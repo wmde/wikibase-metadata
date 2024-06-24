@@ -1,8 +1,8 @@
 """Get Aggregate Property Popularity"""
 
-from typing import List
+from typing import Tuple
 
-from sqlalchemy import desc, select, func
+from sqlalchemy import Select, desc, select, func
 
 from data.database_connection import get_async_session
 from model.database import (
@@ -10,15 +10,46 @@ from model.database import (
     WikibasePropertyPopularityObservationModel,
 )
 from model.strawberry.output import (
+    Page,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
 )
 
 
-async def get_aggregate_property_popularity() -> List[
-    WikibasePropertyPopularityAggregateCountStrawberryModel
-]:
+async def get_aggregate_property_popularity(
+    page_number: int, page_size: int
+) -> Page[WikibasePropertyPopularityAggregateCountStrawberryModel]:
     """Get Aggregate Property Popularity"""
 
+    query = get_unordered_query()
+
+    async with get_async_session() as async_session:
+        total_count = await async_session.scalar(
+            select(func.count()).select_from(query.subquery())
+        )
+        results = (
+            await async_session.execute(
+                query.order_by(desc("wikibase_count"))
+                .order_by(desc("usage_count"))
+                .order_by("id")
+                .offset((page_number - 1) * page_size)
+                .limit(page_size)
+            )
+        ).all()
+
+        return Page.marshal(
+            page_number,
+            page_size,
+            total_count,
+            [
+                WikibasePropertyPopularityAggregateCountStrawberryModel(
+                    r, r[1], r[2], r[3]
+                )
+                for r in results
+            ],
+        )
+
+
+def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
     rank_subquery = (
         select(
             WikibasePropertyPopularityObservationModel,
@@ -44,17 +75,5 @@ async def get_aggregate_property_popularity() -> List[
         .join(rank_subquery)
         .where(rank_subquery.c.rank == 1)
         .group_by(WikibasePropertyPopularityCountModel.property_url)
-        .order_by(desc("wikibase_count"))
-        .order_by(desc("usage_count"))
-        .order_by("id")
     )
-
-    async with get_async_session() as async_session:
-        results = (await async_session.execute(query)).all()
-
-        return [
-            WikibasePropertyPopularityAggregateCountStrawberryModel(
-                r[0], r[1], r[2], r[3]
-            )
-            for r in results
-        ]
+    return query
