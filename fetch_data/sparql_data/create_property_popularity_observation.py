@@ -42,7 +42,7 @@ def compile_property_popularity_observation(
     try:
         print("FETCHING PROPERTY DATA")
         property_count_results = get_results(
-            sparql_endpoint_url, PROPERTY_POPULARITY_QUERY, "PROPERTY_USAGE_QUERY"
+            sparql_endpoint_url, PROPERTY_POPULARITY_QUERY, "PROPERTY_POPULARITY_QUERY"
         )
 
         observation.returned_data = True
