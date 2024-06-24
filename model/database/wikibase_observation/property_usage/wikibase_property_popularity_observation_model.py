@@ -20,8 +20,8 @@ class WikibasePropertyPopularityObservationModel(ModelBase, WikibaseObservationM
     property_count_observations: Mapped[
         List[WikibasePropertyPopularityCountModel]
     ] = relationship(
-        "WikibasePropertyUsageCountModel",
-        back_populates="property_usage_observation",
+        "WikibasePropertyPopularityCountModel",
+        back_populates="property_popularity_observation",
         lazy="selectin",
     )
     """Property Count Observations"""
