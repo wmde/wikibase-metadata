@@ -131,7 +131,7 @@ def compile_distance_dict(
             for n in step_list:
                 distance_dict[node][n] = step
             step += 1
-        if node.endswith('0'):
+        if node.endswith("0"):
             print(f"\t\t{node}: {step-1}")
     return distance_dict
 
