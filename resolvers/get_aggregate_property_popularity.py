@@ -32,9 +32,6 @@ async def get_aggregate_property_popularity() -> List[
         .where(WikibasePropertyPopularityObservationModel.returned_data)
         .subquery()
     )
-    observation_subquery = (
-        select(rank_subquery).where(rank_subquery.c.rank == 1).subquery()
-    )
     query = (
         select(
             func.min(WikibasePropertyPopularityCountModel.id).label("id"),
@@ -44,7 +41,8 @@ async def get_aggregate_property_popularity() -> List[
             ),
             func.count().label("wikibase_count"),
         )
-        .join(observation_subquery)
+        .join(rank_subquery)
+        .where(rank_subquery.c.rank == 1)
         .group_by(WikibasePropertyPopularityCountModel.property_url)
         .order_by(desc("wikibase_count"))
         .order_by(desc("usage_count"))
