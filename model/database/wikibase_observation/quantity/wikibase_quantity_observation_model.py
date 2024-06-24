@@ -1,4 +1,4 @@
-"""Wikibase User Observation Table"""
+"""Wikibase Quantity Observation Table"""
 
 from typing import Optional
 from sqlalchemy import Integer

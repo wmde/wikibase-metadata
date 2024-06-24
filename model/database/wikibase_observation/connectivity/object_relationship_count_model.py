@@ -1,4 +1,4 @@
-"""Wikibase User Observation Table"""
+"""Wikibase Connectivity Object / Relationship Count Table"""
 
 from sqlalchemy import Integer
 from sqlalchemy.orm import Mapped, mapped_column
