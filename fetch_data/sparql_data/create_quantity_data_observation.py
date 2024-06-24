@@ -18,11 +18,10 @@ async def create_quantity_data_observation(wikibase_id: int) -> bool:
 
     async with get_async_session() as async_session:
         wikibase = await get_wikibase_from_database(
-            async_session=async_session, wikibase_id=wikibase_id
+            async_session=async_session,
+            wikibase_id=wikibase_id,
+            require_sparql_endpoint=True,
         )
-        assert (
-            wikibase.sparql_endpoint_url is not None
-        ), "SPARQL Endpoint Must Be Populated"
 
         observation = compile_quantity_observation(wikibase.sparql_endpoint_url)
 
