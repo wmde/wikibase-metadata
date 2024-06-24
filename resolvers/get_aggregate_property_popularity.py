@@ -2,7 +2,7 @@
 
 from typing import List
 
-from sqlalchemy import select, func
+from sqlalchemy import desc, select, func
 
 from data.database_connection import get_async_session
 from model.database import (
@@ -46,9 +46,9 @@ async def get_aggregate_property_popularity() -> List[
         )
         .join(observation_subquery)
         .group_by(WikibasePropertyPopularityCountModel.property_url)
-        .order_by(func.count().desc())
-        .order_by(func.sum(WikibasePropertyPopularityCountModel.usage_count).desc())
-        .order_by(func.min(WikibasePropertyPopularityCountModel.id))
+        .order_by(desc("wikibase_count"))
+        .order_by(desc("usage_count"))
+        .order_by("id")
     )
 
     async with get_async_session() as async_session:
