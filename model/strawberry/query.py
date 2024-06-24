@@ -19,6 +19,6 @@ class Query:
     )
 
     aggregate_property_popularity = strawberry.field(
-        description="Aggregated Property Popularity - from the most current property popularity for each wikibase",
+        description="Aggregated Property Popularity - from the most current property popularity for each wikibase, ordered by # wikibases desc, # uses desc",
         resolver=get_aggregate_property_popularity,
     )
