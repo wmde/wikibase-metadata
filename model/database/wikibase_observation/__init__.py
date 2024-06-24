@@ -6,8 +6,8 @@ from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationModel,
 )
 from model.database.wikibase_observation.property_usage import (
-    WikibasePropertyUsageObservationModel,
-    WikibasePropertyUsageCountModel,
+    WikibasePropertyPopularityObservationModel,
+    WikibasePropertyPopularityCountModel,
 )
 from model.database.wikibase_observation.quantity import (
     WikibaseQuantityObservationModel,

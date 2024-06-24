@@ -4,11 +4,11 @@ from urllib.error import HTTPError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_results
-from fetch_data.sparql_data.sparql_queries import PROPERTY_USAGE_QUERY
+from fetch_data.sparql_data.sparql_queries import PROPERTY_POPULARITY_QUERY
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from model.database import (
-    WikibasePropertyUsageCountModel,
-    WikibasePropertyUsageObservationModel,
+    WikibasePropertyPopularityCountModel,
+    WikibasePropertyPopularityObservationModel,
 )
 
 
@@ -26,7 +26,7 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
             wikibase.sparql_endpoint_url
         )
 
-        wikibase.property_usage_observations.append(observation)
+        wikibase.property_popularity_observations.append(observation)
 
         await async_session.commit()
         return observation.returned_data
@@ -34,21 +34,21 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
 
 def compile_property_popularity_observation(
     sparql_endpoint_url: str,
-) -> WikibasePropertyUsageObservationModel:
+) -> WikibasePropertyPopularityObservationModel:
     """Compile Property Popularity Observation"""
 
-    observation = WikibasePropertyUsageObservationModel()
+    observation = WikibasePropertyPopularityObservationModel()
 
     try:
         print("FETCHING PROPERTY DATA")
         property_count_results = get_results(
-            sparql_endpoint_url, PROPERTY_USAGE_QUERY, "PROPERTY_USAGE_QUERY"
+            sparql_endpoint_url, PROPERTY_POPULARITY_QUERY, "PROPERTY_USAGE_QUERY"
         )
 
         observation.returned_data = True
 
         for result in property_count_results["results"]["bindings"]:
-            record = WikibasePropertyUsageCountModel()
+            record = WikibasePropertyPopularityCountModel()
             record.property_url = result["property"]["value"]
             record.usage_count = result["propertyCount"]["value"]
             observation.property_count_observations.append(record)

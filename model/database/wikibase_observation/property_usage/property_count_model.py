@@ -1,4 +1,4 @@
-"""Wikibase User Observation Table"""
+"""Wikibase Property Popularity Count Table"""
 
 from sqlalchemy import ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -6,8 +6,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from model.database.base import ModelBase
 
 
-class WikibasePropertyUsageCountModel(ModelBase):
-    """Wikibase Property Usage Count Table"""
+class WikibasePropertyPopularityCountModel(ModelBase):
+    """Wikibase Property Popularity Count Table"""
 
     __tablename__ = "wikibase_property_usage_count"
 
@@ -29,16 +29,16 @@ class WikibasePropertyUsageCountModel(ModelBase):
         ),
         nullable=False,
     )
-    """Wikibase Property Usage Observation ID"""
+    """Wikibase Property Popularity Observation ID"""
 
-    property_usage_observation: Mapped[
-        "WikibasePropertyUsageObservationModel"
+    property_popularity_observation: Mapped[
+        "WikibasePropertyPopularityObservationModel"
     ] = relationship(
-        "WikibasePropertyUsageObservationModel",
+        "WikibasePropertyPopularityObservationModel",
         back_populates="property_count_observations",
         lazy="selectin",
     )
-    """Property Usage Observation"""
+    """Property Popularity Observation"""
 
     property_url: Mapped[str] = mapped_column("property_url", String, nullable=False)
     """Property URL"""

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from model.database.base import ModelBase
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
-    WikibasePropertyUsageObservationModel,
+    WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
     WikibaseUserObservationModel,
 )
@@ -53,14 +53,14 @@ class WikibaseModel(ModelBase):
     )
     """Connectivity Observations"""
 
-    property_usage_observations: Mapped[
-        List[WikibasePropertyUsageObservationModel]
+    property_popularity_observations: Mapped[
+        List[WikibasePropertyPopularityObservationModel]
     ] = relationship(
-        "WikibasePropertyUsageObservationModel",
+        "WikibasePropertyPopularityObservationModel",
         back_populates="wikibase",
         lazy="selectin",
     )
-    """Property Usage Observations"""
+    """Property Popularity Observations"""
 
     quantity_observations: Mapped[
         List[WikibaseQuantityObservationModel]
