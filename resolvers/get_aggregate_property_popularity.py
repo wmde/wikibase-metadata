@@ -3,13 +3,9 @@
 from typing import List
 
 from sqlalchemy import select
-import strawberry
 
 from data.database_connection import get_async_session
-from model.database import WikibaseModel
-from model.database.wikibase_observation.property_usage.wikibase_property_popularity_observation_model import (
-    WikibasePropertyPopularityObservationModel,
-)
+from model.database import WikibaseModel, WikibasePropertyPopularityObservationModel
 from model.strawberry.output import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseStrawberryModel,
@@ -47,10 +43,8 @@ async def get_aggregate_property_popularity() -> List[
                         property_dict[
                             property_count.property_url
                         ] = WikibasePropertyPopularityAggregateCountStrawberryModel(
-                            id=strawberry.ID(property_count.id),
+                            id=property_count.id,
                             property_url=property_count.property_url,
-                            usage_count=0,
-                            wikibase_count=0,
                         )
                     property_dict[
                         property_count.property_url
