@@ -4,6 +4,7 @@ from model.strawberry.output.observation.connectivity import (
     WikibaseConnectivityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.property_popularity import (
+    WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibasePropertyPopularityCountStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
 )

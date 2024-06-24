@@ -1,4 +1,4 @@
-"""Wikibase Property Popularity Observation Property Popularity Count"""
+"""Wikibase Property Popularity Count"""
 
 import strawberry
 
@@ -7,7 +7,7 @@ from model.database import WikibasePropertyPopularityCountModel
 
 @strawberry.type
 class WikibasePropertyPopularityCountStrawberryModel:
-    """Wikibase Property Popularity Observation Property Popularity Count"""
+    """Wikibase Property Popularity Count"""
 
     id: strawberry.ID
     property_url: str = strawberry.field(description="Property URL")
