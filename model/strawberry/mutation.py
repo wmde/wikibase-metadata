@@ -1,0 +1,35 @@
+"""GraphQL Mutation"""
+
+import strawberry
+
+from fetch_data import (
+    create_connectivity_data_observation,
+    create_property_popularity_observation,
+    create_quantity_data_observation,
+    create_user_data_observation,
+)
+
+
+@strawberry.type
+class Mutation:
+    """Mutation"""
+
+    fetch_connectivity_data = strawberry.mutation(
+        description="Fetch Connectivity Data from Specified Wikibase Instance",
+        resolver=create_connectivity_data_observation,
+    )
+
+    fetch_property_usage_data = strawberry.mutation(
+        description="Fetch Property Usage from Specified Wikibase Instance",
+        resolver=create_property_popularity_observation,
+    )
+
+    fetch_quantity_data = strawberry.mutation(
+        description="Fetch Quantity Data from Specified Wikibase Instance",
+        resolver=create_quantity_data_observation,
+    )
+
+    fetch_user_data = strawberry.mutation(
+        description="Fetch User Data from Specified Wikibase Instance",
+        resolver=create_user_data_observation,
+    )

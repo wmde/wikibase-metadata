@@ -1,0 +1,45 @@
+a -> b
+b -> c
+
+    a   b   c
+a   0   1   2
+b       0   1
+c           0
+
+average distance:
+average of non-zero distances in the grid above
+4 / 3
+
+connectivity:
+k / (n (n - 1))
+    k is number of non-zero, populated connections
+    n is number of items
+3 / 6 = 0.5
+
+item relationship counts:
+    a links to {b, c} (including indirect connections)
+    a has 2 links
+
+    b links to {c}
+    b has 1 links
+
+    c links to {}
+    c has 0 links
+
+    1 item has 0 links
+    1 item has 1 link
+    1 item has 2 links
+
+object relationship counts:
+    a is linked to by {}
+    a has 0 links
+
+    b is linked to by {a}
+    b has 1 link
+
+    c is linked to by {a, b} (including indirect connections)
+    c has 2 links
+
+    1 object has 0 links
+    1 object has 1 link
+    1 object has 2 links

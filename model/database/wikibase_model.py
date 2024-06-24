@@ -1,0 +1,75 @@
+"""Wikibase Table"""
+
+from typing import List, Optional
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from model.database.base import ModelBase
+from model.database.wikibase_observation import (
+    WikibaseConnectivityObservationModel,
+    WikibasePropertyUsageObservationModel,
+    WikibaseQuantityObservationModel,
+    WikibaseUserObservationModel,
+)
+
+
+class WikibaseModel(ModelBase):
+    """Wikibase Table"""
+
+    __tablename__ = "wikibase"
+
+    id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
+    """ID"""
+
+    url: Mapped[str] = mapped_column("base_url", String, nullable=False)
+    """Base URL"""
+
+    action_query_url: Mapped[Optional[str]] = mapped_column(
+        "action_query_url", String, nullable=True
+    )
+    """Action Query API"""
+
+    index_query_url: Mapped[Optional[str]] = mapped_column(
+        "index_query_url", String, nullable=True
+    )
+    """Index Query API"""
+
+    sparql_query_url: Mapped[Optional[str]] = mapped_column(
+        "sparql_query_url", String, nullable=True
+    )
+    """SPARQL Query API"""
+
+    sparql_endpoint_url: Mapped[Optional[str]] = mapped_column(
+        "sparql_endpoint_url", String, nullable=True
+    )
+    """SPARQL Endpoint"""
+
+    connectivity_observations: Mapped[
+        List[WikibaseConnectivityObservationModel]
+    ] = relationship(
+        "WikibaseConnectivityObservationModel",
+        back_populates="wikibase",
+        lazy="selectin",
+    )
+    """Connectivity Observations"""
+
+    property_usage_observations: Mapped[
+        List[WikibasePropertyUsageObservationModel]
+    ] = relationship(
+        "WikibasePropertyUsageObservationModel",
+        back_populates="wikibase",
+        lazy="selectin",
+    )
+    """Property Usage Observations"""
+
+    quantity_observations: Mapped[
+        List[WikibaseQuantityObservationModel]
+    ] = relationship(
+        "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="selectin"
+    )
+    """Quantity Observations"""
+
+    user_observations: Mapped[List[WikibaseUserObservationModel]] = relationship(
+        "WikibaseUserObservationModel", back_populates="wikibase", lazy="selectin"
+    )
+    """User Observations"""

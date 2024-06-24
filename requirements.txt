@@ -1,0 +1,7 @@
+aiosqlite
+fastapi
+numpy
+requests
+SPARQLWrapper
+sqlalchemy
+strawberry-graphql[fastapi]

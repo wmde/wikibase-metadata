@@ -1,0 +1,5 @@
+__pycache__
+.~lock*
+virtualenv/
+.ipynb_checkpoints/
+fetch_data/sparql_data/sparql_queries/failed_queries/
