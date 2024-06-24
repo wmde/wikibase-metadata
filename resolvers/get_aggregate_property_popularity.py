@@ -2,13 +2,15 @@
 
 from typing import List
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 from data.database_connection import get_async_session
-from model.database import WikibaseModel, WikibasePropertyPopularityObservationModel
+from model.database import (
+    WikibasePropertyPopularityCountModel,
+    WikibasePropertyPopularityObservationModel,
+)
 from model.strawberry.output import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
-    WikibaseStrawberryModel,
 )
 
 
@@ -17,37 +19,44 @@ async def get_aggregate_property_popularity() -> List[
 ]:
     """Get Aggregate Property Popularity"""
 
-    async with get_async_session() as async_session:
-        wikibases = (
-            await async_session.scalars(
-                select(WikibaseModel).where(
-                    WikibaseModel.property_popularity_observations.any(
-                        WikibasePropertyPopularityObservationModel.returned_data
-                    )
-                )
+    rank_subquery = (
+        select(
+            WikibasePropertyPopularityObservationModel,
+            func.rank()
+            .over(
+                partition_by=WikibasePropertyPopularityObservationModel.wikibase_id,
+                order_by=WikibasePropertyPopularityObservationModel.observation_date.desc(),
             )
-        ).all()
+            .label("rank"),
+        )
+        .where(WikibasePropertyPopularityObservationModel.returned_data)
+        .subquery()
+    )
+    observation_subquery = (
+        select(rank_subquery).where(rank_subquery.c.rank == 1).subquery()
+    )
+    query = (
+        select(
+            func.min(WikibasePropertyPopularityCountModel.id).label("id"),
+            WikibasePropertyPopularityCountModel.property_url,
+            func.sum(WikibasePropertyPopularityCountModel.usage_count).label(
+                "usage_count"
+            ),
+            func.count().label("wikibase_count"),
+        )
+        .join(observation_subquery)
+        .group_by(WikibasePropertyPopularityCountModel.property_url)
+        .order_by(func.count().desc())
+        .order_by(func.sum(WikibasePropertyPopularityCountModel.usage_count).desc())
+        .order_by(func.min(WikibasePropertyPopularityCountModel.id))
+    )
 
-        wikibase_strawberries = [WikibaseStrawberryModel.marshal(c) for c in wikibases]
+    async with get_async_session() as async_session:
+        results = (await async_session.execute(query)).all()
 
-        property_dict: dict[
-            str, WikibasePropertyPopularityAggregateCountStrawberryModel
-        ] = {}
-
-        for wikibase_strawberry in wikibase_strawberries:
-            if (
-                most_recent := wikibase_strawberry.property_popularity_observations.most_recent
-            ) is not None:
-                for property_count in most_recent.property_popularity_counts:
-                    if property_count.property_url not in property_dict:
-                        property_dict[
-                            property_count.property_url
-                        ] = WikibasePropertyPopularityAggregateCountStrawberryModel(
-                            id=property_count.id,
-                            property_url=property_count.property_url,
-                        )
-                    property_dict[
-                        property_count.property_url
-                    ].usage_count += property_count.usage_count
-                    property_dict[property_count.property_url].wikibase_count += 1
-        return sorted(property_dict.values(), key=lambda x: x.usage_count, reverse=True)
+        return [
+            WikibasePropertyPopularityAggregateCountStrawberryModel(
+                r[0], r[1], r[2], r[3]
+            )
+            for r in results
+        ]
