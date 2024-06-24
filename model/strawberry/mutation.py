@@ -19,8 +19,8 @@ class Mutation:
         resolver=create_connectivity_data_observation,
     )
 
-    fetch_property_usage_data = strawberry.mutation(
-        description="Fetch Property Usage from Specified Wikibase Instance",
+    fetch_property_popularity_data = strawberry.mutation(
+        description="Fetch Property Popularity from Specified Wikibase Instance",
         resolver=create_property_popularity_observation,
     )
 

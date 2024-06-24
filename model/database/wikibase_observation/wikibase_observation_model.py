@@ -11,7 +11,7 @@ class WikibaseObservationModel:
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibase_id = mapped_column(
+    wikibase_id: Mapped[int] = mapped_column(
         "wikibase_id",
         ForeignKey("wikibase.id", None, False, "observation_wikibase"),
         nullable=False,

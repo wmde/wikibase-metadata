@@ -1,4 +1,4 @@
-"""Wikibase User Observation Table"""
+"""Wikibase Connectivity Relationship Count Table"""
 
 from sqlalchemy import ForeignKey, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship

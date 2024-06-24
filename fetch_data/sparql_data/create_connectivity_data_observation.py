@@ -25,11 +25,10 @@ async def create_connectivity_data_observation(wikibase_id: int) -> bool:
 
     async with get_async_session() as async_session:
         wikibase = await get_wikibase_from_database(
-            async_session=async_session, wikibase_id=wikibase_id
+            async_session=async_session,
+            wikibase_id=wikibase_id,
+            require_sparql_endpoint=True,
         )
-        assert (
-            wikibase.sparql_endpoint_url is not None
-        ), "SPARQL Endpoint Must Be Populated"
 
         observation = compile_connectivity_observation(wikibase.sparql_endpoint_url)
 
@@ -131,7 +130,7 @@ def compile_distance_dict(
             for n in step_list:
                 distance_dict[node][n] = step
             step += 1
-        if node.endswith('0'):
+        if node.endswith("0"):
             print(f"\t\t{node}: {step-1}")
     return distance_dict
 
