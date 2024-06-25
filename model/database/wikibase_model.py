@@ -9,6 +9,7 @@ from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseSoftwareVersionObservationModel,
     WikibaseUserObservationModel,
 )
 
@@ -44,6 +45,11 @@ class WikibaseModel(ModelBase):
     )
     """SPARQL Endpoint"""
 
+    special_version_url: Mapped[Optional[str]] = mapped_column(
+        "special_version_url", String, nullable=True
+    )
+    """Special:Version URL"""
+
     connectivity_observations: Mapped[
         List[WikibaseConnectivityObservationModel]
     ] = relationship(
@@ -66,6 +72,15 @@ class WikibaseModel(ModelBase):
         List[WikibaseQuantityObservationModel]
     ] = relationship(
         "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="selectin"
+    )
+    """Quantity Observations"""
+
+    software_version_observations: Mapped[
+        List[WikibaseSoftwareVersionObservationModel]
+    ] = relationship(
+        "WikibaseSoftwareVersionObservationModel",
+        back_populates="wikibase",
+        lazy="selectin",
     )
     """Quantity Observations"""
 

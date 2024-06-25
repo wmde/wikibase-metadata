@@ -22,7 +22,7 @@ class WikibasePropertyPopularityCountModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibase_property_popularity_observation_id = mapped_column(
+    wikibase_property_popularity_observation_id: Mapped[int] = mapped_column(
         "wikibase_property_usage_observation_id",
         ForeignKey(
             "wikibase_property_usage_observation.id", None, False, "observation"

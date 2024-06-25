@@ -26,7 +26,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("wikibase_id", sa.Integer(), nullable=False),
         sa.Column("anything", sa.Boolean(), nullable=False),
-        sa.Column("date", sa.DateTime(), nullable=False),
+        sa.Column("date", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
             ["wikibase_id"], ["wikibase.id"], name="observation_wikibase"
         ),

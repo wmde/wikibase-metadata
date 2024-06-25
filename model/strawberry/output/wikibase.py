@@ -10,6 +10,9 @@ from model.strawberry.output.observation import (
     WikibaseQuantityObservationStrawberryModel,
     WikibaseUserObservationStrawberryModel,
 )
+from model.strawberry.output.observation.software_version.wikibase_software_version_observation import (
+    WikibaseSoftwareVersionObservationStrawberryModel,
+)
 from model.strawberry.output.wikibase_url_set import WikibaseURLSetStrawberryModel
 
 
@@ -28,6 +31,9 @@ class WikibaseStrawberryModel:
     quantity_observations: WikibaseObservationSetStrawberryModel[
         WikibaseQuantityObservationStrawberryModel
     ] = strawberry.field(description="Quantity Data")
+    software_version_observations: WikibaseObservationSetStrawberryModel[
+        WikibaseSoftwareVersionObservationStrawberryModel
+    ] = strawberry.field(description="Software Version Data")
     user_observations: WikibaseObservationSetStrawberryModel[
         WikibaseUserObservationStrawberryModel
     ] = strawberry.field(description="User Data")
@@ -55,6 +61,12 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseQuantityObservationStrawberryModel.marshal(o)
                     for o in model.quantity_observations
+                ]
+            ),
+            software_version_observations=WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseSoftwareVersionObservationStrawberryModel.marshal(o)
+                    for o in model.software_version_observations
                 ]
             ),
             user_observations=WikibaseObservationSetStrawberryModel.marshal(

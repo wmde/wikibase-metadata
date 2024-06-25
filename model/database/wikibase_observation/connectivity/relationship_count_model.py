@@ -18,7 +18,7 @@ class WikibaseConnectivityObservationRelationshipCountModel:
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibase_connectivity_observation_id = mapped_column(
+    wikibase_connectivity_observation_id: Mapped[int] = mapped_column(
         "wikibase_connectivity_observation_id",
         ForeignKey("wikibase_connectivity_observation.id", None, False, "observation"),
         nullable=False,

@@ -6,7 +6,10 @@ from model.database import WikibaseModel
 
 
 async def get_wikibase_from_database(
-    async_session: AsyncSession, wikibase_id: int, require_sparql_endpoint: bool = False
+    async_session: AsyncSession,
+    wikibase_id: int,
+    require_sparql_endpoint: bool = False,
+    require_special_version: bool = False,
 ) -> WikibaseModel:
     """Get Wikibase"""
 
@@ -20,4 +23,8 @@ async def get_wikibase_from_database(
         assert (
             wikibase.sparql_endpoint_url is not None
         ), "SPARQL Endpoint Must Be Populated"
+    if require_special_version:
+        assert (
+            wikibase.special_version_url is not None
+        ), "Special:Version URL Must Be Populated"
     return wikibase

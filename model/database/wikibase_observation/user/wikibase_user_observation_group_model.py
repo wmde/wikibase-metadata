@@ -14,7 +14,7 @@ class WikibaseUserObservationGroupModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibase_user_observation_id = mapped_column(
+    wikibase_user_observation_id: Mapped[int] = mapped_column(
         "wikibase_user_observation_id",
         ForeignKey("wikibase_user_observation.id", None, False, "observation"),
         nullable=False,
@@ -28,7 +28,7 @@ class WikibaseUserObservationGroupModel(ModelBase):
     )
     """User Observation"""
 
-    wikibase_user_group_id = mapped_column(
+    wikibase_user_group_id: Mapped[int] = mapped_column(
         "wikibase_user_group_id",
         ForeignKey("wikibase_user_group.id", None, False, "group"),
         nullable=False,
