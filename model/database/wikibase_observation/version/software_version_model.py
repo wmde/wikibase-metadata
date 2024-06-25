@@ -93,3 +93,6 @@ class WikibaseSoftwareVersionModel(ModelBase):
             if version != "–" or self.version_hash is None
             else self.version_hash
         )
+
+    def __str__(self) -> str:
+        return f"WikibaseSoftwareVersionModel(software_type={self.software_type}, software_name={self.software_name}, version={self.version}, version_date={self.version_date}, version_hash={self.version_hash})"
