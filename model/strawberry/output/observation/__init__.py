@@ -12,6 +12,8 @@ from model.strawberry.output.observation.quantity import (
     WikibaseQuantityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.software_version import (
+    WikibaseSoftwareVersionAggregateStrawberryModel,
+    WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseSoftwareVersionObservationStrawberryModel,
     WikibaseSoftwareVersionStrawberryModel,
 )

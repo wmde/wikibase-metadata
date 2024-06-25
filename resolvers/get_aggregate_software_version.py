@@ -6,14 +6,12 @@ from typing import List, Optional, Tuple
 from sqlalchemy import Select, and_, select, func
 
 from data.database_connection import get_async_session
-from model.database.wikibase_observation.version.software_version_model import (
+from model.database import (
     WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
-)
-from model.database.wikibase_observation.version.wikibase_version_observation_model import (
     WikibaseSoftwareVersionObservationModel,
 )
-from model.strawberry.output.observation.software_version.wikibase_software_version_aggregate import (
+from model.strawberry.output import (
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
 )
