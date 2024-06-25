@@ -3,6 +3,7 @@ from typing import List
 from bs4 import BeautifulSoup, Tag
 import requests
 from data.database_connection import get_async_session
+from fetch_data.scrape_data.parse_datetime import parse_datetime
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_observation.version.software_version_model import (
@@ -24,7 +25,9 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
 
         observation = WikibaseSoftwareVersionObservationModel()
 
-        result = requests.get(wikibase.special_version_url)
+        result = requests.get(
+            wikibase.special_version_url, headers={"Cookie": "mediawikilanguage=en"}
+        )
         soup = BeautifulSoup(result.content, "html.parser")
 
         observation.returned_data = True
@@ -53,10 +56,14 @@ def compile_extension_versions(
     extensions_table = soup.find(
         "table", attrs={"id": ["sv-ext", "sv-credits-specialpage"]}
     )
-    return [
-        get_software_version_from_row(row, WikibaseSoftwareTypes.extension)
-        for row in extensions_table.find_all("tr", attrs={"class": "mw-version-ext"})
-    ]
+    return unique_versions(
+        [
+            get_software_version_from_row(row, WikibaseSoftwareTypes.extension)
+            for row in extensions_table.find_all(
+                "tr", attrs={"class": "mw-version-ext"}
+            )
+        ]
+    )
 
 
 def compile_installed_software_versions(
@@ -84,11 +91,12 @@ def compile_installed_software_versions(
             ):
                 version = version_strings[0]
                 version_hash = version_strings[1]
-                version_date = datetime.strptime(version_strings[2], "%H:%M, %d %B %Y")
+                version_date = parse_datetime(version_strings[2])
+            elif len(version_strings) == 2:
+                version = version_strings[0]
+                version_hash = version_strings[1]
             else:
-                raise NotImplementedError(
-                    f"{[s for s in row.find_all('td')[1].strings]}"
-                )
+                raise NotImplementedError(f"{version_strings}")
 
             software_versions.append(
                 WikibaseSoftwareVersionModel(
@@ -113,35 +121,53 @@ def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersio
             software_name = row.find(
                 "a", attrs={"class": "mw-version-library-name"}
             ).string
-            version = row.find_all("td")[1].string
-            library_versions.append(
-                WikibaseSoftwareVersionModel(
-                    software_type=WikibaseSoftwareTypes.library,
-                    software_name=software_name,
-                    version=version,
+            if software_name is not None:
+                version = row.find_all("td")[1].string
+                library_versions.append(
+                    WikibaseSoftwareVersionModel(
+                        software_type=WikibaseSoftwareTypes.library,
+                        software_name=software_name,
+                        version=version,
+                    )
                 )
-            )
 
-    return library_versions
+    return unique_versions(library_versions)
 
 
 def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionModel]:
     installed_skin_table: Tag = soup.find(
         "table", attrs={"id": ["sv-skin", "sv-credits-skin"]}
     )
-    return [
-        get_software_version_from_row(row, WikibaseSoftwareTypes.skin)
-        for row in installed_skin_table.find_all(
-            "tr", attrs={"class": "mw-version-ext"}
-        )
-    ]
+    return unique_versions(
+        [
+            get_software_version_from_row(row, WikibaseSoftwareTypes.skin)
+            for row in installed_skin_table.find_all(
+                "tr", attrs={"class": "mw-version-ext"}
+            )
+        ]
+    )
 
 
 def get_software_version_from_row(
     row: Tag, software_type: WikibaseSoftwareTypes
 ) -> WikibaseSoftwareVersionModel:
-    software_name = row.find("a", attrs={"class": "mw-version-ext-name"}).string
-    version = row.find("span", attrs={"class": "mw-version-ext-version"}).string
+    software_name = (
+        row.find("a", attrs={"class": "mw-version-ext-name"}) or row.find_all("td")[0]
+    ).string
+    assert software_name is not None, f"Could Not Find Software Name: {row.prettify()}"
+
+    version: str | None = None
+    if (
+        version_tag := row.find("span", attrs={"class": "mw-version-ext-version"})
+    ).string is not None:
+        version = version_tag.string
+    elif (
+        version_tag.find("a", attrs={"href": "https://www.mediawiki.org/wiki/MLEB"})
+        is not None
+    ):
+        version = [s.strip() for s in version_tag.strings][0]
+
+    assert version is not None, f"Could Not Find Version: {row.prettify()}"
 
     version_hash: str | None = None
     if (
@@ -155,7 +181,7 @@ def get_software_version_from_row(
     if (
         date_tag := row.find("span", attrs={"class": "mw-version-ext-vcs-timestamp"})
     ) is not None:
-        version_date = datetime.strptime(date_tag.string, "%H:%M, %d %B %Y")
+        version_date = parse_datetime(date_tag.string)
 
     return WikibaseSoftwareVersionModel(
         software_type=software_type,
@@ -164,3 +190,12 @@ def get_software_version_from_row(
         version_hash=version_hash,
         version_date=version_date,
     )
+
+
+def unique_versions(
+    input_list: List[WikibaseSoftwareVersionModel],
+) -> List[WikibaseSoftwareVersionModel]:
+    temp = dict()
+    for v in input_list:
+        temp[str(v)] = v
+    return temp.values()
