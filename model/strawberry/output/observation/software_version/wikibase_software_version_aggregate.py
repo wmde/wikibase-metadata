@@ -4,21 +4,17 @@ from datetime import datetime
 from typing import List, Optional
 import strawberry
 
-from model.strawberry.output.observation.observation_aggregate import (
-    AggregateStrawberryModel,
-)
 from model.strawberry.output.observation.software_version.wikibase_software_version import (
     VersionStrawberryModel,
 )
 
 
 @strawberry.type
-class WikibaseSoftwareVersionAggregateStrawberryModel(
-    VersionStrawberryModel, AggregateStrawberryModel
-):
+class WikibaseSoftwareVersionAggregateStrawberryModel(VersionStrawberryModel):
     """Wikibase Software Version Aggregate"""
 
     id: strawberry.ID
+    wikibase_count: int = strawberry.field(description="Number of Wikibases Used")
 
     def __init__(
         self,
