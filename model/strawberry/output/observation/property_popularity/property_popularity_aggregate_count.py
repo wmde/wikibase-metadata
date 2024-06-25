@@ -2,6 +2,9 @@
 
 import strawberry
 
+from model.strawberry.output.observation.observation_aggregate import (
+    AggregateStrawberryModel,
+)
 from model.strawberry.output.observation.property_popularity.property_popularity_count import (
     WikibasePropertyPopularityCountStrawberryModel,
 )
@@ -9,11 +12,9 @@ from model.strawberry.output.observation.property_popularity.property_popularity
 
 @strawberry.type
 class WikibasePropertyPopularityAggregateCountStrawberryModel(
-    WikibasePropertyPopularityCountStrawberryModel
+    WikibasePropertyPopularityCountStrawberryModel, AggregateStrawberryModel
 ):
     """Wikibase Property Popularity Aggregate Count"""
-
-    wikibase_count: int = strawberry.field(description="Number of Wikibases Used")
 
     def __init__(
         self, id: int, property_url: str, usage_count: int, wikibase_count: int
