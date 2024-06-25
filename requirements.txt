@@ -1,4 +1,5 @@
 aiosqlite
+bs4
 fastapi
 numpy
 requests
