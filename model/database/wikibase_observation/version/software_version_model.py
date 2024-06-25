@@ -51,7 +51,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     )
     """Software Version Observation"""
 
-    software_type = mapped_column(
+    software_type: Mapped[WikibaseSoftwareTypes] = mapped_column(
         "software_type", Enum(WikibaseSoftwareTypes), nullable=False
     )
     """Software Type"""
@@ -71,3 +71,25 @@ class WikibaseSoftwareVersionModel(ModelBase):
         "version_date", DateTime, nullable=True
     )
     """Version Date"""
+
+    def __init__(
+        self,
+        software_type: WikibaseSoftwareTypes,
+        software_name: str,
+        version: str,
+        version_hash: Optional[str] = None,
+        version_date: Optional[datetime] = None,
+    ):
+        self.software_type = software_type
+        self.software_name = software_name
+        self.version_hash = (
+            None
+            if version_hash is None
+            else version_hash.replace("(", "").replace(")", "")
+        )
+        self.version_date = version_date
+        self.version = (
+            version
+            if version != "–" or self.version_hash is None
+            else self.version_hash
+        )

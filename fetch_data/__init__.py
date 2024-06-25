@@ -1,5 +1,6 @@
 """Fetch Data"""
 
+from fetch_data.scrape_data import create_software_version_observation
 from fetch_data.sparql_data import (
     create_connectivity_data_observation,
     create_property_popularity_observation,

@@ -6,6 +6,7 @@ from fetch_data import (
     create_connectivity_data_observation,
     create_property_popularity_observation,
     create_quantity_data_observation,
+    create_software_version_observation,
     create_user_data_observation,
 )
 
@@ -32,4 +33,9 @@ class Mutation:
     fetch_user_data = strawberry.mutation(
         description="Fetch User Data from Specified Wikibase Instance",
         resolver=create_user_data_observation,
+    )
+
+    fetch_version_data = strawberry.mutation(
+        description="Scrape data from Special:Version page",
+        resolver=create_software_version_observation,
     )
