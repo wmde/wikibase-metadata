@@ -11,6 +11,10 @@ from model.strawberry.output.observation.property_popularity import (
 from model.strawberry.output.observation.quantity import (
     WikibaseQuantityObservationStrawberryModel,
 )
+from model.strawberry.output.observation.software_version import (
+    WikibaseSoftwareVersionObservationStrawberryModel,
+    WikibaseSoftwareVersionStrawberryModel,
+)
 from model.strawberry.output.observation.user import (
     WikibaseUserGroupStrawberryModel,
     WikibaseUserObservationStrawberryModel,
