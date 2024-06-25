@@ -17,6 +17,11 @@ from model.database.wikibase_observation.user import (
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
 )
+from model.database.wikibase_observation.version import (
+    WikibaseSoftwareTypes,
+    WikibaseSoftwareVersionModel,
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_observation.wikibase_observation_model import (
     WikibaseObservationModel,
 )

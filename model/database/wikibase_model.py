@@ -9,6 +9,7 @@ from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseSoftwareVersionObservationModel,
     WikibaseUserObservationModel,
 )
 
@@ -71,6 +72,15 @@ class WikibaseModel(ModelBase):
         List[WikibaseQuantityObservationModel]
     ] = relationship(
         "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="selectin"
+    )
+    """Quantity Observations"""
+
+    software_version_observations: Mapped[
+        List[WikibaseSoftwareVersionObservationModel]
+    ] = relationship(
+        "WikibaseSoftwareVersionObservationModel",
+        back_populates="wikibase",
+        lazy="selectin",
     )
     """Quantity Observations"""
 
