@@ -59,7 +59,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     software_name: Mapped[str] = mapped_column("software_name", String, nullable=False)
     """Software Name"""
 
-    version: Mapped[str] = mapped_column("version", String, nullable=False)
+    version: Mapped[Optional[str]] = mapped_column("version", String, nullable=True)
     """Version"""
 
     version_hash: Mapped[Optional[str]] = mapped_column(
@@ -88,11 +88,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
             else version_hash.replace("(", "").replace(")", "")
         )
         self.version_date = version_date
-        self.version = (
-            version
-            if version != "–" or self.version_hash is None
-            else self.version_hash
-        )
+        self.version = version if version != "–" else self.version_hash
 
     def __str__(self) -> str:
         return f"WikibaseSoftwareVersionModel(software_type={self.software_type}, software_name={self.software_name}, version={self.version}, version_date={self.version_date}, version_hash={self.version_hash})"

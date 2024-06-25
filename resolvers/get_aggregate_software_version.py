@@ -74,7 +74,7 @@ async def get_aggregate_version(
 
 def get_query(
     software_type: WikibaseSoftwareTypes,
-) -> Select[Tuple[int, str, str, Optional[datetime], Optional[str], int]]:
+) -> Select[Tuple[int, str, Optional[str], Optional[datetime], Optional[str], int]]:
     rank_subquery = (
         select(
             WikibaseSoftwareVersionObservationModel,

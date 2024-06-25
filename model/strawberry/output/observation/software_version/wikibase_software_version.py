@@ -11,7 +11,7 @@ from model.database import WikibaseSoftwareVersionModel
 class VersionStrawberryModel:
     """Version"""
 
-    version: str = strawberry.field(description="Software Version")
+    version: Optional[str] = strawberry.field(description="Software Version")
     version_date: Optional[datetime] = strawberry.field(
         description="Software Version Release Date"
     )

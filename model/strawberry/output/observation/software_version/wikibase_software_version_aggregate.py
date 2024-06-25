@@ -23,7 +23,7 @@ class WikibaseSoftwareVersionAggregateStrawberryModel(
     def __init__(
         self,
         id: int,
-        version: str,
+        version: Optional[str],
         version_date: Optional[datetime],
         version_hash: Optional[str],
         wikibase_count: int,
@@ -60,5 +60,5 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
     @strawberry.field
     def versions(self) -> List[WikibaseSoftwareVersionAggregateStrawberryModel]:
         return sorted(
-            self._versions, key=lambda x: (x.wikibase_count, x.version), reverse=True
+            self._versions, key=lambda x: (x.wikibase_count, x.version or ""), reverse=True
         )
