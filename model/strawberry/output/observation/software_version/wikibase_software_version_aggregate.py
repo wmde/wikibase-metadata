@@ -60,5 +60,7 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
     @strawberry.field
     def versions(self) -> List[WikibaseSoftwareVersionAggregateStrawberryModel]:
         return sorted(
-            self._versions, key=lambda x: (x.wikibase_count, x.version or ""), reverse=True
+            self._versions,
+            key=lambda x: (x.wikibase_count, x.version or ""),
+            reverse=True,
         )

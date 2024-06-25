@@ -1,7 +1,7 @@
 """Get Aggregate Property Popularity"""
 
 from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
 from sqlalchemy import Select, and_, select, func
 
@@ -12,38 +12,47 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
 )
 from model.strawberry.output import (
+    Page,
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
 )
 
 
-async def get_aggregate_extension_version() -> List[
-    WikibaseSoftwareVersionDoubleAggregateStrawberryModel
-]:
-    return await get_aggregate_version(WikibaseSoftwareTypes.extension)
+async def get_aggregate_extension_version(
+    page_number: int, page_size: int
+) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
+    return await get_aggregate_version(
+        WikibaseSoftwareTypes.extension, page_number, page_size
+    )
 
 
-async def get_aggregate_library_version() -> List[
-    WikibaseSoftwareVersionDoubleAggregateStrawberryModel
-]:
-    return await get_aggregate_version(WikibaseSoftwareTypes.library)
+async def get_aggregate_library_version(
+    page_number: int, page_size: int
+) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
+    return await get_aggregate_version(
+        WikibaseSoftwareTypes.library, page_number, page_size
+    )
 
 
-async def get_aggregate_skin_version() -> List[
-    WikibaseSoftwareVersionDoubleAggregateStrawberryModel
-]:
-    return await get_aggregate_version(WikibaseSoftwareTypes.skin)
+async def get_aggregate_skin_version(
+    page_number: int, page_size: int
+) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
+    return await get_aggregate_version(
+        WikibaseSoftwareTypes.skin, page_number, page_size
+    )
 
 
-async def get_aggregate_software_version() -> List[
-    WikibaseSoftwareVersionDoubleAggregateStrawberryModel
-]:
-    return await get_aggregate_version(WikibaseSoftwareTypes.software)
+async def get_aggregate_software_version(
+    page_number: int, page_size: int
+) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
+    return await get_aggregate_version(
+        WikibaseSoftwareTypes.software, page_number, page_size
+    )
 
 
 async def get_aggregate_version(
-    software_type: WikibaseSoftwareTypes,
-) -> List[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
+    software_type: WikibaseSoftwareTypes, page_number: int, page_size: int
+) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
     """Get Aggregate Property Popularity"""
 
     query = get_query(software_type)
@@ -67,8 +76,13 @@ async def get_aggregate_version(
                 )
             )
 
-        return sorted(
-            software_dict.values(), key=lambda x: x.wikibase_count(), reverse=True
+        return Page.marshal(
+            page_number,
+            page_size,
+            len(software_dict),
+            sorted(
+                software_dict.values(), key=lambda x: x.wikibase_count(), reverse=True
+            )[page_size * (page_number - 1) : page_size * page_number],
         )
 
 
