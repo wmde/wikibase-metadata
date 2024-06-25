@@ -87,4 +87,5 @@ def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
     except ValueError:
         pass
 
-    raise ValueError(f"{date_string} cannot be parsed")
+    # raise ValueError(f"{date_string} cannot be parsed")
+    return None
