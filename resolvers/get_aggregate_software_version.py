@@ -18,38 +18,6 @@ from model.strawberry.output import (
 )
 
 
-async def get_aggregate_extension_version(
-    page_number: int, page_size: int
-) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
-    return await get_aggregate_version(
-        WikibaseSoftwareTypes.extension, page_number, page_size
-    )
-
-
-async def get_aggregate_library_version(
-    page_number: int, page_size: int
-) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
-    return await get_aggregate_version(
-        WikibaseSoftwareTypes.library, page_number, page_size
-    )
-
-
-async def get_aggregate_skin_version(
-    page_number: int, page_size: int
-) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
-    return await get_aggregate_version(
-        WikibaseSoftwareTypes.skin, page_number, page_size
-    )
-
-
-async def get_aggregate_software_version(
-    page_number: int, page_size: int
-) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
-    return await get_aggregate_version(
-        WikibaseSoftwareTypes.software, page_number, page_size
-    )
-
-
 async def get_aggregate_version(
     software_type: WikibaseSoftwareTypes, page_number: int, page_size: int
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
