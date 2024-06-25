@@ -44,6 +44,11 @@ class WikibaseModel(ModelBase):
     )
     """SPARQL Endpoint"""
 
+    special_version_url: Mapped[Optional[str]] = mapped_column(
+        "special_version_url", String, nullable=True
+    )
+    """Special:Version URL"""
+
     connectivity_observations: Mapped[
         List[WikibaseConnectivityObservationModel]
     ] = relationship(
