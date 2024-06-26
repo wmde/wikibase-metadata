@@ -23,7 +23,13 @@ class WikibaseModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    url: Mapped[str] = mapped_column("base_url", String, nullable=False)
+    wikibase_name: Mapped[str] = mapped_column("wikibase_name", String, nullable=True)
+    """Name"""
+
+    organization: Mapped[str] = mapped_column("organization", String, nullable=True)
+    """Organization"""
+
+    url: Mapped[str] = mapped_column("base_url", String, nullable=True)
     """Base URL"""
 
     action_query_url: Mapped[Optional[str]] = mapped_column(
