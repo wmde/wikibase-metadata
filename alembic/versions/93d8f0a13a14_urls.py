@@ -28,12 +28,12 @@ def upgrade() -> None:
         sa.Column(
             "url_type",
             sa.Enum(
-                "base_url",
-                "action_query_url",
-                "index_query_url",
-                "sparql_endpoint_url",
-                "sparql_query_url",
-                "special_version_url",
+                "BASE_URL",
+                "ACTION_QUERY_URL",
+                "INDEX_QUERY_URL",
+                "SPARQL_ENDPOINT_URL",
+                "SPARQL_QUERY_URL",
+                "SPECIAL_VERSION_URL",
                 name="wikibaseurltypes",
             ),
             nullable=False,
