@@ -33,12 +33,12 @@ async def get_aggregate_version(
         ] = {}
         for r in results:
             if r[1] not in software_dict:
-                software_dict[
-                    r[1]
-                ] = WikibaseSoftwareVersionDoubleAggregateStrawberryModel(
-                    r[0], r[1], []
+                software_dict[r[1]] = (
+                    WikibaseSoftwareVersionDoubleAggregateStrawberryModel(
+                        r[0], r[1], []
+                    )
                 )
-            software_dict[r[1]]._versions.append(
+            software_dict[r[1]].private_versions.append(
                 WikibaseSoftwareVersionAggregateStrawberryModel(
                     r[0], r[2], r[3], r[4], r[5]
                 )
@@ -57,10 +57,12 @@ async def get_aggregate_version(
 def get_query(
     software_type: WikibaseSoftwareTypes,
 ) -> Select[Tuple[int, str, Optional[str], Optional[datetime], Optional[str], int]]:
+    """Get Software Version Query"""
+
     rank_subquery = (
         select(
             WikibaseSoftwareVersionObservationModel,
-            func.rank()
+            func.rank()  # pylint: disable=not-callable
             .over(
                 partition_by=WikibaseSoftwareVersionObservationModel.wikibase_id,
                 order_by=WikibaseSoftwareVersionObservationModel.observation_date.desc(),
@@ -77,7 +79,7 @@ def get_query(
             WikibaseSoftwareVersionModel.version,
             WikibaseSoftwareVersionModel.version_date,
             WikibaseSoftwareVersionModel.version_hash,
-            func.count().label("wikibase_count"),
+            func.count().label("wikibase_count"),  # pylint: disable=not-callable
         )
         .join(rank_subquery)
         .where(

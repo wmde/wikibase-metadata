@@ -23,6 +23,8 @@ def get_results(endpoint_url: str, query: str, query_name: str) -> dict:
             f"fetch_data/sparql_data/sparql_queries/failed_queries/{query_name}"
         )
         os.makedirs(failed_dir, exist_ok=True)
-        with open(f"{failed_dir}/temp_{datetime.now()}.txt", "w") as temp:
+        with open(
+            f"{failed_dir}/temp_{datetime.now()}.txt", "w", encoding="utf-8"
+        ) as temp:
             temp.write(str(query_result))
         raise exc

@@ -8,13 +8,15 @@ from model.database.base import ModelBase
 
 
 class WikibaseURLTypes(enum.Enum):
-    base_url = 1
-    action_query_url = 2
-    index_query_url = 3
-    sparql_endpoint_url = 4
-    sparql_query_url = 5
-    special_version_url = 6
-    special_base = 7
+    """Wikibase URL Types"""
+
+    BASE_URL = 1
+    ACTION_QUERY_URL = 2
+    INDEX_QUERY_URL = 3
+    SPARQL_ENDPOINT_URL = 4
+    SPARQL_QUERY_URL = 5
+    SPECIAL_VERSION_URL = 6
+    SPECIAL_BASE = 7
 
 
 class WikibaseURLModel(ModelBase):

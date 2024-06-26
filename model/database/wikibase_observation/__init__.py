@@ -5,7 +5,7 @@ from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseConnectivityObservationModel,
 )
-from model.database.wikibase_observation.property_popularity import (
+from model.database.wikibase_observation.property import (
     WikibasePropertyPopularityObservationModel,
     WikibasePropertyPopularityCountModel,
 )

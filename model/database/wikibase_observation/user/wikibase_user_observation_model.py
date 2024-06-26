@@ -18,15 +18,15 @@ class WikibaseUserObservationModel(ModelBase, WikibaseObservationModel):
 
     __tablename__ = "wikibase_user_observation"
 
-    total_users: Mapped[  # pylint: disable=unsubscriptable-object
-        Optional[int]
-    ] = mapped_column("total_users", Integer, nullable=True)
+    total_users: Mapped[Optional[int]] = mapped_column(
+        "total_users", Integer, nullable=True
+    )
 
-    user_group_observations: Mapped[  # pylint: disable=unsubscriptable-object
-        List[WikibaseUserObservationGroupModel]
-    ] = relationship(
-        "WikibaseUserObservationGroupModel",
-        back_populates="user_observation",
-        lazy="selectin",
+    user_group_observations: Mapped[List[WikibaseUserObservationGroupModel]] = (
+        relationship(
+            "WikibaseUserObservationGroupModel",
+            back_populates="user_observation",
+            lazy="selectin",
+        )
     )
     """User Group Observations"""

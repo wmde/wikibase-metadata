@@ -26,11 +26,11 @@ class WikibaseUserGroupModel(ModelBase):
     )
     """Wikibase Default?"""
 
-    user_group_observations: Mapped[
-        List[WikibaseUserObservationGroupModel]
-    ] = relationship(
-        "WikibaseUserObservationGroupModel",
-        back_populates="user_group",
-        lazy="selectin",
+    user_group_observations: Mapped[List[WikibaseUserObservationGroupModel]] = (
+        relationship(
+            "WikibaseUserObservationGroupModel",
+            back_populates="user_group",
+            lazy="selectin",
+        )
     )
     """User Group Observations"""

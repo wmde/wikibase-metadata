@@ -1,6 +1,5 @@
 """Get Wikibase List"""
 
-
 from sqlalchemy import func, select
 
 from data.database_connection import get_async_session
@@ -16,7 +15,9 @@ async def get_wikibase_list(
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
-            select(func.count()).select_from(WikibaseModel)
+            select(func.count()).select_from(  # pylint: disable=not-callable
+                WikibaseModel
+            )
         )
         results = (
             await async_session.scalars(
