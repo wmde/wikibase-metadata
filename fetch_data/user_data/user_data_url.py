@@ -3,7 +3,7 @@
 from fetch_data.utils import dict_to_url
 
 
-def users_url(api_url: str, continue_from: str | None = None) -> str:
+def all_users_url(api_url: str, continue_from: str | None = None) -> str:
     """URL for User Data"""
 
     parameters = {
