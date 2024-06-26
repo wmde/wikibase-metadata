@@ -12,6 +12,7 @@ from model.database.wikibase_observation import (
     WikibaseSoftwareVersionObservationModel,
     WikibaseUserObservationModel,
 )
+from model.database.wikibase_url_model import WikibaseURLModel
 
 
 class WikibaseModel(ModelBase):
@@ -49,6 +50,11 @@ class WikibaseModel(ModelBase):
         "special_version_url", String, nullable=True
     )
     """Special:Version URL"""
+
+    wikibase_urls: Mapped[List[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel", back_populates="wikibase", lazy="selectin"
+    )
+    """URLs"""
 
     connectivity_observations: Mapped[
         List[WikibaseConnectivityObservationModel]
