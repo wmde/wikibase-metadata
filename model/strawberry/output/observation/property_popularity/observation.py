@@ -6,7 +6,7 @@ import strawberry
 from model.database import (
     WikibasePropertyPopularityObservationModel,
 )
-from model.strawberry.output.observation.property_popularity.property_popularity_count import (
+from model.strawberry.output.observation.property_popularity.count import (
     WikibasePropertyPopularityCountStrawberryModel,
 )
 from model.strawberry.output.observation.wikibase_observation import (

@@ -10,6 +10,8 @@ from model.database.base import ModelBase
 
 
 class WikibaseSoftwareTypes(enum.Enum):
+    """Wikibase Software Types"""
+
     software = 1
     skin = 2
     extension = 3
@@ -72,6 +74,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     )
     """Version Date"""
 
+    # pylint: disable=too-many-arguments
     def __init__(
         self,
         software_type: WikibaseSoftwareTypes,
@@ -91,4 +94,11 @@ class WikibaseSoftwareVersionModel(ModelBase):
         self.version = version if version != "–" else self.version_hash
 
     def __str__(self) -> str:
-        return f"WikibaseSoftwareVersionModel(software_type={self.software_type}, software_name={self.software_name}, version={self.version}, version_date={self.version_date}, version_hash={self.version_hash})"
+        return (
+            "WikibaseSoftwareVersionModel("
+            + f"software_type={self.software_type}, "
+            + f"software_name={self.software_name}, "
+            + f"version={self.version}, "
+            + f"version_date={self.version_date}, "
+            + f"version_hash={self.version_hash})"
+        )

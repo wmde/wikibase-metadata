@@ -1,9 +1,15 @@
+# pylint: disable=too-many-return-statements
+
+"""Parse Datetime"""
+
 from datetime import datetime
 import re
 from typing import Optional
 
 
 def parse_datetime(date_string: Optional[str]) -> Optional[datetime]:
+    """Parse Datetime"""
+
     if date_string is None:
         return None
 

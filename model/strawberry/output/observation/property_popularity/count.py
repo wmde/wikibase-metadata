@@ -1,6 +1,5 @@
 """Wikibase Property Popularity Count"""
 
-from typing import Union
 import strawberry
 
 from model.database import WikibasePropertyPopularityCountModel

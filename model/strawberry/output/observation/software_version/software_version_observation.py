@@ -9,7 +9,7 @@ from model.database import (
 from model.database.wikibase_observation.version.software_version_model import (
     WikibaseSoftwareTypes,
 )
-from model.strawberry.output.observation.software_version.wikibase_software_version import (
+from model.strawberry.output.observation.software_version.software_version import (
     WikibaseSoftwareVersionStrawberryModel,
 )
 from model.strawberry.output.observation.wikibase_observation import (

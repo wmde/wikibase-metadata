@@ -1,3 +1,5 @@
+# pylint: disable=unnecessary-lambda
+
 """Big Int"""
 
 from typing import Union

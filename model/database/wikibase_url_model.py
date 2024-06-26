@@ -8,6 +8,8 @@ from model.database.base import ModelBase
 
 
 class WikibaseURLTypes(enum.Enum):
+    """Wikibase URL Types"""
+
     base_url = 1
     action_query_url = 2
     index_query_url = 3

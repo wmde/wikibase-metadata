@@ -45,6 +45,8 @@ class WikibaseConnectivityObservationStrawberryModel(
         graphql_type=Optional[BigInt],
     )
     def total_connections(self):
+        """Item -> Item Connections; assert that math works"""
+
         if self.returned_data:
             item_sum = sum(
                 i.item_count * i.relationship_count

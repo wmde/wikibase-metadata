@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List, Optional
 import strawberry
 
-from model.strawberry.output.observation.software_version.wikibase_software_version import (
+from model.strawberry.output.observation.software_version.software_version import (
     VersionStrawberryModel,
 )
 
@@ -16,9 +16,10 @@ class WikibaseSoftwareVersionAggregateStrawberryModel(VersionStrawberryModel):
     id: strawberry.ID
     wikibase_count: int = strawberry.field(description="Number of Wikibases Used")
 
+    # pylint: disable=too-many-arguments
     def __init__(
         self,
-        id: int,
+        id: int,  # pylint: disable=redefined-builtin
         version: Optional[str],
         version_date: Optional[datetime],
         version_hash: Optional[str],
@@ -37,26 +38,32 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
 
     id: strawberry.ID
     software_name: str = strawberry.field(description="Software Name")
-    _versions: strawberry.Private[List[WikibaseSoftwareVersionAggregateStrawberryModel]]
+    private_versions: strawberry.Private[
+        List[WikibaseSoftwareVersionAggregateStrawberryModel]
+    ]
 
     def __init__(
         self,
-        id: int,
+        id: int,  # pylint: disable=redefined-builtin
         software_name: str,
         versions: List[WikibaseSoftwareVersionAggregateStrawberryModel],
     ):
         self.id = strawberry.ID(id)
         self.software_name = software_name
-        self._versions = versions
+        self.private_versions = versions
 
-    @strawberry.field
+    @strawberry.field(description="Wikibase Count")
     def wikibase_count(self) -> int:
-        return sum([v.wikibase_count for v in self._versions])
+        """Wikibase Count"""
 
-    @strawberry.field
+        return sum(v.wikibase_count for v in self.private_versions)
+
+    @strawberry.field(description="Version List")
     def versions(self) -> List[WikibaseSoftwareVersionAggregateStrawberryModel]:
+        """Version List"""
+
         return sorted(
-            self._versions,
+            self.private_versions,
             key=lambda x: (x.wikibase_count, x.version or ""),
             reverse=True,
         )

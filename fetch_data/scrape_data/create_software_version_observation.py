@@ -1,3 +1,5 @@
+"""Create Software Version Observation"""
+
 from datetime import datetime
 from typing import List
 from bs4 import BeautifulSoup, Tag
@@ -16,6 +18,8 @@ from model.database.wikibase_observation.version.wikibase_version_observation_mo
 
 
 async def create_software_version_observation(wikibase_id: int) -> bool:
+    """Create Software Version Observation"""
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
@@ -26,7 +30,9 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
         observation = WikibaseSoftwareVersionObservationModel()
 
         result = requests.get(
-            wikibase.special_version_url.url, headers={"Cookie": "mediawikilanguage=en"}
+            wikibase.special_version_url.url,
+            headers={"Cookie": "mediawikilanguage=en"},
+            timeout=10,
         )
         soup = BeautifulSoup(result.content, "html.parser")
 
@@ -53,6 +59,8 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
 def compile_extension_versions(
     soup: BeautifulSoup,
 ) -> List[WikibaseSoftwareVersionModel]:
+    """Compile Extension Version List"""
+
     extensions_table = soup.find(
         "table", attrs={"id": ["sv-ext", "sv-credits-specialpage"]}
     )
@@ -69,6 +77,8 @@ def compile_extension_versions(
 def compile_installed_software_versions(
     soup: BeautifulSoup,
 ) -> List[WikibaseSoftwareVersionModel]:
+    """Compile Installed Software Version List"""
+
     installed_software_table: Tag = soup.find("table", attrs={"id": "sv-software"})
 
     software_versions: List[WikibaseSoftwareVersionModel] = []
@@ -112,6 +122,8 @@ def compile_installed_software_versions(
 
 
 def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionModel]:
+    """Compile Library Version List"""
+
     libraries_table = soup.find("table", attrs={"id": "sv-libraries"})
 
     library_versions: List[WikibaseSoftwareVersionModel] = []
@@ -135,6 +147,8 @@ def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersio
 
 
 def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionModel]:
+    """Compile Skin Version List"""
+
     installed_skin_table: Tag = soup.find(
         "table", attrs={"id": ["sv-skin", "sv-credits-skin"]}
     )
@@ -151,6 +165,8 @@ def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionMo
 def get_software_version_from_row(
     row: Tag, software_type: WikibaseSoftwareTypes
 ) -> WikibaseSoftwareVersionModel:
+    """Parse Software Version from Table Row"""
+
     software_name = (
         row.find("a", attrs={"class": "mw-version-ext-name"}) or row.find_all("td")[0]
     ).string
@@ -195,7 +211,9 @@ def get_software_version_from_row(
 def unique_versions(
     input_list: List[WikibaseSoftwareVersionModel],
 ) -> List[WikibaseSoftwareVersionModel]:
-    temp = dict()
+    """Unique Version List"""
+
+    temp: dict[str, WikibaseSoftwareVersionModel] = {}
     for v in input_list:
         temp[str(v)] = v
     return temp.values()
