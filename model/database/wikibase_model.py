@@ -1,7 +1,7 @@
 """Wikibase Table"""
 
 from typing import List, Optional
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -12,7 +12,7 @@ from model.database.wikibase_observation import (
     WikibaseSoftwareVersionObservationModel,
     WikibaseUserObservationModel,
 )
-from model.database.wikibase_url_model import WikibaseURLModel
+from model.database.wikibase_url_model import WikibaseURLModel, WikibaseURLTypes
 
 
 class WikibaseModel(ModelBase):
@@ -23,44 +23,73 @@ class WikibaseModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibase_name: Mapped[str] = mapped_column("wikibase_name", String, nullable=True)
+    wikibase_name: Mapped[str] = mapped_column("wikibase_name", String, nullable=False)
     """Name"""
 
-    organization: Mapped[str] = mapped_column("organization", String, nullable=True)
+    organization: Mapped[Optional[str]] = mapped_column(
+        "organization", String, nullable=True
+    )
     """Organization"""
 
-    url: Mapped[str] = mapped_column("base_url", String, nullable=True)
+    url: Mapped[WikibaseURLModel] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.base_url == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
+    )
     """Base URL"""
 
-    action_query_url: Mapped[Optional[str]] = mapped_column(
-        "action_query_url", String, nullable=True
+    action_query_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.action_query_url == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
     )
     """Action Query API"""
 
-    index_query_url: Mapped[Optional[str]] = mapped_column(
-        "index_query_url", String, nullable=True
+    index_query_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.index_query_url == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
     )
     """Index Query API"""
 
-    sparql_query_url: Mapped[Optional[str]] = mapped_column(
-        "sparql_query_url", String, nullable=True
+    sparql_query_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.sparql_query_url == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
     )
     """SPARQL Query API"""
 
-    sparql_endpoint_url: Mapped[Optional[str]] = mapped_column(
-        "sparql_endpoint_url", String, nullable=True
+    sparql_endpoint_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.sparql_endpoint_url == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
     )
     """SPARQL Endpoint"""
 
-    special_version_url: Mapped[Optional[str]] = mapped_column(
-        "special_version_url", String, nullable=True
+    special_version_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.special_version_url == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
     )
     """Special:Version URL"""
-
-    wikibase_urls: Mapped[List[WikibaseURLModel]] = relationship(
-        "WikibaseURLModel", back_populates="wikibase", lazy="selectin"
-    )
-    """URLs"""
 
     connectivity_observations: Mapped[
         List[WikibaseConnectivityObservationModel]

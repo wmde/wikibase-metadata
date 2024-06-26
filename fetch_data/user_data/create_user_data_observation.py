@@ -22,18 +22,17 @@ async def create_user_data_observation(wikibase_id: int) -> bool:
     """Create User Data Observation"""
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = get_wikibase_from_database(
-            async_session=async_session, wikibase_id=wikibase_id
+            async_session=async_session,
+            wikibase_id=wikibase_id,
+            require_action_api=True,
         )
         observation = WikibaseUserObservationModel()
 
+        site_user_data: list[dict]
         try:
-            site_user_data = fetch_user_data(wikibase.action_query_url)
+            site_user_data = fetch_user_data(wikibase.action_query_url.url)
             observation.returned_data = True
-        except ReadTimeout:
-            observation.returned_data = False
-        except SSLError:
-            observation.returned_data = False
-        except ValueError:
+        except (ReadTimeout, SSLError, ValueError):
             observation.returned_data = False
 
         if observation.returned_data:

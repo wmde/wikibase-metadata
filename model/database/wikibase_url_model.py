@@ -40,9 +40,7 @@ class WikibaseURLModel(ModelBase):
     )
     """Wikibase ID"""
 
-    wikibase: Mapped["WikibaseModel"] = relationship(
-        "WikibaseModel", back_populates="wikibase_urls", lazy="selectin"
-    )
+    wikibase: Mapped["WikibaseModel"] = relationship("WikibaseModel", lazy="selectin")
     """Wikibase"""
 
     url_type: Mapped[WikibaseURLTypes] = mapped_column(

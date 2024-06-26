@@ -23,7 +23,7 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
         )
 
         observation = compile_property_popularity_observation(
-            wikibase.sparql_endpoint_url
+            wikibase.sparql_endpoint_url.url
         )
 
         wikibase.property_popularity_observations.append(observation)
