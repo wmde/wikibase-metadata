@@ -1,8 +1,8 @@
 """urls
 
-Revision ID: 0b1e399e0e78
+Revision ID: 93d8f0a13a14
 Revises: 8c2df588e047
-Create Date: 2024-06-26 15:19:17.270449
+Create Date: 2024-06-26 15:47:45.773456
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "0b1e399e0e78"
+revision: str = "93d8f0a13a14"
 down_revision: Union[str, None] = "8c2df588e047"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -34,7 +34,6 @@ def upgrade() -> None:
                 "sparql_endpoint_url",
                 "sparql_query_url",
                 "special_version",
-                "special_base",
                 name="wikibaseurltypes",
             ),
             nullable=False,
@@ -44,6 +43,7 @@ def upgrade() -> None:
             ["wikibase_id"], ["wikibase.id"], name="observation_wikibase"
         ),
         sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("wikibase_id", "url_type", name="unique_wikibase_url_type"),
     )
     # ### end Alembic commands ###
 

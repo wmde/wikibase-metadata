@@ -1,7 +1,7 @@
 """Wikibase URL Table"""
 
 import enum
-from sqlalchemy import Enum, ForeignKey, Integer, String
+from sqlalchemy import Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -21,6 +21,14 @@ class WikibaseURLModel(ModelBase):
     """Wikibase URL Table"""
 
     __tablename__ = "wikibase_url"
+
+    __table_args__ = (
+        UniqueConstraint(
+            "wikibase_id",
+            "url_type",
+            name="unique_wikibase_url_type",
+        ),
+    )
 
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
