@@ -1,6 +1,5 @@
 """Get Wikibase List"""
 
-
 from sqlalchemy import func, select
 
 from data.database_connection import get_async_session

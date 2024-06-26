@@ -17,11 +17,11 @@ class WikibasePropertyPopularityObservationModel(ModelBase, WikibaseObservationM
 
     __tablename__ = "wikibase_property_usage_observation"
 
-    property_count_observations: Mapped[
-        List[WikibasePropertyPopularityCountModel]
-    ] = relationship(
-        "WikibasePropertyPopularityCountModel",
-        back_populates="wikibase_property_popularity_observation",
-        lazy="selectin",
+    property_count_observations: Mapped[List[WikibasePropertyPopularityCountModel]] = (
+        relationship(
+            "WikibasePropertyPopularityCountModel",
+            back_populates="wikibase_property_popularity_observation",
+            lazy="selectin",
+        )
     )
     """Property Count Observations"""

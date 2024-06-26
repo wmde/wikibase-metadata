@@ -97,12 +97,12 @@ class WikibaseModel(ModelBase):
     )
     """Special:Version URL"""
 
-    connectivity_observations: Mapped[
-        List[WikibaseConnectivityObservationModel]
-    ] = relationship(
-        "WikibaseConnectivityObservationModel",
-        back_populates="wikibase",
-        lazy="selectin",
+    connectivity_observations: Mapped[List[WikibaseConnectivityObservationModel]] = (
+        relationship(
+            "WikibaseConnectivityObservationModel",
+            back_populates="wikibase",
+            lazy="selectin",
+        )
     )
     """Connectivity Observations"""
 
@@ -115,10 +115,12 @@ class WikibaseModel(ModelBase):
     )
     """Property Popularity Observations"""
 
-    quantity_observations: Mapped[
-        List[WikibaseQuantityObservationModel]
-    ] = relationship(
-        "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="selectin"
+    quantity_observations: Mapped[List[WikibaseQuantityObservationModel]] = (
+        relationship(
+            "WikibaseQuantityObservationModel",
+            back_populates="wikibase",
+            lazy="selectin",
+        )
     )
     """Quantity Observations"""
 

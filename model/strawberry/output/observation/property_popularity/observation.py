@@ -20,9 +20,9 @@ class WikibasePropertyPopularityObservationStrawberryModel(
 ):
     """Wikibase Property Popularity Observation"""
 
-    property_popularity_counts: List[
-        WikibasePropertyPopularityCountStrawberryModel
-    ] = strawberry.field(description="Number of Items with Number of Relationships")
+    property_popularity_counts: List[WikibasePropertyPopularityCountStrawberryModel] = (
+        strawberry.field(description="Number of Items with Number of Relationships")
+    )
 
     @classmethod
     def marshal(

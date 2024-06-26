@@ -33,10 +33,10 @@ async def get_aggregate_version(
         ] = {}
         for r in results:
             if r[1] not in software_dict:
-                software_dict[
-                    r[1]
-                ] = WikibaseSoftwareVersionDoubleAggregateStrawberryModel(
-                    r[0], r[1], []
+                software_dict[r[1]] = (
+                    WikibaseSoftwareVersionDoubleAggregateStrawberryModel(
+                        r[0], r[1], []
+                    )
                 )
             software_dict[r[1]].private_versions.append(
                 WikibaseSoftwareVersionAggregateStrawberryModel(

@@ -23,13 +23,13 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
 ):
     """Wikibase Software Version Observation"""
 
-    installed_extensions: List[
-        WikibaseSoftwareVersionStrawberryModel
-    ] = strawberry.field(description="Installed Extensions w/ Versions")
+    installed_extensions: List[WikibaseSoftwareVersionStrawberryModel] = (
+        strawberry.field(description="Installed Extensions w/ Versions")
+    )
 
-    installed_libraries: List[
-        WikibaseSoftwareVersionStrawberryModel
-    ] = strawberry.field(description="Installed Libraries w/ Versions")
+    installed_libraries: List[WikibaseSoftwareVersionStrawberryModel] = (
+        strawberry.field(description="Installed Libraries w/ Versions")
+    )
 
     installed_skins: List[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
         description="Installed Skins w/ Versions"
