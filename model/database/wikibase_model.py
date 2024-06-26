@@ -41,7 +41,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.base_url == WikibaseURLModel.url_type,
+            WikibaseURLTypes.BASE_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
     )
@@ -51,7 +51,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.action_query_url == WikibaseURLModel.url_type,
+            WikibaseURLTypes.ACTION_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
     )
@@ -61,7 +61,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.index_query_url == WikibaseURLModel.url_type,
+            WikibaseURLTypes.INDEX_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
     )
@@ -71,7 +71,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.sparql_query_url == WikibaseURLModel.url_type,
+            WikibaseURLTypes.SPARQL_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
     )
@@ -81,7 +81,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.sparql_endpoint_url == WikibaseURLModel.url_type,
+            WikibaseURLTypes.SPARQL_ENDPOINT_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
     )
@@ -91,7 +91,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.special_version_url == WikibaseURLModel.url_type,
+            WikibaseURLTypes.SPECIAL_VERSION_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
     )

@@ -66,7 +66,7 @@ def compile_extension_versions(
     )
     return unique_versions(
         [
-            get_software_version_from_row(row, WikibaseSoftwareTypes.extension)
+            get_software_version_from_row(row, WikibaseSoftwareTypes.EXTENSION)
             for row in extensions_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )
@@ -110,7 +110,7 @@ def compile_installed_software_versions(
 
             software_versions.append(
                 WikibaseSoftwareVersionModel(
-                    software_type=WikibaseSoftwareTypes.software,
+                    software_type=WikibaseSoftwareTypes.SOFTWARE,
                     software_name=software_name,
                     version=version,
                     version_hash=version_hash,
@@ -137,7 +137,7 @@ def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersio
                 version = row.find_all("td")[1].string
                 library_versions.append(
                     WikibaseSoftwareVersionModel(
-                        software_type=WikibaseSoftwareTypes.library,
+                        software_type=WikibaseSoftwareTypes.LIBRARY,
                         software_name=software_name,
                         version=version,
                     )
@@ -154,7 +154,7 @@ def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionMo
     )
     return unique_versions(
         [
-            get_software_version_from_row(row, WikibaseSoftwareTypes.skin)
+            get_software_version_from_row(row, WikibaseSoftwareTypes.SKIN)
             for row in installed_skin_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )

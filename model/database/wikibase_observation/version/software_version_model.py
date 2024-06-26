@@ -12,10 +12,10 @@ from model.database.base import ModelBase
 class WikibaseSoftwareTypes(enum.Enum):
     """Wikibase Software Types"""
 
-    software = 1
-    skin = 2
-    extension = 3
-    library = 4
+    SOFTWARE = 1
+    SKIN = 2
+    EXTENSION = 3
+    LIBRARY = 4
 
 
 class WikibaseSoftwareVersionModel(ModelBase):

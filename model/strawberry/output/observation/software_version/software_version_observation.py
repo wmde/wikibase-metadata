@@ -53,7 +53,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.extension
+                    if o.software_type == WikibaseSoftwareTypes.EXTENSION
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -61,7 +61,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.library
+                    if o.software_type == WikibaseSoftwareTypes.LIBRARY
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -69,7 +69,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.skin
+                    if o.software_type == WikibaseSoftwareTypes.SKIN
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -77,7 +77,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.software
+                    if o.software_type == WikibaseSoftwareTypes.SOFTWARE
                 ],
                 key=lambda x: x.software_name,
             ),
