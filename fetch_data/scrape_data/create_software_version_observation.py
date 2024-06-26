@@ -5,8 +5,7 @@ from typing import List
 from bs4 import BeautifulSoup, Tag
 import requests
 from data.database_connection import get_async_session
-from fetch_data.scrape_data.parse_datetime import parse_datetime
-from fetch_data.utils.get_wikibase import get_wikibase_from_database
+from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareTypes,
