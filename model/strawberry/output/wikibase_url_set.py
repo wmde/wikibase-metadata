@@ -28,12 +28,10 @@ class WikibaseURLSetStrawberryModel:
         return cls(
             base_url=model.url.url,
             action_api=(
-                model.action_query_url.url
-                if model.action_query_url is not None
-                else None
+                model.action_api_url.url if model.action_api_url is not None else None
             ),
             index_api=(
-                model.index_query_url.url if model.index_query_url is not None else None
+                model.index_api_url.url if model.index_api_url is not None else None
             ),
             sparql_url=(
                 model.sparql_query_url.url

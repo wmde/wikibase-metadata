@@ -47,7 +47,7 @@ class WikibaseModel(ModelBase):
     )
     """Base URL"""
 
-    action_query_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+    action_api_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
@@ -57,7 +57,7 @@ class WikibaseModel(ModelBase):
     )
     """Action Query API"""
 
-    index_query_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+    index_api_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,

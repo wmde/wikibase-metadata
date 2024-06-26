@@ -22,7 +22,7 @@ async def get_wikibase_from_database(
     assert wikibase is not None, "Wikibase Not Found"
 
     if require_action_api:
-        assert wikibase.action_query_url is not None, "Action API Must Be Populated"
+        assert wikibase.action_api_url is not None, "Action API Must Be Populated"
     if require_sparql_endpoint:
         assert (
             wikibase.sparql_endpoint_url is not None

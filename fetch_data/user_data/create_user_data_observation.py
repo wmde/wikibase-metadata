@@ -30,7 +30,7 @@ async def create_user_data_observation(wikibase_id: int) -> bool:
 
         site_user_data: list[dict]
         try:
-            site_user_data = fetch_user_data(wikibase.action_query_url.url)
+            site_user_data = fetch_user_data(wikibase.action_api_url.url)
             observation.returned_data = True
         except (ReadTimeout, SSLError, ValueError):
             observation.returned_data = False
