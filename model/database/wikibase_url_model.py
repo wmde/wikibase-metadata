@@ -13,7 +13,7 @@ class WikibaseURLTypes(enum.Enum):
     index_query_url = 3
     sparql_endpoint_url = 4
     sparql_query_url = 5
-    special_version = 6
+    special_version_url = 6
     special_base = 7
 
 

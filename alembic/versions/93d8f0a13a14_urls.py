@@ -33,7 +33,7 @@ def upgrade() -> None:
                 "index_query_url",
                 "sparql_endpoint_url",
                 "sparql_query_url",
-                "special_version",
+                "special_version_url",
                 name="wikibaseurltypes",
             ),
             nullable=False,
