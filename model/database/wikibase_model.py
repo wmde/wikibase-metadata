@@ -31,6 +31,12 @@ class WikibaseModel(ModelBase):
     )
     """Organization"""
 
+    country: Mapped[Optional[str]] = mapped_column("country", String, nullable=True)
+    """Country"""
+
+    region: Mapped[str] = mapped_column("region", String, nullable=False)
+    """Region"""
+
     url: Mapped[WikibaseURLModel] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
