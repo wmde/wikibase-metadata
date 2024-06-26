@@ -8,6 +8,7 @@ from model.database import WikibaseModel
 async def get_wikibase_from_database(
     async_session: AsyncSession,
     wikibase_id: int,
+    require_action_api: bool = False,
     require_sparql_endpoint: bool = False,
     require_special_version: bool = False,
 ) -> WikibaseModel:
@@ -19,6 +20,9 @@ async def get_wikibase_from_database(
         )
     ).one_or_none()
     assert wikibase is not None, "Wikibase Not Found"
+
+    if require_action_api:
+        assert wikibase.action_api_url is not None, "Action API Must Be Populated"
     if require_sparql_endpoint:
         assert (
             wikibase.sparql_endpoint_url is not None

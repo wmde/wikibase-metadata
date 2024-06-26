@@ -23,7 +23,7 @@ async def create_quantity_data_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = compile_quantity_observation(wikibase.sparql_endpoint_url)
+        observation = compile_quantity_observation(wikibase.sparql_endpoint_url.url)
 
         wikibase.quantity_observations.append(observation)
 
