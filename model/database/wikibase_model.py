@@ -44,6 +44,16 @@ class WikibaseModel(ModelBase):
             WikibaseURLTypes.BASE_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "index_api_url",
+                "sparql_endpoint_url",
+                "sparql_query_url",
+                "special_version_url",
+                "wikibase",
+            ]
+        ),
     )
     """Base URL"""
 
@@ -54,6 +64,16 @@ class WikibaseModel(ModelBase):
             WikibaseURLTypes.ACTION_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
+        overlaps=",".join(
+            [
+                "index_api_url",
+                "sparql_endpoint_url",
+                "sparql_query_url",
+                "special_version_url",
+                "url",
+                "wikibase",
+            ]
+        ),
     )
     """Action Query API"""
 
@@ -64,6 +84,16 @@ class WikibaseModel(ModelBase):
             WikibaseURLTypes.INDEX_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "sparql_endpoint_url",
+                "sparql_query_url",
+                "special_version_url",
+                "url",
+                "wikibase",
+            ]
+        ),
     )
     """Index Query API"""
 
@@ -74,6 +104,16 @@ class WikibaseModel(ModelBase):
             WikibaseURLTypes.SPARQL_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "index_api_url",
+                "sparql_endpoint_url",
+                "special_version_url",
+                "url",
+                "wikibase",
+            ]
+        ),
     )
     """SPARQL Query API"""
 
@@ -84,6 +124,16 @@ class WikibaseModel(ModelBase):
             WikibaseURLTypes.SPARQL_ENDPOINT_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "index_api_url",
+                "sparql_query_url",
+                "special_version_url",
+                "url",
+                "wikibase",
+            ]
+        ),
     )
     """SPARQL Endpoint"""
 
@@ -94,6 +144,16 @@ class WikibaseModel(ModelBase):
             WikibaseURLTypes.SPECIAL_VERSION_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "index_api_url",
+                "sparql_endpoint_url",
+                "sparql_query_url",
+                "url",
+                "wikibase",
+            ]
+        ),
     )
     """Special:Version URL"""
 
