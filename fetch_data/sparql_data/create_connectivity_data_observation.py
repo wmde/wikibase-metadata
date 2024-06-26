@@ -30,7 +30,7 @@ async def create_connectivity_data_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = compile_connectivity_observation(wikibase.sparql_endpoint_url)
+        observation = compile_connectivity_observation(wikibase.sparql_endpoint_url.url)
 
         wikibase.connectivity_observations.append(observation)
 

@@ -26,7 +26,7 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
         observation = WikibaseSoftwareVersionObservationModel()
 
         result = requests.get(
-            wikibase.special_version_url, headers={"Cookie": "mediawikilanguage=en"}
+            wikibase.special_version_url.url, headers={"Cookie": "mediawikilanguage=en"}
         )
         soup = BeautifulSoup(result.content, "html.parser")
 

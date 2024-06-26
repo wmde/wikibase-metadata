@@ -1,5 +1,6 @@
 """Wikibase Instance Strawberry Model"""
 
+from typing import Optional
 import strawberry
 
 from model.database import WikibaseModel
@@ -8,11 +9,10 @@ from model.strawberry.output.observation import (
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
+    WikibaseSoftwareVersionObservationStrawberryModel,
     WikibaseUserObservationStrawberryModel,
 )
-from model.strawberry.output.observation.software_version.wikibase_software_version_observation import (
-    WikibaseSoftwareVersionObservationStrawberryModel,
-)
+from model.strawberry.output.wikibase_location import WikibaseLocationStrawberryModel
 from model.strawberry.output.wikibase_url_set import WikibaseURLSetStrawberryModel
 
 
@@ -21,7 +21,15 @@ class WikibaseStrawberryModel:
     """Wikibase Instance"""
 
     id: strawberry.ID
+    title: str = strawberry.field(description="Wikibase Name")
+    organization: Optional[str] = strawberry.field(description="Organization")
+
+    location: WikibaseLocationStrawberryModel = strawberry.field(
+        description="Wikibase Location"
+    )
+
     urls: WikibaseURLSetStrawberryModel = strawberry.field(description="URLs")
+
     connectivity_observations: WikibaseObservationSetStrawberryModel[
         WikibaseConnectivityObservationStrawberryModel
     ] = strawberry.field(description="Connectivity Data")
@@ -44,6 +52,9 @@ class WikibaseStrawberryModel:
 
         return cls(
             id=strawberry.ID(model.id),
+            title=model.wikibase_name,
+            organization=model.organization,
+            location=WikibaseLocationStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
             connectivity_observations=WikibaseObservationSetStrawberryModel.marshal(
                 [
