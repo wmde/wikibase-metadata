@@ -14,7 +14,7 @@ def fetch_user_data(api_url: str) -> list[dict]:
     next_from = None
 
     while should_query:
-        url = all_users_url(api_url, continue_from=next_from)
+        url = api_url + all_users_url(continue_from=next_from)
         print(f"Querying {url}")
         result = requests.get(url, timeout=10)
         query_data = json.loads(result.content)
