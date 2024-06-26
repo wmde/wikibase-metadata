@@ -13,6 +13,7 @@ from model.strawberry.output.observation.connectivity.relationship_count import 
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
@@ -38,6 +39,24 @@ class WikibaseConnectivityObservationStrawberryModel(
     relationship_object_counts: List[
         WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel
     ] = strawberry.field(description="Number of Items with Number of Relationships")
+
+    @strawberry.field(
+        description="Number of Unique Item -> Item Connections (direct or indirect)",
+        graphql_type=Optional[BigInt],
+    )
+    def total_connections(self):
+        if self.returned_data:
+            item_sum = sum(
+                i.item_count * i.relationship_count
+                for i in self.relationship_item_counts
+            )
+            object_sum = sum(
+                o.object_count * o.relationship_count
+                for o in self.relationship_object_counts
+            )
+            assert item_sum == object_sum, "Error: Math Has Stopped Working"
+            return item_sum
+        return None
 
     @classmethod
     def marshal(

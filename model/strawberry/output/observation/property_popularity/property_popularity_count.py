@@ -4,15 +4,7 @@ from typing import Union
 import strawberry
 
 from model.database import WikibasePropertyPopularityCountModel
-
-
-# This is needed because GraphQL does not support 64 bit integers
-BigInt = strawberry.scalar(
-    Union[int, str],  # type: ignore
-    serialize=lambda v: int(v),
-    parse_value=lambda v: str(v),
-    description="BigInt field",
-)
+from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
