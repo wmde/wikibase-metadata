@@ -33,6 +33,7 @@ def upgrade() -> None:
                 "INDEX_QUERY_URL",
                 "SPARQL_ENDPOINT_URL",
                 "SPARQL_QUERY_URL",
+                "SPECIAL_LOG_URL",
                 "SPECIAL_VERSION_URL",
                 name="wikibaseurltypes",
             ),

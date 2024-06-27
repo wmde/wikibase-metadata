@@ -1,3 +1,5 @@
+# pylint: disable=too-many-arguments
+
 """Get Wikibase"""
 
 from sqlalchemy import select
@@ -10,6 +12,7 @@ async def get_wikibase_from_database(
     wikibase_id: int,
     require_action_api: bool = False,
     require_sparql_endpoint: bool = False,
+    require_special_log: bool = False,
     require_special_version: bool = False,
 ) -> WikibaseModel:
     """Get Wikibase"""
@@ -27,6 +30,8 @@ async def get_wikibase_from_database(
         assert (
             wikibase.sparql_endpoint_url is not None
         ), "SPARQL Endpoint Must Be Populated"
+    if require_special_log:
+        assert wikibase.special_log_url is not None, "Special:Log URL Must Be Populated"
     if require_special_version:
         assert (
             wikibase.special_version_url is not None

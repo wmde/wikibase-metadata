@@ -137,6 +137,26 @@ class WikibaseModel(ModelBase):
     )
     """SPARQL Endpoint"""
 
+    special_log_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLTypes.SPECIAL_LOG_URL == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "index_api_url",
+                "sparql_endpoint_url",
+                "sparql_query_url",
+                "url",
+                "wikibase",
+            ]
+        ),
+    )
+    """Special:Log URL"""
+
     special_version_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
