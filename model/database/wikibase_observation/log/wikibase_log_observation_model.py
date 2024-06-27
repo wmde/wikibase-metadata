@@ -15,7 +15,8 @@ class WikibaseUserType(enum.Enum):
     """Wikibase User Type"""
 
     BOT = 1
-    USER = 2
+    MISSING = 2
+    USER = 3
 
 
 class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):

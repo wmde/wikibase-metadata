@@ -1,6 +1,7 @@
 """Create Log Observation"""
 
 from datetime import datetime
+from typing import Optional
 from bs4 import NavigableString, Tag
 from fetch_data.utils import parse_datetime
 
@@ -25,7 +26,17 @@ class WikibaseLogRecord:
 def get_date_from_log(log: Tag) -> datetime:
     """Get Date from Log - fail if cannot parse"""
 
-    date_string = log.find("a", attrs={"title": "Special:Log"}).string
+    date_string: Optional[str] = None
+
+    date_tag = log.find("a", attrs={"title": "Special:Log"})
+    if date_tag is not None:
+        date_string = date_tag.string
+    else:
+        date_string = list(log.stripped_strings)[0].replace("User account", "").strip()
+
+    if date_string is None:
+        raise ValueError(f"Could Not Find Date String in Log {log}")
+
     result = parse_datetime(date_string)
     if result is not None:
         return result

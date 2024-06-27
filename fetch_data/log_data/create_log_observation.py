@@ -43,7 +43,11 @@ async def create_log_observation(wikibase_id: int) -> bool:
             raise ValueError("SUSPECT SHOULD FETCH ADDITIONAL PAGE")
 
         observation.last_month_user_count = len(
-            last_month_users := {log.user for log in last_month_logs}
+            last_month_users := {
+                log.user
+                for log in last_month_logs
+                if "page does not exist" not in log.user
+            }
         )
         observation.last_month_human_user_count = len(
             [
@@ -84,10 +88,15 @@ def get_log_param_string(
 def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
     """Get Log List from URL"""
 
+    print(url)
+
     result = requests.get(url, timeout=10)
     soup = BeautifulSoup(result.content, "html.parser")
-    log_list = soup.find("body").find("ul", attrs={"class": "mw-logevent-loglines"})
+    log_list = soup.find("body").find(
+        "ul", attrs={"class": "mw-logevent-loglines"}
+    ) or soup.find("body").find("div", attrs={"id": "mw-content-text"}).find("ul")
     if log_list is None or isinstance(log_list, NavigableString):
+
         raise ValueError(f"Could Not Find Log List at URL: {url}")
 
     logs = [WikibaseLogRecord(log) for log in log_list.find_all("li")]
@@ -104,6 +113,8 @@ def get_user_type(wikibase: WikibaseModel, user: str) -> WikibaseUserType:
 def get_user_type_from_user_data(user_data: dict) -> WikibaseUserType:
     """User or Bot?"""
 
-    return (
-        WikibaseUserType.BOT if "bot" in user_data["groups"] else WikibaseUserType.USER
-    )
+    if "groups" not in user_data and "missing" in user_data:
+        return WikibaseUserType.MISSING
+    if "bot" in user_data["groups"]:
+        return WikibaseUserType.BOT
+    return WikibaseUserType.MISSING

@@ -31,7 +31,7 @@ def upgrade() -> None:
         sa.Column("last_log_date", sa.DateTime(timezone=True), nullable=False),
         sa.Column(
             "last_log_user_type",
-            sa.Enum("BOT", "USER", name="wikibaseusertype"),
+            sa.Enum("BOT", "MISSING", "USER", name="wikibaseusertype"),
             nullable=False,
         ),
         sa.Column("last_month_log_count", sa.Integer(), nullable=False),
