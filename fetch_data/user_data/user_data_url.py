@@ -15,3 +15,16 @@ def all_users_url(continue_from: str | None = None) -> str:
         "aufrom": continue_from,
     }
     return dict_to_url(parameters)
+
+
+def user_url(user: str) -> str:
+    """Single User Data"""
+
+    parameters = {
+        "action": "query",
+        "list": "users",
+        "ususers": user,
+        "usprop": "groups",
+        "format": "json",
+    }
+    return dict_to_url(parameters)

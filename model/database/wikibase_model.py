@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from model.database.base import ModelBase
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
+    WikibaseLogObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
     WikibaseSoftwareVersionObservationModel,
@@ -185,6 +186,13 @@ class WikibaseModel(ModelBase):
         )
     )
     """Connectivity Observations"""
+
+    log_observations: Mapped[List[WikibaseLogObservationModel]] = relationship(
+        "WikibaseLogObservationModel",
+        back_populates="wikibase",
+        lazy="selectin",
+    )
+    """Log Observations"""
 
     property_popularity_observations: Mapped[
         List[WikibasePropertyPopularityObservationModel]

@@ -6,6 +6,7 @@ from model.database.wikibase_observation import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseConnectivityObservationModel,
+    WikibaseLogObservationModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
@@ -15,5 +16,6 @@ from model.database.wikibase_observation import (
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
+    WikibaseUserType,
 )
 from model.database.wikibase_url_model import WikibaseURLModel
