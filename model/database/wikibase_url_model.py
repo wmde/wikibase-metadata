@@ -17,7 +17,6 @@ class WikibaseURLTypes(enum.Enum):
     SPARQL_QUERY_URL = 5
     SPECIAL_LOG_URL = 6
     SPECIAL_VERSION_URL = 7
-    SPECIAL_BASE = 8
 
 
 class WikibaseURLModel(ModelBase):
