@@ -5,7 +5,7 @@ import requests
 from fetch_data.user_data.user_data_url import all_users_url
 
 
-def fetch_user_data(api_url: str) -> list[dict]:
+def fetch_all_user_data(api_url: str) -> list[dict]:
     """Fetch User Data"""
 
     data = []
