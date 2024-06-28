@@ -109,17 +109,15 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
         if self.version is None:
             return None
         temp: dict[
-            Optional[str], WikibaseSoftwarePatchVersionAggregateStrawberryModel
+            Optional[int], WikibaseSoftwarePatchVersionAggregateStrawberryModel
         ] = {}
         for v in self.private_versions:
-            key = (
-                None
-                if v.semver_version is None
-                else f"{v.semver_version.major}.{v.semver_version.minor}.{v.semver_version.patch}"
-            )
+            key = None if v.semver_version is None else v.semver_version.patch
             if key not in temp:
                 temp[key] = WikibaseSoftwareMidVersionAggregateStrawberryModel(
-                    id=v.id, version=key, private_versions=[]
+                    id=v.id,
+                    version=f"{v.semver_version.major}.{v.semver_version.minor}.{v.semver_version.patch}",
+                    private_versions=[],
                 )
             temp[key].private_versions.append(v)
         return sorted(temp.values(), key=lambda x: x.wikibase_count(), reverse=True)
@@ -143,14 +141,12 @@ class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
             Optional[str], WikibaseSoftwareMinorVersionAggregateStrawberryModel
         ] = {}
         for v in self.private_versions:
-            key = (
-                None
-                if v.semver_version is None
-                else f"{v.semver_version.major}.{v.semver_version.minor}"
-            )
+            key = None if v.semver_version is None else v.semver_version.minor
             if key not in temp:
                 temp[key] = WikibaseSoftwareMinorVersionAggregateStrawberryModel(
-                    id=v.id, version=key, private_versions=[]
+                    id=v.id,
+                    version=f"{v.semver_version.major}.{v.semver_version.minor}",
+                    private_versions=[],
                 )
             temp[key].private_versions.append(v)
         return sorted(temp.values(), key=lambda x: x.wikibase_count(), reverse=True)
