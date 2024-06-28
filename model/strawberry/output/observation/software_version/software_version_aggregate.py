@@ -5,20 +5,7 @@ import re
 from typing import List, Optional
 import strawberry
 
-
-@strawberry.type
-class Semver:
-    major: int
-    minor: int
-    patch: Optional[int]
-
-    def __init__(self, major: int, minor: int, patch: Optional[int] = None):
-        self.major = major
-        self.minor = minor
-        self.patch = patch
-
-    def __str__(self) -> str:
-        return f"{self.major}.{self.minor}.{self.patch}"
+from model.strawberry.output.semver import Semver
 
 
 @strawberry.type
@@ -64,6 +51,8 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
 
 @strawberry.type
 class WikibaseSoftwareMidVersionAggregateStrawberryModel:
+    """Aggregated to X Version - ABSTRACT"""
+
     id: strawberry.ID
     version: Optional[str] = strawberry.field(description="Software Version")
 
@@ -82,10 +71,14 @@ class WikibaseSoftwareMidVersionAggregateStrawberryModel:
 class WikibaseSoftwarePatchVersionAggregateStrawberryModel(
     WikibaseSoftwareMidVersionAggregateStrawberryModel
 ):
+    """Aggregated to Patch Version"""
+
     @strawberry.field(description="Versions")
     def sub_versions(
         self,
     ) -> Optional[List[WikibaseSoftwareVersionAggregateStrawberryModel]]:
+        """Sub-Patch Versions"""
+
         if (
             len(self.private_versions) == 1
             and (
@@ -105,10 +98,14 @@ class WikibaseSoftwarePatchVersionAggregateStrawberryModel(
 class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
     WikibaseSoftwareMidVersionAggregateStrawberryModel
 ):
+    """Aggregated to Minor Version"""
+
     @strawberry.field(description="Patch Versions")
     def patch_versions(
         self,
     ) -> Optional[List[WikibaseSoftwarePatchVersionAggregateStrawberryModel]]:
+        """Patch Versions"""
+
         if self.version is None:
             return None
         temp: dict[
@@ -132,11 +129,14 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
 class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
     WikibaseSoftwareMidVersionAggregateStrawberryModel
 ):
+    """Aggregated to Major Version"""
 
     @strawberry.field(description="Minor Versions")
     def minor_versions(
         self,
     ) -> Optional[List[WikibaseSoftwareMinorVersionAggregateStrawberryModel]]:
+        """Minor Versions"""
+
         if self.version is None:
             return None
         temp: dict[
@@ -186,6 +186,8 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
     def major_versions(
         self,
     ) -> List[WikibaseSoftwareMajorVersionAggregateStrawberryModel]:
+        """Major Versions"""
+
         temp: dict[
             Optional[str], WikibaseSoftwareMajorVersionAggregateStrawberryModel
         ] = {}
