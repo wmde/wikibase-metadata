@@ -116,7 +116,13 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
             if key not in temp:
                 temp[key] = WikibaseSoftwareMidVersionAggregateStrawberryModel(
                     id=v.id,
-                    version=f"{v.semver_version.major}.{v.semver_version.minor}.{v.semver_version.patch}",
+                    version=str(
+                        Semver(
+                            v.semver_version.major,
+                            v.semver_version.minor,
+                            v.semver_version.patch,
+                        )
+                    ),
                     private_versions=[],
                 )
             temp[key].private_versions.append(v)
@@ -145,7 +151,7 @@ class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
             if key not in temp:
                 temp[key] = WikibaseSoftwareMinorVersionAggregateStrawberryModel(
                     id=v.id,
-                    version=f"{v.semver_version.major}.{v.semver_version.minor}",
+                    version=str(Semver(v.semver_version.major, v.semver_version.minor)),
                     private_versions=[],
                 )
             temp[key].private_versions.append(v)

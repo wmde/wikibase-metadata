@@ -18,4 +18,6 @@ class Semver:
         self.patch = patch
 
     def __str__(self) -> str:
+        if self.patch is None:
+            return f"{self.major}.{self.minor}"
         return f"{self.major}.{self.minor}.{self.patch}"
