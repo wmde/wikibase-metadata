@@ -1,5 +1,6 @@
 """Wikibase Property Popularity Aggregate Count"""
 
+from datetime import datetime
 import re
 from typing import List, Optional
 import strawberry
@@ -26,6 +27,8 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
 
     id: strawberry.ID
     version: Optional[str] = strawberry.field(description="Software Version")
+    version_date: Optional[datetime] = strawberry.field(description="Software Version")
+    version_hash: Optional[str] = strawberry.field(description="Software Version")
     wikibase_count: int = strawberry.field(description="Number of Wikibases Used")
 
     semver_version: strawberry.Private[Optional[Semver]]
@@ -35,10 +38,14 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
         self,
         id: int,  # pylint: disable=redefined-builtin
         version: Optional[str],
+        version_date: Optional[datetime],
+        version_hash: Optional[str],
         wikibase_count: int,
     ):
         self.id = strawberry.ID(id)
         self.version = version
+        self.version_date = version_date
+        self.version_hash = version_hash
         self.wikibase_count = wikibase_count
 
         self.semver_version = None
@@ -79,8 +86,14 @@ class WikibaseSoftwarePatchVersionAggregateStrawberryModel(
     def sub_versions(
         self,
     ) -> Optional[List[WikibaseSoftwareVersionAggregateStrawberryModel]]:
-        if len(self.private_versions) == 1 and self.private_versions[0].version == str(
-            self.private_versions[0].semver_version
+        if (
+            len(self.private_versions) == 1
+            and (
+                (only_version := self.private_versions[0]).version is None
+                or only_version.version == str(only_version.semver_version)
+            )
+            and only_version.version_date is None
+            and only_version.version_hash is None
         ):
             return None
         return sorted(
