@@ -8,9 +8,11 @@ from model.database import WikibaseSoftwareVersionModel
 
 
 @strawberry.type
-class VersionStrawberryModel:
-    """Version"""
+class WikibaseSoftwareVersionStrawberryModel:
+    """Wikibase Software Version"""
 
+    id: strawberry.ID
+    software_name: str = strawberry.field(description="Software Name")
     version: Optional[str] = strawberry.field(description="Software Version")
     version_date: Optional[datetime] = strawberry.field(
         description="Software Version Release Date"
@@ -18,14 +20,6 @@ class VersionStrawberryModel:
     version_hash: Optional[str] = strawberry.field(
         description="Software Version Commit Hash"
     )
-
-
-@strawberry.type
-class WikibaseSoftwareVersionStrawberryModel(VersionStrawberryModel):
-    """Wikibase Software Version"""
-
-    id: strawberry.ID
-    software_name: str = strawberry.field(description="Software Name")
 
     @classmethod
     def marshal(
