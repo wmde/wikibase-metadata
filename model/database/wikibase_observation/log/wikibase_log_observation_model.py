@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import enum
+from typing import Optional
 from sqlalchemy import DateTime, Enum, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -24,33 +25,33 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
 
     __tablename__ = "wikibase_log_observation"
 
-    first_log_date: Mapped[datetime] = mapped_column(
-        "first_log_date", DateTime(timezone=True), nullable=False
+    first_log_date: Mapped[Optional[datetime]] = mapped_column(
+        "first_log_date", DateTime(timezone=True), nullable=True
     )
     """Oldest Log Date"""
 
-    last_log_date: Mapped[datetime] = mapped_column(
-        "last_log_date", DateTime(timezone=True), nullable=False
+    last_log_date: Mapped[Optional[datetime]] = mapped_column(
+        "last_log_date", DateTime(timezone=True), nullable=True
     )
     """Most Recent Log Date"""
 
-    last_log_user_type: Mapped[WikibaseUserType] = mapped_column(
-        "last_log_user_type", Enum(WikibaseUserType), nullable=False
+    last_log_user_type: Mapped[Optional[WikibaseUserType]] = mapped_column(
+        "last_log_user_type", Enum(WikibaseUserType), nullable=True
     )
     """Most Recent Log - User or Bot?"""
 
-    last_month_log_count: Mapped[int] = mapped_column(
-        "last_month_log_count", Integer, nullable=False
+    last_month_log_count: Mapped[Optional[int]] = mapped_column(
+        "last_month_log_count", Integer, nullable=True
     )
     """Number of Logs from 30 Days Since Observation"""
 
-    last_month_user_count: Mapped[int] = mapped_column(
-        "last_month_user_count", Integer, nullable=False
+    last_month_user_count: Mapped[Optional[int]] = mapped_column(
+        "last_month_user_count", Integer, nullable=True
     )
     """Unique Number of Users Logged in 30 Days Since Observation"""
 
-    last_month_human_user_count: Mapped[int] = mapped_column(
-        "last_month_user_count_no_bot", Integer, nullable=False
+    last_month_human_user_count: Mapped[Optional[int]] = mapped_column(
+        "last_month_user_count_no_bot", Integer, nullable=True
     )
     """Unique Number of Users Logged in 30 Days Since Observation, Without Bots"""
 

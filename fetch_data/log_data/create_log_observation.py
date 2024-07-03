@@ -1,6 +1,7 @@
 """Create Log Observation"""
 
 from datetime import datetime
+from json.decoder import JSONDecodeError
 from requests.exceptions import SSLError
 from typing import List, Optional
 from data import get_async_session
@@ -66,7 +67,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
                 observation.last_month_human_user_count = 0
 
             observation.returned_data = True
-        except SSLError:
+        except (JSONDecodeError, SSLError):
             observation.returned_data = False
 
         wikibase.log_observations.append(observation)
