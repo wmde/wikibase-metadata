@@ -45,3 +45,7 @@ class WikibasePropertyPopularityCountModel(ModelBase):
 
     usage_count: Mapped[int] = mapped_column("usage_count", Integer, nullable=False)
     """Number of Relationships with This Property"""
+
+    def __init__(self, property_url: str, usage_count: int):
+        self.property_url = property_url
+        self.usage_count = usage_count
