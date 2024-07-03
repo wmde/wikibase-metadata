@@ -21,7 +21,6 @@ async def create_log_observation(wikibase_id: int) -> bool:
             async_session=async_session,
             wikibase_id=wikibase_id,
             require_action_api=True,
-            require_special_log=True,
         )
 
         observation = WikibaseLogObservationModel()
