@@ -25,6 +25,8 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
         observation = WikibaseLogObservationModel()
 
+        print("FETCHING ONE MONTH'S LOGS")
+
         most_recent_log_list = get_month_log_list(wikibase.action_api_url.url)
 
         most_recent_log = max(most_recent_log_list, key=lambda x: x.id)
@@ -41,19 +43,16 @@ async def create_log_observation(wikibase_id: int) -> bool:
                 if "page does not exist" not in log.user
             }
         )
-        print("Last Month Users: ", last_month_users)
 
-        last_month_user_data = get_multiple_user_data(wikibase, last_month_users)
-        print("Last Month User Data: ", last_month_user_data)
+        print("FETCHING USER DATA")
 
         observation.last_month_human_user_count = len(
-            last_month_human_user_data := [
+            [
                 u
-                for u in last_month_user_data
+                for u in get_multiple_user_data(wikibase, last_month_users)
                 if get_user_type_from_user_data(u) == WikibaseUserType.USER
             ]
         )
-        print("Last Month Human User Data: ", last_month_human_user_data)
 
         oldest_log_list = get_log_list_from_url(
             wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
@@ -97,7 +96,6 @@ def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
     data = []
 
     query_data = fetch_api_data(url)
-    # print(query_data)
     for record in query_data["query"]["logevents"]:
         data.append(WikibaseLogRecord(record))
 
