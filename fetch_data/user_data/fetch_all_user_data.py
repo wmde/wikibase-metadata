@@ -1,8 +1,8 @@
 """Fetch User Data"""
 
-import json
-import requests
+from typing import Optional
 from fetch_data.user_data.user_data_url import all_users_url
+from fetch_data.utils.fetch_api_data import fetch_api_data
 
 
 def fetch_all_user_data(api_url: str) -> list[dict]:
@@ -11,15 +11,10 @@ def fetch_all_user_data(api_url: str) -> list[dict]:
     data = []
 
     should_query = True
-    next_from = None
+    next_from: Optional[str] = None
 
     while should_query:
-        url = api_url + all_users_url(continue_from=next_from)
-        print(f"Querying {url}")
-        result = requests.get(url, timeout=10)
-        query_data = json.loads(result.content)
-        if "error" in query_data:
-            raise ValueError(f"API Returned Error: {query_data['error']}")
+        query_data = fetch_api_data(api_url + all_users_url(continue_from=next_from))
         data.extend(query_data["query"]["allusers"])
         print(f"\tData Length: {len(data)}")
         if "continue" in query_data:
