@@ -18,6 +18,9 @@ def get_single_user_data(wikibase: WikibaseModel, user: str) -> dict:
 def get_multiple_user_data(wikibase: WikibaseModel, users: Iterable[str]) -> list[dict]:
     """Get User Data"""
 
+    if len(users) == 0:
+        return []
+
     result = requests.get(
         wikibase.action_api_url.url + user_url("|".join(users)), timeout=10
     )

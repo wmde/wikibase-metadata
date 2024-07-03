@@ -44,15 +44,17 @@ async def create_log_observation(wikibase_id: int) -> bool:
             }
         )
 
-        print("FETCHING USER DATA")
-
-        observation.last_month_human_user_count = len(
-            [
-                u
-                for u in get_multiple_user_data(wikibase, last_month_users)
-                if get_user_type_from_user_data(u) == WikibaseUserType.USER
-            ]
-        )
+        if len(last_month_users) > 0:
+            print("FETCHING USER DATA")
+            observation.last_month_human_user_count = len(
+                [
+                    u
+                    for u in get_multiple_user_data(wikibase, last_month_users)
+                    if get_user_type_from_user_data(u) == WikibaseUserType.USER
+                ]
+            )
+        else:
+            observation.last_month_human_user_count = 0
 
         oldest_log_list = get_log_list_from_url(
             wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
