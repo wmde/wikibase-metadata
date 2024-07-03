@@ -1,8 +1,7 @@
 """Create Log Observation"""
 
+from datetime import datetime
 from typing import List, Optional
-from bs4 import BeautifulSoup, NavigableString
-import requests
 from data import get_async_session
 from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
 from fetch_data.user_data.fetch_single_user_data import (
@@ -10,6 +9,7 @@ from fetch_data.user_data.fetch_single_user_data import (
     get_single_user_data,
 )
 from fetch_data.utils import dict_to_url, get_wikibase_from_database
+from fetch_data.utils.fetch_api_data import fetch_api_data
 from model.database import WikibaseLogObservationModel, WikibaseModel, WikibaseUserType
 
 
@@ -26,11 +26,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
         observation = WikibaseLogObservationModel()
 
-        limit = 500
-
-        most_recent_log_list = get_log_list_from_url(
-            wikibase.special_log_url.url + get_log_param_string(limit=limit)
-        )
+        most_recent_log_list = get_month_log_list(wikibase.action_api_url.url)
 
         most_recent_log = max(most_recent_log_list, key=lambda x: x.id)
         observation.last_log_date = most_recent_log.log_date
@@ -39,9 +35,6 @@ async def create_log_observation(wikibase_id: int) -> bool:
         last_month_logs = [log for log in most_recent_log_list if log.age() <= 30]
         observation.last_month_log_count = len(last_month_logs)
 
-        if observation.last_month_log_count == limit:
-            raise ValueError("SUSPECT SHOULD FETCH ADDITIONAL PAGE")
-
         observation.last_month_user_count = len(
             last_month_users := {
                 log.user
@@ -49,16 +42,22 @@ async def create_log_observation(wikibase_id: int) -> bool:
                 if "page does not exist" not in log.user
             }
         )
+        print("Last Month Users: ", last_month_users)
+
+        last_month_user_data = get_multiple_user_data(wikibase, last_month_users)
+        print("Last Month User Data: ", last_month_user_data)
+
         observation.last_month_human_user_count = len(
-            [
+            last_month_human_user_data := [
                 u
-                for u in get_multiple_user_data(wikibase, last_month_users)
+                for u in last_month_user_data
                 if get_user_type_from_user_data(u) == WikibaseUserType.USER
             ]
         )
+        print("Last Month Human User Data: ", last_month_human_user_data)
 
         oldest_log_list = get_log_list_from_url(
-            wikibase.special_log_url.url + get_log_param_string(limit=1, oldest=True)
+            wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
         )
         observation.first_log_date = oldest_log_list[0].log_date
 
@@ -77,30 +76,56 @@ def get_log_param_string(
 ):
     """Log Page URL Parameters"""
 
-    parameters: dict = {"limit": limit}
-    if oldest:
-        parameters["dir"] = "prev"
+    parameters: dict = {
+        "action": "query",
+        "format": "json",
+        "list": "logevents",
+        "formatversion": 2,
+        "ledir": "newer" if oldest else "older",
+        "lelimit": limit,
+    }
+
     if offset is not None:
-        parameters["offset"] = f"{offset.log_date.strftime('%Y%m%d%H%M%S')}|{offset.id}"
+        parameters["lecontinue"] = (
+            f"{offset.log_date.strftime('%Y%m%d%H%M%S')}|{offset.id}"
+        )
     return dict_to_url(parameters)
 
 
 def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
     """Get Log List from URL"""
 
-    print(url)
+    data = []
 
-    result = requests.get(url, timeout=10)
-    soup = BeautifulSoup(result.content, "html.parser")
-    log_list = soup.find("body").find(
-        "ul", attrs={"class": "mw-logevent-loglines"}
-    ) or soup.find("body").find("div", attrs={"id": "mw-content-text"}).find("ul")
-    if log_list is None or isinstance(log_list, NavigableString):
+    query_data = fetch_api_data(url)
+    # print(query_data)
+    for record in query_data["query"]["logevents"]:
+        data.append(WikibaseLogRecord(record))
 
-        raise ValueError(f"Could Not Find Log List at URL: {url}")
+    return data
 
-    logs = [WikibaseLogRecord(log) for log in log_list.find_all("li")]
-    return logs
+
+def get_month_log_list(
+    api_url: str,
+) -> List[WikibaseLogRecord]:
+    """Get Log List from api_url"""
+
+    data: List[WikibaseLogRecord] = []
+    limit = 500
+
+    should_query = True
+    next_from: Optional[WikibaseLogRecord] = None
+    while should_query:
+        query_data = fetch_api_data(
+            api_url + get_log_param_string(limit=limit, offset=next_from)
+        )
+        for record in query_data["query"]["logevents"]:
+            data.append(WikibaseLogRecord(record))
+        should_query = (
+            datetime.now() - (next_from := min(data, key=lambda x: x.log_date)).log_date
+        ).days <= 30
+
+    return data
 
 
 def get_user_type(wikibase: WikibaseModel, user: str) -> WikibaseUserType:
@@ -117,4 +142,4 @@ def get_user_type_from_user_data(user_data: dict) -> WikibaseUserType:
         return WikibaseUserType.MISSING
     if "bot" in user_data["groups"]:
         return WikibaseUserType.BOT
-    return WikibaseUserType.MISSING
+    return WikibaseUserType.USER
