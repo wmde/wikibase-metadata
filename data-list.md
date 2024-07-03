@@ -75,3 +75,71 @@ User observations:
 
 
   
+## Individual Wikibase Instances:
+
+### Manually Added Attributes:
+
+- Title
+- Organization
+- Location
+  - Country
+  - Region
+- URLs:
+  - Base URL
+  - Action API URL
+  - Index API URL
+  - SPARQL Endpoint URL (machine endpoint)
+  - SPARQL UI URL (human-usable UI)
+  - Special:Version URL
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  wikibase(wikibaseId: 10) {
+    id
+    title
+    organization
+    location {
+      country
+      region
+    }
+    urls {
+      baseUrl
+      actionApi
+      indexApi
+      sparqlEndpointUrl
+      sparqlUrl
+      specialVersionUrl
+    }
+  }
+}
+```
+
+Results:
+
+```
+{
+  "data": {
+    "wikibase": {
+      "id": "10",
+      "title": "ELTEdata",
+      "organization": "Digital Humanities Department of ELTE BTK (Eötvös Loránd University Faculty of Humanities)",
+      "location": {
+        "country": "Hungary",
+        "region": "Europe"
+      },
+      "urls": {
+        "baseUrl": "https://eltedata.elte-dh.hu",
+        "actionApi": "https://eltedata.elte-dh.hu/w/api.php",
+        "indexApi": "https://eltedata.elte-dh.hu/w/index.php",
+        "sparqlEndpointUrl": "https://query.elte-dh.hu/proxy/wdqs/bigdata/namespace/wdq/sparql",
+        "sparqlUrl": "https://query.elte-dh.hu/",
+        "specialVersionUrl": "https://eltedata.elte-dh.hu/wiki/Special:Version"
+      }
+    }
+  }
+}
+```
