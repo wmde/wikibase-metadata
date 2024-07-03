@@ -5,7 +5,8 @@ import strawberry
 
 from model.database import WikibaseModel
 from model.strawberry.output.observation import (
-    WikibaseConnectivityObservationStrawberryModel,WikibaseLogObservationStrawberryModel,
+    WikibaseConnectivityObservationStrawberryModel,
+    WikibaseLogObservationStrawberryModel,
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
