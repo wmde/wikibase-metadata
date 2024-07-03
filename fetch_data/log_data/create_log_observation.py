@@ -1,6 +1,7 @@
 """Create Log Observation"""
 
 from datetime import datetime
+from requests.exceptions import SSLError
 from typing import List, Optional
 from data import get_async_session
 from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
@@ -25,43 +26,48 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
         observation = WikibaseLogObservationModel()
 
-        print("FETCHING ONE MONTH'S LOGS")
-
-        most_recent_log_list = get_month_log_list(wikibase.action_api_url.url)
-
-        most_recent_log = max(most_recent_log_list, key=lambda x: x.id)
-        observation.last_log_date = most_recent_log.log_date
-        observation.last_log_user_type = get_user_type(wikibase, most_recent_log.user)
-
-        last_month_logs = [log for log in most_recent_log_list if log.age() <= 30]
-        observation.last_month_log_count = len(last_month_logs)
-
-        observation.last_month_user_count = len(
-            last_month_users := {
-                log.user
-                for log in last_month_logs
-                if "page does not exist" not in log.user
-            }
-        )
-
-        if len(last_month_users) > 0:
-            print("FETCHING USER DATA")
-            observation.last_month_human_user_count = len(
-                [
-                    u
-                    for u in get_multiple_user_data(wikibase, last_month_users)
-                    if get_user_type_from_user_data(u) == WikibaseUserType.USER
-                ]
+        try:
+            print("FETCHING OLDEST LOG")
+            oldest_log_list = get_log_list_from_url(
+                wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
             )
-        else:
-            observation.last_month_human_user_count = 0
+            observation.first_log_date = oldest_log_list[0].log_date
 
-        oldest_log_list = get_log_list_from_url(
-            wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
-        )
-        observation.first_log_date = oldest_log_list[0].log_date
+            print("FETCHING ONE MONTH'S LOGS")
+            most_recent_log_list = get_month_log_list(wikibase.action_api_url.url)
 
-        observation.returned_data = True
+            most_recent_log = max(most_recent_log_list, key=lambda x: x.id)
+            observation.last_log_date = most_recent_log.log_date
+            observation.last_log_user_type = get_user_type(
+                wikibase, most_recent_log.user
+            )
+
+            last_month_logs = [log for log in most_recent_log_list if log.age() <= 30]
+            observation.last_month_log_count = len(last_month_logs)
+
+            observation.last_month_user_count = len(
+                last_month_users := {
+                    log.user
+                    for log in last_month_logs
+                    if "page does not exist" not in log.user
+                }
+            )
+
+            if len(last_month_users) > 0:
+                print("FETCHING USER DATA")
+                observation.last_month_human_user_count = len(
+                    [
+                        u
+                        for u in get_multiple_user_data(wikibase, last_month_users)
+                        if get_user_type_from_user_data(u) == WikibaseUserType.USER
+                    ]
+                )
+            else:
+                observation.last_month_human_user_count = 0
+
+            observation.returned_data = True
+        except SSLError:
+            observation.returned_data = False
 
         wikibase.log_observations.append(observation)
 
@@ -137,7 +143,7 @@ def get_user_type(wikibase: WikibaseModel, user: str) -> WikibaseUserType:
 def get_user_type_from_user_data(user_data: dict) -> WikibaseUserType:
     """User or Bot?"""
 
-    if "groups" not in user_data and "missing" in user_data:
+    if "groups" not in user_data and ("invalid" in user_data or "missing" in user_data):
         return WikibaseUserType.MISSING
     if "bot" in user_data["groups"]:
         return WikibaseUserType.BOT
