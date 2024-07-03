@@ -15,20 +15,23 @@ def get_single_user_data(wikibase: WikibaseModel, user: str) -> dict:
     return data["query"]["users"][0]
 
 
+MULTIPLE_USER_QUERY_LIMIT = 50
+
+
 def get_multiple_user_data(wikibase: WikibaseModel, users: Iterable[str]) -> list[dict]:
     """Get User Data"""
-
-    QUERY_LIMIT = 50
 
     if len(users) == 0:
         return []
 
-    if len(users) > QUERY_LIMIT:
+    if len(users) > MULTIPLE_USER_QUERY_LIMIT:
         data = []
         list_users = list(users)
-        for i in range(0, len(users), QUERY_LIMIT):
+        for i in range(0, len(users), MULTIPLE_USER_QUERY_LIMIT):
             data.extend(
-                get_multiple_user_data(wikibase, list_users[i : i + QUERY_LIMIT])
+                get_multiple_user_data(
+                    wikibase, list_users[i : i + MULTIPLE_USER_QUERY_LIMIT]
+                )
             )
         return data
 
