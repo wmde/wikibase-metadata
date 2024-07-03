@@ -150,7 +150,9 @@ All observations return `observationDate`, the date the observation was attempte
 
 For each type of observation, the most recent successful observation -- maximum `observationDate` where `returnedData = True` -- is returned as `mostRecent`, and all observations, successful or not, are returned in a collection labelled `allObservations`. `mostRecent` will be `null` if there are no successful observations.
 
-#### Connectivity Observations:
+The relationship between `mostRecent` and `allObservations` is demonstrated below in Connectivity Observations, but omitted elsewhere for brevity.
+
+### Connectivity Observations:
 
 Please see connectivity_notes for further details.
 
@@ -165,7 +167,7 @@ We want to measure the connectivity of the network of Wikidata items in the Wiki
 
 \* The SPARQL query returns directional links `a -> b`, so we say there's a direct connection between `a` and `b`. If `b -> c` is also returned, then we say `a` is _indirectly_ connected to `c`: `a -> b -> c`. Note that when we say directional, we mean that we do not _assume_ `b -> a` if `a -> b`; we would need a separate `b -> a` connection.
 
-##### Example:
+#### Example:
 
 Query:
 
@@ -257,34 +259,7 @@ Result:
             "returnedLinks": 210,
             ...
           },
-          {
-            "id": "7",
-            "observationDate": "2024-06-20T16:50:37",
-            "returnedData": true,
-            "returnedLinks": 210,
-            ...
-          },
-          {
-            "id": "8",
-            "observationDate": "2024-06-20T16:51:26",
-            "returnedData": true,
-            "returnedLinks": 210,
-            ...
-          },
-          {
-            "id": "9",
-            "observationDate": "2024-06-20T16:54:07",
-            "returnedData": true,
-            "returnedLinks": 210,
-            ...
-          },
-          {
-            "id": "12",
-            "observationDate": "2024-06-24T09:01:31",
-            "returnedData": true,
-            "returnedLinks": 210,
-            ...
-          }
+          ...
         ]
       }
     }
@@ -292,4 +267,82 @@ Result:
 }
 ```
 
-(Data abbreviated for brevity)
+Data abbreviated for brevity.
+
+
+### Property Popularity Observations:
+
+Using SPARQL, we query for all properties in the Wikibase, and the number of times they are used in the data. We return that list.
+
+- Property URL: the format the properties are returned in, as many are not specific to this particular wikibase
+- Usage Count: Number of times the property is used
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  wikibase(wikibaseId: 43) {
+    id
+    propertyPopularityObservations {
+      mostRecent {
+        id
+        observationDate
+        returnedData
+        propertyPopularityCounts {
+          id
+          propertyUrl
+          usageCount
+        }
+      }
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "wikibase": {
+      "id": "43",
+      "propertyPopularityObservations": {
+        "mostRecent": {
+          "id": "1",
+          "observationDate": "2024-06-24T13:05:05",
+          "returnedData": true,
+          "propertyPopularityCounts": [
+            {
+              "id": "110",
+              "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              "usageCount": 936
+            },
+            {
+              "id": "1",
+              "propertyUrl": "http://wikiba.se/ontology#rank",
+              "usageCount": 323
+            },
+            ...
+            {
+              "id": "112",
+              "propertyUrl": "http://schema.org/dateModified",
+              "usageCount": 135
+            },
+            ...
+            {
+              "id": "31",
+              "propertyUrl": "http://modelling.dissco.tech/prop/P15",
+              "usageCount": 1
+            },
+            ...
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+Data abbreviated for brevity.
