@@ -50,7 +50,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
                 last_month_users := {
                     log.user
                     for log in last_month_logs
-                    if "page does not exist" not in log.user
+                    if log.user is not None and "page does not exist" not in log.user
                 }
             )
 
@@ -134,8 +134,11 @@ def get_month_log_list(
     return data
 
 
-def get_user_type(wikibase: WikibaseModel, user: str) -> WikibaseUserType:
+def get_user_type(wikibase: WikibaseModel, user: Optional[str]) -> WikibaseUserType:
     """User or Bot?"""
+
+    if user is None:
+        return WikibaseUserType.NONE
 
     user_data = get_single_user_data(wikibase, user)
     return get_user_type_from_user_data(user_data)

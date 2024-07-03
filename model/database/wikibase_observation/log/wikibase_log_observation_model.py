@@ -18,6 +18,7 @@ class WikibaseUserType(enum.Enum):
     BOT = 1
     MISSING = 2
     USER = 3
+    NONE = 4
 
 
 class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):

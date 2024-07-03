@@ -1,13 +1,14 @@
 """Create Log Observation"""
 
 from datetime import datetime
+from typing import Optional
 
 
 class WikibaseLogRecord:
     """Parsing Record from Tag"""
 
     id: int
-    user: str
+    user: Optional[str]
     log_date: datetime
 
     def age(self) -> int:
@@ -16,6 +17,5 @@ class WikibaseLogRecord:
 
     def __init__(self, record: dict):
         self.id = record["logid"]
-
         self.log_date = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
-        self.user = record["user"]
+        self.user = record["user"] if "user" in record else None
