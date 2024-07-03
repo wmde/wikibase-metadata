@@ -5,7 +5,7 @@ import strawberry
 
 from model.database import WikibaseModel
 from model.strawberry.output.observation import (
-    WikibaseConnectivityObservationStrawberryModel,
+    WikibaseConnectivityObservationStrawberryModel,WikibaseLogObservationStrawberryModel,
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
@@ -33,6 +33,9 @@ class WikibaseStrawberryModel:
     connectivity_observations: WikibaseObservationSetStrawberryModel[
         WikibaseConnectivityObservationStrawberryModel
     ] = strawberry.field(description="Connectivity Data")
+    log_observations: WikibaseObservationSetStrawberryModel[
+        WikibaseLogObservationStrawberryModel
+    ] = strawberry.field(description="Log Data")
     property_popularity_observations: WikibaseObservationSetStrawberryModel[
         WikibasePropertyPopularityObservationStrawberryModel
     ] = strawberry.field(description="Property Popularity Data")
@@ -60,6 +63,12 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseConnectivityObservationStrawberryModel.marshal(o)
                     for o in model.connectivity_observations
+                ]
+            ),
+            log_observations=WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseLogObservationStrawberryModel.marshal(o)
+                    for o in model.log_observations
                 ]
             ),
             property_popularity_observations=WikibaseObservationSetStrawberryModel.marshal(
