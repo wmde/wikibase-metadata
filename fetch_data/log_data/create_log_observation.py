@@ -1,13 +1,19 @@
 """Create Log Observation"""
 
-from datetime import datetime
 from json.decoder import JSONDecodeError
 from requests.exceptions import SSLError
-from typing import List, Optional
 from data import get_async_session
-from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
-from fetch_data.user_data import get_multiple_user_data, get_single_user_data
-from fetch_data.utils import dict_to_url, fetch_api_data, get_wikibase_from_database
+from fetch_data.log_data.fetch_log_data import (
+    get_log_list_from_url,
+    get_log_param_string,
+    get_month_log_list,
+)
+from fetch_data.user_data import (
+    get_multiple_user_data,
+    get_user_type,
+    get_user_type_from_user_data,
+)
+from fetch_data.utils import get_wikibase_from_database
 from model.database import WikibaseLogObservationModel, WikibaseModel, WikibaseUserType
 
 
@@ -70,81 +76,3 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
         await async_session.commit()
         return observation.returned_data
-
-
-def get_log_param_string(
-    limit: Optional[int] = None,
-    oldest: bool = False,
-    offset: Optional[WikibaseLogRecord] = None,
-):
-    """Log Page URL Parameters"""
-
-    parameters: dict = {
-        "action": "query",
-        "format": "json",
-        "list": "logevents",
-        "formatversion": 2,
-        "ledir": "newer" if oldest else "older",
-        "lelimit": limit,
-    }
-
-    if offset is not None:
-        parameters["lecontinue"] = (
-            f"{offset.log_date.strftime('%Y%m%d%H%M%S')}|{offset.id}"
-        )
-    return dict_to_url(parameters)
-
-
-def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
-    """Get Log List from URL"""
-
-    data = []
-
-    query_data = fetch_api_data(url)
-    for record in query_data["query"]["logevents"]:
-        data.append(WikibaseLogRecord(record))
-
-    return data
-
-
-def get_month_log_list(
-    api_url: str,
-) -> List[WikibaseLogRecord]:
-    """Get Log List from api_url"""
-
-    data: List[WikibaseLogRecord] = []
-    limit = 500
-
-    should_query = True
-    next_from: Optional[WikibaseLogRecord] = None
-    while should_query:
-        query_data = fetch_api_data(
-            api_url + get_log_param_string(limit=limit, offset=next_from)
-        )
-        for record in query_data["query"]["logevents"]:
-            data.append(WikibaseLogRecord(record))
-        should_query = (
-            datetime.now() - (next_from := min(data, key=lambda x: x.log_date)).log_date
-        ).days <= 30
-
-    return data
-
-
-def get_user_type(wikibase: WikibaseModel, user: Optional[str]) -> WikibaseUserType:
-    """User or Bot?"""
-
-    if user is None:
-        return WikibaseUserType.NONE
-
-    user_data = get_single_user_data(wikibase, user)
-    return get_user_type_from_user_data(user_data)
-
-
-def get_user_type_from_user_data(user_data: dict) -> WikibaseUserType:
-    """User or Bot?"""
-
-    if "groups" not in user_data and ("invalid" in user_data or "missing" in user_data):
-        return WikibaseUserType.MISSING
-    if "bot" in user_data["groups"]:
-        return WikibaseUserType.BOT
-    return WikibaseUserType.USER
