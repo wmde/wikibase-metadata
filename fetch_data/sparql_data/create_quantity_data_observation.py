@@ -10,14 +10,14 @@ from fetch_data.sparql_data.sparql_queries import (
     COUNT_PROPERTIES_QUERY,
 )
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
-from model.database import WikibaseModel, WikibaseQuantityObservationModel
+from model.database import WikibaseQuantityObservationModel
 
 
 async def create_quantity_data_observation(wikibase_id: int) -> bool:
     """Create Quantity Data Observation"""
 
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await get_wikibase_from_database(
+        wikibase = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
             require_sparql_endpoint=True,

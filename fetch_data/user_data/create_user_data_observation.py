@@ -21,7 +21,7 @@ from model.database.wikibase_model import WikibaseModel
 async def create_user_data_observation(wikibase_id: int) -> bool:
     """Create User Data Observation"""
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await get_wikibase_from_database(
+        wikibase: WikibaseModel = get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
             require_action_api=True,

@@ -48,10 +48,9 @@ def compile_property_popularity_observation(
         observation.returned_data = True
 
         for result in property_count_results["results"]["bindings"]:
-            record = WikibasePropertyPopularityCountModel(
-                property_url=result["property"]["value"],
-                usage_count=result["propertyCount"]["value"],
-            )
+            record = WikibasePropertyPopularityCountModel()
+            record.property_url = result["property"]["value"]
+            record.usage_count = result["propertyCount"]["value"]
             observation.property_count_observations.append(record)
     except (HTTPError, EndPointInternalError):
         observation.returned_data = False
