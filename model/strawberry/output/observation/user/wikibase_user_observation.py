@@ -36,8 +36,12 @@ class WikibaseUserObservationStrawberryModel(WikibaseObservationStrawberryModel)
             observation_date=model.observation_date,
             returned_data=model.returned_data,
             total_users=model.total_users,
-            user_groups=[
-                WikibaseUserObservationGroupStrawberryModel.marshal(o)
-                for o in model.user_group_observations
-            ],
+            user_groups=sorted(
+                [
+                    WikibaseUserObservationGroupStrawberryModel.marshal(o)
+                    for o in model.user_group_observations
+                ],
+                key=lambda x: (x.user_count, x.group_implicit),
+                reverse=True,
+            ),
         )
