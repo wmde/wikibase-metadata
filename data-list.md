@@ -400,3 +400,131 @@ Result:
   }
 }
 ```
+
+### Software Version Observations:
+
+This data is parsed from the Wikibase's Special:Version page. For each installed software (Mediawiki, Elasticsearch, etc), skin, library, and extension, the following fields are fetched:
+
+- Software Name
+- Version: If any identifiable version string exists in the table row; may be semver, date, docker-tag-like string, hash, a combination, or nothing
+- Version Date: If any identifiable, parsable date exists in the table row
+- Version Hash: If any identifiable commit hash exists in the table row
+
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  wikibase(wikibaseId: 43) {
+    id
+    softwareVersionObservations {
+      mostRecent {
+        id
+        observationDate
+        returnedData
+        installedExtensions {
+          ...WikibaseSoftwareVersionStrawberryModelFragment
+        }
+        installedLibraries {
+          ...WikibaseSoftwareVersionStrawberryModelFragment
+        }
+        installedSkins {
+          ...WikibaseSoftwareVersionStrawberryModelFragment
+        }
+        installedSoftware {
+          ...WikibaseSoftwareVersionStrawberryModelFragment
+        }
+      }
+    }
+  }
+}
+
+fragment WikibaseSoftwareVersionStrawberryModelFragment on WikibaseSoftwareVersionStrawberryModel {
+  id
+  softwareName
+  version
+  versionDate
+  versionHash
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "wikibase": {
+      "id": "43",
+      "softwareVersionObservations": {
+        "mostRecent": {
+          "id": "93",
+          "observationDate": "2024-06-26T18:41:28",
+          "returnedData": true,
+          "installedExtensions": [
+            {
+              "id": "13933",
+              "softwareName": "Babel",
+              "version": "1.12.0",
+              "versionDate": null,
+              "versionHash": null
+            },
+            {
+              "id": "13948",
+              "softwareName": "CLDR",
+              "version": "4.10.0",
+              "versionDate": null,
+              "versionHash": null
+            },
+            ...
+          ],
+          "installedLibraries": [
+            {
+              "id": "13955",
+              "softwareName": "christian-riesen/base32",
+              "version": "1.4.0",
+              "versionDate": null,
+              "versionHash": null
+            },
+            {
+              "id": "13956",
+              "softwareName": "composer/installers",
+              "version": "1.12.0",
+              "versionDate": null,
+              "versionHash": null
+            },
+            ...
+          ],
+          "installedSkins": [
+            {
+              "id": "13930",
+              "softwareName": "Vector",
+              "version": null,
+              "versionDate": null,
+              "versionHash": null
+            }
+          ],
+          "installedSoftware": [
+            {
+              "id": "13928",
+              "softwareName": "Elasticsearch",
+              "version": "6.8.23",
+              "versionDate": null,
+              "versionHash": null
+            },
+            {
+              "id": "13927",
+              "softwareName": "ICU",
+              "version": "67.1",
+              "versionDate": null,
+              "versionHash": null
+            },
+            ...
+          ]
+        }
+      }
+    }
+  }
+}
+```
