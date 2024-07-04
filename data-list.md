@@ -192,6 +192,80 @@ Result:
 
 Data abbreviated for brevity.
 
+### Log Observations:
+
+Using the Action API, we query for the first log and the last 30 days'.
+
+- First Log:
+  - Date
+- Last Log:
+  - Date
+  - User Type: Bot, Missing, None, User
+- Last Month:
+  - All Users: Count distinct users
+  - Human Users: Count distinct (probably) human users
+  - Log Count
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  wikibase(wikibaseId: 10) {
+    logObservations {
+      mostRecent {
+        id
+        observationDate
+        returnedData
+        firstLog {
+          date
+        }
+        lastLog {
+          date
+          userType
+        }
+        lastMonth {
+          allUsers
+          humanUsers
+          logCount
+        }
+      }
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "wikibase": {
+      "logObservations": {
+        "mostRecent": {
+          "id": "39",
+          "observationDate": "2024-07-03T21:18:08",
+          "returnedData": true,
+          "firstLog": {
+            "date": "2021-03-19T09:20:21"
+          },
+          "lastLog": {
+            "date": "2024-07-03T14:45:01",
+            "userType": "BOT"
+          },
+          "lastMonth": {
+            "allUsers": 2,
+            "humanUsers": 1,
+            "logCount": 387
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ### Property Popularity Observations:
 
 Using SPARQL, we query for all properties in the Wikibase, and the number of times they are used in the data. We return that list.
