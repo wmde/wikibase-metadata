@@ -713,3 +713,97 @@ Result:
 ```
 
 Data abbreviated for brevity.
+
+## Aggregated Data:
+
+Data aggregated from the `mostRecent` record for each Wikibase.
+
+All data is paginated as above; the Page Number and Page Size arguments are the same, and the queries return Meta and Data as above.
+
+### Aggregated Extension/Library/Skin/Software Popularity:
+
+All four work exactly the same way, so they are outlined together here.
+
+Aggregated from the Software Version Observations above.
+
+- Software Name
+- Wikibase Count: Number of Wikibases in which software is installed
+- Versions: List of versions, ordered by wikibase count descending
+  - Version: Version string (if existant)
+  - Version Date: Version date (if existant)
+  - Version Hash: Version commit hash (if existant)
+  - Wikibase Count: Number of Wikibases with this specific version
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  aggregateSoftwarePopularity(pageSize: 10, pageNumber: 1) {
+    meta {
+      totalCount
+    }
+    data {
+      softwareName
+      wikibaseCount
+      versions {
+        version
+        versionDate
+        versionHash
+        wikibaseCount
+      }
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregateSoftwarePopularity": {
+      "meta": {
+        "totalCount": 12
+      },
+      "data": [
+        {
+          "softwareName": "MediaWiki",
+          "wikibaseCount": 41,
+          "versions": [
+            {
+              "version": "1.41.0",
+              "versionDate": "2024-02-07T06:39:00",
+              "versionHash": " 5498056",
+              "wikibaseCount": 3
+            },
+            ...
+          ]
+        },
+        ...
+        {
+          "softwareName": "ICU",
+          "wikibaseCount": 40,
+          "versions": [
+            {
+              "version": "67.1",
+              "versionDate": null,
+              "versionHash": null,
+              "wikibaseCount": 11
+            },
+            {
+              "version": "72.1",
+              "versionDate": null,
+              "versionHash": null,
+              "wikibaseCount": 6
+            },
+            ...
+          ]
+        },
+        ...
+      ]
+    }
+  }
+}
+```
