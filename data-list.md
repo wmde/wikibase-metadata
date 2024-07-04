@@ -401,6 +401,8 @@ Result:
 }
 ```
 
+Data abbreviated for brevity.
+
 ### Software Version Observations:
 
 This data is parsed from the Wikibase's Special:Version page. For each installed software (Mediawiki, Elasticsearch, etc), skin, library, and extension, the following fields are fetched:
@@ -409,7 +411,6 @@ This data is parsed from the Wikibase's Special:Version page. For each installed
 - Version: If any identifiable version string exists in the table row; may be semver, date, docker-tag-like string, hash, a combination, or nothing
 - Version Date: If any identifiable, parsable date exists in the table row
 - Version Hash: If any identifiable commit hash exists in the table row
-
 
 #### Example:
 
@@ -529,6 +530,7 @@ Result:
 }
 ```
 
+Data abbreviated for brevity.
 
 ### User Observations:
 
@@ -614,3 +616,100 @@ Result:
   }
 }
 ```
+
+Data abbreviated for brevity.
+
+## Paginated Wikibase List:
+
+A paginated list of the Wikibase instances.
+
+Arguments:
+
+- Page Number: 1-indexed page number
+- Page Size: number of Wikibases per page
+
+Results:
+
+- Meta:
+  - Page Number: same as the input
+  - Page Size: same as the input
+  - Total Count: total number of Wikibases
+  - Total Pages: total number of pages, with the given total and page size
+- Data: list of Wikibases, ordered by id ascending. Every field noted above in Individual Wikibase Instances is accessible here.
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  wikibaseList(pageNumber: 2, pageSize: 10) {
+    meta {
+      pageNumber
+      pageSize
+      totalCount
+      totalPages
+    }
+    data {
+      id
+      title
+      urls {
+        baseUrl
+      }
+      quantityObservations {
+        mostRecent {
+          totalItems
+          totalLexemes
+          totalProperties
+        }
+      }
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "wikibaseList": {
+      "meta": {
+        "pageNumber": 2,
+        "pageSize": 10,
+        "totalCount": 43,
+        "totalPages": 5
+      },
+      "data": [
+        {
+          "id": "11",
+          "title": "Kunstmuseum API",
+          "urls": {
+            "baseUrl": "https://api.kunstmuseum.nl"
+          },
+          "quantityObservations": {
+            "mostRecent": {
+              "totalItems": 37267,
+              "totalLexemes": 0,
+              "totalProperties": 113
+            }
+          }
+        },
+        ...
+        {
+          "id": "20",
+          "title": "Safer Nicotine Wiki",
+          "urls": {
+            "baseUrl": "https://safernicotine.wiki/mediawiki"
+          },
+          "quantityObservations": {
+            "mostRecent": null
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+Data abbreviated for brevity.
