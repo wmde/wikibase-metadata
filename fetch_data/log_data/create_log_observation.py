@@ -6,12 +6,8 @@ from requests.exceptions import SSLError
 from typing import List, Optional
 from data import get_async_session
 from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
-from fetch_data.user_data.fetch_single_user_data import (
-    get_multiple_user_data,
-    get_single_user_data,
-)
-from fetch_data.utils import dict_to_url, get_wikibase_from_database
-from fetch_data.utils.fetch_api_data import fetch_api_data
+from fetch_data.user_data import get_multiple_user_data, get_single_user_data
+from fetch_data.utils import dict_to_url, fetch_api_data, get_wikibase_from_database
 from model.database import WikibaseLogObservationModel, WikibaseModel, WikibaseUserType
 
 
