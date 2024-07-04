@@ -3,8 +3,8 @@
 from fetch_data.utils import dict_to_url
 
 
-def users_url(api_url: str, continue_from: str | None = None) -> str:
-    """URL for User Data"""
+def all_users_url(continue_from: str | None = None) -> str:
+    """URL for All User Data"""
 
     parameters = {
         "action": "query",
@@ -14,4 +14,17 @@ def users_url(api_url: str, continue_from: str | None = None) -> str:
         "format": "json",
         "aufrom": continue_from,
     }
-    return f"{api_url}{dict_to_url(parameters)}"
+    return dict_to_url(parameters)
+
+
+def user_url(user: str) -> str:
+    """Single User Data"""
+
+    parameters = {
+        "action": "query",
+        "list": "users",
+        "ususers": user,
+        "usprop": "groups",
+        "format": "json",
+    }
+    return dict_to_url(parameters)

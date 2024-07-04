@@ -4,10 +4,8 @@ from typing import List
 import strawberry
 
 from model.database import (
-    WikibaseSoftwareVersionObservationModel,
-)
-from model.database.wikibase_observation.version.software_version_model import (
     WikibaseSoftwareTypes,
+    WikibaseSoftwareVersionObservationModel,
 )
 from model.strawberry.output.observation.software_version.software_version import (
     WikibaseSoftwareVersionStrawberryModel,

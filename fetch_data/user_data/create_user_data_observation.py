@@ -8,7 +8,7 @@ from fetch_data.user_data.compile_user_data import (
     compile_user_group_counts,
 )
 from fetch_data.user_data.constants import WIKIBASE_DEFAULT_USER_GROUPS
-from fetch_data.user_data.fetch_user_data import fetch_user_data
+from fetch_data.user_data.fetch_all_user_data import fetch_all_user_data
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from model.database import (
     WikibaseUserGroupModel,
@@ -21,7 +21,7 @@ from model.database.wikibase_model import WikibaseModel
 async def create_user_data_observation(wikibase_id: int) -> bool:
     """Create User Data Observation"""
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = get_wikibase_from_database(
+        wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
             require_action_api=True,
@@ -30,7 +30,7 @@ async def create_user_data_observation(wikibase_id: int) -> bool:
 
         site_user_data: list[dict]
         try:
-            site_user_data = fetch_user_data(wikibase.action_api_url.url)
+            site_user_data = fetch_all_user_data(wikibase.action_api_url.url)
             observation.returned_data = True
         except (ReadTimeout, SSLError, ValueError):
             observation.returned_data = False

@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 
 from sqlalchemy import Select, and_, select, func
 
-from data.database_connection import get_async_session
+from data import get_async_session
 from model.database import (
     WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,

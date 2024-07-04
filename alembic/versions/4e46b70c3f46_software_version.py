@@ -41,7 +41,7 @@ def upgrade() -> None:
         sa.Column(
             "software_type",
             sa.Enum(
-                "software", "skin", "extension", "library", name="wikibasesoftwaretypes"
+                "SOFTWARE", "SKIN", "EXTENSION", "LIBRARY", name="wikibasesoftwaretypes"
             ),
             nullable=False,
         ),

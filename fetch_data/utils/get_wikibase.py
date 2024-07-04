@@ -1,3 +1,5 @@
+# pylint: disable=too-many-arguments
+
 """Get Wikibase"""
 
 from sqlalchemy import select
