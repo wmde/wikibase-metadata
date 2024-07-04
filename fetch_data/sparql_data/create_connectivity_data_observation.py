@@ -17,6 +17,7 @@ from model.database import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseConnectivityObservationModel,
+    WikibaseModel,
 )
 
 
@@ -24,7 +25,7 @@ async def create_connectivity_data_observation(wikibase_id: int) -> bool:
     """Create Connectivity Data Observation"""
 
     async with get_async_session() as async_session:
-        wikibase = await get_wikibase_from_database(
+        wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
             require_sparql_endpoint=True,

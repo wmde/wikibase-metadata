@@ -15,4 +15,4 @@ def compile_all_implicit_user_groups(data: list[dict]) -> set[str]:
 
 def compile_user_group_counts(data: list[dict]) -> dict:
     """Return dict: {group_name: user_count}"""
-    return counts([group for user in data for group in user["groups"]])
+    return counts([group for user in data for group in set(user["groups"])])

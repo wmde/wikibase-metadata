@@ -2,10 +2,9 @@
 
 from sqlalchemy import func, select
 
-from data.database_connection import get_async_session
+from data import get_async_session
 from model.database import WikibaseModel
-from model.strawberry.output import WikibaseStrawberryModel
-from model.strawberry.output.page import Page
+from model.strawberry.output import Page, WikibaseStrawberryModel
 
 
 async def get_wikibase_list(
