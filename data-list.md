@@ -807,3 +807,55 @@ Result:
   }
 }
 ```
+
+### Aggregated Property Popularity:
+
+- Property URL
+- Usage Count: Sum of usages in all Wikibases
+- Wikibase Count: Number of Wikibases that use this property
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  aggregatePropertyPopularity(pageNumber: 1, pageSize: 10) {
+    meta {
+      totalCount
+    }
+    data {
+      propertyUrl
+      usageCount
+      wikibaseCount
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregatePropertyPopularity": {
+      "meta": {
+        "totalCount": 79501
+      },
+      "data": [
+        {
+          "propertyUrl": "http://schema.org/description",
+          "usageCount": 3149752997,
+          "wikibaseCount": 17
+        },
+        {
+          "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "usageCount": 1944635733,
+          "wikibaseCount": 17
+        },
+        ...
+      ]
+    }
+  }
+}
+```
