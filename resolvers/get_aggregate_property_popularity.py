@@ -4,7 +4,7 @@ from typing import Tuple
 
 from sqlalchemy import Select, desc, select, func
 
-from data.database_connection import get_async_session
+from data import get_async_session
 from model.database import (
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
