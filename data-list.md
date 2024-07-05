@@ -769,7 +769,7 @@ Result:
             {
               "version": "1.41.0",
               "versionDate": "2024-02-07T06:39:00",
-              "versionHash": " 5498056",
+              "versionHash": "5498056",
               "wikibaseCount": 3
             },
             ...
