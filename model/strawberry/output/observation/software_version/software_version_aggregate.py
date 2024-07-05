@@ -12,7 +12,6 @@ from model.strawberry.output.semver import Semver
 class WikibaseSoftwareVersionAggregateStrawberryModel:
     """Wikibase Software Version Aggregate"""
 
-    id: strawberry.ID
     version: Optional[str] = strawberry.field(description="Software Version")
     version_date: Optional[datetime] = strawberry.field(description="Software Version")
     version_hash: Optional[str] = strawberry.field(description="Software Version")
@@ -23,13 +22,11 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
     # pylint: disable=too-many-arguments
     def __init__(
         self,
-        id: int,  # pylint: disable=redefined-builtin
         version: Optional[str],
         version_date: Optional[datetime],
         version_hash: Optional[str],
         wikibase_count: int,
     ):
-        self.id = strawberry.ID(id)
         self.version = version
         self.version_date = version_date
         self.version_hash = version_hash
@@ -53,7 +50,6 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
 class WikibaseSoftwareMidVersionAggregateStrawberryModel:
     """Aggregated to X Version - ABSTRACT"""
 
-    id: strawberry.ID
     version: Optional[str] = strawberry.field(description="Software Version")
 
     private_versions: strawberry.Private[
@@ -115,7 +111,6 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
             key = None if v.semver_version is None else v.semver_version.patch
             if key not in temp:
                 temp[key] = WikibaseSoftwareMidVersionAggregateStrawberryModel(
-                    id=v.id,
                     version=str(
                         Semver(
                             v.semver_version.major,
@@ -150,7 +145,6 @@ class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
             key = None if v.semver_version is None else v.semver_version.minor
             if key not in temp:
                 temp[key] = WikibaseSoftwareMinorVersionAggregateStrawberryModel(
-                    id=v.id,
                     version=str(Semver(v.semver_version.major, v.semver_version.minor)),
                     private_versions=[],
                 )
@@ -162,7 +156,6 @@ class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
 class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
     """Wikibase Software Version Aggregate"""
 
-    id: strawberry.ID
     software_name: str = strawberry.field(description="Software Name")
     private_versions: strawberry.Private[
         List[WikibaseSoftwareVersionAggregateStrawberryModel]
@@ -170,11 +163,9 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
 
     def __init__(
         self,
-        id: int,  # pylint: disable=redefined-builtin
         software_name: str,
         versions: List[WikibaseSoftwareVersionAggregateStrawberryModel],
     ):
-        self.id = strawberry.ID(id)
         self.software_name = software_name
         self.private_versions = versions
 
@@ -191,13 +182,13 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
         """Major Versions"""
 
         temp: dict[
-            Optional[str], WikibaseSoftwareMajorVersionAggregateStrawberryModel
+            Optional[int], WikibaseSoftwareMajorVersionAggregateStrawberryModel
         ] = {}
         for v in self.private_versions:
-            key = None if v.semver_version is None else str(v.semver_version.major)
+            key = None if v.semver_version is None else v.semver_version.major
             if key not in temp:
                 temp[key] = WikibaseSoftwareMajorVersionAggregateStrawberryModel(
-                    id=v.id, version=key, private_versions=[]
+                    version=key, private_versions=[]
                 )
             temp[key].private_versions.append(v)
         return sorted(temp.values(), key=lambda x: x.wikibase_count(), reverse=True)
