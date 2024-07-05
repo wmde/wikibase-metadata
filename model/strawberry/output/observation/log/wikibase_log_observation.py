@@ -27,13 +27,14 @@ class WikibaseLogUserStrawberryModel(WikibaseLogStrawberryModel):
 
 
 @strawberry.type
-class UserCountStrawberryModel:
-    """Wikibase Log"""
+class WikibaseLogCollectionStrawberryModel:
+    """Wikibase Log Collection"""
 
     all_users: int = strawberry.field(description="Distinct User Count")
     human_users: int = strawberry.field(
         description="Distinct (Probably) Human User Count"
     )
+    log_count: Optional[int] = strawberry.field(description="Log Count")
 
 
 @strawberry.type
@@ -47,11 +48,8 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
         description="Last Log"
     )
 
-    last_month_log_count: Optional[int] = strawberry.field(
-        description="Logs from the Last 30 Days"
-    )
-    last_month_user_count: Optional[UserCountStrawberryModel] = strawberry.field(
-        description="Users from the Last Month's Logs"
+    last_month: Optional[WikibaseLogCollectionStrawberryModel] = strawberry.field(
+        description="Last Month's Logs"
     )
 
     @classmethod
@@ -88,13 +86,11 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
                 if model.returned_data
                 else None
             ),
-            last_month_log_count=(
-                model.last_month_log_count if model.returned_data else None
-            ),
-            last_month_user_count=(
-                UserCountStrawberryModel(
+            last_month=(
+                WikibaseLogCollectionStrawberryModel(
                     all_users=model.last_month_user_count,
                     human_users=model.last_month_human_user_count,
+                    log_count=model.last_month_log_count,
                 )
                 if model.returned_data
                 else None
