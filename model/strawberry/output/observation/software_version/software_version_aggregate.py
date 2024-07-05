@@ -110,7 +110,7 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
         for v in self.private_versions:
             key = None if v.semver_version is None else v.semver_version.patch
             if key not in temp:
-                temp[key] = WikibaseSoftwareMidVersionAggregateStrawberryModel(
+                temp[key] = WikibaseSoftwarePatchVersionAggregateStrawberryModel(
                     version=str(
                         Semver(
                             v.semver_version.major,
