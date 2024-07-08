@@ -20,8 +20,10 @@ async def get_aggregate_created() -> List[WikibaseYearCreatedAggregated]:
 
     async with get_async_session() as async_session:
         results = (await async_session.execute(total_quantity_query)).all()
-        return [WikibaseYearCreatedAggregated(year=year, wikibase_count=wikibase_count) for year, wikibase_count in results]
-
+        return [
+            WikibaseYearCreatedAggregated(year=year, wikibase_count=wikibase_count)
+            for year, wikibase_count in results
+        ]
 
 
 def get_created_query() -> Select[Tuple[int, int]]:
@@ -51,6 +53,6 @@ def get_created_query() -> Select[Tuple[int, int]]:
         )
         .where(rank_subquery.c.rank == 1)
         .group_by("year")
-        .order_by('year')
+        .order_by("year")
     )
     return query
