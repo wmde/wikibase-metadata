@@ -10,13 +10,16 @@ from model.strawberry.output.observation.user.wikibase_user_observation_group im
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
 class WikibaseUserObservationStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase User Data Observation"""
 
-    total_users: Optional[int] = strawberry.field(description="Total Users")
+    total_users: Optional[int] = strawberry.field(
+        description="Total Users", graphql_type=Optional[BigInt]
+    )
     user_groups: List[WikibaseUserObservationGroupStrawberryModel] = strawberry.field(
         description="User Groups and Counts"
     )

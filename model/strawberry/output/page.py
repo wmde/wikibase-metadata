@@ -4,6 +4,8 @@ from math import ceil
 from typing import Generic, List, TypeVar
 import strawberry
 
+from model.strawberry.scalars.big_int import BigInt
+
 
 T = TypeVar("T")
 
@@ -12,10 +14,18 @@ T = TypeVar("T")
 class PageMetadata:
     """Page Metadata"""
 
-    page_number: int = strawberry.field(description="Page Number (1-indexed) - input")
-    page_size: int = strawberry.field(description="Page Size - input")
-    total_count: int = strawberry.field(description="Total Number of Records")
-    total_pages: int = strawberry.field(description="Total Number of Pages")
+    page_number: int = strawberry.field(
+        description="Page Number (1-indexed) - input", graphql_type=BigInt
+    )
+    page_size: int = strawberry.field(
+        description="Page Size - input", graphql_type=BigInt
+    )
+    total_count: int = strawberry.field(
+        description="Total Number of Records", graphql_type=BigInt
+    )
+    total_pages: int = strawberry.field(
+        description="Total Number of Pages", graphql_type=BigInt
+    )
 
     @classmethod
     def marshal(

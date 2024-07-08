@@ -10,6 +10,7 @@ from model.database import (
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
@@ -30,11 +31,15 @@ class WikibaseLogUserStrawberryModel(WikibaseLogStrawberryModel):
 class WikibaseLogCollectionStrawberryModel:
     """Wikibase Log Collection"""
 
-    all_users: int = strawberry.field(description="Distinct User Count")
-    human_users: int = strawberry.field(
-        description="Distinct (Probably) Human User Count"
+    all_users: int = strawberry.field(
+        description="Distinct User Count", graphql_type=BigInt
     )
-    log_count: Optional[int] = strawberry.field(description="Log Count")
+    human_users: int = strawberry.field(
+        description="Distinct (Probably) Human User Count", graphql_type=BigInt
+    )
+    log_count: Optional[int] = strawberry.field(
+        description="Log Count", graphql_type=Optional[BigInt]
+    )
 
 
 @strawberry.type

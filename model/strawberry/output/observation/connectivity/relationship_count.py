@@ -6,6 +6,7 @@ from model.database import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
 )
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
@@ -14,7 +15,7 @@ class WikibaseConnectivityObservationRelationshipCountStrawberryModel:
 
     id: strawberry.ID
     relationship_count: int = strawberry.field(
-        description="Number of Relationships Defined for Item"
+        description="Number of Relationships Defined for Item", graphql_type=BigInt
     )
 
 
@@ -25,7 +26,7 @@ class WikibaseConnectivityObservationItemRelationshipCountStrawberryModel(
     """Wikibase Connectivity Observation Item / Relationship Counts"""
 
     item_count: int = strawberry.field(
-        description="Number of Items with This Relationship Count"
+        description="Number of Items with This Relationship Count", graphql_type=BigInt
     )
 
     @classmethod
@@ -48,7 +49,7 @@ class WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel(
     """Wikibase Connectivity Observation Object / Relationship Counts"""
 
     object_count: int = strawberry.field(
-        description="Number of Object with This Relationship Count"
+        description="Number of Object with This Relationship Count", graphql_type=BigInt
     )
 
     @classmethod
