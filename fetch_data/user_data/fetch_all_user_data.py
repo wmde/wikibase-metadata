@@ -11,7 +11,7 @@ def fetch_all_user_data(api_url: str) -> list[dict]:
     data = []
 
     should_query = True
-    next_from: Optional[str] = None
+    next_from: str = "!"
 
     while should_query:
         query_data = fetch_api_data(api_url + all_users_url(continue_from=next_from))
