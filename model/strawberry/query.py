@@ -9,9 +9,11 @@ from model.strawberry.output import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseStrawberryModel,
+    WikibaseUserAggregate,
 )
 from resolvers import (
     get_aggregate_property_popularity,
+    get_aggregate_users,
     get_aggregate_version,
     get_wikibase,
     get_wikibase_list,
@@ -103,3 +105,11 @@ class Query:
         return await get_aggregate_version(
             WikibaseSoftwareTypes.SOFTWARE, page_number, page_size
         )
+
+    @strawberry.field(description="Aggregated Users")
+    async def aggregate_users(
+        self,
+    ) -> WikibaseUserAggregate:
+        """Aggregated Users"""
+
+        return await get_aggregate_users()

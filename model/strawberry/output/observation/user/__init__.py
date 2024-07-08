@@ -1,5 +1,8 @@
 """Wikibase User Observations"""
 
+from model.strawberry.output.observation.user.wikibase_user_aggregate import (
+    WikibaseUserAggregate,
+)
 from model.strawberry.output.observation.user.wikibase_user_group import (
     WikibaseUserGroupStrawberryModel,
 )
