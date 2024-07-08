@@ -21,6 +21,7 @@ async def get_wikibase_list(
         results = (
             await async_session.scalars(
                 select(WikibaseModel)
+                .where(WikibaseModel.checked)
                 .order_by(WikibaseModel.id)
                 .offset((page_number - 1) * page_size)
                 .limit(page_size)
