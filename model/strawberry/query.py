@@ -1,6 +1,6 @@
 """GraphQL Query"""
 
-from typing import Annotated
+from typing import Annotated, List
 import strawberry
 
 from model.database import WikibaseSoftwareTypes
@@ -12,7 +12,9 @@ from model.strawberry.output import (
     WikibaseStrawberryModel,
     WikibaseUserAggregate,
 )
+from model.strawberry.output.observation.log.wikibase_created_aggregate import WikibaseYearCreatedAggregated
 from resolvers import (
+    get_aggregate_created,
     get_aggregate_property_popularity,
     get_aggregate_quantity,
     get_aggregate_users,
@@ -39,6 +41,14 @@ class Query:
         """List of Wikibases"""
 
         return await get_wikibase_list(page_number, page_size)
+
+    @strawberry.field(description="Year of First Log Date")
+    async def aggregate_created(
+        self,
+    ) -> List[WikibaseYearCreatedAggregated]:
+        """Aggregated Creation Year"""
+
+        return await get_aggregate_created()
 
     @strawberry.field(description="Aggregated Extension Popularity")
     async def aggregate_extension_popularity(
