@@ -5,6 +5,7 @@ from model.strawberry.output.observation.connectivity import (
 )
 from model.strawberry.output.observation.log import (
     WikibaseLogObservationStrawberryModel,
+    WikibaseYearCreatedAggregated,
 )
 from model.strawberry.output.observation.property_popularity import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,

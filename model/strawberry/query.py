@@ -11,8 +11,8 @@ from model.strawberry.output import (
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseStrawberryModel,
     WikibaseUserAggregate,
+    WikibaseYearCreatedAggregated,
 )
-from model.strawberry.output.observation.log.wikibase_created_aggregate import WikibaseYearCreatedAggregated
 from resolvers import (
     get_aggregate_created,
     get_aggregate_property_popularity,
