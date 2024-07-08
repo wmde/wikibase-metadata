@@ -1,6 +1,5 @@
 """Fetch User Data"""
 
-from typing import Optional
 from fetch_data.user_data.user_data_url import all_users_url
 from fetch_data.utils.fetch_api_data import fetch_api_data
 
