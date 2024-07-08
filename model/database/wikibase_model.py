@@ -1,5 +1,7 @@
 """Wikibase Table"""
 
+# pylint: disable=too-many-instance-attributes,too-many-arguments
+
 from typing import List, Optional
 from sqlalchemy import Boolean, Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -208,3 +210,28 @@ class WikibaseModel(ModelBase):
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="selectin"
     )
     """User Observations"""
+
+    def __init__(
+        self,
+        wikibase_name: str,
+        base_url: str,
+        region: str,
+        organization: Optional[str] = None,
+        country: Optional[str] = None,
+        sparql_query_url: Optional[str] = None,
+        sparql_endpoint_url: Optional[str] = None,
+    ):
+        self.wikibase_name = wikibase_name
+        self.organization = organization
+        self.country = country
+        self.region = region
+        self.checked = False
+        self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLTypes.BASE_URL)
+        if sparql_endpoint_url is not None:
+            self.sparql_endpoint_url = WikibaseURLModel(
+                url=sparql_endpoint_url, url_type=WikibaseURLTypes.SPARQL_ENDPOINT_URL
+            )
+        if sparql_query_url is not None:
+            self.sparql_query_url = WikibaseURLModel(
+                url=sparql_query_url, url_type=WikibaseURLTypes.SPARQL_QUERY_URL
+            )
