@@ -7,12 +7,14 @@ from model.database import WikibaseSoftwareTypes
 from model.strawberry.output import (
     Page,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
+    WikibaseQuantityAggregate,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseStrawberryModel,
     WikibaseUserAggregate,
 )
 from resolvers import (
     get_aggregate_property_popularity,
+    get_aggregate_quantity,
     get_aggregate_users,
     get_aggregate_version,
     get_wikibase,
@@ -77,6 +79,14 @@ class Query:
         """Aggregated Property Popularity"""
 
         return await get_aggregate_property_popularity(page_number, page_size)
+
+    @strawberry.field(description="Aggregated Quantity")
+    async def aggregate_quantity(
+        self,
+    ) -> WikibaseQuantityAggregate:
+        """Aggregated Users"""
+
+        return await get_aggregate_quantity()
 
     @strawberry.field(description="Aggregated Skin Popularity")
     async def aggregate_skin_popularity(
