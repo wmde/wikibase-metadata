@@ -1,7 +1,7 @@
 """Wikibase Table"""
 
 from typing import List, Optional
-from sqlalchemy import Integer, String, and_
+from sqlalchemy import Boolean, Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -37,6 +37,9 @@ class WikibaseModel(ModelBase):
 
     region: Mapped[str] = mapped_column("region", String, nullable=False)
     """Region"""
+
+    checked: Mapped[bool] = mapped_column("valid", Boolean, nullable=False)
+    """Checked"""
 
     url: Mapped[WikibaseURLModel] = relationship(
         "WikibaseURLModel",
