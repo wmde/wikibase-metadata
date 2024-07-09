@@ -12,13 +12,16 @@ WIKIBASES_QUERY = """PREFIX wdt: <https://wikibase.world/prop/direct/>
 PREFIX wd: <https://wikibase.world/entity/>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
-SELECT ?itemLabel ?url ?host ?hostLabel ?sparqlUIUrl ?sparqlEndpointUrl WHERE {
+SELECT ?itemLabel ?url ?host ?hostLabel ?available ?availableLabel ?sparqlUIUrl ?sparqlEndpointUrl WHERE {
   ?item wdt:P3 wd:Q10;
     wdt:P1 ?url;
-    wdt:P2 ?host.
-  FILTER(?host != wd:Q4)
-  FILTER(?host != wd:Q6)
-  FILTER(?host != wd:Q8)
+    wdt:P2 ?host;
+    wdt:P13 ?available.
+#   FILTER(?host != wd:Q4)
+#   FILTER(?host != wd:Q6)
+#   FILTER(?host != wd:Q7)
+#   FILTER(?host != wd:Q117)
+#   FILTER(?host != wd:Q8)
   OPTIONAL { ?item wdt:P7 ?sparqlUIUrl. }
   OPTIONAL { ?item wdt:P8 ?sparqlEndpointUrl. }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
