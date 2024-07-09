@@ -3,10 +3,11 @@
 # pylint: disable=too-many-instance-attributes,too-many-arguments
 
 from typing import List, Optional
-from sqlalchemy import Boolean, Integer, String, and_
+from sqlalchemy import Boolean, ForeignKey, Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
+from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
     WikibaseLogObservationModel,
@@ -39,6 +40,18 @@ class WikibaseModel(ModelBase):
 
     region: Mapped[str] = mapped_column("region", String, nullable=False)
     """Region"""
+
+    category_id: Mapped[int] = mapped_column(
+        "wikibase_category_id",
+        ForeignKey("wikibase_category.id", None, False, "wikibase_category"),
+        nullable=True,
+    )
+    """Wikibase Category ID"""
+
+    category: Mapped[WikibaseCategoryModel] = relationship(
+        "WikibaseCategoryModel", lazy="selectin", back_populates="wikibases"
+    )
+    """Wikibase Category"""
 
     checked: Mapped[bool] = mapped_column("valid", Boolean, nullable=False)
     """Checked"""
