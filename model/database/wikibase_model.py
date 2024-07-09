@@ -51,7 +51,7 @@ class WikibaseModel(ModelBase):
     )
     """Wikibase Category ID"""
 
-    category: Mapped[WikibaseCategoryModel] = relationship(
+    category: Mapped[Optional[WikibaseCategoryModel]] = relationship(
         "WikibaseCategoryModel", lazy="selectin", back_populates="wikibases"
     )
     """Wikibase Category"""

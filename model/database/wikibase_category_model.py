@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from model.database.base import ModelBase
 
 
-class WikibaseCategories(enum.Enum):
+class WikibaseCategory(enum.Enum):
     """Wikibase Categories"""
 
     CULTURAL_AND_HISTORICAL = 1
@@ -22,6 +22,10 @@ class WikibaseCategories(enum.Enum):
     SEMANTIC_AND_PROSOPOGRAPHIC_DATA = 9
     SOCIAL_AND_ADVOCACY = 10
     TECHNOLOGY_AND_OPEN_SOURCE = 11
+
+
+def wikibase_category_name(category: WikibaseCategory) -> str:
+    return category.name.replace("_", " ").title().replace("And", "and")
 
 
 class WikibaseCategoryModel(ModelBase):
@@ -44,7 +48,7 @@ class WikibaseCategoryModel(ModelBase):
     )
     """Wikibases"""
 
-    category: Mapped[WikibaseCategories] = mapped_column(
-        "category", Enum(WikibaseCategories), nullable=False
+    category: Mapped[WikibaseCategory] = mapped_column(
+        "category", Enum(WikibaseCategory), nullable=False
     )
     """Category"""

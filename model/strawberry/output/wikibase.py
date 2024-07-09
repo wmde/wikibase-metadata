@@ -4,6 +4,7 @@ from typing import Optional
 import strawberry
 
 from model.database import WikibaseModel
+from model.database.wikibase_category_model import wikibase_category_name
 from model.strawberry.output.observation import (
     WikibaseConnectivityObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,
@@ -24,6 +25,8 @@ class WikibaseStrawberryModel:
     id: strawberry.ID
     title: str = strawberry.field(description="Wikibase Name")
     organization: Optional[str] = strawberry.field(description="Organization")
+    description: Optional[str] = strawberry.field(description="Description")
+    category: Optional[str] = strawberry.field(description="Wikibase Category")
 
     location: WikibaseLocationStrawberryModel = strawberry.field(
         description="Wikibase Location"
@@ -58,6 +61,12 @@ class WikibaseStrawberryModel:
             id=strawberry.ID(model.id),
             title=model.wikibase_name,
             organization=model.organization,
+            description=model.description,
+            category=(
+                wikibase_category_name(model.category.category)
+                if model.category is not None
+                else None
+            ),
             location=WikibaseLocationStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
             connectivity_observations=WikibaseObservationSetStrawberryModel.marshal(
