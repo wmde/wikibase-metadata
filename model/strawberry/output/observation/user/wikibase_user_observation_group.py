@@ -8,6 +8,7 @@ from model.database import (
 from model.strawberry.output.observation.user.wikibase_user_group import (
     WikibaseUserGroupStrawberryModel,
 )
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
@@ -17,7 +18,7 @@ class WikibaseUserObservationGroupStrawberryModel:
     id: strawberry.ID
     group: WikibaseUserGroupStrawberryModel
     group_implicit: bool = strawberry.field(description="Group Marked Implicit?")
-    user_count: int = strawberry.field(description="User Count")
+    user_count: int = strawberry.field(description="User Count", graphql_type=BigInt)
 
     @classmethod
     def marshal(

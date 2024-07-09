@@ -5,6 +5,7 @@ from model.strawberry.output.observation.connectivity import (
 )
 from model.strawberry.output.observation.log import (
     WikibaseLogObservationStrawberryModel,
+    WikibaseYearCreatedAggregated,
 )
 from model.strawberry.output.observation.property_popularity import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
@@ -12,6 +13,7 @@ from model.strawberry.output.observation.property_popularity import (
     WikibasePropertyPopularityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.quantity import (
+    WikibaseQuantityAggregate,
     WikibaseQuantityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.software_version import (
@@ -21,6 +23,7 @@ from model.strawberry.output.observation.software_version import (
     WikibaseSoftwareVersionStrawberryModel,
 )
 from model.strawberry.output.observation.user import (
+    WikibaseUserAggregate,
     WikibaseUserGroupStrawberryModel,
     WikibaseUserObservationStrawberryModel,
     WikibaseUserObservationGroupStrawberryModel,

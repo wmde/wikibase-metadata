@@ -10,6 +10,7 @@ from model.database import (
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
@@ -30,17 +31,25 @@ class WikibaseLogUserStrawberryModel(WikibaseLogStrawberryModel):
 class WikibaseLogCollectionStrawberryModel:
     """Wikibase Log Collection"""
 
-    all_users: int = strawberry.field(description="Distinct User Count")
-    human_users: int = strawberry.field(
-        description="Distinct (Probably) Human User Count"
+    all_users: int = strawberry.field(
+        description="Distinct User Count", graphql_type=BigInt
     )
-    log_count: Optional[int] = strawberry.field(description="Log Count")
+    human_users: int = strawberry.field(
+        description="Distinct (Probably) Human User Count", graphql_type=BigInt
+    )
+    log_count: Optional[int] = strawberry.field(
+        description="Log Count", graphql_type=Optional[BigInt]
+    )
 
 
 @strawberry.type
 class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Log Data Observation"""
 
+    instance_age: Optional[int] = strawberry.field(
+        description="Age of Instance in Days (Estimated from First Log Date)",
+        graphql_type=BigInt,
+    )
     first_log: Optional[WikibaseLogStrawberryModel] = strawberry.field(
         description="First Log"
     )
@@ -74,6 +83,11 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
             id=strawberry.ID(model.id),
             observation_date=model.observation_date,
             returned_data=model.returned_data,
+            instance_age=(
+                (datetime.now() - model.first_log_date).days
+                if model.first_log_date is not None
+                else None
+            ),
             first_log=(
                 WikibaseLogStrawberryModel(date=model.first_log_date)
                 if model.returned_data

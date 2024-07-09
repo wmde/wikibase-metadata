@@ -9,15 +9,25 @@ from model.database import (
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
 class WikibaseQuantityObservationStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Quantity Data Observation"""
 
-    total_items: Optional[int] = strawberry.field(description="Total Items")
-    total_lexemes: Optional[int] = strawberry.field(description="Total Lexemes")
-    total_properties: Optional[int] = strawberry.field(description="Total Properties")
+    total_items: Optional[int] = strawberry.field(
+        description="Total Items", graphql_type=Optional[BigInt]
+    )
+    total_lexemes: Optional[int] = strawberry.field(
+        description="Total Lexemes", graphql_type=Optional[BigInt]
+    )
+    total_properties: Optional[int] = strawberry.field(
+        description="Total Properties", graphql_type=Optional[BigInt]
+    )
+    total_triples: Optional[int] = strawberry.field(
+        description="Total Triples", graphql_type=Optional[BigInt]
+    )
 
     @classmethod
     def marshal(
@@ -40,4 +50,5 @@ class WikibaseQuantityObservationStrawberryModel(WikibaseObservationStrawberryMo
             total_items=model.total_items,
             total_lexemes=model.total_lexemes,
             total_properties=model.total_properties,
+            total_triples=model.total_triples,
         )

@@ -24,3 +24,6 @@ class WikibaseQuantityObservationModel(ModelBase, WikibaseObservationModel):
     total_properties: Mapped[Optional[int]] = mapped_column(
         "total_properties", Integer, nullable=True
     )
+    total_triples: Mapped[Optional[int]] = mapped_column(
+        "total_triples", Integer, nullable=True
+    )

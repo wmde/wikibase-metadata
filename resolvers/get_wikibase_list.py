@@ -14,13 +14,14 @@ async def get_wikibase_list(
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
-            select(func.count()).select_from(  # pylint: disable=not-callable
-                WikibaseModel
-            )
+            select(func.count())  # pylint: disable=not-callable
+            .select_from(WikibaseModel)
+            .where(WikibaseModel.checked)
         )
         results = (
             await async_session.scalars(
                 select(WikibaseModel)
+                .where(WikibaseModel.checked)
                 .order_by(WikibaseModel.id)
                 .offset((page_number - 1) * page_size)
                 .limit(page_size)

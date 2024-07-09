@@ -1,17 +1,23 @@
 """GraphQL Query"""
 
-from typing import Annotated
+from typing import Annotated, List
 import strawberry
 
 from model.database import WikibaseSoftwareTypes
 from model.strawberry.output import (
     Page,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
+    WikibaseQuantityAggregate,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseStrawberryModel,
+    WikibaseUserAggregate,
+    WikibaseYearCreatedAggregated,
 )
 from resolvers import (
+    get_aggregate_created,
     get_aggregate_property_popularity,
+    get_aggregate_quantity,
+    get_aggregate_users,
     get_aggregate_version,
     get_wikibase,
     get_wikibase_list,
@@ -35,6 +41,14 @@ class Query:
         """List of Wikibases"""
 
         return await get_wikibase_list(page_number, page_size)
+
+    @strawberry.field(description="Year of First Log Date")
+    async def aggregate_created(
+        self,
+    ) -> List[WikibaseYearCreatedAggregated]:
+        """Aggregated Creation Year"""
+
+        return await get_aggregate_created()
 
     @strawberry.field(description="Aggregated Extension Popularity")
     async def aggregate_extension_popularity(
@@ -76,6 +90,14 @@ class Query:
 
         return await get_aggregate_property_popularity(page_number, page_size)
 
+    @strawberry.field(description="Aggregated Quantity")
+    async def aggregate_quantity(
+        self,
+    ) -> WikibaseQuantityAggregate:
+        """Aggregated Users"""
+
+        return await get_aggregate_quantity()
+
     @strawberry.field(description="Aggregated Skin Popularity")
     async def aggregate_skin_popularity(
         self,
@@ -103,3 +125,11 @@ class Query:
         return await get_aggregate_version(
             WikibaseSoftwareTypes.SOFTWARE, page_number, page_size
         )
+
+    @strawberry.field(description="Aggregated Users")
+    async def aggregate_users(
+        self,
+    ) -> WikibaseUserAggregate:
+        """Aggregated Users"""
+
+        return await get_aggregate_users()

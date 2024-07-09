@@ -6,6 +6,7 @@ from typing import List, Optional
 import strawberry
 
 from model.strawberry.output.semver import Semver
+from model.strawberry.scalars.big_int import BigInt
 
 
 @strawberry.type
@@ -15,7 +16,9 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
     version: Optional[str] = strawberry.field(description="Software Version")
     version_date: Optional[datetime] = strawberry.field(description="Software Version")
     version_hash: Optional[str] = strawberry.field(description="Software Version")
-    wikibase_count: int = strawberry.field(description="Number of Wikibases Used")
+    wikibase_count: int = strawberry.field(
+        description="Number of Wikibases Used", graphql_type=BigInt
+    )
 
     semver_version: strawberry.Private[Optional[Semver]]
 

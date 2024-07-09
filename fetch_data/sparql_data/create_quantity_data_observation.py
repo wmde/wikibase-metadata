@@ -8,6 +8,7 @@ from fetch_data.sparql_data.sparql_queries import (
     COUNT_ITEMS_QUERY,
     COUNT_LEXEMES_QUERY,
     COUNT_PROPERTIES_QUERY,
+    COUNT_TRIPLES_QUERY,
 )
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
@@ -60,6 +61,14 @@ def compile_quantity_observation(
         )
         observation.total_lexemes = int(
             lexeme_count_results["results"]["bindings"][0]["count"]["value"]
+        )
+
+        print("FETCHING TRIPLE COUNT")
+        triple_count_results = get_results(
+            sparql_endpoint_url, COUNT_TRIPLES_QUERY, "COUNT_TRIPLES_QUERY"
+        )
+        observation.total_triples = int(
+            triple_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
         observation.returned_data = True

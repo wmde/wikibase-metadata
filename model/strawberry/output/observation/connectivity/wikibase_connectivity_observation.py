@@ -30,7 +30,8 @@ class WikibaseConnectivityObservationStrawberryModel(
         Number of Items Squared"""
     )
     returned_links: Optional[int] = strawberry.field(
-        description="Number of Non-Unique Item -> Item Links Returned"
+        description="Number of Non-Unique Item -> Item Links Returned",
+        graphql_type=Optional[BigInt],
     )
 
     relationship_item_counts: List[
