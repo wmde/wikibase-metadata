@@ -35,6 +35,9 @@ class WikibaseModel(ModelBase):
     )
     """Organization"""
 
+    description: Mapped[str] = mapped_column("description", String, nullable=True)
+    """Description"""
+
     country: Mapped[Optional[str]] = mapped_column("country", String, nullable=True)
     """Country"""
 
