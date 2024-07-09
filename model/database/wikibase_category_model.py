@@ -25,6 +25,7 @@ class WikibaseCategory(enum.Enum):
 
 
 def wikibase_category_name(category: WikibaseCategory) -> str:
+    """Human-Readable Category"""
     return category.name.replace("_", " ").title().replace("And", "and")
 
 

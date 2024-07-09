@@ -1,6 +1,6 @@
 """Wikibase Log Data Observation Strawberry Model"""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 import strawberry
 
