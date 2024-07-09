@@ -54,6 +54,7 @@ async def pull_wikibase_world():
                     )
                 ).all()
                 if len(existing) == 0:
+                    print(record.get("itemLabel"))
                     async_session.add(
                         WikibaseModel(
                             wikibase_name=record.get("itemLabel"),
