@@ -1,6 +1,6 @@
 """Wikibase Log Data Observation Strawberry Model"""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 import strawberry
 
@@ -46,6 +46,10 @@ class WikibaseLogCollectionStrawberryModel:
 class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Log Data Observation"""
 
+    instance_age: Optional[int] = strawberry.field(
+        description="Age of Instance in Days (Estimated from First Log Date)",
+        graphql_type=BigInt,
+    )
     first_log: Optional[WikibaseLogStrawberryModel] = strawberry.field(
         description="First Log"
     )
@@ -79,6 +83,11 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
             id=strawberry.ID(model.id),
             observation_date=model.observation_date,
             returned_data=model.returned_data,
+            instance_age=(
+                (datetime.now() - model.first_log_date).days
+                if model.first_log_date is not None
+                else None
+            ),
             first_log=(
                 WikibaseLogStrawberryModel(date=model.first_log_date)
                 if model.returned_data
