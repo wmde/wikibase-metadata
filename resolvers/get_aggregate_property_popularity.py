@@ -2,10 +2,11 @@
 
 from typing import Tuple
 
-from sqlalchemy import Select, desc, select, func
+from sqlalchemy import Select, and_, desc, select, func
 
 from data import get_async_session
 from model.database import (
+    WikibaseModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
 )
@@ -44,9 +45,12 @@ async def get_aggregate_property_popularity(
             total_count,
             [
                 WikibasePropertyPopularityAggregateCountStrawberryModel(
-                    r, r[1], r[2], r[3]
+                    id=id,
+                    property_url=property_url,
+                    usage_count=usage_count,
+                    wikibase_count=wikibase_count,
                 )
-                for r in results
+                for (id, property_url, usage_count, wikibase_count) in results
             ],
         )
 
@@ -64,7 +68,14 @@ def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
             )
             .label("rank"),
         )
-        .where(WikibasePropertyPopularityObservationModel.returned_data)
+        .where(
+            and_(
+                WikibasePropertyPopularityObservationModel.returned_data,
+                WikibasePropertyPopularityObservationModel.wikibase.has(
+                    WikibaseModel.checked
+                ),
+            )
+        )
         .subquery()
     )
     query = (

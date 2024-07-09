@@ -5,18 +5,13 @@ from typing import Tuple
 from sqlalchemy import Select, and_, or_, select, func
 
 from data import get_async_session
-from model.database.wikibase_observation.user.wikibase_user_group_model import (
+from model.database import (
+    WikibaseModel,
     WikibaseUserGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
     WikibaseUserObservationGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_model import (
     WikibaseUserObservationModel,
 )
-from model.strawberry.output.observation.user.wikibase_user_aggregate import (
-    WikibaseUserAggregate,
-)
+from model.strawberry.output import WikibaseUserAggregate
 
 
 async def get_aggregate_users() -> WikibaseUserAggregate:
@@ -51,7 +46,12 @@ def get_total_admin_query() -> Select[Tuple[int]]:
             )
             .label("rank"),
         )
-        .where(WikibaseUserObservationModel.returned_data)
+        .where(
+            and_(
+                WikibaseUserObservationModel.returned_data,
+                WikibaseUserObservationModel.wikibase.has(WikibaseModel.checked),
+            )
+        )
         .subquery()
     )
     query = (
@@ -91,7 +91,12 @@ def get_total_user_query() -> Select[Tuple[int, int]]:
             )
             .label("rank"),
         )
-        .where(WikibaseUserObservationModel.returned_data)
+        .where(
+            and_(
+                WikibaseUserObservationModel.returned_data,
+                WikibaseUserObservationModel.wikibase.has(WikibaseModel.checked),
+            )
+        )
         .subquery()
     )
     query = (

@@ -7,6 +7,7 @@ from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
 from model.database import (
+    WikibaseModel,
     WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
@@ -78,7 +79,14 @@ def get_query(
             )
             .label("rank"),
         )
-        .where(WikibaseSoftwareVersionObservationModel.returned_data)
+        .where(
+            and_(
+                WikibaseSoftwareVersionObservationModel.returned_data,
+                WikibaseSoftwareVersionObservationModel.wikibase.has(
+                    WikibaseModel.checked
+                ),
+            )
+        )
         .subquery()
     )
     query = (

@@ -2,15 +2,11 @@
 
 from typing import Tuple
 
-from sqlalchemy import Select, select, func
+from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
-    WikibaseQuantityObservationModel,
-)
-from model.strawberry.output.observation.quantity.wikibase_quantity_aggregate import (
-    WikibaseQuantityAggregate,
-)
+from model.database import WikibaseModel, WikibaseQuantityObservationModel
+from model.strawberry.output import WikibaseQuantityAggregate
 
 
 async def get_aggregate_quantity() -> WikibaseQuantityAggregate:
@@ -45,7 +41,12 @@ def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
             )
             .label("rank"),
         )
-        .where(WikibaseQuantityObservationModel.returned_data)
+        .where(
+            and_(
+                WikibaseQuantityObservationModel.returned_data,
+                WikibaseQuantityObservationModel.wikibase.has(WikibaseModel.checked),
+            )
+        )
         .subquery()
     )
     query = (

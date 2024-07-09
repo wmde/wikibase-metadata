@@ -2,15 +2,11 @@
 
 from typing import List, Tuple
 
-from sqlalchemy import Select, select, func
+from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database.wikibase_observation.log.wikibase_log_observation_model import (
-    WikibaseLogObservationModel,
-)
-from model.strawberry.output.observation.log.wikibase_created_aggregate import (
-    WikibaseYearCreatedAggregated,
-)
+from model.database import WikibaseLogObservationModel, WikibaseModel
+from model.strawberry.output import WikibaseYearCreatedAggregated
 
 
 async def get_aggregate_created() -> List[WikibaseYearCreatedAggregated]:
@@ -39,7 +35,12 @@ def get_created_query() -> Select[Tuple[int, int]]:
             )
             .label("rank"),
         )
-        .where(WikibaseLogObservationModel.returned_data)
+        .where(
+            and_(
+                WikibaseLogObservationModel.returned_data,
+                WikibaseLogObservationModel.wikibase.has(WikibaseModel.checked),
+            )
+        )
         .subquery()
     )
     query = (
