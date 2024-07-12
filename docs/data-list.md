@@ -352,6 +352,7 @@ Using SPARQL, we query for the total number of items, lexemes, and properties in
 - Total Items
 - Total Lexemes
 - Total Properties
+- Total Triples
 
 #### Example:
 
