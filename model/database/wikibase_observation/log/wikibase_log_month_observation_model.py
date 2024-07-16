@@ -9,6 +9,9 @@ from model.database.base import ModelBase
 from model.database.wikibase_observation.log.wikibase_log_month_type_observation_model import (
     WikibaseLogMonthTypeObservationModel,
 )
+from model.database.wikibase_observation.log.wikibase_log_month_user_observation_model import (
+    WikibaseLogMonthUserObservationModel,
+)
 
 
 class WikibaseLogMonthObservationModel(ModelBase):
@@ -42,6 +45,11 @@ class WikibaseLogMonthObservationModel(ModelBase):
 
     log_type_records: Mapped[List[WikibaseLogMonthTypeObservationModel]] = relationship(
         "WikibaseLogMonthTypeObservationModel", lazy="selectin"
+    )
+    """Log Type Observations"""
+
+    user_type_records: Mapped[List[WikibaseLogMonthUserObservationModel]] = (
+        relationship("WikibaseLogMonthUserObservationModel", lazy="selectin")
     )
     """Log Type Observations"""
 

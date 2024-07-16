@@ -1,0 +1,58 @@
+"""Wikibase Log Observation Table"""
+
+from datetime import datetime
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column
+
+from model.database.base import ModelBase
+from model.enum import WikibaseUserType
+
+
+class WikibaseLogMonthUserObservationModel(ModelBase):
+    """Wikibase Log Month User Observation Table"""
+
+    __tablename__ = "wikibase_log_observation_month_user"
+
+    id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
+    """ID"""
+
+    log_month_observation_id: Mapped[int] = mapped_column(
+        "log_month_observation_id",
+        ForeignKey(
+            column="wikibase_log_observation_month.id", name="month_observation"
+        ),
+        nullable=False,
+    )
+
+    user_type: Mapped[WikibaseUserType] = mapped_column(
+        "log_type", Enum(WikibaseUserType), nullable=False
+    )
+    """Log Type"""
+
+    first_log_date: Mapped[datetime] = mapped_column(
+        "first_log_date", DateTime(timezone=True), nullable=False
+    )
+    """Oldest Log Date"""
+
+    last_log_date: Mapped[datetime] = mapped_column(
+        "last_log_date", DateTime(timezone=True), nullable=False
+    )
+    """Newest Log Date"""
+
+    log_count: Mapped[int] = mapped_column("log_count", Integer, nullable=False)
+    """Number of Logs"""
+
+    user_count: Mapped[int] = mapped_column("user_count", Integer, nullable=False)
+    """Number of Unique Users"""
+
+    def __str__(self) -> str:
+        return (
+            "WikibaseLogMonthUserObservationModel("
+            + f"id={self.id}, "
+            + f"user_type={self.user_type}, "
+            + f"first_log_date={self.first_log_date}, "
+            + f"last_log_date={self.last_log_date}, "
+            + f"log_count={self.log_count}, "
+            + f"user_count={self.user_count}"
+            + ")"
+        )
