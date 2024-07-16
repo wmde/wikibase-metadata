@@ -124,11 +124,13 @@ async def create_log_month(
     for log_type in {log.log_type for log in log_list}:
         log_type_record = WikibaseLogMonthTypeObservationModel(log_type=log_type)
         log_type_record.log_count = len(
-            type_logs := [l for l in log_list if l.log_type == log_type]
+            log_type_logs := [l for l in log_list if l.log_type == log_type]
         )
-        log_type_record.first_log_date = min(log.log_date for log in type_logs)
-        log_type_record.last_log_date = max(log.log_date for log in type_logs)
-        log_type_record.user_count = len(type_users := {log.user for log in type_logs})
+        log_type_record.first_log_date = min(log.log_date for log in log_type_logs)
+        log_type_record.last_log_date = max(log.log_date for log in log_type_logs)
+        log_type_record.user_count = len(
+            type_users := {log.user for log in log_type_logs}
+        )
         log_type_record.human_user_count = len(
             [u for u in type_users if user_type_dict.get(u) == WikibaseUserType.USER]
         )
@@ -138,10 +140,14 @@ async def create_log_month(
         if user_type is not None:
             user_type_record = WikibaseLogMonthUserObservationModel(user_type=user_type)
             user_type_record.log_count = len(
-                type_logs := [l for l in log_list if l.log_type == log_type]
+                user_type_logs := [
+                    l for l in log_list if user_type_dict.get(l.user) == user_type
+                ]
             )
-            user_type_record.first_log_date = min(log.log_date for log in type_logs)
-            user_type_record.last_log_date = max(log.log_date for log in type_logs)
-            user_type_record.user_count = len({log.user for log in type_logs})
+            user_type_record.first_log_date = min(
+                log.log_date for log in user_type_logs
+            )
+            user_type_record.last_log_date = max(log.log_date for log in user_type_logs)
+            user_type_record.user_count = len({log.user for log in user_type_logs})
             result.user_type_records.append(user_type_record)
     return result
