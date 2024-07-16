@@ -1,7 +1,7 @@
 """Wikibase Log Observation Table"""
 
 from datetime import datetime
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from model.database.base import ModelBase
@@ -12,6 +12,14 @@ class WikibaseLogMonthTypeObservationModel(ModelBase):
     """Wikibase Log Month Type Observation Table"""
 
     __tablename__ = "wikibase_log_observation_month_type"
+
+    __table_args__ = (
+        UniqueConstraint(
+            "log_month_observation_id",
+            "log_type",
+            name="unique_observation_log_type",
+        ),
+    )
 
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
