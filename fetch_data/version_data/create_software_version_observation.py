@@ -11,7 +11,7 @@ from model.database import (
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
-from model.enum import WikibaseSoftwareTypes
+from model.enum import WikibaseSoftwareType
 
 
 async def create_software_version_observation(wikibase_id: int) -> bool:
@@ -63,7 +63,7 @@ def compile_extension_versions(
     )
     return unique_versions(
         [
-            get_software_version_from_row(row, WikibaseSoftwareTypes.EXTENSION)
+            get_software_version_from_row(row, WikibaseSoftwareType.EXTENSION)
             for row in extensions_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )
@@ -107,7 +107,7 @@ def compile_installed_software_versions(
 
             software_versions.append(
                 WikibaseSoftwareVersionModel(
-                    software_type=WikibaseSoftwareTypes.SOFTWARE,
+                    software_type=WikibaseSoftwareType.SOFTWARE,
                     software_name=software_name,
                     version=version,
                     version_hash=version_hash,
@@ -134,7 +134,7 @@ def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersio
                 version = row.find_all("td")[1].string
                 library_versions.append(
                     WikibaseSoftwareVersionModel(
-                        software_type=WikibaseSoftwareTypes.LIBRARY,
+                        software_type=WikibaseSoftwareType.LIBRARY,
                         software_name=software_name,
                         version=version,
                     )
@@ -151,7 +151,7 @@ def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionMo
     )
     return unique_versions(
         [
-            get_software_version_from_row(row, WikibaseSoftwareTypes.SKIN)
+            get_software_version_from_row(row, WikibaseSoftwareType.SKIN)
             for row in installed_skin_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )
@@ -160,7 +160,7 @@ def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionMo
 
 
 def get_software_version_from_row(
-    row: Tag, software_type: WikibaseSoftwareTypes
+    row: Tag, software_type: WikibaseSoftwareType
 ) -> WikibaseSoftwareVersionModel:
     """Parse Software Version from Table Row"""
 

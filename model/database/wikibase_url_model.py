@@ -4,7 +4,7 @@ from sqlalchemy import Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
-from model.enum import WikibaseURLTypes
+from model.enum import WikibaseURLType
 
 
 class WikibaseURLModel(ModelBase):
@@ -33,8 +33,8 @@ class WikibaseURLModel(ModelBase):
     wikibase: Mapped["WikibaseModel"] = relationship("WikibaseModel", lazy="selectin")
     """Wikibase"""
 
-    url_type: Mapped[WikibaseURLTypes] = mapped_column(
-        "url_type", Enum(WikibaseURLTypes), nullable=False
+    url_type: Mapped[WikibaseURLType] = mapped_column(
+        "url_type", Enum(WikibaseURLType), nullable=False
     )
     """URL Type"""
 

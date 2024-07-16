@@ -3,7 +3,7 @@
 import enum
 
 
-class WikibaseURLTypes(enum.Enum):
+class WikibaseURLType(enum.Enum):
     """Wikibase URL Types"""
 
     BASE_URL = 1

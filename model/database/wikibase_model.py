@@ -17,7 +17,7 @@ from model.database.wikibase_observation import (
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_url_model import WikibaseURLModel
-from model.enum import WikibaseURLTypes
+from model.enum import WikibaseURLType
 
 
 class WikibaseModel(ModelBase):
@@ -64,7 +64,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.BASE_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.BASE_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
@@ -84,7 +84,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.ACTION_QUERY_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.ACTION_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
@@ -104,7 +104,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.INDEX_QUERY_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.INDEX_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
@@ -124,7 +124,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.SPARQL_QUERY_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.SPARQL_QUERY_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
@@ -144,7 +144,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.SPARQL_ENDPOINT_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.SPARQL_ENDPOINT_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
@@ -164,7 +164,7 @@ class WikibaseModel(ModelBase):
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLTypes.SPECIAL_VERSION_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.SPECIAL_VERSION_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
@@ -243,12 +243,12 @@ class WikibaseModel(ModelBase):
         self.country = country
         self.region = region
         self.checked = False
-        self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLTypes.BASE_URL)
+        self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
         if sparql_endpoint_url is not None:
             self.sparql_endpoint_url = WikibaseURLModel(
-                url=sparql_endpoint_url, url_type=WikibaseURLTypes.SPARQL_ENDPOINT_URL
+                url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
             )
         if sparql_query_url is not None:
             self.sparql_query_url = WikibaseURLModel(
-                url=sparql_query_url, url_type=WikibaseURLTypes.SPARQL_QUERY_URL
+                url=sparql_query_url, url_type=WikibaseURLType.SPARQL_QUERY_URL
             )

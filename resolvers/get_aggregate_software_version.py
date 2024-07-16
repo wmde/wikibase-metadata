@@ -11,7 +11,7 @@ from model.database import (
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
-from model.enum import WikibaseSoftwareTypes
+from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
     Page,
     WikibaseSoftwareVersionAggregateStrawberryModel,
@@ -20,7 +20,7 @@ from model.strawberry.output import (
 
 
 async def get_aggregate_version(
-    software_type: WikibaseSoftwareTypes, page_number: int, page_size: int
+    software_type: WikibaseSoftwareType, page_number: int, page_size: int
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
     """Get Aggregate Property Popularity"""
 
@@ -65,7 +65,7 @@ async def get_aggregate_version(
 
 
 def get_query(
-    software_type: WikibaseSoftwareTypes,
+    software_type: WikibaseSoftwareType,
 ) -> Select[Tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
     """Get Software Version Query"""
 

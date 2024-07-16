@@ -3,8 +3,8 @@
 import enum
 
 
-class WikibaseSoftwareTypes(enum.Enum):
-    """Wikibase Software Types"""
+class WikibaseSoftwareType(enum.Enum):
+    """Wikibase Software Type"""
 
     SOFTWARE = 1
     SKIN = 2
