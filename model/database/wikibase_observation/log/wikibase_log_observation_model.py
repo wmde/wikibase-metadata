@@ -1,7 +1,6 @@
 """Wikibase Log Observation Table"""
 
 from datetime import datetime
-import enum
 from typing import Optional
 from sqlalchemy import DateTime, Enum, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -13,15 +12,7 @@ from model.database.wikibase_observation.log.wikibase_log_month_observation_mode
 from model.database.wikibase_observation.wikibase_observation_model import (
     WikibaseObservationModel,
 )
-
-
-class WikibaseUserType(enum.Enum):
-    """Wikibase User Type"""
-
-    BOT = 1
-    MISSING = 2
-    USER = 3
-    NONE = 4
+from model.enum import WikibaseUserType
 
 
 class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):

@@ -9,8 +9,6 @@ from model.database.wikibase_observation.log import (
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthTypeObservationModel,
     WikibaseLogObservationModel,
-    WikibaseLogType,
-    WikibaseUserType,
 )
 from model.database.wikibase_observation.property import (
     WikibasePropertyPopularityObservationModel,
@@ -25,7 +23,6 @@ from model.database.wikibase_observation.user import (
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_observation.version import (
-    WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )

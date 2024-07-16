@@ -17,11 +17,13 @@ from fetch_data.user_data import (
     get_user_type_from_user_data,
 )
 from fetch_data.utils import get_wikibase_from_database
-from model.database import WikibaseLogObservationModel, WikibaseModel, WikibaseUserType
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+from model.database import (
     WikibaseLogMonthObservationModel,
+    WikibaseLogMonthTypeObservationModel,
+    WikibaseLogObservationModel,
+    WikibaseModel,
 )
-from model.database.wikibase_observation.log.wikibase_log_month_type_observation_model import WikibaseLogMonthTypeObservationModel
+from model.enum import WikibaseUserType
 
 
 async def create_log_observation(wikibase_id: int) -> bool:
@@ -118,11 +120,15 @@ async def create_log_month(
 
     for log_type in {log.log_type for log in log_list}:
         type_record = WikibaseLogMonthTypeObservationModel(log_type=log_type)
-        type_record.log_count = len(type_logs := [l for l in log_list if l.log_type == log_type])
+        type_record.log_count = len(
+            type_logs := [l for l in log_list if l.log_type == log_type]
+        )
         type_record.first_log_date = min(log.log_date for log in type_logs)
         type_record.last_log_date = max(log.log_date for log in type_logs)
         type_record.user_count = len(type_users := {log.user for log in type_logs})
-        type_record.human_user_count = len([u for u in type_users if user_type_dict.get(u) == WikibaseUserType.USER])
+        type_record.human_user_count = len(
+            [u for u in type_users if user_type_dict.get(u) == WikibaseUserType.USER]
+        )
         result.log_type_records.append(type_record)
 
     return result

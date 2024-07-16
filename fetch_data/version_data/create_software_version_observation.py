@@ -8,10 +8,10 @@ from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
     WikibaseModel,
-    WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
+from model.enum import WikibaseSoftwareTypes
 
 
 async def create_software_version_observation(wikibase_id: int) -> bool:

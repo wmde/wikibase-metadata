@@ -2,7 +2,8 @@
 
 from typing import Optional
 from fetch_data.user_data.fetch_single_user_data import get_single_user_data
-from model.database import WikibaseModel, WikibaseUserType
+from model.database import WikibaseModel
+from model.enum import WikibaseUserType
 
 
 def get_user_type(wikibase: WikibaseModel, user: Optional[str]) -> WikibaseUserType:

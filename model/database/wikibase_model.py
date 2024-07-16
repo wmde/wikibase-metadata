@@ -16,7 +16,8 @@ from model.database.wikibase_observation import (
     WikibaseSoftwareVersionObservationModel,
     WikibaseUserObservationModel,
 )
-from model.database.wikibase_url_model import WikibaseURLModel, WikibaseURLTypes
+from model.database.wikibase_url_model import WikibaseURLModel
+from model.enum import WikibaseURLTypes
 
 
 class WikibaseModel(ModelBase):

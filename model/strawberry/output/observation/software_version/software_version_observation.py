@@ -3,10 +3,8 @@
 from typing import List
 import strawberry
 
-from model.database import (
-    WikibaseSoftwareTypes,
-    WikibaseSoftwareVersionObservationModel,
-)
+from model.database import WikibaseSoftwareVersionObservationModel
+from model.enum import WikibaseSoftwareTypes
 from model.strawberry.output.observation.software_version.software_version import (
     WikibaseSoftwareVersionStrawberryModel,
 )

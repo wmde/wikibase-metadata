@@ -1,41 +1,11 @@
 """Wikibase Log Observation Table"""
 
 from datetime import datetime
-import enum
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from model.database.base import ModelBase
-
-
-class WikibaseLogType(enum.Enum):
-    """Wikibase Log Type"""
-
-    COMMENTS_CREATE = 1
-    COMMENTS_DELETE = 2
-    CONSUMER_APPROVE = 3
-    CONSUMER_PROPOSE = 4
-    IMAGE_UPLOAD = 5
-    IMAGE_OVERWRITE = 6
-    IMPORT = 7
-    INTERWIKI_CREATE = 8
-    INTERWIKI_DELETE = 9
-    INTERWIKI_EDIT = 10
-    ITEM_CREATE = 11
-    ITEM_DELETE = 12
-    MOVE = 13
-    PAGE_CREATE = 14
-    PAGE_DELETE = 15
-    PATROL = 16
-    PATROL_AUTO = 17
-    PROPERTY_CREATE = 18
-    PROPERTY_DELETE = 19
-    PROTECT = 20
-    UNDO_DELETE = 21
-    USER_BLOCK = 22
-    USER_UNBLOCK = 23
-    USER_CREATE = 24
-    USER_RIGHTS = 25
+from model.enum import WikibaseLogType
 
 
 class WikibaseLogMonthTypeObservationModel(ModelBase):

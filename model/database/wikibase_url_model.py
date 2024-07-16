@@ -1,21 +1,10 @@
 """Wikibase URL Table"""
 
-import enum
 from sqlalchemy import Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
-
-
-class WikibaseURLTypes(enum.Enum):
-    """Wikibase URL Types"""
-
-    BASE_URL = 1
-    ACTION_QUERY_URL = 2
-    INDEX_QUERY_URL = 3
-    SPARQL_ENDPOINT_URL = 4
-    SPARQL_QUERY_URL = 5
-    SPECIAL_VERSION_URL = 6
+from model.enum import WikibaseURLTypes
 
 
 class WikibaseURLModel(ModelBase):

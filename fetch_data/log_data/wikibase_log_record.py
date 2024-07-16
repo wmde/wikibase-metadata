@@ -4,7 +4,7 @@ from datetime import datetime
 import re
 from typing import Optional
 
-from model.database import WikibaseLogType
+from model.enum import WikibaseLogType
 
 
 class WikibaseLogRecord:

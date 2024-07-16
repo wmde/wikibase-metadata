@@ -8,10 +8,10 @@ from sqlalchemy import Select, and_, select, func
 from data import get_async_session
 from model.database import (
     WikibaseModel,
-    WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
+from model.enum import WikibaseSoftwareTypes
 from model.strawberry.output import (
     Page,
     WikibaseSoftwareVersionAggregateStrawberryModel,

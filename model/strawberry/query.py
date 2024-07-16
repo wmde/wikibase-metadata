@@ -3,7 +3,7 @@
 from typing import Annotated, List
 import strawberry
 
-from model.database import WikibaseSoftwareTypes
+from model.enum import WikibaseSoftwareTypes
 from model.strawberry.output import (
     Page,
     WikibasePropertyPopularityAggregateCountStrawberryModel,

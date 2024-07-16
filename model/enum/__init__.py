@@ -1,0 +1,7 @@
+"""Enums"""
+
+from model.enum.wikibase_category_enum import WikibaseCategory
+from model.enum.wikibase_log_type_enum import WikibaseLogType
+from model.enum.wikibase_software_type_enum import WikibaseSoftwareTypes
+from model.enum.wikibase_url_type_enum import WikibaseURLTypes
+from model.enum.wikibase_user_type_enum import WikibaseUserType

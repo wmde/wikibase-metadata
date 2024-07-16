@@ -10,16 +10,13 @@ from model.database.wikibase_observation import (
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthTypeObservationModel,
     WikibaseLogObservationModel,
-    WikibaseLogType,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
-    WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
-    WikibaseUserType,
 )
 from model.database.wikibase_url_model import WikibaseURLModel

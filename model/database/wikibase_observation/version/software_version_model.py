@@ -1,21 +1,12 @@
 """Wikibase Software Version Table"""
 
 from datetime import datetime
-import enum
 from typing import Optional
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
-
-
-class WikibaseSoftwareTypes(enum.Enum):
-    """Wikibase Software Types"""
-
-    SOFTWARE = 1
-    SKIN = 2
-    EXTENSION = 3
-    LIBRARY = 4
+from model.enum import WikibaseSoftwareTypes
 
 
 class WikibaseSoftwareVersionModel(ModelBase):
