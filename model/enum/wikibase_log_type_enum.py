@@ -32,7 +32,11 @@ class WikibaseLogType(enum.Enum):
     USER_BLOCK = 23
     USER_UNBLOCK = 24
     USER_CREATE = 25
-    USER_RIGHTS = 26
+    USER_RENAME = 26
+    USER_RIGHTS = 27
+    WIKI_NAMESPACES = 28
+    WIKI_RIGHTS = 29
+    WIKI_SETTINGS = 30
 
 
 def compile_log_type(record: dict) -> WikibaseLogType:
@@ -59,7 +63,12 @@ def compile_log_type(record: dict) -> WikibaseLogType:
                 log_type = WikibaseLogType.PROPERTY_CREATE
             else:
                 log_type = WikibaseLogType.PAGE_CREATE
-        case ("newusers", "byemail") | ("newusers", "create") | ("newusers", "create2"):
+        case (
+            ("newusers", "autocreate")
+            | ("newusers", "byemail")
+            | ("newusers", "create")
+            | ("newusers", "create2")
+        ):
             log_type = WikibaseLogType.USER_CREATE
         case ("delete", "delete"):
             if re.match(r"Item:Q\d+", record["title"]):
@@ -91,18 +100,26 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.PATROL_AUTO
         case ("patrol", "patrol"):
             log_type = WikibaseLogType.PATROL
-        case ("block", "block"):
+        case ("block", "block") | ("block", "reblock"):
             log_type = WikibaseLogType.USER_BLOCK
         case ("block", "unblock"):
             log_type = WikibaseLogType.USER_UNBLOCK
         case ("rights", "rights"):
             log_type = WikibaseLogType.USER_RIGHTS
+        case ("renameuser", "renameuser"):
+            log_type = WikibaseLogType.USER_RENAME
         case ("mwoauthconsumer", "approve"):
             log_type = WikibaseLogType.CONSUMER_APPROVE
         case ("mwoauthconsumer", "propose"):
             log_type = WikibaseLogType.CONSUMER_PROPOSE
         case ("protect", "move_prot") | ("protect", "protect") | ("protect", "modify"):
             log_type = WikibaseLogType.PROTECT
+        case ("managewiki", "namespaces"):
+            log_type = WikibaseLogType.WIKI_NAMESPACES
+        case ("managewiki", "rights"):
+            log_type = WikibaseLogType.WIKI_RIGHTS
+        case ("managewiki", "settings"):
+            log_type = WikibaseLogType.WIKI_SETTINGS
         case _:
             raise NotImplementedError(record)
     return log_type
