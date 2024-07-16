@@ -14,9 +14,7 @@ class WikibaseUserGroupModel(ModelBase):
     """Wikibase User Group"""
 
     __tablename__ = "wikibase_user_group"
-    __table_args__ = (
-        UniqueConstraint(columns=["group_name"], name="unique_group_name"),
-    )
+    __table_args__ = (UniqueConstraint("group_name", name="unique_group_name"),)
 
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""

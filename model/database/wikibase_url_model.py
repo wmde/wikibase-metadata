@@ -14,7 +14,8 @@ class WikibaseURLModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint(
-            columns=["wikibase_id", "url_type"],
+            "wikibase_id",
+            "url_type",
             name="unique_wikibase_url_type",
         ),
     )

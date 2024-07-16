@@ -13,7 +13,8 @@ class WikibasePropertyPopularityCountModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint(
-            columns=["wikibase_property_usage_observation_id", "property_url"],
+            "wikibase_property_usage_observation_id",
+            "property_url",
             name="unique_observation_property_url",
         ),
     )
