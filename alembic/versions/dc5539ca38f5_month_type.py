@@ -28,6 +28,7 @@ def upgrade() -> None:
         sa.Column(
             "log_type",
             sa.Enum(
+                "ABUSE_FILTER_CREATE",
                 "COMMENTS_CREATE",
                 "COMMENTS_DELETE",
                 "CONSUMER_APPROVE",
