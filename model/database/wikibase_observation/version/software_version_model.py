@@ -16,9 +16,11 @@ class WikibaseSoftwareVersionModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint(
-            "wikibase_software_version_observation_id",
-            "software_type",
-            "software_name",
+            columns=[
+                "wikibase_software_version_observation_id",
+                "software_type",
+                "software_name",
+            ],
             name="unique_observation_software_type_name",
         ),
     )

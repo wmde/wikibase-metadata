@@ -15,7 +15,7 @@ class WikibaseCategoryModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint(
-            "category",
+            columns=["category"],
             name="unique_category",
         ),
     )

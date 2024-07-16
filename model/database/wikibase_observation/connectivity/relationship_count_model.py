@@ -9,8 +9,7 @@ class WikibaseConnectivityObservationRelationshipCountModel:
 
     __table_args__ = (
         UniqueConstraint(
-            "wikibase_connectivity_observation_id",
-            "relationship_count",
+            columns=["wikibase_connectivity_observation_id", "relationship_count"],
             name="unique_observation_relationship_count",
         ),
     )
