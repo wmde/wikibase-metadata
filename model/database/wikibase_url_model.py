@@ -36,7 +36,7 @@ class WikibaseURLModel(ModelBase):
 
     wikibase_id: Mapped[int] = mapped_column(
         "wikibase_id",
-        ForeignKey("wikibase.id", None, False, "observation_wikibase"),
+        ForeignKey(column="wikibase.id", name="observation_wikibase"),
         nullable=False,
     )
     """Wikibase ID"""

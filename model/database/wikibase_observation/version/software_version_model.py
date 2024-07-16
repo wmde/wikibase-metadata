@@ -38,7 +38,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     wikibase_software_version_observation_id: Mapped[int] = mapped_column(
         "wikibase_software_version_observation_id",
         ForeignKey(
-            "wikibase_software_version_observation.id", None, False, "observation"
+            column="wikibase_software_version_observation.id", name="observation"
         ),
         nullable=False,
     )

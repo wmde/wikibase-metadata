@@ -46,7 +46,7 @@ class WikibaseModel(ModelBase):
 
     category_id: Mapped[int] = mapped_column(
         "wikibase_category_id",
-        ForeignKey("wikibase_category.id", None, False, "wikibase_category"),
+        ForeignKey(column="wikibase_category.id", name="wikibase_category"),
         nullable=True,
     )
     """Wikibase Category ID"""
