@@ -4,7 +4,7 @@ import enum
 
 
 class WikibaseURLType(enum.Enum):
-    """Wikibase URL Types"""
+    """Wikibase URL Type"""
 
     BASE_URL = 1
     ACTION_QUERY_URL = 2
