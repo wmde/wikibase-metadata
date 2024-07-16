@@ -58,6 +58,8 @@ class WikibaseLogMonthTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
     def marshal(
         cls, model: WikibaseLogMonthTypeObservationModel
     ) -> "WikibaseLogMonthTypeStrawberryModel":
+        """Coerce Database Model to Strawberry Model"""
+
         return cls(
             id=strawberry.ID(model.id),
             log_type=model.log_type.name,
@@ -81,6 +83,8 @@ class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
     def marshal(
         cls, model: WikibaseLogMonthObservationModel
     ) -> "WikibaseLogMonthStrawberryModel":
+        """Coerce Database Model to Strawberry Model"""
+
         return cls(
             id=strawberry.ID(model.id),
             log_count=model.log_count,
