@@ -1,6 +1,8 @@
 """Create Log Observation"""
 
+from datetime import datetime
 from json.decoder import JSONDecodeError
+from typing import List
 from requests.exceptions import SSLError
 from data import get_async_session
 from fetch_data.log_data.fetch_log_data import (
@@ -8,6 +10,7 @@ from fetch_data.log_data.fetch_log_data import (
     get_log_param_string,
     get_month_log_list,
 )
+from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
 from fetch_data.user_data import (
     get_multiple_user_data,
     get_user_type,
@@ -15,6 +18,9 @@ from fetch_data.user_data import (
 )
 from fetch_data.utils import get_wikibase_from_database
 from model.database import WikibaseLogObservationModel, WikibaseModel, WikibaseUserType
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 
 
 async def create_log_observation(wikibase_id: int) -> bool:
@@ -31,13 +37,28 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
         try:
             print("FETCHING OLDEST LOG")
-            oldest_log_list = get_log_list_from_url(
+            oldest_log = get_log_list_from_url(
                 wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
-            )
-            observation.first_log_date = oldest_log_list[0].log_date
+            )[0]
+            observation.first_log_date = oldest_log.log_date
 
-            print("FETCHING ONE MONTH'S LOGS")
-            most_recent_log_list = get_month_log_list(wikibase.action_api_url.url)
+            print("FETCHING FIRST MONTH'S LOGS")
+            initial_log_list = get_month_log_list(
+                wikibase.action_api_url.url,
+                comparison_date=oldest_log.log_date,
+                oldest=True,
+            )
+            first_month_log_list = [
+                l
+                for l in initial_log_list
+                if abs((l.log_date - oldest_log.log_date).days) <= 30
+            ]
+
+            print("FETCHING LAST MONTH'S LOGS")
+            most_recent_log_list = get_month_log_list(
+                wikibase.action_api_url.url, comparison_date=datetime.today()
+            )
+            last_month_log_list = [l for l in most_recent_log_list if l.age() <= 30]
 
             most_recent_log = max(most_recent_log_list, key=lambda x: x.id)
             observation.last_log_date = most_recent_log.log_date
@@ -45,28 +66,12 @@ async def create_log_observation(wikibase_id: int) -> bool:
                 wikibase, most_recent_log.user
             )
 
-            last_month_logs = [log for log in most_recent_log_list if log.age() <= 30]
-            observation.last_month_log_count = len(last_month_logs)
-
-            observation.last_month_user_count = len(
-                last_month_users := {
-                    log.user
-                    for log in last_month_logs
-                    if log.user is not None and "page does not exist" not in log.user
-                }
+            observation.last_month = await create_log_month(
+                wikibase, last_month_log_list
             )
-
-            if len(last_month_users) > 0:
-                print("FETCHING USER DATA")
-                observation.last_month_human_user_count = len(
-                    [
-                        u
-                        for u in get_multiple_user_data(wikibase, last_month_users)
-                        if get_user_type_from_user_data(u) == WikibaseUserType.USER
-                    ]
-                )
-            else:
-                observation.last_month_human_user_count = 0
+            observation.first_month = await create_log_month(
+                wikibase, first_month_log_list
+            )
 
             observation.returned_data = True
         except (JSONDecodeError, SSLError):
@@ -76,3 +81,38 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
         await async_session.commit()
         return observation.returned_data
+
+
+async def create_log_month(
+    wikibase: WikibaseModel,
+    log_list: List[WikibaseLogRecord],
+) -> WikibaseLogMonthObservationModel:
+    """Create Log Month"""
+
+    result = WikibaseLogMonthObservationModel(log_count=len(log_list))
+
+    if len(log_list) > 0:
+        result.first_log_date = min(log.log_date for log in log_list)
+        result.last_log_date = max(log.log_date for log in log_list)
+
+    result.user_count = len(
+        users := {
+            log.user
+            for log in log_list
+            if log.user is not None and "page does not exist" not in log.user
+        }
+    )
+
+    user_type_dict: dict[str, WikibaseUserType] = {}
+
+    if len(users) > 0:
+        print("FETCHING USER DATA")
+        user_data = get_multiple_user_data(wikibase, users)
+        for u in user_data:
+            user_type_dict[u["name"]] = get_user_type_from_user_data(u)
+
+    result.human_user_count = len(
+        [u for u in users if user_type_dict.get(u) == WikibaseUserType.USER]
+    )
+
+    return result

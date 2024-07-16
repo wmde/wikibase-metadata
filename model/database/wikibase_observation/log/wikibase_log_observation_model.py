@@ -3,7 +3,7 @@
 from datetime import datetime
 import enum
 from typing import Optional
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer
+from sqlalchemy import DateTime, Enum, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -53,7 +53,7 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
     first_month: Mapped[Optional[WikibaseLogMonthObservationModel]] = relationship(
         "WikibaseLogMonthObservationModel",
         lazy="selectin",
-        primaryjoin=first_month_id == WikibaseLogMonthObservationModel.id
+        primaryjoin=first_month_id == WikibaseLogMonthObservationModel.id,
     )
 
     last_month_id: Mapped[Optional[int]] = mapped_column(
@@ -65,23 +65,8 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
     last_month: Mapped[Optional[WikibaseLogMonthObservationModel]] = relationship(
         "WikibaseLogMonthObservationModel",
         lazy="selectin",
-        primaryjoin=last_month_id == WikibaseLogMonthObservationModel.id
+        primaryjoin=last_month_id == WikibaseLogMonthObservationModel.id,
     )
-
-    last_month_log_count: Mapped[Optional[int]] = mapped_column(
-        "last_month_log_count", Integer, nullable=True
-    )
-    """Number of Logs from 30 Days Since Observation"""
-
-    last_month_user_count: Mapped[Optional[int]] = mapped_column(
-        "last_month_user_count", Integer, nullable=True
-    )
-    """Unique Number of Users Logged in 30 Days Since Observation"""
-
-    last_month_human_user_count: Mapped[Optional[int]] = mapped_column(
-        "last_month_user_count_no_bot", Integer, nullable=True
-    )
-    """Unique Number of Users Logged in 30 Days Since Observation, Without Bots"""
 
     def __str__(self) -> str:
         return (
@@ -90,9 +75,6 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
             + f"observation_date={self.observation_date}, "
             + f"first_log_date={self.first_log_date}, "
             + f"last_log_date={self.last_log_date}, "
-            + f"last_log_by={self.last_log_user_type}, "
-            + f"last_month_log_count={self.last_month_log_count}, "
-            + f"last_month_user_count={self.last_month_user_count}, "
-            + f"last_month_human_user_count={self.last_month_human_user_count}"
+            + f"last_log_by={self.last_log_user_type}"
             + ")"
         )
