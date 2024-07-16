@@ -3,10 +3,13 @@
 from datetime import datetime
 import enum
 from typing import Optional
-from sqlalchemy import DateTime, Enum, Integer
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 from model.database.wikibase_observation.wikibase_observation_model import (
     WikibaseObservationModel,
 )
@@ -40,6 +43,30 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
         "last_log_user_type", Enum(WikibaseUserType), nullable=True
     )
     """Most Recent Log - User or Bot?"""
+
+    first_month_id: Mapped[Optional[int]] = mapped_column(
+        "first_month_id",
+        ForeignKey(column="wikibase_log_observation_month.id", name="first_month"),
+        nullable=True,
+    )
+
+    first_month: Mapped[Optional[WikibaseLogMonthObservationModel]] = relationship(
+        "WikibaseLogMonthObservationModel",
+        lazy="selectin",
+        primaryjoin=first_month_id == WikibaseLogMonthObservationModel.id
+    )
+
+    last_month_id: Mapped[Optional[int]] = mapped_column(
+        "last_month_id",
+        ForeignKey(column="wikibase_log_observation_month.id", name="last_month"),
+        nullable=True,
+    )
+
+    last_month: Mapped[Optional[WikibaseLogMonthObservationModel]] = relationship(
+        "WikibaseLogMonthObservationModel",
+        lazy="selectin",
+        primaryjoin=last_month_id == WikibaseLogMonthObservationModel.id
+    )
 
     last_month_log_count: Mapped[Optional[int]] = mapped_column(
         "last_month_log_count", Integer, nullable=True
