@@ -1,39 +1,10 @@
 """Create Log Observation"""
 
 from datetime import datetime
-import enum
 import re
 from typing import Optional
 
-
-class WikibaseLogType(enum.Enum):
-    """Wikibase Log Type"""
-
-    COMMENTS_CREATE = 1
-    COMMENTS_DELETE = 2
-    CONSUMER_APPROVE = 3
-    CONSUMER_PROPOSE = 4
-    IMAGE_UPLOAD = 5
-    IMAGE_OVERWRITE = 6
-    IMPORT = 7
-    INTERWIKI_CREATE = 8
-    INTERWIKI_DELETE = 25
-    INTERWIKI_EDIT = 9
-    ITEM_CREATE = 10
-    ITEM_DELETE = 11
-    MOVE = 12
-    PAGE_CREATE = 13
-    PAGE_DELETE = 14
-    PATROL = 15
-    PATROL_AUTO = 16
-    PROPERTY_CREATE = 17
-    PROPERTY_DELETE = 18
-    PROTECT = 19
-    UNDO_DELETE = 20
-    USER_BLOCK = 21
-    USER_UNBLOCK = 22
-    USER_CREATE = 23
-    USER_RIGHTS = 24
+from model.database import WikibaseLogType
 
 
 class WikibaseLogRecord:

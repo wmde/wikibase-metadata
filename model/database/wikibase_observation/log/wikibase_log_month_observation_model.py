@@ -1,11 +1,14 @@
 """Wikibase Log Observation Table"""
 
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 from sqlalchemy import DateTime, Integer
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
+from model.database.wikibase_observation.log.wikibase_log_month_type_observation_model import (
+    WikibaseLogMonthTypeObservationModel,
+)
 
 
 class WikibaseLogMonthObservationModel(ModelBase):
@@ -36,6 +39,11 @@ class WikibaseLogMonthObservationModel(ModelBase):
         "user_count_no_bot", Integer, nullable=True
     )
     """Number of Unique Users, Without Bots"""
+
+    log_type_records: Mapped[List[WikibaseLogMonthTypeObservationModel]] = relationship(
+        "WikibaseLogMonthTypeObservationModel", lazy="selectin"
+    )
+    """Log Type Observations"""
 
     def __str__(self) -> str:
         return (
