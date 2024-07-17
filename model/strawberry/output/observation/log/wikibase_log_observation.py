@@ -7,6 +7,7 @@ import strawberry
 from model.database import (
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthTypeObservationModel,
+    WikibaseLogMonthUserObservationModel,
     WikibaseLogObservationModel,
 )
 from model.strawberry.output.observation.wikibase_observation import (
@@ -38,9 +39,6 @@ class WikibaseLogCollectionStrawberryModel:
     all_users: int = strawberry.field(
         description="Distinct User Count", graphql_type=BigInt
     )
-    human_users: int = strawberry.field(
-        description="Distinct (Probably) Human User Count", graphql_type=BigInt
-    )
     log_count: Optional[int] = strawberry.field(
         description="Log Count", graphql_type=Optional[BigInt]
     )
@@ -50,9 +48,12 @@ class WikibaseLogCollectionStrawberryModel:
 
 @strawberry.type
 class WikibaseLogMonthTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
-    """Wikibase Log Month, specific Type"""
+    """Wikibase Log Month, specific Log Type"""
 
     log_type: str = strawberry.field(description="Log Type")
+    human_users: int = strawberry.field(
+        description="Distinct (Probably) Human User Count", graphql_type=BigInt
+    )
 
     @classmethod
     def marshal(
@@ -72,11 +73,39 @@ class WikibaseLogMonthTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
 
 
 @strawberry.type
+class WikibaseLogMonthUserStrawberryModel(WikibaseLogCollectionStrawberryModel):
+    """Wikibase Log Month, specific User Type"""
+
+    user_type: str = strawberry.field(description="User Type")
+
+    @classmethod
+    def marshal(
+        cls, model: WikibaseLogMonthUserObservationModel
+    ) -> "WikibaseLogMonthTypeStrawberryModel":
+        """Coerce Database Model to Strawberry Model"""
+
+        return cls(
+            id=strawberry.ID(model.id),
+            user_type=model.user_type.name,
+            log_count=model.log_count,
+            all_users=model.user_count,
+            first_log_date=model.first_log_date,
+            last_log_date=model.last_log_date,
+        )
+
+
+@strawberry.type
 class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month"""
 
     log_type_records: List[WikibaseLogMonthTypeStrawberryModel] = strawberry.field(
         description="Records of Each Type"
+    )
+    user_type_records: List[WikibaseLogMonthUserStrawberryModel] = strawberry.field(
+        description="Records of Each Type"
+    )
+    human_users: int = strawberry.field(
+        description="Distinct (Probably) Human User Count", graphql_type=BigInt
     )
 
     @classmethod
@@ -95,6 +124,10 @@ class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
             log_type_records=[
                 WikibaseLogMonthTypeStrawberryModel.marshal(r)
                 for r in model.log_type_records
+            ],
+            user_type_records=[
+                WikibaseLogMonthUserStrawberryModel.marshal(r)
+                for r in model.user_type_records
             ],
         )
 

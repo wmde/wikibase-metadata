@@ -8,6 +8,7 @@ from model.database.wikibase_observation.connectivity import (
 from model.database.wikibase_observation.log import (
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthTypeObservationModel,
+    WikibaseLogMonthUserObservationModel,
     WikibaseLogObservationModel,
 )
 from model.database.wikibase_observation.property import (
