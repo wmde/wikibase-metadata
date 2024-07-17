@@ -5,9 +5,9 @@ from typing import List, Optional
 import strawberry
 
 from model.database import (
+    WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
-    WikibaseLogMonthTypeObservationModel,
-    WikibaseLogMonthUserObservationModel,
+    WikibaseLogMonthUserTypeObservationModel,
     WikibaseLogObservationModel,
 )
 from model.strawberry.output.observation.wikibase_observation import (
@@ -47,7 +47,7 @@ class WikibaseLogCollectionStrawberryModel:
 
 
 @strawberry.type
-class WikibaseLogMonthTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
+class WikibaseLogMonthLogTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month, specific Log Type"""
 
     log_type: str = strawberry.field(description="Log Type")
@@ -57,8 +57,8 @@ class WikibaseLogMonthTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
 
     @classmethod
     def marshal(
-        cls, model: WikibaseLogMonthTypeObservationModel
-    ) -> "WikibaseLogMonthTypeStrawberryModel":
+        cls, model: WikibaseLogMonthLogTypeObservationModel
+    ) -> "WikibaseLogMonthLogTypeStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
 
         return cls(
@@ -73,15 +73,15 @@ class WikibaseLogMonthTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
 
 
 @strawberry.type
-class WikibaseLogMonthUserStrawberryModel(WikibaseLogCollectionStrawberryModel):
+class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month, specific User Type"""
 
     user_type: str = strawberry.field(description="User Type")
 
     @classmethod
     def marshal(
-        cls, model: WikibaseLogMonthUserObservationModel
-    ) -> "WikibaseLogMonthTypeStrawberryModel":
+        cls, model: WikibaseLogMonthUserTypeObservationModel
+    ) -> "WikibaseLogMonthLogTypeStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
 
         return cls(
@@ -98,10 +98,10 @@ class WikibaseLogMonthUserStrawberryModel(WikibaseLogCollectionStrawberryModel):
 class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month"""
 
-    log_type_records: List[WikibaseLogMonthTypeStrawberryModel] = strawberry.field(
+    log_type_records: List[WikibaseLogMonthLogTypeStrawberryModel] = strawberry.field(
         description="Records of Each Type"
     )
-    user_type_records: List[WikibaseLogMonthUserStrawberryModel] = strawberry.field(
+    user_type_records: List[WikibaseLogMonthUserTypeStrawberryModel] = strawberry.field(
         description="Records of Each Type"
     )
     human_users: int = strawberry.field(
@@ -122,11 +122,11 @@ class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
             first_log_date=model.first_log_date,
             last_log_date=model.last_log_date,
             log_type_records=[
-                WikibaseLogMonthTypeStrawberryModel.marshal(r)
+                WikibaseLogMonthLogTypeStrawberryModel.marshal(r)
                 for r in model.log_type_records
             ],
             user_type_records=[
-                WikibaseLogMonthUserStrawberryModel.marshal(r)
+                WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
                 for r in model.user_type_records
             ],
         )

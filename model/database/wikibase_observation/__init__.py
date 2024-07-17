@@ -6,9 +6,9 @@ from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationModel,
 )
 from model.database.wikibase_observation.log import (
+    WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
-    WikibaseLogMonthTypeObservationModel,
-    WikibaseLogMonthUserObservationModel,
+    WikibaseLogMonthUserTypeObservationModel,
     WikibaseLogObservationModel,
 )
 from model.database.wikibase_observation.property import (

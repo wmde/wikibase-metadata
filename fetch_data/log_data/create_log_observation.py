@@ -18,13 +18,11 @@ from fetch_data.user_data import (
 )
 from fetch_data.utils import get_wikibase_from_database
 from model.database import (
+    WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
-    WikibaseLogMonthTypeObservationModel,
+    WikibaseLogMonthUserTypeObservationModel,
     WikibaseLogObservationModel,
     WikibaseModel,
-)
-from model.database.wikibase_observation.log.wikibase_log_month_user_observation_model import (
-    WikibaseLogMonthUserObservationModel,
 )
 from model.enum import WikibaseUserType
 
@@ -122,7 +120,7 @@ async def create_log_month(
     )
 
     for log_type in {log.log_type for log in log_list}:
-        log_type_record = WikibaseLogMonthTypeObservationModel(log_type=log_type)
+        log_type_record = WikibaseLogMonthLogTypeObservationModel(log_type=log_type)
         log_type_record.log_count = len(
             log_type_logs := [l for l in log_list if l.log_type == log_type]
         )
@@ -138,7 +136,9 @@ async def create_log_month(
 
     for user_type in {user_type_dict.get(log.user) for log in log_list}:
         if user_type is not None:
-            user_type_record = WikibaseLogMonthUserObservationModel(user_type=user_type)
+            user_type_record = WikibaseLogMonthUserTypeObservationModel(
+                user_type=user_type
+            )
             user_type_record.log_count = len(
                 user_type_logs := [
                     l for l in log_list if user_type_dict.get(l.user) == user_type

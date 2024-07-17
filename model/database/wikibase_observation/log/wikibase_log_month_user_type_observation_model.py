@@ -5,19 +5,19 @@ from sqlalchemy import DateTime, Enum, ForeignKey, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from model.database.base import ModelBase
-from model.enum import WikibaseLogType
+from model.enum import WikibaseUserType
 
 
-class WikibaseLogMonthTypeObservationModel(ModelBase):
-    """Wikibase Log Month Type Observation Table"""
+class WikibaseLogMonthUserTypeObservationModel(ModelBase):
+    """Wikibase Log Month User Observation Table"""
 
-    __tablename__ = "wikibase_log_observation_month_type"
+    __tablename__ = "wikibase_log_observation_month_user"
 
     __table_args__ = (
         UniqueConstraint(
             "log_month_observation_id",
-            "log_type",
-            name="unique_observation_log_type",
+            "user_type",
+            name="unique_observation_user_type",
         ),
     )
 
@@ -32,8 +32,8 @@ class WikibaseLogMonthTypeObservationModel(ModelBase):
         nullable=False,
     )
 
-    log_type: Mapped[WikibaseLogType] = mapped_column(
-        "log_type", Enum(WikibaseLogType), nullable=False
+    user_type: Mapped[WikibaseUserType] = mapped_column(
+        "user_type", Enum(WikibaseUserType), nullable=False
     )
     """Log Type"""
 
@@ -53,20 +53,14 @@ class WikibaseLogMonthTypeObservationModel(ModelBase):
     user_count: Mapped[int] = mapped_column("user_count", Integer, nullable=False)
     """Number of Unique Users"""
 
-    human_user_count: Mapped[int] = mapped_column(
-        "user_count_no_bot", Integer, nullable=True
-    )
-    """Number of Unique Users, Without Bots"""
-
     def __str__(self) -> str:
         return (
-            "WikibaseLogMonthTypeObservationModel("
+            "WikibaseLogMonthUserObservationModel("
             + f"id={self.id}, "
-            + f"log_type={self.log_type}, "
+            + f"user_type={self.user_type}, "
             + f"first_log_date={self.first_log_date}, "
             + f"last_log_date={self.last_log_date}, "
             + f"log_count={self.log_count}, "
-            + f"user_count={self.user_count}, "
-            + f"human_user_count={self.human_user_count}"
+            + f"user_count={self.user_count}"
             + ")"
         )
