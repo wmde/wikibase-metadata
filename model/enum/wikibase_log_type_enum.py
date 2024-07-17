@@ -14,6 +14,8 @@ class WikibaseLogType(enum.Enum):
     CONSUMER_CREATE = 5
     CONSUMER_PROPOSE = 6
     CONSUMER_REJECT = 7
+    CONSUMER_UPDATE = 39
+    EVENT_DELETE = 37
     IMAGE_OVERWRITE = 8
     IMAGE_REVERT = 9
     IMAGE_UPLOAD = 10
@@ -31,6 +33,7 @@ class WikibaseLogType(enum.Enum):
     PROPERTY_CREATE = 22
     PROPERTY_DELETE = 23
     PROTECT = 24
+    REVISION_DELETE = 38
     TAG_CREATE = 25
     UNDO_DELETE = 26
     USER_BLOCK = 27
@@ -82,6 +85,10 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.CONSUMER_PROPOSE
         case ("mwoauthconsumer", "reject"):
             log_type = WikibaseLogType.CONSUMER_REJECT
+        case ("mwoauthconsumer", "update"):
+            log_type = WikibaseLogType.CONSUMER_UPDATE
+        case ("delete", "event"):
+            log_type = WikibaseLogType.EVENT_DELETE
         case ("upload", "overwrite"):
             if "img_sha1" in record["params"]:
                 log_type = WikibaseLogType.IMAGE_OVERWRITE
@@ -113,6 +120,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.PATROL
         case ("protect", "move_prot") | ("protect", "protect") | ("protect", "modify"):
             log_type = WikibaseLogType.PROTECT
+        case ("delete", "revision"):
+            log_type = WikibaseLogType.REVISION_DELETE
         case ("managetags", "create"):
             log_type = WikibaseLogType.TAG_CREATE
         case ("delete", "restore"):
