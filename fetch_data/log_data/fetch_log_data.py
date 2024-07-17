@@ -7,9 +7,7 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 
 
 def get_log_param_string(
-    limit: Optional[int] = None,
-    oldest: bool = False,
-    offset: Optional[WikibaseLogRecord] = None,
+    limit: Optional[int] = None, oldest: bool = False, offset: Optional[str] = None
 ):
     """Log Page URL Parameters"""
 
@@ -22,9 +20,7 @@ def get_log_param_string(
         "lelimit": limit,
     }
     if offset is not None:
-        parameters["lecontinue"] = (
-            f"{offset.log_date.strftime('%Y%m%d%H%M%S')}|{offset.id}"
-        )
+        parameters["lecontinue"] = offset
     return dict_to_url(parameters)
 
 
@@ -49,7 +45,7 @@ def get_month_log_list(
     limit = 500
 
     should_query = True
-    next_from: Optional[WikibaseLogRecord] = None
+    next_from: Optional[str] = None
     # directory = f"data/logs/{re.sub(r'[^a-z]+', r'_', api_url)}"
     # os.makedirs(directory, exist_ok=True)
     while should_query:
@@ -59,23 +55,30 @@ def get_month_log_list(
         )
 
         # with open(f"{directory}/{datetime.now()}.json", "w", encoding="utf-8") as temp:
-        # json.dump(query_data, temp, indent="\t", sort_keys=False)
+        #     json.dump(query_data, temp, indent="\t", sort_keys=False)
         for record in query_data["query"]["logevents"]:
             data.append(WikibaseLogRecord(record))
+
+        # print(query_data.get('continue'))
+
         should_query = (
-            abs(
-                (
-                    comparison_date
-                    - (
-                        next_from := (
+            (
+                abs(
+                    (
+                        comparison_date
+                        - (
                             max(data, key=lambda x: x.log_date)
                             if oldest
                             else min(data, key=lambda x: x.log_date)
-                        )
-                    ).log_date
-                ).days
+                        ).log_date
+                    ).days
+                )
+                <= 30
             )
-            <= 30
+            and "continue" in query_data
+            and "lecontinue" in query_data["continue"]
         )
+        if should_query:
+            next_from = query_data["continue"]["lecontinue"]
 
     return data
