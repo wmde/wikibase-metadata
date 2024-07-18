@@ -9,6 +9,11 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "log_month_observation_id" },
 			"meta": {}
@@ -26,6 +31,11 @@
 		{
 			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "user_type" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_compound_columns_to_be_unique",
+			"kwargs": { "column_list": ["log_month_observation_id", "user_type"] },
 			"meta": {}
 		},
 		{

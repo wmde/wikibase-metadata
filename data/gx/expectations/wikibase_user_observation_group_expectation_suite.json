@@ -9,6 +9,11 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "wikibase_user_observation_id" },
 			"meta": {}

@@ -9,12 +9,22 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "category" },
 			"meta": {}
 		},
 		{
 			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "category" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
 			"kwargs": { "column": "category" },
 			"meta": {}
 		}
