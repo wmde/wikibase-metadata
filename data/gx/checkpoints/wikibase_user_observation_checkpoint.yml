@@ -25,6 +25,18 @@ validations:
       options: {}
       batch_slice:
     expectation_suite_name: wikibase_user_observation_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_user_group_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_user_group_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_user_observation_group_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_user_observation_group_expectation_suite
 profilers: []
 ge_cloud_id:
 expectation_suite_ge_cloud_id:
