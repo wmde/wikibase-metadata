@@ -3,8 +3,6 @@
 import os
 from pathlib import Path
 import pytest
-import sys
-from typing import List
 from great_expectations.data_context import FileDataContext
 
 GREAT_EXPECTATIONS_PROJECT_ROOT = "./data"
@@ -33,19 +31,3 @@ def test_data_expectations(checkpoint_name: str):
     context.build_data_docs()
 
 
-if __name__ == "__main__":
-    SUCCESS = True
-    check_list: List[str]
-    if len(sys.argv) < 2:
-        check_list = [Path(file).stem for file in os.listdir(CHECKPOINT_DIRECTORY)]
-    else:
-        check_list = sys.argv[1:]
-
-    for check in sorted(check_list):
-        print(check)
-        try:
-            test_data_expectations(checkpoint_name=check)
-        except AssertionError:
-            SUCCESS = False
-
-    assert SUCCESS
