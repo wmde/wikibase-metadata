@@ -9,58 +9,63 @@ class WikibaseLogType(enum.Enum):
 
     ABUSE_FILTER_CREATE = 1
     ABUSE_FILTER_MODIFIY = 2
-    COMMENTS_CREATE = 3
-    COMMENTS_DELETE = 4
-    CONSUMER_APPROVE = 5
-    CONSUMER_CREATE = 6
-    CONSUMER_PROPOSE = 7
-    CONSUMER_REJECT = 8
-    CONSUMER_UPDATE = 9
-    EVENT_DELETE = 10
-    EXPORT_PDF = 11
-    FEEDBACK_CREATE = 12
-    FEEDBACK_FEATURE = 13
-    FEEDBACK_FLAG = 14
-    FEEDBACK_FLAG_INAPPROPRIATE = 15
-    FEEDBACK_HIDE = 16
-    FEEDBACK_NO_ACTION = 17
-    FEEDBACK_RESOLVE = 18
-    IMPORT = 19
-    INTERWIKI_CREATE = 20
-    INTERWIKI_DELETE = 21
-    INTERWIKI_EDIT = 22
-    ITEM_CREATE = 23
-    ITEM_DELETE = 24
-    MEDIA_OVERWRITE = 25
-    MEDIA_REVERT = 26
-    MEDIA_UPLOAD = 27
-    MOVE = 28
-    PAGE_CREATE = 29
-    PAGE_DELETE = 30
-    PATROL = 31
-    PATROL_AUTO = 32
-    PROFILE = 33
-    PROPERTY_CREATE = 34
-    PROPERTY_DELETE = 35
-    PROTECT = 36
-    REVISION_DELETE = 37
-    TAG_CREATE = 38
-    UNDO_DELETE = 39
-    UNPROTECT = 40
-    USER_BLOCK = 41
-    USER_UNBLOCK = 42
-    USER_CREATE = 43
-    USER_DELETE = 44
-    USER_MERGE = 45
-    USER_RENAME = 46
-    USER_RIGHTS = 47
-    WIKI_FARM = 48
-    WIKI_NAMESPACES = 49
-    WIKI_RIGHTS = 50
-    WIKI_SETTINGS = 51
+    APPROVE = 3
+    COMMENTS_CREATE = 4
+    COMMENTS_DELETE = 5
+    CONSUMER_APPROVE = 6
+    CONSUMER_CREATE = 7
+    CONSUMER_PROPOSE = 8
+    CONSUMER_REJECT = 9
+    CONSUMER_UPDATE = 10
+    EVENT_DELETE = 11
+    EXPORT_PDF = 12
+    FEEDBACK_CREATE = 13
+    FEEDBACK_FEATURE = 14
+    FEEDBACK_FLAG = 15
+    FEEDBACK_FLAG_INAPPROPRIATE = 16
+    FEEDBACK_HIDE = 17
+    FEEDBACK_NO_ACTION = 18
+    FEEDBACK_RESOLVE = 19
+    IMPORT = 20
+    INTERWIKI_CREATE = 21
+    INTERWIKI_DELETE = 22
+    INTERWIKI_EDIT = 23
+    ITEM_CREATE = 24
+    ITEM_DELETE = 25
+    MEDIA_APPROVE = 26
+    MEDIA_OVERWRITE = 27
+    MEDIA_REVERT = 28
+    MEDIA_UPLOAD = 29
+    MOVE = 30
+    PAGE_CREATE = 31
+    PAGE_DELETE = 32
+    PATROL = 33
+    PATROL_AUTO = 34
+    PROFILE = 35
+    PROPERTY_CREATE = 36
+    PROPERTY_DELETE = 37
+    PROTECT = 38
+    REDIRECT_DELETE = 39
+    REDIRECT_MOVE = 40
+    REVISION_DELETE = 41
+    TAG_CREATE = 42
+    UNAPPROVE = 43
+    UNDO_DELETE = 44
+    UNPROTECT = 45
+    USER_BLOCK = 46
+    USER_UNBLOCK = 47
+    USER_CREATE = 48
+    USER_DELETE = 49
+    USER_MERGE = 50
+    USER_RENAME = 51
+    USER_RIGHTS = 52
+    WIKI_FARM = 53
+    WIKI_NAMESPACES = 54
+    WIKI_RIGHTS = 55
+    WIKI_SETTINGS = 56
 
 
-MEDIA_REGEX = re.compile(r".*\.(flv|jpg|png)", re.IGNORECASE)
+MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png)", re.IGNORECASE)
 ITEM_REGEX = re.compile(r"Item:Q\d+")
 PROPERTY_REGEX = re.compile(r"(Property|WikibaseProperty):P\d+")
 
@@ -89,6 +94,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.ABUSE_FILTER_CREATE
         case ("abusefilter", "modify"):
             log_type = WikibaseLogType.ABUSE_FILTER_MODIFIY
+        case ("approval", "approve"):
+            log_type = WikibaseLogType.APPROVE
         case ("comments", "add"):
             log_type = WikibaseLogType.COMMENTS_CREATE
         case ("comments", "delete"):
@@ -129,6 +136,11 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.INTERWIKI_DELETE
         case ("interwiki", "iw_edit"):
             log_type = WikibaseLogType.INTERWIKI_EDIT
+        case ("approval", "approvefile"):
+            if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
+                log_type = WikibaseLogType.MEDIA_APPROVE
+            else:
+                raise NotImplementedError(record)
         case ("upload", "overwrite"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_OVERWRITE
@@ -154,10 +166,16 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.PROFILE
         case ("protect", "move_prot") | ("protect", "protect") | ("protect", "modify"):
             log_type = WikibaseLogType.PROTECT
+        case ("delete", "delete_redir"):
+            log_type = WikibaseLogType.REDIRECT_DELETE
+        case ("move", "move_redir"):
+            log_type = WikibaseLogType.REDIRECT_MOVE
         case ("delete", "revision"):
             log_type = WikibaseLogType.REVISION_DELETE
         case ("managetags", "create"):
             log_type = WikibaseLogType.TAG_CREATE
+        case ("approval", "unapprove"):
+            log_type = WikibaseLogType.UNAPPROVE
         case ("delete", "restore"):
             log_type = WikibaseLogType.UNDO_DELETE
         case ("protect", "unprotect"):
