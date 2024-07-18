@@ -39,30 +39,36 @@ class WikibaseLogType(enum.Enum):
     MOVE = 30
     PAGE_CREATE = 31
     PAGE_DELETE = 32
-    PATROL = 33
-    PATROL_AUTO = 34
-    PROFILE = 35
-    PROPERTY_CREATE = 36
-    PROPERTY_DELETE = 37
-    PROTECT = 38
-    REDIRECT_DELETE = 39
-    REDIRECT_MOVE = 40
-    REVISION_DELETE = 41
-    TAG_CREATE = 42
-    UNAPPROVE = 43
-    UNDO_DELETE = 44
-    UNPROTECT = 45
-    USER_BLOCK = 46
-    USER_UNBLOCK = 47
-    USER_CREATE = 48
-    USER_DELETE = 49
-    USER_MERGE = 50
-    USER_RENAME = 51
-    USER_RIGHTS = 52
-    WIKI_FARM = 53
-    WIKI_NAMESPACES = 54
-    WIKI_RIGHTS = 55
-    WIKI_SETTINGS = 56
+    PAGE_TRANSLATE = 33
+    PAGE_TRANSLATE_DELETE_FOK = 34
+    PAGE_TRANSLATE_DELETE_LOK = 35
+    PAGE_TRANSLATE_MARK = 36
+    PAGE_TRANSLATE_UNMARK = 37
+    PAGE_UPDATE_LANGUAGE=38
+    PATROL = 39
+    PATROL_AUTO = 40
+    PROFILE = 41
+    PROPERTY_CREATE = 42
+    PROPERTY_DELETE = 43
+    PROTECT = 44
+    REDIRECT_DELETE = 45
+    REDIRECT_MOVE = 46
+    REVISION_DELETE = 47
+    TAG_CREATE = 48
+    UNAPPROVE = 49
+    UNDO_DELETE = 50
+    UNPROTECT = 51
+    USER_BLOCK = 52
+    USER_UNBLOCK = 53
+    USER_CREATE = 54
+    USER_DELETE = 55
+    USER_MERGE = 56
+    USER_RENAME = 57
+    USER_RIGHTS = 58
+    WIKI_FARM = 59
+    WIKI_NAMESPACES = 60
+    WIKI_RIGHTS = 61
+    WIKI_SETTINGS = 62
 
 
 MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png)", re.IGNORECASE)
@@ -158,6 +164,24 @@ def compile_log_type(record: dict) -> WikibaseLogType:
                 raise NotImplementedError(record)
         case ("move", "move"):
             log_type = WikibaseLogType.MOVE
+        case ("pagetranslation", "prioritylanguages"):
+            if 'languages' in record['params']:
+                log_type = WikibaseLogType.PAGE_TRANSLATE
+            else:
+                raise NotImplementedError(record)
+        case ("pagetranslation", "deletefok"):
+                log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_FOK
+        case ("pagetranslation", "deletelok"):
+                log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK
+        case ("pagetranslation", "mark"):
+                log_type = WikibaseLogType.PAGE_TRANSLATE_MARK
+        case ("pagetranslation", "unmark"):
+                log_type = WikibaseLogType.PAGE_TRANSLATE_UNMARK
+        case ("pagelang", "pagelang"):
+                if 'oldlanguage' in record["params"] and 'newlanguage' in record["params"]:
+                    log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
+                else:
+                    raise NotImplementedError(record)
         case ("patrol", "autopatrol"):
             log_type = WikibaseLogType.PATROL_AUTO
         case ("patrol", "patrol"):
