@@ -34,6 +34,11 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": { "column": "user_type", "value_set": ["BOT", "MISSING", "USER", "NONE"] },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_compound_columns_to_be_unique",
 			"kwargs": { "column_list": ["log_month_observation_id", "user_type"] },
 			"meta": {}

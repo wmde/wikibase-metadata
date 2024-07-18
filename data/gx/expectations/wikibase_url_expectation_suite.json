@@ -34,6 +34,21 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": {
+				"column": "url_type",
+				"value_set": [
+					"BASE_URL",
+					"ACTION_QUERY_URL",
+					"INDEX_QUERY_URL",
+					"SPARQL_ENDPOINT_URL",
+					"SPARQL_QUERY_URL",
+					"SPECIAL_VERSION_URL"
+				]
+			},
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_compound_columns_to_be_unique",
 			"kwargs": { "column_list": ["wikibase_id", "url_type"] },
 			"meta": {}

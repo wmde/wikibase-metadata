@@ -34,6 +34,14 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": {
+				"column": "software_type",
+				"value_set": ["SOFTWARE", "SKIN", "EXTENSION", "LIBRARY"]
+			},
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "software_name" },
 			"meta": {}
