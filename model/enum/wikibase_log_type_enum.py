@@ -2,6 +2,7 @@
 
 import enum
 import re
+from typing import Optional
 
 
 class WikibaseLogType(enum.Enum):
@@ -18,70 +19,79 @@ class WikibaseLogType(enum.Enum):
     CONSUMER_PROPOSE = 9
     CONSUMER_REJECT = 10
     CONSUMER_UPDATE = 11
-    EVENT_DELETE = 12
-    EXPORT_PDF = 13
-    FEEDBACK_CREATE = 14
-    FEEDBACK_FEATURE = 15
-    FEEDBACK_FLAG = 16
-    FEEDBACK_FLAG_INAPPROPRIATE = 17
-    FEEDBACK_HIDE = 18
-    FEEDBACK_NO_ACTION = 19
-    FEEDBACK_RESOLVE = 20
-    IMPORT = 21
-    INTERWIKI_CREATE = 22
-    INTERWIKI_DELETE = 23
-    INTERWIKI_EDIT = 24
-    ITEM_CREATE = 25
-    ITEM_DELETE = 26
-    MEDIA_APPROVE = 27
-    MEDIA_OVERWRITE = 28
-    MEDIA_REVERT = 29
-    MEDIA_UPLOAD = 30
-    MOVE = 31
-    PAGE_CREATE = 32
-    PAGE_DELETE = 33
-    PAGE_TRANSLATE = 34
-    PAGE_TRANSLATE_DELETE_FOK = 35
-    PAGE_TRANSLATE_DELETE_LOK = 36
-    PAGE_TRANSLATE_MARK = 37
-    PAGE_TRANSLATE_UNMARK = 38
-    PAGE_UPDATE_LANGUAGE = 39
-    PATROL = 40
-    PATROL_AUTO = 41
-    PROFILE = 42
-    PROPERTY_CREATE = 43
-    PROPERTY_DELETE = 44
-    PROTECT = 45
-    REDIRECT_DELETE = 46
-    REDIRECT_MOVE = 47
-    REVISION_DELETE = 48
-    TAG_CREATE = 49
-    UNAPPROVE = 50
-    UNDO_DELETE = 51
-    UNPROTECT = 52
-    USER_BLOCK = 53
-    USER_UNBLOCK = 54
-    USER_CREATE = 55
-    USER_DELETE = 56
-    USER_MERGE = 57
-    USER_RENAME = 58
-    USER_RIGHTS = 59
-    WIKI_FARM = 60
-    WIKI_NAMESPACES = 61
-    WIKI_RIGHTS = 62
-    WIKI_SETTINGS = 63
+    CONTENT_MODEL_CREATE = 12
+    CONTENT_MODEL_CHANGE = 13
+    DATADUMP_DELETE = 14
+    DATADUMP_GENERATE = 15
+    EVENT_DELETE = 16
+    EXPORT_PDF = 17
+    FEEDBACK_CREATE = 18
+    FEEDBACK_FEATURE = 19
+    FEEDBACK_FLAG = 20
+    FEEDBACK_FLAG_INAPPROPRIATE = 21
+    FEEDBACK_HIDE = 22
+    FEEDBACK_NO_ACTION = 23
+    FEEDBACK_RESOLVE = 24
+    IMPORT = 25
+    IMPORT_HTML = 26
+    INTERWIKI_CREATE = 27
+    INTERWIKI_DELETE = 28
+    INTERWIKI_EDIT = 29
+    ITEM_CREATE = 30
+    ITEM_DELETE = 31
+    MEDIA_APPROVE = 32
+    MEDIA_OVERWRITE = 33
+    MEDIA_REVERT = 34
+    MEDIA_UPLOAD = 35
+    MOVE = 36
+    PAGE_CREATE = 37
+    PAGE_DELETE = 38
+    PAGE_TRANSLATE = 39
+    PAGE_TRANSLATE_DELETE_FOK = 40
+    PAGE_TRANSLATE_DELETE_LOK = 41
+    PAGE_TRANSLATE_MARK = 42
+    PAGE_TRANSLATE_UNMARK = 43
+    PAGE_UPDATE_LANGUAGE = 44
+    PATROL = 45
+    PATROL_AUTO = 46
+    PROFILE = 47
+    PROPERTY_CREATE = 48
+    PROPERTY_DELETE = 49
+    PROTECT = 50
+    REDIRECT_DELETE = 51
+    REDIRECT_MOVE = 52
+    REVISION_DELETE = 53
+    TABLE_CREATE = 54
+    TABLE_DELETE = 55
+    TAG_CREATE = 56
+    THANK = 57
+    UNAPPROVE = 58
+    UNDO_DELETE = 59
+    UNPROTECT = 60
+    USER_BLOCK = 61
+    USER_UNBLOCK = 62
+    USER_CREATE = 63
+    USER_DELETE = 64
+    USER_MERGE = 65
+    USER_RENAME = 66
+    USER_RIGHTS = 67
+    WIKI_FARM = 68
+    WIKI_GROUP_DELETE = 69
+    WIKI_NAMESPACES = 70
+    WIKI_RIGHTS = 71
+    WIKI_SETTINGS = 72
 
 
-MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png)", re.IGNORECASE)
+MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png|svg)", re.IGNORECASE)
 ITEM_REGEX = re.compile(r"Item:Q\d+")
 PROPERTY_REGEX = re.compile(r"(Property|WikibaseProperty):P\d+")
 
 
-# pylint: disable=too-many-statements
+# pylint: disable=too-many-branches,too-many-statements
 def compile_log_type(record: dict) -> WikibaseLogType:
     """Compile Log Type"""
 
-    log_type: WikibaseLogType
+    log_type: Optional[WikibaseLogType] = None
     match (record["type"], record["action"]):
         case ("create", "create"):
             if ITEM_REGEX.match(record["title"]) is not None:
@@ -119,6 +129,16 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.CONSUMER_REJECT
         case ("mwoauthconsumer", "update"):
             log_type = WikibaseLogType.CONSUMER_UPDATE
+        case ("contentmodel", "change"):
+            if "oldmodel" in record["params"] and "newmodel" in record["params"]:
+                log_type = WikibaseLogType.CONTENT_MODEL_CHANGE
+        case ("contentmodel", "new"):
+            if "oldmodel" in record["params"] and "newmodel" in record["params"]:
+                log_type = WikibaseLogType.CONTENT_MODEL_CREATE
+        case ("datadump", "delete"):
+            log_type = WikibaseLogType.DATADUMP_DELETE
+        case ("datadump", "generate"):
+            log_type = WikibaseLogType.DATADUMP_GENERATE
         case ("delete", "event"):
             log_type = WikibaseLogType.EVENT_DELETE
         case ("pdf", "book"):
@@ -139,6 +159,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.FEEDBACK_RESOLVE
         case ("import", "upload"):
             log_type = WikibaseLogType.IMPORT
+        case ("html2wiki", "import"):
+            log_type = WikibaseLogType.IMPORT_HTML
         case ("interwiki", "iw_add"):
             log_type = WikibaseLogType.INTERWIKI_CREATE
         case ("interwiki", "iw_delete"):
@@ -148,30 +170,20 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("approval", "approvefile"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_APPROVE
-            else:
-                raise NotImplementedError(record)
         case ("upload", "overwrite"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_OVERWRITE
-            else:
-                raise NotImplementedError(record)
         case ("upload", "revert"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_REVERT
-            else:
-                raise NotImplementedError(record)
         case ("upload", "upload"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_UPLOAD
-            else:
-                raise NotImplementedError(record)
         case ("move", "move"):
             log_type = WikibaseLogType.MOVE
         case ("pagetranslation", "prioritylanguages"):
             if "languages" in record["params"]:
                 log_type = WikibaseLogType.PAGE_TRANSLATE
-            else:
-                raise NotImplementedError(record)
         case ("pagetranslation", "deletefok"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_FOK
         case ("pagetranslation", "deletelok"):
@@ -183,8 +195,6 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("pagelang", "pagelang"):
             if "oldlanguage" in record["params"] and "newlanguage" in record["params"]:
                 log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
-            else:
-                raise NotImplementedError(record)
         case ("patrol", "autopatrol"):
             log_type = WikibaseLogType.PATROL_AUTO
         case ("patrol", "patrol"):
@@ -199,8 +209,14 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.REDIRECT_MOVE
         case ("delete", "revision"):
             log_type = WikibaseLogType.REVISION_DELETE
+        case ("cargo", "createtable"):
+            log_type = WikibaseLogType.TABLE_CREATE
+        case ("cargo", "deletetable"):
+            log_type = WikibaseLogType.TABLE_DELETE
         case ("managetags", "create"):
             log_type = WikibaseLogType.TAG_CREATE
+        case ("thanks", "thank"):
+            log_type = WikibaseLogType.THANK
         case ("approval", "unapprove"):
             log_type = WikibaseLogType.UNAPPROVE
         case ("delete", "restore"):
@@ -228,12 +244,16 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.USER_RENAME
         case ("farmer", "managewiki"):
             log_type = WikibaseLogType.WIKI_FARM
+        case ("managewiki", "delete-group"):
+            log_type = WikibaseLogType.WIKI_GROUP_DELETE
         case ("managewiki", "namespaces"):
             log_type = WikibaseLogType.WIKI_NAMESPACES
         case ("managewiki", "rights"):
             log_type = WikibaseLogType.WIKI_RIGHTS
         case ("managewiki", "settings"):
             log_type = WikibaseLogType.WIKI_SETTINGS
-        case _:
-            raise NotImplementedError(record)
+    try:
+        assert log_type is not None
+    except AssertionError as exc:
+        raise NotImplementedError(record) from exc
     return log_type
