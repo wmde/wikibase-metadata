@@ -4,7 +4,7 @@ from typing import Optional
 import strawberry
 
 from model.database import WikibaseModel
-from model.database.wikibase_category_model import wikibase_category_name
+from model.enum.wikibase_category_enum import wikibase_category_name
 from model.strawberry.output.observation import (
     WikibaseConnectivityObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,

@@ -3,7 +3,7 @@
 from typing import Annotated, List
 import strawberry
 
-from model.database import WikibaseSoftwareTypes
+from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
     Page,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
@@ -61,7 +61,7 @@ class Query:
         """Aggregated Extension Popularity"""
 
         return await get_aggregate_version(
-            WikibaseSoftwareTypes.EXTENSION, page_number, page_size
+            WikibaseSoftwareType.EXTENSION, page_number, page_size
         )
 
     @strawberry.field(description="Aggregated Library Popularity")
@@ -75,7 +75,7 @@ class Query:
         """Aggregated Library Popularity"""
 
         return await get_aggregate_version(
-            WikibaseSoftwareTypes.LIBRARY, page_number, page_size
+            WikibaseSoftwareType.LIBRARY, page_number, page_size
         )
 
     @strawberry.field(description="Aggregated Property Popularity")
@@ -109,7 +109,7 @@ class Query:
         """Aggregated Skin Popularity"""
 
         return await get_aggregate_version(
-            WikibaseSoftwareTypes.SKIN, page_number, page_size
+            WikibaseSoftwareType.SKIN, page_number, page_size
         )
 
     @strawberry.field(description="Aggregated Software Popularity")
@@ -123,7 +123,7 @@ class Query:
         """Aggregated Software Popularity"""
 
         return await get_aggregate_version(
-            WikibaseSoftwareTypes.SOFTWARE, page_number, page_size
+            WikibaseSoftwareType.SOFTWARE, page_number, page_size
         )
 
     @strawberry.field(description="Aggregated Users")

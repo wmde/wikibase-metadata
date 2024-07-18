@@ -7,9 +7,7 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 
 
 def get_log_param_string(
-    limit: Optional[int] = None,
-    oldest: bool = False,
-    offset: Optional[WikibaseLogRecord] = None,
+    limit: Optional[int] = None, oldest: bool = False, offset: Optional[str] = None
 ):
     """Log Page URL Parameters"""
 
@@ -22,9 +20,7 @@ def get_log_param_string(
         "lelimit": limit,
     }
     if offset is not None:
-        parameters["lecontinue"] = (
-            f"{offset.log_date.strftime('%Y%m%d%H%M%S')}|{offset.id}"
-        )
+        parameters["lecontinue"] = offset
     return dict_to_url(parameters)
 
 
@@ -41,7 +37,7 @@ def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
 
 
 def get_month_log_list(
-    api_url: str,
+    api_url: str, comparison_date: datetime, oldest: bool = False
 ) -> List[WikibaseLogRecord]:
     """Get Log List from api_url"""
 
@@ -49,15 +45,33 @@ def get_month_log_list(
     limit = 500
 
     should_query = True
-    next_from: Optional[WikibaseLogRecord] = None
+    next_from: Optional[str] = None
     while should_query:
         query_data = fetch_api_data(
-            api_url + get_log_param_string(limit=limit, offset=next_from)
+            api_url + get_log_param_string(limit=limit, offset=next_from, oldest=oldest)
         )
+
         for record in query_data["query"]["logevents"]:
             data.append(WikibaseLogRecord(record))
+
         should_query = (
-            datetime.now() - (next_from := min(data, key=lambda x: x.log_date)).log_date
-        ).days <= 30
+            (
+                abs(
+                    (
+                        comparison_date
+                        - (
+                            max(data, key=lambda x: x.log_date)
+                            if oldest
+                            else min(data, key=lambda x: x.log_date)
+                        ).log_date
+                    ).days
+                )
+                <= 30
+            )
+            and "continue" in query_data
+            and "lecontinue" in query_data["continue"]
+        )
+        if should_query:
+            next_from = query_data["continue"]["lecontinue"]
 
     return data

@@ -1,10 +1,13 @@
 """Wikibase Log Data Observation Strawberry Model"""
 
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 import strawberry
 
 from model.database import (
+    WikibaseLogMonthLogTypeObservationModel,
+    WikibaseLogMonthObservationModel,
+    WikibaseLogMonthUserTypeObservationModel,
     WikibaseLogObservationModel,
 )
 from model.strawberry.output.observation.wikibase_observation import (
@@ -31,20 +34,109 @@ class WikibaseLogUserStrawberryModel(WikibaseLogStrawberryModel):
 class WikibaseLogCollectionStrawberryModel:
     """Wikibase Log Collection"""
 
+    id: strawberry.ID
+
     all_users: int = strawberry.field(
         description="Distinct User Count", graphql_type=BigInt
-    )
-    human_users: int = strawberry.field(
-        description="Distinct (Probably) Human User Count", graphql_type=BigInt
     )
     log_count: Optional[int] = strawberry.field(
         description="Log Count", graphql_type=Optional[BigInt]
     )
+    first_log_date: datetime = strawberry.field(description="First Log Date")
+    last_log_date: datetime = strawberry.field(description="First Log Date")
+
+
+@strawberry.type
+class WikibaseLogMonthLogTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
+    """Wikibase Log Month, specific Log Type"""
+
+    log_type: str = strawberry.field(description="Log Type")
+    human_users: int = strawberry.field(
+        description="Distinct (Probably) Human User Count", graphql_type=BigInt
+    )
+
+    @classmethod
+    def marshal(
+        cls, model: WikibaseLogMonthLogTypeObservationModel
+    ) -> "WikibaseLogMonthLogTypeStrawberryModel":
+        """Coerce Database Model to Strawberry Model"""
+
+        return cls(
+            id=strawberry.ID(model.id),
+            log_type=model.log_type.name,
+            log_count=model.log_count,
+            all_users=model.user_count,
+            human_users=model.human_user_count,
+            first_log_date=model.first_log_date,
+            last_log_date=model.last_log_date,
+        )
+
+
+@strawberry.type
+class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
+    """Wikibase Log Month, specific User Type"""
+
+    user_type: str = strawberry.field(description="User Type")
+
+    @classmethod
+    def marshal(
+        cls, model: WikibaseLogMonthUserTypeObservationModel
+    ) -> "WikibaseLogMonthLogTypeStrawberryModel":
+        """Coerce Database Model to Strawberry Model"""
+
+        return cls(
+            id=strawberry.ID(model.id),
+            user_type=model.user_type.name,
+            log_count=model.log_count,
+            all_users=model.user_count,
+            first_log_date=model.first_log_date,
+            last_log_date=model.last_log_date,
+        )
+
+
+@strawberry.type
+class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
+    """Wikibase Log Month"""
+
+    log_type_records: List[WikibaseLogMonthLogTypeStrawberryModel] = strawberry.field(
+        description="Records of Each Type"
+    )
+    user_type_records: List[WikibaseLogMonthUserTypeStrawberryModel] = strawberry.field(
+        description="Records of Each Type"
+    )
+    human_users: int = strawberry.field(
+        description="Distinct (Probably) Human User Count", graphql_type=BigInt
+    )
+
+    @classmethod
+    def marshal(
+        cls, model: WikibaseLogMonthObservationModel
+    ) -> "WikibaseLogMonthStrawberryModel":
+        """Coerce Database Model to Strawberry Model"""
+
+        return cls(
+            id=strawberry.ID(model.id),
+            log_count=model.log_count,
+            all_users=model.user_count,
+            human_users=model.human_user_count,
+            first_log_date=model.first_log_date,
+            last_log_date=model.last_log_date,
+            log_type_records=[
+                WikibaseLogMonthLogTypeStrawberryModel.marshal(r)
+                for r in model.log_type_records
+            ],
+            user_type_records=[
+                WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
+                for r in model.user_type_records
+            ],
+        )
 
 
 @strawberry.type
 class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Log Data Observation"""
+
+    id: strawberry.ID
 
     instance_age: Optional[int] = strawberry.field(
         description="Age of Instance in Days (Estimated from First Log Date)",
@@ -57,7 +149,10 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
         description="Last Log"
     )
 
-    last_month: Optional[WikibaseLogCollectionStrawberryModel] = strawberry.field(
+    first_month: Optional[WikibaseLogMonthStrawberryModel] = strawberry.field(
+        description="First Month's Logs"
+    )
+    last_month: Optional[WikibaseLogMonthStrawberryModel] = strawberry.field(
         description="Last Month's Logs"
     )
 
@@ -71,9 +166,8 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
             model.first_log_date is None
             or model.last_log_date is None
             or model.last_log_user_type is None
-            or model.last_month_log_count is None
-            or model.last_month_user_count is None
-            or model.last_month_human_user_count is None
+            or model.last_month is None
+            # or model.first_month is None
         ):
             raise ValueError(
                 f"Log Observation {model.id}: Expected data when observation returned data"
@@ -100,12 +194,13 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
                 if model.returned_data
                 else None
             ),
+            first_month=(
+                WikibaseLogMonthStrawberryModel.marshal(model.first_month)
+                if model.returned_data and model.first_month is not None
+                else None
+            ),
             last_month=(
-                WikibaseLogCollectionStrawberryModel(
-                    all_users=model.last_month_user_count,
-                    human_users=model.last_month_human_user_count,
-                    log_count=model.last_month_log_count,
-                )
+                WikibaseLogMonthStrawberryModel.marshal(model.last_month)
                 if model.returned_data
                 else None
             ),

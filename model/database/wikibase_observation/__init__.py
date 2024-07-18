@@ -6,8 +6,10 @@ from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationModel,
 )
 from model.database.wikibase_observation.log import (
+    WikibaseLogMonthLogTypeObservationModel,
+    WikibaseLogMonthObservationModel,
+    WikibaseLogMonthUserTypeObservationModel,
     WikibaseLogObservationModel,
-    WikibaseUserType,
 )
 from model.database.wikibase_observation.property import (
     WikibasePropertyPopularityObservationModel,
@@ -22,7 +24,6 @@ from model.database.wikibase_observation.user import (
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_observation.version import (
-    WikibaseSoftwareTypes,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )

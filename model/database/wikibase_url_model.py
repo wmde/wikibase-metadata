@@ -1,21 +1,10 @@
 """Wikibase URL Table"""
 
-import enum
 from sqlalchemy import Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
-
-
-class WikibaseURLTypes(enum.Enum):
-    """Wikibase URL Types"""
-
-    BASE_URL = 1
-    ACTION_QUERY_URL = 2
-    INDEX_QUERY_URL = 3
-    SPARQL_ENDPOINT_URL = 4
-    SPARQL_QUERY_URL = 5
-    SPECIAL_VERSION_URL = 6
+from model.enum import WikibaseURLType
 
 
 class WikibaseURLModel(ModelBase):
@@ -36,7 +25,7 @@ class WikibaseURLModel(ModelBase):
 
     wikibase_id: Mapped[int] = mapped_column(
         "wikibase_id",
-        ForeignKey("wikibase.id", None, False, "observation_wikibase"),
+        ForeignKey(column="wikibase.id", name="observation_wikibase"),
         nullable=False,
     )
     """Wikibase ID"""
@@ -44,8 +33,8 @@ class WikibaseURLModel(ModelBase):
     wikibase: Mapped["WikibaseModel"] = relationship("WikibaseModel", lazy="selectin")
     """Wikibase"""
 
-    url_type: Mapped[WikibaseURLTypes] = mapped_column(
-        "url_type", Enum(WikibaseURLTypes), nullable=False
+    url_type: Mapped[WikibaseURLType] = mapped_column(
+        "url_type", Enum(WikibaseURLType), nullable=False
     )
     """URL Type"""
 

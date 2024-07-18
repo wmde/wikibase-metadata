@@ -1,21 +1,12 @@
 """Wikibase Software Version Table"""
 
 from datetime import datetime
-import enum
 from typing import Optional
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
-
-
-class WikibaseSoftwareTypes(enum.Enum):
-    """Wikibase Software Types"""
-
-    SOFTWARE = 1
-    SKIN = 2
-    EXTENSION = 3
-    LIBRARY = 4
+from model.enum import WikibaseSoftwareType
 
 
 class WikibaseSoftwareVersionModel(ModelBase):
@@ -38,7 +29,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     wikibase_software_version_observation_id: Mapped[int] = mapped_column(
         "wikibase_software_version_observation_id",
         ForeignKey(
-            "wikibase_software_version_observation.id", None, False, "observation"
+            column="wikibase_software_version_observation.id", name="observation"
         ),
         nullable=False,
     )
@@ -53,8 +44,8 @@ class WikibaseSoftwareVersionModel(ModelBase):
     )
     """Software Version Observation"""
 
-    software_type: Mapped[WikibaseSoftwareTypes] = mapped_column(
-        "software_type", Enum(WikibaseSoftwareTypes), nullable=False
+    software_type: Mapped[WikibaseSoftwareType] = mapped_column(
+        "software_type", Enum(WikibaseSoftwareType), nullable=False
     )
     """Software Type"""
 
@@ -77,7 +68,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     # pylint: disable=too-many-arguments
     def __init__(
         self,
-        software_type: WikibaseSoftwareTypes,
+        software_type: WikibaseSoftwareType,
         software_name: str,
         version: str,
         version_hash: Optional[str] = None,

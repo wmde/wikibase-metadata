@@ -3,10 +3,8 @@
 from typing import List
 import strawberry
 
-from model.database import (
-    WikibaseSoftwareTypes,
-    WikibaseSoftwareVersionObservationModel,
-)
+from model.database import WikibaseSoftwareVersionObservationModel
+from model.enum import WikibaseSoftwareType
 from model.strawberry.output.observation.software_version.software_version import (
     WikibaseSoftwareVersionStrawberryModel,
 )
@@ -51,7 +49,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.EXTENSION
+                    if o.software_type == WikibaseSoftwareType.EXTENSION
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -59,7 +57,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.LIBRARY
+                    if o.software_type == WikibaseSoftwareType.LIBRARY
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -67,7 +65,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.SKIN
+                    if o.software_type == WikibaseSoftwareType.SKIN
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -75,7 +73,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareTypes.SOFTWARE
+                    if o.software_type == WikibaseSoftwareType.SOFTWARE
                 ],
                 key=lambda x: x.software_name,
             ),

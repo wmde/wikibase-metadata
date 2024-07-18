@@ -34,7 +34,7 @@ def upgrade() -> None:
                 "SPARQL_ENDPOINT_URL",
                 "SPARQL_QUERY_URL",
                 "SPECIAL_VERSION_URL",
-                name="wikibaseurltypes",
+                name="wikibaseurltype",
             ),
             nullable=False,
         ),
