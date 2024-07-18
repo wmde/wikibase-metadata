@@ -99,6 +99,121 @@ anonymous_usage_statistics:
 fluent_datasources:
   wikibase_datasource:
     type: sqlite
+    assets:
+      alembic_version_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: alembic_version
+        schema_name:
+      wikibase_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase
+        schema_name:
+      wikibase_category_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_category
+        schema_name:
+      wikibase_connectivity_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_connectivity_observation
+        schema_name:
+      wikibase_connectivity_observation_item_relationship_count_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_connectivity_observation_item_relationship_count
+        schema_name:
+      wikibase_connectivity_observation_object_relationship_count_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_connectivity_observation_object_relationship_count
+        schema_name:
+      wikibase_log_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_log_observation
+        schema_name:
+      wikibase_log_observation_month_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_log_observation_month
+        schema_name:
+      wikibase_log_observation_month_type_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_log_observation_month_type
+        schema_name:
+      wikibase_log_observation_month_user_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_log_observation_month_user
+        schema_name:
+      wikibase_property_usage_count_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_property_usage_count
+        schema_name:
+      wikibase_property_usage_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_property_usage_observation
+        schema_name:
+      wikibase_quantity_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_quantity_observation
+        schema_name:
+      wikibase_software_version_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_software_version
+        schema_name:
+      wikibase_software_version_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_software_version_observation
+        schema_name:
+      wikibase_url_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_url
+        schema_name:
+      wikibase_user_group_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_user_group
+        schema_name:
+      wikibase_user_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_user_observation
+        schema_name:
+      wikibase_user_observation_group_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_user_observation_group
+        schema_name:
     connection_string: sqlite:///data/wikibase-data.db
 notebooks:
 include_rendered_content:
