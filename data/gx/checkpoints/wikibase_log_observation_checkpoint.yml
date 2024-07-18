@@ -24,6 +24,12 @@ validations:
       data_asset_name: wikibase_log_observation_table
       options: {}
       batch_slice:
+    expectation_suite_name: wikibase_observation_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_log_observation_table
+      options: {}
+      batch_slice:
     expectation_suite_name: wikibase_log_observation_expectation_suite
   - batch_request:
       datasource_name: wikibase_datasource

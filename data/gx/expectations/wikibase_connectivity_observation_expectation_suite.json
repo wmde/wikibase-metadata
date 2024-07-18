@@ -2,18 +2,6 @@
 	"data_asset_type": null,
 	"expectation_suite_name": "wikibase_connectivity_observation_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
-		{
-			"expectation_type": "expect_column_to_exist",
-			"kwargs": { "column": "wikibase_id" },
-			"meta": {}
-		},
-		{
-			"expectation_type": "expect_column_to_exist",
-			"kwargs": { "column": "anything" },
-			"meta": {}
-		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "date" }, "meta": {} },
 		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "link_count" },
