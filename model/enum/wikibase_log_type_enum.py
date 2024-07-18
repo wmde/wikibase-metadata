@@ -10,79 +10,82 @@ class WikibaseLogType(enum.Enum):
 
     ABUSE_FILTER_CREATE = 1
     ABUSE_FILTER_MODIFIY = 2
-    APPROVE = 3
-    COMMENTS_CREATE = 4
-    COMMENTS_DELETE = 5
-    CONSUMER_APPROVE = 6
-    CONSUMER_CREATE = 7
-    CONSUMER_DISABLE = 8
-    CONSUMER_PROPOSE = 9
-    CONSUMER_REJECT = 10
-    CONSUMER_UPDATE = 11
-    CONTENT_MODEL_CREATE = 12
-    CONTENT_MODEL_CHANGE = 13
-    DATADUMP_DELETE = 14
-    DATADUMP_GENERATE = 15
-    EVENT_DELETE = 16
-    EXPORT_PDF = 17
-    FEEDBACK_CREATE = 18
-    FEEDBACK_FEATURE = 19
-    FEEDBACK_FLAG = 20
-    FEEDBACK_FLAG_INAPPROPRIATE = 21
-    FEEDBACK_HIDE = 22
-    FEEDBACK_NO_ACTION = 23
-    FEEDBACK_RESOLVE = 24
-    IMPORT = 25
-    IMPORT_HTML = 26
-    INTERWIKI_CREATE = 27
-    INTERWIKI_DELETE = 28
-    INTERWIKI_EDIT = 29
-    ITEM_CREATE = 30
-    ITEM_DELETE = 31
-    MEDIA_APPROVE = 32
-    MEDIA_OVERWRITE = 33
-    MEDIA_REVERT = 34
-    MEDIA_UPLOAD = 35
-    MOVE = 36
-    PAGE_CREATE = 37
-    PAGE_DELETE = 38
-    PAGE_TRANSLATE = 39
-    PAGE_TRANSLATE_DELETE_FOK = 40
-    PAGE_TRANSLATE_DELETE_LOK = 41
-    PAGE_TRANSLATE_MARK = 42
-    PAGE_TRANSLATE_UNMARK = 43
-    PAGE_UPDATE_LANGUAGE = 44
-    PATROL = 45
-    PATROL_AUTO = 46
-    PROFILE = 47
-    PROPERTY_CREATE = 48
-    PROPERTY_DELETE = 49
-    PROTECT = 50
-    REDIRECT_DELETE = 51
-    REDIRECT_MOVE = 52
-    REVISION_DELETE = 53
-    TABLE_CREATE = 54
-    TABLE_DELETE = 55
-    TAG_CREATE = 56
-    THANK = 57
-    UNAPPROVE = 58
-    UNDO_DELETE = 59
-    UNPROTECT = 60
-    USER_BLOCK = 61
-    USER_UNBLOCK = 62
-    USER_CREATE = 63
-    USER_DELETE = 64
-    USER_MERGE = 65
-    USER_RENAME = 66
-    USER_RIGHTS = 67
-    WIKI_FARM = 68
-    WIKI_GROUP_DELETE = 69
-    WIKI_NAMESPACES = 70
-    WIKI_RIGHTS = 71
-    WIKI_SETTINGS = 72
+    ACHIEVEMENT_BADGE = 3
+    APPROVE = 4
+    COMMENTS_CREATE = 5
+    COMMENTS_DELETE = 6
+    CONSUMER_APPROVE = 7
+    CONSUMER_CREATE = 8
+    CONSUMER_DISABLE = 9
+    CONSUMER_PROPOSE = 10
+    CONSUMER_REJECT = 11
+    CONSUMER_UPDATE = 12
+    CONFIG_UPDATE = 13
+    CONTENT_MODEL_CREATE = 14
+    CONTENT_MODEL_CHANGE = 15
+    DATADUMP_DELETE = 16
+    DATADUMP_GENERATE = 17
+    EVENT_DELETE = 18
+    EXPORT_PDF = 19
+    FEEDBACK_CREATE = 20
+    FEEDBACK_FEATURE = 21
+    FEEDBACK_FLAG = 22
+    FEEDBACK_FLAG_INAPPROPRIATE = 23
+    FEEDBACK_HIDE = 24
+    FEEDBACK_NO_ACTION = 25
+    FEEDBACK_RESOLVE = 26
+    IMPORT = 27
+    IMPORT_HTML = 28
+    INTERWIKI_CREATE = 29
+    INTERWIKI_DELETE = 30
+    INTERWIKI_EDIT = 31
+    ITEM_CREATE = 32
+    ITEM_DELETE = 33
+    LOCK_FLOW_LOCK_TOPIC = 34
+    MEDIA_APPROVE = 35
+    MEDIA_OVERWRITE = 36
+    MEDIA_REVERT = 37
+    MEDIA_UPLOAD = 38
+    MOVE = 39
+    PAGE_CREATE = 40
+    PAGE_DELETE = 41
+    PAGE_TRANSLATE = 42
+    PAGE_TRANSLATE_DELETE_FOK = 43
+    PAGE_TRANSLATE_DELETE_LOK = 44
+    PAGE_TRANSLATE_MARK = 45
+    PAGE_TRANSLATE_UNMARK = 46
+    PAGE_UPDATE_LANGUAGE = 47
+    PATROL = 48
+    PATROL_AUTO = 49
+    PROFILE = 50
+    PROPERTY_CREATE = 51
+    PROPERTY_DELETE = 52
+    PROTECT = 54
+    REDIRECT_DELETE = 55
+    REDIRECT_MOVE = 56
+    REVISION_DELETE = 57
+    TABLE_CREATE = 58
+    TABLE_DELETE = 59
+    TAG_CREATE = 60
+    THANK = 61
+    UNAPPROVE = 62
+    UNDO_DELETE = 63
+    UNPROTECT = 64
+    USER_BLOCK = 65
+    USER_UNBLOCK = 66
+    USER_CREATE = 67
+    USER_DELETE = 68
+    USER_MERGE = 69
+    USER_RENAME = 70
+    USER_RIGHTS = 71
+    WIKI_FARM = 72
+    WIKI_GROUP_DELETE = 73
+    WIKI_NAMESPACES = 74
+    WIKI_RIGHTS = 75
+    WIKI_SETTINGS = 76
 
 
-MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png|svg)", re.IGNORECASE)
+MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png|svg|wav|webm)", re.IGNORECASE)
 ITEM_REGEX = re.compile(r"Item:Q\d+")
 PROPERTY_REGEX = re.compile(r"(Property|WikibaseProperty):P\d+")
 
@@ -111,12 +114,31 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.ABUSE_FILTER_CREATE
         case ("abusefilter", "modify"):
             log_type = WikibaseLogType.ABUSE_FILTER_MODIFIY
+        case (
+            ("achievementbadges", "be-thanked")
+            | ("achievementbadges", "contribs-sunday")
+            | ("achievementbadges", "contribs-monday")
+            | ("achievementbadges", "contribs-tuesday")
+            | ("achievementbadges", "contribs-thursday")
+            | ("achievementbadges", "contribs-friday")
+            | ("achievementbadges", "contribs-saturday")
+            | ("achievementbadges", "create-page")
+            | ("achievementbadges", "edit-page")
+            | ("achievementbadges", "edit-size")
+            | ("achievementbadges", "long-user-page")
+            | ("achievementbadges", "sign-up")
+            | ("achievementbadges", "thanks")
+            | ("achievementbadges", "visual-edit")
+        ):
+            log_type = WikibaseLogType.ACHIEVEMENT_BADGE
         case ("approval", "approve"):
             log_type = WikibaseLogType.APPROVE
         case ("comments", "add"):
             log_type = WikibaseLogType.COMMENTS_CREATE
         case ("comments", "delete"):
             log_type = WikibaseLogType.COMMENTS_DELETE
+        case ("stable", "config"):
+            log_type = WikibaseLogType.CONFIG_UPDATE
         case ("mwoauthconsumer", "approve"):
             log_type = WikibaseLogType.CONSUMER_APPROVE
         case ("mwoauthconsumer", "create-owner-only"):
@@ -167,6 +189,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.INTERWIKI_DELETE
         case ("interwiki", "iw_edit"):
             log_type = WikibaseLogType.INTERWIKI_EDIT
+        case ("lock", "flow-lock-topic"):
+            log_type = WikibaseLogType.LOCK_FLOW_LOCK_TOPIC
         case ("approval", "approvefile"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_APPROVE
@@ -176,9 +200,13 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("upload", "revert"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_REVERT
-        case ("upload", "upload"):
+        case ("upload", "upload") | ("remoteupload", "file"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_UPLOAD
+        case ("remoteupload", "stashedfile"):
+            if "remotetitle" in record["params"]:
+                if MEDIA_REGEX.match(record["params"]["remotetitle"]):
+                    log_type = WikibaseLogType.MEDIA_UPLOAD
         case ("move", "move"):
             log_type = WikibaseLogType.MOVE
         case ("pagetranslation", "prioritylanguages"):
