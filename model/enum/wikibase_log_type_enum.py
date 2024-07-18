@@ -8,48 +8,56 @@ class WikibaseLogType(enum.Enum):
     """Wikibase Log Type"""
 
     ABUSE_FILTER_CREATE = 1
-    ABUSE_FILTER_MODIFIY = 43
-    COMMENTS_CREATE = 2
-    COMMENTS_DELETE = 3
-    CONSUMER_APPROVE = 4
-    CONSUMER_CREATE = 5
-    CONSUMER_PROPOSE = 6
-    CONSUMER_REJECT = 7
-    CONSUMER_UPDATE = 39
-    EVENT_DELETE = 37
-    IMPORT = 11
-    INTERWIKI_CREATE = 12
-    INTERWIKI_DELETE = 13
-    INTERWIKI_EDIT = 14
-    ITEM_CREATE = 15
-    ITEM_DELETE = 16
-    MEDIA_OVERWRITE = 8
-    MEDIA_REVERT = 9
-    MEDIA_UPLOAD = 10
-    MOVE = 17
-    PAGE_CREATE = 18
-    PAGE_DELETE = 19
-    PATROL = 20
-    PATROL_AUTO = 21
-    PROFILE = 42
-    PROPERTY_CREATE = 22
-    PROPERTY_DELETE = 23
-    PROTECT = 24
-    REVISION_DELETE = 38
-    TAG_CREATE = 25
-    UNDO_DELETE = 26
-    UNPROTECT = 41
-    USER_BLOCK = 27
-    USER_UNBLOCK = 28
-    USER_CREATE = 29
-    USER_DELETE = 30
-    USER_MERGE = 31
-    USER_RENAME = 32
-    USER_RIGHTS = 33
-    WIKI_FARM = 40
-    WIKI_NAMESPACES = 34
-    WIKI_RIGHTS = 35
-    WIKI_SETTINGS = 36
+    ABUSE_FILTER_MODIFIY = 2
+    COMMENTS_CREATE = 3
+    COMMENTS_DELETE = 4
+    CONSUMER_APPROVE = 5
+    CONSUMER_CREATE = 6
+    CONSUMER_PROPOSE = 7
+    CONSUMER_REJECT = 8
+    CONSUMER_UPDATE = 9
+    EVENT_DELETE = 10
+    EXPORT_PDF = 11
+    FEEDBACK_CREATE = 12
+    FEEDBACK_FEATURE = 13
+    FEEDBACK_FLAG = 14
+    FEEDBACK_FLAG_INAPPROPRIATE = 15
+    FEEDBACK_HIDE = 16
+    FEEDBACK_NO_ACTION = 17
+    FEEDBACK_RESOLVE = 18
+    IMPORT = 19
+    INTERWIKI_CREATE = 20
+    INTERWIKI_DELETE = 21
+    INTERWIKI_EDIT = 22
+    ITEM_CREATE = 23
+    ITEM_DELETE = 24
+    MEDIA_OVERWRITE = 25
+    MEDIA_REVERT = 26
+    MEDIA_UPLOAD = 27
+    MOVE = 28
+    PAGE_CREATE = 29
+    PAGE_DELETE = 30
+    PATROL = 31
+    PATROL_AUTO = 32
+    PROFILE = 33
+    PROPERTY_CREATE = 34
+    PROPERTY_DELETE = 35
+    PROTECT = 36
+    REVISION_DELETE = 37
+    TAG_CREATE = 38
+    UNDO_DELETE = 39
+    UNPROTECT = 40
+    USER_BLOCK = 41
+    USER_UNBLOCK = 42
+    USER_CREATE = 43
+    USER_DELETE = 44
+    USER_MERGE = 45
+    USER_RENAME = 46
+    USER_RIGHTS = 47
+    WIKI_FARM = 48
+    WIKI_NAMESPACES = 49
+    WIKI_RIGHTS = 50
+    WIKI_SETTINGS = 51
 
 
 MEDIA_REGEX = re.compile(r".*\.(flv|jpg|png)", re.IGNORECASE)
@@ -97,6 +105,22 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.CONSUMER_UPDATE
         case ("delete", "event"):
             log_type = WikibaseLogType.EVENT_DELETE
+        case ("pdf", "book"):
+            log_type = WikibaseLogType.EXPORT_PDF
+        case ("articlefeedbackv5", "create"):
+            log_type = WikibaseLogType.FEEDBACK_CREATE
+        case ("articlefeedbackv5", "feature"):
+            log_type = WikibaseLogType.FEEDBACK_FEATURE
+        case ("articlefeedbackv5", "flag"):
+            log_type = WikibaseLogType.FEEDBACK_FLAG
+        case ("articlefeedbackv5", "inappropriate"):
+            log_type = WikibaseLogType.FEEDBACK_FLAG_INAPPROPRIATE
+        case ("articlefeedbackv5", "hide"):
+            log_type = WikibaseLogType.FEEDBACK_HIDE
+        case ("articlefeedbackv5", "noaction"):
+            log_type = WikibaseLogType.FEEDBACK_NO_ACTION
+        case ("articlefeedbackv5", "resolve"):
+            log_type = WikibaseLogType.FEEDBACK_RESOLVE
         case ("import", "upload"):
             log_type = WikibaseLogType.IMPORT
         case ("interwiki", "iw_add"):
