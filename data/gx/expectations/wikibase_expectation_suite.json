@@ -43,7 +43,37 @@
 			"kwargs": { "column": "organization" },
 			"meta": {}
 		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "organization", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "organization", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "organization", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "country" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "country", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "country", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "country", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "region" }, "meta": {} },
 		{
 			"expectation_type": "expect_column_values_to_not_be_null",
@@ -84,6 +114,21 @@
 		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "description" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "description", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "description", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "description", "regex": "[ \t\r\n]+$" },
 			"meta": {}
 		}
 	],

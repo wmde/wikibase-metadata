@@ -71,8 +71,38 @@
 		},
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "version" }, "meta": {} },
 		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "version_hash" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version_hash", "regex": "[ \t\r\n]+$" },
 			"meta": {}
 		},
 		{
