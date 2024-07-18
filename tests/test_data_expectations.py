@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+import pytest
 import sys
 from typing import List
 from great_expectations.data_context import FileDataContext
@@ -19,7 +20,7 @@ def pytest_generate_tests(metafunc):
         # Generate test cases based on the test_data list
         metafunc.parametrize("checkpoint_name", sorted(checkpoints))
 
-
+@pytest.mark.data
 def test_data_expectations(checkpoint_name: str):
     """Test Data Expectations with Great Expectations"""
 

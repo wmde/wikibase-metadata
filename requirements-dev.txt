@@ -2,3 +2,4 @@ alembic
 black
 great-expectations
 pylint
+pytest
