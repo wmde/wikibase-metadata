@@ -44,6 +44,21 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "software_name", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_compound_columns_to_be_unique",
 			"kwargs": {
 				"column_list": [
