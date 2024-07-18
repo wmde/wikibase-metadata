@@ -1,3 +1,4 @@
 alembic
 black
+great-expectations
 pylint
