@@ -44,7 +44,7 @@ class WikibaseLogType(enum.Enum):
     PAGE_TRANSLATE_DELETE_LOK = 35
     PAGE_TRANSLATE_MARK = 36
     PAGE_TRANSLATE_UNMARK = 37
-    PAGE_UPDATE_LANGUAGE=38
+    PAGE_UPDATE_LANGUAGE = 38
     PATROL = 39
     PATROL_AUTO = 40
     PROFILE = 41
@@ -165,23 +165,23 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("move", "move"):
             log_type = WikibaseLogType.MOVE
         case ("pagetranslation", "prioritylanguages"):
-            if 'languages' in record['params']:
+            if "languages" in record["params"]:
                 log_type = WikibaseLogType.PAGE_TRANSLATE
             else:
                 raise NotImplementedError(record)
         case ("pagetranslation", "deletefok"):
-                log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_FOK
+            log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_FOK
         case ("pagetranslation", "deletelok"):
-                log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK
+            log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK
         case ("pagetranslation", "mark"):
-                log_type = WikibaseLogType.PAGE_TRANSLATE_MARK
+            log_type = WikibaseLogType.PAGE_TRANSLATE_MARK
         case ("pagetranslation", "unmark"):
-                log_type = WikibaseLogType.PAGE_TRANSLATE_UNMARK
+            log_type = WikibaseLogType.PAGE_TRANSLATE_UNMARK
         case ("pagelang", "pagelang"):
-                if 'oldlanguage' in record["params"] and 'newlanguage' in record["params"]:
-                    log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
-                else:
-                    raise NotImplementedError(record)
+            if "oldlanguage" in record["params"] and "newlanguage" in record["params"]:
+                log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
+            else:
+                raise NotImplementedError(record)
         case ("patrol", "autopatrol"):
             log_type = WikibaseLogType.PATROL_AUTO
         case ("patrol", "patrol"):
