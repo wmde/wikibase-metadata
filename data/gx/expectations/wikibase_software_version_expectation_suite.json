@@ -4,7 +4,17 @@
 	"expectations": [
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_software_version_observation_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "wikibase_software_version_observation_id" },
 			"meta": {}
 		},
@@ -14,7 +24,17 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "software_type" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "software_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "software_name" },
 			"meta": {}
 		},

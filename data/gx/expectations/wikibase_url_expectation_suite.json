@@ -4,7 +4,17 @@
 	"expectations": [
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "wikibase_id" },
 			"meta": {}
 		},
@@ -13,7 +23,17 @@
 			"kwargs": { "column": "url_type" },
 			"meta": {}
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "url" }, "meta": {} }
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "url_type" },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "url" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "url" },
+			"meta": {}
+		}
 	],
 	"ge_cloud_id": null,
 	"meta": { "great_expectations_version": "0.18.19" }

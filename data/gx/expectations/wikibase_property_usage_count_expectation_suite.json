@@ -4,7 +4,17 @@
 	"expectations": [
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_property_usage_observation_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "wikibase_property_usage_observation_id" },
 			"meta": {}
 		},
@@ -14,7 +24,17 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "property_url" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "usage_count" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "usage_count" },
 			"meta": {}
 		}

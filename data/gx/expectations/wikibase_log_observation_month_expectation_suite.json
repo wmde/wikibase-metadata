@@ -4,6 +4,11 @@
 	"expectations": [
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "first_log_date" },
 			"meta": {}
@@ -19,7 +24,17 @@
 			"meta": {}
 		},
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "log_count" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "user_count" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "user_count" },
 			"meta": {}
 		},

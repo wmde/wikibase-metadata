@@ -4,7 +4,17 @@
 	"expectations": [
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
 			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "wikibase_name" },
 			"meta": {}
 		},
@@ -15,7 +25,17 @@
 		},
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "country" }, "meta": {} },
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "region" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "region" },
+			"meta": {}
+		},
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "valid" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "valid" },
+			"meta": {}
+		},
 		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "wikibase_category_id" },
