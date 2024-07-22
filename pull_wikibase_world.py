@@ -64,7 +64,6 @@ async def pull_wikibase_world():
                             base_url=record.get("url"),
                             sparql_query_url=record.get("sparqlUIUrl"),
                             sparql_endpoint_url=record.get("sparqlEndpointUrl"),
-                            region="",
                         )
                     )
             await async_session.commit()
