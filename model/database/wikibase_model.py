@@ -42,7 +42,7 @@ class WikibaseModel(ModelBase):
     country: Mapped[Optional[str]] = mapped_column("country", String, nullable=True)
     """Country"""
 
-    region: Mapped[str] = mapped_column("region", String, nullable=False)
+    region: Mapped[str] = mapped_column("region", String, nullable=True)
     """Region"""
 
     category_id: Mapped[int] = mapped_column(
@@ -232,9 +232,9 @@ class WikibaseModel(ModelBase):
         self,
         wikibase_name: str,
         base_url: str,
-        region: str,
         organization: Optional[str] = None,
         country: Optional[str] = None,
+        region: Optional[str] = None,
         sparql_query_url: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
     ):
