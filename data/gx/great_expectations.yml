@@ -213,6 +213,11 @@ fluent_datasources:
         batch_metadata: {}
         table_name: wikibase_user_observation_group
         schema_name:
+      valid_wikibases:
+        type: query
+        order_by: []
+        batch_metadata: {}
+        query: SELECT * FROM wikibase WHERE valid
     connection_string: sqlite:///data/wikibase-data.db
 notebooks:
 include_rendered_content:

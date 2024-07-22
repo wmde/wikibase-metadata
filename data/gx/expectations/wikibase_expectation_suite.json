@@ -76,11 +76,6 @@
 		},
 		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "region" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
-			"kwargs": { "column": "region" },
-			"meta": {}
-		},
-		{
 			"expectation_type": "expect_column_values_to_not_match_regex",
 			"kwargs": { "column": "region", "regex": "^[ \t\r\n]*$" },
 			"meta": {}

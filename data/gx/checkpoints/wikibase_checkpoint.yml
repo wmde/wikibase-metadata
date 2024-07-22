@@ -27,6 +27,18 @@ validations:
     expectation_suite_name: wikibase_expectation_suite
   - batch_request:
       datasource_name: wikibase_datasource
+      data_asset_name: valid_wikibases
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: valid_wikibases
+      options: {}
+      batch_slice:
+    expectation_suite_name: valid_wikibase_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
       data_asset_name: wikibase_category_table
       options: {}
       batch_slice:
