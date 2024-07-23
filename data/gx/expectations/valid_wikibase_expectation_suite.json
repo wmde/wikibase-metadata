@@ -19,6 +19,11 @@
 		},
 		{
 			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "wikibase_category_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
 			"kwargs": { "column": "description" },
 			"meta": {}
 		}
