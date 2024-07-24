@@ -1,3 +1,5 @@
+# Data Metrics
+
 ## Individual Wikibase Instances:
 
 ### Manually Added Attributes:
@@ -71,7 +73,7 @@ Results:
 
 All observations return `observationDate`, the date the observation was attempted, and `returnedData`, a boolean to signify if the observation attempt was successful. All data fields are null if `returnedData` is false.
 
-For each type of observation, the most recent successful observation -- maximum `observationDate` where `returnedData = True` -- is returned as `mostRecent`, and all observations, successful or not, are returned in a collection labelled `allObservations`. `mostRecent` will be `null` if there are no successful observations.
+For each type of observation, the most recent successful observation -- maximum `observationDate` where `returnedData == True` -- is returned as `mostRecent`, and all observations, successful or not, are returned in a collection labelled `allObservations`. `mostRecent` will be `null` if there are no successful observations.
 
 The relationship between `mostRecent` and `allObservations` is demonstrated below in Connectivity Observations, but omitted elsewhere for brevity.
 
@@ -350,6 +352,7 @@ Using SPARQL, we query for the total number of items, lexemes, and properties in
 - Total Items
 - Total Lexemes
 - Total Properties
+- Total Triples
 
 #### Example:
 
