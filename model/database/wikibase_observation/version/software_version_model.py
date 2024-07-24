@@ -45,7 +45,9 @@ class WikibaseSoftwareVersionModel(ModelBase):
     """Software Version Observation"""
 
     software_type: Mapped[WikibaseSoftwareType] = mapped_column(
-        "software_type", Enum(WikibaseSoftwareType), nullable=False
+        "software_type",
+        Enum(WikibaseSoftwareType).with_variant(String, "sqlite"),
+        nullable=False,
     )
     """Software Type"""
 
