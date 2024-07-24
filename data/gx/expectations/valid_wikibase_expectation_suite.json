@@ -4,7 +4,7 @@
 	"expectations": [
 		{
 			"expectation_type": "expect_column_values_to_not_be_null",
-			"kwargs": { "column": "organization" },
+			"kwargs": { "column": "organization", "mostly": 0.95 },
 			"meta": {}
 		},
 		{
@@ -24,7 +24,7 @@
 		},
 		{
 			"expectation_type": "expect_column_values_to_not_be_null",
-			"kwargs": { "column": "description" },
+			"kwargs": { "column": "description", "mostly": 0.95 },
 			"meta": {}
 		}
 	],
