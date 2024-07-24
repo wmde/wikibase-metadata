@@ -1,0 +1,54 @@
+name: wikibase_log_observation_checkpoint
+config_version: 1.0
+template_name:
+module_name: great_expectations.checkpoint
+class_name: Checkpoint
+run_name_template:
+expectation_suite_name:
+batch_request: {}
+action_list:
+  - name: store_validation_result
+    action:
+      class_name: StoreValidationResultAction
+  - name: store_evaluation_params
+    action:
+      class_name: StoreEvaluationParametersAction
+  - name: update_data_docs
+    action:
+      class_name: UpdateDataDocsAction
+evaluation_parameters: {}
+runtime_configuration: {}
+validations:
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_log_observation_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_observation_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_log_observation_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_log_observation_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_log_observation_month_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_log_observation_month_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_log_observation_month_type_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_log_observation_month_type_expectation_suite
+  - batch_request:
+      datasource_name: wikibase_datasource
+      data_asset_name: wikibase_log_observation_month_user_table
+      options: {}
+      batch_slice:
+    expectation_suite_name: wikibase_log_observation_month_user_expectation_suite
+profilers: []
+ge_cloud_id:
+expectation_suite_ge_cloud_id:

@@ -1,0 +1,69 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_property_usage_count_expectation_suite",
+	"expectations": [
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_property_usage_observation_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "wikibase_property_usage_observation_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "property_url" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "property_url" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "property_url", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "property_url", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "property_url", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_compound_columns_to_be_unique",
+			"kwargs": { "column_list": ["wikibase_property_usage_observation_id", "property_url"] },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "usage_count" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "usage_count" },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}

@@ -1,0 +1,60 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_user_group_expectation_suite",
+	"expectations": [
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "group_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "group_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "group_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "group_name", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "group_name", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "group_name", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "default" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "default" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": { "column": "default", "value_set": [0, 1] },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}

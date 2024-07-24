@@ -1,0 +1,26 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "alembic_version_expectation_suite",
+	"expectations": [
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "version_num" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "version_num" },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_table_row_count_to_equal", "kwargs": { "value": 1 }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_match_regex",
+			"kwargs": { "column": "version_num", "regex": "^[0-9a-g]{12}$" },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": {
+		"great_expectations_version": "0.18.19"
+	}
+}

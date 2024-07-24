@@ -1,0 +1,50 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_observation_expectation_suite",
+	"expectations": [
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "wikibase_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "anything" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "anything" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": { "column": "anything", "value_set": [0, 1] },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "date" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "date" },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}

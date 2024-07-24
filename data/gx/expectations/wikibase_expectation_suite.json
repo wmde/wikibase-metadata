@@ -1,0 +1,132 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_expectation_suite",
+	"expectations": [
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "wikibase_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "wikibase_name", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "wikibase_name", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "wikibase_name", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "organization" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "organization", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "organization", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "organization", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "country" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "country", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "country", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "country", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "region" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "region", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "region", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "region", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "valid" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "valid" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": { "column": "valid", "value_set": [0, 1] },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_category_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "description" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "description", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "description", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "description", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}

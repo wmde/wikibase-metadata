@@ -1,0 +1,54 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_category_expectation_suite",
+	"expectations": [
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "category" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "category" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "category" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": {
+				"column": "category",
+				"value_set": [
+					"CULTURAL_AND_HISTORICAL",
+					"DIGITAL_COLLECTIONS_AND_ARCHIVES",
+					"EDUCATIONAL_AND_REFERENCE_COLLECTIONS",
+					"EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+					"FICTIONAL_AND_CREATIVE_WORKS",
+					"LEGAL_AND_POLITICAL",
+					"LINGUISTIC_AND_LITERARY",
+					"MATHEMATICS_AND_SCIENCE",
+					"SEMANTIC_AND_PROSOPOGRAPHIC_DATA",
+					"SOCIAL_AND_ADVOCACY",
+					"TECHNOLOGY_AND_OPEN_SOURCE"
+				]
+			},
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}

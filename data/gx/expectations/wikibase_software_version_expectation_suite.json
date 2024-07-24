@@ -1,0 +1,124 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_software_version_expectation_suite",
+	"expectations": [
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_be_unique",
+			"kwargs": { "column": "id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "wikibase_software_version_observation_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "wikibase_software_version_observation_id" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "software_type" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "software_type" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": {
+				"column": "software_type",
+				"value_set": ["SOFTWARE", "SKIN", "EXTENSION", "LIBRARY"]
+			},
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "software_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "software_name" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "software_name", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_compound_columns_to_be_unique",
+			"kwargs": {
+				"column_list": [
+					"wikibase_software_version_observation_id",
+					"software_type",
+					"software_name"
+				]
+			},
+			"meta": {}
+		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "version" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "version_hash" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]*$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]+" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_values_to_not_match_regex",
+			"kwargs": { "column": "version_hash", "regex": "[ \t\r\n]+$" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "version_date" },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}

@@ -8,7 +8,7 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 
 def get_log_param_string(
     limit: Optional[int] = None, oldest: bool = False, offset: Optional[str] = None
-):
+) -> str:
     """Log Page URL Parameters"""
 
     parameters: dict = {

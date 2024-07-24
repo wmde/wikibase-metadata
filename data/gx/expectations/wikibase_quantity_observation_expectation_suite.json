@@ -1,0 +1,28 @@
+{
+	"data_asset_type": null,
+	"expectation_suite_name": "wikibase_quantity_observation_expectation_suite",
+	"expectations": [
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "total_items" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "total_properties" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "total_lexemes" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_to_exist",
+			"kwargs": { "column": "total_triples" },
+			"meta": {}
+		}
+	],
+	"ge_cloud_id": null,
+	"meta": { "great_expectations_version": "0.18.19" }
+}
