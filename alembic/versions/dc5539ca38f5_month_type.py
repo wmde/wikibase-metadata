@@ -65,7 +65,7 @@ def upgrade() -> None:
                 "WIKI_RIGHTS",
                 "WIKI_SETTINGS",
                 name="wikibaselogtype",
-            ),
+            ).with_variant(sa.String, "sqlite"),
             nullable=False,
         ),
         sa.Column("first_log_date", sa.DateTime(timezone=True), nullable=False),

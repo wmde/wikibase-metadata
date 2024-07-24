@@ -1,7 +1,7 @@
 """Wikibase Log Observation Table"""
 
 from datetime import datetime
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer, UniqueConstraint
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from model.database.base import ModelBase
@@ -33,7 +33,9 @@ class WikibaseLogMonthUserTypeObservationModel(ModelBase):
     )
 
     user_type: Mapped[WikibaseUserType] = mapped_column(
-        "user_type", Enum(WikibaseUserType), nullable=False
+        "user_type",
+        Enum(WikibaseUserType).with_variant(String, "sqlite"),
+        nullable=False,
     )
     """Log Type"""
 

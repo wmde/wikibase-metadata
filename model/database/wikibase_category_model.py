@@ -1,7 +1,7 @@
 """Wikibase Category Table"""
 
 from typing import List
-from sqlalchemy import Enum, Integer, UniqueConstraint
+from sqlalchemy import Enum, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -29,6 +29,8 @@ class WikibaseCategoryModel(ModelBase):
     """Wikibases"""
 
     category: Mapped[WikibaseCategory] = mapped_column(
-        "category", Enum(WikibaseCategory), nullable=False
+        "category",
+        Enum(WikibaseCategory).with_variant(String, "sqlite"),
+        nullable=False,
     )
     """Category"""

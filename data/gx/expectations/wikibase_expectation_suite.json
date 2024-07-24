@@ -101,6 +101,17 @@
 			"kwargs": { "column": "valid", "value_set": [0, 1] },
 			"meta": {}
 		},
+		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "test" }, "meta": {} },
+		{
+			"expectation_type": "expect_column_values_to_not_be_null",
+			"kwargs": { "column": "test" },
+			"meta": {}
+		},
+		{
+			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"kwargs": { "column": "test", "value_set": [0, 1] },
+			"meta": {}
+		},
 		{
 			"expectation_type": "expect_column_to_exist",
 			"kwargs": { "column": "wikibase_category_id" },
