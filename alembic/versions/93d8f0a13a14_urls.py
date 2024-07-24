@@ -35,7 +35,7 @@ def upgrade() -> None:
                 "SPARQL_QUERY_URL",
                 "SPECIAL_VERSION_URL",
                 name="wikibaseurltype",
-            ),
+            ).with_variant(sa.String, "sqlite"),
             nullable=False,
         ),
         sa.Column("url", sa.String(), nullable=False),
