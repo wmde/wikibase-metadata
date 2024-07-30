@@ -123,7 +123,7 @@ async def create_log_month(
         log_type_record.first_log_date = min(log.log_date for log in log_type_logs)
         log_type_record.last_log_date = max(log.log_date for log in log_type_logs)
         log_type_record.user_count = len(
-            type_users := {log.user for log in log_type_logs}
+            type_users := {log.user for log in log_type_logs if log.user is not None}
         )
         log_type_record.human_user_count = len(
             [u for u in type_users if user_type_dict.get(u) == WikibaseUserType.USER]
