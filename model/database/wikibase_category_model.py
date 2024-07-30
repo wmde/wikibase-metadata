@@ -1,7 +1,7 @@
 """Wikibase Category Table"""
 
 from typing import List
-from sqlalchemy import Enum, Integer, String, UniqueConstraint
+from sqlalchemy import Enum, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
