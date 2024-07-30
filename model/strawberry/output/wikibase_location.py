@@ -17,7 +17,4 @@ class WikibaseLocationStrawberryModel:
     def marshal(cls, model: WikibaseModel) -> "WikibaseLocationStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
 
-        return cls(
-            country=model.country,
-            region=model.region,
-        )
+        return cls(country=model.country, region=model.region)

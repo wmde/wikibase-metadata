@@ -49,11 +49,7 @@ class Page(Generic[T]):
 
     @classmethod
     def marshal(
-        cls,
-        page_number: int,
-        page_size: int,
-        total_count: int,
-        page_data: List[T],
+        cls, page_number: int, page_size: int, total_count: int, page_data: List[T]
     ) -> "Page":
         """Marshal Data into Page"""
         return cls(

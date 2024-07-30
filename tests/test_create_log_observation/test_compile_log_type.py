@@ -16,13 +16,7 @@ from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
         ("delete", "delete", "Former Test Page", {}, WikibaseLogType.PAGE_DELETE),
         ("abusefilter", "create", "", {}, WikibaseLogType.ABUSE_FILTER_CREATE),
         ("abusefilter", "modify", "", {}, WikibaseLogType.ABUSE_FILTER_MODIFIY),
-        (
-            "achievementbadges",
-            "be-thanked",
-            "",
-            {},
-            WikibaseLogType.ACHIEVEMENT_BADGE,
-        ),
+        ("achievementbadges", "be-thanked", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
         (
             "achievementbadges",
             "contribs-sunday",
@@ -65,27 +59,9 @@ from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
             {},
             WikibaseLogType.ACHIEVEMENT_BADGE,
         ),
-        (
-            "achievementbadges",
-            "create-page",
-            "",
-            {},
-            WikibaseLogType.ACHIEVEMENT_BADGE,
-        ),
-        (
-            "achievementbadges",
-            "edit-page",
-            "",
-            {},
-            WikibaseLogType.ACHIEVEMENT_BADGE,
-        ),
-        (
-            "achievementbadges",
-            "edit-size",
-            "",
-            {},
-            WikibaseLogType.ACHIEVEMENT_BADGE,
-        ),
+        ("achievementbadges", "create-page", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
+        ("achievementbadges", "edit-page", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
+        ("achievementbadges", "edit-size", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
         (
             "achievementbadges",
             "long-user-page",
@@ -95,13 +71,7 @@ from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
         ),
         ("achievementbadges", "sign-up", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
         ("achievementbadges", "thanks", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
-        (
-            "achievementbadges",
-            "visual-edit",
-            "",
-            {},
-            WikibaseLogType.ACHIEVEMENT_BADGE,
-        ),
+        ("achievementbadges", "visual-edit", "", {}, WikibaseLogType.ACHIEVEMENT_BADGE),
         ("approval", "approve", "", {}, WikibaseLogType.APPROVE),
         ("comments", "add", "", {}, WikibaseLogType.COMMENTS_CREATE),
         ("comments", "delete", "", {}, WikibaseLogType.COMMENTS_DELETE),
@@ -147,13 +117,7 @@ from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
             WikibaseLogType.FEEDBACK_FLAG_INAPPROPRIATE,
         ),
         ("articlefeedbackv5", "hide", "", {}, WikibaseLogType.FEEDBACK_HIDE),
-        (
-            "articlefeedbackv5",
-            "noaction",
-            "",
-            {},
-            WikibaseLogType.FEEDBACK_NO_ACTION,
-        ),
+        ("articlefeedbackv5", "noaction", "", {}, WikibaseLogType.FEEDBACK_NO_ACTION),
         ("articlefeedbackv5", "resolve", "", {}, WikibaseLogType.FEEDBACK_RESOLVE),
         ("import", "upload", "", {}, WikibaseLogType.IMPORT),
         ("html2wiki", "import", "", {}, WikibaseLogType.IMPORT_HTML),
@@ -170,13 +134,7 @@ from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
             WikibaseLogType.MEDIA_APPROVE,
         ),
         ("upload", "overwrite", "slides.pdf", {}, WikibaseLogType.MEDIA_OVERWRITE),
-        (
-            "upload",
-            "overwrite",
-            "",
-            {"img_sha1": ""},
-            WikibaseLogType.MEDIA_OVERWRITE,
-        ),
+        ("upload", "overwrite", "", {"img_sha1": ""}, WikibaseLogType.MEDIA_OVERWRITE),
         ("upload", "revert", "slides.pdf", {}, WikibaseLogType.MEDIA_REVERT),
         ("upload", "revert", "", {"img_sha1": ""}, WikibaseLogType.MEDIA_REVERT),
         ("upload", "upload", "slides.pdf", {}, WikibaseLogType.MEDIA_UPLOAD),
@@ -213,13 +171,7 @@ from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
             WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK,
         ),
         ("pagetranslation", "mark", "", {}, WikibaseLogType.PAGE_TRANSLATE_MARK),
-        (
-            "pagetranslation",
-            "unmark",
-            "",
-            {},
-            WikibaseLogType.PAGE_TRANSLATE_UNMARK,
-        ),
+        ("pagetranslation", "unmark", "", {}, WikibaseLogType.PAGE_TRANSLATE_UNMARK),
         (
             "pagelang",
             "pagelang",
@@ -303,12 +255,7 @@ def test_compile_log_type_success(
         ("pagelang", "pagelang", "", {"newlanguage": "a"}),
     ],
 )
-def test_compile_log_type_failure(
-    log_type: str,
-    action: str,
-    title: str,
-    params: dict,
-):
+def test_compile_log_type_failure(log_type: str, action: str, title: str, params: dict):
     """Test Log Type"""
 
     record = {"type": log_type, "action": action, "title": title, "params": params}

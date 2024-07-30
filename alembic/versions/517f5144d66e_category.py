@@ -50,10 +50,7 @@ def upgrade() -> None:
             sa.Column("wikibase_category_id", sa.Integer(), nullable=True)
         )
         batch_op.create_foreign_key(
-            "wikibase_category",
-            "wikibase_category",
-            ["wikibase_category_id"],
-            ["id"],
+            "wikibase_category", "wikibase_category", ["wikibase_category_id"], ["id"]
         )
     # ### end Alembic commands ###
 

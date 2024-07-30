@@ -15,9 +15,7 @@ class WikibaseLogMonthUserTypeObservationModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint(
-            "log_month_observation_id",
-            "user_type",
-            name="unique_observation_user_type",
+            "log_month_observation_id", "user_type", name="unique_observation_user_type"
         ),
     )
 

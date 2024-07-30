@@ -43,9 +43,7 @@ class Query:
         return await get_wikibase_list(page_number, page_size)
 
     @strawberry.field(description="Year of First Log Date")
-    async def aggregate_created(
-        self,
-    ) -> List[WikibaseYearCreatedAggregated]:
+    async def aggregate_created(self) -> List[WikibaseYearCreatedAggregated]:
         """Aggregated Creation Year"""
 
         return await get_aggregate_created()
@@ -91,9 +89,7 @@ class Query:
         return await get_aggregate_property_popularity(page_number, page_size)
 
     @strawberry.field(description="Aggregated Quantity")
-    async def aggregate_quantity(
-        self,
-    ) -> WikibaseQuantityAggregate:
+    async def aggregate_quantity(self) -> WikibaseQuantityAggregate:
         """Aggregated Users"""
 
         return await get_aggregate_quantity()
@@ -127,9 +123,7 @@ class Query:
         )
 
     @strawberry.field(description="Aggregated Users")
-    async def aggregate_users(
-        self,
-    ) -> WikibaseUserAggregate:
+    async def aggregate_users(self) -> WikibaseUserAggregate:
         """Aggregated Users"""
 
         return await get_aggregate_users()

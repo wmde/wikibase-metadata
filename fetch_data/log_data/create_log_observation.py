@@ -84,8 +84,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
 
 async def create_log_month(
-    wikibase: WikibaseModel,
-    log_list: List[WikibaseLogRecord],
+    wikibase: WikibaseModel, log_list: List[WikibaseLogRecord]
 ) -> WikibaseLogMonthObservationModel:
     """Create Log Month"""
 

@@ -13,12 +13,7 @@ class WikibaseCategoryModel(ModelBase):
 
     __tablename__ = "wikibase_category"
 
-    __table_args__ = (
-        UniqueConstraint(
-            "category",
-            name="unique_category",
-        ),
-    )
+    __table_args__ = (UniqueConstraint("category", name="unique_category"),)
 
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
