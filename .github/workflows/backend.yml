@@ -63,3 +63,5 @@ jobs:
           pip install -r requirements.txt -r requirements-dev.txt
       - name: Run tests (except data)
         run: pytest ./ -m "not data" --cov=.
+        env:
+          PYTHONPATH: .
