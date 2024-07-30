@@ -1,5 +1,6 @@
 """Test get_month_log_list_from_url"""
 
+from urllib.error import HTTPError
 import pytest
 from fetch_data.sparql_data import create_quantity_observation
 
@@ -19,3 +20,21 @@ async def test_create_quantity_observation_success(mocker):
     )
     success = await create_quantity_observation(1)
     assert success
+
+
+@pytest.mark.asyncio
+async def test_create_quantity_observation_failure(mocker):
+    """Test"""
+
+    mocker.patch(
+        "fetch_data.sparql_data.create_quantity_data_observation.get_results",
+        side_effect=[
+            {"results": {"bindings": [{"count": {"value": 1}}]}},  # Properties
+            {"results": {"bindings": [{"count": {"value": 2}}]}},  # Items
+            HTTPError(
+                url="query.test.url/sparql", code=500, msg="Error", hdrs="", fp=None
+            ),
+        ],
+    )
+    success = await create_quantity_observation(1)
+    assert success is False
