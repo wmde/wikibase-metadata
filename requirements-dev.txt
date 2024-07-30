@@ -1,5 +1,6 @@
 alembic
 black
+freezegun
 great-expectations
 pylint
 pytest
