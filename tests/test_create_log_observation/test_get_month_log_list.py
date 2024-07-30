@@ -170,5 +170,5 @@ def test_get_month_log_list_from_url_oldest_one_pull(mocker):
     assert newest_log.log_date == datetime(2020, 3, 31)
     assert newest_log.age() == 1431
     oldest_log = min(results, key=lambda x: x.log_date)
-    assert oldest_log.log_date == datetime(2020, 3,1)
+    assert oldest_log.log_date == datetime(2020, 3, 1)
     assert oldest_log.age() == 1461

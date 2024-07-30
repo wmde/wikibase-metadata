@@ -69,7 +69,6 @@ async def create_log_observation(wikibase_id: int) -> bool:
             last_month_log_list = get_month_log_list(
                 wikibase.action_api_url.url, comparison_date=datetime.today()
             )
-
             observation.last_month = await create_log_month(
                 wikibase, last_month_log_list
             )

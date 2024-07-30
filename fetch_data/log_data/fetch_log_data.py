@@ -39,11 +39,7 @@ def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
 def get_month_log_list(
     api_url: str, comparison_date: datetime, oldest: bool = False
 ) -> List[WikibaseLogRecord]:
-    """
-    Get Log List from api_url\n
-    DOES NOT LIMIT TO 1 MONTH DATA;
-    queries until at least 1 month of data found and returns all results
-    """
+    """Get Log List from api_url, limit to within 30 days of the comparison date"""
 
     data: List[WikibaseLogRecord] = []
     limit = 500
