@@ -1,4 +1,4 @@
-"""Test get_month_log_list_from_url"""
+"""Test create_quantity_observation"""
 
 from urllib.error import HTTPError
 import pytest
