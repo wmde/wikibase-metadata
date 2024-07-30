@@ -46,35 +46,32 @@ async def create_log_observation(wikibase_id: int) -> bool:
             )[0]
             observation.first_log_date = oldest_log.log_date
 
-            print("FETCHING FIRST MONTH'S LOGS")
-            initial_log_list = get_month_log_list(
-                wikibase.action_api_url.url,
-                comparison_date=oldest_log.log_date,
-                oldest=True,
-            )
-            first_month_log_list = [
-                l
-                for l in initial_log_list
-                if abs((l.log_date - oldest_log.log_date).days) <= 30
-            ]
-
-            print("FETCHING LAST MONTH'S LOGS")
-            most_recent_log_list = get_month_log_list(
-                wikibase.action_api_url.url, comparison_date=datetime.today()
-            )
-            last_month_log_list = [l for l in most_recent_log_list if l.age() <= 30]
-
-            most_recent_log = max(most_recent_log_list, key=lambda x: x.id)
+            print("FETCHING NEWEST LOG")
+            most_recent_log = get_log_list_from_url(
+                wikibase.action_api_url.url + get_log_param_string(limit=1)
+            )[0]
             observation.last_log_date = most_recent_log.log_date
             observation.last_log_user_type = get_user_type(
                 wikibase, most_recent_log.user
             )
 
-            observation.last_month = await create_log_month(
-                wikibase, last_month_log_list
+            print("FETCHING FIRST MONTH'S LOGS")
+            first_month_log_list = get_month_log_list(
+                wikibase.action_api_url.url,
+                comparison_date=oldest_log.log_date,
+                oldest=True,
             )
             observation.first_month = await create_log_month(
                 wikibase, first_month_log_list
+            )
+
+            print("FETCHING LAST MONTH'S LOGS")
+            last_month_log_list = get_month_log_list(
+                wikibase.action_api_url.url, comparison_date=datetime.today()
+            )
+
+            observation.last_month = await create_log_month(
+                wikibase, last_month_log_list
             )
 
             observation.returned_data = True

@@ -78,4 +78,6 @@ def get_month_log_list(
         if should_query:
             next_from = query_data["continue"]["lecontinue"]
 
-    return data
+    return [
+        datum for datum in data if abs((comparison_date - datum.log_date).days) <= 30
+    ]
