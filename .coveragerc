@@ -13,4 +13,3 @@ exclude_also =
     raise AssertionError
     raise ValueError
     def __str__
-    def __init__
