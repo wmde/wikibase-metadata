@@ -1,3 +1,5 @@
+"""Test get_log_list_from_url"""
+
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -7,6 +9,8 @@ from tests.test_create_log_observation.assert_log_record import assert_log_recor
 
 
 def test_get_log_list_from_url_empty(mocker):
+    """Test No Result Scenario"""
+
     mocker.patch(
         "fetch_data.log_data.fetch_log_data.fetch_api_data",
         return_value={"query": {"logevents": []}},
@@ -16,6 +20,8 @@ def test_get_log_list_from_url_empty(mocker):
 
 @freeze_time("2024-03-01")
 def test_get_log_list_from_url_single(mocker):
+    """Test Single Result Scenario"""
+
     mocker.patch(
         "fetch_data.log_data.fetch_log_data.fetch_api_data",
         return_value={
@@ -41,6 +47,8 @@ def test_get_log_list_from_url_single(mocker):
 
 @freeze_time("2024-03-01")
 def test_get_log_list_from_url_several(mocker):
+    """Test Several Result Scenario"""
+
     mock_log_types: list[tuple[str, str]] = [
         ("managetags", "create"),
         ("thanks", "thank"),

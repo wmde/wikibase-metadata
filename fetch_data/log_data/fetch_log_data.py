@@ -41,7 +41,7 @@ def get_month_log_list(
 ) -> List[WikibaseLogRecord]:
     """
     Get Log List from api_url\n
-    DOES NOT LIMIT TO 1 MONTH DATA; 
+    DOES NOT LIMIT TO 1 MONTH DATA;
     queries until at least 1 month of data found and returns all results
     """
 

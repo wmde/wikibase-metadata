@@ -1,11 +1,12 @@
-from datetime import datetime, timedelta
+"""Assert WikibaseLogRecord Matches Expectations"""
+
+from datetime import datetime
 from typing import Optional
 
-from freezegun import freeze_time
-from fetch_data.log_data.fetch_log_data import get_log_list_from_url
 from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
 
 
+# pylint: disable=too-many-arguments
 def assert_log_record(
     log: WikibaseLogRecord,
     expected_id: int,
@@ -14,6 +15,8 @@ def assert_log_record(
     expected_user: Optional[str],
     expected_log_type_name: str,
 ):
+    """Assert WikibaseLogRecord Matches Expectations"""
+
     assert log.id == expected_id
     assert log.log_date == expected_log_date
     assert log.age() == expected_age
