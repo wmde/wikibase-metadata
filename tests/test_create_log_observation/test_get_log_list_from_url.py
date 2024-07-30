@@ -3,7 +3,7 @@ from typing import Optional
 
 from freezegun import freeze_time
 from fetch_data.log_data.fetch_log_data import get_log_list_from_url
-from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
+from tests.test_create_log_observation.assert_log_record import assert_log_record
 
 
 def test_get_log_list_from_url_empty(mocker):
@@ -12,21 +12,6 @@ def test_get_log_list_from_url_empty(mocker):
         return_value={"query": {"logevents": []}},
     )
     assert get_log_list_from_url("test.url") == []
-
-
-def assert_log_record(
-    log: WikibaseLogRecord,
-    expected_id: int,
-    expected_log_date: datetime,
-    expected_age: int,
-    expected_user: Optional[str],
-    expected_log_type_name: str,
-):
-    assert log.id == expected_id
-    assert log.log_date == expected_log_date
-    assert log.age() == expected_age
-    assert log.log_type.name == expected_log_type_name
-    assert log.user == expected_user
 
 
 @freeze_time("2024-03-01")
@@ -87,10 +72,10 @@ def test_get_log_list_from_url_several(mocker):
     )
     results = get_log_list_from_url("test.url")
     assert len(results) == 7
-    assert_log_record(results[0], 1, datetime(2024, 1, 1), 60, 'User:A', "TAG_CREATE")
+    assert_log_record(results[0], 1, datetime(2024, 1, 1), 60, "User:A", "TAG_CREATE")
     assert_log_record(results[1], 2, datetime(2024, 1, 8), 53, None, "THANK")
-    assert_log_record(results[2], 3, datetime(2024, 1, 15), 46, 'User:B', "UNAPPROVE")
-    assert_log_record(results[3], 4, datetime(2024, 1, 22), 39, 'User:C', "TAG_CREATE")
-    assert_log_record(results[4], 5, datetime(2024, 1, 29), 32, 'User:A', "THANK")
+    assert_log_record(results[2], 3, datetime(2024, 1, 15), 46, "User:B", "UNAPPROVE")
+    assert_log_record(results[3], 4, datetime(2024, 1, 22), 39, "User:C", "TAG_CREATE")
+    assert_log_record(results[4], 5, datetime(2024, 1, 29), 32, "User:A", "THANK")
     assert_log_record(results[5], 6, datetime(2024, 2, 5), 25, None, "UNAPPROVE")
-    assert_log_record(results[6], 7, datetime(2024, 2, 12), 18, 'User:B', "TAG_CREATE")
+    assert_log_record(results[6], 7, datetime(2024, 2, 12), 18, "User:B", "TAG_CREATE")
