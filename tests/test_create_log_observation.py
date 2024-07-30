@@ -1,7 +1,7 @@
 from fetch_data.log_data.fetch_log_data import get_log_param_string
 
 
-def test_get_log_url():
+def test_get_log_param_string():
     assert (
         get_log_param_string()
         == "?action=query&format=json&list=logevents&formatversion=2&ledir=older"
