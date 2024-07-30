@@ -48,8 +48,8 @@ async def test_create_log_observation(mocker):
             },  # last month
         ],
     )
-    results = await create_log_observation(1)
-    assert results
+    success = await create_log_observation(1)
+    assert success
 
 
 @freeze_time("2024-03-01")
@@ -60,8 +60,8 @@ async def test_create_log_observation_error(mocker):
     mocker.patch(
         "fetch_data.log_data.fetch_log_data.fetch_api_data", side_effect=[ReadTimeout()]
     )
-    results = await create_log_observation(1)
-    assert results is False
+    success = await create_log_observation(1)
+    assert success is False
 
 
 @freeze_time("2024-03-01")
@@ -104,5 +104,5 @@ async def test_create_log_observation_no_last_month(mocker):
             },  # last month
         ],
     )
-    results = await create_log_observation(1)
-    assert results
+    success = await create_log_observation(1)
+    assert success
