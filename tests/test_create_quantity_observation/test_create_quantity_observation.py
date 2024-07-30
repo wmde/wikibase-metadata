@@ -6,6 +6,8 @@ from fetch_data.sparql_data import create_quantity_observation
 
 
 @pytest.mark.asyncio
+@pytest.mark.quantity
+@pytest.mark.sparql
 async def test_create_quantity_observation_success(mocker):
     """Test"""
 
@@ -23,6 +25,8 @@ async def test_create_quantity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.quantity
+@pytest.mark.sparql
 async def test_create_quantity_observation_failure(mocker):
     """Test"""
 

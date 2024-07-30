@@ -10,6 +10,7 @@ from fetch_data.log_data import create_log_observation
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
+@pytest.mark.log
 async def test_create_log_observation(mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
@@ -54,6 +55,7 @@ async def test_create_log_observation(mocker):
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
+@pytest.mark.log
 async def test_create_log_observation_error(mocker):
     """Test One-Pull Per Month, Error Returned Scenario"""
 
@@ -66,6 +68,7 @@ async def test_create_log_observation_error(mocker):
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
+@pytest.mark.log
 async def test_create_log_observation_no_last_month(mocker):
     """Test One-Pull Per Month, No Data In Range Returned Scenario"""
 

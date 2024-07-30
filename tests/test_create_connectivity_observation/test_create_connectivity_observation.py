@@ -7,6 +7,8 @@ from fetch_data.sparql_data import create_connectivity_observation
 
 
 @pytest.mark.asyncio
+@pytest.mark.connectivity
+@pytest.mark.sparql
 @pytest.mark.parametrize(
     ["links"],
     [
@@ -49,6 +51,8 @@ async def test_create_connectivity_observation_success(
 
 
 @pytest.mark.asyncio
+@pytest.mark.connectivity
+@pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(mocker):
     """Test"""
 
@@ -78,6 +82,8 @@ async def test_create_connectivity_observation_success_complex(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.connectivity
+@pytest.mark.sparql
 async def test_create_connectivity_observation_failure(mocker):
     """Test"""
 

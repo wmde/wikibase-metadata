@@ -3,10 +3,12 @@
 from datetime import datetime, timedelta
 
 from freezegun import freeze_time
+import pytest
 from fetch_data.log_data.fetch_log_data import get_month_log_list
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.log
 def test_get_month_log_list_from_url_one_pull(mocker):
     """Test One-Pull, Newest Logs Scenario"""
 
@@ -47,6 +49,7 @@ def test_get_month_log_list_from_url_one_pull(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.log
 def test_get_month_log_list_from_url_two_pulls(mocker):
     """Test Two-Pull, Newest Logs Scenario"""
 
@@ -87,6 +90,7 @@ def test_get_month_log_list_from_url_two_pulls(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.log
 def test_get_month_log_list_from_url_more_pulls(mocker):
     """Test More-Pull, Newest Logs Scenario"""
 
@@ -135,6 +139,7 @@ def test_get_month_log_list_from_url_more_pulls(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.log
 def test_get_month_log_list_from_url_oldest_one_pull(mocker):
     """Test One-Pull, Oldest Logs Scenario"""
 

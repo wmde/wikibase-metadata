@@ -4,10 +4,12 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from freezegun import freeze_time
+import pytest
 from fetch_data.log_data.fetch_log_data import get_log_list_from_url
 from tests.test_create_log_observation.assert_log_record import assert_log_record
 
 
+@pytest.mark.log
 def test_get_log_list_from_url_empty(mocker):
     """Test No Result Scenario"""
 
@@ -19,6 +21,7 @@ def test_get_log_list_from_url_empty(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.log
 def test_get_log_list_from_url_single(mocker):
     """Test Single Result Scenario"""
 
@@ -46,6 +49,7 @@ def test_get_log_list_from_url_single(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.log
 def test_get_log_list_from_url_several(mocker):
     """Test Several Result Scenario"""
 
