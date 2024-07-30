@@ -4,7 +4,7 @@ import json
 import requests
 
 
-def fetch_api_data(url: str) -> list[dict]:
+def fetch_api_data(url: str) -> dict:
     """Fetch User Data"""
 
     print(f"Querying {url}")
