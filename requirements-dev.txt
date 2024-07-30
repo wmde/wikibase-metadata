@@ -4,5 +4,6 @@ freezegun
 great-expectations
 pylint
 pytest
+pytest-asyncio
 pytest-cov
 pytest-mock
