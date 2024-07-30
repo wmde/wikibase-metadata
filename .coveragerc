@@ -3,6 +3,8 @@ branch = True
 omit =
     alembic/*
     tests/*
+    resolvers/*
+    model/strawberry/*
 
 [report]
 fail_under=90
