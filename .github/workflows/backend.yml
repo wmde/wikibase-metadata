@@ -48,6 +48,8 @@ jobs:
           pip install -r requirements.txt -r requirements-dev.txt
       - name: Analysing the database with great expectations
         run: pytest ./ -m data
+        env:
+          PYTHONPATH: .
 
   test-backend:
     runs-on: ubuntu-latest
