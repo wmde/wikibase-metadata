@@ -21,7 +21,7 @@ from model.database import (
 )
 
 
-async def create_connectivity_data_observation(wikibase_id: int) -> bool:
+async def create_connectivity_observation(wikibase_id: int) -> bool:
     """Create Connectivity Data Observation"""
 
     async with get_async_session() as async_session:
