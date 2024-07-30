@@ -3,3 +3,4 @@ black
 great-expectations
 pylint
 pytest
+pytest-cov
