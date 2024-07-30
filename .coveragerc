@@ -1,0 +1,16 @@
+[run]
+branch = True
+omit =
+    alembic/*
+    tests/*
+
+[report]
+fail_under=90
+
+; Regexes for lines to exclude from consideration
+exclude_also =
+    ; Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise ValueError
+    def __str__
+    def __init__
