@@ -67,3 +67,4 @@ jobs:
         run: pytest ./ -m "not data" --cov=.
         env:
           PYTHONPATH: .
+          SETTINGS_FILE: test-settings.ini
