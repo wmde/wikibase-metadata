@@ -63,7 +63,7 @@ def upgrade() -> None:
                 "WIKI_RIGHTS",
                 "WIKI_SETTINGS",
                 name="wikibaselogtype",
-            ).with_variant(sa.String, "sqlite"),
+            ),
             existing_nullable=False,
         )
     with op.batch_alter_table("wikibase_log_observation_month_user") as batch_op:
@@ -122,7 +122,7 @@ def downgrade() -> None:
                 "WIKI_RIGHTS",
                 "WIKI_SETTINGS",
                 name="wikibaselogtype",
-            ).with_variant(sa.String, "sqlite"),
+            ),
             type_=sa.VARCHAR(length=16),
             existing_nullable=False,
         )

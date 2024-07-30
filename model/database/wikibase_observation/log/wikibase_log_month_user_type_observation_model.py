@@ -33,9 +33,7 @@ class WikibaseLogMonthUserTypeObservationModel(ModelBase):
     )
 
     user_type: Mapped[WikibaseUserType] = mapped_column(
-        "user_type",
-        Enum(WikibaseUserType).with_variant(String, "sqlite"),
-        nullable=False,
+        "user_type", Enum(WikibaseUserType), nullable=False
     )
     """Log Type"""
 

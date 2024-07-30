@@ -31,9 +31,7 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
     """Most Recent Log Date"""
 
     last_log_user_type: Mapped[Optional[WikibaseUserType]] = mapped_column(
-        "last_log_user_type",
-        Enum(WikibaseUserType).with_variant(String, "sqlite"),
-        nullable=True,
+        "last_log_user_type", Enum(WikibaseUserType), nullable=True
     )
     """Most Recent Log - User or Bot?"""
 

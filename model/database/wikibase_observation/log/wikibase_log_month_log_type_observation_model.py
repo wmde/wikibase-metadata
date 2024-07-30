@@ -33,7 +33,7 @@ class WikibaseLogMonthLogTypeObservationModel(ModelBase):
     )
 
     log_type: Mapped[WikibaseLogType] = mapped_column(
-        "log_type", Enum(WikibaseLogType).with_variant(String, "sqlite"), nullable=False
+        "log_type", Enum(WikibaseLogType), nullable=False
     )
     """Log Type"""
 

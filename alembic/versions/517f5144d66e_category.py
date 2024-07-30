@@ -39,7 +39,7 @@ def upgrade() -> None:
                 "SOCIAL_AND_ADVOCACY",
                 "TECHNOLOGY_AND_OPEN_SOURCE",
                 name="wikibasecategories",
-            ).with_variant(sa.String, "sqlite"),
+            ),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),

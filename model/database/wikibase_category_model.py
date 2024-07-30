@@ -29,8 +29,6 @@ class WikibaseCategoryModel(ModelBase):
     """Wikibases"""
 
     category: Mapped[WikibaseCategory] = mapped_column(
-        "category",
-        Enum(WikibaseCategory).with_variant(String, "sqlite"),
-        nullable=False,
+        "category", Enum(WikibaseCategory), nullable=False
     )
     """Category"""

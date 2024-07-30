@@ -34,7 +34,7 @@ class WikibaseURLModel(ModelBase):
     """Wikibase"""
 
     url_type: Mapped[WikibaseURLType] = mapped_column(
-        "url_type", Enum(WikibaseURLType).with_variant(String, "sqlite"), nullable=False
+        "url_type", Enum(WikibaseURLType), nullable=False
     )
     """URL Type"""
 
