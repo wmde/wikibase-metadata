@@ -4,15 +4,7 @@ import os
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_software_version_observation
-
-
-class MockResponse:
-    status_code: int
-    content: bytes
-
-    def __init__(self, status_code: int, content: bytes):
-        self.content = content
-        self.status_code = status_code
+from tests.utils import MockResponse
 
 
 DATA_DIRECTORY = "tests/test_create_software_version_observation/data"
