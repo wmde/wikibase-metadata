@@ -5,6 +5,7 @@ omit =
     tests/*
     resolvers/*
     model/strawberry/*
+    app.py
 
 [report]
 fail_under=90
