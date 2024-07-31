@@ -7,7 +7,7 @@ from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
 from fetch_data import create_log_observation
-from tests.utils import MockResponse,ParsedUrl
+from tests.utils import MockResponse, ParsedUrl
 
 
 @freeze_time("2024-03-01")
@@ -82,7 +82,9 @@ async def test_create_log_observation_no_last_month(mocker):
                 "timestamp": (datetime(2024, 1, 1) - timedelta(hours=i * 24)).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": "User:A" if i % 3 == 0 else "User:B" if i % 2 == 0 else "User:C",
+                "user": (
+                    "User:A" if i % 3 == 0 else "User:B" if i % 2 == 0 else "User:C"
+                ),
                 "type": "thanks",
                 "action": "thank",
             }
@@ -136,7 +138,7 @@ async def test_create_log_observation_no_last_month(mocker):
                 if "User:A" in query.params.get("ususers"):
                     users.append({"name": "User:A", "groups": ["*", "users", "admin"]})
                 if "User:B" in query.params.get("ususers"):
-                    users.append({"name": "User:B", 'invalid': True})
+                    users.append({"name": "User:B", "invalid": True})
                 if "User:C" in query.params.get("ususers"):
                     users.append({"name": "User:C", "groups": ["*", "users", "bot"]})
                 return MockResponse(200, json.dumps({"query": {"users": users}}))
