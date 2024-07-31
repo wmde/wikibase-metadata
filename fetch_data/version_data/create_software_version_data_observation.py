@@ -179,6 +179,8 @@ def get_software_version_from_row(
         is not None
     ):
         version = [s.strip() for s in version_tag.strings][0]
+    else:
+        raise NotImplementedError()
 
     assert version is not None, f"Could Not Find Version: {row.prettify()}"
 
