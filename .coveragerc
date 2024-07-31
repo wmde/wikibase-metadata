@@ -13,5 +13,6 @@ fail_under=90
 exclude_also =
     ; Don't complain if tests don't hit defensive assertion code:
     raise AssertionError
+    raise NotImplementedError
     raise ValueError
     def __str__
