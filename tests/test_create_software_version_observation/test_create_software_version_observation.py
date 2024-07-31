@@ -1,6 +1,7 @@
 """Test create_property_popularity_observation"""
 
 import os
+from urllib.error import HTTPError
 import pytest
 from fetch_data import create_software_version_observation
 
@@ -19,7 +20,7 @@ DATA_DIRECTORY = "tests/test_create_software_version_observation/data"
 
 @pytest.mark.asyncio
 @pytest.mark.version
-async def test_create_software_version_observation(mocker):
+async def test_create_software_version_observation_success(mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
     with open(
@@ -32,3 +33,24 @@ async def test_create_software_version_observation(mocker):
         )
         success = await create_software_version_observation(1)
         assert success
+
+
+@pytest.mark.asyncio
+@pytest.mark.version
+async def test_create_software_version_observation_failure(mocker):
+    """Test One-Pull Per Month, Data Returned Scenario"""
+
+    mocker.patch(
+        "fetch_data.version_data.create_software_version_data_observation.requests.get",
+        side_effect=[
+            HTTPError(
+                url="query.test.url/wiki/Special:Version",
+                code=500,
+                msg="Error",
+                hdrs="",
+                fp=None,
+            )
+        ],
+    )
+    success = await create_software_version_observation(1)
+    assert success is False

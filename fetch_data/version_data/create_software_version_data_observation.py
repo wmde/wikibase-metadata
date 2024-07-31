@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from typing import List
+from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
 from data import get_async_session
@@ -26,26 +27,29 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
 
         observation = WikibaseSoftwareVersionObservationModel()
 
-        result = requests.get(
-            wikibase.special_version_url.url,
-            headers={"Cookie": "mediawikilanguage=en"},
-            timeout=10,
-        )
-        soup = BeautifulSoup(result.content, "html.parser")
+        try:
+            result = requests.get(
+                wikibase.special_version_url.url,
+                headers={"Cookie": "mediawikilanguage=en"},
+                timeout=10,
+            )
+            soup = BeautifulSoup(result.content, "html.parser")
 
-        observation.returned_data = True
+            observation.returned_data = True
 
-        installed_software_versions = compile_installed_software_versions(soup)
-        observation.software_versions.extend(installed_software_versions)
+            installed_software_versions = compile_installed_software_versions(soup)
+            observation.software_versions.extend(installed_software_versions)
 
-        skin_versions = compile_skin_versions(soup)
-        observation.software_versions.extend(skin_versions)
+            skin_versions = compile_skin_versions(soup)
+            observation.software_versions.extend(skin_versions)
 
-        extensions_versions = compile_extension_versions(soup)
-        observation.software_versions.extend(extensions_versions)
+            extensions_versions = compile_extension_versions(soup)
+            observation.software_versions.extend(extensions_versions)
 
-        library_versions = compile_library_versions(soup)
-        observation.software_versions.extend(library_versions)
+            library_versions = compile_library_versions(soup)
+            observation.software_versions.extend(library_versions)
+        except HTTPError:
+            observation.returned_data = False
 
         wikibase.software_version_observations.append(observation)
 
