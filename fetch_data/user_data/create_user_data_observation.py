@@ -44,16 +44,19 @@ async def create_user_observation(wikibase_id: int) -> bool:
                 observation.user_group_observations.append(
                     WikibaseUserObservationGroupModel(
                         user_group=(
-                            await async_session.scalars(
-                                select(WikibaseUserGroupModel).where(
-                                    WikibaseUserGroupModel.group_name == group
+                            (
+                                await async_session.scalars(
+                                    select(WikibaseUserGroupModel).where(
+                                        WikibaseUserGroupModel.group_name == group
+                                    )
                                 )
+                            ).one_or_none()
+                            or WikibaseUserGroupModel(
+                                group_name=group,
+                                wikibase_default_group=(
+                                    group in WIKIBASE_DEFAULT_USER_GROUPS
+                                ),
                             )
-                        ).one_or_none()
-                        or WikibaseUserGroupModel(
-                            group_name=group,
-                            wikibase_default_group=group
-                            in WIKIBASE_DEFAULT_USER_GROUPS,
                         ),
                         user_count=count,
                         group_implicit=group in site_implicit_user_groups,
