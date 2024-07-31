@@ -1,7 +1,7 @@
 """Test compile log type"""
 
 import pytest
-from model.enum.wikibase_log_type_enum import WikibaseLogType, compile_log_type
+from model.enum import WikibaseLogType, compile_log_type
 
 
 @pytest.mark.log

@@ -2,9 +2,7 @@
 
 import os
 import pytest
-from fetch_data.version_data.create_software_version_data_observation import (
-    create_software_version_observation,
-)
+from fetch_data import create_software_version_observation
 
 
 class MockResponse:

@@ -2,7 +2,7 @@
 
 from urllib.error import HTTPError
 import pytest
-from fetch_data.sparql_data import create_quantity_observation
+from fetch_data import create_quantity_observation
 
 
 @pytest.mark.asyncio
