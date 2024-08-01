@@ -18,7 +18,7 @@ from model.database import (
 from model.database.wikibase_model import WikibaseModel
 
 
-async def create_user_data_observation(wikibase_id: int) -> bool:
+async def create_user_observation(wikibase_id: int) -> bool:
     """Create User Data Observation"""
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
@@ -44,16 +44,19 @@ async def create_user_data_observation(wikibase_id: int) -> bool:
                 observation.user_group_observations.append(
                     WikibaseUserObservationGroupModel(
                         user_group=(
-                            await async_session.scalars(
-                                select(WikibaseUserGroupModel).where(
-                                    WikibaseUserGroupModel.group_name == group
+                            (
+                                await async_session.scalars(
+                                    select(WikibaseUserGroupModel).where(
+                                        WikibaseUserGroupModel.group_name == group
+                                    )
                                 )
+                            ).one_or_none()
+                            or WikibaseUserGroupModel(
+                                group_name=group,
+                                wikibase_default_group=(
+                                    group in WIKIBASE_DEFAULT_USER_GROUPS
+                                ),
                             )
-                        ).one_or_none()
-                        or WikibaseUserGroupModel(
-                            group_name=group,
-                            wikibase_default_group=group
-                            in WIKIBASE_DEFAULT_USER_GROUPS,
                         ),
                         user_count=count,
                         group_implicit=group in site_implicit_user_groups,

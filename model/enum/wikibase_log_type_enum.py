@@ -154,9 +154,13 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("contentmodel", "change"):
             if "oldmodel" in record["params"] and "newmodel" in record["params"]:
                 log_type = WikibaseLogType.CONTENT_MODEL_CHANGE
+            else:
+                pass
         case ("contentmodel", "new"):
             if "oldmodel" in record["params"] and "newmodel" in record["params"]:
                 log_type = WikibaseLogType.CONTENT_MODEL_CREATE
+            else:
+                pass
         case ("datadump", "delete"):
             log_type = WikibaseLogType.DATADUMP_DELETE
         case ("datadump", "generate"):
@@ -194,24 +198,38 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("approval", "approvefile"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_APPROVE
+            else:
+                pass
         case ("upload", "overwrite"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_OVERWRITE
+            else:
+                pass
         case ("upload", "revert"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_REVERT
+            else:
+                pass
         case ("upload", "upload") | ("remoteupload", "file"):
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_UPLOAD
+            else:
+                pass
         case ("remoteupload", "stashedfile"):
             if "remotetitle" in record["params"]:
                 if MEDIA_REGEX.match(record["params"]["remotetitle"]):
                     log_type = WikibaseLogType.MEDIA_UPLOAD
+                else:
+                    pass
+            else:
+                pass
         case ("move", "move"):
             log_type = WikibaseLogType.MOVE
         case ("pagetranslation", "prioritylanguages"):
             if "languages" in record["params"]:
                 log_type = WikibaseLogType.PAGE_TRANSLATE
+            else:
+                pass
         case ("pagetranslation", "deletefok"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_FOK
         case ("pagetranslation", "deletelok"):
@@ -223,6 +241,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("pagelang", "pagelang"):
             if "oldlanguage" in record["params"] and "newlanguage" in record["params"]:
                 log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
+            else:
+                pass
         case ("patrol", "autopatrol"):
             log_type = WikibaseLogType.PATROL_AUTO
         case ("patrol", "patrol"):

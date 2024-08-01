@@ -39,7 +39,7 @@ def upgrade() -> None:
                 "SOCIAL_AND_ADVOCACY",
                 "TECHNOLOGY_AND_OPEN_SOURCE",
                 name="wikibasecategories",
-            ).with_variant(sa.String, "sqlite"),
+            ),
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),
@@ -50,10 +50,7 @@ def upgrade() -> None:
             sa.Column("wikibase_category_id", sa.Integer(), nullable=True)
         )
         batch_op.create_foreign_key(
-            "wikibase_category",
-            "wikibase_category",
-            ["wikibase_category_id"],
-            ["id"],
+            "wikibase_category", "wikibase_category", ["wikibase_category_id"], ["id"]
         )
     # ### end Alembic commands ###
 

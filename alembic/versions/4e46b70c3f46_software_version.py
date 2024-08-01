@@ -42,7 +42,7 @@ def upgrade() -> None:
             "software_type",
             sa.Enum(
                 "SOFTWARE", "SKIN", "EXTENSION", "LIBRARY", name="wikibasesoftwaretype"
-            ).with_variant(sa.String, "sqlite"),
+            ),
             nullable=False,
         ),
         sa.Column("software_name", sa.String(), nullable=False),

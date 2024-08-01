@@ -193,9 +193,7 @@ class WikibaseModel(ModelBase):
     """Connectivity Observations"""
 
     log_observations: Mapped[List[WikibaseLogObservationModel]] = relationship(
-        "WikibaseLogObservationModel",
-        back_populates="wikibase",
-        lazy="selectin",
+        "WikibaseLogObservationModel", back_populates="wikibase", lazy="selectin"
     )
     """Log Observations"""
 

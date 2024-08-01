@@ -3,3 +3,5 @@ __pycache__
 virtualenv/
 .ipynb_checkpoints/
 fetch_data/sparql_data/sparql_queries/failed_queries/
+.coverage
+cov_html/

@@ -3,9 +3,7 @@
 from typing import List
 import strawberry
 
-from model.database import (
-    WikibasePropertyPopularityObservationModel,
-)
+from model.database import WikibasePropertyPopularityObservationModel
 from model.strawberry.output.observation.property_popularity.count import (
     WikibasePropertyPopularityCountStrawberryModel,
 )

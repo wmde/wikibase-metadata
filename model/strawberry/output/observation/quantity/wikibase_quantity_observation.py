@@ -3,9 +3,7 @@
 from typing import Optional
 import strawberry
 
-from model.database import (
-    WikibaseQuantityObservationModel,
-)
+from model.database import WikibaseQuantityObservationModel
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )

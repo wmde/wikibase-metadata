@@ -31,9 +31,7 @@ def upgrade() -> None:
         batch_op.alter_column(
             "last_log_user_type",
             existing_type=sa.VARCHAR(length=4),
-            type_=sa.Enum(
-                "BOT", "MISSING", "USER", "NONE", name="wikibaseusertype"
-            ).with_variant(sa.String, "sqlite"),
+            type_=sa.Enum("BOT", "MISSING", "USER", "NONE", name="wikibaseusertype"),
             nullable=True,
         )
         batch_op.alter_column(
@@ -62,9 +60,7 @@ def downgrade() -> None:
         )
         batch_op.alter_column(
             "last_log_user_type",
-            existing_type=sa.Enum(
-                "BOT", "MISSING", "USER", name="wikibaseusertype"
-            ).with_variant(sa.String, "sqlite"),
+            existing_type=sa.Enum("BOT", "MISSING", "USER", name="wikibaseusertype"),
             type_=sa.VARCHAR(length=4),
             nullable=False,
         )

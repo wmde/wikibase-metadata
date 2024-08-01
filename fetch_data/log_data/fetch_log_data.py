@@ -39,7 +39,7 @@ def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
 def get_month_log_list(
     api_url: str, comparison_date: datetime, oldest: bool = False
 ) -> List[WikibaseLogRecord]:
-    """Get Log List from api_url"""
+    """Get Log List from api_url, limit to within 30 days of the comparison date"""
 
     data: List[WikibaseLogRecord] = []
     limit = 500
@@ -74,4 +74,6 @@ def get_month_log_list(
         if should_query:
             next_from = query_data["continue"]["lecontinue"]
 
-    return data
+    return [
+        datum for datum in data if abs((comparison_date - datum.log_date).days) <= 30
+    ]

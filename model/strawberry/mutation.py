@@ -3,12 +3,12 @@
 import strawberry
 
 from fetch_data import (
-    create_connectivity_data_observation,
+    create_connectivity_observation,
     create_log_observation,
     create_property_popularity_observation,
-    create_quantity_data_observation,
+    create_quantity_observation,
     create_software_version_observation,
-    create_user_data_observation,
+    create_user_observation,
 )
 
 
@@ -18,7 +18,7 @@ class Mutation:
 
     fetch_connectivity_data = strawberry.mutation(
         description="Fetch Connectivity Data from Specified Wikibase Instance",
-        resolver=create_connectivity_data_observation,
+        resolver=create_connectivity_observation,
     )
 
     fetch_log_data = strawberry.mutation(
@@ -33,12 +33,12 @@ class Mutation:
 
     fetch_quantity_data = strawberry.mutation(
         description="Fetch Quantity Data from Specified Wikibase Instance",
-        resolver=create_quantity_data_observation,
+        resolver=create_quantity_observation,
     )
 
     fetch_user_data = strawberry.mutation(
         description="Fetch User Data from Specified Wikibase Instance",
-        resolver=create_user_data_observation,
+        resolver=create_user_observation,
     )
 
     fetch_version_data = strawberry.mutation(

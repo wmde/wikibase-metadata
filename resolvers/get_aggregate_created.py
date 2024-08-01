@@ -49,8 +49,7 @@ def get_created_query() -> Select[Tuple[int, int]]:
             func.count().label("wikibase_count"),  # pylint: disable=not-callable
         )
         .join(
-            rank_subquery,
-            onclause=WikibaseLogObservationModel.id == rank_subquery.c.id,
+            rank_subquery, onclause=WikibaseLogObservationModel.id == rank_subquery.c.id
         )
         .where(rank_subquery.c.rank == 1)
         .group_by("year")

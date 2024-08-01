@@ -13,11 +13,7 @@ class WikibaseURLModel(ModelBase):
     __tablename__ = "wikibase_url"
 
     __table_args__ = (
-        UniqueConstraint(
-            "wikibase_id",
-            "url_type",
-            name="unique_wikibase_url_type",
-        ),
+        UniqueConstraint("wikibase_id", "url_type", name="unique_wikibase_url_type"),
     )
 
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
@@ -34,7 +30,7 @@ class WikibaseURLModel(ModelBase):
     """Wikibase"""
 
     url_type: Mapped[WikibaseURLType] = mapped_column(
-        "url_type", Enum(WikibaseURLType).with_variant(String, "sqlite"), nullable=False
+        "url_type", Enum(WikibaseURLType), nullable=False
     )
     """URL Type"""
 

@@ -3,9 +3,7 @@
 from typing import List, Optional
 import strawberry
 
-from model.database import (
-    WikibaseConnectivityObservationModel,
-)
+from model.database import WikibaseConnectivityObservationModel
 from model.strawberry.output.observation.connectivity.relationship_count import (
     WikibaseConnectivityObservationItemRelationshipCountStrawberryModel,
     WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel,

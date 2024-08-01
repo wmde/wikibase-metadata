@@ -30,10 +30,7 @@ class WikibaseConnectivityObservationRelationshipCountModel:
         self,
     ) -> Mapped["WikibaseConnectivityObservationModel"]:
         """Connectivity Observation"""
-        return relationship(
-            "WikibaseConnectivityObservationModel",
-            lazy="selectin",
-        )
+        return relationship("WikibaseConnectivityObservationModel", lazy="selectin")
 
     relationship_count: Mapped[int] = mapped_column(
         "relationship_count", Integer, nullable=False

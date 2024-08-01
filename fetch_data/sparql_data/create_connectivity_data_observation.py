@@ -21,7 +21,7 @@ from model.database import (
 )
 
 
-async def create_connectivity_data_observation(wikibase_id: int) -> bool:
+async def create_connectivity_observation(wikibase_id: int) -> bool:
     """Create Connectivity Data Observation"""
 
     async with get_async_session() as async_session:
@@ -101,11 +101,17 @@ def compile_connectivity_observation(
             ]
 
             print("\tCalculating Connectivity")
-            observation.connectivity = len(all_nonzero_distances) / (
-                len(all_nodes) * (len(all_nodes) - 1)
+            observation.connectivity = (
+                (len(all_nonzero_distances) / (len(all_nodes) * (len(all_nodes) - 1)))
+                if (len(all_nodes) * (len(all_nodes) - 1) != 0)
+                else None
             )
             print("\tCalculating Average Connected Distance")
-            observation.average_connected_distance = numpy.mean(all_nonzero_distances)
+            observation.average_connected_distance = (
+                numpy.mean(all_nonzero_distances)
+                if len(all_nonzero_distances) > 0
+                else None
+            )
 
     except (EndPointInternalError, JSONDecodeError, HTTPError, URLError):
         observation.returned_data = False
