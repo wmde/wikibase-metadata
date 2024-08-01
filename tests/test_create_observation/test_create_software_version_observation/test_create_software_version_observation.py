@@ -7,7 +7,9 @@ from fetch_data import create_software_version_observation
 from tests.utils import MockResponse
 
 
-DATA_DIRECTORY = "tests/test_create_observation/test_create_software_version_observation/data"
+DATA_DIRECTORY = (
+    "tests/test_create_observation/test_create_software_version_observation/data"
+)
 
 
 @pytest.mark.asyncio
