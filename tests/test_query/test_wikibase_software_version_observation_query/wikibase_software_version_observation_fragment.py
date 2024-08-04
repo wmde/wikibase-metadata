@@ -9,3 +9,19 @@ fragment WikibaseSoftwareVersionStrawberryModelFragment on WikibaseSoftwareVersi
   versionHash
 }
 """
+
+
+WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT = (
+    """
+fragment WikibaseSoftwareVersionObservationStrawberryModelFragment on WikibaseSoftwareVersionObservationStrawberryModel {
+  id
+  observationDate
+  returnedData
+  installedSoftware {
+    ...WikibaseSoftwareVersionStrawberryModelFragment
+  }
+}
+
+"""
+    + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
+)
