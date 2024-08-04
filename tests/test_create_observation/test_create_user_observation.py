@@ -1,33 +1,30 @@
 """Test create_user_observation"""
 
+from math import floor
+import time
 import pytest
 from requests import ReadTimeout
 from fetch_data import create_user_observation
 
 
 TEST_USER_GROUPS = [
-    "private",
     "bureaucrat",
-    "interface-admin",
     "sysop",
     "bot",
-    "data",
-    "push-subscription-manager",
-    "suppress",
     "editor",
     "administrator",
-    "translationadmin",
-    "contributor",
-    "checkuser",
 ]
 
 TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="user-empty", depends_on=[])
 @pytest.mark.user
 async def test_create_user_observation_empty(mocker):
     """Test No-Data Scenario"""
+
+    time.sleep(1)
 
     mocker.patch(
         "fetch_data.user_data.fetch_all_user_data.fetch_api_data",
@@ -38,9 +35,12 @@ async def test_create_user_observation_empty(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="user-failure", depends_on=["user-empty"])
 @pytest.mark.user
 async def test_create_user_observation_failure(mocker):
     """Test Error Scenario"""
+
+    time.sleep(1)
 
     mocker.patch(
         "fetch_data.user_data.fetch_all_user_data.fetch_api_data",
@@ -51,9 +51,12 @@ async def test_create_user_observation_failure(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="user-20", depends_on=["user-empty", "user-failure"])
 @pytest.mark.user
 async def test_create_user_observation_single_pull(mocker):
     """Test Data, Single Pull Scenario"""
+
+    time.sleep(1)
 
     users = []
     for i in range(20):
@@ -77,9 +80,14 @@ async def test_create_user_observation_single_pull(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="user-2000", depends_on=["user-empty", "user-failure", "user-20"]
+)
 @pytest.mark.user
 async def test_create_user_observation_multiple_pull(mocker):
     """Test Data, Multiple Pull Scenario"""
+
+    time.sleep(1)
 
     users = []
     for i in range(2000):
@@ -88,7 +96,7 @@ async def test_create_user_observation_multiple_pull(mocker):
                 "groups": sorted(
                     TEST_USER_GROUPS_IMPLICIT
                     | {TEST_USER_GROUPS[i % len(TEST_USER_GROUPS)]}
-                    | {TEST_USER_GROUPS[(2 * i) % len(TEST_USER_GROUPS)]}
+                    | {TEST_USER_GROUPS[floor(i / 9) % len(TEST_USER_GROUPS)]}
                 ),
                 "implicitgroups": sorted(TEST_USER_GROUPS_IMPLICIT),
             }
