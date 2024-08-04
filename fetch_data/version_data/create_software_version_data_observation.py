@@ -100,12 +100,12 @@ def compile_installed_software_versions(
                 )
                 == 3
             ):
-                version = version_strings[0]
-                version_hash = version_strings[1]
-                version_date = parse_datetime(version_strings[2])
+                version = version_strings[0].strip()
+                version_hash = version_strings[1].strip()
+                version_date = parse_datetime(version_strings[2].strip())
             elif len(version_strings) == 2:
-                version = version_strings[0]
-                version_hash = version_strings[1]
+                version = version_strings[0].strip()
+                version_hash = version_strings[1].strip()
             else:
                 raise NotImplementedError(f"{version_strings}")
 
