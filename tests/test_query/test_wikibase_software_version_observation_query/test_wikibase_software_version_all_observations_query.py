@@ -1,7 +1,9 @@
 """Test Wikibase All User Observations Query"""
 
 import pytest
-from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT
+from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import (
+    WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT,
+)
 from tests.test_query.test_wikibase_user_observation_query.assert_user_group import (
     assert_user_group,
 )
@@ -32,14 +34,17 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends_on=["software-version-success", "software-version-failure"])
+@pytest.mark.dependency(
+    depends_on=["software-version-success", "software-version-failure"]
+)
 @pytest.mark.query
 @pytest.mark.version
 async def test_wikibase_software_version_all_observations_query():
     """Test Wikibase Software Version All Observations"""
 
     result = await test_schema.execute(
-        WIKIBASE_SOFTWARE_VERSION_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_SOFTWARE_VERSION_ALL_OBSERVATIONS_QUERY,
+        variable_values={"wikibaseId": 1},
     )
 
     assert result.errors is None
@@ -52,17 +57,21 @@ async def test_wikibase_software_version_all_observations_query():
     assert "allObservations" in result_wikibase["softwareVersionObservations"]
     assert (
         len(
-            software_version_observation_list := result_wikibase["softwareVersionObservations"][
-                "allObservations"
-            ]
+            software_version_observation_list := result_wikibase[
+                "softwareVersionObservations"
+            ]["allObservations"]
         )
         == 2
     )
 
     assert_layered_property_value(software_version_observation_list, [0, "id"], "1")
     assert "observationDate" in software_version_observation_list[0]
-    assert_layered_property_value(software_version_observation_list, [0, "returnedData"], True)
+    assert_layered_property_value(
+        software_version_observation_list, [0, "returnedData"], True
+    )
 
     assert_layered_property_value(software_version_observation_list, [1, "id"], "2")
     assert "observationDate" in software_version_observation_list[1]
-    assert_layered_property_value(software_version_observation_list, [1, "returnedData"], False)
+    assert_layered_property_value(
+        software_version_observation_list, [1, "returnedData"], False
+    )
