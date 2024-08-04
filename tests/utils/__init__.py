@@ -1,6 +1,7 @@
 """Test Utilities"""
 
 from tests.utils.assert_property_value import (
+    assert_layered_property_count,
     assert_layered_property_value,
     assert_property_value,
 )
