@@ -3,8 +3,6 @@ branch = True
 omit =
     alembic/*
     tests/*
-    resolvers/*
-    model/strawberry/*
     app.py
 
 [report]
