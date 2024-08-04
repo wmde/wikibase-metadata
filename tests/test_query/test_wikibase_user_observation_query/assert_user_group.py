@@ -1,9 +1,6 @@
 """Assert User Group"""
 
-from tests.utils import (
-    assert_layered_property_value,
-    assert_property_value,
-)
+from tests.utils import assert_layered_property_value, assert_property_value
 
 
 def assert_user_group(

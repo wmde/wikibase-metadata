@@ -13,6 +13,7 @@ DATA_DIRECTORY = (
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="software-version-success")
 @pytest.mark.version
 async def test_create_software_version_observation_success(mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
@@ -30,6 +31,7 @@ async def test_create_software_version_observation_success(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="software-version-failure")
 @pytest.mark.version
 async def test_create_software_version_observation_failure(mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
