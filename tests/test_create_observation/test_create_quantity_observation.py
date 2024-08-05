@@ -1,15 +1,19 @@
 """Test create_quantity_observation"""
 
+import time
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_quantity_observation
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="quantity-success")
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_success(mocker):
     """Test"""
+
+    time.sleep(1)
 
     mocker.patch(
         "fetch_data.sparql_data.create_quantity_data_observation.get_results",
@@ -25,6 +29,7 @@ async def test_create_quantity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="quantity-failure", depends_on=["quantity-success"])
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_failure(mocker):
