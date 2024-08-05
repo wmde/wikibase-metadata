@@ -1,4 +1,4 @@
-"""Test Notices Query"""
+"""Test Wikibase List"""
 
 import pytest
 from tests.test_schema import test_schema

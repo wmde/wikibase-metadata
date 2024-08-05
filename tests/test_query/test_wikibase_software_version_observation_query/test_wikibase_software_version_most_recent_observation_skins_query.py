@@ -1,7 +1,7 @@
-"""Test Wikibase Most Recent User Observation Query"""
+"""Test Wikibase Software Version Most Recent Observation Installed Skins Query"""
 
 import pytest
-from tests.test_query.test_wikibase_software_version_observation_query.assert_user_group import (
+from tests.test_query.test_wikibase_software_version_observation_query.assert_software_version import (
     assert_software_version,
 )
 from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import (
@@ -39,7 +39,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.query
 @pytest.mark.version
 async def test_wikibase_software_version_most_recent_observation_skins_query():
-    """Test Wikibase List"""
+    """Test Wikibase Software Version Most Recent Observation Installed Skins Query"""
 
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SKINS_QUERY,

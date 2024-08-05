@@ -1,4 +1,4 @@
-"""Assert User Group"""
+"""Assert Log Records"""
 
 from datetime import datetime
 from typing import Optional
@@ -17,6 +17,8 @@ def assert_month_type_record(
     expected_user_type: Optional[str] = None,
     expected_human_count: Optional[int] = None,
 ):
+    """Assert Month User/Log Type"""
+
     assert (expected_log_type or expected_user_type) is not None
 
     assert_property_value(returned_month_type_record, "id", expected_id)

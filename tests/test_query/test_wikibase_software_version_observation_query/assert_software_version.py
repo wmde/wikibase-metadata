@@ -1,4 +1,4 @@
-"""Assert User Group"""
+"""Assert Software Version"""
 
 from datetime import datetime
 from typing import Optional
@@ -13,7 +13,7 @@ def assert_software_version(
     expected_version_date: Optional[datetime],
     expected_version_hash: Optional[str],
 ):
-    """Assert User Group"""
+    """Assert Software Version"""
 
     assert_property_value(returned_software_version, "id", expected_id)
     assert_property_value(returned_software_version, "softwareName", expected_name)

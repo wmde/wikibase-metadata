@@ -1,4 +1,4 @@
-"""Test Wikibase Most Recent User Observation Query"""
+"""Test Wikibase Log Most Recent Observation"""
 
 from datetime import datetime
 from freezegun import freeze_time

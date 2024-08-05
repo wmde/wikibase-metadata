@@ -34,7 +34,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.query
 @pytest.mark.user
 async def test_wikibase_user_most_recent_observation_query():
-    """Test Wikibase List"""
+    """Test Wikibase Most Recent User Observation"""
 
     result = await test_schema.execute(
         WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": 1}
