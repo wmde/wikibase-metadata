@@ -1,18 +1,11 @@
-"""Test Wikibase All User Observations Query"""
+"""Test Wikibase All Software Versions Observations Query"""
 
 import pytest
 from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import (
     WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT,
 )
-from tests.test_query.test_wikibase_user_observation_query.assert_user_group import (
-    assert_user_group,
-)
 from tests.test_schema import test_schema
-from tests.utils import (
-    assert_layered_property_count,
-    assert_layered_property_value,
-    assert_property_value,
-)
+from tests.utils import assert_layered_property_value, assert_property_value
 
 
 WIKIBASE_SOFTWARE_VERSION_ALL_OBSERVATIONS_QUERY = (
@@ -40,7 +33,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.query
 @pytest.mark.version
 async def test_wikibase_software_version_all_observations_query():
-    """Test Wikibase Software Version All Observations"""
+    """Test Wikibase All Software Version Observations"""
 
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_ALL_OBSERVATIONS_QUERY,

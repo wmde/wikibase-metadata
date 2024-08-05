@@ -40,7 +40,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.property
 @pytest.mark.query
 async def test_wikibase_property_popularity_all_observations_query():
-    """Test Wikibase Property Popularity All Observations Query"""
+    """Test Wikibase All Property Popularity Observations Query"""
 
     result = await test_schema.execute(
         WIKIBASE_PROPERTY_POPULARITY_ALL_OBSERVATIONS_QUERY,

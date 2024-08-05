@@ -1,4 +1,4 @@
-"""Test Wikibase Quantity All Observations"""
+"""Test Wikibase All Quantity Observations"""
 
 import pytest
 from tests.test_query.test_wikibase_quantity_observation_query.assert_quantity import (
@@ -34,7 +34,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.query
 @pytest.mark.quantity
 async def test_wikibase_quantity_all_observations_query():
-    """Test Wikibase Quantity All Observations"""
+    """Test Wikibase All Quantity Observations"""
 
     result = await test_schema.execute(
         WIKIBASE_QUANTITY_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}

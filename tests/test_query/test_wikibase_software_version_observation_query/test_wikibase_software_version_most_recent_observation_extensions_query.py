@@ -1,4 +1,4 @@
-"""Test Wikibase Software Most Recent Observation Installed Extensions Query"""
+"""Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
 
 from datetime import datetime
 import pytest
@@ -40,7 +40,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.query
 @pytest.mark.version
 async def test_wikibase_software_version_most_recent_observation_extensions_query():
-    """Test Wikibase Software Most Recent Observation Installed Extensions Query"""
+    """Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
 
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_EXTENSIONS_QUERY,

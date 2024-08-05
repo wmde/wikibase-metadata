@@ -1,4 +1,4 @@
-"""Test Wikibase Log Most Recent Observation"""
+"""Test Wikibase Most Recent Log Observation"""
 
 from datetime import datetime
 from freezegun import freeze_time
@@ -42,7 +42,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.log
 @pytest.mark.query
 async def test_wikibase_log_most_recent_observation_query():
-    """Test Wikibase Log Most Recent Observation"""
+    """Test Wikibase Most Recent Log Observation"""
 
     result = await test_schema.execute(
         WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": 1}
