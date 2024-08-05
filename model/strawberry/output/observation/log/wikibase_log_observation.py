@@ -146,7 +146,7 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
 
     instance_age: Optional[int] = strawberry.field(
         description="Age of Instance in Days (Estimated from First Log Date)",
-        graphql_type=BigInt,
+        graphql_type=Optional[BigInt],
     )
     first_log: Optional[WikibaseLogStrawberryModel] = strawberry.field(
         description="First Log"
