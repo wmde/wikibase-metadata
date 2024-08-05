@@ -13,8 +13,6 @@ from fetch_data import create_quantity_observation
 async def test_create_quantity_observation_success(mocker):
     """Test"""
 
-    time.sleep(1)
-
     mocker.patch(
         "fetch_data.sparql_data.create_quantity_data_observation.get_results",
         side_effect=[
@@ -29,11 +27,13 @@ async def test_create_quantity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="quantity-failure", depends_on=["quantity-success"])
+@pytest.mark.dependency(name="quantity-failure", depends=["quantity-success"])
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_failure(mocker):
     """Test"""
+
+    time.sleep(1)
 
     mocker.patch(
         "fetch_data.sparql_data.create_quantity_data_observation.get_results",

@@ -19,12 +19,10 @@ TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-empty", depends_on=[])
+@pytest.mark.dependency(name="user-empty")
 @pytest.mark.user
 async def test_create_user_observation_empty(mocker):
     """Test No-Data Scenario"""
-
-    time.sleep(1)
 
     mocker.patch(
         "fetch_data.user_data.fetch_all_user_data.fetch_api_data",
@@ -35,7 +33,7 @@ async def test_create_user_observation_empty(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-failure", depends_on=["user-empty"])
+@pytest.mark.dependency(name="user-failure", depends=["user-empty"])
 @pytest.mark.user
 async def test_create_user_observation_failure(mocker):
     """Test Error Scenario"""
@@ -51,7 +49,7 @@ async def test_create_user_observation_failure(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-20", depends_on=["user-empty", "user-failure"])
+@pytest.mark.dependency(name="user-20", depends=["user-empty", "user-failure"])
 @pytest.mark.user
 async def test_create_user_observation_single_pull(mocker):
     """Test Data, Single Pull Scenario"""
@@ -81,7 +79,7 @@ async def test_create_user_observation_single_pull(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="user-2000", depends_on=["user-empty", "user-failure", "user-20"]
+    name="user-2000", depends=["user-empty", "user-failure", "user-20"]
 )
 @pytest.mark.user
 async def test_create_user_observation_multiple_pull(mocker):
