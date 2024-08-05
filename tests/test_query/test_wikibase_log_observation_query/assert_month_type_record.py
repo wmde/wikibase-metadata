@@ -2,8 +2,42 @@
 
 from datetime import datetime
 from typing import Optional
-from tests.utils import assert_property_value
-from tests.utils.datetime_format import DATETIME_FORMAT
+from tests.utils import (
+    assert_layered_property_count,
+    assert_property_value,
+    DATETIME_FORMAT,
+)
+
+
+def assert_month_record(
+    month_record: dict,
+    expected_id: str,
+    expected_first_log_date: datetime,
+    expected_last_log_date: datetime,
+    expected_log_count: int,
+    expected_user_count: int,
+    expected_human_count: int,
+    expected_log_type_record_count: int,
+    expected_user_type_record_count: int,
+):
+    """Assert Month Record"""
+
+    assert_property_value(month_record, "id", expected_id)
+    assert_property_value(
+        month_record, "firstLogDate", expected_first_log_date.strftime(DATETIME_FORMAT)
+    )
+    assert_property_value(
+        month_record, "lastLogDate", expected_last_log_date.strftime(DATETIME_FORMAT)
+    )
+    assert_property_value(month_record, "logCount", expected_log_count)
+    assert_property_value(month_record, "allUsers", expected_user_count)
+    assert_property_value(month_record, "humanUsers", expected_human_count)
+    assert_layered_property_count(
+        month_record, ["logTypeRecords"], expected_log_type_record_count
+    )
+    assert_layered_property_count(
+        month_record, ["userTypeRecords"], expected_user_type_record_count
+    )
 
 
 def assert_month_type_record(
