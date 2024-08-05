@@ -67,7 +67,7 @@ async def test_wikibase_user_all_observations_query():
     assert "observationDate" in user_observation_list[0]
     assert_layered_property_value(user_observation_list, [0, "returnedData"], True)
     assert_layered_property_value(user_observation_list, [0, "totalUsers"], 0)
-    assert_layered_property_count(user_observation_list[0], ["userGroups"], 0)
+    assert_layered_property_count(user_observation_list, [0, "userGroups"], 0)
 
     assert_layered_property_value(user_observation_list, [1, "id"], "2")
     assert "observationDate" in user_observation_list[1]
