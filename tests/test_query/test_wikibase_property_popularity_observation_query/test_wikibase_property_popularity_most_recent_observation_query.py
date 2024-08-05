@@ -30,7 +30,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["property-popularity-success"])
+@pytest.mark.dependency(depends_on=["property-popularity-success"])
 @pytest.mark.property
 @pytest.mark.query
 async def test_wikibase_property_popularity_most_recent_observation_query():

@@ -35,7 +35,7 @@ async def test_create_software_version_observation_success(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="software-version-failure", depends=["software-version-success"]
+    name="software-version-failure", depends_on=["software-version-success"]
 )
 @pytest.mark.version
 async def test_create_software_version_observation_failure(mocker):

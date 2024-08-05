@@ -38,7 +38,7 @@ query MyQuery($wikibaseId: Int!) {
 
 @freeze_time("2024-04-01")
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["log-success-1", "log-success-2", "log-failure"])
+@pytest.mark.dependency(depends_on=["log-success-1", "log-success-2", "log-failure"])
 @pytest.mark.log
 @pytest.mark.query
 async def test_wikibase_log_all_observations_query():

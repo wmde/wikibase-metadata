@@ -35,7 +35,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["software-version-success"])
+@pytest.mark.dependency(depends_on=["software-version-success"])
 @pytest.mark.query
 @pytest.mark.version
 async def test_wikibase_software_version_most_recent_observation_skins_query():

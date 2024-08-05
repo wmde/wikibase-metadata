@@ -28,7 +28,7 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["software-version-success", "software-version-failure"]
+    depends_on=["software-version-success", "software-version-failure"]
 )
 @pytest.mark.query
 @pytest.mark.version

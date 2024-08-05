@@ -29,7 +29,7 @@ async def test_create_quantity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="quantity-failure", depends=["quantity-success"])
+@pytest.mark.dependency(name="quantity-failure", depends_on=["quantity-success"])
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_failure(mocker):

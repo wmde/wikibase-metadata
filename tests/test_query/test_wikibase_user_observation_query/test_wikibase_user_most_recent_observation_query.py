@@ -30,7 +30,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["user-2000"])
+@pytest.mark.dependency(depends_on=["user-2000"])
 @pytest.mark.query
 @pytest.mark.user
 async def test_wikibase_user_most_recent_observation_query():
