@@ -35,7 +35,7 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends_on=["property-popularity-success", "property-popularity-failure"]
+    depends=["property-popularity-success", "property-popularity-failure"]
 )
 @pytest.mark.property
 @pytest.mark.query
