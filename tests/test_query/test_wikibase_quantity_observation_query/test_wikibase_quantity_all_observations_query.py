@@ -30,7 +30,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends_on=["quantity-success", "quantity-failure"])
+@pytest.mark.dependency(
+    depends=["quantity-success", "quantity-failure"], scope="session"
+)
 @pytest.mark.query
 @pytest.mark.quantity
 async def test_wikibase_quantity_all_observations_query():
