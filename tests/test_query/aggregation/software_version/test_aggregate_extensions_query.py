@@ -2,10 +2,10 @@
 
 from datetime import datetime
 import pytest
-from tests.test_query.aggregation.software_version_obs.assert_software_version_aggregate import (
+from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
 )
-from tests.test_query.aggregation.software_version_obs.software_version_aggregate_fragment import (
+from tests.test_query.aggregation.software_version.software_version_aggregate_fragment import (
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
 from tests.test_schema import test_schema
