@@ -85,7 +85,11 @@ def assert_semver_aggregate(
         assert_layered_property_value(
             returned,
             ["majorVersions", 0, "minorVersions", 0, "patchVersions", 0, "version"],
-            f"{expected_version_major}.{expected_version_minor}.{expected_version_patch}",
+            (
+                f"{expected_version_major}.{expected_version_minor}.{expected_version_patch}"
+                if expected_version_patch is not None
+                else f"{expected_version_major}.{expected_version_minor}"
+            ),
         )
         assert_layered_property_value(
             returned,

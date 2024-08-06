@@ -1,4 +1,4 @@
-"""Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
+"""Test Aggregated Extensions Query"""
 
 from datetime import datetime
 import pytest
@@ -30,7 +30,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.query
 @pytest.mark.version
 async def test_aggregate_extensions_query_page_one():
-    """Test Aggregated Extensions Query"""
+    """Test Aggregated Extensions Query - 1-5"""
 
     result = await test_schema.execute(
         AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
@@ -104,7 +104,7 @@ async def test_aggregate_extensions_query_page_one():
 @pytest.mark.query
 @pytest.mark.version
 async def test_aggregate_extensions_query_page_two():
-    """Test Aggregated Extensions Query"""
+    """Test Aggregated Extensions Query - 6-10"""
 
     result = await test_schema.execute(
         AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 2, "pageSize": 5}
