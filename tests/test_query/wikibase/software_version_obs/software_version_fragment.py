@@ -1,4 +1,4 @@
-"""User Observation Fragment"""
+"""Software Version Observation Fragment"""
 
 WIKIBASE_SOFTWARE_VERSION_FRAGMENT = """
 fragment WikibaseSoftwareVersionStrawberryModelFragment on WikibaseSoftwareVersionStrawberryModel {

@@ -19,7 +19,7 @@ def assert_month_record(
     expected_human_count: int,
     expected_log_type_record_count: int,
     expected_user_type_record_count: int,
-):
+):  # pylint: disable=too-many-arguments
     """Assert Month Record"""
 
     assert_property_value(month_record, "id", expected_id)
@@ -50,7 +50,7 @@ def assert_month_type_record(
     expected_log_type: Optional[str] = None,
     expected_user_type: Optional[str] = None,
     expected_human_count: Optional[int] = None,
-):
+):  # pylint: disable=too-many-arguments
     """Assert Month User/Log Type"""
 
     assert (expected_log_type or expected_user_type) is not None

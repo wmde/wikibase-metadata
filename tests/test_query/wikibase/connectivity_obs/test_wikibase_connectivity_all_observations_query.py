@@ -2,15 +2,14 @@
 
 from freezegun import freeze_time
 import pytest
-from tests.test_query.test_wikibase_connectivity_observation_query.assert_connectivity_observation import (
+from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
     assert_connectivity_observation,
-    assert_relationship_count,
 )
-from tests.test_query.test_wikibase_connectivity_observation_query.wikibase_connectivity_observation_fragment import (
+from tests.test_query.wikibase.connectivity_obs.connectivity_fragment import (
     WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_property_value
+from tests.utils import assert_property_value
 
 
 WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY = (

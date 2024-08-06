@@ -2,10 +2,10 @@
 
 from datetime import datetime
 import pytest
-from tests.test_query.test_wikibase_software_version_observation_query.assert_software_version import (
+from tests.test_query.wikibase.software_version_obs.assert_software_version import (
     assert_software_version,
 )
-from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import (
+from tests.test_query.wikibase.software_version_obs.software_version_fragment import (
     WIKIBASE_SOFTWARE_VERSION_FRAGMENT,
 )
 from tests.test_schema import test_schema

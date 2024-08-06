@@ -1,10 +1,10 @@
 """Test Wikibase Most Recent Property Popularity Observation Query"""
 
 import pytest
-from tests.test_query.test_wikibase_property_popularity_observation_query.assert_property_count import (
+from tests.test_query.wikibase.property_popularity_obs.assert_property_popularity import (
     assert_property_count,
 )
-from tests.test_query.test_wikibase_property_popularity_observation_query.wikibase_property_popularity_observation_fragment import (
+from tests.test_query.wikibase.property_popularity_obs.property_popularity_fragment import (
     WIKIBASE_PROPERTY_POPULARITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema

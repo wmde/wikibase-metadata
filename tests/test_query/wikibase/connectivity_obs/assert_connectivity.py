@@ -14,7 +14,7 @@ def assert_connectivity_observation(
     expected_connectivity: Optional[float] = None,
     expected_item_relationship_counts: list[tuple[str, int, int]] = [],
     expected_object_relationship_counts: list[tuple[str, int, int]] = [],
-):
+):  # pylint: disable=too-many-arguments,too-many-locals
     """Assert Connectivity Observation"""
 
     assert_property_value(returned_connectivity_observation, "id", expected_id)

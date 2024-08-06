@@ -1,10 +1,8 @@
 """Test Wikibase Most Recent Quantity Observation Query"""
 
 import pytest
-from tests.test_query.test_wikibase_quantity_observation_query.assert_quantity import (
-    assert_quantity,
-)
-from tests.test_query.test_wikibase_quantity_observation_query.wikibase_quantity_observation_fragment import (
+from tests.test_query.wikibase.quantity_obs.assert_quantity import assert_quantity
+from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
     WIKIBASE_QUANTITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema

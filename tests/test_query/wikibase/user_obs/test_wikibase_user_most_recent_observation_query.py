@@ -1,10 +1,8 @@
 """Test Wikibase Most Recent User Observation Query"""
 
 import pytest
-from tests.test_query.test_wikibase_user_observation_query.assert_user_group import (
-    assert_user_group,
-)
-from tests.test_query.test_wikibase_user_observation_query.wikibase_user_observation_fragment import (
+from tests.test_query.wikibase.user_obs.assert_user import assert_user_group
+from tests.test_query.wikibase.user_obs.user_fragment import (
     WIKIBASE_USER_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema

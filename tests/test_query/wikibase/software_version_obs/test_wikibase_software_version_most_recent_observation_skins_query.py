@@ -1,18 +1,17 @@
-"""Test Wikibase Most Recent Software Version Installed Software Observation Query"""
+"""Test Wikibase Most Recent Software Version Installed Skins Observation Query"""
 
-from datetime import datetime
 import pytest
-from tests.test_query.test_wikibase_software_version_observation_query.assert_software_version import (
+from tests.test_query.wikibase.software_version_obs.assert_software_version import (
     assert_software_version,
 )
-from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import (
+from tests.test_query.wikibase.software_version_obs.software_version_fragment import (
     WIKIBASE_SOFTWARE_VERSION_FRAGMENT,
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_property_value
 
 
-WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SOFTWARE_QUERY = (
+WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SKINS_QUERY = (
     """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
@@ -22,7 +21,7 @@ query MyQuery($wikibaseId: Int!) {
         id
         observationDate
         returnedData
-        installedSoftware {
+        installedSkins {
           ...WikibaseSoftwareVersionStrawberryModelFragment
         }
       }
@@ -39,11 +38,11 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
-async def test_wikibase_software_version_most_recent_observation_software_query():
-    """Test Wikibase Most Recent Software Version Installed Software Observation Query"""
+async def test_wikibase_software_version_most_recent_observation_skins_query():
+    """Test Wikibase Most Recent Software Version Installed Skins Observation Query"""
 
     result = await test_schema.execute(
-        WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SOFTWARE_QUERY,
+        WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SKINS_QUERY,
         variable_values={"wikibaseId": 1},
     )
 
@@ -60,7 +59,7 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
     assert "observationDate" in most_recent
     assert_property_value(most_recent, "returnedData", True)
 
-    assert_layered_property_count(most_recent, ["installedSoftware"], 5)
+    assert_layered_property_count(most_recent, ["installedSkins"], 3)
     for index, (
         expected_id,
         expected_name,
@@ -69,15 +68,13 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
         expected_version_hash,
     ) in enumerate(
         [
-            ("4", "ICU", "60.2", None, None),
-            ("5", "Lua", "5.1.5", None, None),
-            ("1", "MediaWiki", "1.39.8", None, "fbca402"),
-            ("3", "MySQL", "1.35.8", datetime(2022, 12, 13, 5, 50), "e43140f"),
-            ("2", "PHP", "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", None, None),
+            ("6", "MonoBook", None, None, None),
+            ("7", "Timeless", "0.8.9", None, None),
+            ("8", "Vector", None, None, None),
         ]
     ):
         assert_software_version(
-            most_recent["installedSoftware"][index],
+            most_recent["installedSkins"][index],
             expected_id,
             expected_name,
             expected_version,

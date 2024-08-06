@@ -11,7 +11,7 @@ def assert_quantity(
     expected_lexemes: int,
     expected_properties: int,
     expected_triples: int,
-):
+):  # pylint: disable=too-many-arguments
     """Assert Quantity Observation"""
 
     assert_property_value(returned_quantity, "id", expected_id)

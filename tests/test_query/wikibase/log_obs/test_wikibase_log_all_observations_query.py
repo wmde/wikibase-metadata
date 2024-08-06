@@ -3,11 +3,11 @@
 from datetime import datetime
 from freezegun import freeze_time
 import pytest
-from tests.test_query.test_wikibase_log_observation_query.assert_month_type_record import (
+from tests.test_query.wikibase.log_obs.assert_log import (
     assert_month_record,
     assert_month_type_record,
 )
-from tests.test_query.test_wikibase_log_observation_query.wikibase_log_observation_fragment import (
+from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema

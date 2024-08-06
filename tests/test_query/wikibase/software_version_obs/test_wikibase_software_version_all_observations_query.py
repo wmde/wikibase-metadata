@@ -1,7 +1,7 @@
 """Test Wikibase All Software Versions Observations Query"""
 
 import pytest
-from tests.test_query.test_wikibase_software_version_observation_query.wikibase_software_version_observation_fragment import (
+from tests.test_query.wikibase.software_version_obs.software_version_fragment import (
     WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT,
 )
 from tests.test_schema import test_schema
