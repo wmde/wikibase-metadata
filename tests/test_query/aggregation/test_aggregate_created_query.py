@@ -5,7 +5,7 @@ from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_layered_property_value
 
 
-WIKIBASE_LIST_QUERY = """
+AGGREGATED_CREATED_QUERY = """
 query MyQuery {
   aggregateCreated {
     year
@@ -23,7 +23,7 @@ query MyQuery {
 async def test_aggregate_created_query():
     """Test Aggregate Created Query"""
 
-    result = await test_schema.execute(WIKIBASE_LIST_QUERY)
+    result = await test_schema.execute(AGGREGATED_CREATED_QUERY)
 
     assert result.errors is None
     assert result.data is not None
