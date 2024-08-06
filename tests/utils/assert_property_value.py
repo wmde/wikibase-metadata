@@ -1,11 +1,16 @@
 """Test Utilities"""
 
-from typing import List
 
-
-def assert_property_value(data: dict, prop: str, expected_value: any):
+def assert_property_value(
+    data: dict[int | str] | list, prop: int | str, expected_value: any
+):
     """Assert property has value"""
-    assert prop in data, f"{prop} not found in {data.keys()}"
+    if isinstance(data, dict):
+        assert prop in data, f"{prop} not found in {data.keys()}"
+    elif isinstance(data, list) and isinstance(prop, int):
+        assert len(data) >= prop
+    else:
+        raise ValueError(f"Incompatible: prop ({prop}), data ({data})")
     assert (
         actual := data[prop]
     ) == expected_value, (
@@ -13,7 +18,9 @@ def assert_property_value(data: dict, prop: str, expected_value: any):
     )
 
 
-def assert_layered_property_count(data: dict, props: list[str], expected_count: int):
+def assert_layered_property_count(
+    data: dict[int | str] | list, props: list[int | str], expected_count: int
+):
     """Assert property has value levels deep"""
     if len(props) == 0:
         assert (
@@ -21,17 +28,18 @@ def assert_layered_property_count(data: dict, props: list[str], expected_count: 
         ), f"Expected length {expected_count}, actual {len(data)}"
     else:
         prop = props.pop(0)
-        if isinstance(prop, str):
+        if isinstance(data, dict):
             assert prop in data, f"{prop} not found in {data.keys()}"
-        else:
-            assert isinstance(data, List)
+        elif isinstance(prop, int) and isinstance(data, list):
             assert len(data) >= prop
+        else:
+            raise ValueError(f"Incompatible: prop ({prop}), data ({data})")
         assert data[prop] is not None
         assert_layered_property_count(data[prop], props, expected_count)
 
 
 def assert_layered_property_value(
-    data: dict, props: list[int | str], expected_value: any
+    data: dict[int | str] | list, props: list[int | str], expected_value: any
 ):
     """Assert property has value levels deep"""
     if len(props) < 1:
@@ -40,10 +48,11 @@ def assert_layered_property_value(
         assert_property_value(data, props.pop(), expected_value)
     else:
         prop = props.pop(0)
-        if isinstance(prop, str):
+        if isinstance(data, dict):
             assert prop in data, f"{prop} not found in {data.keys()}"
-        else:
-            assert isinstance(data, List)
+        elif isinstance(prop, int) and isinstance(data, list):
             assert len(data) >= prop
+        else:
+            raise ValueError(f"Incompatible: prop ({prop}), data ({data})")
         assert data[prop] is not None
         assert_layered_property_value(data[prop], props, expected_value)
