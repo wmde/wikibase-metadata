@@ -53,7 +53,6 @@ async def test_aggregate_libraries_query_page_one():
         result.data, ["aggregateLibraryPopularity", "data"], 30
     )
 
-    # [('WikibaseView', 'dbbcdd8', (None, None, None), datetime(2019, 12, 10, 12, 52), 'dbbcdd8')]
     for index, (
         expected_software_name,
         expected_version_string,
