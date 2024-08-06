@@ -12,8 +12,12 @@ def assert_connectivity_observation(
     expected_total_connections: Optional[int] = None,
     expected_avg_connected_distance: Optional[float] = None,
     expected_connectivity: Optional[float] = None,
-    expected_item_relationship_counts: list[tuple[str, int, int]] = [],
-    expected_object_relationship_counts: list[tuple[str, int, int]] = [],
+    expected_item_relationship_counts: list[
+        tuple[str, int, int]
+    ] = [],  # pylint: disable=dangerous-default-value
+    expected_object_relationship_counts: list[
+        tuple[str, int, int]
+    ] = [],  # pylint: disable=dangerous-default-value
 ):  # pylint: disable=too-many-arguments,too-many-locals
     """Assert Connectivity Observation"""
 

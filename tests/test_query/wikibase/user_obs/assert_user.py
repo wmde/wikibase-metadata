@@ -11,7 +11,7 @@ def assert_user_group(
     expected_wikibase_default: bool,
     expected_group_implicit: bool,
     expected_user_count,
-):
+):  # pylint: disable=too-many-arguments
     """Assert User Group"""
 
     assert_property_value(returned_user_group, "id", expected_id)

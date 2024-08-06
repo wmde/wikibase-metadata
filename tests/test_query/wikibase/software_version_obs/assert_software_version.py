@@ -12,7 +12,7 @@ def assert_software_version(
     expected_version: str,
     expected_version_date: Optional[datetime],
     expected_version_hash: Optional[str],
-):
+):  # pylint: disable=too-many-arguments
     """Assert Software Version"""
 
     assert_property_value(returned_software_version, "id", expected_id)
