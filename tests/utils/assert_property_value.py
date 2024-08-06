@@ -8,7 +8,9 @@ def assert_property_value(data: dict, prop: str, expected_value: any):
     assert prop in data, f"{prop} not found in {data.keys()}"
     assert (
         actual := data[prop]
-    ) == expected_value, f"Expected {prop} to be {expected_value}, Actual {actual}"
+    ) == expected_value, (
+        f"Expected {prop} to be {expected_value}, Actual {actual}; ({data})"
+    )
 
 
 def assert_layered_property_count(data: dict, props: list[str], expected_count: int):
