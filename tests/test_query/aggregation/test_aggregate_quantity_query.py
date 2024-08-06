@@ -26,10 +26,7 @@ query MyQuery {
 async def test_aggregate_quantity_query():
     """Test Aggregate Quantity Query"""
 
-    result = await test_schema.execute(
-        AGGREGATED_QUANTITY_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 30},
-    )
+    result = await test_schema.execute(AGGREGATED_QUANTITY_QUERY)
 
     assert result.errors is None
     assert result.data is not None
