@@ -1,4 +1,4 @@
-"""Test Wikibase List"""
+"""Test Aggregate Created Query"""
 
 import pytest
 from tests.test_schema import test_schema
@@ -21,7 +21,7 @@ query MyQuery {
 @pytest.mark.log
 @pytest.mark.query
 async def test_aggregate_created_query():
-    """Test Aggregate Created"""
+    """Test Aggregate Created Query"""
 
     result = await test_schema.execute(WIKIBASE_LIST_QUERY)
 
