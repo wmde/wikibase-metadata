@@ -1,6 +1,5 @@
 """Test Aggregate Libraries Query"""
 
-from datetime import datetime
 import pytest
 from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
