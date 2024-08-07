@@ -1,4 +1,4 @@
-"""Test Wikibase All User Observations Query"""
+"""Test Wikibase All Connectivity Observations Query"""
 
 from freezegun import freeze_time
 import pytest
