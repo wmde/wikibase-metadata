@@ -26,6 +26,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 
 @pytest.mark.asyncio
+@pytest.mark.agg
 @pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
@@ -99,6 +100,7 @@ async def test_aggregate_extensions_query_page_one():
 
 
 @pytest.mark.asyncio
+@pytest.mark.agg
 @pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
