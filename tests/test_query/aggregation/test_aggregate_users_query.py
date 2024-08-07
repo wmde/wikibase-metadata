@@ -1,4 +1,4 @@
-"""Test Aggregate Quantity Query"""
+"""Test Aggregate Users Query"""
 
 import pytest
 from tests.test_schema import test_schema
