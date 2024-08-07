@@ -59,7 +59,8 @@ async def get_aggregate_version(
             page_size,
             len(software_dict),
             sorted(
-                software_dict.values(), key=lambda x: x.wikibase_count(), reverse=True
+                software_dict.values(),
+                key=lambda x: (-x.wikibase_count(), x.software_name),
             )[page_size * (page_number - 1) : page_size * page_number],
         )
 

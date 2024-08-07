@@ -6,4 +6,6 @@ pylint
 pytest
 pytest-asyncio
 pytest-cov
+pytest-dependency
 pytest-mock
+pytest-order

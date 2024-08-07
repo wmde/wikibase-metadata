@@ -2,6 +2,7 @@
 
 from datetime import datetime, timedelta
 import json
+import time
 
 from freezegun import freeze_time
 import pytest
@@ -12,6 +13,7 @@ from tests.utils import MockResponse, ParsedUrl
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="log-success-1")
 @pytest.mark.log
 async def test_create_log_observation(mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
@@ -57,6 +59,7 @@ async def test_create_log_observation(mocker):
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="log-failure")
 @pytest.mark.log
 async def test_create_log_observation_error(mocker):
     """Test One-Pull Per Month, Error Returned Scenario"""
@@ -70,9 +73,12 @@ async def test_create_log_observation_error(mocker):
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="log-success-2", depends=["log-success-1", "log-failure"])
 @pytest.mark.log
 async def test_create_log_observation_no_last_month(mocker):
     """Test One-Pull Per Month, No Data In Range Returned Scenario"""
+
+    time.sleep(1)
 
     mock_logs: list[dict] = []
     for i in range(70):

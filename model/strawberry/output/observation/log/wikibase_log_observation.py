@@ -121,14 +121,20 @@ class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
             human_users=model.human_user_count,
             first_log_date=model.first_log_date,
             last_log_date=model.last_log_date,
-            log_type_records=[
-                WikibaseLogMonthLogTypeStrawberryModel.marshal(r)
-                for r in model.log_type_records
-            ],
-            user_type_records=[
-                WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
-                for r in model.user_type_records
-            ],
+            log_type_records=sorted(
+                [
+                    WikibaseLogMonthLogTypeStrawberryModel.marshal(r)
+                    for r in model.log_type_records
+                ],
+                key=lambda x: x.log_type,
+            ),
+            user_type_records=sorted(
+                [
+                    WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
+                    for r in model.user_type_records
+                ],
+                key=lambda x: x.user_type,
+            ),
         )
 
 
@@ -140,7 +146,7 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
 
     instance_age: Optional[int] = strawberry.field(
         description="Age of Instance in Days (Estimated from First Log Date)",
-        graphql_type=BigInt,
+        graphql_type=Optional[BigInt],
     )
     first_log: Optional[WikibaseLogStrawberryModel] = strawberry.field(
         description="First Log"
@@ -196,12 +202,16 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
             ),
             first_month=(
                 WikibaseLogMonthStrawberryModel.marshal(model.first_month)
-                if model.returned_data and model.first_month is not None
+                if model.returned_data
+                and model.first_month is not None
+                and model.first_month.log_count > 0
                 else None
             ),
             last_month=(
                 WikibaseLogMonthStrawberryModel.marshal(model.last_month)
                 if model.returned_data
+                and model.last_month is not None
+                and model.last_month.log_count > 0
                 else None
             ),
         )

@@ -54,27 +54,31 @@ def get_total_admin_query() -> Select[Tuple[int]]:
         )
         .subquery()
     )
-    query = (
-        select(
-            func.sum(WikibaseUserObservationGroupModel.user_count).label("total_admins")
-        )
+
+    group_subquery = (
+        select(func.max(WikibaseUserObservationGroupModel.user_count).label("admins"))
         .join(
             rank_subquery,
-            onclause=WikibaseUserObservationGroupModel.wikibase_user_observation_id
-            == rank_subquery.c.id,
+            onclause=and_(
+                WikibaseUserObservationGroupModel.wikibase_user_observation_id
+                == rank_subquery.c.id,
+                rank_subquery.c.rank == 1,
+            ),
         )
         .where(
-            and_(
-                rank_subquery.c.rank == 1,
-                WikibaseUserObservationGroupModel.user_group.has(
-                    or_(
-                        WikibaseUserGroupModel.group_name.in_(["bureaucrat", "sysop"]),
-                        WikibaseUserGroupModel.group_name.like(r"%admin%"),
-                    )
-                ),
+            WikibaseUserObservationGroupModel.user_group.has(
+                or_(
+                    WikibaseUserGroupModel.group_name.in_(["bureaucrat", "sysop"]),
+                    WikibaseUserGroupModel.group_name.like(r"%admin%"),
+                )
             )
         )
+        .group_by(WikibaseUserObservationGroupModel.wikibase_user_observation_id)
+        .subquery()
     )
+
+    query = select(func.sum(group_subquery.c.admins).label("total_admins"))
+
     return query
 
 
