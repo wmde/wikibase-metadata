@@ -1,4 +1,4 @@
-"""Test Wikibase Most Recent Log Observation"""
+"""Test Wikibase Most Recent Connectivity Observation"""
 
 from freezegun import freeze_time
 import pytest
