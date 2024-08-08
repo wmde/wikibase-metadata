@@ -3,7 +3,7 @@
 from datetime import datetime
 from json.decoder import JSONDecodeError
 from typing import List
-from requests.exceptions import ConnectionError, ReadTimeout, SSLError
+from requests.exceptions import ReadTimeout, SSLError
 from data import get_async_session
 from fetch_data.log_data.fetch_log_data import (
     get_log_list_from_url,
