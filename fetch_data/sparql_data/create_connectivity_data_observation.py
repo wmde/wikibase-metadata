@@ -5,6 +5,7 @@ from typing import List
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 import numpy
+from tqdm import tqdm
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_results
 from fetch_data.sparql_data.sparql_queries import (
@@ -73,11 +74,6 @@ def compile_connectivity_observation(
                     )
                 )
 
-            unique_connection_count = numpy.dot(
-                [int(k) for k in item_link_counts.keys()],
-                [int(v) for v in item_link_counts.values()],
-            )
-
             print("\tCalculating Object Link Counts")
             object_link_dict = compile_link_dict(clean_data, all_nodes, reverse=True)
             object_link_counts = counts([len(a) for a in object_link_dict.values()])
@@ -88,9 +84,7 @@ def compile_connectivity_observation(
                     )
                 )
 
-            print(
-                f"\tCalculating Distance Dict: {len(all_nodes)}, {unique_connection_count}"
-            )
+            print("\tCalculating Distance Dict")
             distance_dict = compile_distance_dict(all_nodes, item_link_dict)
 
             all_nonzero_distances = [
@@ -125,7 +119,7 @@ def compile_distance_dict(
     """Compile Distance Dictionary"""
     distance_dict: dict[str, dict[str, int]] = {}
 
-    for node in all_nodes:
+    for node in tqdm(all_nodes):
         distance_dict[node] = {}
         returning = True
         step = 0
@@ -137,8 +131,6 @@ def compile_distance_dict(
             for n in step_list:
                 distance_dict[node][n] = step
             step += 1
-        if node.endswith("0"):
-            print(f"\t\t{node}: {step-1}")
     return distance_dict
 
 
