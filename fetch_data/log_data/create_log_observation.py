@@ -74,7 +74,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
             )
 
             observation.returned_data = True
-        except (JSONDecodeError, ReadTimeout, SSLError):
+        except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
             observation.returned_data = False
 
         wikibase.log_observations.append(observation)

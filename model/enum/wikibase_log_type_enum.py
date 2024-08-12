@@ -85,7 +85,7 @@ class WikibaseLogType(enum.Enum):
     WIKI_SETTINGS = 75
 
 
-MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpg|pdf|png|svg|wav|webm)", re.IGNORECASE)
+MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpe?g|pdf|png|svg|wav|webm)", re.IGNORECASE)
 ITEM_REGEX = re.compile(r"Item:Q\d+")
 PROPERTY_REGEX = re.compile(r"(Property|WikibaseProperty):P\d+")
 

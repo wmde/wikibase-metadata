@@ -1,10 +1,11 @@
 """Create User Data Observation"""
 
 from json import JSONDecodeError
-from typing import List
+from typing import Iterable, List
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 import numpy
+from tqdm import tqdm
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_results
 from fetch_data.sparql_data.sparql_queries import (
@@ -73,11 +74,6 @@ def compile_connectivity_observation(
                     )
                 )
 
-            unique_connection_count = numpy.dot(
-                [int(k) for k in item_link_counts.keys()],
-                [int(v) for v in item_link_counts.values()],
-            )
-
             print("\tCalculating Object Link Counts")
             object_link_dict = compile_link_dict(clean_data, all_nodes, reverse=True)
             object_link_counts = counts([len(a) for a in object_link_dict.values()])
@@ -88,9 +84,7 @@ def compile_connectivity_observation(
                     )
                 )
 
-            print(
-                f"\tCalculating Distance Dict: {len(all_nodes)}, {unique_connection_count}"
-            )
+            print("\tCalculating Distance Dict")
             distance_dict = compile_distance_dict(all_nodes, item_link_dict)
 
             all_nonzero_distances = [
@@ -125,20 +119,18 @@ def compile_distance_dict(
     """Compile Distance Dictionary"""
     distance_dict: dict[str, dict[str, int]] = {}
 
-    for node in all_nodes:
-        distance_dict[node] = {}
+    for node in tqdm(all_nodes):
+        distance_dict[node] = {node: 0}
         returning = True
-        step = 0
+        step = 1
         while returning:
-            step_list = nth_step(link_dict, {node}, step) - set(
+            step_list = next_step(link_dict, distance_dict[node].keys()) - set(
                 distance_dict[node].keys()
             )
             returning = len(step_list) > 0
             for n in step_list:
                 distance_dict[node][n] = step
             step += 1
-        if node.endswith("0"):
-            print(f"\t\t{node}: {step-1}")
     return distance_dict
 
 
@@ -160,19 +152,7 @@ def compile_link_dict(
     return link_dict
 
 
-def next_step(link_dict: dict[str, set[str]], node_list: set[str]) -> set[str]:
+def next_step(link_dict: dict[str, set[str]], node_list: Iterable[str]) -> set[str]:
     """Return all nodes any node in the list is linked to"""
 
     return {n for node in node_list for n in link_dict[node]}
-
-
-def nth_step(
-    link_dict: dict[str, set[str]], node_list: set[str], step: int
-) -> set[str]:
-    """Return all nodes any node in the list is linked to, over n recursive steps"""
-
-    if step < 0:
-        raise ValueError("Step Cannot Be Negative")
-    if step == 0:
-        return node_list
-    return nth_step(link_dict, next_step(link_dict, node_list), step - 1)

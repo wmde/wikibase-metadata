@@ -6,3 +6,4 @@ requests
 SPARQLWrapper
 sqlalchemy[asyncio]
 strawberry-graphql[fastapi]
+tqdm
