@@ -6,3 +6,6 @@ requests
 SPARQLWrapper
 sqlalchemy
 strawberry-graphql[fastapi]
+httpx
+uvicorn[standard]
+gunicorn
