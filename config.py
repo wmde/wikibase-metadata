@@ -1,10 +1,12 @@
 """Parse Config"""
 
 import configparser
-from os import environ
+import os
 
 
 config = configparser.ConfigParser()
-config.read(environ["SETTINGS_FILE"] if "SETTINGS_FILE" in environ else "settings.ini")
+config.read(os.environ.get("SETTINGS_FILE") or "settings.ini")
 
-database_connection_string = config.get("database", "database_connection_string")
+database_connection_string = os.path.expandvars(
+    config.get("database", "database_connection_string")
+)
