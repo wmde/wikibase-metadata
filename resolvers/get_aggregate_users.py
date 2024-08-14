@@ -21,15 +21,18 @@ async def get_aggregate_users() -> WikibaseUserAggregate:
     total_admin_query = get_total_admin_query()
 
     async with get_async_session() as async_session:
-        total_users, wikibase_count = (
+        total_users, users_wikibase_count = (
             await async_session.execute(total_user_query)
         ).one()
-        (total_admin,) = (await async_session.execute(total_admin_query)).one()
+        total_admin, admin_wikibase_count = (
+            await async_session.execute(total_admin_query)
+        ).one()
+        assert users_wikibase_count == admin_wikibase_count
 
         return WikibaseUserAggregate(
             total_admin=total_admin,
             total_users=total_users,
-            wikibase_count=wikibase_count,
+            wikibase_count=users_wikibase_count,
         )
 
 
@@ -77,7 +80,10 @@ def get_total_admin_query() -> Select[Tuple[int]]:
         .subquery()
     )
 
-    query = select(func.sum(group_subquery.c.admins).label("total_admins"))
+    query = select(
+        func.sum(group_subquery.c.admins).label("total_admins"),
+        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+    )
 
     return query
 
@@ -103,15 +109,15 @@ def get_total_user_query() -> Select[Tuple[int, int]]:
         )
         .subquery()
     )
-    query = (
-        select(
-            func.sum(WikibaseUserObservationModel.total_users).label("total_users"),
-            func.count().label("wikibase_count"),  # pylint: disable=not-callable
-        )
-        .join(
-            rank_subquery,
-            onclause=WikibaseUserObservationModel.id == rank_subquery.c.id,
-        )
-        .where(rank_subquery.c.rank == 1)
+    query = select(
+        func.sum(WikibaseUserObservationModel.total_users).label("total_users"),
+        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+    ).join(
+        rank_subquery,
+        onclause=and_(
+            WikibaseUserObservationModel.id == rank_subquery.c.id,
+            rank_subquery.c.rank == 1,
+        ),
     )
+
     return query

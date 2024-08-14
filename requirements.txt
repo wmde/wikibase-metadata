@@ -1,9 +1,12 @@
 aiosqlite
 bs4
 fastapi
+gunicorn
+httpx
 numpy
 requests
 SPARQLWrapper
 sqlalchemy[asyncio]
 strawberry-graphql[fastapi]
 tqdm
+uvicorn[standard]

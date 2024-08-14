@@ -1,18 +1,17 @@
 """Create User Data Observation"""
 
 from json import JSONDecodeError
-from typing import Iterable, List
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 import numpy
 from tqdm import tqdm
 from data import get_async_session
-from fetch_data.sparql_data.pull_wikidata import get_results
-from fetch_data.sparql_data.sparql_queries import (
-    ITEM_LINKS_QUERY,
-    ItemLink,
-    clean_item_link_data,
+from fetch_data.sparql_data.connectivity_math import (
+    compile_distance_dict,
+    compile_link_dict,
 )
+from fetch_data.sparql_data.pull_wikidata import get_results
+from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
 from fetch_data.utils import counts, get_wikibase_from_database
 from model.database import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
@@ -63,9 +62,9 @@ def compile_connectivity_observation(
             all_nodes = sorted(
                 {p.item_from for p in clean_data} | {p.item_to for p in clean_data}
             )
-            item_link_dict = compile_link_dict(clean_data, all_nodes)
 
             print("\tCalculating Item Link Counts")
+            item_link_dict = compile_link_dict(clean_data, all_nodes)
             item_link_counts = counts([len(a) for a in item_link_dict.values()])
             for link_count, item_count in item_link_counts.items():
                 observation.item_relationship_count_observations.append(
@@ -111,48 +110,3 @@ def compile_connectivity_observation(
         observation.returned_data = False
 
     return observation
-
-
-def compile_distance_dict(
-    all_nodes: List[str], link_dict: dict[str, set[str]]
-) -> dict[str, dict[str, int]]:
-    """Compile Distance Dictionary"""
-    distance_dict: dict[str, dict[str, int]] = {}
-
-    for node in tqdm(all_nodes):
-        distance_dict[node] = {node: 0}
-        returning = True
-        step = 1
-        while returning:
-            step_list = next_step(link_dict, distance_dict[node].keys()) - set(
-                distance_dict[node].keys()
-            )
-            returning = len(step_list) > 0
-            for n in step_list:
-                distance_dict[node][n] = step
-            step += 1
-    return distance_dict
-
-
-def compile_link_dict(
-    clean_data: List[ItemLink], all_nodes: List[str], reverse: bool = False
-) -> dict[str, set[str]]:
-    """Compile Connection Dictionary"""
-
-    link_dict: dict[str, set[str]] = {}
-
-    for node in all_nodes:
-        link_dict[node] = set()
-    for point in clean_data:
-        link_dict[point.item_from if not reverse else point.item_to].add(
-            point.item_to if not reverse else point.item_from
-        )
-    for node in all_nodes:
-        link_dict[node].discard(node)
-    return link_dict
-
-
-def next_step(link_dict: dict[str, set[str]], node_list: Iterable[str]) -> set[str]:
-    """Return all nodes any node in the list is linked to"""
-
-    return {n for node in node_list for n in link_dict[node]}

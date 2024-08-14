@@ -1,11 +1,16 @@
 """Counts"""
 
+from typing import Iterable, TypeVar
 
-def counts(values: list) -> dict:
+
+T = TypeVar("T")
+
+
+def counts(values: Iterable[T]) -> dict[T, int]:
     """Count instances of each value
     @return dict {value: count_values}"""
 
-    result = {}
+    result: dict[T, int] = {}
     for value in sorted(values):
         if value not in result:
             result[value] = 0
