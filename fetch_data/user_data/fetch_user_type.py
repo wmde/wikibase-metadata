@@ -1,5 +1,6 @@
 """Fetch Log Data"""
 
+import re
 from typing import Optional
 from fetch_data.user_data.fetch_single_user_data import get_single_user_data
 from model.database import WikibaseModel
@@ -19,6 +20,8 @@ def get_user_type(wikibase: WikibaseModel, user: Optional[str]) -> WikibaseUserT
 def get_user_type_from_user_data(user_data: dict) -> WikibaseUserType:
     """User or Bot?"""
 
+    if re.search(r"\b(bot|script)\b", user_data["name"], re.IGNORECASE) is not None:
+        return WikibaseUserType.BOT
     if "groups" not in user_data and ("invalid" in user_data or "missing" in user_data):
         return WikibaseUserType.MISSING
     if "bot" in user_data["groups"]:
