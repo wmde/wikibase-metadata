@@ -108,12 +108,12 @@ async def test_wikibase_list_query():
     assert_layered_property_value(result_datum, ["location", "region"], "Europe")
 
     for url_name, url in [
-        ("baseUrl", "test.url"),
-        ("actionApi", "test.url/w/api.php"),
-        ("indexApi", "test.url/w/index.php"),
-        ("sparqlEndpointUrl", "query.test.url/sparql"),
-        ("sparqlUrl", "query.test.url"),
-        ("specialVersionUrl", "test.url/wiki/Special:Version"),
+        ("baseUrl", "example.com"),
+        ("actionApi", "example.com/w/api.php"),
+        ("indexApi", "example.com/w/index.php"),
+        ("sparqlEndpointUrl", "query.example.com/sparql"),
+        ("sparqlUrl", "query.example.com"),
+        ("specialVersionUrl", "example.com/wiki/Special:Version"),
     ]:
         assert_layered_property_value(result_datum, ["urls", url_name], url)
 
