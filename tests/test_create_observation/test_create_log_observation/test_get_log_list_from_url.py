@@ -6,7 +6,9 @@ from typing import Optional
 from freezegun import freeze_time
 import pytest
 from fetch_data.log_data.fetch_log_data import get_log_list_from_url
-from tests.test_create_log_observation.assert_log_record import assert_log_record
+from tests.test_create_observation.test_create_log_observation.assert_log_record import (
+    assert_log_record,
+)
 
 
 @pytest.mark.log
@@ -17,7 +19,7 @@ def test_get_log_list_from_url_empty(mocker):
         "fetch_data.log_data.fetch_log_data.fetch_api_data",
         return_value={"query": {"logevents": []}},
     )
-    assert get_log_list_from_url("test.url") == []
+    assert get_log_list_from_url("example.com") == []
 
 
 @freeze_time("2024-03-01")
@@ -41,7 +43,7 @@ def test_get_log_list_from_url_single(mocker):
             }
         },
     )
-    results = get_log_list_from_url("test.url")
+    results = get_log_list_from_url("example.com")
     assert len(results) == 1
     assert_log_record(
         results[0], 1, datetime(2024, 1, 1, 12, 4, 15), 59, None, "PROPERTY_CREATE"
@@ -82,7 +84,7 @@ def test_get_log_list_from_url_several(mocker):
         "fetch_data.log_data.fetch_log_data.fetch_api_data",
         return_value={"query": {"logevents": mock_logs}},
     )
-    results = get_log_list_from_url("test.url")
+    results = get_log_list_from_url("example.com")
     assert len(results) == 7
     assert_log_record(results[0], 1, datetime(2024, 1, 1), 60, "User:A", "TAG_CREATE")
     assert_log_record(results[1], 2, datetime(2024, 1, 8), 53, None, "THANK")

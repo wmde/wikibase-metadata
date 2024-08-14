@@ -1,19 +1,25 @@
 """Test create_property_popularity_observation"""
 
 import os
+import time
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_software_version_observation
 from tests.utils import MockResponse
 
 
-DATA_DIRECTORY = "tests/test_create_software_version_observation/data"
+DATA_DIRECTORY = (
+    "tests/test_create_observation/test_create_software_version_observation/data"
+)
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="software-version-success")
 @pytest.mark.version
 async def test_create_software_version_observation_success(mocker):
-    """Test One-Pull Per Month, Data Returned Scenario"""
+    """Test Data Returned Scenario"""
+
+    time.sleep(1)
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Version.html"), "rb"
@@ -28,15 +34,20 @@ async def test_create_software_version_observation_success(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="software-version-failure", depends=["software-version-success"]
+)
 @pytest.mark.version
 async def test_create_software_version_observation_failure(mocker):
-    """Test One-Pull Per Month, Data Returned Scenario"""
+    """Test Failure Scenario"""
+
+    time.sleep(1)
 
     mocker.patch(
         "fetch_data.version_data.create_software_version_data_observation.requests.get",
         side_effect=[
             HTTPError(
-                url="query.test.url/wiki/Special:Version",
+                url="query.example.com/wiki/Special:Version",
                 code=500,
                 msg="Error",
                 hdrs="",

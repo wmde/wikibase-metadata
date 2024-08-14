@@ -12,9 +12,8 @@ def get_results(endpoint_url: str, query: str, query_name: str) -> dict:
     """Get Data from Wikidata"""
     user_agent = f"WDQS-example Python/{sys.version_info[0]}.{sys.version_info[1]}"
     # TODO adjust user agent; see https://w.wiki/CX6
-    sparql = SPARQLWrapper(endpoint_url, agent=user_agent)
+    sparql = SPARQLWrapper(endpoint_url, agent=user_agent, returnFormat=JSON)
     sparql.setQuery(query)
-    sparql.setReturnFormat(JSON)
     query_result = sparql.query()
     try:
         return query_result.convert()

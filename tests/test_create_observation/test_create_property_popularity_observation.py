@@ -6,6 +6,7 @@ from fetch_data import create_property_popularity_observation
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="property-popularity-success")
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_success(mocker):
@@ -17,7 +18,8 @@ async def test_create_property_popularity_observation_success(mocker):
             {
                 "results": {
                     "bindings": [
-                        {"property": {"value": "P1"}, "propertyCount": {"value": 12}}
+                        {"property": {"value": "P1"}, "propertyCount": {"value": 12}},
+                        {"property": {"value": "P14"}, "propertyCount": {"value": 1}},
                     ]
                 }
             }
@@ -28,6 +30,7 @@ async def test_create_property_popularity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.dependency(name="property-popularity-failure")
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_failure(mocker):
@@ -37,7 +40,7 @@ async def test_create_property_popularity_observation_failure(mocker):
         "fetch_data.sparql_data.create_property_popularity_data_observation.get_results",
         side_effect=[
             HTTPError(
-                url="query.test.url/sparql", code=500, msg="Error", hdrs="", fp=None
+                url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None
             ),
         ],
     )

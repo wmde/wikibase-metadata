@@ -8,6 +8,7 @@ from fetch_data import create_connectivity_observation
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
+@pytest.mark.dependency(name="connectivity-success-simple")
 @pytest.mark.sparql
 @pytest.mark.parametrize(
     ["links"],
@@ -52,13 +53,14 @@ async def test_create_connectivity_observation_success(
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
+@pytest.mark.dependency(name="connectivity-success-complex")
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(mocker):
     """Test"""
 
     returned_links = []
     for i in range(500):
-        for o in range(i + 1, i + 5):
+        for o in range(i + 1, min(500, i + 5)):
             returned_links.append(
                 {"item": {"value": f"Q{i}"}, "object": {"value": f"Q{o}"}}
             )
@@ -83,6 +85,7 @@ async def test_create_connectivity_observation_success_complex(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
+@pytest.mark.dependency(name="connectivity-failure")
 @pytest.mark.sparql
 async def test_create_connectivity_observation_failure(mocker):
     """Test"""
@@ -91,7 +94,7 @@ async def test_create_connectivity_observation_failure(mocker):
         "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
         side_effect=[
             HTTPError(
-                url="query.test.url/sparql", code=500, msg="Error", hdrs="", fp=None
+                url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None
             ),
         ],
     )

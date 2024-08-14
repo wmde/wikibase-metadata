@@ -5,6 +5,7 @@ from typing import List
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
+from requests.exceptions import SSLError
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
@@ -48,7 +49,7 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
 
             library_versions = compile_library_versions(soup)
             observation.software_versions.extend(library_versions)
-        except HTTPError:
+        except (HTTPError, SSLError):
             observation.returned_data = False
 
         wikibase.software_version_observations.append(observation)
@@ -100,12 +101,12 @@ def compile_installed_software_versions(
                 )
                 == 3
             ):
-                version = version_strings[0]
-                version_hash = version_strings[1]
-                version_date = parse_datetime(version_strings[2])
+                version = version_strings[0].strip()
+                version_hash = version_strings[1].strip()
+                version_date = parse_datetime(version_strings[2].strip())
             elif len(version_strings) == 2:
-                version = version_strings[0]
-                version_hash = version_strings[1]
+                version = version_strings[0].strip()
+                version_hash = version_strings[1].strip()
             else:
                 raise NotImplementedError(f"{version_strings}")
 
