@@ -4,7 +4,6 @@ from json import JSONDecodeError
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 import numpy
-from tqdm import tqdm
 from data import get_async_session
 from fetch_data.sparql_data.connectivity_math import (
     compile_distance_dict,
