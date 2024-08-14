@@ -41,7 +41,7 @@ async def test_create_quantity_observation_failure(mocker):
             {"results": {"bindings": [{"count": {"value": 1}}]}},  # Properties
             {"results": {"bindings": [{"count": {"value": 2}}]}},  # Items
             HTTPError(
-                url="query.test.url/sparql", code=500, msg="Error", hdrs="", fp=None
+                url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None
             ),
         ],
     )

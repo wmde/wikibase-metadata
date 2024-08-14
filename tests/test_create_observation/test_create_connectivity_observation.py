@@ -94,7 +94,7 @@ async def test_create_connectivity_observation_failure(mocker):
         "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
         side_effect=[
             HTTPError(
-                url="query.test.url/sparql", code=500, msg="Error", hdrs="", fp=None
+                url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None
             ),
         ],
     )
