@@ -14,6 +14,7 @@ from model.database.wikibase_observation import (
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
     WikibaseSoftwareVersionObservationModel,
+    WikibaseStatisticsObservationModel,
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_url_model import WikibaseURLModel
@@ -76,6 +77,7 @@ class WikibaseModel(ModelBase):
                 "index_api_url",
                 "sparql_endpoint_url",
                 "sparql_query_url",
+                "special_statistics_url",
                 "special_version_url",
                 "wikibase",
             ]
@@ -95,6 +97,7 @@ class WikibaseModel(ModelBase):
                 "index_api_url",
                 "sparql_endpoint_url",
                 "sparql_query_url",
+                "special_statistics_url",
                 "special_version_url",
                 "url",
                 "wikibase",
@@ -115,6 +118,7 @@ class WikibaseModel(ModelBase):
                 "action_api_url",
                 "sparql_endpoint_url",
                 "sparql_query_url",
+                "special_statistics_url",
                 "special_version_url",
                 "url",
                 "wikibase",
@@ -135,6 +139,7 @@ class WikibaseModel(ModelBase):
                 "action_api_url",
                 "index_api_url",
                 "sparql_endpoint_url",
+                "special_statistics_url",
                 "special_version_url",
                 "url",
                 "wikibase",
@@ -155,6 +160,7 @@ class WikibaseModel(ModelBase):
                 "action_api_url",
                 "index_api_url",
                 "sparql_query_url",
+                "special_statistics_url",
                 "special_version_url",
                 "url",
                 "wikibase",
@@ -162,6 +168,27 @@ class WikibaseModel(ModelBase):
         ),
     )
     """SPARQL Endpoint"""
+
+    special_statistics_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+        "WikibaseURLModel",
+        primaryjoin=and_(
+            id == WikibaseURLModel.wikibase_id,
+            WikibaseURLType.SPECIAL_STATISTICS_URL == WikibaseURLModel.url_type,
+        ),
+        lazy="selectin",
+        overlaps=",".join(
+            [
+                "action_api_url",
+                "index_api_url",
+                "sparql_endpoint_url",
+                "sparql_query_url",
+                "special_version_url",
+                "url",
+                "wikibase",
+            ]
+        ),
+    )
+    """Special:Statistics URL"""
 
     special_version_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
@@ -176,6 +203,7 @@ class WikibaseModel(ModelBase):
                 "index_api_url",
                 "sparql_endpoint_url",
                 "sparql_query_url",
+                "special_statistics_url",
                 "url",
                 "wikibase",
             ]
@@ -222,7 +250,16 @@ class WikibaseModel(ModelBase):
         back_populates="wikibase",
         lazy="selectin",
     )
-    """Quantity Observations"""
+    """Software Version Observations"""
+
+    statistics_observations: Mapped[List[WikibaseStatisticsObservationModel]] = (
+        relationship(
+            "WikibaseStatisticsObservationModel",
+            back_populates="wikibase",
+            lazy="selectin",
+        )
+    )
+    """Statistics Observations"""
 
     user_observations: Mapped[List[WikibaseUserObservationModel]] = relationship(
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="selectin"

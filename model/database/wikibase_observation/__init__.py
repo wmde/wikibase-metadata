@@ -18,6 +18,9 @@ from model.database.wikibase_observation.property import (
 from model.database.wikibase_observation.quantity import (
     WikibaseQuantityObservationModel,
 )
+from model.database.wikibase_observation.statistics import (
+    WikibaseStatisticsObservationModel,
+)
 from model.database.wikibase_observation.user import (
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,

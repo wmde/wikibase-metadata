@@ -16,6 +16,7 @@ from model.database.wikibase_observation import (
     WikibaseQuantityObservationModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
+    WikibaseStatisticsObservationModel,
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
