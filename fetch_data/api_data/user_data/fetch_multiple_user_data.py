@@ -3,7 +3,7 @@
 import json
 from typing import Iterable
 import requests
-from fetch_data.user_data.user_data_url import user_url
+from fetch_data.api_data.user_data.user_data_url import user_url
 from model.database import WikibaseModel
 
 

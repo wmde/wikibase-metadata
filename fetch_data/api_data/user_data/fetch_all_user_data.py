@@ -1,6 +1,6 @@
 """Fetch User Data"""
 
-from fetch_data.user_data.user_data_url import all_users_url
+from fetch_data.api_data.user_data.user_data_url import all_users_url
 from fetch_data.utils import fetch_api_data
 
 

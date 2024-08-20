@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Optional
 
-from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
+from fetch_data.api_data.log_data import WikibaseLogRecord
 
 
 # pylint: disable=too-many-arguments

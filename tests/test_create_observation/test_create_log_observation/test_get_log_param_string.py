@@ -1,7 +1,7 @@
 """Test get_log_param_string"""
 
 import pytest
-from fetch_data.log_data.fetch_log_data import get_log_param_string
+from fetch_data.api_data.log_data.fetch_log_data import get_log_param_string
 
 
 @pytest.mark.log

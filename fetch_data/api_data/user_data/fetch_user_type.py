@@ -2,7 +2,7 @@
 
 import re
 from typing import Optional
-from fetch_data.user_data.fetch_single_user_data import get_single_user_data
+from fetch_data.api_data.user_data.fetch_single_user_data import get_single_user_data
 from model.database import WikibaseModel
 from model.enum import WikibaseUserType
 

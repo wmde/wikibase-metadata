@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from freezegun import freeze_time
 import pytest
-from fetch_data.log_data.fetch_log_data import get_month_log_list
+from fetch_data.api_data.log_data.fetch_log_data import get_month_log_list
 
 
 @freeze_time("2024-03-01")
@@ -26,7 +26,7 @@ def test_get_month_log_list_from_url_one_pull(mocker):
             }
         )
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[
             {
                 "query": {"logevents": mock_logs[0:50]},
@@ -67,7 +67,7 @@ def test_get_month_log_list_from_url_two_pulls(mocker):
             }
         )
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[
             {
                 "query": {"logevents": mock_logs[0:50]},
@@ -124,7 +124,7 @@ def test_get_month_log_list_from_url_more_pulls(mocker):
         mock_side_effects.append(result)
 
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=mock_side_effects,
     )
     results = get_month_log_list("example.com", datetime.now())
@@ -157,7 +157,7 @@ def test_get_month_log_list_from_url_oldest_one_pull(mocker):
             }
         )
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[
             {
                 "query": {"logevents": mock_logs[0:50]},

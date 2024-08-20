@@ -5,13 +5,13 @@ from json.decoder import JSONDecodeError
 from typing import List
 from requests.exceptions import ReadTimeout, SSLError
 from data import get_async_session
-from fetch_data.log_data.fetch_log_data import (
+from fetch_data.api_data.log_data.fetch_log_data import (
     get_log_list_from_url,
     get_log_param_string,
     get_month_log_list,
 )
-from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
-from fetch_data.user_data import (
+from fetch_data.api_data.log_data.wikibase_log_record import WikibaseLogRecord
+from fetch_data.api_data.user_data import (
     get_multiple_user_data,
     get_user_type,
     get_user_type_from_user_data,
