@@ -26,7 +26,7 @@ async def test_create_software_version_observation_success(mocker):
     ) as version_html:
 
         mocker.patch(
-            "fetch_data.version_data.create_software_version_data_observation.requests.get",
+            "fetch_data.soup_data.create_software_version_data_observation.requests.get",
             side_effect=[MockResponse(200, version_html.read())],
         )
         success = await create_software_version_observation(1)
@@ -44,7 +44,7 @@ async def test_create_software_version_observation_failure(mocker):
     time.sleep(1)
 
     mocker.patch(
-        "fetch_data.version_data.create_software_version_data_observation.requests.get",
+        "fetch_data.soup_data.create_software_version_data_observation.requests.get",
         side_effect=[
             HTTPError(
                 url="query.example.com/wiki/Special:Version",
