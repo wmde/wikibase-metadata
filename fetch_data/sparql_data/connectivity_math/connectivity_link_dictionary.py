@@ -10,13 +10,13 @@ def compile_link_dict(
     """Compile Connection Dictionary
 
     Direct links present in the data, represented as a dictionary,
-    with each node having a set of all the nodes to which it directly links.
+    with each node having a set of all non-self nodes to which it directly links.
 
-    `a -> b, a -> c, a -> d, b -> c, b -> a`
+    `a -> b, a -> c, a -> d, b -> c, b -> a, d -> d`
 
     becomes
 
-    `{a: {b, c, d}, b: {a, c}}`"""
+    `{a: {b, c, d}, b: {a, c}, c: {}, d: {}}`"""
 
     link_dict: dict[str, set[str]] = {}
 
