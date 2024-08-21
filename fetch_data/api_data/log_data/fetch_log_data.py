@@ -56,16 +56,10 @@ def get_month_log_list(
 
         should_query = (
             (
-                abs(
-                    (
-                        comparison_date
-                        - (
-                            max(data, key=lambda x: x.log_date)
-                            if oldest
-                            else min(data, key=lambda x: x.log_date)
-                        ).log_date
-                    ).days
-                )
+                (
+                    max(data, key=lambda x: x.log_date).log_date
+                    - min(data, key=lambda x: x.log_date).log_date
+                ).days
                 <= 30
             )
             and "continue" in query_data
