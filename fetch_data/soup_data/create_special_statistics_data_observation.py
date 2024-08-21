@@ -54,7 +54,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
             observation.total_admin = get_number_from_row(
                 table, row_class="statistics-group-sysop"
             )
-            observation.words_in_content_pages = get_number_from_row(
+            observation.content_page_word_count_total = get_number_from_row(
                 table, row_id="mw-cirrussearch-article-words", optional=True
             )
 

@@ -35,7 +35,7 @@ class WikibaseStatisticsObservationModel(ModelBase, WikibaseObservationModel):
     )
     """Total Edits"""
 
-    words_in_content_pages: Mapped[Optional[int]] = mapped_column(
+    content_page_word_count_total: Mapped[Optional[int]] = mapped_column(
         "content_words", Integer, nullable=True
     )
     """Words in Content Pages"""

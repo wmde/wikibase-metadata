@@ -64,17 +64,17 @@ class WikibaseStatisticsPagesObservationStrawberryModel:
     content_pages: int = strawberry.field(
         description="Content Pages", graphql_type=BigInt
     )
-    content_pages_word_count_total: Optional[int] = strawberry.field(
-        description="Total Words in Content Pages", graphql_type=Optional[BigInt]
+    content_page_word_count_total: Optional[int] = strawberry.field(
+        description="Content Page Word Count - Total", graphql_type=Optional[BigInt]
     )
 
-    @strawberry.field(description="Average Word Count per Content Page")
-    def content_pages_word_count_avg(self) -> Optional[float]:
+    @strawberry.field(description="Content Page Word Count - Average")
+    def content_page_word_count_avg(self) -> Optional[float]:
         """Average Word Count per Content Page"""
-        if self.content_pages_word_count_total is None or self.content_pages == 0:
+        if self.content_page_word_count_total is None or self.content_pages == 0:
             return None
 
-        return self.content_pages_word_count_total / self.content_pages
+        return self.content_page_word_count_total / self.content_pages
 
     @classmethod
     def marshal(
@@ -89,7 +89,7 @@ class WikibaseStatisticsPagesObservationStrawberryModel:
         return cls(
             total_pages=model.total_pages,
             content_pages=model.content_pages,
-            content_pages_word_count_total=model.words_in_content_pages,
+            content_page_word_count_total=model.content_page_word_count_total,
         )
 
 
