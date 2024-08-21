@@ -21,6 +21,9 @@ class WikibaseStatisticsObservationModel(ModelBase, WikibaseObservationModel):
     content_pages: Mapped[Optional[int]] = mapped_column(
         "content_pages", Integer, nullable=True
     )
+    total_files: Mapped[Optional[int]] = mapped_column(
+        "total_files", Integer, nullable=True
+    )
     total_edits: Mapped[Optional[int]] = mapped_column(
         "total_edits", Integer, nullable=True
     )
