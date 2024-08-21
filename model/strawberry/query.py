@@ -25,11 +25,6 @@ from resolvers import (
     get_wikibase_list,
 )
 
-PageNumberType = Annotated[
-    int, strawberry.argument(description="Page Number - 1-indexed")
-]
-PageSizeType = Annotated[int, strawberry.argument(description="Page Size")]
-
 
 @strawberry.type
 class Query:

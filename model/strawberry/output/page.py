@@ -7,6 +7,10 @@ import strawberry
 from model.strawberry.scalars import BigInt
 
 
+PageNumberType = Annotated[
+    int, strawberry.argument(description="Page Number - 1-indexed")
+]
+PageSizeType = Annotated[int, strawberry.argument(description="Page Size")]
 T = TypeVar("T")
 
 
@@ -29,7 +33,7 @@ class PageMetadata:
 
     @classmethod
     def marshal(
-        cls, page_number: int, page_size: int, total_count: int
+        cls, page_number: PageNumberType, page_size: PageSizeType, total_count: int
     ) -> "PageMetadata":
         """Marshal Data into Page Metadata"""
         return cls(
@@ -49,7 +53,11 @@ class Page(Generic[T]):
 
     @classmethod
     def marshal(
-        cls, page_number: int, page_size: int, total_count: int, page_data: List[T]
+        cls,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        total_count: int,
+        page_data: List[T],
     ) -> "Page":
         """Marshal Data into Page"""
         return cls(
@@ -58,9 +66,3 @@ class Page(Generic[T]):
             ),
             data=page_data,
         )
-
-
-PageNumberType = Annotated[
-    int, strawberry.argument(description="Page Number - 1-indexed")
-]
-PageSizeType = Annotated[int, strawberry.argument(description="Page Size")]
