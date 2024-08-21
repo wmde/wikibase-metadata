@@ -7,6 +7,8 @@ from tests.utils import assert_layered_property_value, assert_property_value
 def assert_edits(
     returned_statistics: dict, expected_total_edits: int, expected_average_edits: float
 ):
+    """Assert Edits"""
+
     assert_layered_property_value(
         returned_statistics, ["edits", "editsPerPage"], expected_average_edits
     )
@@ -16,6 +18,8 @@ def assert_edits(
 
 
 def assert_files(returned_statistics: dict, expected_total_files: int):
+    """Assert Files"""
+
     assert_layered_property_value(
         returned_statistics, ["files", "totalFiles"], expected_total_files
     )
@@ -28,6 +32,8 @@ def assert_pages(
     expected_content_page_word_count_total: int,
     expected_total_pages: int,
 ):
+    """Assert Pages"""
+
     assert_layered_property_value(
         returned_statistics, ["pages", "contentPages"], expected_content_pages
     )
@@ -52,6 +58,8 @@ def assert_users(
     expected_total_admin: int,
     expected_total_users: int,
 ):
+    """Assert Users"""
+
     assert_layered_property_value(
         returned_statistics, ["users", "activeUsers"], expected_active_users
     )
