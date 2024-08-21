@@ -25,39 +25,40 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
         try:
             result = requests.get(
                 wikibase.special_statistics_url.url,
-                # headers={"Cookie": "mediawikilanguage=en"},
+                headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,
             )
             soup = BeautifulSoup(result.content, "html.parser")
+            table = soup.find("table", attrs={"class": "mw-statistics-table"})
 
             observation.returned_data = True
 
             observation.content_pages = get_number_from_row(
-                soup, "mw-statistics-articles"
+                table, "mw-statistics-articles"
             )
             observation.total_pages = get_number_from_row(
-                soup, row_class="mw-statistics-pages"
+                table, row_class="mw-statistics-pages"
             )
             observation.total_files = get_number_from_row(
-                soup, row_class="mw-statistics-numbers", optional=True
+                table, row_class="mw-statistics-numbers", optional=True
             )
             observation.total_edits = get_number_from_row(
-                soup, row_class="mw-statistics-edits"
+                table, row_class="mw-statistics-edits"
             )
             observation.total_users = get_number_from_row(
-                soup, row_class="mw-statistics-users"
+                table, row_class="mw-statistics-users"
             )
             observation.active_users = get_number_from_row(
-                soup, row_class="mw-statistics-users-active"
+                table, row_class="mw-statistics-users-active"
             )
             observation.total_admin = get_number_from_row(
-                soup, row_class="statistics-group-sysop"
+                table, row_class="statistics-group-sysop"
             )
             observation.words_in_content_pages = get_number_from_row(
-                soup, row_id="mw-cirrussearch-article-words", optional=True
+                table, row_id="mw-cirrussearch-article-words", optional=True
             )
 
-        except (HTTPError, SSLError):
+        except (ConnectionError, HTTPError, SSLError):
             observation.returned_data = False
 
         wikibase.statistics_observations.append(observation)
@@ -83,11 +84,12 @@ def get_number_from_row(
     )
 
     if statistic_row is None:
-        assert optional, f"Could Not Find Row: {row_class}"
+        assert optional, f"Could Not Find Row: {row_class}, {soup.prettify()}"
         return None
 
     return int(
         statistic_row.find("td", attrs={"class": "mw-statistics-numbers"})
         .string.replace(",", "")
+        .replace(".", "")
         .replace("\xa0", "")
     )
