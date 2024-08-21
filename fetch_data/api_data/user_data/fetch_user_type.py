@@ -1,4 +1,4 @@
-"""Fetch Log Data"""
+"""Fetch User Type"""
 
 import re
 from typing import Optional

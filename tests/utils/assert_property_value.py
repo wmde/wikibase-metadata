@@ -5,6 +5,7 @@ def assert_property_value(
     data: dict[int | str] | list, prop: int | str, expected_value: any
 ):
     """Assert property has value"""
+
     if isinstance(data, dict):
         assert prop in data, f"{prop} not found in {data.keys()}"
     elif isinstance(data, list) and isinstance(prop, int):
@@ -21,7 +22,8 @@ def assert_property_value(
 def assert_layered_property_count(
     data: dict[int | str] | list, props: list[int | str], expected_count: int
 ):
-    """Assert property has value levels deep"""
+    """Assert property has count levels deep"""
+
     if len(props) == 0:
         assert (
             len(data) == expected_count
@@ -42,6 +44,7 @@ def assert_layered_property_value(
     data: dict[int | str] | list, props: list[int | str], expected_value: any
 ):
     """Assert property has value levels deep"""
+
     if len(props) < 1:
         raise ValueError(f"Props must have at least one value: {props}")
     if len(props) == 1:

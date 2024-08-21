@@ -1,4 +1,4 @@
-"""Create User Data Observation"""
+"""Compile Connectivity Distance"""
 
 from typing import Iterable, List
 from tqdm import tqdm

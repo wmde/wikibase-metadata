@@ -18,7 +18,7 @@ def all_users_url(continue_from: str | None = None) -> str:
 
 
 def user_url(user: str) -> str:
-    """Single User Data"""
+    """Single User Url"""
 
     parameters = {
         "action": "query",

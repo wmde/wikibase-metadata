@@ -1,4 +1,4 @@
-"""Create User Data Observation"""
+"""Create Quantity Data Observation"""
 
 from urllib.error import HTTPError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
