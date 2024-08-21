@@ -11,12 +11,10 @@ from model.strawberry.output import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
+    WikibaseStatisticsAggregateStrawberryModel,
     WikibaseStrawberryModel,
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
-)
-from model.strawberry.output.observation.statistics.wikibase_statistics_aggregate import (
-    WikibaseStatisticsAggregateStrawberryModel,
 )
 from resolvers import (
     get_aggregate_created,

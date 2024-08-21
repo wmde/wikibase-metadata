@@ -7,7 +7,7 @@ from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
-class WikibaseStatisticsAggregateStrawberryModel: # pylint: disable=too-many-instance-attributes
+class WikibaseStatisticsAggregateStrawberryModel:  # pylint: disable=too-many-instance-attributes
     """Aggregate Statistics"""
 
     total_pages: int = strawberry.field(description="Total Pages", graphql_type=BigInt)
