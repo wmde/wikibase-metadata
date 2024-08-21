@@ -4,11 +4,16 @@ from sqlalchemy import func, select
 
 from data import get_async_session
 from model.database import WikibaseModel
-from model.strawberry.output import Page, WikibaseStrawberryModel
+from model.strawberry.output import (
+    Page,
+    PageNumberType,
+    PageSizeType,
+    WikibaseStrawberryModel,
+)
 
 
 async def get_wikibase_list(
-    page_number: int, page_size: int
+    page_number: PageNumberType, page_size: PageSizeType
 ) -> Page[WikibaseStrawberryModel]:
     """Get Wikibase List"""
 
