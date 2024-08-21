@@ -12,6 +12,7 @@ from model.strawberry.output.observation import (
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
     WikibaseSoftwareVersionObservationStrawberryModel,
+    WikibaseStatisticsObservationStrawberryModel,
     WikibaseUserObservationStrawberryModel,
 )
 from model.strawberry.output.wikibase_location import WikibaseLocationStrawberryModel
@@ -49,6 +50,9 @@ class WikibaseStrawberryModel:
     software_version_observations: WikibaseObservationSetStrawberryModel[
         WikibaseSoftwareVersionObservationStrawberryModel
     ] = strawberry.field(description="Software Version Data")
+    statistics_observations: WikibaseObservationSetStrawberryModel[
+        WikibaseStatisticsObservationStrawberryModel
+    ] = strawberry.field(description="Statistics Data")
     user_observations: WikibaseObservationSetStrawberryModel[
         WikibaseUserObservationStrawberryModel
     ] = strawberry.field(description="User Data")
@@ -97,6 +101,12 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseSoftwareVersionObservationStrawberryModel.marshal(o)
                     for o in model.software_version_observations
+                ]
+            ),
+            statistics_observations=WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseStatisticsObservationStrawberryModel.marshal(o)
+                    for o in model.statistics_observations
                 ]
             ),
             user_observations=WikibaseObservationSetStrawberryModel.marshal(
