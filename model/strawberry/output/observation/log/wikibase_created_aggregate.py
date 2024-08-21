@@ -2,7 +2,7 @@
 
 import strawberry
 
-from model.strawberry.scalars.big_int import BigInt
+from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
