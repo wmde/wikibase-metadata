@@ -8,5 +8,5 @@ from model.strawberry.output.observation import (
     WikibaseUserAggregate,
     WikibaseYearCreatedAggregated,
 )
-from model.strawberry.output.page import Page
+from model.strawberry.output.page import Page, PageNumberType, PageSizeType
 from model.strawberry.output.wikibase import WikibaseStrawberryModel

@@ -1,11 +1,13 @@
 """Query"""
 
-from typing import Annotated, List
+from typing import List
 import strawberry
 
 from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
     Page,
+    PageNumberType,
+    PageSizeType,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
@@ -22,11 +24,6 @@ from resolvers import (
     get_wikibase,
     get_wikibase_list,
 )
-
-PageNumberType = Annotated[
-    int, strawberry.argument(description="Page Number - 1-indexed")
-]
-PageSizeType = Annotated[int, strawberry.argument(description="Page Size")]
 
 
 @strawberry.type
