@@ -60,7 +60,7 @@ def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
 
     rank_subquery = (
         select(
-            WikibasePropertyPopularityObservationModel,
+            WikibasePropertyPopularityObservationModel.id,
             func.rank()  # pylint: disable=not-callable
             .over(
                 partition_by=WikibasePropertyPopularityObservationModel.wikibase_id,
@@ -87,8 +87,14 @@ def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
             ),
             func.count().label("wikibase_count"),  # pylint: disable=not-callable
         )
-        .join(rank_subquery)
-        .where(rank_subquery.c.rank == 1)
+        .join(
+            rank_subquery,
+            onclause=and_(
+                rank_subquery.c.id
+                == WikibasePropertyPopularityCountModel.wikibase_property_popularity_observation_id,
+                rank_subquery.c.rank == 1,
+            ),
+        )
         .group_by(WikibasePropertyPopularityCountModel.property_url)
     )
     return query
