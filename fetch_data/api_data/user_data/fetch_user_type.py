@@ -7,8 +7,10 @@ from model.database import WikibaseModel
 from model.enum import WikibaseUserType
 
 
-def get_user_type(wikibase: WikibaseModel, user: Optional[str]) -> WikibaseUserType:
-    """User or Bot?"""
+def get_user_type_from_wikibase(
+    wikibase: WikibaseModel, user: Optional[str]
+) -> WikibaseUserType:
+    """User Type from Wikibase"""
 
     if user is None:
         return WikibaseUserType.NONE
@@ -18,7 +20,7 @@ def get_user_type(wikibase: WikibaseModel, user: Optional[str]) -> WikibaseUserT
 
 
 def get_user_type_from_user_data(user_data: dict) -> WikibaseUserType:
-    """User or Bot?"""
+    """User Type from User Data"""
 
     if re.search(r"\b(bot|script)\b", user_data["name"], re.IGNORECASE) is not None:
         return WikibaseUserType.BOT
