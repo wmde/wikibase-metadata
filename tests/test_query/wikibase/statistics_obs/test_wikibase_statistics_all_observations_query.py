@@ -1,11 +1,12 @@
 """Test Wikibase All Quantity Observations"""
 
 import pytest
+from tests.test_query.wikibase.statistics_obs.assert_statistics import assert_statistics
 from tests.test_query.wikibase.statistics_obs.statistics_fragment import (
     WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, assert_property_value
+from tests.utils import assert_property_value
 
 
 WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY = (
@@ -56,47 +57,13 @@ async def test_wikibase_statistics_all_observations_query():
         == 2
     )
 
-    assert_layered_property_value(statistics_observation_list, [0, "id"], "1")
-    assert "observationDate" in statistics_observation_list[0]
-    assert_layered_property_value(
-        statistics_observation_list, [0, "returnedData"], True
+    assert_statistics(
+        statistics_observation_list[0],
+        "1",
+        True,
+        (36150323, 36150323 / 12655622),
+        (30,),
+        (851723, 27750 / 851723, 27750, 12655622),
+        (5, 17, 465),
     )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "edits", "totalEdits"], 36150323
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "edits", "editsPerPage"], 36150323 / 12655622
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "files", "totalFiles"], 30
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "pages", "contentPages"], 851723
-    )
-    assert_layered_property_value(
-        statistics_observation_list,
-        [0, "pages", "contentPageWordCountAvg"],
-        27750 / 851723,
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "pages", "contentPageWordCountTotal"], 27750
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "pages", "totalPages"], 12655622
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "users", "activeUsers"], 5
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "users", "totalAdmin"], 17
-    )
-    assert_layered_property_value(
-        statistics_observation_list, [0, "users", "totalUsers"], 465
-    )
-
-    assert_layered_property_value(statistics_observation_list, [1, "id"], "2")
-    assert "observationDate" in statistics_observation_list[1]
-    assert_layered_property_value(
-        statistics_observation_list, [1, "returnedData"], False
-    )
-    assert_layered_property_value(statistics_observation_list, [1, "edits"], None)
+    assert_statistics(statistics_observation_list[1], "2", False)
