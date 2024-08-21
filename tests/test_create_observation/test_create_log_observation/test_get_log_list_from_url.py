@@ -5,7 +5,7 @@ from typing import Optional
 
 from freezegun import freeze_time
 import pytest
-from fetch_data.log_data.fetch_log_data import get_log_list_from_url
+from fetch_data.api_data.log_data.fetch_log_data import get_log_list_from_url
 from tests.test_create_observation.test_create_log_observation.assert_log_record import (
     assert_log_record,
 )
@@ -16,7 +16,7 @@ def test_get_log_list_from_url_empty(mocker):
     """Test No Result Scenario"""
 
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         return_value={"query": {"logevents": []}},
     )
     assert get_log_list_from_url("example.com") == []
@@ -28,7 +28,7 @@ def test_get_log_list_from_url_single(mocker):
     """Test Single Result Scenario"""
 
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         return_value={
             "query": {
                 "logevents": [
@@ -81,7 +81,7 @@ def test_get_log_list_from_url_several(mocker):
             }
         )
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         return_value={"query": {"logevents": mock_logs}},
     )
     results = get_log_list_from_url("example.com")

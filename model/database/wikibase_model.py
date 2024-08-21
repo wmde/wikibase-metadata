@@ -61,7 +61,7 @@ class WikibaseModel(ModelBase):
     """Checked"""
 
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
-    """Test Wikibase"""
+    """Test Wikibase?"""
 
     url: Mapped[WikibaseURLModel] = relationship(
         "WikibaseURLModel",
@@ -222,7 +222,7 @@ class WikibaseModel(ModelBase):
         back_populates="wikibase",
         lazy="selectin",
     )
-    """Quantity Observations"""
+    """Software Version Observations"""
 
     user_observations: Mapped[List[WikibaseUserObservationModel]] = relationship(
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="selectin"

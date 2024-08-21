@@ -1,4 +1,4 @@
-"""Get Aggregate Property Popularity"""
+"""Get Aggregate Software Version"""
 
 from datetime import datetime
 from typing import Optional, Tuple
@@ -22,7 +22,7 @@ from model.strawberry.output import (
 async def get_aggregate_version(
     software_type: WikibaseSoftwareType, page_number: int, page_size: int
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
-    """Get Aggregate Property Popularity"""
+    """Get Aggregate Software Version"""
 
     query = get_query(software_type)
 
@@ -72,7 +72,7 @@ def get_query(
 
     rank_subquery = (
         select(
-            WikibaseSoftwareVersionObservationModel,
+            WikibaseSoftwareVersionObservationModel.id,
             func.rank()  # pylint: disable=not-callable
             .over(
                 partition_by=WikibaseSoftwareVersionObservationModel.wikibase_id,
@@ -98,13 +98,15 @@ def get_query(
             WikibaseSoftwareVersionModel.version_hash,
             func.count().label("wikibase_count"),  # pylint: disable=not-callable
         )
-        .join(rank_subquery)
-        .where(
-            and_(
+        .join(
+            rank_subquery,
+            onclause=and_(
+                WikibaseSoftwareVersionModel.wikibase_software_version_observation_id
+                == rank_subquery.c.id,
                 rank_subquery.c.rank == 1,
-                WikibaseSoftwareVersionModel.software_type == software_type,
-            )
+            ),
         )
+        .where(WikibaseSoftwareVersionModel.software_type == software_type)
         .group_by(
             WikibaseSoftwareVersionModel.software_name,
             WikibaseSoftwareVersionModel.version,

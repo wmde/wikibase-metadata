@@ -1,4 +1,4 @@
-"""Create User Data Observation"""
+"""Create Connectivity Data Observation"""
 
 from json import JSONDecodeError
 from urllib.error import HTTPError, URLError
@@ -41,7 +41,7 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
 def compile_connectivity_observation(
     sparql_endpoint_url: str,
 ) -> WikibaseConnectivityObservationModel:
-    """Compile Quantity Observation"""
+    """Compile Connectivity Observation"""
 
     observation = WikibaseConnectivityObservationModel()
     try:

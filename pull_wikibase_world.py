@@ -1,4 +1,4 @@
-"""Pull Wikibase Data"""
+"""Pull Wikibase World Data"""
 
 import asyncio
 import json
@@ -29,7 +29,7 @@ SELECT ?itemLabel ?url ?host ?hostLabel ?available ?availableLabel ?sparqlUIUrl 
 
 
 async def pull_wikibase_world():
-    """Pull Wikibase Data"""
+    """Pull Wikibase World Data"""
     # data = get_results(
     #     endpoint_url="https://wikibase.world/query/sparql",
     #     query=WIKIBASES_QUERY,

@@ -21,6 +21,7 @@ class WikibaseUserObservationModel(ModelBase, WikibaseObservationModel):
     total_users: Mapped[Optional[int]] = mapped_column(
         "total_users", Integer, nullable=True
     )
+    """Total Users"""
 
     user_group_observations: Mapped[List[WikibaseUserObservationGroupModel]] = (
         relationship(

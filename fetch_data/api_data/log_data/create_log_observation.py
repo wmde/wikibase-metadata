@@ -5,15 +5,15 @@ from json.decoder import JSONDecodeError
 from typing import List
 from requests.exceptions import ReadTimeout, SSLError
 from data import get_async_session
-from fetch_data.log_data.fetch_log_data import (
+from fetch_data.api_data.log_data.fetch_log_data import (
     get_log_list_from_url,
     get_log_param_string,
     get_month_log_list,
 )
-from fetch_data.log_data.wikibase_log_record import WikibaseLogRecord
-from fetch_data.user_data import (
+from fetch_data.api_data.log_data.wikibase_log_record import WikibaseLogRecord
+from fetch_data.api_data.user_data import (
     get_multiple_user_data,
-    get_user_type,
+    get_user_type_from_wikibase,
     get_user_type_from_user_data,
 )
 from fetch_data.utils import get_wikibase_from_database
@@ -28,7 +28,7 @@ from model.enum import WikibaseUserType
 
 
 async def create_log_observation(wikibase_id: int) -> bool:
-    """Create Software Version Observation"""
+    """Create Log Observation"""
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
@@ -51,7 +51,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
                 wikibase.action_api_url.url + get_log_param_string(limit=1)
             )[0]
             observation.last_log_date = most_recent_log.log_date
-            observation.last_log_user_type = get_user_type(
+            observation.last_log_user_type = get_user_type_from_wikibase(
                 wikibase, most_recent_log.user
             )
 

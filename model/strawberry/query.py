@@ -1,17 +1,19 @@
-"""GraphQL Query"""
+"""Query"""
 
-from typing import Annotated, List
+from typing import List
 import strawberry
 
 from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
     Page,
+    PageNumberType,
+    PageSizeType,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
-    WikibaseQuantityAggregate,
+    WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseStrawberryModel,
-    WikibaseUserAggregate,
-    WikibaseYearCreatedAggregated,
+    WikibaseUserAggregateStrawberryModel,
+    WikibaseYearCreatedAggregateStrawberryModel,
 )
 from resolvers import (
     get_aggregate_created,
@@ -26,35 +28,30 @@ from resolvers import (
 
 @strawberry.type
 class Query:
-    """GraphQL Query"""
+    """Query"""
 
     wikibase = strawberry.field(description="Wikibase Instance", resolver=get_wikibase)
+    """Wikibase Instance"""
 
     @strawberry.field(description="List of Wikibases")
     async def wikibase_list(
-        self,
-        page_number: Annotated[
-            int, strawberry.argument(description="Page Number - 1-indexed")
-        ],
-        page_size: Annotated[int, strawberry.argument(description="Page Size")],
+        self, page_number: PageNumberType, page_size: PageSizeType
     ) -> Page[WikibaseStrawberryModel]:
         """List of Wikibases"""
 
         return await get_wikibase_list(page_number, page_size)
 
-    @strawberry.field(description="Year of First Log Date")
-    async def aggregate_created(self) -> List[WikibaseYearCreatedAggregated]:
-        """Aggregated Creation Year"""
+    @strawberry.field(description="Aggregated Year of First Log Date")
+    async def aggregate_created(
+        self,
+    ) -> List[WikibaseYearCreatedAggregateStrawberryModel]:
+        """Aggregated Year of First Log Date"""
 
         return await get_aggregate_created()
 
     @strawberry.field(description="Aggregated Extension Popularity")
     async def aggregate_extension_popularity(
-        self,
-        page_number: Annotated[
-            int, strawberry.argument(description="Page Number - 1-indexed")
-        ],
-        page_size: Annotated[int, strawberry.argument(description="Page Size")],
+        self, page_number: PageNumberType, page_size: PageSizeType
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Extension Popularity"""
 
@@ -64,11 +61,7 @@ class Query:
 
     @strawberry.field(description="Aggregated Library Popularity")
     async def aggregate_library_popularity(
-        self,
-        page_number: Annotated[
-            int, strawberry.argument(description="Page Number - 1-indexed")
-        ],
-        page_size: Annotated[int, strawberry.argument(description="Page Size")],
+        self, page_number: PageNumberType, page_size: PageSizeType
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Library Popularity"""
 
@@ -78,29 +71,21 @@ class Query:
 
     @strawberry.field(description="Aggregated Property Popularity")
     async def aggregate_property_popularity(
-        self,
-        page_number: Annotated[
-            int, strawberry.argument(description="Page Number - 1-indexed")
-        ],
-        page_size: Annotated[int, strawberry.argument(description="Page Size")],
+        self, page_number: PageNumberType, page_size: PageSizeType
     ) -> Page[WikibasePropertyPopularityAggregateCountStrawberryModel]:
         """Aggregated Property Popularity"""
 
         return await get_aggregate_property_popularity(page_number, page_size)
 
     @strawberry.field(description="Aggregated Quantity")
-    async def aggregate_quantity(self) -> WikibaseQuantityAggregate:
-        """Aggregated Users"""
+    async def aggregate_quantity(self) -> WikibaseQuantityAggregateStrawberryModel:
+        """Aggregated Quantity"""
 
         return await get_aggregate_quantity()
 
     @strawberry.field(description="Aggregated Skin Popularity")
     async def aggregate_skin_popularity(
-        self,
-        page_number: Annotated[
-            int, strawberry.argument(description="Page Number - 1-indexed")
-        ],
-        page_size: Annotated[int, strawberry.argument(description="Page Size")],
+        self, page_number: PageNumberType, page_size: PageSizeType
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Skin Popularity"""
 
@@ -110,11 +95,7 @@ class Query:
 
     @strawberry.field(description="Aggregated Software Popularity")
     async def aggregate_software_popularity(
-        self,
-        page_number: Annotated[
-            int, strawberry.argument(description="Page Number - 1-indexed")
-        ],
-        page_size: Annotated[int, strawberry.argument(description="Page Size")],
+        self, page_number: PageNumberType, page_size: PageSizeType
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Software Popularity"""
 
@@ -123,7 +104,7 @@ class Query:
         )
 
     @strawberry.field(description="Aggregated Users")
-    async def aggregate_users(self) -> WikibaseUserAggregate:
+    async def aggregate_users(self) -> WikibaseUserAggregateStrawberryModel:
         """Aggregated Users"""
 
         return await get_aggregate_users()

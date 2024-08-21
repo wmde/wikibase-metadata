@@ -1,3 +1,3 @@
 # pylint: disable=invalid-name
 
-"""Wikibase Metadata"""
+"""Suite Scraper"""

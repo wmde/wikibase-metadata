@@ -35,4 +35,4 @@ class WikibaseURLModel(ModelBase):
     """URL Type"""
 
     url: Mapped[str] = mapped_column("url", String, nullable=False)
-    """Base URL"""
+    """URL"""

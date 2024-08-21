@@ -1,4 +1,4 @@
-"""Wikibase User Data Observation Strawberry Model"""
+"""Wikibase Observation Strawberry Model"""
 
 from datetime import datetime
 import strawberry
@@ -6,7 +6,7 @@ import strawberry
 
 @strawberry.type
 class WikibaseObservationStrawberryModel:
-    """Wikibase Data Observation"""
+    """Wikibase Data Observation - ABSTRACT"""
 
     id: strawberry.ID
     observation_date: datetime = strawberry.field(description="Observation Date")

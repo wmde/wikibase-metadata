@@ -33,31 +33,35 @@ class WikibaseLogObservationModel(ModelBase, WikibaseObservationModel):
     last_log_user_type: Mapped[Optional[WikibaseUserType]] = mapped_column(
         "last_log_user_type", Enum(WikibaseUserType), nullable=True
     )
-    """Most Recent Log - User or Bot?"""
+    """Most Recent Log User Type - User or Bot?"""
 
     first_month_id: Mapped[Optional[int]] = mapped_column(
         "first_month_id",
         ForeignKey(column="wikibase_log_observation_month.id", name="first_month"),
         nullable=True,
     )
+    """First Month ID"""
 
     first_month: Mapped[Optional[WikibaseLogMonthObservationModel]] = relationship(
         "WikibaseLogMonthObservationModel",
         lazy="selectin",
         primaryjoin=first_month_id == WikibaseLogMonthObservationModel.id,
     )
+    """First Month Log Record"""
 
     last_month_id: Mapped[Optional[int]] = mapped_column(
         "last_month_id",
         ForeignKey(column="wikibase_log_observation_month.id", name="last_month"),
         nullable=True,
     )
+    """Last Month ID"""
 
     last_month: Mapped[Optional[WikibaseLogMonthObservationModel]] = relationship(
         "WikibaseLogMonthObservationModel",
         lazy="selectin",
         primaryjoin=last_month_id == WikibaseLogMonthObservationModel.id,
     )
+    """Last Month Log Record"""
 
     def __str__(self) -> str:
         return (

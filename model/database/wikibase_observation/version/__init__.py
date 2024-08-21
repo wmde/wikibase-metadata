@@ -1,4 +1,4 @@
-"""Software Version Observations"""
+"""Software Version Observation Tables"""
 
 from model.database.wikibase_observation.version.software_version_model import (
     WikibaseSoftwareVersionModel,

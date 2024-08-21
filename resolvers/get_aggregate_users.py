@@ -1,4 +1,4 @@
-"""Get Aggregate Property Popularity"""
+"""Get Aggregate Users"""
 
 from typing import Tuple
 
@@ -11,11 +11,11 @@ from model.database import (
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
 )
-from model.strawberry.output import WikibaseUserAggregate
+from model.strawberry.output import WikibaseUserAggregateStrawberryModel
 
 
-async def get_aggregate_users() -> WikibaseUserAggregate:
-    """Get Aggregate Property Popularity"""
+async def get_aggregate_users() -> WikibaseUserAggregateStrawberryModel:
+    """Get Aggregate Users"""
 
     total_user_query = get_total_user_query()
     total_admin_query = get_total_admin_query()
@@ -29,7 +29,7 @@ async def get_aggregate_users() -> WikibaseUserAggregate:
         ).one()
         assert users_wikibase_count == admin_wikibase_count
 
-        return WikibaseUserAggregate(
+        return WikibaseUserAggregateStrawberryModel(
             total_admin=total_admin,
             total_users=total_users,
             wikibase_count=users_wikibase_count,

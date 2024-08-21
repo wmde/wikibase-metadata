@@ -6,10 +6,10 @@ from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
 from model.database import WikibaseLogObservationModel, WikibaseModel
-from model.strawberry.output import WikibaseYearCreatedAggregated
+from model.strawberry.output import WikibaseYearCreatedAggregateStrawberryModel
 
 
-async def get_aggregate_created() -> List[WikibaseYearCreatedAggregated]:
+async def get_aggregate_created() -> List[WikibaseYearCreatedAggregateStrawberryModel]:
     """Get Aggregate Year Created"""
 
     total_quantity_query = get_created_query()
@@ -17,7 +17,9 @@ async def get_aggregate_created() -> List[WikibaseYearCreatedAggregated]:
     async with get_async_session() as async_session:
         results = (await async_session.execute(total_quantity_query)).all()
         return [
-            WikibaseYearCreatedAggregated(year=year, wikibase_count=wikibase_count)
+            WikibaseYearCreatedAggregateStrawberryModel(
+                year=year, wikibase_count=wikibase_count
+            )
             for year, wikibase_count in results
         ]
 
@@ -49,9 +51,12 @@ def get_created_query() -> Select[Tuple[int, int]]:
             func.count().label("wikibase_count"),  # pylint: disable=not-callable
         )
         .join(
-            rank_subquery, onclause=WikibaseLogObservationModel.id == rank_subquery.c.id
+            rank_subquery,
+            onclause=and_(
+                WikibaseLogObservationModel.id == rank_subquery.c.id,
+                rank_subquery.c.rank == 1,
+            ),
         )
-        .where(rank_subquery.c.rank == 1)
         .group_by("year")
         .order_by("year")
     )

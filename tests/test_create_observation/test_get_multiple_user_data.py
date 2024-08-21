@@ -1,7 +1,7 @@
 """Test get_multiple_user_data"""
 
 import pytest
-from fetch_data.user_data import get_multiple_user_data
+from fetch_data.api_data import get_multiple_user_data
 
 
 @pytest.mark.user

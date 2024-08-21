@@ -1,4 +1,4 @@
-"""Wikibase Instance Strawberry Model"""
+"""Wikibase URL Set Strawberry Model"""
 
 from typing import Optional
 import strawberry
@@ -8,7 +8,7 @@ from model.database import WikibaseModel
 
 @strawberry.type
 class WikibaseURLSetStrawberryModel:
-    """Wikibase Instance"""
+    """Wikibase URL Set"""
 
     base_url: str = strawberry.field(description="Base URL")
     action_api: Optional[str] = strawberry.field(description="Action API URL")

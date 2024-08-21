@@ -1,4 +1,4 @@
-"""Get Aggregate Property Popularity"""
+"""Get Aggregate Quantity"""
 
 from typing import Tuple
 
@@ -6,11 +6,11 @@ from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
-from model.strawberry.output import WikibaseQuantityAggregate
+from model.strawberry.output import WikibaseQuantityAggregateStrawberryModel
 
 
-async def get_aggregate_quantity() -> WikibaseQuantityAggregate:
-    """Get Aggregate Property Popularity"""
+async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
+    """Get Aggregate Quantity"""
 
     total_quantity_query = get_total_quantity_query()
 
@@ -19,7 +19,7 @@ async def get_aggregate_quantity() -> WikibaseQuantityAggregate:
             await async_session.execute(total_quantity_query)
         ).one()
 
-        return WikibaseQuantityAggregate(
+        return WikibaseQuantityAggregateStrawberryModel(
             wikibase_count=wikibase_count,
             total_items=total_items,
             total_lexemes=total_lexemes,
@@ -49,24 +49,19 @@ def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
         )
         .subquery()
     )
-    query = (
-        select(
-            func.sum(WikibaseQuantityObservationModel.total_items).label("total_items"),
-            func.sum(WikibaseQuantityObservationModel.total_lexemes).label(
-                "total_lexemes"
-            ),
-            func.sum(WikibaseQuantityObservationModel.total_properties).label(
-                "total_properties"
-            ),
-            func.sum(WikibaseQuantityObservationModel.total_triples).label(
-                "total_triples"
-            ),
-            func.count().label("wikibase_count"),  # pylint: disable=not-callable
-        )
-        .join(
-            rank_subquery,
-            onclause=WikibaseQuantityObservationModel.id == rank_subquery.c.id,
-        )
-        .where(rank_subquery.c.rank == 1)
+    query = select(
+        func.sum(WikibaseQuantityObservationModel.total_items).label("total_items"),
+        func.sum(WikibaseQuantityObservationModel.total_lexemes).label("total_lexemes"),
+        func.sum(WikibaseQuantityObservationModel.total_properties).label(
+            "total_properties"
+        ),
+        func.sum(WikibaseQuantityObservationModel.total_triples).label("total_triples"),
+        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+    ).join(
+        rank_subquery,
+        onclause=and_(
+            WikibaseQuantityObservationModel.id == rank_subquery.c.id,
+            rank_subquery.c.rank == 1,
+        ),
     )
     return query

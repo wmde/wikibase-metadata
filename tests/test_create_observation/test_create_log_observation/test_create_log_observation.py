@@ -35,7 +35,7 @@ async def test_create_log_observation(mocker):
     newest_mock_log = max(mock_logs, key=lambda x: x.get("timestamp"))
 
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data",
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[
             {"query": {"logevents": [oldest_mock_log]}},  # oldest
             {"query": {"logevents": [newest_mock_log]}},  # newest
@@ -65,7 +65,8 @@ async def test_create_log_observation_error(mocker):
     """Test One-Pull Per Month, Error Returned Scenario"""
 
     mocker.patch(
-        "fetch_data.log_data.fetch_log_data.fetch_api_data", side_effect=[ReadTimeout()]
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
+        side_effect=[ReadTimeout()],
     )
     success = await create_log_observation(1)
     assert success is False

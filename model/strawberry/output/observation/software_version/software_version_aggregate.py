@@ -1,4 +1,4 @@
-"""Wikibase Property Popularity Aggregate Count"""
+"""Wikibase Software Version Aggregate Strawberry Models"""
 
 from datetime import datetime
 import re

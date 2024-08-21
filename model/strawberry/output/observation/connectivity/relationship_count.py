@@ -1,4 +1,4 @@
-"""Wikibase Connectivity Observation Item / Relationship Count Strawberry Model"""
+"""Wikibase Connectivity Observation Relationship Count Strawberry Models"""
 
 import strawberry
 

@@ -1,4 +1,4 @@
-"""Create Log Observation"""
+"""Wikibase Log Record"""
 
 from datetime import datetime
 from typing import Optional
@@ -7,7 +7,7 @@ from model.enum import WikibaseLogType, compile_log_type
 
 
 class WikibaseLogRecord:
-    """Parsing Record from Tag"""
+    """Wikibase Log Record"""
 
     id: int
     user: Optional[str]

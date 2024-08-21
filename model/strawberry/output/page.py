@@ -1,7 +1,7 @@
-"""Glacier Page"""
+"""Page"""
 
 from math import ceil
-from typing import Generic, List, TypeVar
+from typing import Annotated, Generic, List, TypeVar
 import strawberry
 
 from model.strawberry.scalars import BigInt
@@ -58,3 +58,9 @@ class Page(Generic[T]):
             ),
             data=page_data,
         )
+
+
+PageNumberType = Annotated[
+    int, strawberry.argument(description="Page Number - 1-indexed")
+]
+PageSizeType = Annotated[int, strawberry.argument(description="Page Size")]

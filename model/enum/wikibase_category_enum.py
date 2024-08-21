@@ -4,7 +4,7 @@ import enum
 
 
 class WikibaseCategory(enum.Enum):
-    """Wikibase Categories"""
+    """Wikibase Category"""
 
     CULTURAL_AND_HISTORICAL = 1
     DIGITAL_COLLECTIONS_AND_ARCHIVES = 2

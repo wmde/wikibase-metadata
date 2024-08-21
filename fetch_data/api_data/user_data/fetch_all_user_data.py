@@ -1,11 +1,11 @@
-"""Fetch User Data"""
+"""Fetch All User Data"""
 
-from fetch_data.user_data.user_data_url import all_users_url
+from fetch_data.api_data.user_data.user_data_url import all_users_url
 from fetch_data.utils import fetch_api_data
 
 
-def fetch_all_user_data(api_url: str) -> list[dict]:
-    """Fetch User Data"""
+def get_all_user_data(api_url: str) -> list[dict]:
+    """Fetch All User Data"""
 
     data = []
 
