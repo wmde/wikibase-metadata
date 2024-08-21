@@ -19,4 +19,4 @@ class WikibaseQuantityAggregateStrawberryModel:
     total_triples: int = strawberry.field(
         description="Total Triples", graphql_type=BigInt
     )
-    wikibase_count: int = strawberry.field(description="Wikibases with User Data")
+    wikibase_count: int = strawberry.field(description="Wikibases with Quantity Data")
