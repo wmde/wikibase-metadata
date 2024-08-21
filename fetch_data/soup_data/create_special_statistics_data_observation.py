@@ -1,5 +1,6 @@
 """Create Special:Statistics Observation"""
 
+from typing import Optional
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 import requests
@@ -31,63 +32,29 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
 
             observation.returned_data = True
 
-            observation.content_pages = int(
-                soup.find("tr", attrs={"class": "mw-statistics-articles"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.content_pages = get_number_from_row(
+                soup, "mw-statistics-articles"
             )
-            observation.total_pages = int(
-                soup.find("tr", attrs={"class": "mw-statistics-pages"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.total_pages = get_number_from_row(
+                soup, row_class="mw-statistics-pages"
             )
-            observation.total_files = (
-                int(
-                    total_files_row.find(
-                        "td", attrs={"class": "mw-statistics-numbers"}
-                    ).string.replace(",", "")
-                )
-                if (
-                    total_files_row := soup.find(
-                        "tr", attrs={"class": "mw-statistics-files"}
-                    )
-                )
-                is not None
-                else None
+            observation.total_files = get_number_from_row(
+                soup, row_class="mw-statistics-numbers", optional=True
             )
-            observation.total_edits = int(
-                soup.find("tr", attrs={"class": "mw-statistics-edits"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.total_edits = get_number_from_row(
+                soup, row_class="mw-statistics-edits"
             )
-            observation.total_users = int(
-                soup.find("tr", attrs={"class": "mw-statistics-users"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.total_users = get_number_from_row(
+                soup, row_class="mw-statistics-users"
             )
-            observation.active_users = int(
-                soup.find("tr", attrs={"class": "mw-statistics-users-active"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.active_users = get_number_from_row(
+                soup, row_class="mw-statistics-users-active"
             )
-            observation.total_admin = int(
-                soup.find("tr", attrs={"class": "statistics-group-sysop"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.total_admin = get_number_from_row(
+                soup, row_class="statistics-group-sysop"
             )
-            observation.words_in_content_pages = (
-                int(
-                    content_words_row.find(
-                        "td", attrs={"class": "mw-statistics-numbers"}
-                    ).string.replace(",", "")
-                )
-                if (
-                    content_words_row := soup.find(
-                        "tr", attrs={"id": "mw-cirrussearch-article-words"}
-                    )
-                )
-                is not None
-                else None
+            observation.words_in_content_pages = get_number_from_row(
+                soup, row_id="mw-cirrussearch-article-words", optional=True
             )
 
         except (HTTPError, SSLError):
@@ -97,3 +64,30 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
 
         await async_session.commit()
         return observation.returned_data
+
+
+def get_number_from_row(
+    soup: BeautifulSoup,
+    row_class: Optional[str] = None,
+    row_id: Optional[str] = None,
+    optional: bool = False,
+) -> int | None:
+    """Get Statistic Number From Row"""
+
+    assert (row_class or row_id) is not None, "No Identifiers Given"
+
+    statistic_row = (
+        soup.find("tr", attrs={"class": row_class})
+        if row_class is not None
+        else soup.find("tr", attrs={"id": row_id})
+    )
+
+    if statistic_row is None:
+        assert optional, f"Could Not Find Row: {row_class}"
+        return None
+
+    return int(
+        statistic_row.find("td", attrs={"class": "mw-statistics-numbers"})
+        .string.replace(",", "")
+        .replace("\xa0", "")
+    )
