@@ -8,6 +8,7 @@ from fetch_data import (
     create_property_popularity_observation,
     create_quantity_observation,
     create_software_version_observation,
+    create_special_statistics_observation,
     create_user_observation,
 )
 
@@ -34,6 +35,11 @@ class Mutation:
     fetch_quantity_data = strawberry.mutation(
         description="Fetch Quantity Data from Specified Wikibase Instance",
         resolver=create_quantity_observation,
+    )
+
+    fetch_statistics_data = strawberry.mutation(
+        description="Fetch Special:Statistics Data",
+        resolver=create_special_statistics_observation,
     )
 
     fetch_user_data = strawberry.mutation(

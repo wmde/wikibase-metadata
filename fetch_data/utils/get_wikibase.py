@@ -12,6 +12,7 @@ async def get_wikibase_from_database(
     wikibase_id: int,
     require_action_api: bool = False,
     require_sparql_endpoint: bool = False,
+    require_special_statistics: bool = False,
     require_special_version: bool = False,
 ) -> WikibaseModel:
     """Get Wikibase"""
@@ -31,6 +32,10 @@ async def get_wikibase_from_database(
         assert (
             wikibase.sparql_endpoint_url is not None
         ), "SPARQL Endpoint Must Be Populated"
+    if require_special_statistics:
+        assert (
+            wikibase.special_statistics_url is not None
+        ), "Special:Statistics URL Must Be Populated"
     if require_special_version:
         assert (
             wikibase.special_version_url is not None
