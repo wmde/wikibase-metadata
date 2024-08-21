@@ -40,7 +40,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 table, row_class="mw-statistics-pages"
             )
             observation.total_files = get_number_from_row(
-                table, row_class="mw-statistics-numbers", optional=True
+                table, row_class="mw-statistics-files", optional=True
             )
             observation.total_edits = get_number_from_row(
                 table, row_class="mw-statistics-edits"
