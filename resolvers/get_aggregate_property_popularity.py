@@ -12,12 +12,14 @@ from model.database import (
 )
 from model.strawberry.output import (
     Page,
+    PageNumberType,
+    PageSizeType,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
 )
 
 
 async def get_aggregate_property_popularity(
-    page_number: int, page_size: int
+    page_number: PageNumberType, page_size: PageSizeType
 ) -> Page[WikibasePropertyPopularityAggregateCountStrawberryModel]:
     """Get Aggregate Property Popularity"""
 

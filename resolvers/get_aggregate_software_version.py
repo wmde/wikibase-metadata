@@ -14,13 +14,17 @@ from model.database import (
 from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
     Page,
+    PageNumberType,
+    PageSizeType,
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
 )
 
 
 async def get_aggregate_version(
-    software_type: WikibaseSoftwareType, page_number: int, page_size: int
+    software_type: WikibaseSoftwareType,
+    page_number: PageNumberType,
+    page_size: PageSizeType,
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
     """Get Aggregate Software Version"""
 
