@@ -1,11 +1,11 @@
-"""Fetch User Data"""
+"""Fetch API Data"""
 
 import json
 import requests
 
 
 def fetch_api_data(url: str) -> dict:
-    """Fetch User Data"""
+    """Fetch API Data"""
 
     print(f"Querying {url}")
     result = requests.get(url, timeout=10)

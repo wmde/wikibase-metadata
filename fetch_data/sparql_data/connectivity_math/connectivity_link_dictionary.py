@@ -1,4 +1,4 @@
-"""Create User Data Observation"""
+"""Compile Link Dictionary"""
 
 from typing import List
 from fetch_data.sparql_data.sparql_queries import ItemLink
@@ -7,7 +7,7 @@ from fetch_data.sparql_data.sparql_queries import ItemLink
 def compile_link_dict(
     clean_data: List[ItemLink], all_nodes: List[str], reverse: bool = False
 ) -> dict[str, set[str]]:
-    """Compile Connection Dictionary
+    """Compile Link Dictionary
 
     Direct links present in the data, represented as a dictionary,
     with each node having a set of all non-self nodes to which it directly links.
