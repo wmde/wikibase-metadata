@@ -41,10 +41,19 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 .find("td", attrs={"class": "mw-statistics-numbers"})
                 .string.replace(",", "")
             )
-            observation.total_files = int(
-                soup.find("tr", attrs={"class": "mw-statistics-files"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.total_files = (
+                int(
+                    total_files_row.find(
+                        "td", attrs={"class": "mw-statistics-numbers"}
+                    ).string.replace(",", "")
+                )
+                if (
+                    total_files_row := soup.find(
+                        "tr", attrs={"class": "mw-statistics-files"}
+                    )
+                )
+                is not None
+                else None
             )
             observation.total_edits = int(
                 soup.find("tr", attrs={"class": "mw-statistics-edits"})
@@ -66,10 +75,19 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 .find("td", attrs={"class": "mw-statistics-numbers"})
                 .string.replace(",", "")
             )
-            observation.words_in_content_pages = int(
-                soup.find("tr", attrs={"id": "mw-cirrussearch-article-words"})
-                .find("td", attrs={"class": "mw-statistics-numbers"})
-                .string.replace(",", "")
+            observation.words_in_content_pages = (
+                int(
+                    content_words_row.find(
+                        "td", attrs={"class": "mw-statistics-numbers"}
+                    ).string.replace(",", "")
+                )
+                if (
+                    content_words_row := soup.find(
+                        "tr", attrs={"id": "mw-cirrussearch-article-words"}
+                    )
+                )
+                is not None
+                else None
             )
 
         except (HTTPError, SSLError):
