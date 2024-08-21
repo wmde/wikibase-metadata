@@ -1,4 +1,4 @@
-"""Wikibase Log Observation Table"""
+"""Wikibase Log Month Observation Table"""
 
 from datetime import datetime
 from typing import List, Optional
@@ -51,7 +51,7 @@ class WikibaseLogMonthObservationModel(ModelBase):
     user_type_records: Mapped[List[WikibaseLogMonthUserTypeObservationModel]] = (
         relationship("WikibaseLogMonthUserTypeObservationModel", lazy="selectin")
     )
-    """Log Type Observations"""
+    """User Type Observations"""
 
     def __str__(self) -> str:
         return (

@@ -62,7 +62,7 @@ class WikibaseModel(ModelBase):
     """Checked"""
 
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
-    """Test Wikibase"""
+    """Test Wikibase?"""
 
     url: Mapped[WikibaseURLModel] = relationship(
         "WikibaseURLModel",

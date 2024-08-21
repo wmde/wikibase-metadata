@@ -1,4 +1,4 @@
-"""User Observations"""
+"""User Observation Tables"""
 
 from model.database.wikibase_observation.user.wikibase_user_group_model import (
     WikibaseUserGroupModel,

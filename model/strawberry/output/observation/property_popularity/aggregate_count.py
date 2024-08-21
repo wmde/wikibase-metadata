@@ -1,4 +1,4 @@
-"""Wikibase Property Popularity Aggregate Count"""
+"""Wikibase Property Popularity Aggregate Count Strawberry Model"""
 
 import strawberry
 

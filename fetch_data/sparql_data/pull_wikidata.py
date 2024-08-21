@@ -1,4 +1,4 @@
-"""Get Data from Wikidata"""
+"""Get SPARQL Data from Wikidata"""
 
 from datetime import datetime
 from json import JSONDecodeError
@@ -9,7 +9,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 # retrieve results from a given endpoint given a distinct SPARQL query
 def get_results(endpoint_url: str, query: str, query_name: str) -> dict:
-    """Get Data from Wikidata"""
+    """Get SPARQL Data from Wikidata"""
     user_agent = f"WDQS-example Python/{sys.version_info[0]}.{sys.version_info[1]}"
     # TODO adjust user agent; see https://w.wiki/CX6
     sparql = SPARQLWrapper(endpoint_url, agent=user_agent, returnFormat=JSON)

@@ -18,12 +18,19 @@ class WikibaseQuantityObservationModel(ModelBase, WikibaseObservationModel):
     total_items: Mapped[Optional[int]] = mapped_column(
         "total_items", Integer, nullable=True
     )
+    """Total Items"""
+
     total_lexemes: Mapped[Optional[int]] = mapped_column(
         "total_lexemes", Integer, nullable=True
     )
+    """Total Lexemes"""
+
     total_properties: Mapped[Optional[int]] = mapped_column(
         "total_properties", Integer, nullable=True
     )
+    """Total Properties"""
+
     total_triples: Mapped[Optional[int]] = mapped_column(
         "total_triples", Integer, nullable=True
     )
+    """Total Triples"""

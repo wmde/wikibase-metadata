@@ -1,4 +1,4 @@
-"""Get User Data"""
+"""Fetch Single User Data"""
 
 import json
 import requests
@@ -7,7 +7,7 @@ from model.database import WikibaseModel
 
 
 def get_single_user_data(wikibase: WikibaseModel, user: str) -> dict:
-    """Get User Data"""
+    """Fetch Single User Data"""
 
     result = requests.get(wikibase.action_api_url.url + user_url(user), timeout=10)
     data = json.loads(result.content)

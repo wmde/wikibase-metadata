@@ -1,4 +1,4 @@
-"""Wikibase Statistics Data Observation Strawberry Model"""
+"""Wikibase Statistics Data Observation Strawberry Models"""
 
 from typing import Optional
 import strawberry

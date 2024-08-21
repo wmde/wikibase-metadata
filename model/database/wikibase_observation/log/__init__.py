@@ -1,4 +1,4 @@
-"""Log Observations"""
+"""Log Observation Tables"""
 
 from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import (
     WikibaseLogMonthLogTypeObservationModel,

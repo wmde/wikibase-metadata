@@ -1,4 +1,4 @@
-"""Wikibase Software Version Table"""
+"""Wikibase Software Type Enum"""
 
 import enum
 

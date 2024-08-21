@@ -1,4 +1,4 @@
-"""GraphQL Mutation"""
+"""Mutation"""
 
 import strawberry
 

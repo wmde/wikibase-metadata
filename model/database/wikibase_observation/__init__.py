@@ -1,4 +1,4 @@
-"""Observations"""
+"""Observation Tables"""
 
 from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationItemRelationshipCountModel,

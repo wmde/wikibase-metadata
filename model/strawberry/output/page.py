@@ -1,4 +1,4 @@
-"""Glacier Page"""
+"""Page"""
 
 from math import ceil
 from typing import Generic, List, TypeVar
