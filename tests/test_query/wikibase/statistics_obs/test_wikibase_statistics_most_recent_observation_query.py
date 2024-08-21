@@ -9,7 +9,7 @@ from tests.test_schema import test_schema
 from tests.utils import assert_property_value
 
 
-WIKIBASE_QUANTITY_MOST_RECENT_OBSERVATION_QUERY = (
+WIKIBASE_STATISTICS_MOST_RECENT_OBSERVATION_QUERY = (
     """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
@@ -35,7 +35,7 @@ async def test_wikibase_statistics_most_recent_observation_query():
     """Test Wikibase Most Recent Statistics Observation"""
 
     result = await test_schema.execute(
-        WIKIBASE_QUANTITY_MOST_RECENT_OBSERVATION_QUERY,
+        WIKIBASE_STATISTICS_MOST_RECENT_OBSERVATION_QUERY,
         variable_values={"wikibaseId": 1},
     )
 
