@@ -5,6 +5,7 @@ from model.strawberry.output.observation import (
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
+    WikibaseStatisticsAggregateStrawberryModel,
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
 )

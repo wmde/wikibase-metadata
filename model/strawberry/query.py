@@ -15,10 +15,14 @@ from model.strawberry.output import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
 )
+from model.strawberry.output.observation.statistics.wikibase_statistics_aggregate import (
+    WikibaseStatisticsAggregateStrawberryModel,
+)
 from resolvers import (
     get_aggregate_created,
     get_aggregate_property_popularity,
     get_aggregate_quantity,
+    get_aggregate_statistics,
     get_aggregate_users,
     get_aggregate_version,
     get_wikibase,
@@ -102,6 +106,12 @@ class Query:
         return await get_aggregate_version(
             WikibaseSoftwareType.SOFTWARE, page_number, page_size
         )
+
+    @strawberry.field(description="Aggregated Statistics")
+    async def aggregate_statistics(self) -> WikibaseStatisticsAggregateStrawberryModel:
+        """Aggregated Statistics"""
+
+        return await get_aggregate_statistics()
 
     @strawberry.field(description="Aggregated Users")
     async def aggregate_users(self) -> WikibaseUserAggregateStrawberryModel:

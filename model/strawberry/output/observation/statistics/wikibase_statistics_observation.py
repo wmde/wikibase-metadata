@@ -71,9 +71,9 @@ class WikibaseStatisticsPagesObservationStrawberryModel:
     @strawberry.field(description="Content Page Word Count - Average")
     def content_page_word_count_avg(self) -> Optional[float]:
         """Average Word Count per Content Page"""
+
         if self.content_page_word_count_total is None or self.content_pages == 0:
             return None
-
         return self.content_page_word_count_total / self.content_pages
 
     @classmethod
