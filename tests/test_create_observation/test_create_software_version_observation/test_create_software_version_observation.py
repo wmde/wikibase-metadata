@@ -47,7 +47,7 @@ async def test_create_software_version_observation_failure(mocker):
         "fetch_data.soup_data.create_software_version_data_observation.requests.get",
         side_effect=[
             HTTPError(
-                url="query.example.com/wiki/Special:Version",
+                url="example.com/wiki/Special:Version",
                 code=500,
                 msg="Error",
                 hdrs="",
