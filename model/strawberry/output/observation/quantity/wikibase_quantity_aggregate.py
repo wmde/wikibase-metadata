@@ -1,4 +1,4 @@
-"""Aggregate Users"""
+"""Aggregate Quantity Strawberry Model"""
 
 import strawberry
 
@@ -6,8 +6,8 @@ from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
-class WikibaseQuantityAggregate:
-    """Quantity Aggregate"""
+class WikibaseQuantityAggregateStrawberryModel:
+    """Aggregate Quantity"""
 
     total_items: int = strawberry.field(description="Total Items", graphql_type=BigInt)
     total_lexemes: int = strawberry.field(
