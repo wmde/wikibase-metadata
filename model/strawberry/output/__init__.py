@@ -2,7 +2,7 @@
 
 from model.strawberry.output.observation import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
-    WikibaseQuantityAggregate,
+    WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseUserAggregate,

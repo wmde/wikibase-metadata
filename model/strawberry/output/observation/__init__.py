@@ -13,7 +13,7 @@ from model.strawberry.output.observation.property_popularity import (
     WikibasePropertyPopularityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.quantity import (
-    WikibaseQuantityAggregate,
+    WikibaseQuantityAggregateStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.software_version import (
