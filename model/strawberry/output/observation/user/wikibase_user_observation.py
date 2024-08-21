@@ -10,7 +10,7 @@ from model.strawberry.output.observation.user.wikibase_user_observation_group im
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
-from model.strawberry.scalars.big_int import BigInt
+from model.strawberry.scalars import BigInt
 
 
 @strawberry.type

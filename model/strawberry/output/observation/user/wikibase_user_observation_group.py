@@ -6,7 +6,7 @@ from model.database import WikibaseUserObservationGroupModel
 from model.strawberry.output.observation.user.wikibase_user_group import (
     WikibaseUserGroupStrawberryModel,
 )
-from model.strawberry.scalars.big_int import BigInt
+from model.strawberry.scalars import BigInt
 
 
 @strawberry.type

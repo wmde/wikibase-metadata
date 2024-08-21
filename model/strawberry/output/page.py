@@ -4,7 +4,7 @@ from math import ceil
 from typing import Generic, List, TypeVar
 import strawberry
 
-from model.strawberry.scalars.big_int import BigInt
+from model.strawberry.scalars import BigInt
 
 
 T = TypeVar("T")

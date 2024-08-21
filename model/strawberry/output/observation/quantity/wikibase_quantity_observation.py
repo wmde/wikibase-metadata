@@ -7,7 +7,7 @@ from model.database import WikibaseQuantityObservationModel
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
-from model.strawberry.scalars.big_int import BigInt
+from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
