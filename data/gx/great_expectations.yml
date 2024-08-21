@@ -189,6 +189,12 @@ fluent_datasources:
         batch_metadata: {}
         table_name: wikibase_software_version_observation
         schema_name:
+      wikibase_statistics_observation_table:
+        type: table
+        order_by: []
+        batch_metadata: {}
+        table_name: wikibase_statistics_observation
+        schema_name:
       wikibase_url_table:
         type: table
         order_by: []
