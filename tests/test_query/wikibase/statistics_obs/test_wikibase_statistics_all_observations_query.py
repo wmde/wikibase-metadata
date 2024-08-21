@@ -1,0 +1,102 @@
+"""Test Wikibase All Quantity Observations"""
+
+import pytest
+from tests.test_query.wikibase.statistics_obs.statistics_fragment import (
+    WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT,
+)
+from tests.test_schema import test_schema
+from tests.utils import assert_layered_property_value, assert_property_value
+
+
+WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY = (
+    """
+query MyQuery($wikibaseId: Int!) {
+  wikibase(wikibaseId: $wikibaseId) {
+    id
+    statisticsObservations {
+      allObservations {
+        ...WikibaseStatisticsObservationStrawberryModelFragment
+      }
+    }
+  }
+}
+
+"""
+    + WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT
+)
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(
+    depends=["statistics-success", "statistics-failure"], scope="session"
+)
+@pytest.mark.query
+@pytest.mark.statistics
+async def test_wikibase_statistics_all_observations_query():
+    """Test Wikibase All Statistics Observations"""
+
+    result = await test_schema.execute(
+        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibase" in result.data
+    result_wikibase = result.data["wikibase"]
+    assert_property_value(result_wikibase, "id", "1")
+    assert "statisticsObservations" in result_wikibase
+
+    assert "allObservations" in result_wikibase["statisticsObservations"]
+    assert (
+        len(
+            statistics_observation_list := result_wikibase["statisticsObservations"][
+                "allObservations"
+            ]
+        )
+        == 2
+    )
+
+    assert_layered_property_value(statistics_observation_list, [0, "id"], "1")
+    assert "observationDate" in statistics_observation_list[0]
+    assert_layered_property_value(
+        statistics_observation_list, [0, "returnedData"], True
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "edits", "totalEdits"], 36150323
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "edits", "editsPerPage"], 36150323 / 12655622
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "files", "totalFiles"], 30
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "pages", "contentPages"], 851723
+    )
+    assert_layered_property_value(
+        statistics_observation_list,
+        [0, "pages", "contentPageWordCountAvg"],
+        27750 / 851723,
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "pages", "contentPageWordCountTotal"], 27750
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "pages", "totalPages"], 12655622
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "users", "activeUsers"], 5
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "users", "totalAdmin"], 17
+    )
+    assert_layered_property_value(
+        statistics_observation_list, [0, "users", "totalUsers"], 465
+    )
+
+    assert_layered_property_value(statistics_observation_list, [1, "id"], "2")
+    assert "observationDate" in statistics_observation_list[1]
+    assert_layered_property_value(
+        statistics_observation_list, [1, "returnedData"], False
+    )
+    assert_layered_property_value(statistics_observation_list, [1, "edits"], None)

@@ -8,9 +8,7 @@ from fetch_data import create_special_statistics_observation
 from tests.utils import MockResponse
 
 
-DATA_DIRECTORY = (
-    "tests/test_create_observation/test_create_statistics_observation/data"
-)
+DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observation/data"
 
 
 @pytest.mark.asyncio
@@ -18,7 +16,6 @@ DATA_DIRECTORY = (
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(mocker):
     """Test Data Returned Scenario"""
-
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Statistics.html"), "rb"
@@ -33,9 +30,7 @@ async def test_create_statistics_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="statistics-failure", depends=["statistics-success"]
-)
+@pytest.mark.dependency(name="statistics-failure", depends=["statistics-success"])
 @pytest.mark.statistics
 async def test_create_statistics_observation_failure(mocker):
     """Test Failure Scenario"""
