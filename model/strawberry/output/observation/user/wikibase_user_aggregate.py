@@ -1,4 +1,4 @@
-"""User Aggregate Strawberry Model"""
+"""Aggregate User Strawberry Model"""
 
 import strawberry
 
@@ -6,8 +6,8 @@ from model.strawberry.scalars import BigInt
 
 
 @strawberry.type
-class WikibaseUserAggregate:
-    """User Aggregate"""
+class WikibaseUserAggregateStrawberryModel:
+    """Aggregate User"""
 
     total_admin: int = strawberry.field(
         description="Total Administrators (estimated from group names)",
