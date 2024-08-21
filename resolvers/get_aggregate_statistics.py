@@ -1,4 +1,4 @@
-"""Get Aggregate Quantity"""
+"""Get Aggregate Statistics"""
 
 from typing import Tuple
 
@@ -9,8 +9,8 @@ from model.database import WikibaseModel, WikibaseQuantityObservationModel
 from model.strawberry.output import WikibaseQuantityAggregateStrawberryModel
 
 
-async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
-    """Get Aggregate Quantity"""
+async def get_aggregate_statistics() -> WikibaseQuantityAggregateStrawberryModel:
+    """Get Aggregate Statistics"""
 
     total_quantity_query = get_total_quantity_query()
 
@@ -49,19 +49,24 @@ def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
         )
         .subquery()
     )
-    query = select(
-        func.sum(WikibaseQuantityObservationModel.total_items).label("total_items"),
-        func.sum(WikibaseQuantityObservationModel.total_lexemes).label("total_lexemes"),
-        func.sum(WikibaseQuantityObservationModel.total_properties).label(
-            "total_properties"
-        ),
-        func.sum(WikibaseQuantityObservationModel.total_triples).label("total_triples"),
-        func.count().label("wikibase_count"),  # pylint: disable=not-callable
-    ).join(
-        rank_subquery,
-        onclause=and_(
-            WikibaseQuantityObservationModel.id == rank_subquery.c.id,
-            rank_subquery.c.rank == 1,
-        ),
+    query = (
+        select(
+            func.sum(WikibaseQuantityObservationModel.total_items).label("total_items"),
+            func.sum(WikibaseQuantityObservationModel.total_lexemes).label(
+                "total_lexemes"
+            ),
+            func.sum(WikibaseQuantityObservationModel.total_properties).label(
+                "total_properties"
+            ),
+            func.sum(WikibaseQuantityObservationModel.total_triples).label(
+                "total_triples"
+            ),
+            func.count().label("wikibase_count"),  # pylint: disable=not-callable
+        )
+        .join(
+            rank_subquery,
+            onclause=WikibaseQuantityObservationModel.id == rank_subquery.c.id,
+        )
+        .where(rank_subquery.c.rank == 1)
     )
     return query
