@@ -10,7 +10,7 @@ def assert_edits(
     """Assert Edits"""
 
     assert_layered_property_value(
-        returned_statistics, ["edits", "editsPerPage"], expected_average_edits
+        returned_statistics, ["edits", "editsPerPageAvg"], expected_average_edits
     )
     assert_layered_property_value(
         returned_statistics, ["edits", "totalEdits"], expected_total_edits

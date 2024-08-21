@@ -6,7 +6,7 @@ fragment WikibaseStatisticsObservationStrawberryModelFragment on WikibaseStatist
   observationDate
   returnedData
   edits {
-    editsPerPage
+    editsPerPageAvg
     totalEdits
   }
   files {
