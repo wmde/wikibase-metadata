@@ -1,4 +1,4 @@
-"""Get User Data"""
+"""Fetch Multiple User Data"""
 
 import json
 from typing import Iterable
@@ -11,7 +11,7 @@ MULTIPLE_USER_QUERY_LIMIT = 50
 
 
 def get_multiple_user_data(wikibase: WikibaseModel, users: Iterable[str]) -> list[dict]:
-    """Get User Data"""
+    """Fetch Multiple User Data"""
 
     if len(users) == 0:
         return []

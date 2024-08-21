@@ -1,4 +1,4 @@
-"""Wikibase User Observation / Group"""
+"""Wikibase User Observation / Group Table"""
 
 from sqlalchemy import Boolean, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -7,7 +7,7 @@ from model.database.base import ModelBase
 
 
 class WikibaseUserObservationGroupModel(ModelBase):
-    """Wikibase User Observation / Group"""
+    """Wikibase User Observation / Group Table"""
 
     __tablename__ = "wikibase_user_observation_group"
 
@@ -48,3 +48,4 @@ class WikibaseUserObservationGroupModel(ModelBase):
     group_implicit: Mapped[bool] = mapped_column(
         "implicit", Boolean, nullable=False, default=False
     )
+    """Group Implicit?"""

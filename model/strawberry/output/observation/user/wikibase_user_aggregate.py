@@ -1,4 +1,4 @@
-"""Aggregate Users"""
+"""User Aggregate Strawberry Model"""
 
 import strawberry
 

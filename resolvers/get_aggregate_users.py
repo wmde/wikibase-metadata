@@ -1,4 +1,4 @@
-"""Get Aggregate Property Popularity"""
+"""Get Aggregate Users"""
 
 from typing import Tuple
 
@@ -15,7 +15,7 @@ from model.strawberry.output import WikibaseUserAggregate
 
 
 async def get_aggregate_users() -> WikibaseUserAggregate:
-    """Get Aggregate Property Popularity"""
+    """Get Aggregate Users"""
 
     total_user_query = get_total_user_query()
     total_admin_query = get_total_admin_query()

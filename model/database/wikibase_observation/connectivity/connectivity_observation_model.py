@@ -52,4 +52,4 @@ class WikibaseConnectivityObservationModel(ModelBase, WikibaseObservationModel):
         back_populates="connectivity_observation",
         lazy="selectin",
     )
-    """Item / Relationship Count Observations"""
+    """Object / Relationship Count Observations"""

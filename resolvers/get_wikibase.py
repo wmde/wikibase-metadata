@@ -1,4 +1,4 @@
-"""Get Wikibase List"""
+"""Get Wikibase"""
 
 from sqlalchemy import select
 

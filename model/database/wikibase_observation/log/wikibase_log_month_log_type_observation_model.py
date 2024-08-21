@@ -1,4 +1,4 @@
-"""Wikibase Log Observation Table"""
+"""Wikibase Log Month Type Observation Table"""
 
 from datetime import datetime
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, UniqueConstraint
@@ -29,6 +29,7 @@ class WikibaseLogMonthLogTypeObservationModel(ModelBase):
         ),
         nullable=False,
     )
+    """Log Month Observation ID"""
 
     log_type: Mapped[WikibaseLogType] = mapped_column(
         "log_type", Enum(WikibaseLogType), nullable=False

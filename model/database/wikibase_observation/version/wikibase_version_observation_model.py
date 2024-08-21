@@ -1,4 +1,4 @@
-"""Wikibase Property Popularity Observation Table"""
+"""Wikibase Software Version Observation Table"""
 
 from typing import List
 from sqlalchemy.orm import Mapped, relationship
@@ -13,7 +13,7 @@ from model.database.wikibase_observation.wikibase_observation_model import (
 
 
 class WikibaseSoftwareVersionObservationModel(ModelBase, WikibaseObservationModel):
-    """Wikibase Property Popularity Observation Table"""
+    """Wikibase Software Version Observation Table"""
 
     __tablename__ = "wikibase_software_version_observation"
 

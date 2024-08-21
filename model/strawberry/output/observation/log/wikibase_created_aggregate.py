@@ -1,4 +1,4 @@
-"""Wikibase First Log Date Strawberry Model"""
+"""Aggregate Year Created Strawberry Model"""
 
 import strawberry
 
