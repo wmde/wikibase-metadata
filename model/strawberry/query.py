@@ -12,8 +12,8 @@ from model.strawberry.output import (
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseStrawberryModel,
-    WikibaseUserAggregate,
-    WikibaseYearCreatedAggregated,
+    WikibaseUserAggregateStrawberryModel,
+    WikibaseYearCreatedAggregateStrawberryModel,
 )
 from resolvers import (
     get_aggregate_created,
@@ -42,7 +42,9 @@ class Query:
         return await get_wikibase_list(page_number, page_size)
 
     @strawberry.field(description="Aggregated Year of First Log Date")
-    async def aggregate_created(self) -> List[WikibaseYearCreatedAggregated]:
+    async def aggregate_created(
+        self,
+    ) -> List[WikibaseYearCreatedAggregateStrawberryModel]:
         """Aggregated Year of First Log Date"""
 
         return await get_aggregate_created()
@@ -102,7 +104,7 @@ class Query:
         )
 
     @strawberry.field(description="Aggregated Users")
-    async def aggregate_users(self) -> WikibaseUserAggregate:
+    async def aggregate_users(self) -> WikibaseUserAggregateStrawberryModel:
         """Aggregated Users"""
 
         return await get_aggregate_users()
