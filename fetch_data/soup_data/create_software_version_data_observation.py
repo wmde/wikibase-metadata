@@ -14,9 +14,12 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
+from model.strawberry.output import WikibaseSoftwareVersionObservationStrawberryModel
 
 
-async def create_software_version_observation(wikibase_id: int) -> bool:
+async def create_software_version_observation(
+    wikibase_id: int,
+) -> WikibaseSoftwareVersionObservationStrawberryModel:
     """Create Software Version Observation"""
 
     async with get_async_session() as async_session:
@@ -55,7 +58,7 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
         wikibase.software_version_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibaseSoftwareVersionObservationStrawberryModel.marshal(observation)
 
 
 def compile_extension_versions(

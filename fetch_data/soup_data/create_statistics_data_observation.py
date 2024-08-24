@@ -8,9 +8,12 @@ from requests.exceptions import SSLError
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database
 from model.database import WikibaseModel, WikibaseStatisticsObservationModel
+from model.strawberry.output import WikibaseStatisticsObservationStrawberryModel
 
 
-async def create_special_statistics_observation(wikibase_id: int) -> bool:
+async def create_special_statistics_observation(
+    wikibase_id: int,
+) -> WikibaseStatisticsObservationStrawberryModel:
     """Create Special:Statistics Observation"""
 
     async with get_async_session() as async_session:
@@ -64,7 +67,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
         wikibase.statistics_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibaseStatisticsObservationStrawberryModel.marshal(observation)
 
 
 def get_number_from_row(
