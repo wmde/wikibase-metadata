@@ -243,10 +243,10 @@ def compile_log_type(record: dict) -> WikibaseLogType:
                 log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
             else:
                 pass
-        case ("patrol", "autopatrol"):
-            log_type = WikibaseLogType.PATROL_AUTO
         case ("patrol", "patrol"):
             log_type = WikibaseLogType.PATROL
+        case ("patrol", "autopatrol"):
+            log_type = WikibaseLogType.PATROL_AUTO
         case ("profile", "profile"):
             log_type = WikibaseLogType.PROFILE
         case ("protect", "move_prot") | ("protect", "protect") | ("protect", "modify"):
@@ -286,10 +286,10 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.USER_DELETE
         case ("usermerge", "mergeuser"):
             log_type = WikibaseLogType.USER_MERGE
-        case ("rights", "rights") | ("rights", "blockautopromote"):
-            log_type = WikibaseLogType.USER_RIGHTS
         case ("renameuser", "renameuser"):
             log_type = WikibaseLogType.USER_RENAME
+        case ("rights", "rights") | ("rights", "blockautopromote"):
+            log_type = WikibaseLogType.USER_RIGHTS
         case ("farmer", "managewiki"):
             log_type = WikibaseLogType.WIKI_FARM
         case ("managewiki", "delete-group"):
