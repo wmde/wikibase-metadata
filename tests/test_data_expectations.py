@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 import pytest
-from great_expectations.data_context import FileDataContext
+import great_expectations as gx
 
 GREAT_EXPECTATIONS_PROJECT_ROOT = "./data"
 CHECKPOINT_DIRECTORY = "./data/gx/checkpoints"
@@ -24,7 +24,7 @@ def test_data_expectations(checkpoint_name: str):
     """Test Data Expectations with Great Expectations"""
 
     print(f"\n{checkpoint_name}")
-    context = FileDataContext(project_root_dir=GREAT_EXPECTATIONS_PROJECT_ROOT)
+    context = gx.get_context(project_root_dir=GREAT_EXPECTATIONS_PROJECT_ROOT)
     retrieved_checkpoint = context.get_checkpoint(name=checkpoint_name)
     result = retrieved_checkpoint.run()
     assert result.success, result.run_results
