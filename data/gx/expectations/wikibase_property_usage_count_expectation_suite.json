@@ -1,69 +1,91 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_property_usage_count_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "0a4c1336-ffef-4b7d-8d83-4f9ec92de448",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "50257287-8684-4f8d-89c0-fd3bb38e2238",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "45f99005-9564-474a-b5c8-846710efc18c",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "f3f999ad-78ff-4485-a3cf-edc955ffb9f0",
 			"kwargs": { "column": "wikibase_property_usage_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "cb44303d-d1a1-48fa-a2ba-8abb8198bed1",
 			"kwargs": { "column": "wikibase_property_usage_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "defafd94-6ead-40a4-82fd-2a44bc9186a8",
 			"kwargs": { "column": "property_url" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "028f6eb0-4bad-4978-98fe-a4d96b732880",
 			"kwargs": { "column": "property_url" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "332a753b-e81e-4515-9dab-b47e3fb92b15",
 			"kwargs": { "column": "property_url", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "53acbc3c-161e-41c9-aa9a-c5d3b7096714",
 			"kwargs": { "column": "property_url", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "668df22e-9563-46b6-b789-199da26c9c97",
 			"kwargs": { "column": "property_url", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_compound_columns_to_be_unique",
-			"kwargs": { "column_list": ["wikibase_property_usage_observation_id", "property_url"] },
-			"meta": {}
+			"id": "b9c5ae42-1541-4e33-9e3b-a6185cf580ad",
+			"kwargs": {
+				"column_list": [
+					"wikibase_property_usage_observation_id",
+					"property_url"
+				]
+			},
+			"meta": {},
+			"type": "expect_compound_columns_to_be_unique"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "2388b27d-2aa5-4341-88c5-c525ddf94f87",
 			"kwargs": { "column": "usage_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "2ca6dbe6-afad-436e-a480-9379ea8a95e0",
 			"kwargs": { "column": "usage_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "c53b91ce-28e1-4f41-bc28-7ef052b612b0",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_property_usage_count_expectation_suite",
+	"notes": null
 }

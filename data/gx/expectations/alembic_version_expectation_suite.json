@@ -1,26 +1,32 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "alembic_version_expectation_suite",
 	"expectations": [
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "6cedbf62-4773-4301-a68a-c52e8b5636db",
 			"kwargs": { "column": "version_num" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "7055916e-278f-4b76-bcc4-9954aaa87910",
 			"kwargs": { "column": "version_num" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
-		{ "expectation_type": "expect_table_row_count_to_equal", "kwargs": { "value": 1 }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_match_regex",
-			"kwargs": { "column": "version_num", "regex": "^[0-9a-g]{12}$" },
-			"meta": {}
+			"id": "c25bf096-f83d-42ba-a8c3-6d48282cd4f1",
+			"kwargs": { "value": 1 },
+			"meta": {},
+			"type": "expect_table_row_count_to_equal"
+		},
+		{
+			"id": "cb4148ae-4eb6-4951-90d0-b96575095a30",
+			"kwargs": { "column": "version_num", "regex": "^[0-9a-g]{12)$" },
+			"meta": {},
+			"type": "expect_column_values_to_match_regex"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": {
-		"great_expectations_version": "0.18.19"
-	}
+	"id": "446d0a99-adcc-4091-bc9a-a1a8aa5611d1",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "alembic_version_expectation_suite",
+	"notes": null
 }

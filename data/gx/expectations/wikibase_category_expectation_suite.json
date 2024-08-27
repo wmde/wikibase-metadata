@@ -1,35 +1,43 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_category_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "91ce115f-ae60-47a0-8609-138a72e36b6c",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "074a024f-7f17-44d4-b473-a2cb76b1795d",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "1d0c1ec8-b7e5-4cef-a45c-6d235f7a3e4f",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "1e176efe-8746-4563-8910-cbe1f3c6b273",
 			"kwargs": { "column": "category" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "c4840ff3-e7f7-451e-9c2d-d249dc6850a5",
 			"kwargs": { "column": "category" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "64240ec2-2bf7-4340-b6ea-dc874bf72749",
 			"kwargs": { "column": "category" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "3e086dcd-9bf0-47f5-be98-e284d1b29654",
 			"kwargs": {
 				"column": "category",
 				"value_set": [
@@ -46,9 +54,12 @@
 					"TECHNOLOGY_AND_OPEN_SOURCE"
 				]
 			},
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "43b4a464-05e8-44db-9b65-0d6acc037cbe",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_category_expectation_suite",
+	"notes": null
 }
