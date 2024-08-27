@@ -19,7 +19,7 @@ class PageMetadata:
     """Page Metadata"""
 
     page_number: int = strawberry.field(
-        description="Page Number (1-indexed) - input", graphql_type=BigInt
+        description="Page Number - 1-indexed - input", graphql_type=BigInt
     )
     page_size: int = strawberry.field(
         description="Page Size - input", graphql_type=BigInt
