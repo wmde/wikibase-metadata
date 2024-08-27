@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "19734e8e-4b68-47c2-b429-80fe4a867e4c",
+      "name": "alembic_version_table"
+    },
+    "batch_definition": {
+      "id": "7d5132d1-89d4-4808-9857-e99931257217",
+      "name": "FULL_TABLE"
+    },
+    "datasource": {
+      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+      "name": "wikibase_datasource"
+    }
+  },
+  "id": "84b6bbcd-589b-4b8e-b4ef-c405e6c6041d",
+  "name": "alembic_version_validation_definition",
+  "suite": {
+    "id": "446d0a99-adcc-4091-bc9a-a1a8aa5611d1",
+    "name": "alembic_version_expectation_suite"
+  }
+}

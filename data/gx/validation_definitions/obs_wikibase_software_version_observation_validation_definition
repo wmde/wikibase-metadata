@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "9ebe19ff-8664-4b55-9877-63ef5de67df0",
+      "name": "wikibase_software_version_observation_table"
+    },
+    "batch_definition": {
+      "id": "673e6508-d457-49bb-b25e-07b1f73773c8",
+      "name": "FULL_TABLE"
+    },
+    "datasource": {
+      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+      "name": "wikibase_datasource"
+    }
+  },
+  "id": "7adb7aa8-7c1c-4759-8519-706ba6134d0d",
+  "name": "obs_wikibase_software_version_observation_validation_definition",
+  "suite": {
+    "id": "a5f967b2-e9e0-4b2c-8dd3-46acbbb2401a",
+    "name": "wikibase_observation_expectation_suite"
+  }
+}
