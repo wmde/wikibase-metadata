@@ -1,0 +1,32 @@
+{
+  "actions": [
+    {
+      "name": "update_all_data_docs",
+      "site_names": [],
+      "type": "update_data_docs"
+    }
+  ],
+  "id": "8e583043-67f9-4597-a99f-90e259d948a0",
+  "name": "wikibase_connectivity_observation_checkpoint",
+  "result_format": {
+    "result_format": "COMPLETE"
+  },
+  "validation_definitions": [
+    {
+      "id": "74fb97d2-f204-41db-8c74-d3b53a4af9fd",
+      "name": "obs_wikibase_connectivity_observation_validation_definition"
+    },
+    {
+      "id": "53bcbc7a-0fd2-4b75-bde4-e91e926fad3e",
+      "name": "wikibase_connectivity_observation_validation_definition"
+    },
+    {
+      "id": "c0daaf62-6831-4e2a-8e7b-a4b77507eb03",
+      "name": "wikibase_connectivity_observation_item_relationship_count_validation_definition"
+    },
+    {
+      "id": "f13d9ff4-83e2-4132-91b1-bccd971fca2b",
+      "name": "wikibase_connectivity_observation_object_relationship_count_validation_definition"
+    }
+  ]
+}
