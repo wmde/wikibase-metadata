@@ -13,7 +13,7 @@
   },
   "validation_definitions": [
     {
-      "id": "84b6bbcd-589b-4b8e-b4ef-c405e6c6041d",
+      "id": "f267138d-f64a-441f-946e-03c5deeffef0",
       "name": "alembic_version_validation_definition"
     }
   ]
