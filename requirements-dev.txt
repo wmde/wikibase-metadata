@@ -1,7 +1,7 @@
 alembic
 black
 freezegun
-great-expectations
+great-expectations==0.18.19
 pylint
 pytest
 pytest-asyncio
