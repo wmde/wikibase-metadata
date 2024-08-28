@@ -1,73 +1,88 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_software_version_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "add726f3-cfb9-4caf-907d-583de5fc662e",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "815d626d-8c82-4c7a-b85f-68b5f8212484",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "bb6f0f0c-d497-484f-aac3-56aaed674ef1",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "acd90331-538d-4acb-96cd-ba7ade9268c9",
 			"kwargs": { "column": "wikibase_software_version_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "57f718f7-88b0-4b55-aa69-306e7f36f69e",
 			"kwargs": { "column": "wikibase_software_version_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "c4616471-93e0-4df0-abbe-9bba1619592f",
 			"kwargs": { "column": "software_type" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "a96e0d04-a0aa-4b24-b27a-c006afcb2012",
 			"kwargs": { "column": "software_type" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "3fa3ac0b-0a7e-4132-81bd-3e998f35be3b",
 			"kwargs": {
 				"column": "software_type",
 				"value_set": ["SOFTWARE", "SKIN", "EXTENSION", "LIBRARY"]
 			},
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "e5cc3f78-9cd7-4087-a880-b2c9616811d2",
 			"kwargs": { "column": "software_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "daef9801-92bb-41af-a081-6d6ba2c239de",
 			"kwargs": { "column": "software_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "aa86c0d0-42e9-47c0-abc5-96b177ef5e7a",
 			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "e2012a55-b676-47fb-a3a6-9b1ea28de334",
 			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "9829cb38-175d-4618-b535-bd96c5b71e67",
 			"kwargs": { "column": "software_name", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_compound_columns_to_be_unique",
+			"id": "1a591246-4126-4545-8a35-74960762bca8",
 			"kwargs": {
 				"column_list": [
 					"wikibase_software_version_observation_id",
@@ -75,50 +90,66 @@
 					"software_name"
 				]
 			},
-			"meta": {}
+			"meta": {},
+			"type": "expect_compound_columns_to_be_unique"
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "version" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "755e9f43-a29d-4cd7-a290-6c302d4f0fb9",
+			"kwargs": { "column": "version" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "21b77115-8d32-4a46-8de2-0e511f7b7637",
 			"kwargs": { "column": "version", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "5e336863-d610-4513-a260-32cad5b96845",
 			"kwargs": { "column": "version", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "bf1c8d54-56d6-48be-83da-164e476e42f4",
 			"kwargs": { "column": "version", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "e7faf854-2154-4ece-8769-c52ac964c313",
 			"kwargs": { "column": "version_hash" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "5b96ef12-12ac-4c4b-b3c0-e79ec9b852ba",
 			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "0f84837c-ac3f-4150-ae10-63e3afdd83ca",
 			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "43c049e6-20f1-4c09-a60a-cc9658de6c60",
 			"kwargs": { "column": "version_hash", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "56c97b61-cec7-4371-8f32-766d4681d055",
 			"kwargs": { "column": "version_date" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "dc5cb675-5725-46cb-940d-df7a04a56257",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_software_version_expectation_suite",
+	"notes": null
 }

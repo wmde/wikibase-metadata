@@ -1,54 +1,73 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_connectivity_observation_item_relationship_count_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "9316df42-f6db-4f08-bb4e-59f9f8670e18",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "e456f30d-6eb8-4415-a340-2232fbd099aa",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "2d6f9511-3838-43fd-b7f2-927c53ad4e83",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "1b20490f-5aac-4cbd-88e4-52fc1af66623",
 			"kwargs": { "column": "wikibase_connectivity_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "69662285-94cf-4402-b456-83fe4edcaa33",
 			"kwargs": { "column": "wikibase_connectivity_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "42ec5c02-f9af-450c-bcd5-3bc98644249c",
 			"kwargs": { "column": "relationship_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "e85b689a-7c2e-4dc7-8379-a5192335383e",
 			"kwargs": { "column": "relationship_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_compound_columns_to_be_unique",
-			"kwargs": { "column_list": ["wikibase_connectivity_observation_id", "relationship_count"] },
-			"meta": {}
+			"id": "162c2a6e-c86c-4a6a-8bd0-a2ec74e6e0a0",
+			"kwargs": {
+				"column_list": [
+					"wikibase_connectivity_observation_id",
+					"relationship_count"
+				]
+			},
+			"meta": {},
+			"type": "expect_compound_columns_to_be_unique"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "9fbd0701-ff5f-4ba4-939e-d6948b110128",
 			"kwargs": { "column": "item_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "14633c26-5106-4390-8ea0-40fe05e3d826",
 			"kwargs": { "column": "item_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "6cc9e6d1-23bd-4a4c-9fbd-34499fb723de",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_connectivity_observation_item_relationship_count_expectation_suite",
+	"notes": null
 }

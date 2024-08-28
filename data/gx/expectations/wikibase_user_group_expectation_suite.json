@@ -1,60 +1,80 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_user_group_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "5cdff54a-dc96-4ca0-9c68-9e512665fa8c",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "dd2eccb1-fa59-48c5-947a-4e6494e0860d",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "1996d012-ecd3-4c01-9ff6-4af7ce31e1a5",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "4e9fda0e-55d1-4c74-a260-af3d46d0a4a0",
 			"kwargs": { "column": "group_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "be4696b7-e787-4b95-9f3f-d0f009155419",
 			"kwargs": { "column": "group_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "b34c8b00-bf7d-40ed-addb-96d82da594fe",
 			"kwargs": { "column": "group_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "f116994a-254b-4cfe-a72f-1be6e84ea2c8",
 			"kwargs": { "column": "group_name", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "a8064326-ca94-456f-81ad-1c9b952fe582",
 			"kwargs": { "column": "group_name", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "0929902c-091f-4576-ac66-3d60db654a7c",
 			"kwargs": { "column": "group_name", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "default" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "8a646929-3c55-4653-bb7f-430bef9fad96",
 			"kwargs": { "column": "default" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "9fe85c37-d811-45e7-9252-3be9aa6b1efd",
+			"kwargs": { "column": "default" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "20d3028c-eb62-48c5-8dcd-35c0add8ef20",
 			"kwargs": { "column": "default", "value_set": [0, 1] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "7684fa9a-0159-474d-9297-43397c9fda74",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_user_group_expectation_suite",
+	"notes": null
 }

@@ -1,23 +1,26 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_connectivity_observation_expectation_suite",
 	"expectations": [
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "48b8f4e2-9e7f-4e02-bafe-48d41fee974a",
 			"kwargs": { "column": "link_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "cef5359d-6ccf-4392-9431-bb263a6a6166",
 			"kwargs": { "column": "connectivity" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "fc74b150-80ec-4c4e-955d-81d8d8efa9ad",
 			"kwargs": { "column": "average_connected_distance" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "c13be6ac-f61c-43c7-802c-71ca681e4aee",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_connectivity_observation_expectation_suite",
+	"notes": null
 }

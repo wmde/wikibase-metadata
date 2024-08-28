@@ -1,28 +1,32 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_quantity_observation_expectation_suite",
 	"expectations": [
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "4817d508-f3ef-4487-9cb6-a4b0a3437082",
 			"kwargs": { "column": "total_items" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "c5d2650c-5024-4be1-88ee-f07dfddbafe4",
 			"kwargs": { "column": "total_properties" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "70a84621-bc7a-4df4-b964-005f7c615a0b",
 			"kwargs": { "column": "total_lexemes" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "3bde70f2-3f47-4741-9db7-359ba9c6cfd2",
 			"kwargs": { "column": "total_triples" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "5a75aff7-053b-4351-9952-04466e0fbdad",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_quantity_observation_expectation_suite",
+	"notes": null
 }

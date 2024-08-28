@@ -1,38 +1,44 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "valid_wikibase_expectation_suite",
 	"expectations": [
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "0035df56-5603-4e1f-aa01-9495082b0a26",
 			"kwargs": { "column": "organization", "mostly": 0.95 },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "bf85588d-b44a-4a1c-ae56-07026fe6bbe6",
 			"kwargs": { "column": "region" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "9041fc41-a287-4d70-a4f8-6fe4b4911d2e",
 			"kwargs": { "column": "valid", "value_set": [1] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "d7bd4bfd-989e-4753-93c8-bdaaba7cff82",
 			"kwargs": { "column": "test", "value_set": [0] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "266da5bd-409a-42fa-829b-2f905aa69585",
 			"kwargs": { "column": "wikibase_category_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "a124147e-cf8f-41d4-94c4-af9dd1e2460d",
 			"kwargs": { "column": "description", "mostly": 0.95 },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "fc96053a-84e8-4555-9d4c-eba06a36864f",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "valid_wikibase_expectation_suite",
+	"notes": null
 }

@@ -1,143 +1,194 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "a642dab1-694e-46a7-bdcf-f609da9f2a06",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "f382391d-902d-49ba-8009-c8b139888186",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "dcfadf35-de21-41ff-8a64-8cdf144427b9",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "54c41a8d-ac70-43db-a9ee-956ec460a94c",
 			"kwargs": { "column": "wikibase_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "cff58c37-7b94-455f-a146-04b91c590fc2",
 			"kwargs": { "column": "wikibase_name" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "95e55253-0b88-4815-96da-c531ff7cfaa0",
 			"kwargs": { "column": "wikibase_name", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "dc34630a-3687-43e1-b9a4-d69cb49f55c3",
 			"kwargs": { "column": "wikibase_name", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "409d22e5-2d54-4437-9358-2dbe9e6644cd",
 			"kwargs": { "column": "wikibase_name", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "3a9be9cf-52b4-407d-8c2e-9467fec807ae",
 			"kwargs": { "column": "organization" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "5927c655-a712-42cd-a8dc-5df0c5161d13",
 			"kwargs": { "column": "organization", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "e7b0d0e4-2158-44d8-b667-8f5b0c819206",
 			"kwargs": { "column": "organization", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "d8ffa61a-f706-4f97-8ec7-113bf078f209",
 			"kwargs": { "column": "organization", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "country" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "9a7827d0-38d0-4bb5-933b-d09d33a5d18d",
+			"kwargs": { "column": "country" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "9fdbe443-e4ef-40bd-8eb2-f1b457216141",
 			"kwargs": { "column": "country", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "d4fb5d4f-f84a-43c6-9acf-e012441106e3",
 			"kwargs": { "column": "country", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "2b4fa22b-bf5f-40ff-b742-392251e354e0",
 			"kwargs": { "column": "country", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "region" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "4bcc036a-82c7-4416-b03c-28a4e12b8a57",
+			"kwargs": { "column": "region" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "0d19d0f8-a507-4508-83f6-68923e80d9ab",
 			"kwargs": { "column": "region", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "87a15320-0f9d-48c7-8985-8fc9d0253249",
 			"kwargs": { "column": "region", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "fe409fe4-cc47-4fde-8ad5-debce8868787",
 			"kwargs": { "column": "region", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "valid" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "3ce11f97-1ba4-4de8-b5a0-31d763efceb7",
 			"kwargs": { "column": "valid" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "af00e93a-757b-45fa-b4a6-1e946d0f31fc",
+			"kwargs": { "column": "valid" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "d061887e-ee58-4575-84db-0c126e0e5300",
 			"kwargs": { "column": "valid", "value_set": [0, 1] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		},
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "test" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "beb8db4e-5f28-4ce4-8729-f3f1415a556b",
 			"kwargs": { "column": "test" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "361f8a45-ce9b-4dfe-9593-e73d555d4e0b",
+			"kwargs": { "column": "test" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "7eb3482b-42c0-4765-9577-50ee50d31e11",
 			"kwargs": { "column": "test", "value_set": [0, 1] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "0152ca32-725a-4b45-9063-94da14ea58af",
 			"kwargs": { "column": "wikibase_category_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "eac93dff-de41-4b35-a14e-eea63b88321b",
 			"kwargs": { "column": "description" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "9273b53a-2273-4a8f-811e-1daadb9fc94a",
 			"kwargs": { "column": "description", "regex": "^[ \t\r\n]*$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "4356cdeb-6c90-4f0f-8825-f7bdb06a0b54",
 			"kwargs": { "column": "description", "regex": "^[ \t\r\n]+" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_match_regex",
+			"id": "99788d9b-2344-456c-a38e-197cfb712ce8",
 			"kwargs": { "column": "description", "regex": "[ \t\r\n]+$" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "a6baca9d-df1f-4221-834d-a5c1cd1b23d3",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_expectation_suite",
+	"notes": null
 }
