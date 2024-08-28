@@ -1,48 +1,56 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_statistics_observation_expectation_suite",
 	"expectations": [
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "12e433dc-9c52-4e4f-a870-33ee9dd478a8",
 			"kwargs": { "column": "total_pages" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "eb9a2650-38e0-4ea3-a567-da64277714d0",
 			"kwargs": { "column": "content_pages" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "6438f289-2748-48cf-9396-9f1f4675e2d8",
 			"kwargs": { "column": "total_files" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "53e7ddb8-f100-42df-975b-d847f53b55e5",
 			"kwargs": { "column": "total_edits" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "08c7e87b-166f-45f0-b7aa-0608df1c397e",
 			"kwargs": { "column": "content_words" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "4be450f0-8a71-4de7-b7a9-fe8fc8993ea7",
 			"kwargs": { "column": "total_users" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "28f7c5ab-4b56-4d76-9d20-1e19a946d384",
 			"kwargs": { "column": "active_users" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "f2dfba72-0028-4e1b-bf21-6a208ed2cc71",
 			"kwargs": { "column": "total_admin" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "3b148b36-c190-4dc0-8504-75d670d6203d",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_statistics_observation_expectation_suite",
+	"notes": null
 }

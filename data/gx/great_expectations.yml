@@ -238,8 +238,12 @@ fluent_datasources:
         schema_name:
       wikibase_statistics_observation_table:
         type: table
-        order_by: []
+        id: 05cc691f-d972-4cdd-8172-86dc600cf18e
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 96994a6a-aa72-4eb2-96b8-c285a7291b69
+            partitioner:
         table_name: wikibase_statistics_observation
         schema_name:
       wikibase_url_table:
