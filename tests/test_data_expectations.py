@@ -25,7 +25,7 @@ def test_data_expectations(checkpoint_name: str):
 
     print(f"\n{checkpoint_name}")
     context = gx.get_context(project_root_dir=GREAT_EXPECTATIONS_PROJECT_ROOT)
-    retrieved_checkpoint = context.checkpoints.get(checkpoint_name)
+    retrieved_checkpoint = context.get_checkpoint(name=checkpoint_name)
     result = retrieved_checkpoint.run()
     assert result.success, result.run_results
 
