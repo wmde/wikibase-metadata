@@ -1,0 +1,14 @@
+{
+	"expectations": [
+		{
+			"id": "4c9d3bfe-6f5d-47a1-a4e8-aacaa96748d1",
+			"kwargs": { "column": "link_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		}
+	],
+	"id": "2f17286b-dd0a-4301-b0a0-a834d9f7a051",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "valid_wikibase_connectivity_observation_expectation_suite",
+	"notes": null
+}

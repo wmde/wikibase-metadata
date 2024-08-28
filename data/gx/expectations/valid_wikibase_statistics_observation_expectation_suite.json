@@ -1,0 +1,44 @@
+{
+	"expectations": [
+		{
+			"id": "d32e9a50-07b8-43e0-aa2d-4a5e6590c5cd",
+			"kwargs": { "column": "total_pages" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "32030956-a4b0-4e07-a302-1c63055f958e",
+			"kwargs": { "column": "content_pages" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "55614781-3634-4df3-ae3a-1927abd33f95",
+			"kwargs": { "column": "total_edits" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "bfe1062f-3c2c-42bf-bb79-0fdbd853f9e1",
+			"kwargs": { "column": "total_users" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "1ac85177-98c0-4ba9-b034-915203a3fe2c",
+			"kwargs": { "column": "active_users" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "a8970d78-bd94-4f40-97fc-44798eb426de",
+			"kwargs": { "column": "total_admin" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		}
+	],
+	"id": "ae836f37-1896-4b7f-a50a-9e2906c9592d",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "valid_wikibase_statistics_observation_expectation_suite",
+	"notes": null
+}

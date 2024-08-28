@@ -19,6 +19,10 @@
     {
       "id": "9ea78ef4-0641-485e-a972-219b43b24e88",
       "name": "wikibase_statistics_observation_validation_definition"
+    },
+    {
+      "id": "d8fba0be-ef0d-472e-823d-a1da6c7ff97a",
+      "name": "valid_wikibase_statistics_observation_validation_definition"
     }
   ]
 }

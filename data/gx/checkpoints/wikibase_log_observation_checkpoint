@@ -21,6 +21,10 @@
       "name": "wikibase_log_observation_validation_definition"
     },
     {
+      "id": "3b4b23fa-ae5d-4e56-826c-aff3d8692ea3",
+      "name": "valid_wikibase_log_observation_validation_definition"
+    },
+    {
       "id": "636b350a-c392-4fde-b855-4da9dae3378a",
       "name": "wikibase_log_observation_month_validation_definition"
     },

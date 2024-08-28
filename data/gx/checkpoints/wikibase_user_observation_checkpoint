@@ -21,6 +21,10 @@
       "name": "wikibase_user_observation_validation_definition"
     },
     {
+      "id": "aada3843-21d5-49b8-89bb-b8952c7b5a82",
+      "name": "valid_wikibase_user_observation_validation_definition"
+    },
+    {
       "id": "7d3d497a-f308-46af-86b1-83df9f83ec34",
       "name": "wikibase_user_group_validation_definition"
     },

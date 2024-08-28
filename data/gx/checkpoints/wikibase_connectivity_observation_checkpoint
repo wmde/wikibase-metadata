@@ -21,6 +21,10 @@
       "name": "wikibase_connectivity_observation_validation_definition"
     },
     {
+      "id": "bb7a4864-196f-4c24-94d7-cb8e7d851292",
+      "name": "valid_wikibase_connectivity_observation_validation_definition"
+    },
+    {
       "id": "c0daaf62-6831-4e2a-8e7b-a4b77507eb03",
       "name": "wikibase_connectivity_observation_item_relationship_count_validation_definition"
     },
