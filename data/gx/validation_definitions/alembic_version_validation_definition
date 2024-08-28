@@ -13,10 +13,10 @@
       "name": "wikibase_datasource"
     }
   },
-  "id": "84b6bbcd-589b-4b8e-b4ef-c405e6c6041d",
+  "id": "f267138d-f64a-441f-946e-03c5deeffef0",
   "name": "alembic_version_validation_definition",
   "suite": {
-    "id": "446d0a99-adcc-4091-bc9a-a1a8aa5611d1",
+    "id": "50bad8f7-38ba-437f-8887-15eef5e20e2b",
     "name": "alembic_version_expectation_suite"
   }
 }

@@ -1,31 +1,31 @@
 {
 	"expectations": [
 		{
-			"id": "6cedbf62-4773-4301-a68a-c52e8b5636db",
+			"id": "5d9c2fe6-2a97-4713-9b49-3dd734b73a70",
 			"kwargs": { "column": "version_num" },
 			"meta": {},
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "7055916e-278f-4b76-bcc4-9954aaa87910",
+			"id": "4e60e2bc-d1f2-4120-b33a-c776ec1fefbb",
 			"kwargs": { "column": "version_num" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"id": "c25bf096-f83d-42ba-a8c3-6d48282cd4f1",
+			"id": "62c7860e-da3c-400e-bd2c-85cc58490bde",
 			"kwargs": { "value": 1 },
 			"meta": {},
 			"type": "expect_table_row_count_to_equal"
 		},
 		{
-			"id": "cb4148ae-4eb6-4951-90d0-b96575095a30",
-			"kwargs": { "column": "version_num", "regex": "^[0-9a-g]{12)$" },
+			"id": "e31991a1-798d-470b-8646-3e8998591904",
+			"kwargs": { "column": "version_num", "regex": "^[0-9a-g]{12}$" },
 			"meta": {},
 			"type": "expect_column_values_to_match_regex"
 		}
 	],
-	"id": "446d0a99-adcc-4091-bc9a-a1a8aa5611d1",
+	"id": "50bad8f7-38ba-437f-8887-15eef5e20e2b",
 	"meta": { "great_expectations_version": "1.0.0" },
 	"name": "alembic_version_expectation_suite",
 	"notes": null
