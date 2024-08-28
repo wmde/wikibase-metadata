@@ -8,11 +8,7 @@
 
 # config_version refers to the syntactic version of this config file, and is used in maintaining backwards compatibility
 # It is auto-generated and usually does not need to be changed.
-config_version: 3.0
-
-# Datasources tell Great Expectations where your data lives and how to get it.
-# Read more at https://docs.greatexpectations.io/docs/guides/connecting_to_your_data/connect_to_data_overview
-datasources: {}
+config_version: 4.0
 
 # This config file supports variable substitution which enables: 1) keeping
 # secrets out of source control & 2) environment-based configuration changes
@@ -41,24 +37,18 @@ stores:
   # Stores are configurable places to store things like Expectations, Validations
   # Data Docs, and more. These are for advanced users only - most users can simply
   # leave this section alone.
-  #
-  # Three stores are required: expectations, validations, and
-  # evaluation_parameters, and must exist with a valid store entry. Additional
-  # stores can be configured for uses such as data_docs, etc.
   expectations_store:
     class_name: ExpectationsStore
     store_backend:
       class_name: TupleFilesystemStoreBackend
       base_directory: expectations/
 
-  validations_store:
-    class_name: ValidationsStore
+  validation_results_store:
+    class_name: ValidationResultsStore
     store_backend:
       class_name: TupleFilesystemStoreBackend
       base_directory: uncommitted/validations/
 
-  evaluation_parameter_store:
-    class_name: EvaluationParameterStore
   checkpoint_store:
     class_name: CheckpointStore
     store_backend:
@@ -66,16 +56,14 @@ stores:
       suppress_store_backend_id: true
       base_directory: checkpoints/
 
-  profiler_store:
-    class_name: ProfilerStore
+  validation_definition_store:
+    class_name: ValidationDefinitionStore
     store_backend:
       class_name: TupleFilesystemStoreBackend
-      suppress_store_backend_id: true
-      base_directory: profilers/
+      base_directory: validation_definitions/
 
 expectations_store_name: expectations_store
-validations_store_name: validations_store
-evaluation_parameter_store_name: evaluation_parameter_store
+validation_results_store_name: validation_results_store
 checkpoint_store_name: checkpoint_store
 
 data_docs_sites:
@@ -92,101 +80,160 @@ data_docs_sites:
     site_index_builder:
       class_name: DefaultSiteIndexBuilder
 
-anonymous_usage_statistics:
-  data_context_id: 809519a2-94a4-4649-86c6-0631029fb56e
-  enabled: true
+analytics_enabled: true
 fluent_datasources:
   wikibase_datasource:
     type: sqlite
+    id: 4a58b404-1ee3-4e91-a373-78d1b365f987
     assets:
       alembic_version_table:
         type: table
-        order_by: []
+        id: 19734e8e-4b68-47c2-b429-80fe4a867e4c
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 7d5132d1-89d4-4808-9857-e99931257217
+            partitioner:
         table_name: alembic_version
         schema_name:
       wikibase_table:
         type: table
-        order_by: []
+        id: 779de8a9-4658-46c1-9622-389d18fe00e5
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 420cc603-a309-4434-a22f-6f2d194e3611
+            partitioner:
         table_name: wikibase
         schema_name:
       wikibase_category_table:
         type: table
-        order_by: []
+        id: 07fad760-0d4b-4f38-bde7-4ff1bdf3ee1b
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: adf99891-4cb3-4594-bdf8-14a86f927a74
+            partitioner:
         table_name: wikibase_category
         schema_name:
       wikibase_connectivity_observation_table:
         type: table
-        order_by: []
+        id: baa8a84b-f3b7-475f-b310-507591390c0c
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: e4cd9bb8-d53e-4649-9b5d-7775f03d753a
+            partitioner:
         table_name: wikibase_connectivity_observation
         schema_name:
       wikibase_connectivity_observation_item_relationship_count_table:
         type: table
-        order_by: []
+        id: 8acebf61-1e1c-4a2a-8939-2218b72f9f56
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 5a83c4c9-2a2b-4892-89a0-de22cfc6e544
+            partitioner:
         table_name: wikibase_connectivity_observation_item_relationship_count
         schema_name:
       wikibase_connectivity_observation_object_relationship_count_table:
         type: table
-        order_by: []
+        id: 4bb149c0-f1f8-4ad2-a62d-48f4c36a9b27
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: f9016371-5309-4e38-b627-280d633be15e
+            partitioner:
         table_name: wikibase_connectivity_observation_object_relationship_count
         schema_name:
       wikibase_log_observation_table:
         type: table
-        order_by: []
+        id: 66094242-25ea-4a8a-be00-0b21cdea786c
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 09db6e09-83a0-4906-a910-94a4f40218bc
+            partitioner:
         table_name: wikibase_log_observation
         schema_name:
       wikibase_log_observation_month_table:
         type: table
-        order_by: []
+        id: 254c7785-cfcf-4f90-b564-42cb429eea6e
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: e00ad34a-5a21-4fa2-8f71-e2a524063cd2
+            partitioner:
         table_name: wikibase_log_observation_month
         schema_name:
       wikibase_log_observation_month_type_table:
         type: table
-        order_by: []
+        id: 7cfcf9da-85d0-4082-bcf0-fd6e7c85141a
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: ef9eae68-e7b8-453a-83da-73a8ecbed2b4
+            partitioner:
         table_name: wikibase_log_observation_month_type
         schema_name:
       wikibase_log_observation_month_user_table:
         type: table
-        order_by: []
+        id: 3fb1783b-0026-4da6-bc41-ba47f87d6d85
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: f9900adb-307a-45d2-babf-c895c6a05939
+            partitioner:
         table_name: wikibase_log_observation_month_user
         schema_name:
       wikibase_property_usage_count_table:
         type: table
-        order_by: []
+        id: 421ea124-d4fe-4504-a338-417fbbea1625
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: d6a6fcf0-d2c0-4951-b10b-c36cc04838fc
+            partitioner:
         table_name: wikibase_property_usage_count
         schema_name:
       wikibase_property_usage_observation_table:
         type: table
-        order_by: []
+        id: 81cfc867-4dc4-49d0-b47c-d093124ebea1
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 5188a790-d406-4300-a0e5-e9d73db8a65e
+            partitioner:
         table_name: wikibase_property_usage_observation
         schema_name:
       wikibase_quantity_observation_table:
         type: table
-        order_by: []
+        id: d6ad1b86-b45c-4570-83da-76534f1f9af4
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 23ccdc9a-badb-41cd-b894-480813b3d70c
+            partitioner:
         table_name: wikibase_quantity_observation
         schema_name:
       wikibase_software_version_table:
         type: table
-        order_by: []
+        id: 2db8b8c6-0bbb-4af5-afc8-7856204b770c
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 0829cb63-1a66-4698-b3bc-d358a81d780c
+            partitioner:
         table_name: wikibase_software_version
         schema_name:
       wikibase_software_version_observation_table:
         type: table
-        order_by: []
+        id: 9ebe19ff-8664-4b55-9877-63ef5de67df0
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 673e6508-d457-49bb-b25e-07b1f73773c8
+            partitioner:
         table_name: wikibase_software_version_observation
         schema_name:
       wikibase_statistics_observation_table:
@@ -197,36 +244,52 @@ fluent_datasources:
         schema_name:
       wikibase_url_table:
         type: table
-        order_by: []
+        id: 4d09e485-87d2-4982-965b-1d5a797c31e1
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 0088e7de-143c-43dc-8bfe-f08f32376b05
+            partitioner:
         table_name: wikibase_url
         schema_name:
       wikibase_user_group_table:
         type: table
-        order_by: []
+        id: 40d16dc1-8e62-4163-bb18-43c0acecab85
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: f1ae068c-b242-4529-a90f-25f108f95f4c
+            partitioner:
         table_name: wikibase_user_group
         schema_name:
       wikibase_user_observation_table:
         type: table
-        order_by: []
+        id: 887fb86a-a044-4376-8d84-b51880ec5b49
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 0206ca46-ca6f-4806-98dd-d0c97852e049
+            partitioner:
         table_name: wikibase_user_observation
         schema_name:
       wikibase_user_observation_group_table:
         type: table
-        order_by: []
+        id: 327881eb-4b05-4aa1-b1c4-c020eadba500
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 68d93746-86ad-4c48-9bb1-bc3df4080828
+            partitioner:
         table_name: wikibase_user_observation_group
         schema_name:
       valid_wikibases:
         type: query
-        order_by: []
+        id: dc0d4790-c1d7-40ad-9bfb-c6accca74b07
         batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 7c62ed8e-60bf-45f1-994e-4cec55c5f205
+            partitioner:
         query: SELECT * FROM wikibase WHERE valid
     connection_string: sqlite:///data/wikibase-data.db
-notebooks:
-include_rendered_content:
-  globally: false
-  expectation_suite: false
-  expectation_validation_result: false
+data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

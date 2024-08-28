@@ -1,89 +1,113 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_log_observation_month_user_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "e173a803-1c4d-4385-9f7e-c0545b0267d4",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "22c4a525-d103-4384-ad58-46a442ef52a6",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "f689398b-0bb5-45a9-879c-876b2839b132",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "1c680506-2119-4f3f-a06e-acb383df7bcd",
 			"kwargs": { "column": "log_month_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "34d69e68-6481-4eb7-96d6-907fa5e70d0e",
 			"kwargs": { "column": "log_month_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "2cfc57b8-c784-4836-8362-fe1b8ec5fca2",
 			"kwargs": { "column": "user_type" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "aef8b37e-a208-49e0-92ca-21588759d681",
 			"kwargs": { "column": "user_type" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
-			"kwargs": { "column": "user_type", "value_set": ["BOT", "MISSING", "USER", "NONE"] },
-			"meta": {}
+			"id": "5bd89f76-803d-4518-81d1-4280247c0db9",
+			"kwargs": {
+				"column": "user_type",
+				"value_set": ["BOT", "MISSING", "USER", "NONE"]
+			},
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		},
 		{
-			"expectation_type": "expect_compound_columns_to_be_unique",
+			"id": "6023bc23-1394-435a-a627-e288ed5a65e6",
 			"kwargs": { "column_list": ["log_month_observation_id", "user_type"] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_compound_columns_to_be_unique"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "3c4278f6-8e3a-400e-b995-6bc2445973f5",
 			"kwargs": { "column": "first_log_date" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "a7e4a9f2-0b4b-49c1-8a6d-0d565107b1b5",
 			"kwargs": { "column": "first_log_date" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "3b23443b-67bc-40bb-bacd-1c4ce0a1f244",
 			"kwargs": { "column": "last_log_date" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "2001c92c-1d79-4ce7-b93c-8e3c08492a81",
 			"kwargs": { "column": "last_log_date" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "5449034f-c6f2-4224-bfbf-b5be0e1d7cb5",
 			"kwargs": { "column": "log_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "647a6009-79d3-4174-8506-9877204dcd4f",
 			"kwargs": { "column": "log_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "76d3dcc2-7b70-43b6-889c-fa985399bd68",
 			"kwargs": { "column": "user_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "44748642-5ec8-46e7-81f6-78ae32635d00",
 			"kwargs": { "column": "user_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "b4e31f87-d494-471d-b627-8bddb4a3e256",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_log_observation_month_user_expectation_suite",
+	"notes": null
 }

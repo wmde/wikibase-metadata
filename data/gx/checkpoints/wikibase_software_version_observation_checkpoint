@@ -1,0 +1,24 @@
+{
+  "actions": [
+    {
+      "name": "update_all_data_docs",
+      "site_names": [],
+      "type": "update_data_docs"
+    }
+  ],
+  "id": "94d3e8bc-3f4a-4372-b288-08de7ca040a3",
+  "name": "wikibase_software_version_observation_checkpoint",
+  "result_format": {
+    "result_format": "COMPLETE"
+  },
+  "validation_definitions": [
+    {
+      "id": "7adb7aa8-7c1c-4759-8519-706ba6134d0d",
+      "name": "obs_wikibase_software_version_observation_validation_definition"
+    },
+    {
+      "id": "5f070450-13a7-43e4-8065-bc4f28431d74",
+      "name": "wikibase_software_version_validation_definition"
+    }
+  ]
+}

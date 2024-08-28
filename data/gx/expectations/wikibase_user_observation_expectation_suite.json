@@ -1,13 +1,14 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_user_observation_expectation_suite",
 	"expectations": [
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "27da9aa6-7a8f-40f3-b9ad-dd980531e5cb",
 			"kwargs": { "column": "total_users" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "fba4f220-fac5-41cc-8d17-6008e47e88fb",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_user_observation_expectation_suite",
+	"notes": null
 }

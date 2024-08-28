@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "07fad760-0d4b-4f38-bde7-4ff1bdf3ee1b",
+      "name": "wikibase_category_table"
+    },
+    "batch_definition": {
+      "id": "adf99891-4cb3-4594-bdf8-14a86f927a74",
+      "name": "FULL_TABLE"
+    },
+    "datasource": {
+      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+      "name": "wikibase_datasource"
+    }
+  },
+  "id": "cff39212-20a9-4c0b-ac94-51329f518d76",
+  "name": "wikibase_category_validation_definition",
+  "suite": {
+    "id": "43b4a464-05e8-44db-9b65-0d6acc037cbe",
+    "name": "wikibase_category_expectation_suite"
+  }
+}

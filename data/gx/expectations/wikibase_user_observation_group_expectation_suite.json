@@ -1,64 +1,80 @@
 {
-	"data_asset_type": null,
-	"expectation_suite_name": "wikibase_user_observation_group_expectation_suite",
 	"expectations": [
-		{ "expectation_type": "expect_column_to_exist", "kwargs": { "column": "id" }, "meta": {} },
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "57af4c74-833d-4431-92e8-be7eb695d043",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_be_unique",
+			"id": "c5d7f210-71a5-4efb-be2b-361fd9e0d308",
 			"kwargs": { "column": "id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "5b4f8bf1-a7a5-4b52-b560-9a9df541174e",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "520ffb97-e041-4e90-9ebb-f61945476955",
 			"kwargs": { "column": "wikibase_user_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "20db3bea-f106-4d68-9422-93a47221b5ad",
 			"kwargs": { "column": "wikibase_user_observation_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "563e8bb0-c184-440d-aace-305cfdc61950",
 			"kwargs": { "column": "wikibase_user_group_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "3f311dc9-941f-4676-8abb-fb39c9693090",
 			"kwargs": { "column": "wikibase_user_group_id" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "2d2927d4-92f2-4d38-83ec-f04c661eb2e5",
 			"kwargs": { "column": "user_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "e0f5f332-d2d7-44fd-8950-d706c19242ae",
 			"kwargs": { "column": "user_count" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_to_exist",
+			"id": "031de223-44e9-48a5-a2a6-7f04cfe7f35b",
 			"kwargs": { "column": "implicit" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_to_exist"
 		},
 		{
-			"expectation_type": "expect_column_values_to_not_be_null",
+			"id": "08418f56-47e3-49b1-813a-49b0493ba7a3",
 			"kwargs": { "column": "implicit" },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"expectation_type": "expect_column_distinct_values_to_be_in_set",
+			"id": "96cc6a78-ebb4-4267-96a4-b031151b124c",
 			"kwargs": { "column": "implicit", "value_set": [0, 1] },
-			"meta": {}
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
-	"ge_cloud_id": null,
-	"meta": { "great_expectations_version": "0.18.19" }
+	"id": "45a6e53c-a74d-49fd-9327-9113ea802d77",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "wikibase_user_observation_group_expectation_suite",
+	"notes": null
 }

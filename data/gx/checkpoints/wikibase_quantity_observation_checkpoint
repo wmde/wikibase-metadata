@@ -1,0 +1,24 @@
+{
+  "actions": [
+    {
+      "name": "update_all_data_docs",
+      "site_names": [],
+      "type": "update_data_docs"
+    }
+  ],
+  "id": "880664ab-b8d2-47b6-8119-6741b77dd313",
+  "name": "wikibase_quantity_observation_checkpoint",
+  "result_format": {
+    "result_format": "COMPLETE"
+  },
+  "validation_definitions": [
+    {
+      "id": "1f70be35-79d7-47c0-b4cf-c97b847e7914",
+      "name": "obs_wikibase_quantity_observation_validation_definition"
+    },
+    {
+      "id": "e39aaf8e-7628-4540-bba3-7d252517b1d6",
+      "name": "wikibase_quantity_observation_validation_definition"
+    }
+  ]
+}
