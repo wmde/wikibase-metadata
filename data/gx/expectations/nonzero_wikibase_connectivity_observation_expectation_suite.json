@@ -1,0 +1,36 @@
+{
+	"expectations": [
+		{
+			"id": "c7437dba-0ad2-4338-b67b-2bec32ccc989",
+			"kwargs": { "column": "connectivity" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "03941875-b938-4521-81b1-c0f81e08376e",
+			"kwargs": {
+				"column": "connectivity",
+				"max_value": 1.0,
+				"min_value": 0.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "04fc4410-a4c6-40e8-bb39-19e21f9efbee",
+			"kwargs": { "column": "average_connected_distance" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "649a9e86-06a3-4a91-a7ce-ce69c3fb8f43",
+			"kwargs": { "column": "average_connected_distance", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		}
+	],
+	"id": "31f54ba1-0c83-411a-b760-186a32c6816f",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "nonzero_wikibase_connectivity_observation_expectation_suite",
+	"notes": null
+}

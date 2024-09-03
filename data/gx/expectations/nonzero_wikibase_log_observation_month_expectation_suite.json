@@ -1,0 +1,64 @@
+{
+	"expectations": [
+		{
+			"id": "c596f229-f93e-4817-a8b5-1d48cf9acc3a",
+			"kwargs": { "column": "user_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "b844abeb-6bd1-405a-81d1-6205c207c749",
+			"kwargs": { "column": "user_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "90b2b17d-dcc2-4f5c-ae5b-8a74d0b78d4f",
+			"kwargs": { "column": "user_count_no_bot" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "7c6f8074-09d2-42d6-a34b-4ea1b5f0c9fc",
+			"kwargs": { "column": "user_count_no_bot", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "279b1d4f-664a-42ba-850c-9c809536cb86",
+			"kwargs": {
+				"column_A": "user_count",
+				"column_B": "user_count_no_bot",
+				"or_equal": true
+			},
+			"meta": {},
+			"type": "expect_column_pair_values_a_to_be_greater_than_b"
+		},
+		{
+			"id": "6b1b7104-95f6-4bef-a03f-605e038a9d96",
+			"kwargs": { "column": "last_log_date" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "d940fcf9-c652-445d-8f29-cd472e680158",
+			"kwargs": { "column": "first_log_date", "mostly": 0.7 },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "b373aa7e-72ea-4060-9785-9579dca55063",
+			"kwargs": {
+				"column_A": "last_log_date",
+				"column_B": "first_log_date",
+				"or_equal": true
+			},
+			"meta": {},
+			"type": "expect_column_pair_values_a_to_be_greater_than_b"
+		}
+	],
+	"id": "2301c825-a6ec-4825-ba96-b702c8007fbf",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "nonzero_wikibase_log_observation_month_expectation_suite",
+	"notes": null
+}

@@ -64,22 +64,13 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"id": "aa86c0d0-42e9-47c0-abc5-96b177ef5e7a",
-			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]*$" },
+			"id": "b852e073-ad49-4028-a42a-217448fde29b",
+			"kwargs": {
+				"column": "software_name",
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+			},
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "e2012a55-b676-47fb-a3a6-9b1ea28de334",
-			"kwargs": { "column": "software_name", "regex": "^[ \t\r\n]+" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "9829cb38-175d-4618-b535-bd96c5b71e67",
-			"kwargs": { "column": "software_name", "regex": "[ \t\r\n]+$" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
+			"type": "expect_column_values_to_not_match_regex_list"
 		},
 		{
 			"id": "1a591246-4126-4545-8a35-74960762bca8",
@@ -100,22 +91,13 @@
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "21b77115-8d32-4a46-8de2-0e511f7b7637",
-			"kwargs": { "column": "version", "regex": "^[ \t\r\n]*$" },
+			"id": "78894d21-05f1-470d-931b-3efe46132d2e",
+			"kwargs": {
+				"column": "version",
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+			},
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "5e336863-d610-4513-a260-32cad5b96845",
-			"kwargs": { "column": "version", "regex": "^[ \t\r\n]+" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "bf1c8d54-56d6-48be-83da-164e476e42f4",
-			"kwargs": { "column": "version", "regex": "[ \t\r\n]+$" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
+			"type": "expect_column_values_to_not_match_regex_list"
 		},
 		{
 			"id": "e7faf854-2154-4ece-8769-c52ac964c313",
@@ -124,22 +106,10 @@
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "5b96ef12-12ac-4c4b-b3c0-e79ec9b852ba",
-			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]*$" },
+			"id": "8a3d40a4-38e7-4f1f-8c33-9bed14b3dcf7",
+			"kwargs": { "column": "version_hash", "regex": "^[0-9a-f]+$" },
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "0f84837c-ac3f-4150-ae10-63e3afdd83ca",
-			"kwargs": { "column": "version_hash", "regex": "^[ \t\r\n]+" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "43c049e6-20f1-4c09-a60a-cc9658de6c60",
-			"kwargs": { "column": "version_hash", "regex": "[ \t\r\n]+$" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
+			"type": "expect_column_values_to_match_regex"
 		},
 		{
 			"id": "56c97b61-cec7-4371-8f32-766d4681d055",

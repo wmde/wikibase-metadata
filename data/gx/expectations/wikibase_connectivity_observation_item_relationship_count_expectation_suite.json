@@ -43,6 +43,12 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "ae0fef63-c7f3-4dc2-b202-56e310f261e9",
+			"kwargs": { "column": "relationship_count", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
 			"id": "162c2a6e-c86c-4a6a-8bd0-a2ec74e6e0a0",
 			"kwargs": {
 				"column_list": [
@@ -64,6 +70,12 @@
 			"kwargs": { "column": "item_count" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "7fdc2ad2-55a1-45f0-a1ac-8c74b724e811",
+			"kwargs": { "column": "item_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
 		}
 	],
 	"id": "6cc9e6d1-23bd-4a4c-9fbd-34499fb723de",

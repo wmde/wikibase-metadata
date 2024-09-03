@@ -43,22 +43,13 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"id": "332a753b-e81e-4515-9dab-b47e3fb92b15",
-			"kwargs": { "column": "property_url", "regex": "^[ \t\r\n]*$" },
+			"id": "77b293b1-73c2-437a-a035-3adfb66294bd",
+			"kwargs": {
+				"column": "property_url",
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+			},
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "53acbc3c-161e-41c9-aa9a-c5d3b7096714",
-			"kwargs": { "column": "property_url", "regex": "^[ \t\r\n]+" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "668df22e-9563-46b6-b789-199da26c9c97",
-			"kwargs": { "column": "property_url", "regex": "[ \t\r\n]+$" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
+			"type": "expect_column_values_to_not_match_regex_list"
 		},
 		{
 			"id": "b9c5ae42-1541-4e33-9e3b-a6185cf580ad",
@@ -82,6 +73,12 @@
 			"kwargs": { "column": "usage_count" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "af9a446f-5565-4637-9ea1-a7e75756343f",
+			"kwargs": { "column": "usage_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
 		}
 	],
 	"id": "c53b91ce-28e1-4f41-bc28-7ef052b612b0",

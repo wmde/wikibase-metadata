@@ -5,6 +5,12 @@
 			"kwargs": { "column": "total_users" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "2992a132-8322-44f2-b780-4d735c2602cd",
+			"kwargs": { "column": "total_users", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
 		}
 	],
 	"id": "ce51f0b2-4aa9-4d24-99bb-edb6ee680d4d",
