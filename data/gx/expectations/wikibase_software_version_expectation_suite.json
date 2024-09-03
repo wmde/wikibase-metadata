@@ -106,13 +106,10 @@
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "1e67ce43-ab92-4ae0-b424-0a3201887d64",
-			"kwargs": {
-				"column": "version_hash",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
-			},
+			"id": "8a3d40a4-38e7-4f1f-8c33-9bed14b3dcf7",
+			"kwargs": { "column": "version_hash", "regex": "^[0-9a-f]+$" },
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex_list"
+			"type": "expect_column_values_to_match_regex"
 		},
 		{
 			"id": "56c97b61-cec7-4371-8f32-766d4681d055",
