@@ -12,9 +12,12 @@ from fetch_data.sparql_data.sparql_queries import (
 )
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
+from model.strawberry.output import WikibaseQuantityObservationStrawberryModel
 
 
-async def create_quantity_observation(wikibase_id: int) -> bool:
+async def create_quantity_observation(
+    wikibase_id: int,
+) -> WikibaseQuantityObservationStrawberryModel:
     """Create Quantity Data Observation"""
 
     async with get_async_session() as async_session:
@@ -29,7 +32,7 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         wikibase.quantity_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibaseQuantityObservationStrawberryModel.marshal(observation)
 
 
 def compile_quantity_observation(

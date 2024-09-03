@@ -10,9 +10,12 @@ from model.database import (
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
 )
+from model.strawberry.output import WikibasePropertyPopularityObservationStrawberryModel
 
 
-async def create_property_popularity_observation(wikibase_id: int) -> bool:
+async def create_property_popularity_observation(
+    wikibase_id: int,
+) -> WikibasePropertyPopularityObservationStrawberryModel:
     """Create Property Popularity Observation"""
 
     async with get_async_session() as async_session:
@@ -29,7 +32,7 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
         wikibase.property_popularity_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibasePropertyPopularityObservationStrawberryModel.marshal(observation)
 
 
 def compile_property_popularity_observation(

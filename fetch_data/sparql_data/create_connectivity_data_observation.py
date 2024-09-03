@@ -18,9 +18,12 @@ from model.database import (
     WikibaseConnectivityObservationModel,
     WikibaseModel,
 )
+from model.strawberry.output import WikibaseConnectivityObservationStrawberryModel
 
 
-async def create_connectivity_observation(wikibase_id: int) -> bool:
+async def create_connectivity_observation(
+    wikibase_id: int,
+) -> WikibaseConnectivityObservationStrawberryModel:
     """Create Connectivity Data Observation"""
 
     async with get_async_session() as async_session:
@@ -35,7 +38,7 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
         wikibase.connectivity_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibaseConnectivityObservationStrawberryModel.marshal(observation)
 
 
 def compile_connectivity_observation(

@@ -16,9 +16,12 @@ from model.database import (
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_model import WikibaseModel
+from model.strawberry.output import WikibaseUserObservationStrawberryModel
 
 
-async def create_user_observation(wikibase_id: int) -> bool:
+async def create_user_observation(
+    wikibase_id: int,
+) -> WikibaseUserObservationStrawberryModel:
     """Create User Data Observation"""
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
@@ -66,4 +69,4 @@ async def create_user_observation(wikibase_id: int) -> bool:
         wikibase.user_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibaseUserObservationStrawberryModel.marshal(observation)

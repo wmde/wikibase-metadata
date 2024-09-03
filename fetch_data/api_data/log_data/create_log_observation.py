@@ -25,9 +25,12 @@ from model.database import (
     WikibaseModel,
 )
 from model.enum import WikibaseUserType
+from model.strawberry.output import WikibaseLogObservationStrawberryModel
 
 
-async def create_log_observation(wikibase_id: int) -> bool:
+async def create_log_observation(
+    wikibase_id: int,
+) -> WikibaseLogObservationStrawberryModel:
     """Create Log Observation"""
 
     async with get_async_session() as async_session:
@@ -80,7 +83,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
         wikibase.log_observations.append(observation)
 
         await async_session.commit()
-        return observation.returned_data
+        return WikibaseLogObservationStrawberryModel.marshal(observation)
 
 
 async def create_log_month(
