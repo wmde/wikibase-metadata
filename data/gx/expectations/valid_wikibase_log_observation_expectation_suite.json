@@ -1,0 +1,32 @@
+{
+	"expectations": [
+		{
+			"id": "a51a3257-666b-4269-a2fb-64a5af988d21",
+			"kwargs": { "column": "first_log_date" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "d7757fa4-8dc8-4291-9a9a-8aa16bcf4933",
+			"kwargs": { "column": "last_log_date" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "b7abe3e6-d269-4767-bf9e-1ae6e4c8f654",
+			"kwargs": { "column": "last_log_user_type" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "e1cbaf19-fac4-4c62-a425-2da1fb3e4402",
+			"kwargs": { "column": "last_month_id" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		}
+	],
+	"id": "cfaf8d67-eb62-4596-86ea-0d49d9efd676",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "valid_wikibase_log_observation_expectation_suite",
+	"notes": null
+}

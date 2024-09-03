@@ -1,22 +1,22 @@
 {
-  "data": {
-    "asset": {
-      "id": "2db8b8c6-0bbb-4af5-afc8-7856204b770c",
-      "name": "wikibase_software_version_table"
-    },
-    "batch_definition": {
-      "id": "0829cb63-1a66-4698-b3bc-d358a81d780c",
-      "name": "FULL_TABLE"
-    },
-    "datasource": {
-      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
-      "name": "wikibase_datasource"
-    }
-  },
-  "id": "5f070450-13a7-43e4-8065-bc4f28431d74",
-  "name": "wikibase_software_version_validation_definition",
-  "suite": {
-    "id": "dc5cb675-5725-46cb-940d-df7a04a56257",
-    "name": "wikibase_software_version_expectation_suite"
-  }
+	"data": {
+		"asset": {
+			"id": "2db8b8c6-0bbb-4af5-afc8-7856204b770c",
+			"name": "wikibase_software_version_table"
+		},
+		"batch_definition": {
+			"id": "0829cb63-1a66-4698-b3bc-d358a81d780c",
+			"name": "FULL_TABLE"
+		},
+		"datasource": {
+			"id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+			"name": "wikibase_datasource"
+		}
+	},
+	"id": "5f070450-13a7-43e4-8065-bc4f28431d74",
+	"name": "wikibase_software_version_validation_definition",
+	"suite": {
+		"id": "dc5cb675-5725-46cb-940d-df7a04a56257",
+		"name": "wikibase_software_version_expectation_suite"
+	}
 }

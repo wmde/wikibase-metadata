@@ -1,22 +1,22 @@
 {
-  "data": {
-    "asset": {
-      "id": "8acebf61-1e1c-4a2a-8939-2218b72f9f56",
-      "name": "wikibase_connectivity_observation_item_relationship_count_table"
-    },
-    "batch_definition": {
-      "id": "5a83c4c9-2a2b-4892-89a0-de22cfc6e544",
-      "name": "FULL_TABLE"
-    },
-    "datasource": {
-      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
-      "name": "wikibase_datasource"
-    }
-  },
-  "id": "c0daaf62-6831-4e2a-8e7b-a4b77507eb03",
-  "name": "wikibase_connectivity_observation_item_relationship_count_validation_definition",
-  "suite": {
-    "id": "6cc9e6d1-23bd-4a4c-9fbd-34499fb723de",
-    "name": "wikibase_connectivity_observation_item_relationship_count_expectation_suite"
-  }
+	"data": {
+		"asset": {
+			"id": "8acebf61-1e1c-4a2a-8939-2218b72f9f56",
+			"name": "wikibase_connectivity_observation_item_relationship_count_table"
+		},
+		"batch_definition": {
+			"id": "5a83c4c9-2a2b-4892-89a0-de22cfc6e544",
+			"name": "FULL_TABLE"
+		},
+		"datasource": {
+			"id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+			"name": "wikibase_datasource"
+		}
+	},
+	"id": "c0daaf62-6831-4e2a-8e7b-a4b77507eb03",
+	"name": "wikibase_connectivity_observation_item_relationship_count_validation_definition",
+	"suite": {
+		"id": "6cc9e6d1-23bd-4a4c-9fbd-34499fb723de",
+		"name": "wikibase_connectivity_observation_item_relationship_count_expectation_suite"
+	}
 }

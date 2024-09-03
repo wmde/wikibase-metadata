@@ -44,7 +44,7 @@
 		},
 		{
 			"id": "a2beb452-24d3-46e5-a1f6-36422efbc333",
-			"kwargs": { "column": "anything", "value_set": [0, 1] },
+			"kwargs": { "column": "anything", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		},

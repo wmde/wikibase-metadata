@@ -43,6 +43,12 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "a5c3242f-319e-4d2a-a0e3-a4de1363e7ff",
+			"kwargs": { "column": "relationship_count", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
 			"id": "185d1cc1-f459-45ba-a05d-014bcda03272",
 			"kwargs": {
 				"column_list": [
@@ -64,6 +70,12 @@
 			"kwargs": { "column": "object_count" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "c392f9eb-10e2-444f-a419-996a35f862ca",
+			"kwargs": { "column": "object_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
 		}
 	],
 	"id": "d43b626e-b02f-4278-baef-7e0fb9104c25",
