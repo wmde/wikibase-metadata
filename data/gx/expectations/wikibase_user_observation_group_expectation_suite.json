@@ -55,6 +55,12 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "289d535c-ce2c-4766-b3c2-4c2afa415540",
+			"kwargs": { "column": "user_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
 			"id": "031de223-44e9-48a5-a2a6-7f04cfe7f35b",
 			"kwargs": { "column": "implicit" },
 			"meta": {},
