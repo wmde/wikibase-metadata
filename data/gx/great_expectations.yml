@@ -321,5 +321,15 @@ fluent_datasources:
             id: 82ef89a4-f2fb-4180-8044-e49b987f21fa
             partitioner:
         query: SELECT * FROM wikibase_user_observation WHERE anything
+      nonzero_wikibase_connectivity_observations:
+        type: query
+        id: 2e61a665-8131-4086-a7c9-efe9c708ea54
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: e37914cf-131d-41dd-baea-5a25dbde7ddb
+            partitioner:
+        query: SELECT * FROM wikibase_connectivity_observation WHERE anything AND
+          link_count > 0
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
