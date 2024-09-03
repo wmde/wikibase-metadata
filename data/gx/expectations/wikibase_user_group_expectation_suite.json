@@ -59,7 +59,7 @@
 		},
 		{
 			"id": "20d3028c-eb62-48c5-8dcd-35c0add8ef20",
-			"kwargs": { "column": "default", "value_set": [0, 1] },
+			"kwargs": { "column": "default", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		}

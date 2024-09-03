@@ -98,7 +98,7 @@
 		},
 		{
 			"id": "d061887e-ee58-4575-84db-0c126e0e5300",
-			"kwargs": { "column": "valid", "value_set": [0, 1] },
+			"kwargs": { "column": "valid", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		},
@@ -116,7 +116,7 @@
 		},
 		{
 			"id": "7eb3482b-42c0-4765-9577-50ee50d31e11",
-			"kwargs": { "column": "test", "value_set": [0, 1] },
+			"kwargs": { "column": "test", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		},

@@ -68,7 +68,7 @@
 		},
 		{
 			"id": "96cc6a78-ebb4-4267-96a4-b031151b124c",
-			"kwargs": { "column": "implicit", "value_set": [0, 1] },
+			"kwargs": { "column": "implicit", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		}
