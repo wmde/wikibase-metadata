@@ -25,6 +25,16 @@
 			"type": "expect_column_values_to_be_between"
 		},
 		{
+			"id": "279b1d4f-664a-42ba-850c-9c809536cb86",
+			"kwargs": {
+				"column_A": "user_count",
+				"column_B": "user_count_no_bot",
+				"or_equal": true
+			},
+			"meta": {},
+			"type": "expect_column_pair_values_a_to_be_greater_than_b"
+		},
+		{
 			"id": "6b1b7104-95f6-4bef-a03f-605e038a9d96",
 			"kwargs": { "column": "last_log_date" },
 			"meta": {},
@@ -32,7 +42,7 @@
 		},
 		{
 			"id": "d940fcf9-c652-445d-8f29-cd472e680158",
-			"kwargs": { "column": "first_log_date", "mostly": 0.6 },
+			"kwargs": { "column": "first_log_date", "mostly": 0.7 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
