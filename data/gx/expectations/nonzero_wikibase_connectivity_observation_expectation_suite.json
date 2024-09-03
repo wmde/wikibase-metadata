@@ -31,6 +31,6 @@
 	],
 	"id": "31f54ba1-0c83-411a-b760-186a32c6816f",
 	"meta": { "great_expectations_version": "1.0.0" },
-	"name": "nonzero_connectivity_observation_expectation_suite",
+	"name": "nonzero_wikibase_connectivity_observation_expectation_suite",
 	"notes": null
 }

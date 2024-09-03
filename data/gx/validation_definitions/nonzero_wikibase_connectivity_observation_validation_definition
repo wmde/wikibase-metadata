@@ -14,9 +14,9 @@
     }
   },
   "id": "bdf69402-df7e-4a77-8734-fce7c14631b2",
-  "name": "nonzero_connectivity_observation_validation_definition",
+  "name": "nonzero_wikibase_connectivity_observation_validation_definition",
   "suite": {
     "id": "31f54ba1-0c83-411a-b760-186a32c6816f",
-    "name": "nonzero_connectivity_observation_expectation_suite"
+    "name": "nonzero_wikibase_connectivity_observation_expectation_suite"
   }
 }
