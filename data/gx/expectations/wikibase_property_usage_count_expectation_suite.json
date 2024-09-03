@@ -73,6 +73,12 @@
 			"kwargs": { "column": "usage_count" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "af9a446f-5565-4637-9ea1-a7e75756343f",
+			"kwargs": { "column": "usage_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
 		}
 	],
 	"id": "c53b91ce-28e1-4f41-bc28-7ef052b612b0",
