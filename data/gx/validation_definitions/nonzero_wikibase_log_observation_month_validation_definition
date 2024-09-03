@@ -1,22 +1,22 @@
 {
-  "data": {
-    "asset": {
-      "id": "2b5c8b28-9fa1-4c9c-914a-8607c1f0f7c1",
-      "name": "nonzero_wikibase_log_observation_months"
-    },
-    "batch_definition": {
-      "id": "1ae4e957-b4b4-42fc-b22a-381ea6e8bceb",
-      "name": "FULL_TABLE"
-    },
-    "datasource": {
-      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
-      "name": "wikibase_datasource"
-    }
-  },
-  "id": "d7831039-f3ab-4726-a84a-ae6258d00931",
-  "name": "nonzero_wikibase_log_observation_month_validation_definition",
-  "suite": {
-    "id": "2301c825-a6ec-4825-ba96-b702c8007fbf",
-    "name": "nonzero_wikibase_log_observation_month_expectation_suite"
-  }
+	"data": {
+		"asset": {
+			"id": "2b5c8b28-9fa1-4c9c-914a-8607c1f0f7c1",
+			"name": "nonzero_wikibase_log_observation_months"
+		},
+		"batch_definition": {
+			"id": "1ae4e957-b4b4-42fc-b22a-381ea6e8bceb",
+			"name": "FULL_TABLE"
+		},
+		"datasource": {
+			"id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+			"name": "wikibase_datasource"
+		}
+	},
+	"id": "d7831039-f3ab-4726-a84a-ae6258d00931",
+	"name": "nonzero_wikibase_log_observation_month_validation_definition",
+	"suite": {
+		"id": "2301c825-a6ec-4825-ba96-b702c8007fbf",
+		"name": "nonzero_wikibase_log_observation_month_expectation_suite"
+	}
 }

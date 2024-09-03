@@ -1,22 +1,22 @@
 {
-  "data": {
-    "asset": {
-      "id": "dc0d4790-c1d7-40ad-9bfb-c6accca74b07",
-      "name": "valid_wikibases"
-    },
-    "batch_definition": {
-      "id": "7c62ed8e-60bf-45f1-994e-4cec55c5f205",
-      "name": "FULL_TABLE"
-    },
-    "datasource": {
-      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
-      "name": "wikibase_datasource"
-    }
-  },
-  "id": "2b2d57b8-8979-4926-a68d-c227c8bc1a7b",
-  "name": "valid_wikibase_validation_definition",
-  "suite": {
-    "id": "fc96053a-84e8-4555-9d4c-eba06a36864f",
-    "name": "valid_wikibase_expectation_suite"
-  }
+	"data": {
+		"asset": {
+			"id": "dc0d4790-c1d7-40ad-9bfb-c6accca74b07",
+			"name": "valid_wikibases"
+		},
+		"batch_definition": {
+			"id": "7c62ed8e-60bf-45f1-994e-4cec55c5f205",
+			"name": "FULL_TABLE"
+		},
+		"datasource": {
+			"id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+			"name": "wikibase_datasource"
+		}
+	},
+	"id": "2b2d57b8-8979-4926-a68d-c227c8bc1a7b",
+	"name": "valid_wikibase_validation_definition",
+	"suite": {
+		"id": "fc96053a-84e8-4555-9d4c-eba06a36864f",
+		"name": "valid_wikibase_expectation_suite"
+	}
 }
