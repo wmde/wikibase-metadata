@@ -1,0 +1,26 @@
+{
+	"expectations": [
+		{
+			"id": "030c4365-94ba-4704-a4ac-212d047ef911",
+			"kwargs": { "column": "total_items" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "2fceba81-d74e-4a64-a4f2-0ab360e10620",
+			"kwargs": { "column": "total_properties" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "176253ae-7b09-4e5c-bb7b-c24d23eb67b8",
+			"kwargs": { "column": "total_lexemes" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		}
+	],
+	"id": "34e1e210-4866-42f5-aeff-a64b8c53673c",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "valid_wikibase_quantity_observation_expectation_suite",
+	"notes": null
+}

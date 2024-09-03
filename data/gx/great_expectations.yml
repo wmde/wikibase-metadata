@@ -285,5 +285,41 @@ fluent_datasources:
             id: 7c62ed8e-60bf-45f1-994e-4cec55c5f205
             partitioner:
         query: SELECT * FROM wikibase WHERE valid
+      valid_wikibase_connectivity_observations:
+        type: query
+        id: 9d9488e8-4d36-4ac2-ab0c-7441d9b8e879
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: b2549e79-5908-4abe-8fb4-544dde87cded
+            partitioner:
+        query: SELECT * FROM wikibase_connectivity_observation WHERE anything
+      valid_wikibase_log_observations:
+        type: query
+        id: 0f77d1c3-5227-49a5-b347-020f5cd85a28
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: f46678c3-344e-4c04-9869-52f8692c7e03
+            partitioner:
+        query: SELECT * FROM wikibase_log_observation WHERE anything
+      valid_wikibase_quantity_observations:
+        type: query
+        id: 0b2995ed-52af-4e48-8b4e-27379c8e9f83
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 0ea2836e-1e7e-4ee6-bedb-57d83b7fa3eb
+            partitioner:
+        query: SELECT * FROM wikibase_quantity_observation WHERE anything
+      valid_wikibase_user_observations:
+        type: query
+        id: e4e7a867-5894-491e-8aae-54478918e8ee
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 82ef89a4-f2fb-4180-8044-e49b987f21fa
+            partitioner:
+        query: SELECT * FROM wikibase_user_observation WHERE anything
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

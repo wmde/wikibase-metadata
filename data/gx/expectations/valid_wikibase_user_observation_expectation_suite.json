@@ -1,0 +1,14 @@
+{
+	"expectations": [
+		{
+			"id": "9f82305b-32aa-44b9-b919-b128922cb87d",
+			"kwargs": { "column": "total_users" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		}
+	],
+	"id": "ce51f0b2-4aa9-4d24-99bb-edb6ee680d4d",
+	"meta": { "great_expectations_version": "1.0.0" },
+	"name": "valid_wikibase_user_observation_expectation_suite",
+	"notes": null
+}

@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "e4e7a867-5894-491e-8aae-54478918e8ee",
+      "name": "valid_wikibase_user_observations"
+    },
+    "batch_definition": {
+      "id": "82ef89a4-f2fb-4180-8044-e49b987f21fa",
+      "name": "FULL_TABLE"
+    },
+    "datasource": {
+      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+      "name": "wikibase_datasource"
+    }
+  },
+  "id": "aada3843-21d5-49b8-89bb-b8952c7b5a82",
+  "name": "valid_wikibase_user_observation_validation_definition",
+  "suite": {
+    "id": "ce51f0b2-4aa9-4d24-99bb-edb6ee680d4d",
+    "name": "valid_wikibase_user_observation_expectation_suite"
+  }
+}
