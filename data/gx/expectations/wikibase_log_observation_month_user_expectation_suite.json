@@ -82,6 +82,16 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "29d6024f-8dce-4f79-bacd-14259178e71a",
+			"kwargs": {
+				"column_A": "last_log_date",
+				"column_B": "first_log_date",
+				"or_equal": true
+			},
+			"meta": {},
+			"type": "expect_column_pair_values_a_to_be_greater_than_b"
+		},
+		{
 			"id": "5449034f-c6f2-4224-bfbf-b5be0e1d7cb5",
 			"kwargs": { "column": "log_count" },
 			"meta": {},
@@ -94,6 +104,12 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "b51c920b-7b35-4152-80b5-d9c6235248cd",
+			"kwargs": { "column": "log_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
 			"id": "76d3dcc2-7b70-43b6-889c-fa985399bd68",
 			"kwargs": { "column": "user_count" },
 			"meta": {},
@@ -104,6 +120,12 @@
 			"kwargs": { "column": "user_count" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "7adb092a-5062-4d37-bd70-fde7eed61709",
+			"kwargs": { "column": "user_count", "min_value": 1.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
 		}
 	],
 	"id": "b4e31f87-d494-471d-b627-8bddb4a3e256",
