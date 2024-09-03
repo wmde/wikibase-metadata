@@ -29,6 +29,10 @@
       "name": "wikibase_log_observation_month_validation_definition"
     },
     {
+      "id": "d7831039-f3ab-4726-a84a-ae6258d00931",
+      "name": "nonzero_wikibase_log_observation_month_validation_definition"
+    },
+    {
       "id": "3469f126-47b8-4414-a21a-547d46ee22e0",
       "name": "wikibase_log_observation_month_type_validation_definition"
     },

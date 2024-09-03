@@ -332,5 +332,14 @@ fluent_datasources:
         query:
           SELECT * FROM wikibase_connectivity_observation WHERE anything AND
           link_count > 0
+      nonzero_wikibase_log_observation_months:
+        type: query
+        id: 2b5c8b28-9fa1-4c9c-914a-8607c1f0f7c1
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 1ae4e957-b4b4-42fc-b22a-381ea6e8bceb
+            partitioner:
+        query: SELECT * FROM wikibase_log_observation_month WHERE log_count > 0
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
