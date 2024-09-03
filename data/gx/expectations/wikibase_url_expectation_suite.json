@@ -78,22 +78,13 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"id": "d2d96eda-f17a-4b7e-9800-147a18c65de8",
-			"kwargs": { "column": "url", "regex": "^[ \t\r\n]*$" },
+			"id": "31ae4f4f-55f0-4ac7-8e0d-3f17fe4fe823",
+			"kwargs": {
+				"column": "url",
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+			},
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "c1436c5f-4f20-4a4d-80bd-b52cc535c5a1",
-			"kwargs": { "column": "url", "regex": "^[ \t\r\n]+" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "4a2eda48-6b0a-40e3-b01b-bd4d8c4e3bd6",
-			"kwargs": { "column": "url", "regex": "[ \t\r\n]+$" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
+			"type": "expect_column_values_to_not_match_regex_list"
 		}
 	],
 	"id": "dca09a54-3872-4eee-8259-f41b4a14bbd3",

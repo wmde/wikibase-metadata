@@ -37,22 +37,13 @@
 			"type": "expect_column_values_to_be_unique"
 		},
 		{
-			"id": "f116994a-254b-4cfe-a72f-1be6e84ea2c8",
-			"kwargs": { "column": "group_name", "regex": "^[ \t\r\n]*$" },
+			"id": "67a3cb18-3559-471d-ba6c-ef4385a9b96b",
+			"kwargs": {
+				"column": "group_name",
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+			},
 			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "a8064326-ca94-456f-81ad-1c9b952fe582",
-			"kwargs": { "column": "group_name", "regex": "^[ \t\r\n]+" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
-		},
-		{
-			"id": "0929902c-091f-4576-ac66-3d60db654a7c",
-			"kwargs": { "column": "group_name", "regex": "[ \t\r\n]+$" },
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex"
+			"type": "expect_column_values_to_not_match_regex_list"
 		},
 		{
 			"id": "8a646929-3c55-4653-bb7f-430bef9fad96",
