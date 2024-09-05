@@ -1,0 +1,13 @@
+# Docker compose setup for developing the app
+# Use with:
+#   docker compose up --build
+
+services:
+  app:
+    build: .
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+    ports:
+      - 8000:8000
