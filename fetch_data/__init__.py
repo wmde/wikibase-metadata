@@ -6,4 +6,7 @@ from fetch_data.sparql_data import (
     create_property_popularity_observation,
     create_quantity_observation,
 )
-from fetch_data.soup_data import create_software_version_observation
+from fetch_data.soup_data import (
+    create_software_version_observation,
+    create_special_statistics_observation,
+)

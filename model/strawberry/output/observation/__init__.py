@@ -22,6 +22,10 @@ from model.strawberry.output.observation.software_version import (
     WikibaseSoftwareVersionObservationStrawberryModel,
     WikibaseSoftwareVersionStrawberryModel,
 )
+from model.strawberry.output.observation.statistics import (
+    WikibaseStatisticsAggregateStrawberryModel,
+    WikibaseStatisticsObservationStrawberryModel,
+)
 from model.strawberry.output.observation.user import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseUserGroupStrawberryModel,
