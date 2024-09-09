@@ -9,9 +9,7 @@ WORKDIR /workspace
 
 COPY ./requirements*.txt /workspace
 
-RUN \
-  pip install -r requirements.txt && \
-  pip install -r requirements-dev.txt
+RUN pip install -r requirements.txt -r requirements-dev.txt
 
 ENV PYTHONPATH="/workspace"
 
