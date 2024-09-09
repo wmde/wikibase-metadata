@@ -810,13 +810,54 @@ Data abbreviated for brevity.
 
 Data aggregated from the `mostRecent` record for each Wikibase.
 
-All data is paginated as above; the Page Number and Page Size arguments are the same, and the queries return Meta and Data as above.
+### Aggregated Created
+
+Number of Wikibases with the fisrt log date aggregated by year.
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  aggregateCreated {
+    wikibaseCount
+    year
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregateCreated": [
+      {
+        "wikibaseCount": 1,
+        "year": 2005
+      },
+      {
+        "wikibaseCount": 1,
+        "year": 2006
+      },
+      {
+        "wikibaseCount": 1,
+        "year": 2011
+      },
+      ...
+    ]
+  }
+}
+```
+
+Data abbreviated for brevity.
 
 ### Aggregated Extension/Library/Skin/Software Popularity:
 
 All four work exactly the same way, so they are outlined together here.
 
-Aggregated from the Software Version Observations above.
+Aggregated from the Software Version Observations above. The data is paginated as above in Wikibase List; the Page Number and Page Size arguments are the same, and the queries return Meta and Data as above.
 
 - Software Name
 - Wikibase Count: Number of Wikibases in which software is installed
@@ -825,6 +866,7 @@ Aggregated from the Software Version Observations above.
   - Version Date: Version date (if existant)
   - Version Hash: Version commit hash (if existant)
   - Wikibase Count: Number of Wikibases with this specific version
+  - If a version is parsable as a SemVer version, then we have a major/minor/patch version tree
 
 #### Example:
 
@@ -902,9 +944,13 @@ Result:
 
 ### Aggregated Property Popularity:
 
+Aggregated from the Property Popularity Observations above. The data is paginated as above in Wikibase List; the Page Number and Page Size arguments are the same, and the queries return Meta and Data as above.
+
 - Property URL
 - Usage Count: Sum of usages in all Wikibases
 - Wikibase Count: Number of Wikibases that use this property
+
+The data is ordered by Wikibase Count descending, then Usage Count descending, then alphabetically by Property URL
 
 #### Example:
 
@@ -947,6 +993,138 @@ Result:
         },
         ...
       ]
+    }
+  }
+}
+```
+
+### Aggregated Quantity:
+
+Data aggregated from the Quantity Observations above.
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  aggregateQuantity {
+    totalItems
+    totalLexemes
+    totalProperties
+    totalTriples
+    wikibaseCount
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregateQuantity": {
+      "totalItems": 123291236,
+      "totalLexemes": 1314076,
+      "totalProperties": 20368,
+      "totalTriples": 17745095804,
+      "wikibaseCount": 17
+    }
+  }
+}
+```
+
+### Aggregated Statistics:
+
+Aggregated from the Statistics Observations above. As indicated above, averages (edits per page and words per content page) are calculated at query time.
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  aggregateStatistics {
+    wikibaseCount
+    edits {
+      editsPerPageAvg
+      totalEdits
+    }
+    files {
+      totalFiles
+    }
+    pages {
+      contentPageWordCountAvg
+      contentPageWordCountTotal
+      contentPages
+      totalPages
+    }
+    users {
+      activeUsers
+      totalAdmin
+      totalUsers
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregateStatistics": {
+      "wikibaseCount": 39,
+      "edits": {
+        "editsPerPageAvg": 4.912389909272705,
+        "totalEdits": 102551430
+      },
+      "files": {
+        "totalFiles": 107936
+      },
+      "pages": {
+        "contentPageWordCountAvg": 5.910143746962713,
+        "contentPageWordCountTotal": 23289542,
+        "contentPages": 3940605,
+        "totalPages": 20876077
+      },
+      "users": {
+        "activeUsers": 912,
+        "totalAdmin": 347,
+        "totalUsers": 284827
+      }
+    }
+  }
+}
+```
+
+### Aggregated Users:
+
+Data aggregated ffrom the User Observations above.
+
+#### Example:
+
+Query:
+
+```
+query MyQuery {
+  aggregateUsers {
+    totalAdmin
+    totalUsers
+    wikibaseCount
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregateUsers": {
+      "totalAdmin": 366,
+      "totalUsers": 227834,
+      "wikibaseCount": 43
     }
   }
 }
