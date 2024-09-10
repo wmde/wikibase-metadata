@@ -1,6 +1,6 @@
 aiosqlite
 bs4
-fastapi
+fastapi[standard]
 gunicorn
 httpx
 numpy
