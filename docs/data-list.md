@@ -812,7 +812,7 @@ Data aggregated from the `mostRecent` record for each Wikibase.
 
 ### Aggregated Created
 
-First log date of each wikibase, aggregated by year.
+This aggregates the number of wikibases created by year. The creation date is derived from the first log date of each wikibase,.
 
 #### Example:
 
