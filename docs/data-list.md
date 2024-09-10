@@ -515,7 +515,7 @@ query MyQuery {
     softwareVersionObservations {
       mostRecent {
         id
-          observationDate
+        observationDate
         returnedData
         installedExtensions {
           ...WikibaseSoftwareVersionStrawberryModelFragment
