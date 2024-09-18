@@ -34,6 +34,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
+            include_observations=True,
             require_action_api=True,
         )
 
