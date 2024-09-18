@@ -11,6 +11,7 @@ from model.strawberry.output.observation.connectivity.relationship_count import 
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.output.page import Page, PageNumberType, PageSizeType
 from model.strawberry.scalars import BigInt
 
 
@@ -32,12 +33,43 @@ class WikibaseConnectivityObservationStrawberryModel(
         graphql_type=Optional[BigInt],
     )
 
-    relationship_item_counts: List[
-        WikibaseConnectivityObservationItemRelationshipCountStrawberryModel
-    ] = strawberry.field(description="Number of Items with Number of Relationships")
-    relationship_object_counts: List[
-        WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel
-    ] = strawberry.field(description="Number of Items with Number of Relationships")
+    _relationship_item_counts: strawberry.Private[
+        List[WikibaseConnectivityObservationItemRelationshipCountStrawberryModel]
+    ]
+
+    @strawberry.field(description="Number of Items with Number of Relationships")
+    def relationship_item_counts(
+        self, page_number: PageNumberType, page_size: PageSizeType
+    ) -> Page[WikibaseConnectivityObservationItemRelationshipCountStrawberryModel]:
+        """Number of Items with Number of Relationships"""
+
+        return Page.marshal(
+            page_number,
+            page_size,
+            len(self._relationship_item_counts),
+            self._relationship_item_counts[
+                page_size * (page_number - 1) : page_size * page_number
+            ],
+        )
+
+    _relationship_object_counts: strawberry.Private[
+        List[WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel]
+    ]
+
+    @strawberry.field(description="Number of Objects with Number of Relationships")
+    def relationship_object_counts(
+        self, page_number: PageNumberType, page_size: PageSizeType
+    ) -> Page[WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel]:
+        """Number of Objects with Number of Relationships"""
+
+        return Page.marshal(
+            page_number,
+            page_size,
+            len(self._relationship_object_counts),
+            self._relationship_object_counts[
+                page_size * (page_number - 1) : page_size * page_number
+            ],
+        )
 
     @strawberry.field(
         description="Number of Unique Item -> Item Connections (direct or indirect)",
@@ -49,11 +81,11 @@ class WikibaseConnectivityObservationStrawberryModel(
         if self.returned_data:
             item_sum = sum(
                 i.item_count * i.relationship_count
-                for i in self.relationship_item_counts
+                for i in self._relationship_item_counts
             )
             object_sum = sum(
                 o.object_count * o.relationship_count
-                for o in self.relationship_object_counts
+                for o in self._relationship_object_counts
             )
             assert item_sum == object_sum, "Error: Math Has Stopped Working"
             return item_sum
@@ -72,13 +104,13 @@ class WikibaseConnectivityObservationStrawberryModel(
             average_connected_distance=model.average_connected_distance,
             connectivity=model.connectivity,
             returned_links=model.returned_links,
-            relationship_item_counts=[
+            _relationship_item_counts=[
                 WikibaseConnectivityObservationItemRelationshipCountStrawberryModel.marshal(
                     o
                 )
                 for o in model.item_relationship_count_observations
             ],
-            relationship_object_counts=[
+            _relationship_object_counts=[
                 WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel.marshal(
                     o
                 )
