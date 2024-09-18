@@ -25,3 +25,13 @@ class WikibasePropertyPopularityObservationModel(ModelBase, WikibaseObservationM
         )
     )
     """Property Count Observations"""
+
+    def __str__(self) -> str:
+        return (
+            "WikibasePropertyPopularityObservationModel("
+            + f"id={self.id}, "
+            + f"wikibase_id={self.wikibase_id}, "
+            + f"returned_data={self.returned_data}, "
+            + f"observation_date={self.observation_date}"
+            + ")"
+        )
