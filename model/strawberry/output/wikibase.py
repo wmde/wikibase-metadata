@@ -15,6 +15,7 @@ from model.strawberry.output.observation import (
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
     WikibaseSoftwareVersionObservationStrawberryModel,
+    WikibaseStatisticsObservationStrawberryModel,
     WikibaseUserObservationStrawberryModel,
 )
 from model.strawberry.output.wikibase_location import WikibaseLocationStrawberryModel

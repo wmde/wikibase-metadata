@@ -6,8 +6,8 @@ We aim to use this to guide future product development and engineering focus, as
 
 For more details, please see:
 
-* [List of metrics currently tracked](docs/data-list.md)
-* [Development documentation](docs/development.md)
+- [List of metrics currently tracked](docs/data-list.md)
+- [Development documentation](docs/development.md)
 
 ## Deployment Commands
 
@@ -34,7 +34,7 @@ You can access a list of builds with `toolforge build list`; please delete old b
 
 ### Environment Variables
 
-Make sure you have environment variables correct: `toolforge envvars list` should include `SETTINGS_FILE` pointing to the correct `settings.ini` file. To create or update an environment variable, use 
+Make sure you have environment variables correct: `toolforge envvars list` should include `SETTINGS_FILE` pointing to the correct `settings.ini` file. To create or update an environment variable, use
 
 ```bash
 $ toolforge envvars create SETTINGS_FILE prod-settings.ini

@@ -236,6 +236,16 @@ fluent_datasources:
             partitioner:
         table_name: wikibase_software_version_observation
         schema_name:
+      wikibase_statistics_observation_table:
+        type: table
+        id: 05cc691f-d972-4cdd-8172-86dc600cf18e
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 96994a6a-aa72-4eb2-96b8-c285a7291b69
+            partitioner:
+        table_name: wikibase_statistics_observation
+        schema_name:
       wikibase_url_table:
         type: table
         id: 4d09e485-87d2-4982-965b-1d5a797c31e1
@@ -312,6 +322,15 @@ fluent_datasources:
             id: 0ea2836e-1e7e-4ee6-bedb-57d83b7fa3eb
             partitioner:
         query: SELECT * FROM wikibase_quantity_observation WHERE anything
+      valid_wikibase_statistics_observations:
+        type: query
+        id: d984b58f-385e-4939-aad2-d45f5432face
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 5c3e8bee-2993-4a54-94df-0ea1dbfb945f
+            partitioner:
+        query: SELECT * FROM wikibase_statistics_observation WHERE anything
       valid_wikibase_user_observations:
         type: query
         id: e4e7a867-5894-491e-8aae-54478918e8ee
