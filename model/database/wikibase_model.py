@@ -1,6 +1,6 @@
 """Wikibase Table"""
 
-# pylint: disable=too-many-instance-attributes,too-many-arguments
+# pylint: disable=too-many-instance-attributes
 
 from typing import List, Optional
 from sqlalchemy import Boolean, ForeignKey, Integer, String, and_
@@ -215,13 +215,13 @@ class WikibaseModel(ModelBase):
         relationship(
             "WikibaseConnectivityObservationModel",
             back_populates="wikibase",
-            lazy="selectin",
+            lazy="select",
         )
     )
     """Connectivity Observations"""
 
     log_observations: Mapped[List[WikibaseLogObservationModel]] = relationship(
-        "WikibaseLogObservationModel", back_populates="wikibase", lazy="selectin"
+        "WikibaseLogObservationModel", back_populates="wikibase", lazy="select"
     )
     """Log Observations"""
 
@@ -230,15 +230,13 @@ class WikibaseModel(ModelBase):
     ] = relationship(
         "WikibasePropertyPopularityObservationModel",
         back_populates="wikibase",
-        lazy="selectin",
+        lazy="select",
     )
     """Property Popularity Observations"""
 
     quantity_observations: Mapped[List[WikibaseQuantityObservationModel]] = (
         relationship(
-            "WikibaseQuantityObservationModel",
-            back_populates="wikibase",
-            lazy="selectin",
+            "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="select"
         )
     )
     """Quantity Observations"""
@@ -248,7 +246,7 @@ class WikibaseModel(ModelBase):
     ] = relationship(
         "WikibaseSoftwareVersionObservationModel",
         back_populates="wikibase",
-        lazy="selectin",
+        lazy="select",
     )
     """Software Version Observations"""
 
@@ -256,13 +254,13 @@ class WikibaseModel(ModelBase):
         relationship(
             "WikibaseStatisticsObservationModel",
             back_populates="wikibase",
-            lazy="selectin",
+            lazy="select",
         )
     )
     """Statistics Observations"""
 
     user_observations: Mapped[List[WikibaseUserObservationModel]] = relationship(
-        "WikibaseUserObservationModel", back_populates="wikibase", lazy="selectin"
+        "WikibaseUserObservationModel", back_populates="wikibase", lazy="select"
     )
     """User Observations"""
 
@@ -275,7 +273,7 @@ class WikibaseModel(ModelBase):
         region: Optional[str] = None,
         sparql_query_url: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
-    ):
+    ):  # pylint: disable=too-many-arguments
         self.wikibase_name = wikibase_name
         self.organization = organization
         self.country = country
