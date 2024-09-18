@@ -254,7 +254,7 @@ class WikibaseModel(ModelBase):
         relationship(
             "WikibaseStatisticsObservationModel",
             back_populates="wikibase",
-            lazy="selectin",
+            lazy="select",
         )
     )
     """Statistics Observations"""

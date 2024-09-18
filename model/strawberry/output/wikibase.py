@@ -175,6 +175,33 @@ class WikibaseStrawberryModel:
                 ]
             )
 
+    @strawberry.field(description="Statistics Data")
+    async def statistics_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseStatisticsObservationStrawberryModel
+    ]:
+        """Summon Statistics Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(joinedload(WikibaseModel.statistics_observations))
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseStatisticsObservationStrawberryModel.marshal(o)
+                    for o in model.statistics_observations
+                ]
+            )
+
     @strawberry.field(description="User Data")
     async def user_observations(
         self,
