@@ -10,6 +10,7 @@ from model.strawberry.output.observation.property_popularity.count import (
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
+from model.strawberry.output.page import Page, PageNumberType, PageSizeType
 
 
 @strawberry.type
@@ -18,9 +19,20 @@ class WikibasePropertyPopularityObservationStrawberryModel(
 ):
     """Wikibase Property Popularity Observation"""
 
-    property_popularity_counts: List[WikibasePropertyPopularityCountStrawberryModel] = (
-        strawberry.field(description="Number of Items with Number of Relationships")
-    )
+    _pco_list: strawberry.Private[List[WikibasePropertyPopularityCountStrawberryModel]]
+
+    @strawberry.field(description="Number of Items with Number of Relationships")
+    def property_popularity_counts(
+        self, page_number: PageNumberType, page_size: PageSizeType
+    ) -> Page[WikibasePropertyPopularityCountStrawberryModel]:
+        """Number of Items with Number of Relationships"""
+
+        return Page.marshal(
+            page_number,
+            page_size,
+            len(self._pco_list),
+            self._pco_list[page_size * (page_number - 1) : page_size * page_number],
+        )
 
     @classmethod
     def marshal(
@@ -32,12 +44,11 @@ class WikibasePropertyPopularityObservationStrawberryModel(
             id=strawberry.ID(model.id),
             observation_date=model.observation_date,
             returned_data=model.returned_data,
-            property_popularity_counts=sorted(
+            _pco_list=sorted(
                 [
                     WikibasePropertyPopularityCountStrawberryModel.marshal(o)
                     for o in model.property_count_observations
                 ],
-                key=lambda x: x.usage_count,
-                reverse=True,
+                key=lambda x: -x.usage_count,
             ),
         )
