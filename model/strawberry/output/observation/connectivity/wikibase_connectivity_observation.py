@@ -3,7 +3,11 @@
 from typing import List, Optional
 import strawberry
 
-from model.database import WikibaseConnectivityObservationModel
+from model.database import (
+    WikibaseConnectivityObservationModel,
+    WikibaseConnectivityObservationItemRelationshipCountModel,
+    WikibaseConnectivityObservationObjectRelationshipCountModel,
+)
 from model.strawberry.output.observation.connectivity.relationship_count import (
     WikibaseConnectivityObservationItemRelationshipCountStrawberryModel,
     WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel,
@@ -34,7 +38,7 @@ class WikibaseConnectivityObservationStrawberryModel(
     )
 
     _relationship_item_counts: strawberry.Private[
-        List[WikibaseConnectivityObservationItemRelationshipCountStrawberryModel]
+        List[WikibaseConnectivityObservationItemRelationshipCountModel]
     ]
 
     @strawberry.field(description="Number of Items with Number of Relationships")
@@ -47,13 +51,18 @@ class WikibaseConnectivityObservationStrawberryModel(
             page_number,
             page_size,
             len(self._relationship_item_counts),
-            self._relationship_item_counts[
-                page_size * (page_number - 1) : page_size * page_number
+            [
+                WikibaseConnectivityObservationItemRelationshipCountStrawberryModel.marshal(
+                    o
+                )
+                for o in self._relationship_item_counts[
+                    page_size * (page_number - 1) : page_size * page_number
+                ]
             ],
         )
 
     _relationship_object_counts: strawberry.Private[
-        List[WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel]
+        List[WikibaseConnectivityObservationObjectRelationshipCountModel]
     ]
 
     @strawberry.field(description="Number of Objects with Number of Relationships")
@@ -66,8 +75,13 @@ class WikibaseConnectivityObservationStrawberryModel(
             page_number,
             page_size,
             len(self._relationship_object_counts),
-            self._relationship_object_counts[
-                page_size * (page_number - 1) : page_size * page_number
+            [
+                WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel.marshal(
+                    o
+                )
+                for o in self._relationship_object_counts[
+                    page_size * (page_number - 1) : page_size * page_number
+                ]
             ],
         )
 
@@ -104,16 +118,12 @@ class WikibaseConnectivityObservationStrawberryModel(
             average_connected_distance=model.average_connected_distance,
             connectivity=model.connectivity,
             returned_links=model.returned_links,
-            _relationship_item_counts=[
-                WikibaseConnectivityObservationItemRelationshipCountStrawberryModel.marshal(
-                    o
-                )
-                for o in model.item_relationship_count_observations
-            ],
-            _relationship_object_counts=[
-                WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel.marshal(
-                    o
-                )
-                for o in model.object_relationship_count_observations
-            ],
+            _relationship_item_counts=sorted(
+                model.item_relationship_count_observations,
+                key=lambda x: (-x.relationship_count, -x.item_count),
+            ),
+            _relationship_object_counts=sorted(
+                model.object_relationship_count_observations,
+                key=lambda x: (-x.relationship_count, -x.object_count),
+            ),
         )
