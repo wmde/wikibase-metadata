@@ -1,8 +1,8 @@
 alembic
 black
 freezegun
-great-expectations==1.0
-pylint
+great-expectations>=1.0.5
+pylint>=3.3.0
 pytest
 pytest-asyncio
 pytest-cov
