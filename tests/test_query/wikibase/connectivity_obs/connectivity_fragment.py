@@ -9,15 +9,32 @@ fragment WikibaseConnectivityObservationStrawberryModelFragment on WikibaseConne
   totalConnections
   averageConnectedDistance
   connectivity
-  relationshipItemCounts {
-    id
-    relationshipCount
-    itemCount
+  relationshipItemCounts(pageNumber: 1, pageSize: 10) {
+    meta {
+      ...PageMetadataFragment
+    }
+    data {
+      id
+      relationshipCount
+      itemCount
+    }
   }
-  relationshipObjectCounts {
-    id
-    relationshipCount
-    objectCount
+  relationshipObjectCounts(pageNumber: 1, pageSize: 10) {
+    meta {
+      ...PageMetadataFragment
+    }
+    data {
+      id
+      relationshipCount
+      objectCount
+    }
   }
+}
+
+fragment PageMetadataFragment on PageMetadata {
+  pageNumber
+  pageSize
+  totalCount
+  totalPages
 }
 """
