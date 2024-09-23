@@ -42,7 +42,8 @@ def get_total_admin_query() -> Select[Tuple[int]]:
     rank_subquery = (
         select(
             WikibaseUserObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseUserObservationModel.wikibase_id,
                 order_by=WikibaseUserObservationModel.observation_date.desc(),
@@ -82,7 +83,8 @@ def get_total_admin_query() -> Select[Tuple[int]]:
 
     query = select(
         func.sum(group_subquery.c.admins).label("total_admins"),
-        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+        # pylint: disable=not-callable
+        func.count().label("wikibase_count"),
     )
 
     return query
@@ -94,7 +96,8 @@ def get_total_user_query() -> Select[Tuple[int, int]]:
     rank_subquery = (
         select(
             WikibaseUserObservationModel,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseUserObservationModel.wikibase_id,
                 order_by=WikibaseUserObservationModel.observation_date.desc(),
@@ -111,7 +114,8 @@ def get_total_user_query() -> Select[Tuple[int, int]]:
     )
     query = select(
         func.sum(WikibaseUserObservationModel.total_users).label("total_users"),
-        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+        # pylint: disable=not-callable
+        func.count().label("wikibase_count"),
     ).join(
         rank_subquery,
         onclause=and_(

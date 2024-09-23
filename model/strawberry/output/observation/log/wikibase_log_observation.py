@@ -48,7 +48,6 @@ class WikibaseLogObservationStrawberryModel(WikibaseObservationStrawberryModel):
     ) -> "WikibaseLogObservationStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
 
-        # pylint: disable=too-many-boolean-expressions
         if model.returned_data and (
             model.first_log_date is None
             or model.last_log_date is None

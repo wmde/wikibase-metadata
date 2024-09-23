@@ -27,9 +27,8 @@ async def get_aggregate_property_popularity(
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
-            select(func.count()).select_from(  # pylint: disable=not-callable
-                query.subquery()
-            )
+            # pylint: disable=not-callable
+            select(func.count()).select_from(query.subquery())
         )
         results = (
             await async_session.execute(
@@ -63,7 +62,8 @@ def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
     rank_subquery = (
         select(
             WikibasePropertyPopularityObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibasePropertyPopularityObservationModel.wikibase_id,
                 order_by=WikibasePropertyPopularityObservationModel.observation_date.desc(),
@@ -87,7 +87,8 @@ def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
             func.sum(WikibasePropertyPopularityCountModel.usage_count).label(
                 "usage_count"
             ),
-            func.count().label("wikibase_count"),  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.count().label("wikibase_count"),
         )
         .join(
             rank_subquery,

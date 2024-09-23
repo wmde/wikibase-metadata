@@ -82,7 +82,8 @@ def get_query(
     rank_subquery = (
         select(
             WikibaseSoftwareVersionObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseSoftwareVersionObservationModel.wikibase_id,
                 order_by=WikibaseSoftwareVersionObservationModel.observation_date.desc(),
@@ -105,7 +106,8 @@ def get_query(
             WikibaseSoftwareVersionModel.version,
             WikibaseSoftwareVersionModel.version_date,
             WikibaseSoftwareVersionModel.version_hash,
-            func.count().label("wikibase_count"),  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.count().label("wikibase_count"),
         )
         .join(
             rank_subquery,

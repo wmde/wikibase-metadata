@@ -10,7 +10,6 @@ from model.strawberry.output.observation.statistics.component import (
 )
 
 
-# pylint: disable=too-many-instance-attributes
 @strawberry.type
 class WikibaseStatisticsAggregateStrawberryModel:
     """Aggregate Statistics"""
