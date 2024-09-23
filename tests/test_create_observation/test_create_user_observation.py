@@ -7,13 +7,7 @@ from requests import ReadTimeout
 from fetch_data import create_user_observation
 
 
-TEST_USER_GROUPS = [
-    "bureaucrat",
-    "sysop",
-    "bot",
-    "editor",
-    "administrator",
-]
+TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
 
 TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 

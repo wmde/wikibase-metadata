@@ -42,14 +42,14 @@ async def test_create_log_observation(mocker):
             {
                 "query": {
                     "logevents": sorted(mock_logs, key=lambda x: x.get("timestamp"))
-                },
+                }
             },  # first month
             {
                 "query": {
                     "logevents": sorted(
                         mock_logs, key=lambda x: x.get("timestamp"), reverse=True
                     )
-                },
+                }
             },  # last month
         ],
     )

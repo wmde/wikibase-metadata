@@ -23,9 +23,7 @@ def assert_user_group(
         returned_user_group, ["group", "groupName"], expected_group_name
     )
     assert_layered_property_value(
-        returned_user_group,
-        ["group", "wikibaseDefault"],
-        expected_wikibase_default,
+        returned_user_group, ["group", "wikibaseDefault"], expected_wikibase_default
     )
     assert_property_value(returned_user_group, "groupImplicit", expected_group_implicit)
     assert_property_value(returned_user_group, "userCount", expected_user_count)
