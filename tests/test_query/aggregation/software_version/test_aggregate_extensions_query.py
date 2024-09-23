@@ -9,7 +9,7 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_layered_property_value
+from tests.utils import assert_layered_property_count, assert_page_meta
 
 
 AGGREGATE_EXTENSIONS_QUERY = (
@@ -39,17 +39,12 @@ async def test_aggregate_extensions_query_page_one():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageNumber"], 1
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageSize"], 5
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalCount"], 10
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalPages"], 2
+    assert_page_meta(
+        result.data["aggregateExtensionPopularity"],
+        expected_page_number=1,
+        expected_page_size=5,
+        expected_total_count=10,
+        expected_total_pages=2,
     )
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
@@ -113,17 +108,12 @@ async def test_aggregate_extensions_query_page_two():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageNumber"], 2
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageSize"], 5
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalCount"], 10
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalPages"], 2
+    assert_page_meta(
+        result.data["aggregateExtensionPopularity"],
+        expected_page_number=2,
+        expected_page_size=5,
+        expected_total_count=10,
+        expected_total_pages=2,
     )
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
