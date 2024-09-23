@@ -15,7 +15,12 @@ from model.strawberry.output.observation.connectivity.relationship_count import 
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
-from model.strawberry.output.page import Page, PageNumberType, PageSizeType
+from model.strawberry.output.page import (
+    Page,
+    PageNumberType,
+    PageSizeType,
+    page_records,
+)
 from model.strawberry.scalars import BigInt
 
 
@@ -55,9 +60,9 @@ class WikibaseConnectivityObservationStrawberryModel(
                 WikibaseConnectivityObservationItemRelationshipCountStrawberryModel.marshal(
                     o
                 )
-                for o in self._relationship_item_counts[
-                    page_size * (page_number - 1) : page_size * page_number
-                ]
+                for o in page_records(
+                    self._relationship_item_counts, page_number, page_size
+                )
             ],
         )
 
@@ -79,9 +84,9 @@ class WikibaseConnectivityObservationStrawberryModel(
                 WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel.marshal(
                     o
                 )
-                for o in self._relationship_object_counts[
-                    page_size * (page_number - 1) : page_size * page_number
-                ]
+                for o in page_records(
+                    self._relationship_object_counts, page_number, page_size
+                )
             ],
         )
 

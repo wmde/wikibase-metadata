@@ -13,7 +13,12 @@ from model.strawberry.output.observation.property_popularity.count import (
 from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
-from model.strawberry.output.page import Page, PageNumberType, PageSizeType
+from model.strawberry.output.page import (
+    Page,
+    PageNumberType,
+    PageSizeType,
+    page_records,
+)
 
 
 @strawberry.type
@@ -36,9 +41,7 @@ class WikibasePropertyPopularityObservationStrawberryModel(
             len(self._pco_list),
             [
                 WikibasePropertyPopularityCountStrawberryModel.marshal(o)
-                for o in self._pco_list[
-                    page_size * (page_number - 1) : page_size * page_number
-                ]
+                for o in page_records(self._pco_list, page_number, page_size)
             ],
         )
 
