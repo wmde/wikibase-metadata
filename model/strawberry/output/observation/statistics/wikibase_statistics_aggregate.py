@@ -10,8 +10,9 @@ from model.strawberry.output.observation.statistics.component import (
 )
 
 
+# pylint: disable=too-many-instance-attributes
 @strawberry.type
-class WikibaseStatisticsAggregateStrawberryModel:  # pylint: disable=too-many-instance-attributes
+class WikibaseStatisticsAggregateStrawberryModel:
     """Aggregate Statistics"""
 
     edits: WikibaseStatisticsEditsObservationStrawberryModel
@@ -21,7 +22,8 @@ class WikibaseStatisticsAggregateStrawberryModel:  # pylint: disable=too-many-in
 
     wikibase_count: int = strawberry.field(description="Wikibases with Statistics Data")
 
-    def __init__(  # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
+    def __init__(
         self,
         total_pages: int,
         content_pages: int,
