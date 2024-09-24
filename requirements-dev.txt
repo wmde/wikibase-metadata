@@ -1,6 +1,6 @@
 alembic>=1.13
 black>=24.8
-freezegun>=1.4
+freezegun>=1.5
 great-expectations>=1.0
 pylint>=3.3
 pytest>=8.3
