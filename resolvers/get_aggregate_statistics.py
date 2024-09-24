@@ -48,7 +48,8 @@ def get_total_statistics_query() -> (
     rank_subquery = (
         select(
             WikibaseStatisticsObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseStatisticsObservationModel.wikibase_id,
                 order_by=WikibaseStatisticsObservationModel.observation_date.desc(),
@@ -76,7 +77,8 @@ def get_total_statistics_query() -> (
         func.sum(WikibaseStatisticsObservationModel.total_users).label("total_users"),
         func.sum(WikibaseStatisticsObservationModel.active_users).label("active_users"),
         func.sum(WikibaseStatisticsObservationModel.total_admin).label("total_admin"),
-        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+        # pylint: disable=not-callable
+        func.count().label("wikibase_count"),
     ).join(
         rank_subquery,
         onclause=and_(

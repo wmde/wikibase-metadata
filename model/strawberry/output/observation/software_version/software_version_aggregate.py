@@ -22,7 +22,6 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
 
     semver_version: strawberry.Private[Optional[Semver]]
 
-    # pylint: disable=too-many-arguments
     def __init__(
         self,
         version: Optional[str],

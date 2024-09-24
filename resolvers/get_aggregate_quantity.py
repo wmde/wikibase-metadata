@@ -34,7 +34,8 @@ def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
     rank_subquery = (
         select(
             WikibaseQuantityObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseQuantityObservationModel.wikibase_id,
                 order_by=WikibaseQuantityObservationModel.observation_date.desc(),
@@ -56,7 +57,8 @@ def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
             "total_properties"
         ),
         func.sum(WikibaseQuantityObservationModel.total_triples).label("total_triples"),
-        func.count().label("wikibase_count"),  # pylint: disable=not-callable
+        # pylint: disable=not-callable
+        func.count().label("wikibase_count"),
     ).join(
         rank_subquery,
         onclause=and_(

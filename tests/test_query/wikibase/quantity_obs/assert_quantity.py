@@ -3,6 +3,7 @@
 from tests.utils import assert_property_value
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_quantity(
     returned_quantity: dict,
     expected_id: str,
@@ -11,7 +12,7 @@ def assert_quantity(
     expected_lexemes: int,
     expected_properties: int,
     expected_triples: int,
-):  # pylint: disable=too-many-arguments
+):
     """Assert Quantity Observation"""
 
     assert_property_value(returned_quantity, "id", expected_id)

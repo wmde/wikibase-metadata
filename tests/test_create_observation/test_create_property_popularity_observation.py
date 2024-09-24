@@ -41,7 +41,7 @@ async def test_create_property_popularity_observation_failure(mocker):
         side_effect=[
             HTTPError(
                 url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None
-            ),
+            )
         ],
     )
     success = await create_property_popularity_observation(1)

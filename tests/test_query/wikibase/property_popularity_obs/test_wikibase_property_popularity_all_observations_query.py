@@ -11,6 +11,7 @@ from tests.test_schema import test_schema
 from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
+    assert_page_meta,
     assert_property_value,
 )
 
@@ -70,8 +71,15 @@ async def test_wikibase_property_popularity_all_observations_query():
     assert_layered_property_value(
         property_popularity_observation_list, [0, "returnedData"], True
     )
+    assert_page_meta(
+        property_popularity_observation_list[0]["propertyPopularityCounts"],
+        expected_page_number=1,
+        expected_page_size=10,
+        expected_total_count=2,
+        expected_total_pages=1,
+    )
     assert_layered_property_count(
-        property_popularity_observation_list, [0, "propertyPopularityCounts"], 2
+        property_popularity_observation_list, [0, "propertyPopularityCounts", "data"], 2
     )
 
     for index, (expected_id, expected_property_url, expected_usage_count) in enumerate(
@@ -81,7 +89,9 @@ async def test_wikibase_property_popularity_all_observations_query():
         ]
     ):
         assert_property_count(
-            property_popularity_observation_list[0]["propertyPopularityCounts"][index],
+            property_popularity_observation_list[0]["propertyPopularityCounts"]["data"][
+                index
+            ],
             expected_id,
             expected_property_url,
             expected_usage_count,
@@ -92,6 +102,13 @@ async def test_wikibase_property_popularity_all_observations_query():
     assert_layered_property_value(
         property_popularity_observation_list, [1, "returnedData"], False
     )
+    assert_page_meta(
+        property_popularity_observation_list[1]["propertyPopularityCounts"],
+        expected_page_number=1,
+        expected_page_size=10,
+        expected_total_count=0,
+        expected_total_pages=0,
+    )
     assert_layered_property_count(
-        property_popularity_observation_list, [1, "propertyPopularityCounts"], 0
+        property_popularity_observation_list, [1, "propertyPopularityCounts", "data"], 0
     )

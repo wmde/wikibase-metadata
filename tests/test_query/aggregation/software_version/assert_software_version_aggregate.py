@@ -10,6 +10,7 @@ from tests.utils import (
 )
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_software_version_aggregate(
     returned: dict,
     expected_software_name: str,
@@ -17,7 +18,7 @@ def assert_software_version_aggregate(
     expected_version_semver: tuple[Optional[int], Optional[int], Optional[int]],
     expected_version_date: Optional[datetime],
     expected_version_hash: Optional[str],
-):  # pylint: disable=too-many-arguments
+):
     """Assert Aggregate Software Version"""
 
     assert_property_value(returned, "softwareName", expected_software_name)

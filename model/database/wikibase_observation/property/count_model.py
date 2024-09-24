@@ -47,3 +47,12 @@ class WikibasePropertyPopularityCountModel(ModelBase):
     def __init__(self, property_url: str, usage_count: int):
         self.property_url = property_url
         self.usage_count = usage_count
+
+    def __str__(self) -> str:
+        return (
+            "WikibasePropertyPopularityCountModel("
+            + f"id={self.id}, "
+            + f"property_url={self.property_url}, "
+            + f"usage_count={self.usage_count}"
+            + ")"
+        )

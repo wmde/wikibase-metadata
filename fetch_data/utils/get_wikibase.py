@@ -1,5 +1,3 @@
-# pylint: disable=too-many-arguments
-
 """Get Wikibase"""
 
 from sqlalchemy import select
@@ -8,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from model.database import WikibaseModel
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 async def get_wikibase_from_database(
     async_session: AsyncSession,
     wikibase_id: int,

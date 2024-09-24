@@ -6,7 +6,7 @@ from typing import Optional
 from fetch_data.api_data.log_data import WikibaseLogRecord
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_log_record(
     log: WikibaseLogRecord,
     expected_id: int,

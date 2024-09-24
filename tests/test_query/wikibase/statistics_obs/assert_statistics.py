@@ -71,6 +71,7 @@ def assert_users(
     )
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_statistics(
     returned_statistics: dict,
     expected_id: str,
@@ -79,7 +80,7 @@ def assert_statistics(
     expected_files: Optional[tuple[int]] = None,
     expected_pages: Optional[tuple[int, float, int, int]] = None,
     expected_users: Optional[tuple[int, int, int]] = None,
-):  # pylint: disable=too-many-arguments
+):
     """Assert Statistics Observation"""
 
     assert_property_value(returned_statistics, "id", expected_id)

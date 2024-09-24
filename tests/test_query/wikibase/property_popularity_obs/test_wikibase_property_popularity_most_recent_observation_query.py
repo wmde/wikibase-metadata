@@ -8,7 +8,11 @@ from tests.test_query.wikibase.property_popularity_obs.property_popularity_fragm
     WIKIBASE_PROPERTY_POPULARITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_property_value
+from tests.utils import (
+    assert_layered_property_count,
+    assert_page_meta,
+    assert_property_value,
+)
 
 
 WIKIBASE_PROPERTY_POPULARITY_MOST_RECENT_OBSERVATION_QUERY = (
@@ -54,6 +58,13 @@ async def test_wikibase_property_popularity_most_recent_observation_query():
     assert "observationDate" in most_recent
     assert_property_value(most_recent, "returnedData", True)
     assert_layered_property_count(most_recent, ["propertyPopularityCounts"], 2)
+    assert_page_meta(
+        most_recent["propertyPopularityCounts"],
+        expected_page_number=1,
+        expected_page_size=10,
+        expected_total_count=2,
+        expected_total_pages=1,
+    )
 
     for index, (expected_id, expected_property_url, expected_usage_count) in enumerate(
         [
@@ -62,7 +73,7 @@ async def test_wikibase_property_popularity_most_recent_observation_query():
         ]
     ):
         assert_property_count(
-            most_recent["propertyPopularityCounts"][index],
+            most_recent["propertyPopularityCounts"]["data"][index],
             expected_id,
             expected_property_url,
             expected_usage_count,

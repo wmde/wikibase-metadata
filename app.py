@@ -8,11 +8,7 @@ from model.strawberry import schema
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://0.0.0.0",
-    "http://127.0.0.1",
-]
+origins = ["http://localhost", "http://0.0.0.0", "http://127.0.0.1"]
 
 app.add_middleware(
     CORSMiddleware,

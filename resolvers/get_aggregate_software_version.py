@@ -16,6 +16,7 @@ from model.strawberry.output import (
     Page,
     PageNumberType,
     PageSizeType,
+    page_records,
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
 )
@@ -62,10 +63,14 @@ async def get_aggregate_version(
             page_number,
             page_size,
             len(software_dict),
-            sorted(
-                software_dict.values(),
-                key=lambda x: (-x.wikibase_count(), x.software_name),
-            )[page_size * (page_number - 1) : page_size * page_number],
+            page_records(
+                sorted(
+                    software_dict.values(),
+                    key=lambda x: (-x.wikibase_count(), x.software_name),
+                ),
+                page_number,
+                page_size,
+            ),
         )
 
 
@@ -77,7 +82,8 @@ def get_query(
     rank_subquery = (
         select(
             WikibaseSoftwareVersionObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseSoftwareVersionObservationModel.wikibase_id,
                 order_by=WikibaseSoftwareVersionObservationModel.observation_date.desc(),
@@ -100,7 +106,8 @@ def get_query(
             WikibaseSoftwareVersionModel.version,
             WikibaseSoftwareVersionModel.version_date,
             WikibaseSoftwareVersionModel.version_hash,
-            func.count().label("wikibase_count"),  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.count().label("wikibase_count"),
         )
         .join(
             rank_subquery,

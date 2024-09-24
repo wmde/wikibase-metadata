@@ -14,6 +14,17 @@ PageSizeType = Annotated[int, strawberry.argument(description="Page Size")]
 T = TypeVar("T")
 
 
+def page_records(
+    records: List[T], page_number: PageNumberType, page_size: PageSizeType
+) -> List[T]:
+    """Fetch the relevant slice of records"""
+
+    assert page_number >= 0, f"Page Number ({page_number}) Must Be Non-Negative"
+    assert page_size >= 1, f"Page Size ({page_size}) Must Be Positive"
+
+    return records[page_size * (page_number - 1) : page_size * page_number]
+
+
 @strawberry.type
 class PageMetadata:
     """Page Metadata"""

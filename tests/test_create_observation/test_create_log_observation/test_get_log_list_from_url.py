@@ -60,12 +60,7 @@ def test_get_log_list_from_url_several(mocker):
         ("thanks", "thank"),
         ("approval", "unapprove"),
     ]
-    mock_users: list[Optional[str]] = [
-        "User:A",
-        None,
-        "User:B",
-        "User:C",
-    ]
+    mock_users: list[Optional[str]] = ["User:A", None, "User:B", "User:C"]
 
     mock_logs: list[dict] = []
     for i in range(7):

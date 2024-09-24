@@ -5,10 +5,18 @@ fragment WikibasePropertyPopularityObservationStrawberryModelFragment on Wikibas
   id
   observationDate
   returnedData
-  propertyPopularityCounts {
-    id
-    propertyUrl
-    usageCount
+  propertyPopularityCounts(pageNumber: 1, pageSize: 10) {
+    meta {
+      pageNumber
+      pageSize
+      totalCount
+      totalPages
+    }
+    data {
+      id
+      propertyUrl
+      usageCount
+    }
   }
 }
 """
