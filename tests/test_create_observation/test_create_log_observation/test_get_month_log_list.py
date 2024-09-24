@@ -111,9 +111,7 @@ def test_get_month_log_list_from_url_more_pulls(mocker):
         )
     mock_side_effects: list[dict] = []
     for i in range(0, len(mock_logs), pull_limit):
-        result = {
-            "query": {"logevents": mock_logs[i : i + pull_limit]},
-        }
+        result = {"query": {"logevents": mock_logs[i : i + pull_limit]}}
         if i + pull_limit < len(mock_logs):
             result["continue"] = {
                 "lecontinue": mock_logs[i + pull_limit].get("timestamp")

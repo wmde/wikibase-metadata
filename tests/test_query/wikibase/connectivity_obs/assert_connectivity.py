@@ -1,9 +1,11 @@
 """Assert Connectivity Observation"""
 
 from typing import Optional
+
 from tests.utils import assert_layered_property_count, assert_property_value
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,dangerous-default-value
 def assert_connectivity_observation(
     returned_connectivity_observation: dict,
     expected_id: str,
@@ -14,7 +16,7 @@ def assert_connectivity_observation(
     expected_connectivity: Optional[float] = None,
     expected_item_relationship_counts: list[tuple[str, int, int]] = [],
     expected_object_relationship_counts: list[tuple[str, int, int]] = [],
-):  # pylint: disable=too-many-arguments,too-many-locals,dangerous-default-value
+):
     """Assert Connectivity Observation"""
 
     assert_property_value(returned_connectivity_observation, "id", expected_id)

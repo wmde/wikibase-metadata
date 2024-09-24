@@ -1,7 +1,5 @@
 """Wikibase Table"""
 
-# pylint: disable=too-many-instance-attributes
-
 from typing import List, Optional
 from sqlalchemy import Boolean, ForeignKey, Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -21,6 +19,7 @@ from model.database.wikibase_url_model import WikibaseURLModel
 from model.enum import WikibaseURLType
 
 
+# pylint: disable=too-many-instance-attributes
 class WikibaseModel(ModelBase):
     """Wikibase Table"""
 
@@ -264,6 +263,7 @@ class WikibaseModel(ModelBase):
     )
     """User Observations"""
 
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
     def __init__(
         self,
         wikibase_name: str,
@@ -273,7 +273,7 @@ class WikibaseModel(ModelBase):
         region: Optional[str] = None,
         sparql_query_url: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
-    ):  # pylint: disable=too-many-arguments
+    ):
         self.wikibase_name = wikibase_name
         self.organization = organization
         self.country = country

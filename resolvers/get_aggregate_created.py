@@ -30,7 +30,8 @@ def get_created_query() -> Select[Tuple[int, int]]:
     rank_subquery = (
         select(
             WikibaseLogObservationModel.id,
-            func.rank()  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.rank()
             .over(
                 partition_by=WikibaseLogObservationModel.wikibase_id,
                 order_by=WikibaseLogObservationModel.observation_date.desc(),
@@ -48,7 +49,8 @@ def get_created_query() -> Select[Tuple[int, int]]:
     query = (
         select(
             func.substr(WikibaseLogObservationModel.first_log_date, 1, 4).label("year"),
-            func.count().label("wikibase_count"),  # pylint: disable=not-callable
+            # pylint: disable=not-callable
+            func.count().label("wikibase_count"),
         )
         .join(
             rank_subquery,
