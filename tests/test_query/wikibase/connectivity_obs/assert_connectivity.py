@@ -1,7 +1,13 @@
 """Assert Connectivity Observation"""
 
+from math import ceil
 from typing import Optional
-from tests.utils import assert_layered_property_count, assert_property_value
+
+from tests.utils import (
+    assert_layered_property_count,
+    assert_page_meta,
+    assert_property_value,
+)
 
 
 # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,dangerous-default-value
@@ -40,35 +46,53 @@ def assert_connectivity_observation(
         returned_connectivity_observation, "connectivity", expected_connectivity
     )
 
+    assert_page_meta(
+        returned_connectivity_observation["relationshipItemCounts"],
+        expected_page_number=1,
+        expected_page_size=10,
+        expected_total_count=len(expected_item_relationship_counts),
+        expected_total_pages=ceil(len(expected_item_relationship_counts) / 10),
+    )
     assert_layered_property_count(
         returned_connectivity_observation,
-        ["relationshipItemCounts"],
-        len(expected_item_relationship_counts),
+        ["relationshipItemCounts", "data"],
+        min(10, len(expected_item_relationship_counts)),
     )
     for ri_index, (
         expected_ri_id,
         expected_relationship_count,
         expected_item_count,
-    ) in enumerate(expected_item_relationship_counts):
+    ) in enumerate(expected_item_relationship_counts[0:10]):
         assert_relationship_count(
-            returned_connectivity_observation["relationshipItemCounts"][ri_index],
+            returned_connectivity_observation["relationshipItemCounts"]["data"][
+                ri_index
+            ],
             expected_ri_id,
             expected_relationship_count,
             expected_item_count=expected_item_count,
         )
 
+    assert_page_meta(
+        returned_connectivity_observation["relationshipObjectCounts"],
+        expected_page_number=1,
+        expected_page_size=10,
+        expected_total_count=len(expected_object_relationship_counts),
+        expected_total_pages=ceil(len(expected_object_relationship_counts) / 10),
+    )
     assert_layered_property_count(
         returned_connectivity_observation,
-        ["relationshipObjectCounts"],
-        len(expected_object_relationship_counts),
+        ["relationshipObjectCounts", "data"],
+        min(10, len(expected_object_relationship_counts)),
     )
     for ro_index, (
         expected_ro_id,
         expected_relationship_count,
         expected_object_count,
-    ) in enumerate(expected_object_relationship_counts):
+    ) in enumerate(expected_object_relationship_counts[0:10]):
         assert_relationship_count(
-            returned_connectivity_observation["relationshipObjectCounts"][ro_index],
+            returned_connectivity_observation["relationshipObjectCounts"]["data"][
+                ro_index
+            ],
             expected_ro_id,
             expected_relationship_count,
             expected_object_count=expected_object_count,

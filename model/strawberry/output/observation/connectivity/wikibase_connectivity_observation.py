@@ -124,11 +124,9 @@ class WikibaseConnectivityObservationStrawberryModel(
             connectivity=model.connectivity,
             returned_links=model.returned_links,
             _relationship_item_counts=sorted(
-                model.item_relationship_count_observations,
-                key=lambda x: (-x.relationship_count, -x.item_count),
+                model.item_relationship_count_observations, key=lambda x: x.id
             ),
             _relationship_object_counts=sorted(
-                model.object_relationship_count_observations,
-                key=lambda x: (-x.relationship_count, -x.object_count),
+                model.object_relationship_count_observations, key=lambda x: x.id
             ),
         )
