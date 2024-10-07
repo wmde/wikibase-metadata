@@ -1,9 +1,8 @@
 """Add Wikibase"""
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from data.database_connection import get_async_session
-from model.database import WikibaseModel
-from model.database.wikibase_category_model import WikibaseCategoryModel
+from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
 from model.strawberry.input import WikibaseInput
 
 
@@ -19,6 +18,35 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> int:
                 )
             )
         ).one()
+
+        assert (
+            await async_session.scalar(
+                select(func.count()).where(  # pylint: disable=not-callable
+                    WikibaseModel.wikibase_name == wikibase_input.wikibase_name.strip()
+                )
+            )
+        ) == 0, (
+            f"Wikibase with name {wikibase_input.wikibase_name.strip()} already exists"
+        )
+
+        for input_url in [
+            wikibase_input.urls.action_api_url,
+            wikibase_input.urls.base_url,
+            wikibase_input.urls.index_api_url,
+            wikibase_input.urls.sparql_endpoint_url,
+            wikibase_input.urls.sparql_query_url,
+            wikibase_input.urls.special_statistics_url,
+            wikibase_input.urls.special_version_url,
+        ]:
+            if input_url is not None:
+                assert (
+                    await async_session.scalar(
+                        select(func.count()).where(  # pylint: disable=not-callable
+                            WikibaseURLModel.url == input_url.strip()
+                        )
+                    )
+                ) == 0, f"URL {input_url.strip()} already exists"
+
         model = WikibaseModel(
             wikibase_name=wikibase_input.wikibase_name,
             organization=wikibase_input.organization,
