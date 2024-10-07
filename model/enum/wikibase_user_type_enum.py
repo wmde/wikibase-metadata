@@ -2,7 +2,10 @@
 
 import enum
 
+import strawberry
 
+
+@strawberry.enum
 class WikibaseUserType(enum.Enum):
     """Wikibase User Type"""
 

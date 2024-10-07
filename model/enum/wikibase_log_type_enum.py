@@ -4,7 +4,10 @@ import enum
 import re
 from typing import Optional
 
+import strawberry
 
+
+@strawberry.enum
 class WikibaseLogType(enum.Enum):
     """Wikibase Log Type"""
 
