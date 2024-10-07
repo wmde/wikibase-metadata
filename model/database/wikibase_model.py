@@ -36,16 +36,18 @@ class WikibaseModel(ModelBase):
     )
     """Organization"""
 
-    description: Mapped[str] = mapped_column("description", String, nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(
+        "description", String, nullable=True
+    )
     """Description"""
 
     country: Mapped[Optional[str]] = mapped_column("country", String, nullable=True)
     """Country"""
 
-    region: Mapped[str] = mapped_column("region", String, nullable=True)
+    region: Mapped[Optional[str]] = mapped_column("region", String, nullable=True)
     """Region"""
 
-    category_id: Mapped[int] = mapped_column(
+    category_id: Mapped[Optional[int]] = mapped_column(
         "wikibase_category_id",
         ForeignKey(column="wikibase_category.id", name="wikibase_category"),
         nullable=True,
@@ -271,15 +273,29 @@ class WikibaseModel(ModelBase):
         organization: Optional[str] = None,
         country: Optional[str] = None,
         region: Optional[str] = None,
+        action_api_url: Optional[str] = None,
+        index_api_url: Optional[str] = None,
         sparql_query_url: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
+        special_statistics_url: Optional[str] = None,
+        special_version_url: Optional[str] = None,
     ):
         self.wikibase_name = wikibase_name
         self.organization = organization
         self.country = country
         self.region = region
         self.checked = False
+        self.test = False
+
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
+        if action_api_url is not None:
+            self.action_api_url = WikibaseURLModel(
+                url=action_api_url, url_type=WikibaseURLType.ACTION_QUERY_URL
+            )
+        if index_api_url is not None:
+            self.index_api_url = WikibaseURLModel(
+                url=index_api_url, url_type=WikibaseURLType.INDEX_QUERY_URL
+            )
         if sparql_endpoint_url is not None:
             self.sparql_endpoint_url = WikibaseURLModel(
                 url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
@@ -287,4 +303,13 @@ class WikibaseModel(ModelBase):
         if sparql_query_url is not None:
             self.sparql_query_url = WikibaseURLModel(
                 url=sparql_query_url, url_type=WikibaseURLType.SPARQL_QUERY_URL
+            )
+        if special_statistics_url is not None:
+            self.special_statistics_url = WikibaseURLModel(
+                url=special_statistics_url,
+                url_type=WikibaseURLType.SPECIAL_STATISTICS_URL,
+            )
+        if special_version_url is not None:
+            self.special_version_url = WikibaseURLModel(
+                url=special_version_url, url_type=WikibaseURLType.SPECIAL_VERSION_URL
             )
