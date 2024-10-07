@@ -27,3 +27,6 @@ class WikibaseCategoryModel(ModelBase):
         "category", Enum(WikibaseCategory), nullable=False
     )
     """Category"""
+
+    def __str__(self):
+        return f"WikibaseCategoryModel(id={self.id}, category={self.category})"
