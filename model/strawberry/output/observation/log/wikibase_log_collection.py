@@ -112,7 +112,7 @@ class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
                 key=lambda x: x.log_type.value,
             ),
             user_type_records=sorted(
-                 [
+                [
                     WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
                     for r in model.user_type_records
                 ],
