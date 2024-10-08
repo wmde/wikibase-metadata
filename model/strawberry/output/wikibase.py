@@ -7,7 +7,7 @@ import strawberry
 
 from data.database_connection import get_async_session
 from model.database import WikibaseModel
-from model.enum.wikibase_category_enum import wikibase_category_name
+from model.enum import WikibaseCategory
 from model.strawberry.output.observation import (
     WikibaseConnectivityObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,
@@ -30,7 +30,9 @@ class WikibaseStrawberryModel:
     title: str = strawberry.field(description="Wikibase Name")
     organization: Optional[str] = strawberry.field(description="Organization")
     description: Optional[str] = strawberry.field(description="Description")
-    category: Optional[str] = strawberry.field(description="Wikibase Category")
+    category: Optional[WikibaseCategory] = strawberry.field(
+        description="Wikibase Category"
+    )
 
     location: WikibaseLocationStrawberryModel = strawberry.field(
         description="Wikibase Location"
@@ -236,11 +238,7 @@ class WikibaseStrawberryModel:
             title=model.wikibase_name,
             organization=model.organization,
             description=model.description,
-            category=(
-                wikibase_category_name(model.category.category)
-                if model.category is not None
-                else None
-            ),
+            category=model.category.category if model.category is not None else None,
             location=WikibaseLocationStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
         )
