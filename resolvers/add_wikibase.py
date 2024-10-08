@@ -57,7 +57,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> int:
             action_api_url=wikibase_input.urls.action_api_url,
             index_api_url=wikibase_input.urls.index_api_url,
             sparql_endpoint_url=wikibase_input.urls.sparql_endpoint_url,
-            sparql_query_url=wikibase_input.urls.sparql_endpoint_url,
+            sparql_query_url=wikibase_input.urls.sparql_query_url,
             special_statistics_url=wikibase_input.urls.special_statistics_url,
             special_version_url=wikibase_input.urls.special_version_url,
         )
