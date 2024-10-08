@@ -1,1 +1,1 @@
-"""Test Query"""
+"""Test Mutation"""
