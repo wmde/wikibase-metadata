@@ -96,7 +96,7 @@ async def test_wikibase_list_query():
     assert_property_value(result_datum, "id", "1")
     assert_property_value(result_datum, "title", "Mock Wikibase")
     assert_property_value(
-        result_datum, "category", "Experimental and Prototype Projects"
+        result_datum, "category", "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"
     )
     assert_property_value(
         result_datum, "description", "Mock wikibase for testing this codebase"

@@ -64,7 +64,7 @@ class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryMod
     @classmethod
     def marshal(
         cls, model: WikibaseLogMonthUserTypeObservationModel
-    ) -> "WikibaseLogMonthLogTypeStrawberryModel":
+    ) -> "WikibaseLogMonthUserTypeStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
 
         return cls(
@@ -109,13 +109,13 @@ class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
                     WikibaseLogMonthLogTypeStrawberryModel.marshal(r)
                     for r in model.log_type_records
                 ],
-                key=lambda x: x.log_type,
+                key=lambda x: x.log_type.value,
             ),
             user_type_records=sorted(
-                [
+                 [
                     WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
                     for r in model.user_type_records
                 ],
-                key=lambda x: x.user_type,
+                key=lambda x: x.user_type.value,
             ),
         )
