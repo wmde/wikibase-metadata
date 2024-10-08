@@ -17,6 +17,9 @@ class WikibaseURLSetStrawberryModel:
     sparql_endpoint_url: Optional[str] = strawberry.field(
         description="SPARQL Endpoint URL"
     )
+    special_statistics_url: Optional[str] = strawberry.field(
+        description="Special:Statistics URL"
+    )
     special_version_url: Optional[str] = strawberry.field(
         description="Special:Version URL"
     )
@@ -41,6 +44,11 @@ class WikibaseURLSetStrawberryModel:
             sparql_endpoint_url=(
                 model.sparql_endpoint_url.url
                 if model.sparql_endpoint_url is not None
+                else None
+            ),
+            special_statistics_url=(
+                model.special_statistics_url.url
+                if model.special_statistics_url is not None
                 else None
             ),
             special_version_url=(

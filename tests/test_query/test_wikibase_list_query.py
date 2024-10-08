@@ -24,6 +24,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
         indexApi
         sparqlEndpointUrl
         sparqlUrl
+        specialStatisticsUrl
         specialVersionUrl
       }
       connectivityObservations {
@@ -113,6 +114,7 @@ async def test_wikibase_list_query():
         ("indexApi", "example.com/w/index.php"),
         ("sparqlEndpointUrl", "query.example.com/sparql"),
         ("sparqlUrl", "query.example.com"),
+        ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
         ("specialVersionUrl", "example.com/wiki/Special:Version"),
     ]:
         assert_layered_property_value(result_datum, ["urls", url_name], url)
