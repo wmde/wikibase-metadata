@@ -36,16 +36,18 @@ class WikibaseModel(ModelBase):
     )
     """Organization"""
 
-    description: Mapped[str] = mapped_column("description", String, nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(
+        "description", String, nullable=True
+    )
     """Description"""
 
     country: Mapped[Optional[str]] = mapped_column("country", String, nullable=True)
     """Country"""
 
-    region: Mapped[str] = mapped_column("region", String, nullable=True)
+    region: Mapped[Optional[str]] = mapped_column("region", String, nullable=True)
     """Region"""
 
-    category_id: Mapped[int] = mapped_column(
+    category_id: Mapped[Optional[int]] = mapped_column(
         "wikibase_category_id",
         ForeignKey(column="wikibase_category.id", name="wikibase_category"),
         nullable=True,

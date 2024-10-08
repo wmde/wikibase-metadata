@@ -11,7 +11,7 @@ class WikibaseLocationStrawberryModel:
     """Wikibase Location"""
 
     country: Optional[str] = strawberry.field(description="Country")
-    region: str = strawberry.field(description="Region")
+    region: Optional[str] = strawberry.field(description="Region")
 
     @classmethod
     def marshal(cls, model: WikibaseModel) -> "WikibaseLocationStrawberryModel":
