@@ -2,7 +2,10 @@
 
 import enum
 
+import strawberry
 
+
+@strawberry.enum
 class WikibaseCategory(enum.Enum):
     """Wikibase Category"""
 
@@ -17,8 +20,3 @@ class WikibaseCategory(enum.Enum):
     SEMANTIC_AND_PROSOPOGRAPHIC_DATA = 9
     SOCIAL_AND_ADVOCACY = 10
     TECHNOLOGY_AND_OPEN_SOURCE = 11
-
-
-def wikibase_category_name(category: WikibaseCategory) -> str:
-    """Human-Readable Category"""
-    return category.name.replace("_", " ").title().replace("And", "and")
