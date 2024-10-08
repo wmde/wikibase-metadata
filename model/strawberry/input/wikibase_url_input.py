@@ -14,9 +14,9 @@ class WikibaseURLSetInput:
 
     index_api_url: Optional[str] = None
 
-    sparql_query_url: Optional[str] = None
-
     sparql_endpoint_url: Optional[str] = None
+
+    sparql_query_url: Optional[str] = None
 
     special_statistics_url: Optional[str] = None
 
