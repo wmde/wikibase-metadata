@@ -49,6 +49,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> int:
 
         model = WikibaseModel(
             wikibase_name=wikibase_input.wikibase_name,
+            description=wikibase_input.description,
             organization=wikibase_input.organization,
             country=wikibase_input.country,
             region=wikibase_input.region,
@@ -60,6 +61,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> int:
             special_statistics_url=wikibase_input.urls.special_statistics_url,
             special_version_url=wikibase_input.urls.special_version_url,
         )
+        model.checked = True
         category.wikibases.append(model)
         await async_session.commit()
 

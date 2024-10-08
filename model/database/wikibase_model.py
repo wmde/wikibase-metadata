@@ -270,6 +270,7 @@ class WikibaseModel(ModelBase):
         self,
         wikibase_name: str,
         base_url: str,
+        description: Optional[str] = None,
         organization: Optional[str] = None,
         country: Optional[str] = None,
         region: Optional[str] = None,
@@ -281,6 +282,7 @@ class WikibaseModel(ModelBase):
         special_version_url: Optional[str] = None,
     ):
         self.wikibase_name = wikibase_name
+        self.description = description
         self.organization = organization
         self.country = country
         self.region = region
