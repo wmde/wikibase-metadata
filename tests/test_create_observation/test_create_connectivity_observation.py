@@ -8,7 +8,9 @@ from fetch_data import create_connectivity_observation
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(name="connectivity-success-simple")
+@pytest.mark.dependency(
+    name="connectivity-success-simple", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.sparql
 @pytest.mark.parametrize(
     ["links"],
@@ -51,7 +53,9 @@ async def test_create_connectivity_observation_success(
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(name="connectivity-success-complex")
+@pytest.mark.dependency(
+    name="connectivity-success-complex", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(mocker):
     """Test"""
@@ -81,7 +85,9 @@ async def test_create_connectivity_observation_success_complex(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(name="connectivity-failure")
+@pytest.mark.dependency(
+    name="connectivity-failure", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.sparql
 async def test_create_connectivity_observation_failure(mocker):
     """Test"""

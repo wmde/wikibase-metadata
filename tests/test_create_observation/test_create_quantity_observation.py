@@ -7,7 +7,9 @@ from fetch_data import create_quantity_observation
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="quantity-success")
+@pytest.mark.dependency(
+    name="quantity-success", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_success(mocker):

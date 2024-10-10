@@ -6,7 +6,9 @@ from fetch_data import create_property_popularity_observation
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="property-popularity-success")
+@pytest.mark.dependency(
+    name="property-popularity-success", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_success(mocker):
@@ -30,7 +32,9 @@ async def test_create_property_popularity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="property-popularity-failure")
+@pytest.mark.dependency(
+    name="property-popularity-failure", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_failure(mocker):
