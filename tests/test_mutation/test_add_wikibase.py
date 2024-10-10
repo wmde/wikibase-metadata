@@ -2,12 +2,14 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value
+from tests.utils import assert_layered_property_value
 
 
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
-  addWikibase(wikibaseInput: $wikibaseInput)
+  addWikibase(wikibaseInput: $wikibaseInput) {
+    id
+  }
 }"""
 
 
@@ -42,4 +44,4 @@ async def test_add_wikibase_mutation():
 
     assert result.errors is None
     assert result.data is not None
-    assert_property_value(result.data, "addWikibase", 1)
+    assert_layered_property_value(result.data, ["addWikibase", "id"], "1")

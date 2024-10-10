@@ -4,9 +4,10 @@ from sqlalchemy import func, select
 from data.database_connection import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
 from model.strawberry.input import WikibaseInput
+from model.strawberry.output import WikibaseStrawberryModel
 
 
-async def add_wikibase(wikibase_input: WikibaseInput) -> int:
+async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel:
     """Add Wikibase"""
 
     async with get_async_session() as async_session:
@@ -65,4 +66,4 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> int:
         category.wikibases.append(model)
         await async_session.commit()
 
-        return model.id
+        return WikibaseStrawberryModel.marshal(model)
