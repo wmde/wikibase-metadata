@@ -13,7 +13,7 @@ TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-empty")
+@pytest.mark.dependency(name="user-empty", depends=["add-wikibase"], scope="session")
 @pytest.mark.user
 async def test_create_user_observation_empty(mocker):
     """Test No-Data Scenario"""

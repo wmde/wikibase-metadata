@@ -12,7 +12,9 @@ DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observati
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="statistics-success")
+@pytest.mark.dependency(
+    name="statistics-success", depends=["add-wikibase"], scope="session"
+)
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(mocker):
     """Test Data Returned Scenario"""

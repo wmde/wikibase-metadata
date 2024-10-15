@@ -1,5 +1,6 @@
 """Resolvers"""
 
+from resolvers.add_wikibase import add_wikibase
 from resolvers.get_aggregate_created import get_aggregate_created
 from resolvers.get_aggregate_property_popularity import (
     get_aggregate_property_popularity,
