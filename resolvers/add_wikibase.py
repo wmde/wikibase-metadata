@@ -12,14 +12,6 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
     async with get_async_session() as async_session:
 
-        category = (
-            await async_session.scalars(
-                select(WikibaseCategoryModel).where(
-                    WikibaseCategoryModel.category == wikibase_input.category.name
-                )
-            )
-        ).one()
-
         assert (
             await async_session.scalar(
                 select(func.count()).where(  # pylint: disable=not-callable
@@ -40,13 +32,14 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             wikibase_input.urls.special_version_url,
         ]:
             if input_url is not None:
+                stripped_input_url: str = input_url.strip()
                 assert (
                     await async_session.scalar(
                         select(func.count()).where(  # pylint: disable=not-callable
-                            WikibaseURLModel.url == input_url.strip()
+                            WikibaseURLModel.url == stripped_input_url
                         )
                     )
-                ) == 0, f"URL {input_url.strip()} already exists"
+                ) == 0, f"URL {stripped_input_url} already exists"
 
         model = WikibaseModel(
             wikibase_name=wikibase_input.wikibase_name,
@@ -63,7 +56,21 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             special_version_url=wikibase_input.urls.special_version_url,
         )
         model.checked = True
-        category.wikibases.append(model)
+        model.category = (
+            await async_session.scalars(
+                select(WikibaseCategoryModel).where(
+                    WikibaseCategoryModel.category == wikibase_input.category.name
+                )
+            )
+        ).one()
+
+        async_session.add(model)
+
+        await async_session.flush()
+        await async_session.refresh(model)
+
+        returning = WikibaseStrawberryModel.marshal(model)
+
         await async_session.commit()
 
-        return WikibaseStrawberryModel.marshal(model)
+        return returning
