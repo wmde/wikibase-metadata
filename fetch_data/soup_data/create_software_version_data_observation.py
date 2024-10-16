@@ -120,8 +120,6 @@ async def compile_installed_software_versions(
 
             software_versions.append(
                 WikibaseSoftwareVersionModel(
-                    software_type=WikibaseSoftwareType.SOFTWARE,
-                    software_name=software_name,
                     software=await get_or_create_software_model(
                         async_session, WikibaseSoftwareType.SOFTWARE, software_name
                     ),
@@ -152,8 +150,6 @@ async def compile_library_versions(
                 version = row.find_all("td")[1].string
                 library_versions.append(
                     WikibaseSoftwareVersionModel(
-                        software_type=WikibaseSoftwareType.LIBRARY,
-                        software_name=software_name,
                         software=await get_or_create_software_model(
                             async_session, WikibaseSoftwareType.LIBRARY, software_name
                         ),
@@ -224,8 +220,6 @@ async def get_software_version_from_row(
         version_date = parse_datetime(date_tag.string)
 
     return WikibaseSoftwareVersionModel(
-        software_type=software_type,
-        software_name=software_name,
         software=await get_or_create_software_model(
             async_session, software_type, software_name
         ),

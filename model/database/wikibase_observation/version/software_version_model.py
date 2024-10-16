@@ -2,12 +2,11 @@
 
 from datetime import datetime
 from typing import Optional
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
 from model.database.wikibase_software import WikibaseSoftwareModel
-from model.enum import WikibaseSoftwareType
 
 
 class WikibaseSoftwareVersionModel(ModelBase):
@@ -18,9 +17,8 @@ class WikibaseSoftwareVersionModel(ModelBase):
     __table_args__ = (
         UniqueConstraint(
             "wikibase_software_version_observation_id",
-            "software_type",
-            "software_name",
-            name="unique_observation_software_type_name",
+            "wikibase_software_id",
+            name="unique_observation_software_id",
         ),
     )
 
@@ -44,14 +42,6 @@ class WikibaseSoftwareVersionModel(ModelBase):
         lazy="selectin",
     )
     """Software Version Observation"""
-
-    software_type: Mapped[WikibaseSoftwareType] = mapped_column(
-        "software_type", Enum(WikibaseSoftwareType), nullable=False
-    )
-    """Software Type"""
-
-    software_name: Mapped[str] = mapped_column("software_name", String, nullable=False)
-    """Software Name"""
 
     software_id: Mapped[int] = mapped_column(
         "wikibase_software_id",
@@ -83,15 +73,11 @@ class WikibaseSoftwareVersionModel(ModelBase):
     # pylint: disable=too-many-arguments,too-many-positional-arguments
     def __init__(
         self,
-        software_type: WikibaseSoftwareType,
-        software_name: str,
+        software: WikibaseSoftwareModel,
         version: str,
         version_hash: Optional[str] = None,
         version_date: Optional[datetime] = None,
-        software: Optional[WikibaseSoftwareModel] = None,
     ):
-        self.software_type = software_type
-        self.software_name = software_name
         self.software = software
 
         self.version_hash = (
@@ -105,8 +91,8 @@ class WikibaseSoftwareVersionModel(ModelBase):
     def __str__(self) -> str:
         return (
             "WikibaseSoftwareVersionModel("
-            + f"software_type={self.software_type}, "
-            + f"software_name={self.software_name}, "
+            + f"software_type={self.software.software_type}, "
+            + f"software_name={self.software.software_name}, "
             + f"version={self.version}, "
             + f"version_date={self.version_date}, "
             + f"version_hash={self.version_hash})"
