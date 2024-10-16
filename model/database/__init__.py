@@ -21,4 +21,5 @@ from model.database.wikibase_observation import (
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
 )
+from model.database.wikibase_software import WikibaseSoftwareModel
 from model.database.wikibase_url_model import WikibaseURLModel
