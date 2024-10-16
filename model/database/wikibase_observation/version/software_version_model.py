@@ -60,7 +60,7 @@ class WikibaseSoftwareVersionModel(ModelBase):
     )
     """Software Id"""
 
-    wikibase_software: Mapped[WikibaseSoftwareModel] = relationship(
+    software: Mapped[WikibaseSoftwareModel] = relationship(
         "WikibaseSoftwareModel",
         # back_populates="software_versions",
         lazy="selectin",
@@ -88,9 +88,12 @@ class WikibaseSoftwareVersionModel(ModelBase):
         version: str,
         version_hash: Optional[str] = None,
         version_date: Optional[datetime] = None,
+        software: Optional[WikibaseSoftwareModel] = None,
     ):
         self.software_type = software_type
         self.software_name = software_name
+        self.software = software
+
         self.version_hash = (
             None
             if version_hash is None
