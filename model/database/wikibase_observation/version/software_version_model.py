@@ -6,6 +6,7 @@ from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, UniqueConstr
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
+from model.database.wikibase_software import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
 
 
@@ -51,6 +52,20 @@ class WikibaseSoftwareVersionModel(ModelBase):
 
     software_name: Mapped[str] = mapped_column("software_name", String, nullable=False)
     """Software Name"""
+
+    software_id: Mapped[Optional[int]] = mapped_column(
+        "wikibase_software_id",
+        ForeignKey(column="wikibase_software.id", name="software"),
+        nullable=True,
+    )
+    """Software Id"""
+
+    wikibase_software: Mapped[WikibaseSoftwareModel] = relationship(
+        "WikibaseSoftwareModel",
+        # back_populates="software_versions",
+        lazy="selectin",
+    )
+    """Software"""
 
     version: Mapped[Optional[str]] = mapped_column("version", String, nullable=True)
     """Version"""
