@@ -53,10 +53,10 @@ class WikibaseSoftwareVersionModel(ModelBase):
     software_name: Mapped[str] = mapped_column("software_name", String, nullable=False)
     """Software Name"""
 
-    software_id: Mapped[Optional[int]] = mapped_column(
+    software_id: Mapped[int] = mapped_column(
         "wikibase_software_id",
         ForeignKey(column="wikibase_software.id", name="software"),
-        nullable=True,
+        nullable=False,
     )
     """Software Id"""
 
