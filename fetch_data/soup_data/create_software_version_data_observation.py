@@ -6,10 +6,13 @@ from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
 from requests.exceptions import SSLError
+from sqlalchemy import and_, select
+from sqlalchemy.ext.asyncio import AsyncSession
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
     WikibaseModel,
+    WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
@@ -39,16 +42,18 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
 
             observation.returned_data = True
 
-            installed_software_versions = compile_installed_software_versions(soup)
+            installed_software_versions = await compile_installed_software_versions(
+                async_session, soup
+            )
             observation.software_versions.extend(installed_software_versions)
 
-            skin_versions = compile_skin_versions(soup)
+            skin_versions = await compile_skin_versions(async_session, soup)
             observation.software_versions.extend(skin_versions)
 
-            extensions_versions = compile_extension_versions(soup)
+            extensions_versions = await compile_extension_versions(async_session, soup)
             observation.software_versions.extend(extensions_versions)
 
-            library_versions = compile_library_versions(soup)
+            library_versions = await compile_library_versions(async_session, soup)
             observation.software_versions.extend(library_versions)
         except (HTTPError, SSLError):
             observation.returned_data = False
@@ -59,8 +64,8 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
         return observation.returned_data
 
 
-def compile_extension_versions(
-    soup: BeautifulSoup,
+async def compile_extension_versions(
+    async_session: AsyncSession, soup: BeautifulSoup
 ) -> list[WikibaseSoftwareVersionModel]:
     """Compile Extension Version List"""
 
@@ -69,7 +74,9 @@ def compile_extension_versions(
     )
     return unique_versions(
         [
-            get_software_version_from_row(row, WikibaseSoftwareType.EXTENSION)
+            await get_software_version_from_row(
+                async_session, row, WikibaseSoftwareType.EXTENSION
+            )
             for row in extensions_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )
@@ -77,8 +84,8 @@ def compile_extension_versions(
     )
 
 
-def compile_installed_software_versions(
-    soup: BeautifulSoup,
+async def compile_installed_software_versions(
+    async_session: AsyncSession, soup: BeautifulSoup
 ) -> list[WikibaseSoftwareVersionModel]:
     """Compile Installed Software Version List"""
 
@@ -115,6 +122,9 @@ def compile_installed_software_versions(
                 WikibaseSoftwareVersionModel(
                     software_type=WikibaseSoftwareType.SOFTWARE,
                     software_name=software_name,
+                    software=await get_or_create_software_model(
+                        async_session, WikibaseSoftwareType.SOFTWARE, software_name
+                    ),
                     version=version,
                     version_hash=version_hash,
                     version_date=version_date,
@@ -124,7 +134,9 @@ def compile_installed_software_versions(
     return software_versions
 
 
-def compile_library_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersionModel]:
+async def compile_library_versions(
+    async_session: AsyncSession, soup: BeautifulSoup
+) -> list[WikibaseSoftwareVersionModel]:
     """Compile Library Version List"""
 
     libraries_table = soup.find("table", attrs={"id": "sv-libraries"})
@@ -142,6 +154,9 @@ def compile_library_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersio
                     WikibaseSoftwareVersionModel(
                         software_type=WikibaseSoftwareType.LIBRARY,
                         software_name=software_name,
+                        software=await get_or_create_software_model(
+                            async_session, WikibaseSoftwareType.LIBRARY, software_name
+                        ),
                         version=version,
                     )
                 )
@@ -149,7 +164,9 @@ def compile_library_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersio
     return unique_versions(library_versions)
 
 
-def compile_skin_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersionModel]:
+async def compile_skin_versions(
+    async_session: AsyncSession, soup: BeautifulSoup
+) -> list[WikibaseSoftwareVersionModel]:
     """Compile Skin Version List"""
 
     installed_skin_table: Tag = soup.find(
@@ -157,7 +174,9 @@ def compile_skin_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersionMo
     )
     return unique_versions(
         [
-            get_software_version_from_row(row, WikibaseSoftwareType.SKIN)
+            await get_software_version_from_row(
+                async_session, row, WikibaseSoftwareType.SKIN
+            )
             for row in installed_skin_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )
@@ -165,8 +184,8 @@ def compile_skin_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersionMo
     )
 
 
-def get_software_version_from_row(
-    row: Tag, software_type: WikibaseSoftwareType
+async def get_software_version_from_row(
+    async_session: AsyncSession, row: Tag, software_type: WikibaseSoftwareType
 ) -> WikibaseSoftwareVersionModel:
     """Parse Software Version from Table Row"""
 
@@ -207,10 +226,40 @@ def get_software_version_from_row(
     return WikibaseSoftwareVersionModel(
         software_type=software_type,
         software_name=software_name,
+        software=await get_or_create_software_model(
+            async_session, software_type, software_name
+        ),
         version=version,
         version_hash=version_hash,
         version_date=version_date,
     )
+
+
+async def get_or_create_software_model(
+    async_session: AsyncSession, software_type: WikibaseSoftwareType, software_name: str
+) -> WikibaseSoftwareModel:
+    """Fetch or Create Software Model"""
+
+    existing = (
+        await async_session.scalars(
+            select(WikibaseSoftwareModel).where(
+                and_(
+                    WikibaseSoftwareModel.software_type == software_type,
+                    WikibaseSoftwareModel.software_name == software_name,
+                )
+            )
+        )
+    ).one_or_none()
+    if existing is not None:
+        return existing
+
+    creating = WikibaseSoftwareModel(
+        software_type=software_type, software_name=software_name
+    )
+    async_session.add(creating)
+    await async_session.flush()
+    await async_session.refresh(creating)
+    return creating
 
 
 def unique_versions(
