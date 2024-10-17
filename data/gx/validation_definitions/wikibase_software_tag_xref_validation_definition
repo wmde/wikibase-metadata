@@ -1,22 +1,22 @@
 {
-  "data": {
-    "asset": {
-      "id": "7f899383-9ce6-4afa-8dbb-0e49c30f3fd5",
-      "name": "wikibase_software_tag_xref_table"
-    },
-    "batch_definition": {
-      "id": "ce729967-02a8-4e8f-b43a-c0d4ac078e44",
-      "name": "FULL_TABLE"
-    },
-    "datasource": {
-      "id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
-      "name": "wikibase_datasource"
-    }
-  },
-  "id": "0fbc7263-c0d9-4390-884d-445bf59a0647",
-  "name": "wikibase_software_tag_xref_validation_definition",
-  "suite": {
-    "id": "e9bf1186-f8b1-4f4a-835f-14e6d1ee6bb5",
-    "name": "wikibase_software_tag_xref_expetation_suite"
-  }
+	"data": {
+		"asset": {
+			"id": "7f899383-9ce6-4afa-8dbb-0e49c30f3fd5",
+			"name": "wikibase_software_tag_xref_table"
+		},
+		"batch_definition": {
+			"id": "ce729967-02a8-4e8f-b43a-c0d4ac078e44",
+			"name": "FULL_TABLE"
+		},
+		"datasource": {
+			"id": "4a58b404-1ee3-4e91-a373-78d1b365f987",
+			"name": "wikibase_datasource"
+		}
+	},
+	"id": "0fbc7263-c0d9-4390-884d-445bf59a0647",
+	"name": "wikibase_software_tag_xref_validation_definition",
+	"suite": {
+		"id": "e9bf1186-f8b1-4f4a-835f-14e6d1ee6bb5",
+		"name": "wikibase_software_tag_xref_expetation_suite"
+	}
 }
