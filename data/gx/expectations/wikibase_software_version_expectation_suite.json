@@ -31,60 +31,6 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"id": "c4616471-93e0-4df0-abbe-9bba1619592f",
-			"kwargs": { "column": "software_type" },
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "a96e0d04-a0aa-4b24-b27a-c006afcb2012",
-			"kwargs": { "column": "software_type" },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
-			"id": "3fa3ac0b-0a7e-4132-81bd-3e998f35be3b",
-			"kwargs": {
-				"column": "software_type",
-				"value_set": ["SOFTWARE", "SKIN", "EXTENSION", "LIBRARY"]
-			},
-			"meta": {},
-			"type": "expect_column_distinct_values_to_be_in_set"
-		},
-		{
-			"id": "e5cc3f78-9cd7-4087-a880-b2c9616811d2",
-			"kwargs": { "column": "software_name" },
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "daef9801-92bb-41af-a081-6d6ba2c239de",
-			"kwargs": { "column": "software_name" },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
-			"id": "b852e073-ad49-4028-a42a-217448fde29b",
-			"kwargs": {
-				"column": "software_name",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
-			},
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex_list"
-		},
-		{
-			"id": "1a591246-4126-4545-8a35-74960762bca8",
-			"kwargs": {
-				"column_list": [
-					"wikibase_software_version_observation_id",
-					"software_type",
-					"software_name"
-				]
-			},
-			"meta": {},
-			"type": "expect_compound_columns_to_be_unique"
-		},
-		{
 			"id": "755e9f43-a29d-4cd7-a290-6c302d4f0fb9",
 			"kwargs": { "column": "version" },
 			"meta": {},
@@ -116,6 +62,29 @@
 			"kwargs": { "column": "version_date" },
 			"meta": {},
 			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "db3ceb44-e8bc-4bb6-ad37-64ba3b6c87d3",
+			"kwargs": { "column": "wikibase_software_id" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "9277e198-b784-47cd-88a2-576d547a99b9",
+			"kwargs": { "column": "wikibase_software_id" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "e7f9a0eb-32f5-4f89-a3b7-3782afe81433",
+			"kwargs": {
+				"column_list": [
+					"wikibase_software_id",
+					"wikibase_software_version_observation_id"
+				]
+			},
+			"meta": {},
+			"type": "expect_compound_columns_to_be_unique"
 		}
 	],
 	"id": "dc5cb675-5725-46cb-940d-df7a04a56257",
