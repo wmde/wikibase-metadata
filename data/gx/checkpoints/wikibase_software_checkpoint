@@ -19,6 +19,10 @@
     {
       "id": "fa8b2a52-4651-4bec-9e42-7af94e5faca7",
       "name": "wikibase_software_tag_validation_definition"
+    },
+    {
+      "id": "0fbc7263-c0d9-4390-884d-445bf59a0647",
+      "name": "wikibase_software_tag_xref_validation_definition"
     }
   ]
 }

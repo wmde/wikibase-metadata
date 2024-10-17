@@ -380,5 +380,15 @@ fluent_datasources:
             partitioner:
         table_name: wikibase_software_tag
         schema_name:
+      wikibase_software_tag_xref_table:
+        type: table
+        id: 7f899383-9ce6-4afa-8dbb-0e49c30f3fd5
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: ce729967-02a8-4e8f-b43a-c0d4ac078e44
+            partitioner:
+        table_name: wikibase_software_tag_xref
+        schema_name:
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
