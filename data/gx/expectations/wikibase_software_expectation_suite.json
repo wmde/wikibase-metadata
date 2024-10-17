@@ -134,6 +134,12 @@
 			"kwargs": { "column": "mw_bundled", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_values_to_be_in_set"
+		},
+		{
+			"id": "a14ce5ac-562d-405d-85bc-7da4a5e07888",
+			"kwargs": { "column": "fetched" },
+			"meta": {},
+			"type": "expect_column_to_exist"
 		}
 	],
 	"id": "072a1275-09e6-4835-85f7-8f55e99dcc3e",
