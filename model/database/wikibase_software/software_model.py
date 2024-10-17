@@ -1,7 +1,8 @@
 """Wikibase Software Table"""
 
+from datetime import datetime
 from typing import List, Optional
-from sqlalchemy import Boolean, Enum, Integer, String, UniqueConstraint
+from sqlalchemy import Boolean, DateTime, Enum, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -36,6 +37,10 @@ class WikibaseSoftwareModel(ModelBase):
 
     url: Mapped[Optional[str]] = mapped_column("url", String, nullable=True)
     """Reference URL"""
+
+    data_fetched: Mapped[Optional[datetime]] = mapped_column(
+        "fetched", DateTime(timezone=True), nullable=True
+    )
 
     tags: Mapped[List[WikibaseSoftwareTagModel]] = relationship(
         secondary=software_tag_xref_table, lazy="selectin"
