@@ -13,10 +13,10 @@
       "name": "wikibase_datasource"
     }
   },
-  "id": "23987b57-7a5c-4d70-be5c-31de1758740a",
+  "id": "fa8b2a52-4651-4bec-9e42-7af94e5faca7",
   "name": "wikibase_software_tag_validation_definition",
   "suite": {
-    "id": "cb8de062-f115-419c-8930-95e8649a2543",
-    "name": "wikibase_software_tag_expectation_suite"
+    "id": "920eb0d9-1590-45e4-ad9b-29c41fdcfce0",
+    "name": "wikibase_software_tag_expetation_suite"
   }
 }
