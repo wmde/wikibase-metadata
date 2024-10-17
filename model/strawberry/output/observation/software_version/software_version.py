@@ -29,7 +29,7 @@ class WikibaseSoftwareVersionStrawberryModel:
 
         return cls(
             id=strawberry.ID(model.id),
-            software_name=model.software_name,
+            software_name=model.software.software_name,
             version=model.version,
             version_date=model.version_date,
             version_hash=model.version_hash,
