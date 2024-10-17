@@ -348,8 +348,7 @@ fluent_datasources:
           FULL_TABLE:
             id: e37914cf-131d-41dd-baea-5a25dbde7ddb
             partitioner:
-        query:
-          SELECT * FROM wikibase_connectivity_observation WHERE anything AND
+        query: SELECT * FROM wikibase_connectivity_observation WHERE anything AND
           link_count > 0
       nonzero_wikibase_log_observation_months:
         type: query
@@ -360,5 +359,15 @@ fluent_datasources:
             id: 1ae4e957-b4b4-42fc-b22a-381ea6e8bceb
             partitioner:
         query: SELECT * FROM wikibase_log_observation_month WHERE log_count > 0
+      wikibase_software_table:
+        type: table
+        id: c93da63e-392d-443c-879e-902c2692b41e
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 550b72d7-9aca-40cc-9d2a-7f94fcb44828
+            partitioner:
+        table_name: wikibase_software
+        schema_name:
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
