@@ -8,7 +8,9 @@ import requests
 from requests.exceptions import SSLError
 from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+import strawberry
 from data import get_async_session
+from fetch_data.soup_data.software.update_software_data import update_software_data
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
     WikibaseModel,
@@ -19,8 +21,12 @@ from model.database import (
 from model.enum import WikibaseSoftwareType
 
 
-async def create_software_version_observation(wikibase_id: int) -> bool:
+async def create_software_version_observation(
+    wikibase_id: int, info: strawberry.Info
+) -> bool:
     """Create Software Version Observation"""
+
+    info.context["background_tasks"].add_task(update_software_data)
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
