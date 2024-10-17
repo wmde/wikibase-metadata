@@ -15,6 +15,10 @@
     {
       "id": "76869a4a-b823-4ccd-b091-2e4dff6befee",
       "name": "wikibase_software_validation_definition"
+    },
+    {
+      "id": "23987b57-7a5c-4d70-be5c-31de1758740a",
+      "name": "wikibase_software_tag_validation_definition"
     }
   ]
 }
