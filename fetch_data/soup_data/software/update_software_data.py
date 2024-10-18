@@ -33,55 +33,54 @@ async def update_software_data():
                     ext.url = (
                         f"https://www.mediawiki.org/wiki/Extension:{ext.software_name}"
                     )
-                with requests.get(
-                    ext.url, timeout=10, allow_redirects=True
-                ) as response:
-                    ext.data_fetched = datetime.now(timezone.utc)
-                    print(f"{response.url}: {response.status_code}")
-                    if response.status_code == 200:
-                        if response.url != ext.url:
-                            ext.url = response.url
 
-                        soup = BeautifulSoup(response.content, features="html.parser")
-
-                        ext.archived = (
-                            soup.find("b", string="This extension has been archived.")
-                            is not None
-                        )
-                        if ext.archived:
-                            permanent_link_tag = soup.find(
-                                "a",
-                                string="To see the page before archival, click here.",
-                            )
-                            perm_response = requests.get(
-                                f"https://www.mediawiki.org{permanent_link_tag['href']}",
-                                timeout=10,
-                                allow_redirects=True,
-                            )
-                            if perm_response.status_code == 200:
-                                soup = BeautifulSoup(
-                                    perm_response.content, features="html.parser"
-                                )
-                                await compile_data_from_soup(async_session, ext, soup)
-
-                        else:
-                            await compile_data_from_soup(async_session, ext, soup)
-
-                        await async_session.flush()
+                await compile_data_from_url(async_session, ext)
+                await async_session.flush()
             await async_session.commit()
 
 
-async def compile_data_from_soup(
-    async_session: AsyncSession, ext: WikibaseSoftwareModel, soup: BeautifulSoup
+async def compile_data_from_url(
+    async_session: AsyncSession,
+    ext: WikibaseSoftwareModel,
+    override_url: Optional[str] = None,
+    archived: bool = False,
 ):
-    """Compile Data from Soup"""
+    with requests.get(
+        override_url or ext.url, timeout=10, allow_redirects=True
+    ) as response:
 
-    ext.tags = await compile_tag_list(async_session, soup)
-    ext.description = compile_description(soup)
-    ext.latest_version = compile_latest_version(soup)
-    ext.quarterly_download_count = compile_quarterly_count(soup)
-    ext.public_wiki_count = compile_wiki_count(soup)
-    ext.mediawiki_bundled = compile_bundled(soup)
+        ext.data_fetched = datetime.now(timezone.utc)
+        print(f"{response.url}: {response.status_code}")
+
+        if response.status_code == 200:
+
+            if override_url is None and response.url != ext.url:
+                ext.url = response.url
+
+            soup = BeautifulSoup(response.content, features="html.parser")
+
+            page_archived = (
+                soup.find("b", string="This extension has been archived.") is not None
+            )
+            ext.archived = archived or page_archived
+            if page_archived:
+                permanent_link_tag = soup.find(
+                    "a",
+                    string="To see the page before archival, click here.",
+                )
+                return await compile_data_from_url(
+                    async_session,
+                    ext,
+                    override_url=f"https://www.mediawiki.org{permanent_link_tag['href']}",
+                    archived=True,
+                )
+
+            ext.tags = await compile_tag_list(async_session, soup)
+            ext.description = compile_description(soup)
+            ext.latest_version = compile_latest_version(soup)
+            ext.quarterly_download_count = compile_quarterly_count(soup)
+            ext.public_wiki_count = compile_wiki_count(soup)
+            ext.mediawiki_bundled = compile_bundled(soup)
 
 
 def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
