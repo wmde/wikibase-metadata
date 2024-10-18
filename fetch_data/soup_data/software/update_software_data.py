@@ -62,26 +62,26 @@ async def update_software_data():
                                 soup = BeautifulSoup(
                                     perm_response.content, features="html.parser"
                                 )
-                                ext.tags = await compile_tag_list(async_session, soup)
-                                ext.description = compile_description(soup)
-                                ext.latest_version = compile_latest_version(soup)
-                                ext.quarterly_download_count = compile_quarterly_count(
-                                    soup
-                                )
-                                ext.public_wiki_count = compile_wiki_count(soup)
-                                ext.mediawiki_bundled = compile_bundled(soup)
+                                await compile_data_from_soup(async_session, ext, soup)
 
                         else:
-
-                            ext.tags = await compile_tag_list(async_session, soup)
-                            ext.description = compile_description(soup)
-                            ext.latest_version = compile_latest_version(soup)
-                            ext.quarterly_download_count = compile_quarterly_count(soup)
-                            ext.public_wiki_count = compile_wiki_count(soup)
-                            ext.mediawiki_bundled = compile_bundled(soup)
+                            await compile_data_from_soup(async_session, ext, soup)
 
                         await async_session.flush()
             await async_session.commit()
+
+
+async def compile_data_from_soup(
+    async_session: AsyncSession, ext: WikibaseSoftwareModel, soup: BeautifulSoup
+):
+    """Compile Data from Soup"""
+
+    ext.tags = await compile_tag_list(async_session, soup)
+    ext.description = compile_description(soup)
+    ext.latest_version = compile_latest_version(soup)
+    ext.quarterly_download_count = compile_quarterly_count(soup)
+    ext.public_wiki_count = compile_wiki_count(soup)
+    ext.mediawiki_bundled = compile_bundled(soup)
 
 
 def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
@@ -99,6 +99,7 @@ def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
                 ),
                 WikibaseSoftwareModel.software_type == WikibaseSoftwareType.EXTENSION,
                 or_(
+                    # pylint: disable=singleton-comparison
                     WikibaseSoftwareModel.archived == False,
                     WikibaseSoftwareModel.archived == None,
                 ),
