@@ -14,11 +14,11 @@ class WikibaseSoftwareTagModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    tag: Mapped[str] = mapped_column("tag", String, nullable=False)
+    tag: Mapped[str] = mapped_column("tag", String, nullable=False, unique=True)
     """Software Tag"""
 
     def __init__(self, tag: str):
         self.tag = tag
 
     def __str__(self) -> str:
-        return "WikibaseSoftwareTagModel(" + f"id={self.id}, " + f"tag={self.tag})"
+        return f"WikibaseSoftwareTagModel(id={self.id}, tag={self.tag})"
