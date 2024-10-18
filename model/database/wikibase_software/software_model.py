@@ -71,6 +71,9 @@ class WikibaseSoftwareModel(ModelBase):
     )
     """Bundled with Mediawiki"""
 
+    archived: Mapped[Optional[bool]] = mapped_column("archived", Boolean, nullable=True)
+    """Archived Extension"""
+
     def __init__(self, software_type: WikibaseSoftwareType, software_name: str):
         self.software_type = software_type
         self.software_name = software_name
