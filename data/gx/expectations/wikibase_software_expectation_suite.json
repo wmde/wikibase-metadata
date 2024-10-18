@@ -140,6 +140,18 @@
 			"kwargs": { "column": "fetched" },
 			"meta": {},
 			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "fc19a549-a4ef-4aba-847b-f0c3efed2b77",
+			"kwargs": { "column": "archived" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "23a2d72e-5309-49c1-af1c-e495022580ca",
+			"kwargs": { "column": "archived", "value_set": [false, true] },
+			"meta": {},
+			"type": "expect_column_values_to_be_in_set"
 		}
 	],
 	"id": "072a1275-09e6-4835-85f7-8f55e99dcc3e",
