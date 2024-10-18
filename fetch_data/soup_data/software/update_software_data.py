@@ -17,34 +17,71 @@ from model.enum import WikibaseSoftwareType
 async def update_software_data():
     """Fetch Software Info"""
 
-    async with get_async_session() as async_session:
-        os.makedirs("dump", exist_ok=True)
+    carry_on = True
+    while carry_on:
 
-        unfound_extensions: Iterable[WikibaseSoftwareModel] = (
-            await async_session.scalars(get_update_extension_query())
-        ).all()
-        for ext in unfound_extensions:
-            if ext.url is None:
-                ext.url = (
-                    f"https://www.mediawiki.org/wiki/Extension:{ext.software_name}"
-                )
-            with requests.get(ext.url, timeout=10, allow_redirects=True) as response:
-                ext.data_fetched = datetime.now(timezone.utc)
-                if response.status_code == 200:
-                    if response.url != ext.url:
-                        ext.url = response.url
+        async with get_async_session() as async_session:
+            os.makedirs("dump", exist_ok=True)
 
-                    soup = BeautifulSoup(response.content, features="html.parser")
+            unfound_extensions: Iterable[WikibaseSoftwareModel] = (
+                await async_session.scalars(get_update_extension_query())
+            ).all()
+            carry_on = len(unfound_extensions) > 0
 
-                    ext.tags = await compile_tag_list(async_session, soup)
-                    ext.description = compile_description(soup)
-                    ext.latest_version = compile_latest_version(soup)
-                    ext.quarterly_download_count = compile_quarterly_count(soup)
-                    ext.public_wiki_count = compile_wiki_count(soup)
-                    ext.mediawiki_bundled = compile_bundled(soup)
+            for ext in unfound_extensions:
+                if ext.url is None:
+                    ext.url = (
+                        f"https://www.mediawiki.org/wiki/Extension:{ext.software_name}"
+                    )
+                with requests.get(
+                    ext.url, timeout=10, allow_redirects=True
+                ) as response:
+                    ext.data_fetched = datetime.now(timezone.utc)
+                    print(f"{response.url}: {response.status_code}")
+                    if response.status_code == 200:
+                        if response.url != ext.url:
+                            ext.url = response.url
 
-                    await async_session.flush()
-        await async_session.commit()
+                        soup = BeautifulSoup(response.content, features="html.parser")
+
+                        ext.archived = (
+                            soup.find("b", string="This extension has been archived.")
+                            is not None
+                        )
+                        if ext.archived:
+                            permanent_link_tag = soup.find(
+                                "a",
+                                string="To see the page before archival, click here.",
+                            )
+                            perm_response = requests.get(
+                                f"https://www.mediawiki.org{permanent_link_tag['href']}",
+                                timeout=10,
+                                allow_redirects=True,
+                            )
+                            if perm_response.status_code == 200:
+                                soup = BeautifulSoup(
+                                    perm_response.content, features="html.parser"
+                                )
+                                ext.tags = await compile_tag_list(async_session, soup)
+                                ext.description = compile_description(soup)
+                                ext.latest_version = compile_latest_version(soup)
+                                ext.quarterly_download_count = compile_quarterly_count(
+                                    soup
+                                )
+                                ext.public_wiki_count = compile_wiki_count(soup)
+                                ext.mediawiki_bundled = compile_bundled(soup)
+
+                        else:
+
+                            ext.tags = await compile_tag_list(async_session, soup)
+                            ext.description = compile_description(soup)
+                            ext.latest_version = compile_latest_version(soup)
+                            ext.quarterly_download_count = compile_quarterly_count(soup)
+                            ext.public_wiki_count = compile_wiki_count(soup)
+                            ext.mediawiki_bundled = compile_bundled(soup)
+
+                        await async_session.flush()
+            await async_session.commit()
 
 
 def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
@@ -61,9 +98,13 @@ def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
                     < (datetime.today() - timedelta(days=30)),
                 ),
                 WikibaseSoftwareModel.software_type == WikibaseSoftwareType.EXTENSION,
+                or_(
+                    WikibaseSoftwareModel.archived == False,
+                    WikibaseSoftwareModel.archived == None,
+                ),
             )
         )
-        .limit(5)
+        .limit(1)
     )
 
 
@@ -75,17 +116,26 @@ async def compile_tag_list(
     type_title_tag = soup.find(
         "a", attrs={"href": "/wiki/Special:MyLanguage/Template:Extension#type"}
     )
+    if type_title_tag is None:
+        return []
+
     type_tag = type_title_tag.find_parent("td").find_next_sibling("td")
     assert type_tag is not None
 
     tag_list: list[str] = []
     if len(list(type_tag.children)) == 1:
-        tag_list = list(type_tag.stripped_strings)
+        tag_list = [
+            s.strip()
+            for t_string in type_tag.stripped_strings
+            for s in t_string.split(",")
+        ]
     else:
         tag_list = [
             stripped
             for t in type_tag.find_all("a")
-            if (stripped := (t.string).strip()) != ""
+            if t.string is not None
+            for s in t.string.split(",")
+            if (stripped := (s).strip()) != ""
         ]
     all_tags = await fetch_or_create_tags(async_session, tag_list)
 
@@ -112,12 +162,15 @@ async def fetch_or_create_tags(
     return all_tags
 
 
-def compile_description(soup: BeautifulSoup) -> str:
+def compile_description(soup: BeautifulSoup) -> Optional[str]:
     """Compile Description"""
 
     description_title_tag = soup.find(
         "a", attrs={"href": "/wiki/Special:MyLanguage/Template:Extension#description"}
     )
+    if description_title_tag is None:
+        return None
+
     description_tag = description_title_tag.find_parent("td").find_next_sibling("td")
     assert description_tag is not None
     return "".join(description_tag.strings)
@@ -134,7 +187,7 @@ def compile_latest_version(soup: BeautifulSoup) -> Optional[str]:
 
     version_tag = version_title_tag.find_parent("td").find_next_sibling("td")
     assert version_tag is not None, f"{version_title_tag.prettify()}"
-    return version_tag.string.strip()
+    return "".join(version_tag.strings).strip()
 
 
 def compile_quarterly_count(soup: BeautifulSoup) -> Optional[int]:
