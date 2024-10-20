@@ -45,6 +45,8 @@ async def compile_data_from_url(
     override_url: Optional[str] = None,
     archived: bool = False,
 ):
+    """Compile Software Data from URL"""
+
     with requests.get(
         override_url or ext.url, timeout=10, allow_redirects=True
     ) as response:
