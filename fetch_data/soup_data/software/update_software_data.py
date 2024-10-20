@@ -175,7 +175,7 @@ def compile_description(soup: BeautifulSoup) -> Optional[str]:
 
     description_tag = description_title_tag.find_parent("td").find_next_sibling("td")
     assert description_tag is not None
-    return "".join(description_tag.strings)
+    return "".join(description_tag.strings).strip()
 
 
 def compile_latest_version(soup: BeautifulSoup) -> Optional[str]:
