@@ -54,7 +54,7 @@ async def test_create_software_version_observation_success(mocker):
         mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
         success = await create_software_version_observation(1, mock_info)
         assert success
-        assert len(mock_info.context['background_tasks'].tasks) == 1
+        assert len(mock_info.context["background_tasks"].tasks) == 1
 
 
 @pytest.mark.asyncio
@@ -83,4 +83,4 @@ async def test_create_software_version_observation_failure(mocker):
     mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
     success = await create_software_version_observation(1, mock_info)
     assert success is False
-    assert len(mock_info.context['background_tasks'].tasks) == 1
+    assert len(mock_info.context["background_tasks"].tasks) == 1
