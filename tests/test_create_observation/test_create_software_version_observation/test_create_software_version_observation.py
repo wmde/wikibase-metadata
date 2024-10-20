@@ -11,6 +11,27 @@ from tests.test_create_observation.test_create_software_version_observation.test
 from tests.utils import MockResponse
 
 
+class MockBackgroundClassList:
+    """Mock Backround Class List"""
+
+    tasks: list
+
+    def add_task(self, task):
+        self.tasks.append(task)
+
+    def __init__(self):
+        self.tasks = []
+
+
+class MockInfo:
+    """Mock StrawberryInfo"""
+
+    context: dict
+
+    def __init__(self, context: dict):
+        self.context = context
+
+
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="software-version-success", depends=["add-wikibase"], scope="session"
@@ -27,11 +48,13 @@ async def test_create_software_version_observation_success(mocker):
     ) as version_html:
 
         mocker.patch(
-            "fetch_data.soup_data.create_software_version_data_observation.requests.get",
+            "fetch_data.soup_data.software.create_software_version_data_observation.requests.get",
             side_effect=[MockResponse("", 200, version_html.read())],
         )
-        success = await create_software_version_observation(1)
+        mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
+        success = await create_software_version_observation(1, mock_info)
         assert success
+        assert len(mock_info.context['background_tasks'].tasks) == 1
 
 
 @pytest.mark.asyncio
@@ -46,7 +69,7 @@ async def test_create_software_version_observation_failure(mocker):
     time.sleep(1)
 
     mocker.patch(
-        "fetch_data.soup_data.create_software_version_data_observation.requests.get",
+        "fetch_data.soup_data.software.create_software_version_data_observation.requests.get",
         side_effect=[
             HTTPError(
                 url="example.com/wiki/Special:Version",
@@ -57,5 +80,7 @@ async def test_create_software_version_observation_failure(mocker):
             )
         ],
     )
-    success = await create_software_version_observation(1)
+    mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
+    success = await create_software_version_observation(1, mock_info)
     assert success is False
+    assert len(mock_info.context['background_tasks'].tasks) == 1
