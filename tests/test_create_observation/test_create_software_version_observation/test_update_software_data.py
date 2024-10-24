@@ -14,7 +14,9 @@ DATA_DIRECTORY = (
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["software-version-success"], scope="session")
+@pytest.mark.dependency(
+    name="update-software-data", depends=["software-version-success"], scope="session"
+)
 @pytest.mark.version
 async def test_update_software_data(mocker):
     """Test Update Software Data"""
