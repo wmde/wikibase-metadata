@@ -7,6 +7,8 @@ class MockBackgroundClassList:
     tasks: list
 
     def add_task(self, task):
+        """Add Background Task"""
+
         self.tasks.append(task)
 
     def __init__(self):
