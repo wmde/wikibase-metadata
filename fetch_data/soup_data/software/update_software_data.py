@@ -9,8 +9,7 @@ import requests
 from sqlalchemy import Select, and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from data import get_async_session
-from model.database import WikibaseSoftwareModel
-from model.database.wikibase_software.software_tag_model import WikibaseSoftwareTagModel
+from model.database import WikibaseSoftwareModel, WikibaseSoftwareTagModel
 from model.enum import WikibaseSoftwareType
 
 
