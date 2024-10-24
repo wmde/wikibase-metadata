@@ -25,7 +25,7 @@ async def test_create_statistics_observation_success(mocker):
 
         mocker.patch(
             "fetch_data.soup_data.create_statistics_data_observation.requests.get",
-            side_effect=[MockResponse(200, version_html.read())],
+            side_effect=[MockResponse("", 200, version_html.read())],
         )
         success = await create_special_statistics_observation(1)
         assert success

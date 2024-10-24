@@ -10,7 +10,7 @@ from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
 from data import get_async_session
-from fetch_data.soup_data.software.update_software_data import update_software_data
+from fetch_data.soup_data.software.get_update_software_data import update_software_data
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
     WikibaseModel,
