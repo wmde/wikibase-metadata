@@ -18,6 +18,7 @@ DATA_DIRECTORY = (
 @pytest.mark.dependency(
     name="software-version-success", depends=["add-wikibase"], scope="session"
 )
+@pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_success(mocker):
     """Test Data Returned Scenario"""
@@ -42,6 +43,7 @@ async def test_create_software_version_observation_success(mocker):
 @pytest.mark.dependency(
     name="software-version-failure", depends=["software-version-success"]
 )
+@pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_failure(mocker):
     """Test Failure Scenario"""
