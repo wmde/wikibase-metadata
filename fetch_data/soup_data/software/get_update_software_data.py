@@ -105,7 +105,7 @@ def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
                 ),
             )
         )
-        .limit(1)
+        .limit(5)
     )
 
 

@@ -3,4 +3,7 @@
 from fetch_data.soup_data.create_statistics_data_observation import (
     create_special_statistics_observation,
 )
-from fetch_data.soup_data.software import create_software_version_observation
+from fetch_data.soup_data.software import (
+    create_software_version_observation,
+    update_software_data,
+)
