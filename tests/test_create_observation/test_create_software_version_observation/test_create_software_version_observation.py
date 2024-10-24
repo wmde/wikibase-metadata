@@ -6,33 +6,16 @@ from typing import List
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_software_version_observation
+from tests.test_create_observation.test_create_software_version_observation.mock_info import (
+    MockBackgroundClassList,
+    MockInfo,
+)
 from tests.utils import MockResponse
 
 
 DATA_DIRECTORY = (
     "tests/test_create_observation/test_create_software_version_observation/data"
 )
-
-
-class MockBackgroundClassList:
-    """Mock Backround Class List"""
-
-    tasks: List
-
-    def add_task(self, task):
-        self.tasks.append(task)
-
-    def __init__(self):
-        self.tasks = []
-
-
-class MockInfo:
-    """Mock StrawberryInfo"""
-
-    context: dict
-
-    def __init__(self, context: dict):
-        self.context = context
 
 
 @pytest.mark.asyncio
