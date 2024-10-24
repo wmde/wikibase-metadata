@@ -66,8 +66,7 @@ async def compile_data_from_url(
             ext.archived = archived or page_archived
             if page_archived:
                 permanent_link_tag = soup.find(
-                    "a",
-                    string="To see the page before archival, click here.",
+                    "a", string="To see the page before archival, click here."
                 )
                 return await compile_data_from_url(
                     async_session,
