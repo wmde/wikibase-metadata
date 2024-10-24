@@ -73,8 +73,7 @@ async def test_update_software_data(mocker):
                     return MockResponse(query, 200, data.read())
             case "https://www.mediawiki.org/wiki/Extension:WikibaseClient":
                 with open(
-                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseClient.html",
-                    mode="rb",
+                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseClient.html", mode="rb"
                 ) as data:
                     return MockResponse(
                         "https://www.mediawiki.org/wiki/Extension:Wikibase_Client",
@@ -83,14 +82,12 @@ async def test_update_software_data(mocker):
                     )
             case "https://www.mediawiki.org/wiki/Extension:WikibaseLib":
                 with open(
-                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib.html",
-                    mode="rb",
+                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib.html", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
             case "https://www.mediawiki.org/wiki/Extension:WikibaseRepository":
                 with open(
-                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseRepository.html",
-                    mode="rb",
+                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseRepository.html", mode="rb"
                 ) as data:
                     return MockResponse(
                         "https://www.mediawiki.org/wiki/Extension:Wikibase_Repository",
@@ -99,14 +96,12 @@ async def test_update_software_data(mocker):
                     )
             case "https://www.mediawiki.org/wiki/Extension:WikibaseView":
                 with open(
-                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseView.html",
-                    mode="rb",
+                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseView.html", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
             case "https://www.mediawiki.org/wiki/Special:PermanentLink/3981869":
                 with open(
-                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib_Archived.html",
-                    mode="rb",
+                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib_Archived.html", mode="rb"
                 ) as data:
                     return MockResponse(
                         "https://www.mediawiki.org/w/index.php?oldid=3981869",
