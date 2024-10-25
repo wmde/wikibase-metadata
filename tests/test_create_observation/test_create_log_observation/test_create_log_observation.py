@@ -107,10 +107,13 @@ async def test_create_log_observation_no_last_month(mocker):
                 match (query.params.get("ledir"), query.params.get("lelimit")):
                     case ("newer", 1):
                         return MockResponse(
-                            200, json.dumps({"query": {"logevents": [oldest_mock_log]}})
+                            query.raw_url,
+                            200,
+                            json.dumps({"query": {"logevents": [oldest_mock_log]}}),
                         )
                     case ("newer", 500):
                         return MockResponse(
+                            query.raw_url,
                             200,
                             json.dumps(
                                 {
@@ -124,10 +127,13 @@ async def test_create_log_observation_no_last_month(mocker):
                         )
                     case ("older", 1):
                         return MockResponse(
-                            200, json.dumps({"query": {"logevents": [newest_mock_log]}})
+                            query.raw_url,
+                            200,
+                            json.dumps({"query": {"logevents": [newest_mock_log]}}),
                         )
                     case ("older", 500):
                         return MockResponse(
+                            query.raw_url,
                             200,
                             json.dumps(
                                 {
@@ -149,7 +155,9 @@ async def test_create_log_observation_no_last_month(mocker):
                     users.append({"name": "User:B", "invalid": True})
                 if "User:C" in query.params.get("ususers"):
                     users.append({"name": "User:C", "groups": ["*", "users", "bot"]})
-                return MockResponse(200, json.dumps({"query": {"users": users}}))
+                return MockResponse(
+                    query.raw_url, 200, json.dumps({"query": {"users": users}})
+                )
         raise NotImplementedError(query)
 
     mocker.patch(

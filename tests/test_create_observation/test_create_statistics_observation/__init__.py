@@ -1,0 +1,1 @@
+"""Test Create Statistics Observation"""

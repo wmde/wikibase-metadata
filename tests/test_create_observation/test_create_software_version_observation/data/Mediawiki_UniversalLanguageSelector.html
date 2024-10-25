@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html class="client-nojs vector-feature-language-in-header-disabled vector-feature-language-in-main-page-header-disabled vector-feature-sticky-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 vector-feature-night-mode-disabled skin-theme-clientpref-day vector-toc-available" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Extension:UniversalLanguageSelector - MediaWiki</title>
+<script>(function(){var className="client-js vector-feature-language-in-header-disabled vector-feature-language-in-main-page-header-disabled vector-feature-sticky-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 vector-feature-night-mode-disabled skin-theme-clientpref-day vector-toc-available";var cookie=document.cookie.match(/(?:^|; )mediawikiwikimwclientpreferences=([^;]+)/);if(cookie){cookie[1].split('%2C').forEach(function(pref){className=className.replace(new RegExp('(^| )'+pref.replace(/-clientpref-\w+$|[^\w-]+/g,'')+'-clientpref-\\w+( |$)'),'$1'+pref+'$2');});}document.documentElement.className=className;}());RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],
+"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"0ecea251-c006-48f8-a586-96c673521736","wgCanonicalNamespace":"Extension","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":102,"wgPageName":"Extension:UniversalLanguageSelector","wgTitle":"UniversalLanguageSelector","wgCurRevisionId":6535273,"wgRevisionId":6535273,"wgArticleId":93965,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Extensions with master compatibility policy","Stable extensions","User interface extensions","Skin extensions","Beta Feature extensions","Extensions supporting Composer","GPL licensed extensions","MIT licensed extensions","Extensions with unknown license","Extensions in Wikimedia version control","BeforePageDisplay extensions","GetBetaFeaturePreferences extensions","GetPreferences extensions",
+"MakeGlobalVariablesScript extensions","ResourceLoaderGetConfigVars extensions","SkinAfterPortlet extensions","SkinTemplateNavigation::Universal extensions","UserGetLanguageObject extensions","All extensions","Extensions used on Wikimedia","Extensions included in Canasta","Extensions included in Miraheze","Extensions included in MyWikis","Extensions included in ProWiki","Extensions included in WikiForge","Localisation extensions","Universal Language Selector"],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Extension:UniversalLanguageSelector","wgRelevantArticleId":93965,"wgIsProbablyEditable":false,"wgRelevantPageIsProbablyEditable":false,"wgRestrictionEdit":["autoconfirmed"],"wgRestrictionMove":["autoconfirmed"],"wgNoticeProject":"mediawiki","wgCiteReferencePreviewsActive":true,"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr",
+"pageVariantFallbacks":"en"},"wgMFDisplayWikibaseDescriptions":{"search":true,"watchlist":true,"tagline":false,"nearby":true},"wgWMESchemaEditAttemptStepOversample":false,"wgWMEPageLength":20000,"wgTranslatePageTranslation":"source","wgCentralAuthMobileDomain":false,"wgEditSubmitButtonLabelPublish":true,"wgULSPosition":"personal","wgULSisCompactLinksEnabled":true,"wgVector2022LanguageInHeader":false,"wgULSisLanguageSelectorEmpty":false,"wgWikibaseItemId":"Q21678941","wgCheckUserClientHintsHeadersJsApi":["architecture","bitness","brands","fullVersionList","mobile","model","platform","platformVersion"],"wgSiteNoticeId":"2.6"};RLSTATE={"ext.globalCssJs.user.styles":"ready","site.styles":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","ext.translate.tag.languages":"ready","ext.pygments":"ready","skins.vector.search.codex.styles":"ready","skins.vector.styles":"ready","skins.vector.icons":"ready","jquery.makeCollapsible.styles":"ready",
+"ext.translate.edit.documentation.styles":"ready","ext.translate":"ready","ext.wikimediamessages.styles":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.pt":"ready","wikibase.client.init":"ready","ext.wikimediaBadges":"ready","ext.dismissableSiteNotice.styles":"ready"};RLPAGEMODULES=["ext.pygments.view","mediawiki.page.media","site","mediawiki.page.ready","jquery.makeCollapsible","mediawiki.toc","skins.vector.js","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.translate.pagetranslation.uls","ext.gadget.syntaxhighlight-copy","ext.urlShortener.toolbar","ext.centralauth.centralautologin","mmv.bootstrap","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.echo.centralauth","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.uls.compactlinks","ext.uls.interface","wikibase.client.vector-2022","ext.checkUser.clientHints","wikibase.sidebar.tracking","ext.dismissableSiteNotice"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});</script>
+<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=ext.dismissableSiteNotice.styles%7Cext.pygments%2Ctranslate%2CwikimediaBadges%7Cext.translate.edit.documentation.styles%7Cext.translate.tag.languages%7Cext.uls.pt%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cjquery.makeCollapsible.styles%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles%7Cwikibase.client.init&amp;only=styles&amp;skin=vector-2022">
+<script async="" src="/w/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector-2022"></script>
+<meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=vector-2022">
+<meta name="generator" content="MediaWiki 1.43.0-wmf.28">
+<meta name="referrer" content="origin">
+<meta name="referrer" content="origin-when-cross-origin">
+<meta name="robots" content="max-image-preview:standard">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/c/cd/ULS-GeoIP.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="810">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/c/cd/ULS-GeoIP.png">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="540">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/ULS-GeoIP.png/640px-ULS-GeoIP.png">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="432">
+<meta name="viewport" content="width=1120">
+<meta property="og:site_name" content="MediaWiki">
+<meta property="og:title" content="Extension:UniversalLanguageSelector - MediaWiki">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="//upload.wikimedia.org">
+<link rel="alternate" media="only screen and (max-width: 640px)" href="//m.mediawiki.org/wiki/Extension:UniversalLanguageSelector">
+<link rel="apple-touch-icon" href="/static/apple-touch/mediawiki.png">
+<link rel="icon" href="/static/favicon/mediawiki.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="/w/rest.php/v1/search" title="MediaWiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="//www.mediawiki.org/w/api.php?action=rsd">
+<link rel="canonical" href="https://www.mediawiki.org/wiki/Extension:UniversalLanguageSelector">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+<link rel="alternate" type="application/atom+xml" title="MediaWiki Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+<link rel="dns-prefetch" href="//login.wikimedia.org">
+</head>
+<body class="skin--responsive skin-vector skin-vector-search-vue mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-102 ns-subject page-Extension_UniversalLanguageSelector rootpage-Extension_UniversalLanguageSelector skin-vector-2022 action-view"><a class="mw-jump-link" href="#bodyContent">Jump to content</a>
+<div class="vector-header-container">
+	<header class="vector-header mw-header">
+		<div class="vector-header-start">
+			<nav class="vector-main-menu-landmark" aria-label="Site">
+				
+<div id="vector-main-menu-dropdown" class="vector-dropdown vector-main-menu-dropdown vector-button-flush-left vector-button-flush-right"  >
+	<input type="checkbox" id="vector-main-menu-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-main-menu-dropdown" class="vector-dropdown-checkbox "  aria-label="Main menu"  >
+	<label id="vector-main-menu-dropdown-label" for="vector-main-menu-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-menu mw-ui-icon-wikimedia-menu"></span>
+
+<span class="vector-dropdown-label-text">Main menu</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+				<div id="vector-main-menu-unpinned-container" class="vector-unpinned-container">
+		
+<div id="vector-main-menu" class="vector-main-menu vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-main-menu-pinnable-header vector-pinnable-header-unpinned"
+	data-feature-name="main-menu-pinned"
+	data-pinnable-element-id="vector-main-menu"
+	data-pinned-container-id="vector-main-menu-pinned-container"
+	data-unpinned-container-id="vector-main-menu-unpinned-container"
+>
+	<div class="vector-pinnable-header-label">Main menu</div>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-main-menu.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-main-menu.unpin">hide</button>
+</div>
+
+	
+<div id="p-navigation" class="vector-menu mw-portlet mw-portlet-navigation"  >
+	<div class="vector-menu-heading">
+		Navigation
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-mainpage-description" class="mw-list-item"><a href="/wiki/MediaWiki" title="Visit the main page [z]" accesskey="z"><span>Main page</span></a></li><li id="n-mw-download" class="mw-list-item"><a href="/wiki/Download"><span>Get MediaWiki</span></a></li><li id="n-mw-extensions" class="mw-list-item"><a href="/wiki/Special:MyLanguage/Category:Extensions"><span>Get extensions</span></a></li><li id="n-blog-text" class="mw-list-item"><a href="https://techblog.wikimedia.org/"><span>Tech blog</span></a></li><li id="n-mw-contribute" class="mw-list-item"><a href="/wiki/Special:MyLanguage/How_to_contribute"><span>Contribute</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+	
+	
+<div id="p-support" class="vector-menu mw-portlet mw-portlet-support"  >
+	<div class="vector-menu-heading">
+		Support
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-help" class="mw-list-item"><a href="/wiki/Special:MyLanguage/Help:Contents" title="The place to find out"><span>User help</span></a></li><li id="n-mw-faq" class="mw-list-item"><a href="/wiki/Special:MyLanguage/Manual:FAQ"><span>FAQ</span></a></li><li id="n-mw-manual" class="mw-list-item"><a href="/wiki/Special:MyLanguage/Manual:Contents"><span>Technical manual</span></a></li><li id="n-mw-supportdesk" class="mw-list-item"><a href="/wiki/Project:Support_desk"><span>Support desk</span></a></li><li id="n-mw-communication" class="mw-list-item"><a href="/wiki/Special:MyLanguage/Communication"><span>Communication</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-development" class="vector-menu mw-portlet mw-portlet-development"  >
+	<div class="vector-menu-heading">
+		Development
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-mw-developerportal" class="mw-list-item"><a href="https://developer.wikimedia.org/"><span>Developer portal</span></a></li><li id="n-svn-statistics" class="mw-list-item"><a href="/wiki/Development_statistics"><span>Code statistics</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-mediawiki.org" class="vector-menu mw-portlet mw-portlet-mediawiki_org"  >
+	<div class="vector-menu-heading">
+		mediawiki.org
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-portal" class="mw-list-item"><a href="/wiki/Project:Help" title="About the project, what you can do, where to find things"><span>Community portal</span></a></li><li id="n-recentchanges" class="mw-list-item"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r"><span>Recent changes</span></a></li><li id="n-mw-translate" class="mw-list-item"><a href="/wiki/Special:LanguageStats"><span>Translate content</span></a></li><li id="n-randompage" class="mw-list-item"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x"><span>Random page</span></a></li><li id="n-mw-discussion" class="mw-list-item"><a href="/wiki/Project:Village_Pump"><span>Village pump</span></a></li><li id="n-Sandboxlink-portlet-label" class="mw-list-item"><a href="/wiki/Project:Sandbox"><span>Sandbox</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+	
+<div id="p-lang" class="vector-menu mw-portlet mw-portlet-lang"  >
+	<div class="vector-menu-heading">
+		In other languages
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-add wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q21678941#sitelinks-wikipedia" title="Add interlanguage links" class="wbc-editpage">Add links</a></span></div>
+	</div>
+</div>
+
+</div>
+
+				</div>
+
+	</div>
+</div>
+
+		</nav>
+			
+<a href="/wiki/MediaWiki" class="mw-logo">
+	<img class="mw-logo-icon" src="/static/images/icons/mediawikiwiki.svg" alt="" aria-hidden="true" height="50" width="50">
+	<span class="mw-logo-container skin-invert">
+		<img class="mw-logo-wordmark" alt="MediaWiki" src="/static/images/mobile/copyright/mediawikiwiki-wordmark.svg" style="width: 7.5em; height: 1.125em;">
+	</span>
+</a>
+
+		</div>
+		<div class="vector-header-end">
+			
+<div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-collapses vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
+	<a href="/wiki/Special:Search" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only search-toggle" title="Search MediaWiki [f]" accesskey="f"><span class="vector-icon mw-ui-icon-search mw-ui-icon-wikimedia-search"></span>
+
+<span>Search</span>
+	</a>
+	<div class="vector-typeahead-search-container">
+		<div class="cdx-typeahead-search cdx-typeahead-search--show-thumbnail cdx-typeahead-search--auto-expand-width">
+			<form action="/w/index.php" id="searchform" class="cdx-search-input cdx-search-input--has-end-button">
+				<div id="simpleSearch" class="cdx-search-input__input-wrapper"  data-search-loc="header-moved">
+					<div class="cdx-text-input cdx-text-input--has-start-icon">
+						<input
+							class="cdx-text-input__input"
+							 type="search" name="search" placeholder="Search MediaWiki" aria-label="Search MediaWiki" autocapitalize="sentences" title="Search MediaWiki [f]" accesskey="f" id="searchInput"
+							>
+						<span class="cdx-text-input__icon cdx-text-input__start-icon"></span>
+					</div>
+					<input type="hidden" name="title" value="Special:Search">
+				</div>
+				<button class="cdx-button cdx-search-input__end-button">Search</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+			<nav class="vector-user-links vector-user-links-wide" aria-label="Personal tools">
+	<div class="vector-user-links-main">
+	
+<div id="p-vector-user-menu-preferences" class="vector-menu mw-portlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			<li id="ca-uls" class="mw-list-item active user-links-collapsible-item"><a data-mw="interface" href="#" class="uls-trigger cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet"><span class="vector-icon mw-ui-icon-wikimedia-language mw-ui-icon-wikimedia-wikimedia-language"></span>
+
+<span>English</span></a>
+</li>
+
+			
+		</ul>
+		
+	</div>
+</div>
+
+	
+<div id="p-vector-user-menu-userpage" class="vector-menu mw-portlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			<li id="ca-sitesupport" class="mw-list-item user-links-collapsible-item"><a data-mw="interface" href="https://donate.wikimedia.org/?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=spontaneous&amp;uselang=en" title="Support us" class=""><span>Donate</span></a>
+</li>
+
+			
+		</ul>
+		
+	</div>
+</div>
+
+	<nav class="vector-appearance-landmark" aria-label="Appearance">
+		
+<div id="vector-appearance-dropdown" class="vector-dropdown "  title="Change the appearance of the page&#039;s font size, width, and color" >
+	<input type="checkbox" id="vector-appearance-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-appearance-dropdown" class="vector-dropdown-checkbox "  aria-label="Appearance"  >
+	<label id="vector-appearance-dropdown-label" for="vector-appearance-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-appearance mw-ui-icon-wikimedia-appearance"></span>
+
+<span class="vector-dropdown-label-text">Appearance</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+			<div id="vector-appearance-unpinned-container" class="vector-unpinned-container">
+				
+			</div>
+		
+	</div>
+</div>
+
+	</nav>
+	
+<div id="p-vector-user-menu-notifications" class="vector-menu mw-portlet emptyPortlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</div>
+
+	
+<div id="p-vector-user-menu-overflow" class="vector-menu mw-portlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			<li id="pt-createaccount-2" class="user-links-collapsible-item mw-list-item user-links-collapsible-item"><a data-mw="interface" href="/w/index.php?title=Special:CreateAccount&amp;returnto=Extension%3AUniversalLanguageSelector" title="You are encouraged to create an account and log in; however, it is not mandatory" class=""><span>Create account</span></a>
+</li>
+<li id="pt-login-2" class="user-links-collapsible-item mw-list-item user-links-collapsible-item"><a data-mw="interface" href="/w/index.php?title=Special:UserLogin&amp;returnto=Extension%3AUniversalLanguageSelector" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o" class=""><span>Log in</span></a>
+</li>
+
+			
+		</ul>
+		
+	</div>
+</div>
+
+	</div>
+	
+<div id="vector-user-links-dropdown" class="vector-dropdown vector-user-menu vector-button-flush-right vector-user-menu-logged-out"  title="More options" >
+	<input type="checkbox" id="vector-user-links-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-user-links-dropdown" class="vector-dropdown-checkbox "  aria-label="Personal tools"  >
+	<label id="vector-user-links-dropdown-label" for="vector-user-links-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-ellipsis mw-ui-icon-wikimedia-ellipsis"></span>
+
+<span class="vector-dropdown-label-text">Personal tools</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+		
+<div id="p-personal" class="vector-menu mw-portlet mw-portlet-personal user-links-collapsible-item"  title="User menu" >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="pt-createaccount" class="user-links-collapsible-item mw-list-item"><a href="/w/index.php?title=Special:CreateAccount&amp;returnto=Extension%3AUniversalLanguageSelector" title="You are encouraged to create an account and log in; however, it is not mandatory"><span class="vector-icon mw-ui-icon-userAdd mw-ui-icon-wikimedia-userAdd"></span> <span>Create account</span></a></li><li id="pt-login" class="user-links-collapsible-item mw-list-item"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Extension%3AUniversalLanguageSelector" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o"><span class="vector-icon mw-ui-icon-logIn mw-ui-icon-wikimedia-logIn"></span> <span>Log in</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-user-menu-anon-editor" class="vector-menu mw-portlet mw-portlet-user-menu-anon-editor"  >
+	<div class="vector-menu-heading">
+		Pages for logged out editors <a href="/wiki/Help:Introduction" aria-label="Learn more about editing"><span>learn more</span></a>
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="pt-anoncontribs" class="mw-list-item"><a href="/wiki/Special:MyContributions" title="A list of edits made from this IP address [y]" accesskey="y"><span>Contributions</span></a></li><li id="pt-anontalk" class="mw-list-item"><a href="/wiki/Special:MyTalk" title="Discussion about edits from this IP address [n]" accesskey="n"><span>Talk</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+	
+	</div>
+</div>
+
+</nav>
+
+		</div>
+	</header>
+</div>
+<div class="mw-page-container">
+	<div class="mw-page-container-inner">
+		<div class="vector-sitenotice-container">
+			<div id="siteNotice"><div id="mw-dismissablenotice-anonplace"></div><script>(function(){var node=document.getElementById("mw-dismissablenotice-anonplace");if(node){node.outerHTML="\u003Cdiv class=\"mw-dismissable-notice\"\u003E\u003Cdiv class=\"mw-dismissable-notice-close\"\u003E[\u003Ca tabindex=\"0\" role=\"button\"\u003Edismiss\u003C/a\u003E]\u003C/div\u003E\u003Cdiv class=\"mw-dismissable-notice-body\"\u003E\u003C!-- CentralNotice --\u003E\u003Cdiv id=\"localNotice\" data-nosnippet=\"\"\u003E\u003Cdiv class=\"sitenotice\" lang=\"en\" dir=\"ltr\"\u003E\u003Cdiv style=\"border:thin solid black; font-size:100%\"\u003E\u003Cdiv style=\"vertical-align:middle;margin-top:0.5em\"\u003E\u003Cfigure class=\"mw-halign-left skin-invert\" typeof=\"mw:File\"\u003E\u003Ca href=\"/wiki/File:MediaWikiUsersDevelopersConferenceWordmark.png\" class=\"mw-file-description\"\u003E\u003Cimg src=\"//upload.wikimedia.org/wikipedia/commons/thumb/7/71/MediaWikiUsersDevelopersConferenceWordmark.png/100px-MediaWikiUsersDevelopersConferenceWordmark.png\" decoding=\"async\" width=\"100\" height=\"44\" class=\"mw-file-element\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/7/71/MediaWikiUsersDevelopersConferenceWordmark.png/150px-MediaWikiUsersDevelopersConferenceWordmark.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/7/71/MediaWikiUsersDevelopersConferenceWordmark.png/200px-MediaWikiUsersDevelopersConferenceWordmark.png 2x\" data-file-width=\"1080\" data-file-height=\"480\" /\u003E\u003C/a\u003E\u003Cfigcaption\u003E\u003C/figcaption\u003E\u003C/figure\u003E\u003C/div\u003E\n\u003Cp\u003E\u003Ca href=\"/wiki/MediaWiki_Users_and_Developers_Conference_Fall_2024\" title=\"MediaWiki Users and Developers Conference Fall 2024\"\u003EMediaWiki Users and Developers Conference Fall 2024\u003C/a\u003E is happening in Vienna, Austria and online from 4 to 6 November 2024. \u003Cb\u003E\u003Ca rel=\"nofollow\" class=\"external text\" href=\"https://mwstake.eventbrite.com/\"\u003ERegister now for the in-person conference\u003C/a\u003E\u003C/b\u003E before all 80 seats are gone!\n\u003C/p\u003E\n\u003Cdiv style=\"clear:both;margin:0\"\u003E\u003C/div\u003E\n\u003C/div\u003E\u003C/div\u003E\u003C/div\u003E\u003C/div\u003E\u003C/div\u003E";}}());</script></div>
+		</div>
+		<div class="vector-column-start">
+			<div class="vector-main-menu-container">
+		<div id="mw-navigation">
+			<nav id="mw-panel" class="vector-main-menu-landmark" aria-label="Site">
+				<div id="vector-main-menu-pinned-container" class="vector-pinned-container">
+				
+				</div>
+		</nav>
+		</div>
+	</div>
+	<div class="vector-sticky-pinned-container">
+				<nav id="mw-panel-toc" aria-label="Contents" data-event-name="ui.sidebar-toc" class="mw-table-of-contents-container vector-toc-landmark">
+					<div id="vector-toc-pinned-container" class="vector-pinned-container">
+					<div id="vector-toc" class="vector-toc vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-toc-pinnable-header vector-pinnable-header-pinned"
+	data-feature-name="toc-pinned"
+	data-pinnable-element-id="vector-toc"
+	
+	
+>
+	<h2 class="vector-pinnable-header-label">Contents</h2>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-toc.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-toc.unpin">hide</button>
+</div>
+
+
+	<ul class="vector-toc-contents" id="mw-panel-toc-list">
+		<li id="toc-mw-content-text"
+			class="vector-toc-list-item vector-toc-level-1">
+			<a href="#" class="vector-toc-link">
+				<div class="vector-toc-text">Beginning</div>
+			</a>
+		</li>
+		<li id="toc-Usage"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Usage">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">1</span>
+				<span>Usage</span>
+			</div>
+		</a>
+		
+		<ul id="toc-Usage-sublist" class="vector-toc-list">
+		</ul>
+	</li>
+	<li id="toc-Adding_fonts"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Adding_fonts">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">2</span>
+				<span>Adding fonts</span>
+			</div>
+		</a>
+		
+			<button aria-controls="toc-Adding_fonts-sublist" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-toc-toggle">
+				<span class="vector-icon mw-ui-icon-wikimedia-expand"></span>
+				<span>Toggle Adding fonts subsection</span>
+			</button>
+		
+		<ul id="toc-Adding_fonts-sublist" class="vector-toc-list">
+			<li id="toc-Preparing_webfonts"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Preparing_webfonts">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">2.1</span>
+					<span>Preparing webfonts</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Preparing_webfonts-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+	</ul>
+	</li>
+	<li id="toc-Adding_support_for_a_new_key_mapping_(input_method)"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Adding_support_for_a_new_key_mapping_(input_method)">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">3</span>
+				<span>Adding support for a new key mapping (input method)</span>
+			</div>
+		</a>
+		
+		<ul id="toc-Adding_support_for_a_new_key_mapping_(input_method)-sublist" class="vector-toc-list">
+		</ul>
+	</li>
+	<li id="toc-Installation"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Installation">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">4</span>
+				<span>Installation</span>
+			</div>
+		</a>
+		
+			<button aria-controls="toc-Installation-sublist" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-toc-toggle">
+				<span class="vector-icon mw-ui-icon-wikimedia-expand"></span>
+				<span>Toggle Installation subsection</span>
+			</button>
+		
+		<ul id="toc-Installation-sublist" class="vector-toc-list">
+			<li id="toc-Updating_LanguageNameIndex"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Updating_LanguageNameIndex">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">4.1</span>
+					<span>Updating LanguageNameIndex</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Updating_LanguageNameIndex-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+	</ul>
+	</li>
+	<li id="toc-Configuration"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Configuration">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">5</span>
+				<span>Configuration</span>
+			</div>
+		</a>
+		
+			<button aria-controls="toc-Configuration-sublist" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-toc-toggle">
+				<span class="vector-icon mw-ui-icon-wikimedia-expand"></span>
+				<span>Toggle Configuration subsection</span>
+			</button>
+		
+		<ul id="toc-Configuration-sublist" class="vector-toc-list">
+			<li id="toc-Position_of_ULS_trigger"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Position_of_ULS_trigger">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">5.1</span>
+					<span>Position of ULS trigger</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Position_of_ULS_trigger-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Overriding_default_fonts"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Overriding_default_fonts">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">5.2</span>
+					<span>Overriding default fonts</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Overriding_default_fonts-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Caching_configuration"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Caching_configuration">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">5.3</span>
+					<span>Caching configuration</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Caching_configuration-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Page_translation"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Page_translation">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">5.4</span>
+					<span>Page translation</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Page_translation-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+	</ul>
+	</li>
+	<li id="toc-Using_Webfonts"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Using_Webfonts">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">6</span>
+				<span>Using Webfonts</span>
+			</div>
+		</a>
+		
+			<button aria-controls="toc-Using_Webfonts-sublist" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-toc-toggle">
+				<span class="vector-icon mw-ui-icon-wikimedia-expand"></span>
+				<span>Toggle Using Webfonts subsection</span>
+			</button>
+		
+		<ul id="toc-Using_Webfonts-sublist" class="vector-toc-list">
+			<li id="toc-Alternate_ways_to_load_fonts"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Alternate_ways_to_load_fonts">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">6.1</span>
+					<span>Alternate ways to load fonts</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Alternate_ways_to_load_fonts-sublist" class="vector-toc-list">
+				<li id="toc-By_specifying_font-family"
+			class="vector-toc-list-item vector-toc-level-3">
+			<a class="vector-toc-link" href="#By_specifying_font-family">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">6.1.1</span>
+					<span>By specifying font-family</span>
+				</div>
+			</a>
+			
+			<ul id="toc-By_specifying_font-family-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-By_specifying_language"
+			class="vector-toc-list-item vector-toc-level-3">
+			<a class="vector-toc-link" href="#By_specifying_language">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">6.1.2</span>
+					<span>By specifying language</span>
+				</div>
+			</a>
+			
+			<ul id="toc-By_specifying_language-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+	</ul>
+		</li>
+	</ul>
+	</li>
+	<li id="toc-See_also"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#See_also">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">7</span>
+				<span>See also</span>
+			</div>
+		</a>
+		
+		<ul id="toc-See_also-sublist" class="vector-toc-list">
+		</ul>
+	</li>
+</ul>
+</div>
+
+					</div>
+		</nav>
+			</div>
+		</div>
+		<div class="mw-content-container">
+			<main id="content" class="mw-body">
+				<header class="mw-body-header vector-page-titlebar">
+					<nav aria-label="Contents" class="vector-toc-landmark">
+						
+<div id="vector-page-titlebar-toc" class="vector-dropdown vector-page-titlebar-toc vector-button-flush-left"  >
+	<input type="checkbox" id="vector-page-titlebar-toc-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-page-titlebar-toc" class="vector-dropdown-checkbox "  aria-label="Toggle the table of contents"  >
+	<label id="vector-page-titlebar-toc-label" for="vector-page-titlebar-toc-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-listBullet mw-ui-icon-wikimedia-listBullet"></span>
+
+<span class="vector-dropdown-label-text">Toggle the table of contents</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+							<div id="vector-page-titlebar-toc-unpinned-container" class="vector-unpinned-container">
+			</div>
+		
+	</div>
+</div>
+
+					</nav>
+					<h1 id="firstHeading" class="firstHeading mw-first-heading"><span class="mw-page-title-namespace">Extension</span><span class="mw-page-title-separator">:</span><span class="mw-page-title-main">UniversalLanguageSelector</span></h1>
+						<div class="mw-indicators">
+		<div id="mw-indicator-phabricator-project" class="mw-indicator"><div class="mw-parser-output"><div class="mw-parser-output"><style data-mw-deduplicate="TemplateStyles:r6605561">.mw-parser-output .tpl-badge{background-color:var(--background-color-progressive-subtle,#eaf3ff);color:var(--color-base,#202122);border-radius:10px;display:inline-block;font-size:90%;padding:5px 8px}</style><div class="tpl-badge"><a href="/wiki/Special:MyLanguage/Phabricator" title="Special:MyLanguage/Phabricator">Issue tracker</a>: <a href="https://phabricator.wikimedia.org/tag/mediawiki-extensions-universallanguageselector/" class="extiw" title="phab:tag/mediawiki-extensions-universallanguageselector/"><b>#MediaWiki-extensions-UniversalLanguageSelector</b></a></div></div></div></div>
+		</div>
+</header>
+				<div class="vector-page-toolbar">
+					<div class="vector-page-toolbar-container">
+						<div id="left-navigation">
+							<nav aria-label="Namespaces">
+								
+<div id="p-associated-pages" class="vector-menu vector-menu-tabs mw-portlet mw-portlet-associated-pages"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-nstab-extension" class="selected vector-tab-noicon mw-list-item"><a href="/wiki/Extension:UniversalLanguageSelector" title="View the subject page [c]" accesskey="c"><span>Extension</span></a></li><li id="ca-talk" class="vector-tab-noicon mw-list-item"><a href="/wiki/Extension_talk:UniversalLanguageSelector" rel="discussion" title="Discussion about the content page [t]" accesskey="t"><span>Discussion</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+								
+<div id="vector-variants-dropdown" class="vector-dropdown emptyPortlet"  >
+	<input type="checkbox" id="vector-variants-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-variants-dropdown" class="vector-dropdown-checkbox " aria-label="Change language variant"   >
+	<label id="vector-variants-dropdown-label" for="vector-variants-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet" aria-hidden="true"  ><span class="vector-dropdown-label-text">English</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+					
+<div id="p-variants" class="vector-menu mw-portlet mw-portlet-variants emptyPortlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</div>
+
+				
+	</div>
+</div>
+
+							</nav>
+						</div>
+						<div id="right-navigation" class="vector-collapsible">
+							<nav aria-label="Views">
+								
+<div id="p-views" class="vector-menu vector-menu-tabs mw-portlet mw-portlet-views"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-view" class="selected vector-tab-noicon mw-list-item"><a href="/wiki/Extension:UniversalLanguageSelector"><span>Read</span></a></li><li id="ca-viewsource" class="vector-tab-noicon mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e"><span>View source</span></a></li><li id="ca-history" class="vector-tab-noicon mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;action=history" title="Past revisions of this page [h]" accesskey="h"><span>View history</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+							</nav>
+				
+							<nav class="vector-page-tools-landmark" aria-label="Page tools">
+								
+<div id="vector-page-tools-dropdown" class="vector-dropdown vector-page-tools-dropdown"  >
+	<input type="checkbox" id="vector-page-tools-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-page-tools-dropdown" class="vector-dropdown-checkbox "  aria-label="Tools"  >
+	<label id="vector-page-tools-dropdown-label" for="vector-page-tools-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet" aria-hidden="true"  ><span class="vector-dropdown-label-text">Tools</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+									<div id="vector-page-tools-unpinned-container" class="vector-unpinned-container">
+						
+<div id="vector-page-tools" class="vector-page-tools vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-page-tools-pinnable-header vector-pinnable-header-unpinned"
+	data-feature-name="page-tools-pinned"
+	data-pinnable-element-id="vector-page-tools"
+	data-pinned-container-id="vector-page-tools-pinned-container"
+	data-unpinned-container-id="vector-page-tools-unpinned-container"
+>
+	<div class="vector-pinnable-header-label">Tools</div>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-page-tools.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-page-tools.unpin">hide</button>
+</div>
+
+	
+<div id="p-cactions" class="vector-menu mw-portlet mw-portlet-cactions emptyPortlet vector-has-collapsible-items"  title="More options" >
+	<div class="vector-menu-heading">
+		Actions
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-more-view" class="selected vector-more-collapsible-item mw-list-item"><a href="/wiki/Extension:UniversalLanguageSelector"><span>Read</span></a></li><li id="ca-more-viewsource" class="vector-more-collapsible-item mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;action=edit"><span>View source</span></a></li><li id="ca-more-history" class="vector-more-collapsible-item mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;action=history"><span>View history</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-tb" class="vector-menu mw-portlet mw-portlet-tb"  >
+	<div class="vector-menu-heading">
+		General
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="t-whatlinkshere" class="mw-list-item"><a href="/wiki/Special:WhatLinksHere/Extension:UniversalLanguageSelector" title="A list of all wiki pages that link here [j]" accesskey="j"><span>What links here</span></a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="/wiki/Special:RecentChangesLinked/Extension:UniversalLanguageSelector" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k"><span>Related changes</span></a></li><li id="t-upload" class="mw-list-item"><a href="//commons.wikimedia.org/wiki/Special:UploadWizard" title="Upload files [u]" accesskey="u"><span>Upload file</span></a></li><li id="t-specialpages" class="mw-list-item"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q"><span>Special pages</span></a></li><li id="t-permalink" class="mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;oldid=6535273" title="Permanent link to this revision of this page"><span>Permanent link</span></a></li><li id="t-info" class="mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;action=info" title="More information about this page"><span>Page information</span></a></li><li id="t-cite" class="mw-list-item"><a href="/w/index.php?title=Special:CiteThisPage&amp;page=Extension%3AUniversalLanguageSelector&amp;id=6535273&amp;wpFormIdentifier=titleform" title="Information on how to cite this page"><span>Cite this page</span></a></li><li id="t-urlshortener" class="mw-list-item"><a href="/w/index.php?title=Special:UrlShortener&amp;url=https%3A%2F%2Fwww.mediawiki.org%2Fwiki%2FExtension%3AUniversalLanguageSelector"><span>Get shortened URL</span></a></li><li id="t-urlshortener-qrcode" class="mw-list-item"><a href="/w/index.php?title=Special:QrCode&amp;url=https%3A%2F%2Fwww.mediawiki.org%2Fwiki%2FExtension%3AUniversalLanguageSelector"><span>Download QR code</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-coll-print_export" class="vector-menu mw-portlet mw-portlet-coll-print_export"  >
+	<div class="vector-menu-heading">
+		Print/export
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="coll-create_a_book" class="mw-list-item"><a href="/w/index.php?title=Special:Book&amp;bookcmd=book_creator&amp;referer=Extension%3AUniversalLanguageSelector"><span>Create a book</span></a></li><li id="coll-download-as-rl" class="mw-list-item"><a href="/w/index.php?title=Special:DownloadAsPdf&amp;page=Extension%3AUniversalLanguageSelector&amp;action=show-download-screen"><span>Download as PDF</span></a></li><li id="t-print" class="mw-list-item"><a href="/w/index.php?title=Extension:UniversalLanguageSelector&amp;printable=yes" title="Printable version of this page [p]" accesskey="p"><span>Printable version</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-wikibase-otherprojects" class="vector-menu mw-portlet mw-portlet-wikibase-otherprojects"  >
+	<div class="vector-menu-heading">
+		In other projects
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="t-wikibase" class="wb-otherproject-link wb-otherproject-wikibase-dataitem mw-list-item"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q21678941" title="Link to connected data repository item [g]" accesskey="g"><span>Wikidata item</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+</div>
+
+									</div>
+				
+	</div>
+</div>
+
+							</nav>
+						</div>
+					</div>
+				</div>
+				<div class="vector-column-end">
+					<div class="vector-sticky-pinned-container">
+						<nav class="vector-page-tools-landmark" aria-label="Page tools">
+							<div id="vector-page-tools-pinned-container" class="vector-pinned-container">
+				
+							</div>
+		</nav>
+						<nav class="vector-appearance-landmark" aria-label="Appearance">
+							<div id="vector-appearance-pinned-container" class="vector-pinned-container">
+				<div id="vector-appearance" class="vector-appearance vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-appearance-pinnable-header vector-pinnable-header-pinned"
+	data-feature-name="appearance-pinned"
+	data-pinnable-element-id="vector-appearance"
+	data-pinned-container-id="vector-appearance-pinned-container"
+	data-unpinned-container-id="vector-appearance-unpinned-container"
+>
+	<div class="vector-pinnable-header-label">Appearance</div>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-appearance.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-appearance.unpin">hide</button>
+</div>
+
+
+</div>
+
+							</div>
+		</nav>
+					</div>
+				</div>
+				<div id="bodyContent" class="vector-body" aria-labelledby="firstHeading" data-mw-ve-target-container>
+					<div class="vector-body-before-content">
+					
+						<div id="siteSub" class="noprint">From mediawiki.org</div>
+					</div>
+					<div id="contentSub"><div id="mw-content-subtitle"></div></div>
+					
+					
+					<div id="mw-content-text" class="mw-body-content"><div class="mw-pt-translate-header noprint nomobile" dir="ltr" lang="en"><a href="/w/index.php?title=Special:Translate&amp;group=page-Extension%3AUniversalLanguageSelector&amp;action=page&amp;filter=&amp;action_source=translate_page" title="Special:Translate">Translate this page</a></div><div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><div class="mw-pt-languages noprint navigation-not-searchable" lang="en" dir="ltr"><div class="mw-pt-languages-label">Languages:</div><ul class="mw-pt-languages-list"><li><a href="/wiki/Extension:UniversalLanguageSelector/id" class="mw-pt-progress mw-pt-progress--low" title="Extension:UniversalLanguageSelector (4% translated)" lang="id" dir="ltr">Bahasa Indonesia</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/de" class="mw-pt-progress mw-pt-progress--med" title="Erweiterung:UniversalLanguageSelector (21% translated)" lang="de" dir="ltr">Deutsch</a></li>
+<li><span class="mw-pt-languages-ui mw-pt-languages-selected mw-pt-progress mw-pt-progress--complete" lang="en" dir="ltr">English</span></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/nl" class="mw-pt-progress mw-pt-progress--complete" title="Extension:UniversalLanguageSelector/nl (100% translated)" lang="nl" dir="ltr">Nederlands</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/tr" class="mw-pt-progress mw-pt-progress--med" title="Extension:UniversalLanguageSelector (65% translated)" lang="tr" dir="ltr">Türkçe</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/ca" class="mw-pt-progress mw-pt-progress--med" title="Extensió:UniversalLanguageSelector (31% translated)" lang="ca" dir="ltr">català</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/es" class="mw-pt-progress mw-pt-progress--med" title="Extension:Selector Idioma Universal (64% translated)" lang="es" dir="ltr">español</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/fr" class="mw-pt-progress mw-pt-progress--complete" title="Extension:UniversalLanguageSelector (100% translated)" lang="fr" dir="ltr">français</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/it" class="mw-pt-progress mw-pt-progress--low" title="Estensione:UniversalLanguageSelector/it (13% translated)" lang="it" dir="ltr">italiano</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/hu" class="mw-pt-progress mw-pt-progress--low" title="Extension:UniversalLanguageSelector/hu (3% translated)" lang="hu" dir="ltr">magyar</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/pl" class="mw-pt-progress mw-pt-progress--low" title="Extension:UniversalLanguageSelector/pl (11% translated)" lang="pl" dir="ltr">polski</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/pt" class="mw-pt-progress mw-pt-progress--med" title="Extensão:Seletor de Idiomas Universal (25% translated)" lang="pt" dir="ltr">português</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/pt-br" class="mw-pt-progress mw-pt-progress--med" title="Extensão:UniversalLanguageSelector (38% translated)" lang="pt-BR" dir="ltr">português do Brasil</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/scn" class="mw-pt-progress mw-pt-progress--low" title="Estinzioni:UniversalLanguageSelector/scn (10% translated)" lang="scn" dir="ltr">sicilianu</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/sk" class="mw-pt-progress mw-pt-progress--low" title="Rozšíření:UniversalLanguageSelector (3% translated)" lang="sk" dir="ltr">slovenčina</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/sv" class="mw-pt-progress mw-pt-progress--med" title="Tillägg:UniversalLanguageSelector (29% translated)" lang="sv" dir="ltr">svenska</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/cs" class="mw-pt-progress mw-pt-progress--high" title="Rozšíření:UniversalLanguageSelector (99% translated)" lang="cs" dir="ltr">čeština</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/ru" class="mw-pt-progress mw-pt-progress--med" title="Расширение:UniversalLanguageSelector (34% translated)" lang="ru" dir="ltr">русский</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/uk" class="mw-pt-progress mw-pt-progress--low" title="Розширення:UniversalLanguageSelector (5% translated)" lang="uk" dir="ltr">українська</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/ar" class="mw-pt-progress mw-pt-progress--med" title="امتداد:أداة اختيار اللغة العمومية (16% translated)" lang="ar" dir="rtl">العربية</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/sd" class="mw-pt-progress mw-pt-progress--low" title="وسعت:عالمگير ٻولي چونڊيندڙ (10% translated)" lang="sd" dir="rtl">سنڌي</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/awa" class="mw-pt-progress mw-pt-progress--med" title="एक्सटेंशन:वैश्विक भाषा चयनकर्ता (18% translated)" lang="awa" dir="ltr">अवधी</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/hi" class="mw-pt-progress mw-pt-progress--med" title="एक्सटेंशन:UniversalLanguageSelector (65% translated)" lang="hi" dir="ltr">हिन्दी</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/th" class="mw-pt-progress mw-pt-progress--med" title="ส่วนขยาย:UniversalLanguageSelector (67% translated)" lang="th" dir="ltr">ไทย</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/mnw" class="mw-pt-progress mw-pt-progress--low" title="Extension:UniversalLanguageSelector/mnw (2% translated)" lang="mnw" dir="ltr">ဘာသာမန်</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/my" class="mw-pt-progress mw-pt-progress--low" title="ထပ်ဆောင်းကိရိယာ:ဘာသာစကားအလုံးစုံရွေးချယ်ရာ (3% translated)" lang="my" dir="ltr">မြန်မာဘာသာ</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/zh" class="mw-pt-progress mw-pt-progress--complete" title="扩展: (100% translated)" lang="zh" dir="ltr">中文</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/ja" class="mw-pt-progress mw-pt-progress--high" title="Extension:UniversalLanguageSelector (90% translated)" lang="ja" dir="ltr">日本語</a></li>
+<li><a href="/wiki/Extension:UniversalLanguageSelector/ko" class="mw-pt-progress mw-pt-progress--low" title="확장기능:UniversalLanguageSelector (14% translated)" lang="ko" dir="ltr">한국어</a></li></ul></div>
+<style data-mw-deduplicate="TemplateStyles:r6651102">.mw-parser-output .infobox{box-sizing:border-box;border:2px solid var(--border-color-base,#a2a9b1);width:280px;border-collapse:collapse;border-spacing:0;background-color:white;color:#333;clear:right;float:right;margin:0 0 0.5em 0.5em}.mw-parser-output .infobox-rtl{clear:left;float:left;margin:0 0.5em 0.5em 0}.mw-parser-output .infobox th{text-align:left;padding:0.2em 0.5em;vertical-align:top}.mw-parser-output .infobox-rtl th{text-align:right}@media(max-width:719px){body.mediawiki .mw-parser-output .infobox{float:none;clear:both;width:100%;margin:0 0 .5em 0}}.mw-parser-output .infobox td{border:none;padding:0.2em 0.5em;vertical-align:top}.mw-parser-output .infobox-header{background-color:#a2a9b1;color:#FFF;text-align:left}.mw-parser-output .infobox-header a{color:#FFF}.mw-parser-output .infobox-header td,.mw-parser-output .infobox-header th{padding:0.5em 0.5em}.mw-parser-output .infobox-header img{padding:0 0.2em 0 0.5em}@media screen{html.skin-theme-clientpref-night .mw-parser-output .infobox{background-color:inherit;color:inherit}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .infobox{background-color:inherit;color:inherit}}</style><style data-mw-deduplicate="TemplateStyles:r5577029">.mw-parser-output .ext-infobox>tbody>tr>td:first-child{vertical-align:top}.mw-parser-output .ext-infobox>tbody>tr>td abbr{white-space:nowrap}.mw-parser-output .ext-infobox .mw-collapsible-header,.mw-parser-output .ext-infobox .mw-collapsible-toggle{font-weight:bold}.mw-parser-output .ext-infobox .mw-collapsible-content{margin-top:.2em;padding-top:.2em}.mw-parser-output .ext-infobox-header>th,.mw-parser-output .ext-infobox caption,.mw-parser-output .ext-infobox-image,.mw-parser-output .ext-infobox-translate{text-align:center}.mw-parser-output .ext-infobox-name{font-size:130%;line-height:100%}.mw-parser-output .ext-infobox-type{min-width:7em}</style><style data-mw-deduplicate="TemplateStyles:r6424453">.mw-parser-output .ext-status-unstable,.mw-parser-output .ext-status-unstable td{border-color:#d33}.mw-parser-output .ext-status-unstable .ext-infobox-header{background-color:#d33;color:#fff}.mw-parser-output .ext-status-unstable .ext-infobox-header a{color:#fff}.mw-parser-output .ext-status-experimental,.mw-parser-output .ext-status-experimental td{border-color:#ff4500}.mw-parser-output .ext-status-experimental .ext-infobox-header{background-color:#ff4500;color:#FFF}.mw-parser-output .ext-status-experimental .ext-infobox-header a{color:#FFF}.mw-parser-output .ext-status-beta,.mw-parser-output .ext-status-beta td{border-color:#fc3}.mw-parser-output .ext-status-beta .ext-infobox-header{color:#000;background-color:#fc3}.mw-parser-output .ext-status-beta .ext-infobox-header a{color:#000}.mw-parser-output .ext-status-stable,.mw-parser-output .ext-status-stable td{border-color:#00af89}.mw-parser-output .ext-status-stable .ext-infobox-header{background-color:#068468;color:#FFF}.mw-parser-output .ext-status-stable .ext-infobox-header a{color:#fff}.mw-parser-output .ext-status-unmaintained,.mw-parser-output .ext-status-unmaintained td{border-color:#ac6600}.mw-parser-output .ext-status-unmaintained .ext-infobox-header{background-color:#ac6600;color:#FFF}.mw-parser-output .ext-status-unmaintained .ext-infobox-header a{color:#fff}</style>
+<table class="infobox infobox-ltr ext-infobox ext-status-stable">
+<caption><b><a href="/wiki/Special:MyLanguage/Manual:Extensions" title="Special:MyLanguage/Manual:Extensions">MediaWiki extensions manual</a><span style="display:none"><a href="/wiki/Manual:Extensions" title="Manual:Extensions"> </a></span></b></caption>
+<tbody><tr class="infobox-header ext-infobox-header notheme">
+<th colspan="2"><figure class="mw-halign-left" typeof="mw:File"><a href="/wiki/Special:MyLanguage/Template:Extension#Content" title="Special:MyLanguage/Template:Extension"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/1/1b/OOjs_UI_icon_advanced-invert.svg/40px-OOjs_UI_icon_advanced-invert.svg.png" decoding="async" width="40" height="40" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/1/1b/OOjs_UI_icon_advanced-invert.svg/60px-OOjs_UI_icon_advanced-invert.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/1/1b/OOjs_UI_icon_advanced-invert.svg/80px-OOjs_UI_icon_advanced-invert.svg.png 2x" data-file-width="20" data-file-height="20" /></a><figcaption></figcaption></figure> <span class="ext-infobox-name">UniversalLanguageSelector</span><br />
+<a href="/wiki/Special:MyLanguage/Extension_status" title="Special:MyLanguage/Extension status">Release status:</a><span style="display:none"><a href="/wiki/Extension_status" title="Extension status"> </a></span> stable</th>
+</tr>
+<tr>
+<td colspan="2" class="ext-infobox-image"><span typeof="mw:File"><a href="/wiki/File:ULS-Display-Settings.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/a/ab/ULS-Display-Settings.png/300px-ULS-Display-Settings.png" decoding="async" width="300" height="96" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/a/ab/ULS-Display-Settings.png/450px-ULS-Display-Settings.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/a/ab/ULS-Display-Settings.png/600px-ULS-Display-Settings.png 2x" data-file-width="1158" data-file-height="370" /></a></span></td>
+</tr>
+<tr>
+<td class="ext-infobox-type"><b><a href="/wiki/Special:MyLanguage/Template:Extension#type" title="Special:MyLanguage/Template:Extension">Implementation</a><span style="display:none"><a href="/wiki/Template:Extension#type" title="Template:Extension"> </a></span></b></td>
+<td>User interface, <a href="/wiki/Special:MyLanguage/Manual:Skins" title="Special:MyLanguage/Manual:Skins">Skin</a><span style="display:none"><a href="/wiki/Manual:Skins" title="Manual:Skins"> </a></span>, <a href="/wiki/Special:MyLanguage/Beta_Features" title="Special:MyLanguage/Beta Features">Beta Feature</a><span style="display:none"><a href="/wiki/Beta_Features" title="Beta Features"> </a></span>
+</td></tr><tr>
+<td><b><a href="/wiki/Special:MyLanguage/Template:Extension#description" title="Special:MyLanguage/Template:Extension">Description</a><span style="display:none"><a href="/wiki/Template:Extension#description" title="Template:Extension"> </a></span></b></td>
+<td>Tool that allows users to select a language and configure its support in an easy way.</td>
+</tr>
+<tr>
+<td><b><a href="/wiki/Special:MyLanguage/Template:Extension#username" title="Special:MyLanguage/Template:Extension">Author(s)</a><span style="display:none"><a href="/wiki/Template:Extension#username" title="Template:Extension"> </a></span></b></td>
+<td><a href="/wiki/Special:MyLanguage/Wikimedia_Language_engineering" title="Special:MyLanguage/Wikimedia Language engineering">Wikimedia Language team</a></td>
+</tr>
+
+<tr>
+<td><b><a href="/wiki/Special:MyLanguage/Template:Extension#version" title="Special:MyLanguage/Template:Extension">Latest version</a><span style="display:none"><a href="/wiki/Template:Extension#version" title="Template:Extension"> </a></span></b></td>
+<td>2024-07-16</td>
+</tr>
+
+<tr>
+<td><b><a href="/wiki/Special:MyLanguage/Compatibility#mediawiki_extensions" title="Special:MyLanguage/Compatibility">Compatibility policy</a><span style="display:none"><a href="/wiki/Compatibility#mediawiki_extensions" title="Compatibility"> </a></span></b></td>
+<td>Master maintains backward compatibility.</td>
+</tr>
+<tr>
+<td><a href="/wiki/Special:MyLanguage/Template:Extension#mediawiki" title="Special:MyLanguage/Template:Extension"><b>MediaWiki</b></a><span style="display:none"><a href="/wiki/Template:Extension#mediawiki" title="Template:Extension"> </a></span></td>
+<td>&gt;= 1.41.0</td>
+</tr>
+
+
+<tr>
+<td><a href="/wiki/Special:MyLanguage/Composer" title="Special:MyLanguage/Composer"><abbr title="Supports &#39;Composer&#39; for installation"><b>Composer</b></abbr></a><span style="display:none"><a href="/wiki/Composer" title="Composer"> </a></span></td>
+<td><a rel="nofollow" class="external text" href="https://packagist.org/packages/mediawiki/universal-language-selector">mediawiki/universal-language-selector</a></td>
+</tr>
+
+
+<tr>
+<td><b><a href="/wiki/Special:MyLanguage/Template:Extension#license" title="Special:MyLanguage/Template:Extension">License</a><span style="display:none"><a href="/wiki/Template:Extension#license" title="Template:Extension"> </a></span></b></td>
+<td>
+<ul><li><a rel="nofollow" class="external text" href="//www.gnu.org/licenses/gpl-2.0.html">GNU General Public License 2.0</a> or later  ,</li>
+<li><a rel="nofollow" class="external text" href="https://www.opensource.org/licenses/mit-license.php">The MIT License</a> </li></ul></td>
+</tr><tr>
+<td><b>Download</b></td>
+<td><div class="plainlinks"><a href="/wiki/Special:ExtensionDistributor/UniversalLanguageSelector" title="Special:ExtensionDistributor/UniversalLanguageSelector"><b>Download extension</b></a> <br />Git <sup>[<a href="/wiki/Special:MyLanguage/Download_from_Git" title="Special:MyLanguage/Download from Git">?</a>]</sup>: 
+<ul><li><span class="plainlinks"><a rel="nofollow" class="external text" href="https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector/archive/master.tar.gz">Download Git master</a></span></li>
+<li><a href="https://gerrit.wikimedia.org/g/mediawiki/extensions/UniversalLanguageSelector" class="extiw" title="git:mediawiki/extensions/UniversalLanguageSelector">browse&#160;repository</a> (<a href="https://phabricator.wikimedia.org/diffusion/EULS" class="extiw" title="phab:diffusion/EULS">Phabricator</a> ·&#160;<a rel="nofollow" class="external text" href="https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector">GitHub</a>)</li>
+<li><a href="https://gerrit.wikimedia.org/g/mediawiki/extensions/UniversalLanguageSelector/%2Blog/master" class="extiw" title="git:mediawiki/extensions/UniversalLanguageSelector/+log/master">commit&#160;history</a></li>
+<li><a rel="nofollow" class="external text" href="https://github.com/wikimedia/mediawiki-extensions-UniversalLanguageSelector/graphs/contributors">repository contributors (GitHub)</a></li>
+<li><a href="https://gerrit.wikimedia.org/r/q/project:mediawiki/extensions/UniversalLanguageSelector" class="extiw" title="gerrit:q/project:mediawiki/extensions/UniversalLanguageSelector">code review</a></li></ul></div>
+<a href="/wiki/Special:MyLanguage/MLEB" title="Special:MyLanguage/MLEB">Included in Language Extension Bundle</a></td>
+</tr>
+<tr>
+<td><b><a href="/wiki/Special:MyLanguage/Template:Extension#help" title="Special:MyLanguage/Template:Extension">Help</a><span style="display:none"><a href="/wiki/Template:Extension#help" title="Template:Extension"> </a></span></b></td>
+<td><a href="/wiki/Special:MyLanguage/Help:Extension:UniversalLanguageSelector" title="Special:MyLanguage/Help:Extension:UniversalLanguageSelector">Help:Extension:UniversalLanguageSelector</a><span style="display:none"><a href="/wiki/Help:Extension:UniversalLanguageSelector" class="mw-redirect" title="Help:Extension:UniversalLanguageSelector"> </a></span></td>
+</tr>
+
+
+<tr>
+<td class="mw-collapsible mw-collapsed" colspan="2">
+<div class="mw-collapsible-header"><a href="/wiki/Special:MyLanguage/Template:Extension#parameters" title="Special:MyLanguage/Template:Extension">Parameters</a><span style="display:none"><a href="/wiki/Template:Extension#parameters" title="Template:Extension"> </a></span></div>
+<div class="mw-collapsible-content">
+<ul><li><span class="configvariable" title="Enable the webfonts feature for all users by default. Can be controlled by the user. @since 2014.02">$wgULSWebfontsEnabled</span></li>
+<li><span class="configvariable" title="ULS can use a geolocation service to suggest languages based on the country the user is vising from. If set to an URL it will query that service which must return an object which has key &quot;country_code&quot; or &quot;country&quot;. For example https&#58;//api.ipstack.com/check?access_key=yourkey&amp;fields=country_code. Setting this to false will prevent built-in geolocation from being used. You can also provide your own geolocation by assigning such object to window.Geo.">$wgULSGeoService</span></li>
+<li><span class="configvariable" title="Try to use preferred interface language for anonymous users. Do not use if you are caching anonymous page views without taking Accept-Language into account. Does not have any effect if $wgULSEnable is set to false.">$wgULSLanguageDetection</span></li>
+<li><span class="configvariable" title="Allow anonymous users to change language with cookie and setlang query parameter. Do not use if you are caching anonymous page views without taking cookies into account. Does not have any effect if $wgULSEnable is set to false. @since 2013.04">$wgULSAnonCanChangeLanguage</span></li>
+<li><span class="configvariable" title="Enable language selection, compact language links, input methods and webfonts for everyone, unless the behavior is overridden by the configuration variables below. Even if false the classes and resource loader modules are registered for the use of other extensions. Language changing via cookie or setlang query parameter is not possible.">$wgULSEnable</span></li>
+<li><span class="configvariable" title="Array of jQuery selectors of elements on which IME should be enabled. @since 2013.11">$wgULSImeSelectors</span></li>
+<li><span class="configvariable" title="Enable the input methods feature for all users by default. Can be controlled by the user.">$wgULSIMEEnabled</span></li>
+<li><span class="configvariable" title="Array of jQuery selectors of elements on which webfonts must not be applied. By default exclude elements with .autonym because that style set font as Autonym @since 2013.09">$wgULSNoWebfontsSelectors</span></li>
+<li><span class="configvariable" title="Base path of ULS font repository. If not set, will be set to &#39;UniversalLanguageSelector/data/fontrepo/fonts/&#39;, relative to $wgExtensionAssetsPath. @since 2013.10">$wgULSFontRepositoryBasePath</span></li>
+<li><span class="configvariable" title="Set compact interlanguage links as beta feature or not. If set false, compact interlanguage links will be available by default to all users.">$wgULSCompactLanguageLinksBetaFeature</span></li>
+<li><span class="configvariable" title="Array of jQuery selectors of elements on which IME must not be enabled. @since 2013.07">$wgULSNoImeSelectors</span></li>
+<li><span class="configvariable" title="The location and the form of the language selection trigger. The possible values are: (a) &quot;personal&quot;- as a link near the username or the log in link in the personal toolbar (default). (b) &quot;interlanguage&quot;: as an icon near the header of the list of interlanguage links in the sidebar.">$wgULSPosition</span></li></ul></div></td>
+</tr>
+
+
+
+<tr>
+<td class="mw-collapsible mw-collapsed" colspan="2">
+<div class="mw-collapsible-header"><a href="/wiki/Special:MyLanguage/Template:Extension#hook" title="Special:MyLanguage/Template:Extension">Hooks used</a><span style="display:none"><a href="/wiki/Template:Extension#hook" title="Template:Extension"> </a></span></div>
+<style data-mw-deduplicate="TemplateStyles:r6219282">.mw-parser-output .plainlist ul{line-height:inherit;list-style:none none;margin:0}.mw-parser-output .plainlist ul li{margin-bottom:0}</style><div class="plainlist mw-collapsible-content"><ul><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/BeforePageDisplay" title="Special:MyLanguage/Manual:Hooks/BeforePageDisplay">BeforePageDisplay</a><span style="display:none"><a href="/wiki/Manual:Hooks/BeforePageDisplay" title="Manual:Hooks/BeforePageDisplay"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/GetBetaFeaturePreferences" title="Special:MyLanguage/Manual:Hooks/GetBetaFeaturePreferences">GetBetaFeaturePreferences</a><span style="display:none"><a href="/wiki/Manual:Hooks/GetBetaFeaturePreferences" class="mw-redirect" title="Manual:Hooks/GetBetaFeaturePreferences"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/GetPreferences" title="Special:MyLanguage/Manual:Hooks/GetPreferences">GetPreferences</a><span style="display:none"><a href="/wiki/Manual:Hooks/GetPreferences" title="Manual:Hooks/GetPreferences"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/MakeGlobalVariablesScript" title="Special:MyLanguage/Manual:Hooks/MakeGlobalVariablesScript">MakeGlobalVariablesScript</a><span style="display:none"><a href="/wiki/Manual:Hooks/MakeGlobalVariablesScript" title="Manual:Hooks/MakeGlobalVariablesScript"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/ResourceLoaderGetConfigVars" title="Special:MyLanguage/Manual:Hooks/ResourceLoaderGetConfigVars">ResourceLoaderGetConfigVars</a><span style="display:none"><a href="/wiki/Manual:Hooks/ResourceLoaderGetConfigVars" title="Manual:Hooks/ResourceLoaderGetConfigVars"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/SkinAfterPortlet" title="Special:MyLanguage/Manual:Hooks/SkinAfterPortlet">SkinAfterPortlet</a><span style="display:none"><a href="/wiki/Manual:Hooks/SkinAfterPortlet" title="Manual:Hooks/SkinAfterPortlet"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/SkinTemplateNavigation::Universal" title="Special:MyLanguage/Manual:Hooks/SkinTemplateNavigation::Universal">SkinTemplateNavigation::Universal</a><span style="display:none"><a href="/wiki/Manual:Hooks/SkinTemplateNavigation::Universal" title="Manual:Hooks/SkinTemplateNavigation::Universal"> </a></span></li><li><a href="/wiki/Special:MyLanguage/Manual:Hooks/UserGetLanguageObject" title="Special:MyLanguage/Manual:Hooks/UserGetLanguageObject">UserGetLanguageObject</a><span style="display:none"><a href="/wiki/Manual:Hooks/UserGetLanguageObject" title="Manual:Hooks/UserGetLanguageObject"> </a></span></li></ul></div>
+</td>
+</tr>
+
+<tr>
+<td colspan="2">
+<a href="https://gerrit.wikimedia.org/r/66330" class="extiw" title="gerrit:66330">Not compatible with Internet Explorer 8 or lower</a>.</td>
+</tr>
+<tr>
+<td title="This only includes downloads from Special:ExtensionDistributor. Other download methods such as git or bundled extensions are not included."><b>Quarterly downloads</b></td>
+<td>243 (Ranked 26<sup>th</sup>)</td>
+</tr>
+<tr>
+<td title=""><a rel="nofollow" class="external text" href="https://wikiapiary.com/wiki/Extension:UniversalLanguageSelector"><b>Public wikis using</b></a></td>
+<td>1,237 (Ranked 214<sup>th</sup>)</td>
+</tr>
+<tr>
+<td colspan="2" class="ext-infobox-translate">
+<a href="https://translatewiki.net/wiki/Special:Translate/ext-universallanguageselector" class="extiw" title="translatewiki:Special:Translate/ext-universallanguageselector">Translate the UniversalLanguageSelector extension</a> if it is available at translatewiki.net</td>
+</tr><tr class="mw-empty-elt">
+</tr>
+
+<tr>
+<td>
+<b><a href="/wiki/Special:MyLanguage/Phabricator" title="Special:MyLanguage/Phabricator">Issues</a><span style="display:none"><a href="/wiki/Phabricator" title="Phabricator"> </a></span></b></td>
+<td><a href="https://phabricator.wikimedia.org/tag/mediawiki-extensions-universallanguageselector" class="extiw" title="phab:tag/mediawiki-extensions-universallanguageselector">Open tasks</a> · <a class="external text" href="https://phabricator.wikimedia.org/maniphest/task/create/?projects=MediaWiki-extensions-UniversalLanguageSelector">Report a bug</a></td>
+</tr>
+
+</tbody></table>
+<p>The <b>Universal Language Selector</b> is a tool that allows users to select a language and easily configure its support. Where used, it also ships the functionality of both the former <a href="/wiki/Special:MyLanguage/Extension:WebFonts" title="Special:MyLanguage/Extension:WebFonts">WebFonts</a><span style="display:none"><a href="/wiki/Extension:WebFonts" title="Extension:WebFonts"> </a></span> and <a href="/wiki/Special:MyLanguage/Extension:Narayam" title="Special:MyLanguage/Extension:Narayam">Narayam</a><span style="display:none"><a href="/wiki/Extension:Narayam" title="Extension:Narayam"> </a></span> extensions (both of which have been deprecated in favor of Universal Language Selector).
+See <a href="/wiki/Special:MyLanguage/Universal_Language_Selector" title="Special:MyLanguage/Universal Language Selector">Universal Language Selector</a><span style="display:none"><a href="/wiki/Universal_Language_Selector" title="Universal Language Selector"> </a></span> for background and additional information.
+</p>
+<meta property="mw:PageProp/toc" />
+<div class="mw-heading mw-heading2"><h2 id="Usage">Usage</h2></div>
+<p>The primary aim is to allow users to select a language and easily configure its support.
+</p><p>The extension provides the following features:
+</p>
+<ol><li>Flexible and easy way to select a language from a large set of languages.
+<ol><li>Selection can be based on geographical region-based browsing, and searching.</li>
+<li>Search can be based on ISO language code, language name written in current user interface language or in its own script(autonym)</li>
+<li>Cross-language search - search language names using any script</li>
+<li>Autocompletion of language names</li>
+<li>Auto correction of spelling mistakes in search strings</li>
+<li>Geo IP based language suggestions</li>
+<li>Language selection based on users browser/OS language</li></ol></li>
+<li>Input methods
+<dl><dd>See <a href="/wiki/Special:MyLanguage/Help:Extension:UniversalLanguageSelector/Input_methods" title="Special:MyLanguage/Help:Extension:UniversalLanguageSelector/Input methods">Help:Extension:UniversalLanguageSelector/Input methods</a><span style="display:none"><a href="/wiki/Help:Extension:UniversalLanguageSelector/Input_methods" title="Help:Extension:UniversalLanguageSelector/Input methods"> </a></span> for complete instructions.</dd></dl>
+<ol><li>An easily selectable input method collection, readily available in every editable field</li>
+<li>Provides a large set of input methods for a wide range of languages
+<ul><li>An outdated list is available at <a href="/wiki/Special:MyLanguage/Extension:Narayam#Supported_schemes" title="Special:MyLanguage/Extension:Narayam">Extension:Narayam#Supported schemes</a></li></ul></li>
+<li>Per-language input method preferences</li></ol></li>
+<li>Webfonts
+<ol><li>A large collection of fonts to choose for each language to use as an embedded font for the page
+<ul><li>You can browse <a href="https://phabricator.wikimedia.org/diffusion/EULS/browse/master/data/fontrepo/fonts" class="extiw" title="phab:diffusion/EULS/browse/master/data/fontrepo/fonts">all the fonts included</a></li></ul></li>
+<li>Per-language font preferences</li></ol></li></ol>
+<figure class="mw-halign-right" typeof="mw:File/Thumb"><a href="/wiki/File:ULS-GeoIP.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/c/cd/ULS-GeoIP.png/400px-ULS-GeoIP.png" decoding="async" width="400" height="270" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/cd/ULS-GeoIP.png/600px-ULS-GeoIP.png 1.5x, //upload.wikimedia.org/wikipedia/commons/c/cd/ULS-GeoIP.png 2x" data-file-width="714" data-file-height="482" /></a><figcaption>Universal Language Selector with geoip based language suggestion for a user from India</figcaption></figure>
+<figure class="mw-halign-right" typeof="mw:File/Thumb"><a href="/wiki/File:ULS-Display-Settings.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/a/ab/ULS-Display-Settings.png/400px-ULS-Display-Settings.png" decoding="async" width="400" height="128" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/a/ab/ULS-Display-Settings.png/600px-ULS-Display-Settings.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/a/ab/ULS-Display-Settings.png/800px-ULS-Display-Settings.png 2x" data-file-width="1158" data-file-height="370" /></a><figcaption>Language settings allow a registered user accessing English Wikipedia to change the UI to their native language.</figcaption></figure>
+<figure class="mw-halign-right" typeof="mw:File/Thumb"><a href="/wiki/File:ULS-Font-Settings-new.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/ULS-Font-Settings-new.png/400px-ULS-Font-Settings-new.png" decoding="async" width="400" height="137" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/ULS-Font-Settings-new.png/600px-ULS-Font-Settings-new.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/4/4a/ULS-Font-Settings-new.png/800px-ULS-Font-Settings-new.png 2x" data-file-width="1460" data-file-height="501" /></a><figcaption>A Bengali user is able to read content from the Bengali Wikipedia despite the lack of fonts in their computer. Web fonts are provided automatically for non-Latin scripts for which an open-source font is available. The user can decide to use their system fonts on a per-language basis.</figcaption></figure>
+<figure class="mw-halign-right" typeof="mw:File/Thumb"><a href="/wiki/File:ULS-Input-Settings.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c3/ULS-Input-Settings.png/400px-ULS-Input-Settings.png" decoding="async" width="400" height="238" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c3/ULS-Input-Settings.png/600px-ULS-Input-Settings.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c3/ULS-Input-Settings.png/800px-ULS-Input-Settings.png 2x" data-file-width="1047" data-file-height="622" /></a><figcaption>A Hindi speaker without a Hindi keyboard configures input methods so that they can type in their language.</figcaption></figure>
+<figure class="mw-halign-right" typeof="mw:File/Thumb"><a href="/wiki/File:ULS-Input-Search.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/e/e2/ULS-Input-Search.png/220px-ULS-Input-Search.png" decoding="async" width="220" height="198" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/e/e2/ULS-Input-Search.png/330px-ULS-Input-Search.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/e2/ULS-Input-Search.png/440px-ULS-Input-Search.png 2x" data-file-width="583" data-file-height="525" /></a><figcaption>When searching a user can switch between English and Hindi.</figcaption></figure>
+<div class="mw-heading mw-heading2"><h2 id="Adding_fonts">Adding fonts</h2></div>
+<p>Supporting more languages is only a matter of including the proper fonts in the code. However, please note that we will only add support for <i>open-source licensed</i> fonts, such as those licensed under GNU GPL, SIL OFL, etc. An example directory of such open-source fonts is <a rel="nofollow" class="external text" href="https://www.google.com/fonts#AboutPlace:about">Google Fonts</a> <a rel="nofollow" class="external autonumber" href="https://www.google.com/fonts/earlyaccess">[1]</a> (not yet fully examined/exploited by the authors of this extension); see also the <a rel="nofollow" class="external text" href="http://openfontlibrary.org/">Open Font Library</a>.
+</p><p>First of all, you need to find or produce such a open-source font (this is the most essential part, and you have to do it yourself); then, it has to be converted to the woff2 format, you can <a class="external text" href="https://phabricator.wikimedia.org/maniphest/task/create/?projects=MediaWiki-extensions-UniversalLanguageSelector">file a request</a> in <a href="/wiki/Special:MyLanguage/Phabricator" title="Special:MyLanguage/Phabricator">Phabricator</a> for the font to be added to the extension.
+</p><p><a href="#Preparing_webfonts">#Preparing webfonts</a> below explains how to convert the fonts: basic knowledge about GNU/Linux-based operating system is required; if you have difficulty in doing this, you can skip this step and ask someone else to do it for you on the same Phabricator request (of course this will slow down the process).
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Preparing_webfonts">Preparing webfonts</h3></div>
+<p><b>Creating .woff2:</b>
+</p><p>Use <a rel="nofollow" class="external free" href="https://github.com/google/woff2">https://github.com/google/woff2</a> to generate woff2 from ttf.
+This will produce a compressed woff2 file. Modern browsers support this format.
+</p><p>Create a font.ini file. Here's an example:
+</p>
+<div class="mw-highlight mw-highlight-lang-ini mw-content-ltr" dir="ltr"><pre><span></span><span class="k">[AbyssinicaSIL]</span>
+<span class="na">languages</span><span class="o">=</span><span class="s">am*, ti*</span>
+<span class="na">version</span><span class="o">=</span><span class="s">1.200</span>
+<span class="na">license</span><span class="o">=</span><span class="s">OFL 1.1</span>
+<span class="na">licensefile</span><span class="o">=</span><span class="s">OFL.txt</span>
+<span class="na">url</span><span class="o">=</span><span class="s">http://scripts.sil.org/AbyssinicaSIL</span>
+<span class="na">request-url</span><span class="o">=</span><span class="s">https://phabricator.wikimedia.org/[Task Number]</span>
+<span class="na">woff2</span><span class="o">=</span><span class="s">AbyssinicaSIL.woff2</span>
+<span class="na">bold</span><span class="o">=</span><span class="s">AbyssinicaSIL Bold</span>
+
+<span class="k">[AbyssinicaSIL Bold]</span>
+<span class="na">woff2</span><span class="o">=</span><span class="s">AbyssinicaSIL-Bold.woff2</span>
+<span class="na">fontweight</span><span class="o">=</span><span class="s">bold</span>
+</pre></div>
+<p>An asterisk (<code>*</code>) after a language code means that this font will be the default font for that language. Don't use the asterisk if you want the option to use this font for that language.
+</p><p>After creating the files, do the following:
+</p>
+<ol><li>Create a directory for the font under <code>data/fontrepo/fonts</code>.</li>
+<li>Put the woff2 and font.ini files in that directory and add them to the source repository (<code>git add</code>).</li>
+<li>Go to the <code>scripts/</code> directory and run <code>php compile-font-repo.php</code>.</li>
+<li>Commit the changes to the repository (<code>git commit -a</code>) and submit them according to the <a href="/wiki/Special:MyLanguage/Git/TLDR" title="Special:MyLanguage/Git/TLDR">Git workflow</a>.</li></ol>
+<div class="mw-heading mw-heading2"><h2 id="Adding_support_for_a_new_key_mapping_(input_method)"><span id="Adding_support_for_a_new_key_mapping_.28input_method.29"></span>Adding support for a new key mapping (input method)</h2></div>
+<p>Follow the <a rel="nofollow" class="external text" href="https://github.com/wikimedia/jquery.ime/wiki/Technical-Specification#input-method-definition">instructions on the jquery.ime github wiki</a>, but file requests in the Wikimedia-extensions-UniversalLanguageSelector <a href="/wiki/Special:MyLanguage/Phabricator" title="Special:MyLanguage/Phabricator">Phabricator</a> product.
+</p>
+<div class="mw-heading mw-heading2"><h2 id="Installation">Installation</h2></div>
+<ul><li><a href="/wiki/Special:ExtensionDistributor/UniversalLanguageSelector" title="Special:ExtensionDistributor/UniversalLanguageSelector">Download</a> and move the extracted <code>UniversalLanguageSelector</code> folder to your <code>extensions/</code> directory.<br />Developers and code contributors should install the extension <a href="/wiki/Special:MyLanguage/Download_from_Git" title="Special:MyLanguage/Download from Git">from Git</a> instead, using:<code class="mw-code mw-highlight" style="display:block">cd extensions/<br />git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/UniversalLanguageSelector</code></li>
+<li>Add the following code at the bottom of your <a href="/wiki/Special:MyLanguage/Manual:LocalSettings.php" title="Special:MyLanguage/Manual:LocalSettings.php">LocalSettings.php</a><span style="display:none"><a href="/wiki/Manual:LocalSettings.php" title="Manual:LocalSettings.php"> </a></span> file: <div class="mw-highlight mw-highlight-lang-php mw-content-ltr" dir="ltr"><pre><span></span><span class="nx">wfLoadExtension</span><span class="p">(</span> <span class="s1">&#39;UniversalLanguageSelector&#39;</span> <span class="p">);</span>
+</pre></div></li>
+<li><span typeof="mw:File"><span><img alt="Yes" src="//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/OOjs_UI_icon_check-constructive.svg/15px-OOjs_UI_icon_check-constructive.svg.png" decoding="async" width="15" height="15" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/OOjs_UI_icon_check-constructive.svg/23px-OOjs_UI_icon_check-constructive.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/f/f6/OOjs_UI_icon_check-constructive.svg/30px-OOjs_UI_icon_check-constructive.svg.png 2x" data-file-width="20" data-file-height="20" /></span></span>&#160;<b>Done</b> – Navigate to <a href="/wiki/Special:Version" title="Special:Version">Special:Version</a> on your wiki to verify that the extension is successfully installed.</li></ul>
+<p><br />
+<b>Vagrant installation:</b>
+</p>
+<ul><li>If using <a href="/wiki/Special:MyLanguage/MediaWiki-Vagrant" title="Special:MyLanguage/MediaWiki-Vagrant">Vagrant</a><span style="display:none"><a href="/wiki/MediaWiki-Vagrant" title="MediaWiki-Vagrant"> </a></span>, install with <code>vagrant roles enable uls --provision</code></li></ul>
+<div class="mw-heading mw-heading3"><h3 id="Updating_LanguageNameIndex">Updating LanguageNameIndex</h3></div>
+<p>For performing cross language search, searching  <a href="https://en.wikipedia.org/wiki/Endonym" class="extiw" title="w:Endonym">autonyms</a>, language data needs to be populated.
+ULS comes with a pre-populated language name index(data/langnames.ser).
+In case you want to update it, install <a href="/wiki/Special:MyLanguage/Extension:CLDR" title="Special:MyLanguage/Extension:CLDR">Extension:CLDR</a><span style="display:none"><a href="/wiki/Extension:CLDR" title="Extension:CLDR"> </a></span> and update the data with the following command.
+</p>
+<pre style="overflow:auto;">php UniversalLanguageSelector/data/LanguageNameIndexer.php</pre>
+<p>and verify that <b>langnames.ser</b> file gets generated in ULS/data/ folder.
+</p>
+<div class="mw-heading mw-heading2"><h2 id="Configuration">Configuration</h2></div>
+<p>The following variables are created automatically during initialization and can be used from JavaScript using mw.config.get( NAME ):
+</p>
+<ul><li><code>wgULSLanguages</code> - an associative array where the keys are language codes and the values are language names in English.</li>
+<li><code>wgULSAcceptLanguageList</code> - an array of language codes from the user's Accept-Language value. These are the languages selected in the user's browser preferences.</li></ul>
+<p>For serving fonts, you might want to add the following MIME types to your webserver if not already there. <a rel="nofollow" class="external text" href="http://www.webcoder.de/2010/06/04/how-to-configure-your-webserver-for-webm-video-and-audio-files/">This guide</a> might help.
+</p>
+<div class="mw-highlight mw-highlight-lang-apacheconf mw-content-ltr" dir="ltr"><pre><span></span><span class="nb">AddType</span><span class="w"> </span>font/woff2<span class="w"> </span>.woff2
+</pre></div>
+<p>The following variables can also be configured:
+</p>
+<ul><li><code>$wgULSGeoService</code> - ULS can use geolocation services to suggest languages based on the country the user is visiting from. Setting this to false will prevent built-in geolocation from being used. You can provide your own geolocation by setting window. Geo to object which has key 'country_code' or 'country'. If set to true, it will query Wikimedia's geoip service. The service should return jsonp that uses the supplied callback parameter. Defaults to <a rel="nofollow" class="external free" href="http://freegeoip.net/json/">http://freegeoip.net/json/</a> (<b>warning</b>: this website has shut down its API) and expects the same format.</li>
+<li><code>$wgULSEnable</code> - Enable language selection, compact language links, input methods, and web fonts for everyone unless the behavior is overridden by the configuration variables below.  Even if false, the classes and resource loader modules are registered for using other extensions. Language changing via cookie or setlang query parameter is not possible.</li>
+<li><code>$wgULSAnonCanChangeLanguage</code> - Allow anonymous users to change the language with cookie and setlang query param. Do not use it if you are caching anonymous page views without  taking cookies into account. It does not have any effect if either <code>$wgULSEnable</code> or <code>$wgULSEnableAnon</code> is set to <code class="mw-highlight mw-highlight-lang-php mw-content-ltr" style="" dir="ltr"><span class="k">false</span></code>.</li>
+<li><code>$wgULSIMEEnabled</code> - Disable the input methods feature for all users by default. The user can still enable it manually.</li>
+<li><code>$wgULSPosition</code> - The location and the form of the language selection trigger. The possible values are: <code>personal</code>: as a link near the username or the login link in the personal toolbar (default). <code>interlanguage</code>: as an icon near the header of the list of interlanguage links in the sidebar.</li>
+<li><code>$wgULSNoImeSelectors</code> - Array of jQuery selectors of elements on which IME must not be enabled. eg: <style data-mw-deduplicate="TemplateStyles:r4673781">.mw-parser-output .nowrap,.mw-parser-output .nowrap a:before,.mw-parser-output .nowrap .selflink:before{white-space:nowrap}</style><span class="nowrap"><code>[ '#wpCaptchaWord' ];</code></span></li>
+<li><code>$wgULSLanguageDetection</code> - Whether to automatically detect the user's language from the Accept-Language header.</li></ul>
+<div class="mw-heading mw-heading3"><h3 id="Position_of_ULS_trigger">Position of ULS trigger</h3></div>
+<ul><li><code>$wgULSPosition</code> - The location and the form of the language selection trigger. The possible values are: <code>personal</code>: as a link near the username or the login link in the personal toolbar (default). <code>interlanguage</code>: as an icon near the header of the list of interlanguage links in the sidebar.</li></ul>
+<p>It is also possible to have a ULS trigger anywhere on the screen. An element with <code>uls-settings-trigger</code> will act as a ULS trigger.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Overriding_default_fonts">Overriding default fonts</h3></div>
+<p>ULS has a large font repository to serve as webfonts.
+Sometimes, there are multiple fonts for a language, and there is a default font for each language/script.
+The order of fonts or default font can be overridden as follows using global scripts (MediaWiki:Common.js) or personal scripts (Special:MyPage/common.js):
+</p>
+<div class="mw-highlight mw-highlight-lang-javascript mw-content-ltr" dir="ltr"><pre><span></span><span class="nx">$</span><span class="p">.</span><span class="nx">webfonts</span><span class="p">.</span><span class="nx">repository</span><span class="p">.</span><span class="nx">languages</span><span class="p">.</span><span class="nx">languageCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;system&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;FontA&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;FontB&quot;</span><span class="p">];</span>
+</pre></div>
+<p>Here, languageCode should be a valid langauge code(eg: en, hi, nl). FontA and FontB are fonts available in font repository. In the above example for languageCode, we set a font available in local computer as default font. ie No default webfont.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Caching_configuration">Caching configuration</h3></div>
+<p>To ensure that the web fonts files are cached on the clients' machines, font file types must be added to the web server configuration. In Apache2 this consists of:
+</p>
+<ul><li>Adding font file extensions to the FileTimes regex at FilesMatch for the relevant directory, example:</li></ul>
+<div class="mw-highlight mw-highlight-lang-apacheconf mw-content-ltr" dir="ltr"><pre><span></span><span class="nt">&lt;FilesMatch</span><span class="w"> </span><span class="s">&quot;\.(gif|jpe?g|png|css|js|woff2|svg)$&quot;</span><span class="nt">&gt;</span>
+</pre></div>
+<ul><li>Adding ExpiresByType values to the relevant MIME types, similarly to image MIME types.
+<ul><li>Note that there's no standard MIME type for TTF. application/x-font-ttf is used for Wikimedia.</li></ul></li>
+<li>Adding the MIME types:</li></ul>
+<div class="mw-highlight mw-highlight-lang-apacheconf mw-content-ltr" dir="ltr"><pre><span></span><span class="nb">AddType</span><span class="w"> </span>font/woff2<span class="w"> </span>.woff2
+</pre></div>
+<p>For a full example see the <a class="external text" href="https://gerrit.wikimedia.org/r/c/operations/puppet/+/137883/2/files/apache/apache2.conf.appserver">caching configuration update done for the Wikimedia cluster</a>.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Page_translation">Page translation</h3></div>
+<p>UniversalLanguageSelector is one of the dependencies of the <a href="/wiki/Special:MyLanguage/Extension:Translate" title="Special:MyLanguage/Extension:Translate">Translate</a><span style="display:none"><a href="/wiki/Extension:Translate" title="Extension:Translate"> </a></span> extension, which uses it for several language selection features. One of it is the <a href="/wiki/Special:MyLanguage/MyLanguage" title="Special:MyLanguage/MyLanguage">MyLanguage</a> system for links, which depends on the interface language of the user, but more can be configured: see <a href="/wiki/Special:MyLanguage/Help:Extension:Translate/Configuration#Page_translation_feature" title="Special:MyLanguage/Help:Extension:Translate/Configuration">Page translation feature</a>.
+</p>
+<div class="mw-heading mw-heading2"><h2 id="Using_Webfonts">Using Webfonts</h2></div>
+<p>Users can choose web fonts for a language from the Language settings -&gt; Display settings. The first font in that menu will be applied to the wiki by default. A user can change the font to be remembered across the pages. Optionally, the user can disable the font embedding by selecting the system font.
+</p><p>If the font is available in the user's local system, the <b>font will not be downloaded</b> from the MediaWiki server. It will be taken from the user's computer. Otherwise, the font will be downloaded from the server only once, when the user selects the font the first time. From then on, the font will be taken from the local cache.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Alternate_ways_to_load_fonts">Alternate ways to load fonts</h3></div>
+<div class="mw-heading mw-heading4"><h4 id="By_specifying_font-family">By specifying font-family</h4></div>
+<p>Inside the wiki text <code>&lt;span style="font-family:'YourFontName';"&gt;YourText&lt;/span&gt;</code>, webfonts extension will check whether the font is available with the extension, if so it will download it to the client.
+So the reader will not face any difficulty reading the text even if the specified font is not available on their computer.
+</p>
+<div class="mw-heading mw-heading4"><h4 id="By_specifying_language">By specifying language</h4></div>
+<p>Inside the wiki text <code>&lt;span lang="my"&gt;YourText&lt;/span&gt;</code>, the web fonts extension will check whether any font is available for the given language with the extension and if so, it will download it to the client.
+So the reader will not face any difficulty reading the text even if the specified font is not available on their computer.
+The default font will be used if there are multiple fonts for the language.
+If the default font is not preferred, use the font-family approach to specify the font.
+If the tag has both lang and font-family definitions, font-family gets precedence.
+</p><p>Example:
+</p><p>&lt;span lang=sux&gt;𒄖𒉈𒅁𒌨𒅎&lt;/span&gt;
+</p><p>gives the text rendered in Cuneiform using Akkadian font
+</p><p><span lang="sux">𒄖𒉈𒅁𒌨𒅎</span>
+</p>
+<div class="mw-heading mw-heading2"><h2 id="See_also">See also</h2></div>
+<ul><li><a href="/wiki/Special:MyLanguage/Universal_Language_Selector" title="Special:MyLanguage/Universal Language Selector">Universal Language Selector</a><span style="display:none"><a href="/wiki/Universal_Language_Selector" title="Universal Language Selector"> </a></span></li>
+<li><a href="/wiki/Special:MyLanguage/Universal_Language_Selector/Interaction_Design_Framework" title="Special:MyLanguage/Universal Language Selector/Interaction Design Framework">Universal Language Selector/Interaction Design Framework</a><span style="display:none"><a href="/wiki/Universal_Language_Selector/Interaction_Design_Framework" title="Universal Language Selector/Interaction Design Framework"> </a></span></li>
+<li><a href="/wiki/Special:MyLanguage/Universal_Language_Selector/Technical_Design" title="Special:MyLanguage/Universal Language Selector/Technical Design">Universal Language Selector/Technical Design</a><span style="display:none"><a href="/wiki/Universal_Language_Selector/Technical_Design" title="Universal Language Selector/Technical Design"> </a></span></li>
+<li><a href="/wiki/Special:MyLanguage/Universal_Language_Selector/WebFonts" title="Special:MyLanguage/Universal Language Selector/WebFonts">Technical details of Webfonts feature of Universal Language Selector</a><span style="display:none"><a href="/wiki/Universal_Language_Selector/WebFonts" title="Universal Language Selector/WebFonts"> </a></span></li>
+<li><a href="/wiki/Extension:Google_Translator" title="Extension:Google Translator">Extension:Google Translator</a></li></ul>
+<style data-mw-deduplicate="TemplateStyles:r6651108">.mw-parser-output table.ombox{margin:4px 10%;border-collapse:collapse;border:1px solid #a2a9b1;background-color:#f8f9fa;color:#333;box-sizing:border-box}.mw-parser-output .ombox td.mbox-empty-cell{border:none;padding:0;width:1px}.mw-parser-output .ombox th.mbox-text,.mw-parser-output .ombox td.mbox-text{border:none;padding:0.25em 0.9em;width:100%}.mw-parser-output .ombox td.mbox-image{border:none;text-align:center;padding:2px 0 2px 0.9em}.mw-parser-output .ombox td.mbox-imageright{border:none;text-align:center;padding:2px 0.9em 2px 0}.mw-parser-output table.ombox-notice{border-color:#a2a9b1}.mw-parser-output table.ombox-speedy{background-color:#fee7e6;color:#333}.mw-parser-output table.ombox-speedy,.mw-parser-output table.ombox-delete{border-color:#b32424;border-width:2px}.mw-parser-output table.ombox-content{border-color:#f28500}.mw-parser-output table.ombox-style{border-color:#fc3}.mw-parser-output table.ombox-move{border-color:#9932cc}.mw-parser-output table.ombox-protection{border-color:#a2a9b1;border-width:2px}html body.mediawiki .mw-parser-output .ombox.mbox-small{clear:right;float:right;margin:4px 0 4px 1em;box-sizing:border-box;width:238px;font-size:88%;line-height:1.25em}@media screen{html.skin-theme-clientpref-night .mw-parser-output table.ombox{background-color:transparent;color:inherit}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output table.ombox{background-color:transparent;color:inherit}}</style><table class="ombox ombox-notice plainlinks" role="presentation" style="clear: both; margin-top: 0; margin-bottom: 0;"><tbody><tr><td class="mbox-image"><span class="skin-invert-image" typeof="mw:File"><span><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Wikimedia-logo_black.svg/40px-Wikimedia-logo_black.svg.png" decoding="async" width="40" height="40" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Wikimedia-logo_black.svg/60px-Wikimedia-logo_black.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Wikimedia-logo_black.svg/80px-Wikimedia-logo_black.svg.png 2x" data-file-width="512" data-file-height="512" /></span></span></td><td class="mbox-text">This extension is being used on one or more <a href="https://meta.wikimedia.org/wiki/Special:MyLanguage/Wikimedia_projects" class="extiw" title="m:Special:MyLanguage/Wikimedia projects">Wikimedia projects</a>. This probably means that the extension is stable and works well enough to be used by such high-traffic websites. Look for this extension's name in Wikimedia's <a class="external text" href="https://noc.wikimedia.org/conf/highlight.php?file=CommonSettings.php">CommonSettings.php</a> and <a class="external text" href="https://noc.wikimedia.org/conf/highlight.php?file=InitialiseSettings.php">InitialiseSettings.php</a> configuration files to see where it's installed. A full list of the extensions installed on a particular wiki can be seen on the wiki's <a href="/wiki/Special:Version" title="Special:Version">Special:Version</a> page.</td></tr></tbody></table>
+<link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r6651108"><table class="ombox ombox-notice" role="presentation"><tbody><tr><td class="mbox-image"><span typeof="mw:File"><span><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/e/ec/OOjs_UI_icon_information-progressive.svg/40px-OOjs_UI_icon_information-progressive.svg.png" decoding="async" width="40" height="40" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/e/ec/OOjs_UI_icon_information-progressive.svg/60px-OOjs_UI_icon_information-progressive.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/ec/OOjs_UI_icon_information-progressive.svg/80px-OOjs_UI_icon_information-progressive.svg.png 2x" data-file-width="20" data-file-height="20" /></span></span></td><td class="mbox-text">This extension is included in the following wiki farms/hosts and/or packages: <style data-mw-deduplicate="TemplateStyles:r6387430">.mw-parser-output .hlist dl,.mw-parser-output .hlist ol,.mw-parser-output .hlist ul{margin:0;padding:0}.mw-parser-output .hlist dd,.mw-parser-output .hlist dt,.mw-parser-output .hlist li{margin:0;display:inline}.mw-parser-output .hlist dl dl,.mw-parser-output .hlist dl ol,.mw-parser-output .hlist dl ul,.mw-parser-output .hlist ol dl,.mw-parser-output .hlist ol ol,.mw-parser-output .hlist ol ul,.mw-parser-output .hlist ul dl,.mw-parser-output .hlist ul ol,.mw-parser-output .hlist ul ul{display:inline}.mw-parser-output .hlist .mw-empty-li,.mw-parser-output .hlist .mw-empty-elt{display:none}.mw-parser-output .hlist dt:after{content:": "}.mw-parser-output .hlist dd:after,.mw-parser-output .hlist li:after{content:" · ";font-weight:bold}.mw-parser-output .hlist dd:last-child:after,.mw-parser-output .hlist dt:last-child:after,.mw-parser-output .hlist li:last-child:after{content:none}.mw-parser-output .hlist dd dd:first-child:before,.mw-parser-output .hlist dd dt:first-child:before,.mw-parser-output .hlist dd li:first-child:before,.mw-parser-output .hlist dt dd:first-child:before,.mw-parser-output .hlist dt dt:first-child:before,.mw-parser-output .hlist dt li:first-child:before,.mw-parser-output .hlist li dd:first-child:before,.mw-parser-output .hlist li dt:first-child:before,.mw-parser-output .hlist li li:first-child:before{content:" (";font-weight:normal}.mw-parser-output .hlist dd dd:last-child:after,.mw-parser-output .hlist dd dt:last-child:after,.mw-parser-output .hlist dd li:last-child:after,.mw-parser-output .hlist dt dd:last-child:after,.mw-parser-output .hlist dt dt:last-child:after,.mw-parser-output .hlist dt li:last-child:after,.mw-parser-output .hlist li dd:last-child:after,.mw-parser-output .hlist li dt:last-child:after,.mw-parser-output .hlist li li:last-child:after{content:")";font-weight:normal}.mw-parser-output .hlist ol{counter-reset:listitem}.mw-parser-output .hlist ol>li{counter-increment:listitem}.mw-parser-output .hlist ol>li:before{content:" "counter(listitem)"\a0 "}.mw-parser-output .hlist dd ol>li:first-child:before,.mw-parser-output .hlist dt ol>li:first-child:before,.mw-parser-output .hlist li ol>li:first-child:before{content:" ("counter(listitem)"\a0 "}</style><div class="hlist">
+<ul><li><a href="/wiki/Special:MyLanguage/Canasta" title="Special:MyLanguage/Canasta">Canasta</a><span style="display:none"><a href="/wiki/Canasta" title="Canasta"> </a></span></li>
+<li><a href="/wiki/Special:MyLanguage/Miraheze" title="Special:MyLanguage/Miraheze">Miraheze</a><span style="display:none"><a href="/wiki/Miraheze" title="Miraheze"> </a></span></li>
+<li><a href="/wiki/Special:MyLanguage/MediaWiki_Language_Extension_Bundle" title="Special:MyLanguage/MediaWiki Language Extension Bundle">MediaWiki Language Extension Bundle</a><span style="display:none"><a href="/wiki/MediaWiki_Language_Extension_Bundle" title="MediaWiki Language Extension Bundle"> </a></span></li>
+<li><a rel="nofollow" class="external text" href="https://www.mywikis.com/">MyWikis</a></li>
+<li><a rel="nofollow" class="external text" href="https://www.pro.wiki/">ProWiki</a></li>
+<li><a rel="nofollow" class="external text" href="https://wikiforge.net/">WikiForge</a></li></ul>
+</div>
+<small>This is not an authoritative list.</small> <small>Some wiki farms/hosts and/or packages may contain this extension even if they are not listed here.</small> <small>Always check with your wiki farms/hosts or bundle to confirm.</small></td></tr></tbody></table>
+<!-- 
+NewPP limit report
+Parsed by mw‐web.eqiad.main‐7d58bc7b95‐gl2xv
+Cached time: 20241023175359
+Cache expiry: 2592000
+Reduced expiry: false
+Complications: [vary‐revision‐sha1, show‐toc]
+CPU time usage: 0.769 seconds
+Real time usage: 1.111 seconds
+Preprocessor visited node count: 4773/1000000
+Post‐expand include size: 95365/2097152 bytes
+Template argument size: 19601/2097152 bytes
+Highest expansion depth: 20/100
+Expensive parser function count: 30/500
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 19380/5000000 bytes
+Lua time usage: 0.299/10.000 seconds
+Lua memory usage: 16187150/52428800 bytes
+Number of Wikibase entities loaded: 0/400
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%  653.432      1 -total
+ 63.64%  415.824      1 Template:Extension
+ 31.62%  206.625     57 Template:Ll
+ 22.39%  146.314     78 Template:Pagelang
+ 17.80%  116.313    126 Template:Translatable
+ 15.82%  103.377      2 Template:Mbox
+ 11.28%   73.689      1 Template:Used_by
+ 10.29%   67.256      1 Template:Flatlist
+  6.11%   39.936      1 Template:OnWikimedia
+  5.54%   36.215      7 Template:Dir
+-->
+
+<!-- Saved in parser cache with key mediawikiwiki:pcache:idhash:93965-0!canonical and timestamp 20241023175359 and revision id 6535273. Rendering was triggered because: page-view
+ -->
+</div><!--esi <esi:include src="/esitest-fa8a495983347898/content" /> --><noscript><img src="https://login.wikimedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" width="1" height="1" style="border: none; position: absolute;"></noscript>
+<div class="printfooter" data-nosnippet="">Retrieved from "<a dir="ltr" href="https://www.mediawiki.org/w/index.php?title=Extension:UniversalLanguageSelector&amp;oldid=6535273">https://www.mediawiki.org/w/index.php?title=Extension:UniversalLanguageSelector&amp;oldid=6535273</a>"</div></div>
+					<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="/wiki/Category:Stable_extensions" title="Category:Stable extensions">Stable extensions</a></li><li><a href="/wiki/Category:User_interface_extensions" title="Category:User interface extensions">User interface extensions</a></li><li><a href="/wiki/Category:Skin_extensions" title="Category:Skin extensions">Skin extensions</a></li><li><a href="/wiki/Category:Beta_Feature_extensions" title="Category:Beta Feature extensions">Beta Feature extensions</a></li><li><a href="/wiki/Category:Extensions_supporting_Composer" title="Category:Extensions supporting Composer">Extensions supporting Composer</a></li><li><a href="/wiki/Category:GPL_licensed_extensions" title="Category:GPL licensed extensions">GPL licensed extensions</a></li><li><a href="/wiki/Category:MIT_licensed_extensions" title="Category:MIT licensed extensions">MIT licensed extensions</a></li><li><a href="/wiki/Category:Extensions_with_unknown_license" title="Category:Extensions with unknown license">Extensions with unknown license</a></li><li><a href="/wiki/Category:Extensions_in_Wikimedia_version_control" title="Category:Extensions in Wikimedia version control">Extensions in Wikimedia version control</a></li><li><a href="/wiki/Category:BeforePageDisplay_extensions" title="Category:BeforePageDisplay extensions">BeforePageDisplay extensions</a></li><li><a href="/wiki/Category:GetBetaFeaturePreferences_extensions" title="Category:GetBetaFeaturePreferences extensions">GetBetaFeaturePreferences extensions</a></li><li><a href="/wiki/Category:GetPreferences_extensions" title="Category:GetPreferences extensions">GetPreferences extensions</a></li><li><a href="/wiki/Category:MakeGlobalVariablesScript_extensions" title="Category:MakeGlobalVariablesScript extensions">MakeGlobalVariablesScript extensions</a></li><li><a href="/wiki/Category:ResourceLoaderGetConfigVars_extensions" title="Category:ResourceLoaderGetConfigVars extensions">ResourceLoaderGetConfigVars extensions</a></li><li><a href="/wiki/Category:SkinAfterPortlet_extensions" title="Category:SkinAfterPortlet extensions">SkinAfterPortlet extensions</a></li><li><a href="/wiki/Category:SkinTemplateNavigation::Universal_extensions" title="Category:SkinTemplateNavigation::Universal extensions">SkinTemplateNavigation::Universal extensions</a></li><li><a href="/wiki/Category:UserGetLanguageObject_extensions" title="Category:UserGetLanguageObject extensions">UserGetLanguageObject extensions</a></li><li><a href="/wiki/Category:All_extensions" title="Category:All extensions">All extensions</a></li><li><a href="/wiki/Category:Extensions_used_on_Wikimedia" title="Category:Extensions used on Wikimedia">Extensions used on Wikimedia</a></li><li><a href="/wiki/Category:Extensions_included_in_Canasta" title="Category:Extensions included in Canasta">Extensions included in Canasta</a></li><li><a href="/wiki/Category:Extensions_included_in_Miraheze" title="Category:Extensions included in Miraheze">Extensions included in Miraheze</a></li><li><a href="/wiki/Category:Extensions_included_in_MyWikis" title="Category:Extensions included in MyWikis">Extensions included in MyWikis</a></li><li><a href="/wiki/Category:Extensions_included_in_ProWiki" title="Category:Extensions included in ProWiki">Extensions included in ProWiki</a></li><li><a href="/wiki/Category:Extensions_included_in_WikiForge" title="Category:Extensions included in WikiForge">Extensions included in WikiForge</a></li><li><a href="/wiki/Category:Localisation_extensions" title="Category:Localisation extensions">Localisation extensions</a></li><li><a href="/wiki/Category:Universal_Language_Selector" title="Category:Universal Language Selector">Universal Language Selector</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">Hidden category: <ul><li><a href="/wiki/Category:Extensions_with_master_compatibility_policy" title="Category:Extensions with master compatibility policy">Extensions with master compatibility policy</a></li></ul></div></div>
+				</div>
+			</main>
+			
+		</div>
+		<div class="mw-footer-container">
+			
+<footer id="footer" class="mw-footer" >
+	<ul id="footer-info">
+	<li id="footer-info-lastmod"> This page was last edited on 23 May 2024, at 13:14.</li>
+	<li id="footer-info-copyright">Text is available under the <a rel="nofollow" class="external text" href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">Creative Commons Attribution-ShareAlike License</a>; additional terms may apply. Text in <a class="external text" href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents">the Help: namespace</a> is available under the <a rel="nofollow" class="external text" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 License</a>.
+By using this site, you agree to the <a class="external text" href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Terms_of_Use">Terms of Use</a> and <a class="external text" href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy">Privacy Policy</a>.</li>
+</ul>
+
+	<ul id="footer-places">
+	<li id="footer-places-privacy"><a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy">Privacy policy</a></li>
+	<li id="footer-places-about"><a href="/wiki/Project:About">About mediawiki.org</a></li>
+	<li id="footer-places-disclaimers"><a href="/wiki/Project:General_disclaimer">Disclaimers</a></li>
+	<li id="footer-places-wm-codeofconduct"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Code_of_Conduct">Code of Conduct</a></li>
+	<li id="footer-places-developers"><a href="https://developer.wikimedia.org">Developers</a></li>
+	<li id="footer-places-statslink"><a href="https://stats.wikimedia.org/#/www.mediawiki.org">Statistics</a></li>
+	<li id="footer-places-cookiestatement"><a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Cookie_statement">Cookie statement</a></li>
+	<li id="footer-places-mobileview"><a href="//m.mediawiki.org/w/index.php?title=Extension:UniversalLanguageSelector&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+</ul>
+
+	<ul id="footer-icons" class="noprint">
+	<li id="footer-copyrightico"><a href="https://wikimediafoundation.org/" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><img src="/static/images/footer/wikimedia-button.svg" width="84" height="29" alt="Wikimedia Foundation" loading="lazy"></a></li>
+	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><img src="/w/resources/assets/poweredby_mediawiki.svg" alt="Powered by MediaWiki" width="88" height="31" loading="lazy"></a></li>
+</ul>
+
+</footer>
+
+		</div>
+	</div> 
+</div> 
+<div class="vector-settings" id="p-dock-bottom">
+	<ul></ul>
+</div><script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgHostname":"mw-web.eqiad.main-5ff89fd665-kxx84","wgBackendResponseTime":124,"wgPageParseReport":{"limitreport":{"cputime":"0.769","walltime":"1.111","ppvisitednodes":{"value":4773,"limit":1000000},"postexpandincludesize":{"value":95365,"limit":2097152},"templateargumentsize":{"value":19601,"limit":2097152},"expansiondepth":{"value":20,"limit":100},"expensivefunctioncount":{"value":30,"limit":500},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":19380,"limit":5000000},"entityaccesscount":{"value":0,"limit":400},"timingprofile":["100.00%  653.432      1 -total"," 63.64%  415.824      1 Template:Extension"," 31.62%  206.625     57 Template:Ll"," 22.39%  146.314     78 Template:Pagelang"," 17.80%  116.313    126 Template:Translatable"," 15.82%  103.377      2 Template:Mbox"," 11.28%   73.689      1 Template:Used_by"," 10.29%   67.256      1 Template:Flatlist","  6.11%   39.936      1 Template:OnWikimedia","  5.54%   36.215      7 Template:Dir"]},"scribunto":{"limitreport-timeusage":{"value":"0.299","limit":"10.000"},"limitreport-memusage":{"value":16187150,"limit":52428800}},"cachereport":{"origin":"mw-web.eqiad.main-7d58bc7b95-gl2xv","timestamp":"20241023175359","ttl":2592000,"transientcontent":false}}});});</script>
+</body>
+</html>

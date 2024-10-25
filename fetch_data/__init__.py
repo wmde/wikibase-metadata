@@ -9,4 +9,5 @@ from fetch_data.sparql_data import (
 from fetch_data.soup_data import (
     create_software_version_observation,
     create_special_statistics_observation,
+    update_software_data,
 )
