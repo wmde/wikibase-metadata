@@ -5,12 +5,10 @@ from fetch_data import update_software_data
 from fetch_data.soup_data.software.get_update_software_data import (
     get_update_extension_query,
 )
-from tests.utils import MockResponse
-
-
-DATA_DIRECTORY = (
-    "tests/test_create_observation/test_create_software_version_observation/data"
+from tests.test_create_observation.test_create_software_version_observation.test_constants import (
+    DATA_DIRECTORY,
 )
+from tests.utils import MockResponse
 
 
 @pytest.mark.asyncio
@@ -22,7 +20,7 @@ DATA_DIRECTORY = (
 async def test_update_software_data(mocker):
     """Test Update Software Data"""
 
-    # pylint: disable=unused-argument
+    # pylint: disable=unused-argument,too-many-return-statements
     def mockery(*args, **kwargs):
         print(args)
         query = args[0]
@@ -125,6 +123,7 @@ def test_get_update_extension_query():
 
     query = get_update_extension_query()
     assert str(query) == (
+        # pylint: disable=line-too-long
         """SELECT wikibase_software.id, wikibase_software.software_type, wikibase_software.software_name, wikibase_software.url, wikibase_software.fetched, wikibase_software.description, wikibase_software.latest_version, wikibase_software.quarterly_download_count, wikibase_software.public_wiki_count, wikibase_software.mw_bundled, wikibase_software.archived 
 FROM wikibase_software 
 WHERE (wikibase_software.fetched IS NULL OR wikibase_software.fetched < :fetched_1) AND wikibase_software.software_type = :software_type_1 AND (wikibase_software.archived = false OR wikibase_software.archived IS NULL)

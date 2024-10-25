@@ -6,12 +6,10 @@ from urllib.error import HTTPError
 import pytest
 from fetch_data import create_software_version_observation
 from tests.mock_info import MockBackgroundClassList, MockInfo
-from tests.utils import MockResponse
-
-
-DATA_DIRECTORY = (
-    "tests/test_create_observation/test_create_software_version_observation/data"
+from tests.test_create_observation.test_create_software_version_observation.test_constants import (
+    DATA_DIRECTORY,
 )
+from tests.utils import MockResponse
 
 
 @pytest.mark.asyncio
