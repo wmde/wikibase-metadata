@@ -1,6 +1,7 @@
 """Test Data Expectations with Great Expectations"""
 
 import os
+from pathlib import Path
 import pytest
 import great_expectations as gx
 
@@ -15,7 +16,11 @@ def pytest_generate_tests(metafunc):
     if "checkpoint_name" in metafunc.fixturenames:
         # Generate test cases based on the test_data list
         metafunc.parametrize(
-            "checkpoint_name", sorted(os.listdir(CHECKPOINT_DIRECTORY))
+            "checkpoint_name",
+            [
+                Path(checkpoint_filename).stem
+                for checkpoint_filename in sorted(os.listdir(CHECKPOINT_DIRECTORY))
+            ],
         )
 
 
