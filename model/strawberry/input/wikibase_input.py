@@ -15,7 +15,7 @@ class WikibaseInput:
 
     organization: Optional[str] = None
 
-    description: str
+    description: Optional[str] = None
 
     country: Optional[str] = None
 
