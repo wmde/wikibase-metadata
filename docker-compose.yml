@@ -11,3 +11,39 @@ services:
         target: /workspace
     ports:
       - 8000:8000
+
+  test-not-data:
+    build: .
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+    entrypoint:
+      - pytest
+    command:
+      - -m 
+      - "not data"
+      - --cov=. 
+      - --cov-report 
+      - html:cov_html 
+      - --order-dependencies
+    environment:
+      SETTINGS_FILE: test-settings.ini
+
+  test-data:
+    build: .
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+    entrypoint:
+      - pytest
+    command:
+      - -m 
+      - data
+      - --cov=. 
+      - --cov-report 
+      - html:cov_html 
+      - --order-dependencies
+    environment:
+      SETTINGS_FILE: test-settings.ini
