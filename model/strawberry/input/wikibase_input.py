@@ -21,7 +21,7 @@ class WikibaseInput:
 
     region: Optional[str] = None
 
-    category: WikibaseCategory
+    category: Optional[WikibaseCategory] = None
 
     test: Optional[bool] = False
 
