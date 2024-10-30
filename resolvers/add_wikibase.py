@@ -57,12 +57,16 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
         model.checked = True
         model.category = (
-            await async_session.scalars(
-                select(WikibaseCategoryModel).where(
-                    WikibaseCategoryModel.category == wikibase_input.category.name
+            (
+                await async_session.scalars(
+                    select(WikibaseCategoryModel).where(
+                        WikibaseCategoryModel.category == wikibase_input.category.name
+                    )
                 )
-            )
-        ).one()
+            ).one()
+            if wikibase_input.category is not None
+            else None
+        )
 
         async_session.add(model)
 

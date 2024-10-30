@@ -15,13 +15,13 @@ class WikibaseInput:
 
     organization: Optional[str] = None
 
-    description: str
+    description: Optional[str] = None
 
     country: Optional[str] = None
 
     region: Optional[str] = None
 
-    category: WikibaseCategory
+    category: Optional[WikibaseCategory] = None
 
     test: Optional[bool] = False
 
