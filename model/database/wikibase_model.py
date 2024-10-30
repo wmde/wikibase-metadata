@@ -1,6 +1,6 @@
 """Wikibase Table"""
 
-from typing import List, Optional
+from typing import Optional
 from sqlalchemy import Boolean, ForeignKey, Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -212,7 +212,7 @@ class WikibaseModel(ModelBase):
     )
     """Special:Version URL"""
 
-    connectivity_observations: Mapped[List[WikibaseConnectivityObservationModel]] = (
+    connectivity_observations: Mapped[list[WikibaseConnectivityObservationModel]] = (
         relationship(
             "WikibaseConnectivityObservationModel",
             back_populates="wikibase",
@@ -221,13 +221,13 @@ class WikibaseModel(ModelBase):
     )
     """Connectivity Observations"""
 
-    log_observations: Mapped[List[WikibaseLogObservationModel]] = relationship(
+    log_observations: Mapped[list[WikibaseLogObservationModel]] = relationship(
         "WikibaseLogObservationModel", back_populates="wikibase", lazy="select"
     )
     """Log Observations"""
 
     property_popularity_observations: Mapped[
-        List[WikibasePropertyPopularityObservationModel]
+        list[WikibasePropertyPopularityObservationModel]
     ] = relationship(
         "WikibasePropertyPopularityObservationModel",
         back_populates="wikibase",
@@ -235,7 +235,7 @@ class WikibaseModel(ModelBase):
     )
     """Property Popularity Observations"""
 
-    quantity_observations: Mapped[List[WikibaseQuantityObservationModel]] = (
+    quantity_observations: Mapped[list[WikibaseQuantityObservationModel]] = (
         relationship(
             "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="select"
         )
@@ -243,7 +243,7 @@ class WikibaseModel(ModelBase):
     """Quantity Observations"""
 
     software_version_observations: Mapped[
-        List[WikibaseSoftwareVersionObservationModel]
+        list[WikibaseSoftwareVersionObservationModel]
     ] = relationship(
         "WikibaseSoftwareVersionObservationModel",
         back_populates="wikibase",
@@ -251,7 +251,7 @@ class WikibaseModel(ModelBase):
     )
     """Software Version Observations"""
 
-    statistics_observations: Mapped[List[WikibaseStatisticsObservationModel]] = (
+    statistics_observations: Mapped[list[WikibaseStatisticsObservationModel]] = (
         relationship(
             "WikibaseStatisticsObservationModel",
             back_populates="wikibase",
@@ -260,7 +260,7 @@ class WikibaseModel(ModelBase):
     )
     """Statistics Observations"""
 
-    user_observations: Mapped[List[WikibaseUserObservationModel]] = relationship(
+    user_observations: Mapped[list[WikibaseUserObservationModel]] = relationship(
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="select"
     )
     """User Observations"""

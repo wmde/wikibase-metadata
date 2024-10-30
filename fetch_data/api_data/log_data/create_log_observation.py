@@ -1,8 +1,8 @@
 """Create Log Observation"""
 
+from collections.abc import Iterable
 from datetime import datetime
 from json.decoder import JSONDecodeError
-from typing import List
 from requests.exceptions import ReadTimeout, SSLError
 from data import get_async_session
 from fetch_data.api_data.log_data.fetch_log_data import (
@@ -85,7 +85,7 @@ async def create_log_observation(wikibase_id: int) -> bool:
 
 
 async def create_log_month(
-    wikibase: WikibaseModel, log_list: List[WikibaseLogRecord]
+    wikibase: WikibaseModel, log_list: Iterable[WikibaseLogRecord]
 ) -> WikibaseLogMonthObservationModel:
     """Create Log Month"""
 

@@ -1,6 +1,6 @@
 """Wikibase Observation Set Strawberry Model"""
 
-from typing import Generic, List, Optional, TypeVar
+from typing import Generic, Optional, TypeVar
 import strawberry
 
 from model.strawberry.output.observation.wikibase_observation import (
@@ -15,7 +15,7 @@ T = TypeVar("T", bound=WikibaseObservationStrawberryModel)
 class WikibaseObservationSetStrawberryModel(Generic[T]):
     """Wikibase Observation Set"""
 
-    all_observations: List[T] = strawberry.field(description="All Observations")
+    all_observations: list[T] = strawberry.field(description="All Observations")
 
     @strawberry.field(description="Most Recent Observation that Returned Data")
     def most_recent(self) -> Optional[T]:
@@ -29,7 +29,7 @@ class WikibaseObservationSetStrawberryModel(Generic[T]):
         return None
 
     @classmethod
-    def marshal(cls, data: List[T]):
+    def marshal(cls, data: list[T]):
         """Coerce List into Set"""
 
         return cls(all_observations=data)

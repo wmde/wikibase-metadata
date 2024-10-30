@@ -1,7 +1,6 @@
 """Links between items"""
 
 import re
-from typing import List
 
 
 ITEM_LINKS_QUERY = """SELECT ?item ?object WHERE {
@@ -36,7 +35,7 @@ def clean_point(point: dict) -> ItemLink:
     )
 
 
-def clean_item_link_data(results: dict) -> List[ItemLink]:
+def clean_item_link_data(results: dict) -> list[ItemLink]:
     """Query Results to list of data"""
 
     return [clean_point(p) for p in results["results"]["bindings"]]

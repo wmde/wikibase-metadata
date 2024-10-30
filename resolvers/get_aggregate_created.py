@@ -1,6 +1,6 @@
 """Get Aggregate Year Created"""
 
-from typing import List, Tuple
+from typing import Tuple
 
 from sqlalchemy import Select, and_, select, func
 
@@ -9,7 +9,7 @@ from model.database import WikibaseLogObservationModel, WikibaseModel
 from model.strawberry.output import WikibaseYearCreatedAggregateStrawberryModel
 
 
-async def get_aggregate_created() -> List[WikibaseYearCreatedAggregateStrawberryModel]:
+async def get_aggregate_created() -> list[WikibaseYearCreatedAggregateStrawberryModel]:
     """Get Aggregate Year Created"""
 
     total_quantity_query = get_created_query()
