@@ -76,14 +76,22 @@ def upgrade() -> None:
             "software", "wikibase_software", ["wikibase_software_id"], ["id"]
         )
     with op.get_bind() as conn:
-        conn.execute(sa.text("""INSERT INTO wikibase_software (software_type, software_name)
+        conn.execute(
+            sa.text(
+                """INSERT INTO wikibase_software (software_type, software_name)
 SELECT DISTINCT software_type, software_name
 FROM wikibase_software_version
-ORDER BY software_type, software_name"""))
-        conn.execute(sa.text("""UPDATE wikibase_software_version
+ORDER BY software_type, software_name"""
+            )
+        )
+        conn.execute(
+            sa.text(
+                """UPDATE wikibase_software_version
 SET wikibase_software_id = wikibase_software.id
 FROM wikibase_software
-WHERE wikibase_software_version.software_name = wikibase_software.software_name AND wikibase_software_version.software_type = wikibase_software.software_type"""))
+WHERE wikibase_software_version.software_name = wikibase_software.software_name AND wikibase_software_version.software_type = wikibase_software.software_type"""
+            )
+        )
         conn.commit()
     # ### end Alembic commands ###
 
