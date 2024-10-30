@@ -13,7 +13,7 @@ from tests.utils import MockResponse, ParsedUrl
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="log-success-1")
+@pytest.mark.dependency(name="log-success-1", depends=["add-wikibase"], scope="session")
 @pytest.mark.log
 async def test_create_log_observation(mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
@@ -59,7 +59,7 @@ async def test_create_log_observation(mocker):
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="log-failure")
+@pytest.mark.dependency(name="log-failure", depends=["add-wikibase"], scope="session")
 @pytest.mark.log
 async def test_create_log_observation_error(mocker):
     """Test One-Pull Per Month, Error Returned Scenario"""

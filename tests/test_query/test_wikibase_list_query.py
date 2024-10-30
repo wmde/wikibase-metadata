@@ -70,6 +70,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.query
+@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
 async def test_wikibase_list_query():
     """Test Wikibase List"""
 
