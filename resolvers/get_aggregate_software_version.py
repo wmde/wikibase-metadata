@@ -1,7 +1,7 @@
 """Get Aggregate Software Version"""
 
 from datetime import datetime
-from typing import Optional, Tuple
+from typing import Optional
 
 from sqlalchemy import Select, and_, select, func
 
@@ -71,7 +71,7 @@ async def get_aggregate_version(
 
 def get_query(
     software_type: WikibaseSoftwareType,
-) -> Select[Tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
+) -> Select[tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
     """Get Software Version Query"""
 
     rank_subquery = (
