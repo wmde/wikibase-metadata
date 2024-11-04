@@ -1,27 +1,25 @@
 """Create Software Version Observation"""
 
 from datetime import datetime
-import re
-from typing import List, Optional
+from typing import List
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
 from requests.exceptions import SSLError
-from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
 from data import get_async_session
+from fetch_data.soup_data.software.get_software_model import (
+    get_or_create_software_model,
+)
 from fetch_data.soup_data.software.get_update_software_data import update_software_data
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from model.database import (
     WikibaseModel,
-    WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
-
-EXTENSIONNAME_PATTERN = r"⧼([a-z]+)-extensionname⧽"
 
 
 async def create_software_version_observation(
@@ -236,56 +234,6 @@ async def get_software_version_from_row(
         version_hash=version_hash,
         version_date=version_date,
     )
-
-
-async def get_or_create_software_model(
-    async_session: AsyncSession, software_type: WikibaseSoftwareType, software_name: str
-) -> WikibaseSoftwareModel:
-    """Fetch or Create Software Model"""
-
-    if re.match(EXTENSIONNAME_PATTERN, software_name):
-        software_name = re.sub(EXTENSIONNAME_PATTERN, r"\1", software_name)
-
-    existing = (
-        await async_session.scalars(
-            select(WikibaseSoftwareModel).where(
-                and_(
-                    WikibaseSoftwareModel.software_type == software_type,
-                    WikibaseSoftwareModel.software_name == software_name,
-                )
-            )
-        )
-    ).one_or_none()
-    if existing is not None:
-        return existing
-
-    all_software_of_type = (
-        await async_session.scalars(
-            select(WikibaseSoftwareModel).where(
-                WikibaseSoftwareModel.software_type == software_type,
-            )
-        )
-    ).all()
-    nearby: Optional[WikibaseSoftwareModel] = None
-    nearby_count = 0
-    for s in all_software_of_type:
-        if (
-            s.software_name.replace(" ", "").lower()
-            == software_name.replace(" ", "").lower()
-        ):
-            nearby = s
-            nearby_count += 1
-    assert nearby_count <= 1
-    if nearby is not None:
-        return existing
-
-    creating = WikibaseSoftwareModel(
-        software_type=software_type, software_name=software_name
-    )
-    async_session.add(creating)
-    await async_session.flush()
-    await async_session.refresh(creating)
-    return creating
 
 
 def unique_versions(
