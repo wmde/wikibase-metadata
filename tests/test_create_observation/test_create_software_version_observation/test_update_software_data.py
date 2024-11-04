@@ -1,5 +1,6 @@
 """Test Extension Data"""
 
+from freezegun import freeze_time
 import pytest
 from fetch_data import update_software_data
 from fetch_data.soup_data.software.get_update_software_data import (
@@ -11,6 +12,7 @@ from tests.test_create_observation.test_create_software_version_observation.test
 from tests.utils import MockResponse
 
 
+@freeze_time("2024-03-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="update-software-data", depends=["software-version-success"], scope="session"
