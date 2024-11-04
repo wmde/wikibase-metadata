@@ -3,6 +3,7 @@
 from collections.abc import Iterable
 from datetime import datetime
 import re
+from typing import Optional
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
@@ -259,19 +260,23 @@ async def get_or_create_software_model(
     if existing is not None:
         return existing
 
-    nearby = (
+    all_software_of_type = (
         await async_session.scalars(
             select(WikibaseSoftwareModel).where(
-                and_(
-                    WikibaseSoftwareModel.software_type == software_type,
-                    func.lower(
-                        WikibaseSoftwareModel.software_name.regexp_replace(" ", "")
-                    )
-                    == software_name.replace(" ", "").lower(),
-                )
+                WikibaseSoftwareModel.software_type == software_type,
             )
         )
-    ).one_or_none()
+    ).all()
+    nearby: Optional[WikibaseSoftwareModel] = None
+    nearby_count = 0
+    for s in all_software_of_type:
+        if (
+            s.software_name.replace(" ", "").lower()
+            == software_name.replace(" ", "").lower()
+        ):
+            nearby = s
+            nearby_count += 1
+    assert nearby_count <= 1
     if nearby is not None:
         return existing
 
