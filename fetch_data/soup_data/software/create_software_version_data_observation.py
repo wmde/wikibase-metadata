@@ -2,11 +2,12 @@
 
 from collections.abc import Iterable
 from datetime import datetime
+import re
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
 from requests.exceptions import SSLError
-from sqlalchemy import and_, select
+from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
 from data import get_async_session
@@ -19,6 +20,8 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
+
+EXTENSIONNAME_PATTERN = r"⧼([a-z]+)-extensionname⧽"
 
 
 async def create_software_version_observation(
@@ -240,6 +243,9 @@ async def get_or_create_software_model(
 ) -> WikibaseSoftwareModel:
     """Fetch or Create Software Model"""
 
+    if re.match(EXTENSIONNAME_PATTERN, software_name):
+        software_name = re.sub(EXTENSIONNAME_PATTERN, r"\1", software_name)
+
     existing = (
         await async_session.scalars(
             select(WikibaseSoftwareModel).where(
@@ -251,6 +257,22 @@ async def get_or_create_software_model(
         )
     ).one_or_none()
     if existing is not None:
+        return existing
+
+    nearby = (
+        await async_session.scalars(
+            select(WikibaseSoftwareModel).where(
+                and_(
+                    WikibaseSoftwareModel.software_type == software_type,
+                    func.lower(
+                        WikibaseSoftwareModel.software_name.regexp_replace(" ", "")
+                    )
+                    == software_name.replace(" ", "").lower(),
+                )
+            )
+        )
+    ).one_or_none()
+    if nearby is not None:
         return existing
 
     creating = WikibaseSoftwareModel(
