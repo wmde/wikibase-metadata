@@ -55,7 +55,12 @@
 			"id": "5c029502-61a0-4af2-b963-7754ea0ebf75",
 			"kwargs": {
 				"column": "software_name",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -76,7 +81,12 @@
 			"id": "fb215a29-24be-46ff-936e-5c40d59b386a",
 			"kwargs": {
 				"column": "url",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -91,7 +101,12 @@
 			"id": "aeaf5287-bbae-4a3b-9a2f-761b7e052629",
 			"kwargs": {
 				"column": "description",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -106,7 +121,12 @@
 			"id": "54d43eee-b079-4448-a90c-2162aa5dfc71",
 			"kwargs": {
 				"column": "latest_version",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"

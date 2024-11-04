@@ -34,7 +34,12 @@
 			"id": "5342a046-55a7-4a61-908e-c461cd4a84bf",
 			"kwargs": {
 				"column": "wikibase_name",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -49,7 +54,12 @@
 			"id": "d4ffc143-e54a-4ad9-af88-b5c38eee60a4",
 			"kwargs": {
 				"column": "organization",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -64,7 +74,12 @@
 			"id": "43da03cf-e685-4bbd-979c-ffd8e16aeed7",
 			"kwargs": {
 				"column": "country",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -79,7 +94,12 @@
 			"id": "9ce6b575-0119-4dac-8d65-d1a210e6f423",
 			"kwargs": {
 				"column": "region",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -136,7 +156,12 @@
 			"id": "ca289730-c632-4991-81c5-f31eef1cee75",
 			"kwargs": {
 				"column": "description",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
