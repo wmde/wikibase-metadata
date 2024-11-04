@@ -266,7 +266,9 @@ async def test_extension_list_query_parameterized(
         result.data, ["extensionList", "data", idx, "description"], expected_description
     )
     assert_layered_property_value(
-        result.data, ["extensionList", "data", idx, "fetched"], expected_fetched.strftime("%Y-%m-%dT%H:%M:%S")
+        result.data,
+        ["extensionList", "data", idx, "fetched"],
+        expected_fetched.strftime("%Y-%m-%dT%H:%M:%S"),
     )
     assert_layered_property_value(
         result.data,
