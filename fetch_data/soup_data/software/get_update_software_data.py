@@ -173,7 +173,8 @@ def compile_description(soup: BeautifulSoup) -> Optional[str]:
 
     description_tag = description_title_tag.find_parent("td").find_next_sibling("td")
     assert description_tag is not None
-    return "".join(description_tag.strings).strip()
+    result = re.sub(r"[ ]{2,}", r" ", "".join(description_tag.strings).strip())
+    return result[0].upper() + result[1:]
 
 
 def compile_latest_version(soup: BeautifulSoup) -> Optional[str]:
@@ -187,7 +188,7 @@ def compile_latest_version(soup: BeautifulSoup) -> Optional[str]:
 
     version_tag = version_title_tag.find_parent("td").find_next_sibling("td")
     assert version_tag is not None, f"{version_title_tag.prettify()}"
-    return "".join(version_tag.strings).strip()
+    return re.sub(r" ", r" ", "".join(version_tag.strings).strip())
 
 
 def compile_quarterly_count(soup: BeautifulSoup) -> Optional[int]:
