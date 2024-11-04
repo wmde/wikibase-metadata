@@ -2,7 +2,11 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_layered_property_value
+from tests.utils import (
+    assert_layered_property_count,
+    assert_layered_property_value,
+    assert_page_meta,
+)
 
 
 AGGREGATED_PROPERTY_POPULARITY_QUERY = """
@@ -41,18 +45,7 @@ async def test_aggregate_property_popularity_query():
     assert result.errors is None
     assert result.data is not None
 
-    assert_layered_property_value(
-        result.data, ["aggregatePropertyPopularity", "meta", "pageNumber"], 1
-    )
-    assert_layered_property_value(
-        result.data, ["aggregatePropertyPopularity", "meta", "pageSize"], 30
-    )
-    assert_layered_property_value(
-        result.data, ["aggregatePropertyPopularity", "meta", "totalCount"], 2
-    )
-    assert_layered_property_value(
-        result.data, ["aggregatePropertyPopularity", "meta", "totalPages"], 1
-    )
+    assert_page_meta(result.data["aggregatePropertyPopularity"], 1, 30, 2, 1)
 
     assert_layered_property_count(
         result.data, ["aggregatePropertyPopularity", "data"], 2
