@@ -51,7 +51,9 @@ class Query:
     ) -> Page[WikibaseSoftwareStrawberryModel]:
         """List of Wikibases"""
 
-        return await get_software_list(page_number, page_size, WikibaseSoftwareType.EXTENSION)
+        return await get_software_list(
+            page_number, page_size, WikibaseSoftwareType.EXTENSION
+        )
 
     @strawberry.field(description="Aggregated Year of First Log Date")
     async def aggregate_created(
