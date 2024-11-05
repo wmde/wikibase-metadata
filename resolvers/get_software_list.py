@@ -4,6 +4,7 @@ from sqlalchemy import func, select
 
 from data import get_async_session
 from model.database import WikibaseSoftwareModel
+from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -13,7 +14,9 @@ from model.strawberry.output import (
 
 
 async def get_software_list(
-    page_number: PageNumberType, page_size: PageSizeType
+    page_number: PageNumberType,
+    page_size: PageSizeType,
+    software_type: WikibaseSoftwareType,
 ) -> Page[WikibaseSoftwareStrawberryModel]:
     """Get Wikibase List"""
 
@@ -22,12 +25,12 @@ async def get_software_list(
             # pylint: disable=not-callable
             select(func.count())
             .select_from(WikibaseSoftwareModel)
-            .where(WikibaseSoftwareModel.software_type == "EXTENSION")
+            .where(WikibaseSoftwareModel.software_type == software_type)
         )
         results = (
             await async_session.scalars(
                 select(WikibaseSoftwareModel)
-                .where(WikibaseSoftwareModel.software_type == "EXTENSION")
+                .where(WikibaseSoftwareModel.software_type == software_type)
                 .order_by(
                     WikibaseSoftwareModel.software_type,
                     WikibaseSoftwareModel.software_name,
