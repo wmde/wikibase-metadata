@@ -1,0 +1,219 @@
+{
+  "expectations": [
+    {
+      "id": "5186d0bf-cd58-4e83-8ac9-cf1cc2274385",
+      "kwargs": {
+        "column": "id"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "2436ef29-36c5-4559-93da-8b926017a00a",
+      "kwargs": {
+        "column": "id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "6ca95d62-9eeb-4435-9817-21a007dd2368",
+      "kwargs": {
+        "column": "id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_unique"
+    },
+    {
+      "id": "a04ae020-0d60-4a80-ae92-5ed52885870b",
+      "kwargs": {
+        "column": "software_type"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "17ac7195-315c-431f-b328-5d758113a7d3",
+      "kwargs": {
+        "column": "software_type"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "da8f1e6a-66e2-41fd-9b5f-6fdd158a4717",
+      "kwargs": {
+        "column": "software_name"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "32acaecc-fa3b-4cfb-a5c9-aca71ad2b345",
+      "kwargs": {
+        "column": "software_name"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "f316d5dd-3974-4007-9865-2fbe51edcd11",
+      "kwargs": {
+        "column_list": [
+          "software_type",
+          "software_name"
+        ]
+      },
+      "meta": {},
+      "type": "expect_compound_columns_to_be_unique"
+    },
+    {
+      "id": "2bf6c7a8-44f9-4566-9e57-f0459ab758f4",
+      "kwargs": {
+        "column": "url"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "be18048d-ff1a-4d83-9389-2b4be7cd9b90",
+      "kwargs": {
+        "column": "url"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "fc428b2f-bfbd-4501-9058-fb8899685639",
+      "kwargs": {
+        "column": "url"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_unique"
+    },
+    {
+      "id": "9182c8f3-080e-43fb-bb24-f25c352ec709",
+      "kwargs": {
+        "column": "description"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "1eab6823-0c11-4606-b98a-24cfddd0fa21",
+      "kwargs": {
+        "column": "description",
+        "mostly": 0.75
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "0e19eae2-39aa-4b09-bc33-444ba2475d6b",
+      "kwargs": {
+        "column": "latest_version"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "0f0a53ab-916c-4a52-b6bf-dd787bfe7c71",
+      "kwargs": {
+        "column": "latest_version",
+        "mostly": 0.75
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "5da516dc-5044-42ec-9d62-33f897d20f30",
+      "kwargs": {
+        "column": "quarterly_download_count"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "479da3dc-7d7d-41f1-88ac-aaf89a7fece1",
+      "kwargs": {
+        "column": "quarterly_download_count",
+        "mostly": 0.5
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "9862d304-019a-432b-bcaa-8fe914225c5a",
+      "kwargs": {
+        "column": "public_wiki_count"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "c9aaffa5-b706-463e-b00d-02ba8ccf310c",
+      "kwargs": {
+        "column": "public_wiki_count",
+        "mostly": 0.5
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "e0e7e43b-9df0-4f3c-9e95-ea6813f45ddd",
+      "kwargs": {
+        "column": "mw_bundled"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "677459aa-3f9c-46c4-9d79-e711adeb2f88",
+      "kwargs": {
+        "column": "mw_bundled",
+        "mostly": 0.9
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "4fc45491-e0b9-4a74-bf70-9886614821ba",
+      "kwargs": {
+        "column": "fetched"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "ef8dc31f-5b13-4abe-8b97-d9ecc54332fa",
+      "kwargs": {
+        "column": "fetched"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "bfd95bd5-0756-4133-8d4a-8ccd58ca5107",
+      "kwargs": {
+        "column": "archived"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "bf643ee9-b0eb-4500-92ea-c49d22adccf6",
+      "kwargs": {
+        "column": "archived",
+        "mostly": 0.9
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    }
+  ],
+  "id": "a4fe5870-c78d-433d-af64-76b02603e528",
+  "meta": {
+    "great_expectations_version": "1.2.0"
+  },
+  "name": "populated_wikibase_software_expetation_suite",
+  "notes": null
+}
