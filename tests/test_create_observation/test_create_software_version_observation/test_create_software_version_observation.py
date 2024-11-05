@@ -28,7 +28,7 @@ async def test_create_software_version_observation_success(mocker):
 
         mocker.patch(
             "fetch_data.soup_data.create_software_version_data_observation.requests.get",
-            side_effect=[MockResponse(200, version_html.read())],
+            side_effect=[MockResponse("", 200, version_html.read())],
         )
         success = await create_software_version_observation(1)
         assert success

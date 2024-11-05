@@ -39,7 +39,7 @@ async def test_aggregate_extensions_query_page_one():
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 5, 11, 3)
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 5, 10, 2)
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
     )
@@ -102,7 +102,7 @@ async def test_aggregate_extensions_query_page_two():
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 5, 11, 3)
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 5, 10, 2)
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
     )
