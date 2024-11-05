@@ -51,6 +51,10 @@ async def test_update_software_data(mocker):
                         200,
                         data.read(),
                     )
+            case "https://www.mediawiki.org/wiki/Extension:MirahezeMagic":
+                return MockResponse(
+                    "https://www.mediawiki.org/wiki/Extension:MirahezeMagic", 404
+                )
             case "https://www.mediawiki.org/wiki/Extension:ProofreadPage":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_ProofreadPage.html", mode="rb"
