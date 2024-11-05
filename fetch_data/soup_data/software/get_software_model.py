@@ -70,7 +70,7 @@ async def get_nearby_software_model(
     all_software_of_type = (
         await async_session.scalars(
             select(WikibaseSoftwareModel).where(
-                WikibaseSoftwareModel.software_type == software_type,
+                WikibaseSoftwareModel.software_type == software_type
             )
         )
     ).all()
