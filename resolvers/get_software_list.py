@@ -20,7 +20,9 @@ async def get_software_list(
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
             # pylint: disable=not-callable
-            select(func.count()).select_from(WikibaseSoftwareModel)
+            select(func.count())
+            .select_from(WikibaseSoftwareModel)
+            .where(WikibaseSoftwareModel.software_type == "EXTENSION")
         )
         results = (
             await async_session.scalars(
