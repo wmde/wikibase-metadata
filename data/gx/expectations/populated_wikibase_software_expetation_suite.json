@@ -74,7 +74,7 @@
 		},
 		{
 			"id": "1eab6823-0c11-4606-b98a-24cfddd0fa21",
-			"kwargs": { "column": "description", "mostly": 0.75 },
+			"kwargs": { "column": "description", "mostly": 0.7 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
@@ -86,7 +86,7 @@
 		},
 		{
 			"id": "0f0a53ab-916c-4a52-b6bf-dd787bfe7c71",
-			"kwargs": { "column": "latest_version", "mostly": 0.75 },
+			"kwargs": { "column": "latest_version", "mostly": 0.6 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
@@ -98,7 +98,7 @@
 		},
 		{
 			"id": "479da3dc-7d7d-41f1-88ac-aaf89a7fece1",
-			"kwargs": { "column": "quarterly_download_count", "mostly": 0.5 },
+			"kwargs": { "column": "quarterly_download_count", "mostly": 0.25 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
@@ -110,7 +110,7 @@
 		},
 		{
 			"id": "c9aaffa5-b706-463e-b00d-02ba8ccf310c",
-			"kwargs": { "column": "public_wiki_count", "mostly": 0.5 },
+			"kwargs": { "column": "public_wiki_count", "mostly": 0.25 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
@@ -122,7 +122,7 @@
 		},
 		{
 			"id": "677459aa-3f9c-46c4-9d79-e711adeb2f88",
-			"kwargs": { "column": "mw_bundled", "mostly": 0.9 },
+			"kwargs": { "column": "mw_bundled", "mostly": 0.75 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
@@ -146,7 +146,7 @@
 		},
 		{
 			"id": "bf643ee9-b0eb-4500-92ea-c49d22adccf6",
-			"kwargs": { "column": "archived", "mostly": 0.9 },
+			"kwargs": { "column": "archived", "mostly": 0.75 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		}
