@@ -75,7 +75,7 @@ async def test_extension_list_query():
     [
         (
             0,
-            "10",
+            "2",
             "Babel",
             "Babel",
             False,
