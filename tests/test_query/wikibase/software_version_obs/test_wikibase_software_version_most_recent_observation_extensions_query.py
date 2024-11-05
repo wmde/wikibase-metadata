@@ -60,7 +60,7 @@ async def test_wikibase_software_version_most_recent_observation_extensions_quer
     assert "observationDate" in most_recent
     assert_property_value(most_recent, "returnedData", True)
 
-    assert_layered_property_count(most_recent, ["installedExtensions"], 10)
+    assert_layered_property_count(most_recent, ["installedExtensions"], 11)
     for index, (
         expected_id,
         expected_name,
@@ -83,6 +83,13 @@ async def test_wikibase_software_version_most_recent_observation_extensions_quer
                 "f621799",
                 datetime(2020, 1, 29, 14, 52),
                 "f621799",
+            ),
+            (
+                "19",
+                "Miraheze Magic",
+                "e742444",
+                datetime(2024, 10, 17, 15, 21),
+                "e742444",
             ),
             ("17", "ProofreadPage", "cb0a218", datetime(2019, 9, 30, 9, 20), "cb0a218"),
             ("11", "Scribunto", None, None, None),

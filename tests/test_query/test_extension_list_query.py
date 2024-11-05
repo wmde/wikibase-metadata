@@ -48,7 +48,7 @@ async def test_extension_list_query():
     assert result.errors is None
     assert result.data is not None
     assert "extensionList" in result.data
-    assert_page_meta(result.data["extensionList"], 1, 10, 77, 8)
+    assert_page_meta(result.data["extensionList"], 1, 10, 11, 2)
     assert "data" in result.data["extensionList"]
     assert len(result.data["extensionList"]["data"]) == 10
 
@@ -75,7 +75,7 @@ async def test_extension_list_query():
     [
         (
             0,
-            "9",
+            "10",
             "Babel",
             "Babel",
             False,
@@ -90,7 +90,7 @@ async def test_extension_list_query():
         ),
         (
             1,
-            "16",
+            "17",
             "Google Analytics Integration",
             "Google_Analytics_Integration",
             False,
@@ -105,7 +105,7 @@ async def test_extension_list_query():
         ),
         (
             2,
-            "10",
+            "11",
             "LabeledSectionTransclusion",
             "Labeled_Section_Transclusion",
             False,
@@ -119,7 +119,21 @@ async def test_extension_list_query():
         ),
         (
             3,
-            "17",
+            "1",
+            "Miraheze Magic",
+            "MirahezeMagic",
+            None,
+            None,
+            datetime(2024, 3, 1),
+            None,
+            None,
+            None,
+            None,
+            [],
+        ),
+        (
+            4,
+            "18",
             "ProofreadPage",
             "Proofread_Page",
             False,
@@ -133,8 +147,8 @@ async def test_extension_list_query():
             ["Tag", "Page action", "ContentHandler", "API", "Database"],
         ),
         (
-            4,
-            "11",
+            5,
+            "12",
             "Scribunto",
             "Scribunto",
             False,
@@ -147,8 +161,8 @@ async def test_extension_list_query():
             ["Parser extension"],
         ),
         (
-            5,
-            "18",
+            6,
+            "19",
             "UniversalLanguageSelector",
             "UniversalLanguageSelector",
             False,
@@ -161,8 +175,8 @@ async def test_extension_list_query():
             ["Skin", "Beta Feature"],
         ),
         (
-            6,
-            "12",
+            7,
+            "13",
             "WikibaseClient",
             "Wikibase_Client",
             False,
@@ -175,8 +189,8 @@ async def test_extension_list_query():
             ["Parser function", "Ajax"],
         ),
         (
-            7,
-            "13",
+            8,
+            "14",
             "WikibaseLib",
             "WikibaseLib",
             True,
@@ -189,8 +203,8 @@ async def test_extension_list_query():
             [],
         ),
         (
-            8,
-            "14",
+            9,
+            "15",
             "WikibaseRepository",
             "Wikibase_Repository",
             False,
@@ -203,8 +217,8 @@ async def test_extension_list_query():
             ["ContentHandler", "API", "Ajax"],
         ),
         (
-            9,
-            "15",
+            10,
+            "16",
             "WikibaseView",
             "WikibaseView",
             False,
@@ -236,15 +250,15 @@ async def test_extension_list_query_parameterized(
     """Test Extension List"""
 
     result = await test_schema.execute(
-        EXTENSION_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 10}
+        EXTENSION_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 100}
     )
 
     assert result.errors is None
     assert result.data is not None
     assert "extensionList" in result.data
-    assert_page_meta(result.data["extensionList"], 1, 10, 77, 8)
+    assert_page_meta(result.data["extensionList"], 1, 100, 11, 1)
     assert "data" in result.data["extensionList"]
-    assert len(result.data["extensionList"]["data"]) == 10
+    assert len(result.data["extensionList"]["data"]) == 11
     assert_layered_property_value(
         result.data, ["extensionList", "data", idx, "id"], expected_id
     )
