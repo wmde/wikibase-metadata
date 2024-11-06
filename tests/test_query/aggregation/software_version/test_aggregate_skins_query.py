@@ -2,7 +2,7 @@
 
 import pytest
 
-from tests.test_query.aggregation.software_version import (
+from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
 )
 from tests.test_query.aggregation.software_version.software_version_aggregate_fragment import (
