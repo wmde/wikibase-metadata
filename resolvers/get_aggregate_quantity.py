@@ -1,7 +1,5 @@
 """Get Aggregate Quantity"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
@@ -28,7 +26,7 @@ async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
         )
 
 
-def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
+def get_total_quantity_query() -> Select[tuple[int, int, int, int, int]]:
     """Get Total Quantity Query"""
 
     rank_subquery = (

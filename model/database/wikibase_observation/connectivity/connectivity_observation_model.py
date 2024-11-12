@@ -1,6 +1,6 @@
 """Wikibase Connectivity Observation Table"""
 
-from typing import List, Optional
+from typing import Optional
 from sqlalchemy import Double, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -37,7 +37,7 @@ class WikibaseConnectivityObservationModel(ModelBase, WikibaseObservationModel):
     """Average steps for item -> item connections, ignoring disconnected items"""
 
     item_relationship_count_observations: Mapped[
-        List[WikibaseConnectivityObservationItemRelationshipCountModel]
+        list[WikibaseConnectivityObservationItemRelationshipCountModel]
     ] = relationship(
         "WikibaseConnectivityObservationItemRelationshipCountModel",
         back_populates="connectivity_observation",
@@ -46,7 +46,7 @@ class WikibaseConnectivityObservationModel(ModelBase, WikibaseObservationModel):
     """Item / Relationship Count Observations"""
 
     object_relationship_count_observations: Mapped[
-        List[WikibaseConnectivityObservationObjectRelationshipCountModel]
+        list[WikibaseConnectivityObservationObjectRelationshipCountModel]
     ] = relationship(
         "WikibaseConnectivityObservationObjectRelationshipCountModel",
         back_populates="connectivity_observation",

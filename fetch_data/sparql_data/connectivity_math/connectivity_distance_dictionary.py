@@ -1,11 +1,11 @@
 """Compile Connectivity Distance"""
 
-from typing import Iterable, List
+from collections.abc import Iterable
 from tqdm import tqdm
 
 
 def compile_distance_dict(
-    all_nodes: List[str], link_dict: dict[str, set[str]]
+    all_nodes: Iterable[str], link_dict: dict[str, set[str]]
 ) -> dict[str, dict[str, int]]:
     """Compile Distance Dictionary
 

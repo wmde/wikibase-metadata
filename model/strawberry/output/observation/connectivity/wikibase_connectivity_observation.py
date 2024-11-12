@@ -1,6 +1,6 @@
 """Wikibase Connectivity Data Observation Strawberry Model"""
 
-from typing import List, Optional
+from typing import Optional
 import strawberry
 
 from model.database import WikibaseConnectivityObservationModel
@@ -32,10 +32,10 @@ class WikibaseConnectivityObservationStrawberryModel(
         graphql_type=Optional[BigInt],
     )
 
-    relationship_item_counts: List[
+    relationship_item_counts: list[
         WikibaseConnectivityObservationItemRelationshipCountStrawberryModel
     ] = strawberry.field(description="Number of Items with Number of Relationships")
-    relationship_object_counts: List[
+    relationship_object_counts: list[
         WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel
     ] = strawberry.field(description="Number of Items with Number of Relationships")
 

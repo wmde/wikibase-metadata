@@ -94,7 +94,12 @@
 			"id": "78894d21-05f1-470d-931b-3efe46132d2e",
 			"kwargs": {
 				"column": "version",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"

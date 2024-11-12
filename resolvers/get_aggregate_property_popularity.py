@@ -1,7 +1,5 @@
 """Get Aggregate Property Popularity"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, desc, select, func
 
 from data import get_async_session
@@ -56,7 +54,7 @@ async def get_aggregate_property_popularity(
         )
 
 
-def get_unordered_query() -> Select[Tuple[int, str, int, int]]:
+def get_unordered_query() -> Select[tuple[int, str, int, int]]:
     """Get Unordered Property Popularity Query"""
 
     rank_subquery = (

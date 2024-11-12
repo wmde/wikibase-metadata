@@ -1,6 +1,6 @@
 """Wikibase User Data Observation Strawberry Model"""
 
-from typing import List, Optional
+from typing import Optional
 import strawberry
 
 from model.database import WikibaseUserObservationModel
@@ -20,7 +20,7 @@ class WikibaseUserObservationStrawberryModel(WikibaseObservationStrawberryModel)
     total_users: Optional[int] = strawberry.field(
         description="Total Users", graphql_type=Optional[BigInt]
     )
-    user_groups: List[WikibaseUserObservationGroupStrawberryModel] = strawberry.field(
+    user_groups: list[WikibaseUserObservationGroupStrawberryModel] = strawberry.field(
         description="User Groups and Counts"
     )
 

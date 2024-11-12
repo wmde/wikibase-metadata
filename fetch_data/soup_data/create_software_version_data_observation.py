@@ -1,7 +1,7 @@
 """Create Software Version Observation"""
 
+from collections.abc import Iterable
 from datetime import datetime
-from typing import List
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
@@ -61,7 +61,7 @@ async def create_software_version_observation(wikibase_id: int) -> bool:
 
 def compile_extension_versions(
     soup: BeautifulSoup,
-) -> List[WikibaseSoftwareVersionModel]:
+) -> list[WikibaseSoftwareVersionModel]:
     """Compile Extension Version List"""
 
     extensions_table = soup.find(
@@ -79,12 +79,12 @@ def compile_extension_versions(
 
 def compile_installed_software_versions(
     soup: BeautifulSoup,
-) -> List[WikibaseSoftwareVersionModel]:
+) -> list[WikibaseSoftwareVersionModel]:
     """Compile Installed Software Version List"""
 
     installed_software_table: Tag = soup.find("table", attrs={"id": "sv-software"})
 
-    software_versions: List[WikibaseSoftwareVersionModel] = []
+    software_versions: list[WikibaseSoftwareVersionModel] = []
     row: Tag
     for row in installed_software_table.find_all("tr"):
         if row.find("td"):
@@ -124,12 +124,12 @@ def compile_installed_software_versions(
     return software_versions
 
 
-def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionModel]:
+def compile_library_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersionModel]:
     """Compile Library Version List"""
 
     libraries_table = soup.find("table", attrs={"id": "sv-libraries"})
 
-    library_versions: List[WikibaseSoftwareVersionModel] = []
+    library_versions: list[WikibaseSoftwareVersionModel] = []
     row: Tag
     for row in libraries_table.find_all("tr"):
         if row.find("td"):
@@ -149,7 +149,7 @@ def compile_library_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersio
     return unique_versions(library_versions)
 
 
-def compile_skin_versions(soup: BeautifulSoup) -> List[WikibaseSoftwareVersionModel]:
+def compile_skin_versions(soup: BeautifulSoup) -> list[WikibaseSoftwareVersionModel]:
     """Compile Skin Version List"""
 
     installed_skin_table: Tag = soup.find(
@@ -214,8 +214,8 @@ def get_software_version_from_row(
 
 
 def unique_versions(
-    input_list: List[WikibaseSoftwareVersionModel],
-) -> List[WikibaseSoftwareVersionModel]:
+    input_list: Iterable[WikibaseSoftwareVersionModel],
+) -> list[WikibaseSoftwareVersionModel]:
     """Unique Version List"""
 
     temp: dict[str, WikibaseSoftwareVersionModel] = {}

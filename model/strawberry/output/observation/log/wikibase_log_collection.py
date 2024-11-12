@@ -1,7 +1,7 @@
 """Wikibase Log Collection Strawberry Models"""
 
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 import strawberry
 
 from model.database import (
@@ -81,10 +81,10 @@ class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryMod
 class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month"""
 
-    log_type_records: List[WikibaseLogMonthLogTypeStrawberryModel] = strawberry.field(
+    log_type_records: list[WikibaseLogMonthLogTypeStrawberryModel] = strawberry.field(
         description="Records of Each Type"
     )
-    user_type_records: List[WikibaseLogMonthUserTypeStrawberryModel] = strawberry.field(
+    user_type_records: list[WikibaseLogMonthUserTypeStrawberryModel] = strawberry.field(
         description="Records of Each Type"
     )
     human_users: int = strawberry.field(

@@ -1,6 +1,5 @@
 """Wikibase Software Version Observation Strawberry Model"""
 
-from typing import List
 import strawberry
 
 from model.database import WikibaseSoftwareVersionObservationModel
@@ -19,19 +18,19 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
 ):
     """Wikibase Software Version Observation"""
 
-    installed_extensions: List[WikibaseSoftwareVersionStrawberryModel] = (
+    installed_extensions: list[WikibaseSoftwareVersionStrawberryModel] = (
         strawberry.field(description="Installed Extensions w/ Versions")
     )
 
-    installed_libraries: List[WikibaseSoftwareVersionStrawberryModel] = (
+    installed_libraries: list[WikibaseSoftwareVersionStrawberryModel] = (
         strawberry.field(description="Installed Libraries w/ Versions")
     )
 
-    installed_skins: List[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
+    installed_skins: list[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
         description="Installed Skins w/ Versions"
     )
 
-    installed_software: List[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
+    installed_software: list[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
         description="Installed Software Versions"
     )
 
