@@ -1,7 +1,5 @@
 """Get Aggregate Statistics"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
@@ -41,7 +39,7 @@ async def get_aggregate_statistics() -> WikibaseStatisticsAggregateStrawberryMod
 
 
 def get_total_statistics_query() -> (
-    Select[Tuple[int, int, int, int, int, int, int, int, int]]
+    Select[tuple[int, int, int, int, int, int, int, int, int]]
 ):
     """Get Total Statistics Query"""
 

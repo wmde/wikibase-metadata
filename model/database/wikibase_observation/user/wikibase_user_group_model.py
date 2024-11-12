@@ -1,6 +1,5 @@
 """Wikibase User Group Table"""
 
-from typing import List
 from sqlalchemy import Boolean, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -27,7 +26,7 @@ class WikibaseUserGroupModel(ModelBase):
     )
     """Wikibase Default?"""
 
-    user_group_observations: Mapped[List[WikibaseUserObservationGroupModel]] = (
+    user_group_observations: Mapped[list[WikibaseUserObservationGroupModel]] = (
         relationship(
             "WikibaseUserObservationGroupModel",
             back_populates="user_group",

@@ -1,7 +1,5 @@
 """Get Aggregate Users"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, or_, select, func
 
 from data import get_async_session
@@ -36,7 +34,7 @@ async def get_aggregate_users() -> WikibaseUserAggregateStrawberryModel:
         )
 
 
-def get_total_admin_query() -> Select[Tuple[int]]:
+def get_total_admin_query() -> Select[tuple[int, int]]:
     """Get Total Admin Query"""
 
     rank_subquery = (
@@ -90,7 +88,7 @@ def get_total_admin_query() -> Select[Tuple[int]]:
     return query
 
 
-def get_total_user_query() -> Select[Tuple[int, int]]:
+def get_total_user_query() -> Select[tuple[int, int]]:
     """Get Total User Query"""
 
     rank_subquery = (

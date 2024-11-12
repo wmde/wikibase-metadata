@@ -1,6 +1,7 @@
 """Test Aggregated Skins Query"""
 
 import pytest
+
 from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
 )
@@ -8,7 +9,7 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_page_meta, assert_layered_property_count
+from tests.utils import assert_layered_property_count, assert_page_meta
 
 
 AGGREGATE_SKINS_QUERY = (

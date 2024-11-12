@@ -1,7 +1,7 @@
 """Fetch Log Data"""
 
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 from fetch_data.api_data.log_data.wikibase_log_record import WikibaseLogRecord
 from fetch_data.utils import dict_to_url, fetch_api_data
 
@@ -24,10 +24,10 @@ def get_log_param_string(
     return dict_to_url(parameters)
 
 
-def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
+def get_log_list_from_url(url: str) -> list[WikibaseLogRecord]:
     """Get Log List from URL"""
 
-    data = []
+    data: list[WikibaseLogRecord] = []
 
     query_data = fetch_api_data(url)
     for record in query_data["query"]["logevents"]:
@@ -38,10 +38,10 @@ def get_log_list_from_url(url: str) -> List[WikibaseLogRecord]:
 
 def get_month_log_list(
     api_url: str, comparison_date: datetime, oldest: bool = False
-) -> List[WikibaseLogRecord]:
+) -> list[WikibaseLogRecord]:
     """Get Log List from api_url, limit to within 30 days of the comparison date"""
 
-    data: List[WikibaseLogRecord] = []
+    data: list[WikibaseLogRecord] = []
     limit = 500
 
     should_query = True

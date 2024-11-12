@@ -1,6 +1,6 @@
 """Wikibase User Observation Table"""
 
-from typing import List, Optional
+from typing import Optional
 from sqlalchemy import Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -23,7 +23,7 @@ class WikibaseUserObservationModel(ModelBase, WikibaseObservationModel):
     )
     """Total Users"""
 
-    user_group_observations: Mapped[List[WikibaseUserObservationGroupModel]] = (
+    user_group_observations: Mapped[list[WikibaseUserObservationGroupModel]] = (
         relationship(
             "WikibaseUserObservationGroupModel",
             back_populates="user_observation",

@@ -1,6 +1,5 @@
 """Wikibase Category Table"""
 
-from typing import List
 from sqlalchemy import Enum, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -18,7 +17,7 @@ class WikibaseCategoryModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibases: Mapped[List["WikibaseModel"]] = relationship(
+    wikibases: Mapped[list["WikibaseModel"]] = relationship(
         "WikibaseModel", lazy="selectin", back_populates="category"
     )
     """Wikibases"""

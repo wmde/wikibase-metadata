@@ -2,7 +2,7 @@
 
 from datetime import datetime
 import re
-from typing import List, Optional
+from typing import Optional
 import strawberry
 
 from model.strawberry.output.semver import Semver
@@ -55,7 +55,7 @@ class WikibaseSoftwareMidVersionAggregateStrawberryModel:
     version: Optional[str] = strawberry.field(description="Software Version")
 
     private_versions: strawberry.Private[
-        List[WikibaseSoftwareVersionAggregateStrawberryModel]
+        list[WikibaseSoftwareVersionAggregateStrawberryModel]
     ]
 
     @strawberry.field(description="Wikibase Count")
@@ -74,7 +74,7 @@ class WikibaseSoftwarePatchVersionAggregateStrawberryModel(
     @strawberry.field(description="Versions")
     def sub_versions(
         self,
-    ) -> Optional[List[WikibaseSoftwareVersionAggregateStrawberryModel]]:
+    ) -> Optional[list[WikibaseSoftwareVersionAggregateStrawberryModel]]:
         """Sub-Patch Versions"""
 
         if (
@@ -101,7 +101,7 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
     @strawberry.field(description="Patch Versions")
     def patch_versions(
         self,
-    ) -> Optional[List[WikibaseSoftwarePatchVersionAggregateStrawberryModel]]:
+    ) -> Optional[list[WikibaseSoftwarePatchVersionAggregateStrawberryModel]]:
         """Patch Versions"""
 
         if self.version is None:
@@ -135,7 +135,7 @@ class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
     @strawberry.field(description="Minor Versions")
     def minor_versions(
         self,
-    ) -> Optional[List[WikibaseSoftwareMinorVersionAggregateStrawberryModel]]:
+    ) -> Optional[list[WikibaseSoftwareMinorVersionAggregateStrawberryModel]]:
         """Minor Versions"""
 
         if self.version is None:
@@ -160,13 +160,13 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
 
     software_name: str = strawberry.field(description="Software Name")
     private_versions: strawberry.Private[
-        List[WikibaseSoftwareVersionAggregateStrawberryModel]
+        list[WikibaseSoftwareVersionAggregateStrawberryModel]
     ]
 
     def __init__(
         self,
         software_name: str,
-        versions: List[WikibaseSoftwareVersionAggregateStrawberryModel],
+        versions: list[WikibaseSoftwareVersionAggregateStrawberryModel],
     ):
         self.software_name = software_name
         self.private_versions = versions
@@ -180,7 +180,7 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
     @strawberry.field(description="Major Versions")
     def major_versions(
         self,
-    ) -> List[WikibaseSoftwareMajorVersionAggregateStrawberryModel]:
+    ) -> list[WikibaseSoftwareMajorVersionAggregateStrawberryModel]:
         """Major Versions"""
 
         temp: dict[
@@ -196,7 +196,7 @@ class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
         return sorted(temp.values(), key=lambda x: x.wikibase_count(), reverse=True)
 
     @strawberry.field(description="Version List")
-    def versions(self) -> List[WikibaseSoftwareVersionAggregateStrawberryModel]:
+    def versions(self) -> list[WikibaseSoftwareVersionAggregateStrawberryModel]:
         """Version List"""
 
         return sorted(

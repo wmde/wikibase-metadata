@@ -1,6 +1,5 @@
 """Query"""
 
-from typing import List
 import strawberry
 
 from model.enum import WikibaseSoftwareType
@@ -58,7 +57,7 @@ class Query:
     @strawberry.field(description="Aggregated Year of First Log Date")
     async def aggregate_created(
         self,
-    ) -> List[WikibaseYearCreatedAggregateStrawberryModel]:
+    ) -> list[WikibaseYearCreatedAggregateStrawberryModel]:
         """Aggregated Year of First Log Date"""
 
         return await get_aggregate_created()

@@ -1,6 +1,5 @@
 """Test create_connectivity_observation"""
 
-from typing import List
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_connectivity_observation
@@ -33,7 +32,7 @@ from fetch_data import create_connectivity_observation
     ],
 )
 async def test_create_connectivity_observation_success(
-    mocker, links: List[tuple[str, str]]
+    mocker, links: list[tuple[str, str]]
 ):
     """Test"""
 

@@ -1,7 +1,7 @@
 """Page"""
 
 from math import ceil
-from typing import Annotated, Generic, List, TypeVar
+from typing import Annotated, Generic, TypeVar
 import strawberry
 
 from model.strawberry.scalars import BigInt
@@ -49,7 +49,7 @@ class Page(Generic[T]):
     """Page"""
 
     meta: PageMetadata = strawberry.field(description="Metadata")
-    data: List[T] = strawberry.field(description="Data")
+    data: list[T] = strawberry.field(description="Data")
 
     @classmethod
     def marshal(
@@ -57,7 +57,7 @@ class Page(Generic[T]):
         page_number: PageNumberType,
         page_size: PageSizeType,
         total_count: int,
-        page_data: List[T],
+        page_data: list[T],
     ) -> "Page":
         """Marshal Data into Page"""
         return cls(
