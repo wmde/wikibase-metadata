@@ -31,6 +31,15 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "5d728de7-5c72-4350-9c3c-c3d31592a3ef",
+			"kwargs": {
+				"column": "software_type",
+				"value_set": ["SOFTWARE", "SKIN", "EXTENSION", "LIBRARY"]
+			},
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
+		},
+		{
 			"id": "da8f1e6a-66e2-41fd-9b5f-6fdd158a4717",
 			"kwargs": { "column": "software_name" },
 			"meta": {},
