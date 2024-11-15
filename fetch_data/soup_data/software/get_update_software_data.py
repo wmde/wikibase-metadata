@@ -9,6 +9,7 @@ import requests
 from sqlalchemy import Select, and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from data import get_async_session
+from fetch_data.utils import clean_string
 from model.database import WikibaseSoftwareModel, WikibaseSoftwareTagModel
 from model.enum import WikibaseSoftwareType
 
@@ -125,7 +126,7 @@ async def compile_tag_list(
     tag_list: list[str] = []
     if len(list(type_tag.children)) == 1:
         tag_list = [
-            s.strip()
+            clean_string(s)
             for t_string in type_tag.stripped_strings
             for s in t_string.split(",")
         ]
@@ -135,7 +136,7 @@ async def compile_tag_list(
             for t in type_tag.find_all("a")
             if t.string is not None
             for s in t.string.split(",")
-            if (stripped := (s).strip()) != ""
+            if (stripped := clean_string(s)) != ""
         ]
     all_tags = await fetch_or_create_tags(async_session, tag_list)
 
@@ -173,8 +174,7 @@ def compile_description(soup: BeautifulSoup) -> Optional[str]:
 
     description_tag = description_title_tag.find_parent("td").find_next_sibling("td")
     assert description_tag is not None
-    result = re.sub(r"[ ]{2,}", r" ", "".join(description_tag.strings).strip())
-    return result[0].upper() + result[1:]
+    return clean_string("".join(description_tag.strings))
 
 
 def compile_latest_version(soup: BeautifulSoup) -> Optional[str]:
@@ -188,7 +188,7 @@ def compile_latest_version(soup: BeautifulSoup) -> Optional[str]:
 
     version_tag = version_title_tag.find_parent("td").find_next_sibling("td")
     assert version_tag is not None, f"{version_title_tag.prettify()}"
-    return re.sub(r" ", r" ", "".join(version_tag.strings).strip())
+    return clean_string("".join(version_tag.strings))
 
 
 def compile_quarterly_count(soup: BeautifulSoup) -> Optional[int]:
