@@ -26,9 +26,11 @@ async def test_update_software_data(mocker):
         print(args)
         query = args[0]
         match query:
+            # Babel
             case "https://www.mediawiki.org/wiki/Extension:Babel":
                 with open(f"{DATA_DIRECTORY}/Mediawiki_Babel.html", mode="rb") as data:
                     return MockResponse(query, 200, data.read())
+            # Google Analytics Integration - redirect
             case (
                 "https://www.mediawiki.org/wiki/Extension:Google Analytics Integration"
             ):
@@ -41,6 +43,7 @@ async def test_update_software_data(mocker):
                         200,
                         data.read(),
                     )
+            # Labeled Section Transclusion - redirect
             case "https://www.mediawiki.org/wiki/Extension:LabeledSectionTransclusion":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_LabeledSectionTransclusion.html",
@@ -51,10 +54,12 @@ async def test_update_software_data(mocker):
                         200,
                         data.read(),
                     )
+            # Miraheze Magic - 404
             case "https://www.mediawiki.org/wiki/Extension:MirahezeMagic":
                 return MockResponse(
                     "https://www.mediawiki.org/wiki/Extension:MirahezeMagic", 404
                 )
+            # Proofread Page - redirect
             case "https://www.mediawiki.org/wiki/Extension:ProofreadPage":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_ProofreadPage.html", mode="rb"
@@ -64,17 +69,20 @@ async def test_update_software_data(mocker):
                         200,
                         data.read(),
                     )
+            # Scribunto
             case "https://www.mediawiki.org/wiki/Extension:Scribunto":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_Scribunto.html", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
+            # Universal Language Selector
             case "https://www.mediawiki.org/wiki/Extension:UniversalLanguageSelector":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_UniversalLanguageSelector.html",
                     mode="rb",
                 ) as data:
                     return MockResponse(query, 200, data.read())
+            # Wikibase Client - redirect
             case "https://www.mediawiki.org/wiki/Extension:WikibaseClient":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_WikibaseClient.html", mode="rb"
@@ -84,11 +92,13 @@ async def test_update_software_data(mocker):
                         200,
                         data.read(),
                     )
+            # Wikibase Lib - Arcived - redirect to permalink
             case "https://www.mediawiki.org/wiki/Extension:WikibaseLib":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib.html", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
+            # Wikibase Repository - redirect
             case "https://www.mediawiki.org/wiki/Extension:WikibaseRepository":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_WikibaseRepository.html", mode="rb"
@@ -98,11 +108,13 @@ async def test_update_software_data(mocker):
                         200,
                         data.read(),
                     )
+            # Wikibase View
             case "https://www.mediawiki.org/wiki/Extension:WikibaseView":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_WikibaseView.html", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
+            # Wikibase Lib Archived Page
             case "https://www.mediawiki.org/wiki/Special:PermanentLink/3981869":
                 with open(
                     f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib_Archived.html", mode="rb"
