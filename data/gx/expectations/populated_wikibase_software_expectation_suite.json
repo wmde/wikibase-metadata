@@ -43,6 +43,20 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "f2db309d-0430-486c-b9b8-1d6a81e307df",
+			"kwargs": {
+				"column": "software_name",
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex_list"
+		},
+		{
 			"id": "f316d5dd-3974-4007-9865-2fbe51edcd11",
 			"kwargs": { "column_list": ["software_type", "software_name"] },
 			"meta": {},
@@ -67,6 +81,20 @@
 			"type": "expect_column_values_to_be_unique"
 		},
 		{
+			"id": "9106df93-7880-4f68-8672-a0e221ba51a5",
+			"kwargs": {
+				"column": "url",
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex_list"
+		},
+		{
 			"id": "9182c8f3-080e-43fb-bb24-f25c352ec709",
 			"kwargs": { "column": "description" },
 			"meta": {},
@@ -79,6 +107,20 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "a82411ee-3695-461d-b0de-0e1476210912",
+			"kwargs": {
+				"column": "description",
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex_list"
+		},
+		{
 			"id": "0e19eae2-39aa-4b09-bc33-444ba2475d6b",
 			"kwargs": { "column": "latest_version" },
 			"meta": {},
@@ -89,6 +131,20 @@
 			"kwargs": { "column": "latest_version", "mostly": 0.6 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "6d4bab5a-911b-49eb-8384-8ecdb320ff01",
+			"kwargs": {
+				"column": "latest_version",
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex_list"
 		},
 		{
 			"id": "5da516dc-5044-42ec-9d62-33f897d20f30",
@@ -127,6 +183,12 @@
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
+			"id": "c9a9a10d-eb42-4ef3-a68c-9165b2e244cf",
+			"kwargs": { "column": "mw_bundled", "value_set": [false, true] },
+			"meta": {},
+			"type": "expect_column_values_to_be_in_set"
+		},
+		{
 			"id": "4fc45491-e0b9-4a74-bf70-9886614821ba",
 			"kwargs": { "column": "fetched" },
 			"meta": {},
@@ -149,6 +211,12 @@
 			"kwargs": { "column": "archived", "mostly": 0.75 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "0a7cdf9d-d17d-4e6e-9a2e-6f4e616e0d05",
+			"kwargs": { "column": "archived", "value_set": [false, true] },
+			"meta": {},
+			"type": "expect_column_values_to_be_in_set"
 		}
 	],
 	"id": "a4fe5870-c78d-433d-af64-76b02603e528",
