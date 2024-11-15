@@ -17,6 +17,6 @@
 	"name": "wikibase_software_tag_xref_validation_definition",
 	"suite": {
 		"id": "e9bf1186-f8b1-4f4a-835f-14e6d1ee6bb5",
-		"name": "wikibase_software_tag_xref_expetation_suite"
+		"name": "wikibase_software_tag_xref_expectation_suite"
 	}
 }

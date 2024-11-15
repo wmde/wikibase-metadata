@@ -17,6 +17,6 @@
 	"name": "wikibase_software_tag_validation_definition",
 	"suite": {
 		"id": "920eb0d9-1590-45e4-ad9b-29c41fdcfce0",
-		"name": "wikibase_software_tag_expetation_suite"
+		"name": "wikibase_software_tag_expectation_suite"
 	}
 }

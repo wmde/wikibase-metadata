@@ -17,6 +17,6 @@
 	"name": "populated_wikibase_software_validation_definition",
 	"suite": {
 		"id": "a4fe5870-c78d-433d-af64-76b02603e528",
-		"name": "populated_wikibase_software_expetation_suite"
+		"name": "populated_wikibase_software_expectation_suite"
 	}
 }
