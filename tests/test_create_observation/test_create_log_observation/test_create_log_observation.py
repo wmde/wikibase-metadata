@@ -204,7 +204,7 @@ async def test_create_log_last_observation_error(mocker):
 @freeze_time("2024-03-03")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-success-2",
+    name="log-last-success-2",
     depends=[
         "log-first-success-1",
         "log-last-success-1",
