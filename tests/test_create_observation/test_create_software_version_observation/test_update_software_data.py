@@ -23,7 +23,6 @@ async def test_update_software_data(mocker):
 
     # pylint: disable-next=unused-argument,too-many-return-statements
     def mockery(*args, **kwargs):
-        print(args)
         query = args[0]
         match query:
             # Babel
