@@ -27,11 +27,6 @@ query MyQuery($wikibaseId: Int!) {
           ...WikibaseLogMonthStrawberryModelFragment
         }
       }
-      lastMonth {
-        mostRecent {
-          ...WikibaseLogMonthStrawberryModelFragment
-        }
-      }
     }
   }
 }
@@ -49,7 +44,7 @@ query MyQuery($wikibaseId: Int!) {
 )
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_most_recent_observation_query():
+async def test_wikibase_log_first_month_most_recent_observation_query():
     """Test Wikibase Most Recent Log Observation"""
 
     result = await test_schema.execute(

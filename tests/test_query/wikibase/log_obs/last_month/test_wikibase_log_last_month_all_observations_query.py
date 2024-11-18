@@ -24,11 +24,6 @@ query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
     logObservations {
-      firstMonth {
-        allObservations {
-          ...WikibaseLogMonthStrawberryModelFragment
-        }
-      }
       lastMonth {
         allObservations {
           ...WikibaseLogMonthStrawberryModelFragment
@@ -56,7 +51,7 @@ query MyQuery($wikibaseId: Int!) {
 )
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_first_month_all_observations_query():
+async def test_wikibase_log_last_month_all_observations_query():
     """Test Wikibase All Log Observations Query"""
 
     result = await test_schema.execute(
@@ -69,12 +64,11 @@ async def test_wikibase_log_first_month_all_observations_query():
     result_wikibase = result.data["wikibase"]
     assert_property_value(result_wikibase, "id", "1")
     assert "logObservations" in result_wikibase
-    assert "firstMonth" in result_wikibase["logObservations"]
-    assert "allObservations" in result_wikibase["logObservations"]['firstMonth']
 
+    assert "allObservations" in result_wikibase["logObservations"]
     assert (
         len(
-            log_observation_list := result_wikibase["logObservations"]['firstMonth'][
+            log_observation_list := result_wikibase["logObservations"][
                 "allObservations"
             ]
         )
