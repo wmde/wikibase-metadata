@@ -3,15 +3,13 @@
 from datetime import datetime
 from freezegun import freeze_time
 import pytest
-from tests.test_query.wikibase.log_obs.assert_log import (
-    assert_month_record,
-    assert_month_type_record,
-)
+from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
 from tests.utils import (
+    assert_layered_property_count,
     assert_layered_property_value,
     assert_property_value,
     DATETIME_FORMAT,
@@ -71,96 +69,34 @@ async def test_wikibase_log_first_month_all_observations_query():
     )
 
     assert_layered_property_value(log_observation_list, [0, "id"], "1")
-    """
-    assert "observationDate" in log_observation_list[0]
+    assert_layered_property_value(
+        log_observation_list,
+        [0, "observationDate"],
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+    )
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
-    assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
+    # assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
     assert_layered_property_value(
         log_observation_list,
         [0, "firstLog", "date"],
-        datetime(2023, 12, 23).strftime(DATETIME_FORMAT),
+        datetime(2023, 10, 24).strftime(DATETIME_FORMAT),
     )
-    assert_month_record(
-        log_observation_list[0]["firstMonth"],
-        "1",
-        datetime(2023, 12, 23),
-        datetime(2024, 1, 22),
-        31,
-        0,
-        0,
-        1,
-        0,
-    )
-    assert_month_type_record(
-        log_observation_list[0]["firstMonth"]["logTypeRecords"][0],
-        expected_id="1",
-        expected_log_type="THANK",
-        expected_first_log_date=datetime(2023, 12, 23),
-        expected_last_log_date=datetime(2024, 1, 22),
-        expected_log_count=31,
-        expected_user_count=0,
-        expected_human_count=0,
-    )
-
     assert_layered_property_value(
         log_observation_list,
         [0, "lastLog", "date"],
-        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+        datetime(2023, 11, 23).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        log_observation_list, [0, "lastLog", "userType"], "NONE"
+        log_observation_list, [0, "lastLog", "userType"], "USER"
     )
-    assert_month_record(
-        log_observation_list[0]["lastMonth"],
-        "2",
-        datetime(2024, 1, 31),
-        datetime(2024, 3, 1),
-        31,
-        0,
-        0,
-        1,
-        0,
-    )
-    assert_month_type_record(
-        log_observation_list[0]["lastMonth"]["logTypeRecords"][0],
-        expected_id="2",
-        expected_log_type="THANK",
-        expected_first_log_date=datetime(2024, 1, 31),
-        expected_last_log_date=datetime(2024, 3, 1),
-        expected_log_count=31,
-        expected_user_count=0,
-        expected_human_count=0,
-    )
-    """
+    assert_layered_property_value(log_observation_list, [0, "logCount"], 31)
+    assert_layered_property_value(log_observation_list, [0, "allUsers"], 3)
+    assert_layered_property_value(log_observation_list, [0, "humanUsers"], 1)
 
-    assert_layered_property_value(log_observation_list, [1, "id"], "3")
-    """
-    assert "observationDate" in log_observation_list[1]
-    assert_layered_property_value(log_observation_list, [1, "returnedData"], False)
-
-    assert_layered_property_value(log_observation_list, [2, "id"], "3")
-    assert "observationDate" in log_observation_list[2]
-    assert_layered_property_value(log_observation_list, [2, "returnedData"], True)
-    assert_layered_property_value(log_observation_list, [2, "instanceAge"], 160)
-    assert_layered_property_value(
-        log_observation_list,
-        [2, "firstLog", "date"],
-        datetime(2023, 10, 24).strftime(DATETIME_FORMAT),
-    )
-    assert_month_record(
-        log_observation_list[2]["firstMonth"],
-        "3",
-        datetime(2023, 10, 24),
-        datetime(2023, 11, 23),
-        31,
-        3,
-        1,
-        1,
-        3,
-    )
+    assert_layered_property_count(log_observation_list, [0, "logTypeRecords"], 1)
     assert_month_type_record(
-        log_observation_list[2]["firstMonth"]["logTypeRecords"][0],
-        expected_id="3",
+        log_observation_list[0]["logTypeRecords"][0],
+        expected_id="1",
         expected_log_type="THANK",
         expected_first_log_date=datetime(2023, 10, 24),
         expected_last_log_date=datetime(2023, 11, 23),
@@ -168,6 +104,8 @@ async def test_wikibase_log_first_month_all_observations_query():
         expected_user_count=3,
         expected_human_count=1,
     )
+
+    assert_layered_property_count(log_observation_list, [0, "userTypeRecords"], 3)
     for index, (
         expected_id,
         expected_user_type,
@@ -183,7 +121,7 @@ async def test_wikibase_log_first_month_all_observations_query():
         ]
     ):
         assert_month_type_record(
-            log_observation_list[2]["firstMonth"]["userTypeRecords"][index],
+            log_observation_list[0]["userTypeRecords"][index],
             expected_id=expected_id,
             expected_user_type=expected_user_type,
             expected_first_log_date=expected_first_log_date,
@@ -192,13 +130,10 @@ async def test_wikibase_log_first_month_all_observations_query():
             expected_user_count=expected_user_count,
         )
 
+    assert_layered_property_value(log_observation_list, [1, "id"], "3")
     assert_layered_property_value(
         log_observation_list,
-        [2, "lastLog", "date"],
-        datetime(2024, 1, 1).strftime(DATETIME_FORMAT),
+        [1, "observationDate"],
+        datetime(2024, 3, 2).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(
-        log_observation_list, [2, "lastLog", "userType"], "USER"
-    )
-    assert_layered_property_value(log_observation_list, [2, "lastMonth"], None)
-    """
+    assert_layered_property_value(log_observation_list, [1, "returnedData"], False)
