@@ -2,7 +2,6 @@
 
 from datetime import datetime, timedelta
 import json
-import time
 
 from freezegun import freeze_time
 import pytest
@@ -18,17 +17,23 @@ from tests.utils import MockResponse, ParsedUrl
 )
 @pytest.mark.log
 async def test_create_log_observation_first_success(mocker):
-    """Test One-Pull Per Month, Data Returned Scenario"""
+    """
+    Test One-Pull Per Month, Data Returned Scenario
+
+    log_month_id 1, first month, users, 'thanks/thank'
+    """
 
     mock_logs: list[dict] = []
     for i in range(70):
         mock_logs.append(
             {
                 "logid": i + 1,
-                "timestamp": (datetime(2024, 3, 1) - timedelta(hours=i * 24)).strftime(
+                "timestamp": (datetime(2024, 1, 1) - timedelta(hours=i * 24)).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": None,
+                "user": (
+                    "User:A" if i % 3 == 0 else "User:B" if i % 2 == 0 else "User:C"
+                ),
                 "type": "thanks",
                 "action": "thank",
             }
@@ -43,30 +48,45 @@ async def test_create_log_observation_first_success(mocker):
         assert query.base_url == "example.com/w/api.php"
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
-        assert query.params.get("list") == "logevents"
-        assert query.params.get("formatversion") == 2
 
-        match (query.params.get("ledir"), query.params.get("lelimit")):
-            # oldest
-            case ("newer", 1):
+        match query.params.get("list"):
+            case "logevents":
+                assert query.params.get("formatversion") == 2
+                match (query.params.get("ledir"), query.params.get("lelimit")):
+                    # oldest
+                    case ("newer", 1):
+                        return MockResponse(
+                            query,
+                            200,
+                            json.dumps({"query": {"logevents": [oldest_mock_log]}}),
+                        )
+                    # first month
+                    case ("newer", 500):
+                        return MockResponse(
+                            query,
+                            200,
+                            json.dumps(
+                                {
+                                    "query": {
+                                        "logevents": sorted(
+                                            mock_logs, key=lambda x: x.get("timestamp")
+                                        )
+                                    }
+                                }
+                            ),
+                        )
+            case "users":
+                users = []
+                if "User:A" in query.params.get("ususers"):
+                    users.append({"name": "User:A", "groups": ["*", "users", "admin"]})
+                if "User:B" in query.params.get("ususers"):
+                    users.append({"name": "User:B", "invalid": True})
+                if "User:C" in query.params.get("ususers"):
+                    users.append({"name": "User:C", "groups": ["*", "users", "bot"]})
                 return MockResponse(
-                    query, 200, json.dumps({"query": {"logevents": [oldest_mock_log]}})
+                    query.raw_url, 200, json.dumps({"query": {"users": users}})
                 )
-            # first month
-            case ("newer", 500):
-                return MockResponse(
-                    query,
-                    200,
-                    json.dumps(
-                        {
-                            "query": {
-                                "logevents": sorted(
-                                    mock_logs, key=lambda x: x.get("timestamp")
-                                )
-                            }
-                        }
-                    ),
-                )
+
         raise NotImplementedError(query.raw_url)
 
     mocker.patch(
@@ -83,7 +103,10 @@ async def test_create_log_observation_first_success(mocker):
 )
 @pytest.mark.log
 async def test_create_log_observation_last_success(mocker):
-    """Test One-Pull Per Month, Data Returned Scenario"""
+    """
+    Test One-Pull Per Month, Data Returned Scenario
+
+    log_month_id 2, last month, None user, thanks/thank"""
 
     mock_logs: list[dict] = []
     for i in range(70):
@@ -137,14 +160,18 @@ async def test_create_log_observation_last_success(mocker):
     assert success
 
 
-@freeze_time("2024-03-01")
+@freeze_time("2024-03-02")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-first-failure", depends=["add-wikibase"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_first_observation_error(mocker):
-    """Test One-Pull Per Month, Error Returned Scenario"""
+    """
+    Test One-Pull Per Month, Error Returned Scenario
+
+    log_month_id 3, first month, fail
+    """
 
     mocker.patch(
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
@@ -154,14 +181,17 @@ async def test_create_log_first_observation_error(mocker):
     assert success is False
 
 
-@freeze_time("2024-03-01")
+@freeze_time("2024-03-02")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-failure", depends=["add-wikibase"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_last_observation_error(mocker):
-    """Test One-Pull Per Month, Error Returned Scenario"""
+    """
+    Test One-Pull Per Month, Error Returned Scenario
+
+    log_month_id 4, last month, fail"""
 
     mocker.patch(
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
@@ -171,7 +201,7 @@ async def test_create_log_last_observation_error(mocker):
     assert success is False
 
 
-@freeze_time("2024-03-01")
+@freeze_time("2024-03-03")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-success-2",
@@ -184,9 +214,10 @@ async def test_create_log_last_observation_error(mocker):
 )
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(mocker):
-    """Test One-Pull Per Month, No Data In Range Returned Scenario"""
+    """
+    Test One-Pull Per Month, No Data In Range Returned Scenario
 
-    time.sleep(1)
+    log_month_id 5, last month, success, no data"""
 
     mock_logs: list[dict] = []
     for i in range(70):
@@ -208,42 +239,30 @@ async def test_create_log_last_observation_no_last_month(mocker):
         assert kwargs.get("timeout") == 10
 
         query = ParsedUrl(args[0])
+
         assert query.base_url == "example.com/w/api.php"
         assert query.params.get("format") == "json"
         assert query.params.get("formatversion") == 2
         assert query.params.get("action") == "query"
+        assert query.params.get("list") == "logevents"
+        assert query.params.get("ledir") == "older"
+        assert query.params.get("lelimit") == 500
 
-        match query.params.get("list"):
-            case "logevents":
-                assert query.params.get("ledir") == "older"
-                assert query.params.get("lelimit") == 500
-                return MockResponse(
-                    query.raw_url,
-                    200,
-                    json.dumps(
-                        {
-                            "query": {
-                                "logevents": sorted(
-                                    mock_logs,
-                                    key=lambda x: x.get("timestamp"),
-                                    reverse=True,
-                                )
-                            }
-                        }
-                    ),
-                )
-            case "users":
-                users = []
-                if "User:A" in query.params.get("ususers"):
-                    users.append({"name": "User:A", "groups": ["*", "users", "admin"]})
-                if "User:B" in query.params.get("ususers"):
-                    users.append({"name": "User:B", "invalid": True})
-                if "User:C" in query.params.get("ususers"):
-                    users.append({"name": "User:C", "groups": ["*", "users", "bot"]})
-                return MockResponse(
-                    query.raw_url, 200, json.dumps({"query": {"users": users}})
-                )
-        raise NotImplementedError(query.raw_url)
+        return MockResponse(
+            query.raw_url,
+            200,
+            json.dumps(
+                {
+                    "query": {
+                        "logevents": sorted(
+                            mock_logs,
+                            key=lambda x: x.get("timestamp"),
+                            reverse=True,
+                        )
+                    }
+                }
+            ),
+        )
 
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
