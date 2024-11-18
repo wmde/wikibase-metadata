@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, func
+from sqlalchemy import Boolean, DateTime, Enum, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -12,39 +12,18 @@ from model.database.wikibase_observation.log.wikibase_log_month_log_type_observa
 from model.database.wikibase_observation.log.wikibase_log_month_user_type_observation_model import (
     WikibaseLogMonthUserTypeObservationModel,
 )
+from model.database.wikibase_observation.wikibase_observation_model import (
+    WikibaseObservationModel,
+)
 from model.enum import WikibaseUserType
 
 
-class WikibaseLogMonthObservationModel(ModelBase):
+class WikibaseLogMonthObservationModel(ModelBase, WikibaseObservationModel):
     """Wikibase Log Month Observation Table"""
 
     __tablename__ = "wikibase_log_observation_month"
 
-    id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
-    """ID"""
-
-    wikibase_id: Mapped[Optional[int]] = mapped_column(
-        "wikibase_id",
-        ForeignKey(column="wikibase.id", name="observation_wikibase"),
-        nullable=True,
-    )
-    """Wikibase ID"""
-
-    returned_data: Mapped[Optional[bool]] = mapped_column(
-        "anything", Boolean, nullable=True
-    )
-    """Returned Data?"""
-
-    observation_date: Mapped[Optional[datetime]] = mapped_column(
-        "date",
-        DateTime(timezone=True),
-        nullable=True,
-        # pylint: disable=not-callable
-        default=func.now(),
-    )
-    """Date"""
-
-    first_month: Mapped[Optional[bool]] = mapped_column("first", Boolean, nullable=True)
+    first_month: Mapped[bool] = mapped_column("first", Boolean, nullable=False)
 
     first_log_date: Mapped[Optional[datetime]] = mapped_column(
         "first_log_date", DateTime(timezone=True), nullable=True

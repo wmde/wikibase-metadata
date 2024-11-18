@@ -6,7 +6,8 @@ Create Date: 2024-11-18 13:21:35.815575
 
 """
 
-from typing import Sequence, Union
+from datetime import datetime
+from typing import Optional, Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
@@ -14,9 +15,65 @@ import sqlalchemy as sa
 from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
     WikibaseLogMonthObservationModel,
 )
-from model.database.wikibase_observation.log.wikibase_log_observation_model import (
-    WikibaseLogObservationModel,
+from model.database.wikibase_observation.wikibase_observation_model import (
+    WikibaseObservationModel,
 )
+from model.enum import WikibaseUserType
+
+
+class WikibaseLogObservationModel(WikibaseObservationModel):
+    """Wikibase Log Observation Table"""
+
+    __tablename__ = "wikibase_log_observation"
+
+    first_log_date: sa.orm.Mapped[Optional[datetime]] = sa.orm.mapped_column(
+        "first_log_date", sa.DateTime(timezone=True), nullable=True
+    )
+    """Oldest Log Date"""
+
+    last_log_date: sa.orm.Mapped[Optional[datetime]] = sa.orm.mapped_column(
+        "last_log_date", sa.DateTime(timezone=True), nullable=True
+    )
+    """Most Recent Log Date"""
+
+    last_log_user_type: sa.orm.Mapped[Optional[WikibaseUserType]] = (
+        sa.orm.mapped_column(
+            "last_log_user_type", sa.Enum(WikibaseUserType), nullable=True
+        )
+    )
+    """Most Recent Log User Type - User or Bot?"""
+
+    first_month_id: sa.orm.Mapped[Optional[int]] = sa.orm.mapped_column(
+        "first_month_id",
+        sa.ForeignKey(column="wikibase_log_observation_month.id", name="first_month"),
+        nullable=True,
+    )
+    """First Month ID"""
+
+    first_month: sa.orm.Mapped[Optional[WikibaseLogMonthObservationModel]] = (
+        sa.orm.relationship(
+            "WikibaseLogMonthObservationModel",
+            lazy="selectin",
+            primaryjoin=first_month_id == WikibaseLogMonthObservationModel.id,
+        )
+    )
+    """First Month Log Record"""
+
+    last_month_id: sa.orm.Mapped[Optional[int]] = sa.orm.mapped_column(
+        "last_month_id",
+        sa.ForeignKey(column="wikibase_log_observation_month.id", name="last_month"),
+        nullable=True,
+    )
+    """Last Month ID"""
+
+    last_month: sa.orm.Mapped[Optional[WikibaseLogMonthObservationModel]] = (
+        sa.orm.relationship(
+            "WikibaseLogMonthObservationModel",
+            lazy="selectin",
+            primaryjoin=last_month_id == WikibaseLogMonthObservationModel.id,
+        )
+    )
+    """Last Month Log Record"""
 
 
 # revision identifiers, used by Alembic.
