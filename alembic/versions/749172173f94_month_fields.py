@@ -43,7 +43,7 @@ def upgrade() -> None:
                 sa.Enum("BOT", "MISSING", "USER", "NONE", name="wikibaseusertype"),
                 nullable=True,
             ),
-            insert_before="first_log_date",
+            insert_after="last_log_date",
         )
         batch_op.create_foreign_key(
             "observation_wikibase", "wikibase", ["wikibase_id"], ["id"]
