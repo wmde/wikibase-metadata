@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional
-from sqlalchemy import DateTime, Integer
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -12,6 +12,7 @@ from model.database.wikibase_observation.log.wikibase_log_month_log_type_observa
 from model.database.wikibase_observation.log.wikibase_log_month_user_type_observation_model import (
     WikibaseLogMonthUserTypeObservationModel,
 )
+from model.enum import WikibaseUserType
 
 
 class WikibaseLogMonthObservationModel(ModelBase):
@@ -22,6 +23,27 @@ class WikibaseLogMonthObservationModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
+    wikibase_id: Mapped[Optional[int]] = mapped_column(
+        "wikibase_id",
+        ForeignKey(column="wikibase.id", name="observation_wikibase"),
+        nullable=True,
+    )
+    """Wikibase ID"""
+
+    returned_data: Mapped[Optional[bool]] = mapped_column(
+        "anything", Boolean, nullable=True
+    )
+    """Returned Data?"""
+
+    observation_date: Mapped[Optional[datetime]] = mapped_column(
+        "date",
+        DateTime(timezone=True),
+        nullable=True,
+        # pylint: disable=not-callable
+        default=func.now(),
+    )
+    """Date"""
+
     first_log_date: Mapped[Optional[datetime]] = mapped_column(
         "first_log_date", DateTime(timezone=True), nullable=True
     )
@@ -31,6 +53,11 @@ class WikibaseLogMonthObservationModel(ModelBase):
         "last_log_date", DateTime(timezone=True), nullable=True
     )
     """Newest Log Date"""
+
+    last_log_user_type: Mapped[Optional[WikibaseUserType]] = mapped_column(
+        "last_log_user_type", Enum(WikibaseUserType), nullable=True
+    )
+    """Most Recent Log User Type - User or Bot?"""
 
     log_count: Mapped[int] = mapped_column("log_count", Integer, nullable=False)
     """Number of Logs"""
