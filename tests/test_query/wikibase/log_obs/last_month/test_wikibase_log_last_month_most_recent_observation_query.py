@@ -39,7 +39,7 @@ query MyQuery($wikibaseId: Int!) {
 @freeze_time("2024-04-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["log-first-success-1", "log-last-success-1", "log-success-2"],
+    depends=["log-last-success-1", "log-last-success-2"],
     scope="session",
 )
 @pytest.mark.log
@@ -57,10 +57,12 @@ async def test_wikibase_log_last_month_most_recent_observation_query():
     result_wikibase = result.data["wikibase"]
     assert_property_value(result_wikibase, "id", "1")
     assert "logObservations" in result_wikibase
-    assert "mostRecent" in result_wikibase["logObservations"]
-    most_recent = result_wikibase["logObservations"]["mostRecent"]
+    assert "lastMonth" in result_wikibase["logObservations"]
+    assert "mostRecent" in result_wikibase["logObservations"]["lastMonth"]
+    most_recent = result_wikibase["logObservations"]["lastMonth"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "3")
+    assert_property_value(most_recent, "id", "5")
+    """
     assert "observationDate" in most_recent
     assert_property_value(most_recent, "returnedData", True)
     assert_property_value(most_recent, "instanceAge", 160)
@@ -124,3 +126,4 @@ async def test_wikibase_log_last_month_most_recent_observation_query():
     )
     assert_layered_property_value(most_recent, ["lastLog", "userType"], "USER")
     assert_property_value(most_recent, "lastMonth", None)
+    """

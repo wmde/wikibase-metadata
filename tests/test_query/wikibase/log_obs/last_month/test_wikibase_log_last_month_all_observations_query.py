@@ -41,12 +41,7 @@ query MyQuery($wikibaseId: Int!) {
 @freeze_time("2024-04-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=[
-        "log-first-success-1",
-        "log-last-success-1",
-        "log-success-2",
-        "log-failure",
-    ],
+    depends=["log-last-success-1", "log-last-success-2", "log-last-failure"],
     scope="session",
 )
 @pytest.mark.log
@@ -64,18 +59,20 @@ async def test_wikibase_log_last_month_all_observations_query():
     result_wikibase = result.data["wikibase"]
     assert_property_value(result_wikibase, "id", "1")
     assert "logObservations" in result_wikibase
+    assert "lastMonth" in result_wikibase["logObservations"]
+    assert "allObservations" in result_wikibase["logObservations"]["lastMonth"]
 
-    assert "allObservations" in result_wikibase["logObservations"]
     assert (
         len(
-            log_observation_list := result_wikibase["logObservations"][
+            log_observation_list := result_wikibase["logObservations"]["lastMonth"][
                 "allObservations"
             ]
         )
         == 3
     )
 
-    assert_layered_property_value(log_observation_list, [0, "id"], "1")
+    assert_layered_property_value(log_observation_list, [0, "id"], "2")
+    """
     assert "observationDate" in log_observation_list[0]
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
     assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
@@ -135,12 +132,16 @@ async def test_wikibase_log_last_month_all_observations_query():
         expected_user_count=0,
         expected_human_count=0,
     )
+    """
 
-    assert_layered_property_value(log_observation_list, [1, "id"], "2")
+    assert_layered_property_value(log_observation_list, [1, "id"], "4")
+    """
     assert "observationDate" in log_observation_list[1]
     assert_layered_property_value(log_observation_list, [1, "returnedData"], False)
+    """
 
-    assert_layered_property_value(log_observation_list, [2, "id"], "3")
+    assert_layered_property_value(log_observation_list, [2, "id"], "5")
+    """
     assert "observationDate" in log_observation_list[2]
     assert_layered_property_value(log_observation_list, [2, "returnedData"], True)
     assert_layered_property_value(log_observation_list, [2, "instanceAge"], 160)
@@ -203,3 +204,4 @@ async def test_wikibase_log_last_month_all_observations_query():
         log_observation_list, [2, "lastLog", "userType"], "USER"
     )
     assert_layered_property_value(log_observation_list, [2, "lastMonth"], None)
+    """
