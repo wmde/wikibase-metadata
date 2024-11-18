@@ -22,14 +22,15 @@ from model.strawberry.scalars import BigInt
 class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Log Month"""
 
-    all_users: int = strawberry.field(
-        description="Distinct User Count", graphql_type=BigInt
+    all_users: Optional[int] = strawberry.field(
+        description="Distinct User Count", graphql_type=Optional[BigInt]
     )
     log_count: Optional[int] = strawberry.field(
         description="Log Count", graphql_type=Optional[BigInt]
     )
-    human_users: int = strawberry.field(
-        description="Distinct (Probably) Human User Count", graphql_type=BigInt
+    human_users: Optional[int] = strawberry.field(
+        description="Distinct (Probably) Human User Count",
+        graphql_type=Optional[BigInt],
     )
 
     first_log: Optional[WikibaseLogStrawberryModel] = strawberry.field(
@@ -61,7 +62,7 @@ class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
             human_users=model.human_user_count,
             first_log=(
                 WikibaseLogStrawberryModel(date=model.first_log_date)
-                if model.returned_data
+                if model.returned_data and model.first_log_date is not None
                 else None
             ),
             last_log=(
@@ -73,7 +74,7 @@ class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
                         else None
                     ),
                 )
-                if model.returned_data
+                if model.returned_data and model.last_log_date is not None
                 else None
             ),
             log_type_records=sorted(
