@@ -66,7 +66,12 @@ class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
             ),
             last_log=(
                 WikibaseLogUserStrawberryModel(
-                    date=model.last_log_date, user_type=model.last_log_user_type.name
+                    date=model.last_log_date,
+                    user_type=(
+                        model.last_log_user_type.name
+                        if model.last_log_user_type is not None
+                        else None
+                    ),
                 )
                 if model.returned_data
                 else None
