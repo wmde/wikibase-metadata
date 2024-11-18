@@ -44,6 +44,8 @@ class WikibaseLogMonthObservationModel(ModelBase):
     )
     """Date"""
 
+    first_month: Mapped[Optional[bool]] = mapped_column("first", Boolean, nullable=True)
+
     first_log_date: Mapped[Optional[datetime]] = mapped_column(
         "first_log_date", DateTime(timezone=True), nullable=True
     )
@@ -59,13 +61,17 @@ class WikibaseLogMonthObservationModel(ModelBase):
     )
     """Most Recent Log User Type - User or Bot?"""
 
-    log_count: Mapped[int] = mapped_column("log_count", Integer, nullable=False)
+    log_count: Mapped[Optional[int]] = mapped_column(
+        "log_count", Integer, nullable=True
+    )
     """Number of Logs"""
 
-    user_count: Mapped[int] = mapped_column("user_count", Integer, nullable=False)
+    user_count: Mapped[Optional[int]] = mapped_column(
+        "user_count", Integer, nullable=True
+    )
     """Number of Unique Users"""
 
-    human_user_count: Mapped[int] = mapped_column(
+    human_user_count: Mapped[Optional[int]] = mapped_column(
         "user_count_no_bot", Integer, nullable=True
     )
     """Number of Unique Users, Without Bots"""
