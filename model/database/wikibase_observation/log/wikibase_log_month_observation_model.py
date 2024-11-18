@@ -1,6 +1,6 @@
 """Wikibase Log Month Observation Table"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from sqlalchemy import Boolean, DateTime, Enum, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -64,6 +64,11 @@ class WikibaseLogMonthObservationModel(ModelBase, WikibaseObservationModel):
         relationship("WikibaseLogMonthUserTypeObservationModel", lazy="selectin")
     )
     """User Type Observations"""
+
+    def __init__(self, wikibase_id: int, first_month: bool):
+        self.wikibase_id = wikibase_id
+        self.first_month = first_month
+        self.observation_date = datetime.now(tz=timezone.utc)
 
     def __str__(self) -> str:
         return (
