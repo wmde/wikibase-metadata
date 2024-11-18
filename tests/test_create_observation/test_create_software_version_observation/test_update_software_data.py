@@ -23,6 +23,7 @@ async def test_update_software_data(mocker):
 
     # pylint: disable=unused-argument,too-many-return-statements
     def mockery(*args, **kwargs):
+        assert kwargs.get("timeout") == 10
         query = args[0]
         match query:
             # Babel
