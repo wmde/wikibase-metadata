@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Optional
 from tests.utils import (
     assert_layered_property_count,
+    assert_layered_property_value,
     assert_property_value,
     DATETIME_FORMAT,
 )
@@ -23,11 +24,15 @@ def assert_month_record(
     """Assert Month Record"""
 
     assert_property_value(month_record, "id", expected_id)
-    assert_property_value(
-        month_record, "firstLogDate", expected_first_log_date.strftime(DATETIME_FORMAT)
+    assert_layered_property_value(
+        month_record,
+        ["firstLog", "date"],
+        expected_first_log_date.strftime(DATETIME_FORMAT),
     )
-    assert_property_value(
-        month_record, "lastLogDate", expected_last_log_date.strftime(DATETIME_FORMAT)
+    assert_layered_property_value(
+        month_record,
+        ["lastLog", "date"],
+        expected_last_log_date.strftime(DATETIME_FORMAT),
     )
     assert_property_value(month_record, "logCount", expected_log_count)
     assert_property_value(month_record, "allUsers", expected_user_count)
