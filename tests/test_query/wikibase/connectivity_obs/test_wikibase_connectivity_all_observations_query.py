@@ -35,7 +35,12 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.connectivity
 @pytest.mark.dependency(
     depends=[
-        "connectivity-success-simple",
+        "connectivity-success-ood",
+        "connectivity-success-simple-1",
+        "connectivity-success-simple-2",
+        "connectivity-success-simple-3",
+        "connectivity-success-simple-4",
+        "connectivity-success-simple-5",
         "connectivity-success-complex",
         "connectivity-failure",
     ],
