@@ -1,3 +1,4 @@
+# pylint: disable=bare-except
 """Update Out of Date Observations"""
 
 from fetch_data.api_data import create_log_observation, create_user_observation
