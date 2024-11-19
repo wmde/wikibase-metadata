@@ -3,6 +3,7 @@
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
@@ -24,15 +25,15 @@ from model.strawberry import schema
 # Set up the scheduler
 scheduler = AsyncIOScheduler()
 
-scheduler.add_job(update_out_of_date_connectivity_observations, CronTrigger(minute=0))
-scheduler.add_job(update_out_of_date_log_first_observations, CronTrigger(minute=5))
-scheduler.add_job(update_out_of_date_log_last_observations, CronTrigger(minute=10))
-scheduler.add_job(update_out_of_date_property_observations, CronTrigger(minute=15))
-scheduler.add_job(update_out_of_date_quantity_observations, CronTrigger(minute=20))
-scheduler.add_job(update_out_of_date_software_observations, CronTrigger(minute=25))
-scheduler.add_job(update_software_data, CronTrigger(minute=30))
-scheduler.add_job(update_out_of_date_stats_observations, CronTrigger(minute=35))
-scheduler.add_job(update_out_of_date_user_observations, CronTrigger(minute=40))
+scheduler.add_job(update_out_of_date_connectivity_observations, CronTrigger(hour=0))
+scheduler.add_job(update_out_of_date_log_first_observations, CronTrigger(hour=1))
+scheduler.add_job(update_out_of_date_log_last_observations, CronTrigger(hour=2))
+scheduler.add_job(update_out_of_date_property_observations, CronTrigger(hour=3))
+scheduler.add_job(update_out_of_date_quantity_observations, CronTrigger(hour=4))
+scheduler.add_job(update_out_of_date_software_observations, CronTrigger(hour=5))
+scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
+scheduler.add_job(update_out_of_date_stats_observations, CronTrigger(hour=6))
+scheduler.add_job(update_out_of_date_user_observations, CronTrigger(hour=7))
 
 
 # Ensure the scheduler shuts down properly on application exit.
