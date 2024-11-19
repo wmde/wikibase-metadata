@@ -60,11 +60,7 @@ async def test_create_user_observation_single_pull(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="user-2000",
-    depends=["user-empty-ood", "user-failure", "user-20"],
-    scope="session",
-)
+@pytest.mark.dependency(name="user-2000", depends=["user-20"], scope="session")
 @pytest.mark.user
 async def test_create_user_observation_multiple_pull(mocker):
     """Test Data, Multiple Pull Scenario"""
