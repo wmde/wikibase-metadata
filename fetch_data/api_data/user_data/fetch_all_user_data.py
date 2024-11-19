@@ -13,9 +13,7 @@ async def get_all_user_data(api_url: str) -> list[dict]:
     next_from: str = "!"
 
     while should_query:
-        query_data = await fetch_api_data(
-            api_url + all_users_url(continue_from=next_from)
-        )
+        query_data = await fetch_api_data(api_url + all_users_url(continue_from=next_from))
         data.extend(query_data["query"]["allusers"])
         print(f"\tData Length: {len(data)}")
         if "continue" in query_data:

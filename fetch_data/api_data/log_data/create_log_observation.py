@@ -44,9 +44,7 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
             print("FETCHING LOGS")
             log_list = await get_month_log_list(
                 wikibase.action_api_url.url,
-                comparison_date=await get_log_list_comparison_date(
-                    wikibase, first_month
-                ),
+                comparison_date=await get_log_list_comparison_date(wikibase, first_month),
                 oldest=first_month,
             )
             observation = await create_log_month(wikibase, log_list, observation)
@@ -60,18 +58,14 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
         return observation.returned_data
 
 
-async def get_log_list_comparison_date(
-    wikibase: WikibaseModel, first: bool
-) -> datetime:
+async def get_log_list_comparison_date(wikibase: WikibaseModel, first: bool) -> datetime:
     """Return either date of first log or today"""
 
     if first:
         print("FETCHING OLDEST LOG")
-        oldest_log = (
-            await get_log_list_from_url(
-                wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
-            )
-        )[0]
+        oldest_log = (await get_log_list_from_url(
+            wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
+        ))[0]
         return oldest_log.log_date
 
     return datetime.today()
