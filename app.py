@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
-from fetch_data.out_of_date.update_out_of_date import (
+from fetch_data import (
     update_out_of_date_connectivity_observations,
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
