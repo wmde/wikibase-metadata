@@ -4,12 +4,27 @@ from math import floor
 import time
 import pytest
 from requests import ReadTimeout
-from fetch_data import create_user_observation
+from fetch_data import create_user_observation, update_out_of_date_user_observations
 
 
 TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
 
 TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="user-empty-ood", depends=["add-wikibase"], scope="session"
+)
+@pytest.mark.user
+async def test_update_out_of_date_user_observations_empty(mocker):
+    """Test No-Data Scenario"""
+
+    mocker.patch(
+        "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
+        side_effect=[{"query": {"allusers": []}}],
+    )
+    await update_out_of_date_user_observations()
 
 
 @pytest.mark.asyncio
