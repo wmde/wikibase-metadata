@@ -1,5 +1,6 @@
 """Create Connectivity Data Observation"""
 
+import asyncio
 from json import JSONDecodeError
 from urllib.error import HTTPError, URLError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
@@ -86,7 +87,9 @@ async def compile_connectivity_observation(
                 )
 
             print("\tCalculating Distance Dict")
-            distance_dict = compile_distance_dict(all_nodes, item_link_dict)
+            distance_dict = await asyncio.to_thread(
+                compile_distance_dict, all_nodes, item_link_dict
+            )
 
             all_nonzero_distances = [
                 distance
