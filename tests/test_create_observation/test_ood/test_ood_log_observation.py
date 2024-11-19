@@ -87,7 +87,7 @@ async def test_update_out_of_date_log_last_observations_success(mocker):
     mock_logs: list[dict] = [
         {
             "logid": 1,
-            "timestamp": datetime(2024, 3, 1).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "timestamp": datetime(2024, 2, 1).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "user": None,
             "type": "thanks",
             "action": "thank",
