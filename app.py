@@ -23,37 +23,23 @@ from model.strawberry import schema
 # Set up the scheduler
 scheduler = AsyncIOScheduler()
 
-start_min = 14
-
-scheduler.add_job(
-    update_out_of_date_connectivity_observations, CronTrigger(minute=0 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_log_first_observations, CronTrigger(minute=5 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_log_last_observations, CronTrigger(minute=10 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_property_observations, CronTrigger(minute=15 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_quantity_observations, CronTrigger(minute=20 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_software_observations, CronTrigger(minute=25 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_stats_observations, CronTrigger(minute=30 + start_min)
-)
-scheduler.add_job(
-    update_out_of_date_user_observations, CronTrigger(minute=35 + start_min)
-)
+scheduler.add_job(update_out_of_date_connectivity_observations, CronTrigger(minute=0))
+scheduler.add_job(update_out_of_date_log_first_observations, CronTrigger(minute=5))
+scheduler.add_job(update_out_of_date_log_last_observations, CronTrigger(minute=10))
+scheduler.add_job(update_out_of_date_property_observations, CronTrigger(minute=15))
+scheduler.add_job(update_out_of_date_quantity_observations, CronTrigger(minute=20))
+scheduler.add_job(update_out_of_date_software_observations, CronTrigger(minute=25))
+scheduler.add_job(update_out_of_date_stats_observations, CronTrigger(minute=30))
+scheduler.add_job(update_out_of_date_user_observations, CronTrigger(minute=35))
 
 
 # Ensure the scheduler shuts down properly on application exit.
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(
+    app: FastAPI,
+):  # pylint: disable=redefined-outer-name,unused-argument
+    """Triggers at startup, yields, resumes at shutdown"""
+
     scheduler.start()
     yield
     scheduler.shutdown()
