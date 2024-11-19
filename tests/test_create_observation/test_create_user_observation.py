@@ -4,7 +4,7 @@ from math import floor
 import time
 import pytest
 from requests import ReadTimeout
-from fetch_data import create_user_observation, update_out_of_date_user_observations
+from fetch_data import create_user_observation
 
 
 TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
@@ -14,35 +14,8 @@ TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="user-empty-ood", depends=["add-wikibase"], scope="session"
+    name="user-failure", depends=["user-empty-ood"], scope="session"
 )
-@pytest.mark.user
-async def test_update_out_of_date_user_observations_empty(mocker):
-    """Test No-Data Scenario"""
-
-    mocker.patch(
-        "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
-        side_effect=[{"query": {"allusers": []}}],
-    )
-    await update_out_of_date_user_observations()
-
-
-@pytest.mark.asyncio
-@pytest.mark.dependency(name="user-empty", depends=["add-wikibase"], scope="session")
-@pytest.mark.user
-async def test_create_user_observation_empty(mocker):
-    """Test No-Data Scenario"""
-
-    mocker.patch(
-        "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
-        side_effect=[{"query": {"allusers": []}}],
-    )
-    success = await create_user_observation(1)
-    assert success
-
-
-@pytest.mark.asyncio
-@pytest.mark.dependency(name="user-failure", depends=["user-empty"])
 @pytest.mark.user
 async def test_create_user_observation_failure(mocker):
     """Test Error Scenario"""
@@ -58,7 +31,7 @@ async def test_create_user_observation_failure(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-20", depends=["user-empty", "user-failure"])
+@pytest.mark.dependency(name="user-20", depends=["user-failure"], scope="session")
 @pytest.mark.user
 async def test_create_user_observation_single_pull(mocker):
     """Test Data, Single Pull Scenario"""
@@ -88,7 +61,9 @@ async def test_create_user_observation_single_pull(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="user-2000", depends=["user-empty", "user-failure", "user-20"]
+    name="user-2000",
+    depends=["user-empty-ood", "user-failure", "user-20"],
+    scope="session",
 )
 @pytest.mark.user
 async def test_create_user_observation_multiple_pull(mocker):

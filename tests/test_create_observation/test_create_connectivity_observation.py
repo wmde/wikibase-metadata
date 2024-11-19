@@ -2,32 +2,15 @@
 
 from urllib.error import HTTPError
 import pytest
-from fetch_data import (
-    create_connectivity_observation,
-    update_out_of_date_connectivity_observations,
-)
+from fetch_data import create_connectivity_observation
 
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.dependency(
-    name="connectivity-success-ood", depends=["add-wikibase"], scope="session"
-)
-@pytest.mark.sparql
-async def test_update_out_of_date_connectivity_observations(mocker):
-    """Test"""
-
-    mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
-        side_effect=[{"results": {"bindings": []}}],
-    )
-    await update_out_of_date_connectivity_observations()
-
-
-@pytest.mark.asyncio
-@pytest.mark.connectivity
-@pytest.mark.dependency(
-    name="connectivity-success-simple", depends=["add-wikibase"], scope="session"
+    name="connectivity-success-simple",
+    depends=["connectivity-success-ood"],
+    scope="session",
 )
 @pytest.mark.sparql
 @pytest.mark.parametrize(
@@ -72,7 +55,9 @@ async def test_create_connectivity_observation_success(
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.dependency(
-    name="connectivity-success-complex", depends=["add-wikibase"], scope="session"
+    name="connectivity-success-complex",
+    depends=["connectivity-success-simple"],
+    scope="session",
 )
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(mocker):
@@ -104,7 +89,9 @@ async def test_create_connectivity_observation_success_complex(mocker):
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.dependency(
-    name="connectivity-failure", depends=["add-wikibase"], scope="session"
+    name="connectivity-failure",
+    depends=["connectivity-success-complex"],
+    scope="session",
 )
 @pytest.mark.sparql
 async def test_create_connectivity_observation_failure(mocker):
