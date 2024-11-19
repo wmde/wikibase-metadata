@@ -15,7 +15,6 @@ from fetch_data.out_of_date.get_out_of_date_wikibases import (
 from fetch_data.soup_data import (
     create_software_version_observation_without_background_task,
     create_special_statistics_observation,
-    update_software_data,
 )
 from fetch_data.sparql_data import (
     create_connectivity_observation,
@@ -98,10 +97,6 @@ async def update_out_of_date_software_observations():
             )
         except:
             pass
-    try:
-        await update_software_data()
-    except:
-        pass
 
 
 async def update_out_of_date_stats_observations():

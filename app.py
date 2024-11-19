@@ -16,6 +16,7 @@ from fetch_data.out_of_date.update_out_of_date import (
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
     update_out_of_date_user_observations,
+    update_software_data,
 )
 from model.strawberry import schema
 
@@ -29,8 +30,9 @@ scheduler.add_job(update_out_of_date_log_last_observations, CronTrigger(minute=1
 scheduler.add_job(update_out_of_date_property_observations, CronTrigger(minute=15))
 scheduler.add_job(update_out_of_date_quantity_observations, CronTrigger(minute=20))
 scheduler.add_job(update_out_of_date_software_observations, CronTrigger(minute=25))
-scheduler.add_job(update_out_of_date_stats_observations, CronTrigger(minute=30))
-scheduler.add_job(update_out_of_date_user_observations, CronTrigger(minute=35))
+scheduler.add_job(update_software_data, CronTrigger(minute=30))
+scheduler.add_job(update_out_of_date_stats_observations, CronTrigger(minute=35))
+scheduler.add_job(update_out_of_date_user_observations, CronTrigger(minute=40))
 
 
 # Ensure the scheduler shuts down properly on application exit.
