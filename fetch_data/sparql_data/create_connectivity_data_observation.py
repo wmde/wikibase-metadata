@@ -9,7 +9,7 @@ from fetch_data.sparql_data.connectivity_math import (
     compile_distance_dict,
     compile_link_dict,
 )
-from fetch_data.sparql_data.pull_wikidata import get_results
+from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
 from fetch_data.utils import counts, get_wikibase_from_database
 from model.database import (
@@ -31,7 +31,9 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = compile_connectivity_observation(wikibase.sparql_endpoint_url.url)
+        observation = await compile_connectivity_observation(
+            wikibase.sparql_endpoint_url.url
+        )
 
         wikibase.connectivity_observations.append(observation)
 
@@ -39,7 +41,7 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
         return observation.returned_data
 
 
-def compile_connectivity_observation(
+async def compile_connectivity_observation(
     sparql_endpoint_url: str,
 ) -> WikibaseConnectivityObservationModel:
     """Compile Connectivity Observation"""
@@ -47,7 +49,7 @@ def compile_connectivity_observation(
     observation = WikibaseConnectivityObservationModel()
     try:
         print("FETCHING ITEM LINKS")
-        item_link_results = get_results(
+        item_link_results = await get_sparql_results(
             sparql_endpoint_url, ITEM_LINKS_QUERY, "ITEM_LINKS_QUERY"
         )
 
