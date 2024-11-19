@@ -3,7 +3,6 @@
 import asyncio
 from collections.abc import Iterable
 from datetime import datetime
-from typing import Optional
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
@@ -25,12 +24,20 @@ from model.enum import WikibaseSoftwareType
 
 
 async def create_software_version_observation(
-    wikibase_id: int, info: Optional[strawberry.Info] = None
+    wikibase_id: int, info: strawberry.Info
 ) -> bool:
     """Create Software Version Observation"""
 
-    if info is not None:
-        info.context["background_tasks"].add_task(update_software_data)
+    info.context["background_tasks"].add_task(update_software_data)
+    return await create_software_version_observation_without_background_task(
+        wikibase_id
+    )
+
+
+async def create_software_version_observation_without_background_task(
+    wikibase_id: int,
+) -> bool:
+    """Create Software Version Observation"""
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
