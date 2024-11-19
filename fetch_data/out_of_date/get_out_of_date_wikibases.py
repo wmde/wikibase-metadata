@@ -37,11 +37,11 @@ def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
                 WikibaseModel.connectivity_observations.any(
                     or_(
                         WikibaseConnectivityObservationModel.observation_date
-                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                         and_(
                             WikibaseConnectivityObservationModel.returned_data,
                             WikibaseConnectivityObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                         ),
                     )
                 )
@@ -112,11 +112,11 @@ def get_wikibase_with_out_of_date_log_last_obs_query() -> Select[tuple[WikibaseM
                         not_(WikibaseLogMonthObservationModel.first_month),
                         or_(
                             WikibaseLogMonthObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                             and_(
                                 WikibaseLogMonthObservationModel.returned_data,
                                 WikibaseLogMonthObservationModel.observation_date
-                                > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                                > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                             ),
                         ),
                     )
@@ -149,11 +149,11 @@ def get_wikibase_with_out_of_date_property_popularity_obs_query() -> (
                 WikibaseModel.property_popularity_observations.any(
                     or_(
                         WikibasePropertyPopularityObservationModel.observation_date
-                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                         and_(
                             WikibasePropertyPopularityObservationModel.returned_data,
                             WikibasePropertyPopularityObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                         ),
                     )
                 )
@@ -185,11 +185,11 @@ def get_wikibase_with_out_of_date_quantity_obs_query() -> Select[tuple[WikibaseM
                 WikibaseModel.quantity_observations.any(
                     or_(
                         WikibaseQuantityObservationModel.observation_date
-                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                         and_(
                             WikibaseQuantityObservationModel.returned_data,
                             WikibaseQuantityObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                         ),
                     )
                 )
@@ -219,11 +219,11 @@ def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseM
                 WikibaseModel.software_version_observations.any(
                     or_(
                         WikibaseSoftwareVersionObservationModel.observation_date
-                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                         and_(
                             WikibaseSoftwareVersionObservationModel.returned_data,
                             WikibaseSoftwareVersionObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                         ),
                     )
                 )
@@ -253,11 +253,11 @@ def get_wikibase_with_out_of_date_stats_obs_query() -> Select[tuple[WikibaseMode
                 WikibaseModel.statistics_observations.any(
                     or_(
                         WikibaseStatisticsObservationModel.observation_date
-                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                         and_(
                             WikibaseStatisticsObservationModel.returned_data,
                             WikibaseStatisticsObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                         ),
                     )
                 )
@@ -287,11 +287,11 @@ def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel
                 WikibaseModel.user_observations.any(
                     or_(
                         WikibaseUserObservationModel.observation_date
-                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=2)),
+                        > (datetime.now(tz=timezone.utc) - timedelta(weeks=1)),
                         and_(
                             WikibaseUserObservationModel.returned_data,
                             WikibaseUserObservationModel.observation_date
-                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=3)),
+                            > (datetime.now(tz=timezone.utc) - timedelta(weeks=4)),
                         ),
                     )
                 )
