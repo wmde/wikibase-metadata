@@ -6,138 +6,14 @@ import json
 from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
-from fetch_data import (
-    create_log_observation,
-    update_out_of_date_log_first_observations,
-    update_out_of_date_log_last_observations,
-)
+from fetch_data import create_log_observation
 from tests.utils import MockResponse, ParsedUrl
 
 
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-first-success-ood", depends=["add-wikibase"], scope="session"
-)
-@pytest.mark.log
-async def test_update_out_of_date_log_first_observations_success(mocker):
-    """Test Empty Scenario"""
-
-    mock_logs: list[dict] = [
-        {
-            "logid": 1,
-            "timestamp": datetime(2024, 1, 1).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "user": None,
-            "type": "thanks",
-            "action": "thank",
-        }
-    ]
-    oldest_mock_log = mock_logs[0]
-
-    def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 10
-
-        query = ParsedUrl(args[0])
-
-        assert query.base_url == "example.com/w/api.php"
-        assert query.params.get("action") == "query"
-        assert query.params.get("format") == "json"
-
-        match query.params.get("list"):
-            case "logevents":
-                assert query.params.get("formatversion") == 2
-                match (query.params.get("ledir"), query.params.get("lelimit")):
-                    # oldest
-                    case ("newer", 1):
-                        return MockResponse(
-                            query,
-                            200,
-                            json.dumps({"query": {"logevents": [oldest_mock_log]}}),
-                        )
-                    # first month
-                    case ("newer", 500):
-                        return MockResponse(
-                            query,
-                            200,
-                            json.dumps(
-                                {
-                                    "query": {
-                                        "logevents": sorted(
-                                            mock_logs, key=lambda x: x.get("timestamp")
-                                        )
-                                    }
-                                }
-                            ),
-                        )
-        raise NotImplementedError(query.raw_url)
-
-    mocker.patch(
-        "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
-    )
-    await update_out_of_date_log_first_observations()
-
-
-@freeze_time("2024-03-01")
-@pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-ood", depends=["add-wikibase"], scope="session"
-)
-@pytest.mark.log
-async def test_update_out_of_date_log_last_observations_success(mocker):
-    """Test Empty Scenario"""
-
-    mock_logs: list[dict] = [
-        {
-            "logid": 1,
-            "timestamp": datetime(2024, 3, 1).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "user": None,
-            "type": "thanks",
-            "action": "thank",
-        }
-    ]
-
-    def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 10
-
-        query = ParsedUrl(args[0])
-
-        assert query.base_url == "example.com/w/api.php"
-        assert query.params.get("action") == "query"
-        assert query.params.get("format") == "json"
-
-        match query.params.get("list"):
-            case "logevents":
-                assert query.params.get("formatversion") == 2
-                match (query.params.get("ledir"), query.params.get("lelimit")):
-                    # first month
-                    case ("older", 500):
-                        return MockResponse(
-                            query,
-                            200,
-                            json.dumps(
-                                {
-                                    "query": {
-                                        "logevents": sorted(
-                                            mock_logs,
-                                            key=lambda x: x.get("timestamp"),
-                                            reverse=True,
-                                        )
-                                    }
-                                }
-                            ),
-                        )
-        raise NotImplementedError(query.raw_url)
-
-    mocker.patch(
-        "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
-    )
-    await update_out_of_date_log_last_observations()
-
-
-@freeze_time("2024-03-01")
-@pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-success-1", depends=["add-wikibase"], scope="session"
+    name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_observation_first_success(mocker):
@@ -223,7 +99,7 @@ async def test_create_log_observation_first_success(mocker):
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-last-success-1", depends=["add-wikibase"], scope="session"
+    name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_observation_last_success(mocker):
@@ -287,7 +163,7 @@ async def test_create_log_observation_last_success(mocker):
 @freeze_time("2024-03-02")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-first-failure", depends=["add-wikibase"], scope="session"
+    name="log-first-failure", depends=["log-first-success-1"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_first_observation_error(mocker):
@@ -308,7 +184,7 @@ async def test_create_log_first_observation_error(mocker):
 @freeze_time("2024-03-02")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-last-failure", depends=["add-wikibase"], scope="session"
+    name="log-last-failure", depends=["log-last-success-1"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_last_observation_error(mocker):
@@ -335,6 +211,7 @@ async def test_create_log_last_observation_error(mocker):
         "log-first-failure",
         "log-last-failure",
     ],
+    scope="session",
 )
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(mocker):
@@ -379,9 +256,7 @@ async def test_create_log_last_observation_no_last_month(mocker):
                 {
                     "query": {
                         "logevents": sorted(
-                            mock_logs,
-                            key=lambda x: x.get("timestamp"),
-                            reverse=True,
+                            mock_logs, key=lambda x: x.get("timestamp"), reverse=True
                         )
                     }
                 }
