@@ -8,8 +8,9 @@ from fetch_data.api_data.log_data.fetch_log_data import get_month_log_list
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.asyncio
 @pytest.mark.log
-def test_get_month_log_list_from_url_one_pull(mocker):
+async def test_get_month_log_list_from_url_one_pull(mocker):
     """Test One-Pull, Newest Logs Scenario"""
 
     mock_logs: list[dict] = []
@@ -37,7 +38,7 @@ def test_get_month_log_list_from_url_one_pull(mocker):
             {"query": {"logevents": mock_logs[50:]}},
         ],
     )
-    results = get_month_log_list("example.com", datetime.now())
+    results = await get_month_log_list("example.com", datetime.now())
     assert len(results) == 31
 
     newest_log = max(results, key=lambda x: x.log_date)
@@ -49,8 +50,9 @@ def test_get_month_log_list_from_url_one_pull(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.asyncio
 @pytest.mark.log
-def test_get_month_log_list_from_url_two_pulls(mocker):
+async def test_get_month_log_list_from_url_two_pulls(mocker):
     """Test Two-Pull, Newest Logs Scenario"""
 
     mock_logs: list[dict] = []
@@ -78,7 +80,7 @@ def test_get_month_log_list_from_url_two_pulls(mocker):
             {"query": {"logevents": mock_logs[50:]}},
         ],
     )
-    results = get_month_log_list("example.com", datetime.now())
+    results = await get_month_log_list("example.com", datetime.now())
     assert len(results) == 62
 
     newest_log = max(results, key=lambda x: x.log_date)
@@ -90,8 +92,9 @@ def test_get_month_log_list_from_url_two_pulls(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.asyncio
 @pytest.mark.log
-def test_get_month_log_list_from_url_more_pulls(mocker):
+async def test_get_month_log_list_from_url_more_pulls(mocker):
     """Test More-Pull, Newest Logs Scenario"""
 
     pull_limit = 500
@@ -125,7 +128,7 @@ def test_get_month_log_list_from_url_more_pulls(mocker):
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=mock_side_effects,
     )
-    results = get_month_log_list("example.com", datetime.now())
+    results = await get_month_log_list("example.com", datetime.now())
     assert len(results) == 2626
 
     newest_log = max(results, key=lambda x: x.log_date)
@@ -137,8 +140,9 @@ def test_get_month_log_list_from_url_more_pulls(mocker):
 
 
 @freeze_time("2024-03-01")
+@pytest.mark.asyncio
 @pytest.mark.log
-def test_get_month_log_list_from_url_oldest_one_pull(mocker):
+async def test_get_month_log_list_from_url_oldest_one_pull(mocker):
     """Test One-Pull, Oldest Logs Scenario"""
 
     mock_logs: list[dict] = []
@@ -166,7 +170,7 @@ def test_get_month_log_list_from_url_oldest_one_pull(mocker):
             {"query": {"logevents": mock_logs[50:]}},
         ],
     )
-    results = get_month_log_list("example.com", datetime(2020, 3, 1), oldest=True)
+    results = await get_month_log_list("example.com", datetime(2020, 3, 1), oldest=True)
     assert len(results) == 31
 
     newest_log = max(results, key=lambda x: x.log_date)
