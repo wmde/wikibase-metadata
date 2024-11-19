@@ -57,6 +57,7 @@ class WikibaseLogType(enum.Enum):
     PAGE_TRANSLATE_DELETE_LOK = 44
     PAGE_TRANSLATE_MARK = 45
     PAGE_TRANSLATE_UNMARK = 46
+    PAGE_TRANSLATE_REVIEW = 76
     PAGE_UPDATE_LANGUAGE = 47
     PATROL = 48
     PATROL_AUTO = 49
@@ -239,6 +240,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK
         case ("pagetranslation", "mark"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_MARK
+        case ("translationreview", "message"):
+            log_type = WikibaseLogType.PAGE_TRANSLATE_REVIEW
         case ("pagetranslation", "unmark"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_UNMARK
         case ("pagelang", "pagelang"):
