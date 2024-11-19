@@ -1,16 +1,17 @@
 """Fetch Multiple User Data"""
 
 from collections.abc import Iterable
-import json
-import requests
 from fetch_data.api_data.user_data.user_data_url import user_url
+from fetch_data.utils.fetch_data_from_api import fetch_api_data
 from model.database import WikibaseModel
 
 
 MULTIPLE_USER_QUERY_LIMIT = 50
 
 
-def get_multiple_user_data(wikibase: WikibaseModel, users: Iterable[str]) -> list[dict]:
+async def get_multiple_user_data(
+    wikibase: WikibaseModel, users: Iterable[str]
+) -> list[dict]:
     """Fetch Multiple User Data"""
 
     if len(users) == 0:
@@ -21,14 +22,11 @@ def get_multiple_user_data(wikibase: WikibaseModel, users: Iterable[str]) -> lis
         list_users = list(users)
         for i in range(0, len(users), MULTIPLE_USER_QUERY_LIMIT):
             data.extend(
-                get_multiple_user_data(
+                await get_multiple_user_data(
                     wikibase, list_users[i : i + MULTIPLE_USER_QUERY_LIMIT]
                 )
             )
         return data
 
-    result = requests.get(
-        wikibase.action_api_url.url + user_url("|".join(users)), timeout=10
-    )
-    data = json.loads(result.content)
+    data = await fetch_api_data(wikibase.action_api_url.url + user_url("|".join(users)))
     return data["query"]["users"]
