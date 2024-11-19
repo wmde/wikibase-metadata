@@ -4,12 +4,31 @@ import os
 import time
 from urllib.error import HTTPError
 import pytest
-from fetch_data import create_software_version_observation
+from fetch_data import (
+    create_software_version_observation,
+    update_out_of_date_software_observations,
+)
 from tests.test_create_observation.test_create_software_version_observation.test_constants import (
     DATA_DIRECTORY,
 )
 from tests.mock_info import MockBackgroundClassList, MockInfo
 from tests.utils import MockResponse
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="software-version-success-ood", depends=["add-wikibase"], scope="session"
+)
+@pytest.mark.soup
+@pytest.mark.version
+async def test_update_out_of_date_software_observations_fail(mocker):
+    """Test Data Returned Scenario"""
+
+    mocker.patch(
+        "fetch_data.soup_data.software.create_software_version_data_observation.requests.get",
+        side_effect=[MockResponse("", 404)],
+    )
+    await update_out_of_date_software_observations()
 
 
 @pytest.mark.asyncio
