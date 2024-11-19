@@ -1,4 +1,5 @@
 aiosqlite>=0.20
+APScheduler>=3.10.4
 bs4>=0.0.2
 fastapi[standard]>=0.115
 gunicorn>=23.0
