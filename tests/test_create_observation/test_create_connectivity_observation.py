@@ -43,7 +43,7 @@ async def test_create_connectivity_observation_success(
         )
 
     mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
+        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
     success = await create_connectivity_observation(1)
@@ -75,7 +75,7 @@ async def test_create_connectivity_observation_success_complex(mocker):
             )
 
     mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
+        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
     success = await create_connectivity_observation(1)
@@ -92,7 +92,7 @@ async def test_create_connectivity_observation_failure(mocker):
     """Test"""
 
     mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
+        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[
             HTTPError(
                 url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None

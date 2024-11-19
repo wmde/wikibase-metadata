@@ -30,7 +30,7 @@ SELECT ?itemLabel ?url ?host ?hostLabel ?available ?availableLabel ?sparqlUIUrl 
 
 async def pull_wikibase_world():
     """Pull Wikibase World Data"""
-    # data = get_results(
+    # data = await get_sparql_results(
     #     endpoint_url="https://wikibase.world/query/sparql",
     #     query=WIKIBASES_QUERY,
     #     query_name="Pull Wikibases",
