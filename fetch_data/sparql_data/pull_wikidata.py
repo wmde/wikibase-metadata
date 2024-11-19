@@ -1,5 +1,6 @@
 """Get SPARQL Data from Wikidata"""
 
+import asyncio
 from datetime import datetime
 from json import JSONDecodeError
 import os
@@ -7,8 +8,15 @@ import sys
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 
+async def get_sparql_results(endpoint_url: str, query: str, query_name: str) -> dict:
+    """Get SPARQL Data from Wikidata ASYNC"""
+    return await asyncio.to_thread(
+        _get_results, endpoint_url=endpoint_url, query=query, query_name=query_name
+    )
+
+
 # retrieve results from a given endpoint given a distinct SPARQL query
-def get_results(endpoint_url: str, query: str, query_name: str) -> dict:
+def _get_results(endpoint_url: str, query: str, query_name: str) -> dict:
     """Get SPARQL Data from Wikidata"""
     user_agent = f"WDQS-example Python/{sys.version_info[0]}.{sys.version_info[1]}"
     # TODO adjust user agent; see https://w.wiki/CX6
