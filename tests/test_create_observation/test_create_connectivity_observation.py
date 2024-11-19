@@ -7,19 +7,27 @@ from fetch_data import create_connectivity_observation
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(
-    name="connectivity-success-simple",
-    depends=["connectivity-success-ood"],
-    scope="session",
-)
 @pytest.mark.sparql
 @pytest.mark.parametrize(
     ["links"],
     [
-        ([],),
-        ([("Q1", "Q1")],),
-        ([("Q1", "Q2")],),
-        (
+        pytest.param(
+            [("Q1", "Q1")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-1",
+                depends=["connectivity-success-ood"],
+                scope="session",
+            ),
+        ),
+        pytest.param(
+            [("Q1", "Q2")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-2",
+                depends=["connectivity-success-simple-1"],
+                scope="session",
+            ),
+        ),
+        pytest.param(
             [
                 ("Q1", "Q2"),
                 ("Q1", "Q2"),
@@ -28,9 +36,28 @@ from fetch_data import create_connectivity_observation
                 ("Q1", "Q2"),
                 ("Q1", "Q2"),
             ],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-3",
+                depends=["connectivity-success-simple-2"],
+                scope="session",
+            ),
         ),
-        ([("Q1", "Q2"), ("Q2", "Q1")],),
-        ([("Q1", "Q2"), ("Q2", "Q3")],),
+        pytest.param(
+            [("Q1", "Q2"), ("Q2", "Q1")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-4",
+                depends=["connectivity-success-simple-3"],
+                scope="session",
+            ),
+        ),
+        pytest.param(
+            [("Q1", "Q2"), ("Q2", "Q3")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-5",
+                depends=["connectivity-success-simple-4"],
+                scope="session",
+            ),
+        ),
     ],
 )
 async def test_create_connectivity_observation_success(
@@ -56,7 +83,7 @@ async def test_create_connectivity_observation_success(
 @pytest.mark.connectivity
 @pytest.mark.dependency(
     name="connectivity-success-complex",
-    depends=["connectivity-success-simple"],
+    depends=["connectivity-success-simple-5"],
     scope="session",
 )
 @pytest.mark.sparql
