@@ -1,4 +1,4 @@
-"""Test get_month_log_list_from_url"""
+"""Test create_log_observation"""
 
 from datetime import datetime, timedelta
 import json

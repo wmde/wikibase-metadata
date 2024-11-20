@@ -1,4 +1,4 @@
-"""Test create_connectivity_observation"""
+"""Test update_out_of_date_connectivity_observations"""
 
 import pytest
 from fetch_data import update_out_of_date_connectivity_observations

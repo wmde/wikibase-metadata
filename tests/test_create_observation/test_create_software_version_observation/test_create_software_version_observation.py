@@ -1,4 +1,4 @@
-"""Test create_property_popularity_observation"""
+"""Test create_software_version_observation"""
 
 import os
 import time

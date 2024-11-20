@@ -1,11 +1,8 @@
-"""Test create_property_popularity_observation"""
+"""Test update_out_of_date_stats_observations"""
 
 import pytest
 from fetch_data import update_out_of_date_stats_observations
 from tests.utils import MockResponse
-
-
-DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observation/data"
 
 
 @pytest.mark.asyncio
