@@ -1,4 +1,4 @@
-"""Test create_user_observation"""
+"""Test update_out_of_date_user_observations"""
 
 import pytest
 from fetch_data import update_out_of_date_user_observations

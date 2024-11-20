@@ -1,4 +1,4 @@
-"""Test create_property_popularity_observation"""
+"""Test update_out_of_date_software_observations"""
 
 import pytest
 from fetch_data import update_out_of_date_software_observations

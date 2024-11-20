@@ -1,4 +1,4 @@
-"""Test create_quantity_observation"""
+"""Test update_out_of_date_quantity_observations"""
 
 import pytest
 from fetch_data import update_out_of_date_quantity_observations

@@ -1,4 +1,4 @@
-"""Test get_month_log_list_from_url"""
+"""Test update_out_of_date_log_last_observations"""
 
 from datetime import datetime
 import json
