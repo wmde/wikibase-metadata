@@ -92,15 +92,16 @@ def get_update_extension_query() -> Select[WikibaseSoftwareModel]:
         .where(
             and_(
                 or_(
-                    # pylint: disable=singleton-comparison
+                    # pylint: disable-next=singleton-comparison
                     WikibaseSoftwareModel.data_fetched == None,
                     WikibaseSoftwareModel.data_fetched
                     < (datetime.today() - timedelta(days=30)),
                 ),
                 WikibaseSoftwareModel.software_type == WikibaseSoftwareType.EXTENSION,
                 or_(
-                    # pylint: disable=singleton-comparison
+                    # pylint: disable-next=singleton-comparison
                     WikibaseSoftwareModel.archived == False,
+                    # pylint: disable-next=singleton-comparison
                     WikibaseSoftwareModel.archived == None,
                 ),
             )

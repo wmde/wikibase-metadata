@@ -21,7 +21,7 @@ from tests.utils import MockResponse
 async def test_update_software_data(mocker):
     """Test Update Software Data"""
 
-    # pylint: disable=unused-argument,too-many-return-statements
+    # pylint: disable-next=unused-argument,too-many-return-statements
     def mockery(*args, **kwargs):
         print(args)
         query = args[0]
