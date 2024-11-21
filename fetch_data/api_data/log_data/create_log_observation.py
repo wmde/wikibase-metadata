@@ -105,7 +105,7 @@ async def create_log_month(
     user_type_dict: dict[str, WikibaseUserType] = {}
 
     if len(users) > 0:
-        logger.info("Fetching User Data", extra={"wikibase", wikibase.id})
+        logger.info("Fetching User Data", extra={"wikibase": wikibase.id})
         user_data = await get_multiple_user_data(wikibase, users)
         for u in user_data:
             user_type_dict[u["name"]] = get_user_type_from_user_data(u)

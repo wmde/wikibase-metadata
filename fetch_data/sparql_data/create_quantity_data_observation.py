@@ -51,7 +51,7 @@ async def compile_quantity_observation(
             property_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        logger.info("Fetching Item Count", extra={"wikibase", wikibase.id})
+        logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
         item_count_results = await get_sparql_results(
             wikibase.sparql_endpoint_url.url, COUNT_ITEMS_QUERY, "COUNT_ITEMS_QUERY"
         )
