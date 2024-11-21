@@ -11,7 +11,7 @@ from sqlalchemy import Select, and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from data import get_async_session
 from fetch_data.utils import clean_string
-from logger import logger
+from logger.get_logger import logger
 from model.database import WikibaseSoftwareModel, WikibaseSoftwareTagModel
 from model.enum import WikibaseSoftwareType
 

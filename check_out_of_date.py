@@ -12,7 +12,7 @@ from fetch_data import (
     get_wikibase_list_with_out_of_date_stats_observations,
     get_wikibase_list_with_out_of_date_user_observations,
 )
-from logger import logger
+from logger.get_logger import logger
 
 
 async def check_out_of_date():

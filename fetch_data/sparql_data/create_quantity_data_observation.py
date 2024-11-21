@@ -11,7 +11,7 @@ from fetch_data.sparql_data.sparql_queries import (
     COUNT_TRIPLES_QUERY,
 )
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
-from logger import logger
+from logger.get_logger import logger
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 
 
