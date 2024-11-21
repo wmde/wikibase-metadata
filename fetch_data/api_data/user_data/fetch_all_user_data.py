@@ -2,7 +2,7 @@
 
 from fetch_data.api_data.user_data.user_data_url import all_users_url
 from fetch_data.utils import fetch_api_data
-from logger import logger
+from logger.get_logger import logger
 
 
 async def get_all_user_data(api_url: str) -> list[dict]:

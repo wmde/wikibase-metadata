@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import great_expectations as gx
 
-from logger import logger
+from logger.get_logger import logger
 
 GREAT_EXPECTATIONS_PROJECT_ROOT = "./data"
 CHECKPOINT_DIRECTORY = "./data/gx/checkpoints"

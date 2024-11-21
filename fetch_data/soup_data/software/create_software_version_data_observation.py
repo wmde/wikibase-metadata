@@ -15,7 +15,7 @@ from fetch_data.soup_data.software.get_software_model import (
 )
 from fetch_data.soup_data.software.get_update_software_data import update_software_data
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
-from logger import logger
+from logger.get_logger import logger
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareVersionModel,

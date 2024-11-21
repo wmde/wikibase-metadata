@@ -5,7 +5,7 @@ import json
 
 from sqlalchemy import or_, select
 from data.database_connection import get_async_session
-from logger import logger
+from logger.get_logger import logger
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_url_model import WikibaseURLModel
 

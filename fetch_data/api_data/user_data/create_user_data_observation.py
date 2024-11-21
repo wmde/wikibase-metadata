@@ -10,7 +10,7 @@ from fetch_data.api_data.user_data.compile_user_data import (
 from fetch_data.api_data.user_data.constants import WIKIBASE_DEFAULT_USER_GROUPS
 from fetch_data.api_data.user_data.fetch_all_user_data import get_all_user_data
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
-from logger import logger
+from logger.get_logger import logger
 from model.database import (
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,

@@ -7,7 +7,7 @@ import os
 import sys
 from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
 
-from logger import logger
+from logger.get_logger import logger
 
 
 async def get_sparql_results(endpoint_url: str, query: str, query_name: str) -> dict:
