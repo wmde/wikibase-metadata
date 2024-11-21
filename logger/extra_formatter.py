@@ -40,12 +40,14 @@ class OptionalExtraFormatter(logging.Formatter):
         )
 
         if "wikibase" in record.__dict__.keys():
-            self._style._fmt = wikibase_fmt  # pylint: disable=protected-access
+            fmt = wikibase_fmt
         else:
-            self._style._fmt = base_fmt  # pylint: disable=protected-access
+            fmt = base_fmt
 
         for k in record.__dict__.keys():
             if k not in DEFAULT_ARGS:
-                self._style._fmt += f"\n\t{k}: {record.__dict__.get(k)}"
+                fmt += f"\n\t{k}: {record.__dict__.get(k)}"
+
+        self._style._fmt = fmt  # pylint: disable=protected-access
 
         return super().format(record)
