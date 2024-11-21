@@ -6,6 +6,8 @@ from typing import Optional
 
 import strawberry
 
+from logger import logger
+
 
 @strawberry.enum
 class WikibaseLogType(enum.Enum):
@@ -309,5 +311,6 @@ def compile_log_type(record: dict) -> WikibaseLogType:
     try:
         assert log_type is not None
     except AssertionError as exc:
+        logger.error("LogTypeError", stack_info=True, extra={"log": record})
         raise NotImplementedError(record) from exc
     return log_type
