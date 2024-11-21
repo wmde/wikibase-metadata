@@ -21,7 +21,7 @@ from fetch_data.sparql_data import (
     create_property_popularity_observation,
     create_quantity_observation,
 )
-from logger.get_logger import logger
+from logger import logger
 
 
 async def update_out_of_date_connectivity_observations():

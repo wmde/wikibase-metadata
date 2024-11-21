@@ -16,7 +16,7 @@ from fetch_data.api_data.user_data import (
     get_user_type_from_user_data,
 )
 from fetch_data.utils import get_wikibase_from_database
-from logger.get_logger import logger
+from logger import logger
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,

@@ -8,7 +8,7 @@ import requests
 from requests.exceptions import SSLError
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database
-from logger.get_logger import logger
+from logger import logger
 from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 
 

@@ -4,7 +4,7 @@ import asyncio
 import json
 import requests
 
-from logger.get_logger import logger
+from logger import logger
 
 
 async def fetch_api_data(url: str) -> dict:
