@@ -9,7 +9,6 @@ from tests.utils import (
 )
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_month_record(
     month_record: dict,
     expected_id: str,
@@ -41,7 +40,6 @@ def assert_month_record(
     )
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_month_type_record(
     returned_month_type_record: dict,
     expected_id: str,

@@ -30,7 +30,7 @@ class WikibaseObservationModel:
         "date",
         DateTime(timezone=True),
         nullable=False,
-        # pylint: disable=not-callable
+        # pylint: disable-next=not-callable
         default=func.now(),
     )
     """Date"""
