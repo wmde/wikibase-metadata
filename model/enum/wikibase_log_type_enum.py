@@ -6,7 +6,7 @@ from typing import Optional
 
 import strawberry
 
-from logger.get_logger import logger
+from logger import logger
 
 
 @strawberry.enum

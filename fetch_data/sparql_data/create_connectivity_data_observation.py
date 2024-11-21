@@ -13,7 +13,7 @@ from fetch_data.sparql_data.connectivity_math import (
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
 from fetch_data.utils import counts, get_wikibase_from_database
-from logger.get_logger import logger
+from logger import logger
 from model.database import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
