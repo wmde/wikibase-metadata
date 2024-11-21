@@ -99,7 +99,7 @@ async def test_create_log_observation_no_last_month(mocker):
     oldest_mock_log = min(mock_logs, key=lambda x: x.get("timestamp"))
     newest_mock_log = max(mock_logs, key=lambda x: x.get("timestamp"))
 
-    # pylint: disable=unused-argument
+    # pylint: disable-next=unused-argument
     def mockery(*args, **kwargs):
         query = ParsedUrl(args[0])
         match (query.params.get("action"), query.params.get("list")):

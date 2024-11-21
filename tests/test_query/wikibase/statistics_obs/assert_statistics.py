@@ -71,7 +71,6 @@ def assert_users(
     )
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_statistics(
     returned_statistics: dict,
     expected_id: str,

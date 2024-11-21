@@ -20,7 +20,7 @@ class WikibasePropertyPopularityAggregateCountStrawberryModel(
 
     def __init__(
         self,
-        # pylint: disable=redefined-builtin
+        # pylint: disable-next=redefined-builtin
         id: int,
         property_url: str,
         usage_count: int,
