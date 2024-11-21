@@ -13,6 +13,7 @@ from fetch_data.sparql_data.connectivity_math import (
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
 from fetch_data.utils import counts, get_wikibase_from_database
+from logger import logger
 from model.database import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
@@ -32,9 +33,7 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = await compile_connectivity_observation(
-            wikibase.sparql_endpoint_url.url
-        )
+        observation = await compile_connectivity_observation(wikibase)
 
         wikibase.connectivity_observations.append(observation)
 
@@ -43,15 +42,15 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
 
 
 async def compile_connectivity_observation(
-    sparql_endpoint_url: str,
+    wikibase: WikibaseModel,
 ) -> WikibaseConnectivityObservationModel:
     """Compile Connectivity Observation"""
 
     observation = WikibaseConnectivityObservationModel()
     try:
-        print("FETCHING ITEM LINKS")
+        logger.info("Fetching Item Links", extra={"wikibase": wikibase.id})
         item_link_results = await get_sparql_results(
-            sparql_endpoint_url, ITEM_LINKS_QUERY, "ITEM_LINKS_QUERY"
+            wikibase.sparql_endpoint_url.url, ITEM_LINKS_QUERY, "ITEM_LINKS_QUERY"
         )
 
         clean_data = clean_item_link_data(item_link_results)
@@ -60,13 +59,18 @@ async def compile_connectivity_observation(
         observation.returned_links = len(clean_data)
 
         if observation.returned_links > 0:
-            print(f"RUNNING ITEM LINK MATH: {observation.returned_links}")
+            logger.info(
+                f"Running Item Link Math: {observation.returned_links}",
+                extra={"wikibase": wikibase.id},
+            )
 
             all_nodes = sorted(
                 {p.item_from for p in clean_data} | {p.item_to for p in clean_data}
             )
 
-            print("\tCalculating Item Link Counts")
+            logger.debug(
+                "Calculating Item Link Counts", extra={"wikibase": wikibase.id}
+            )
             item_link_dict = compile_link_dict(clean_data, all_nodes)
             item_link_counts = counts([len(a) for a in item_link_dict.values()])
             for link_count, item_count in item_link_counts.items():
@@ -76,7 +80,9 @@ async def compile_connectivity_observation(
                     )
                 )
 
-            print("\tCalculating Object Link Counts")
+            logger.debug(
+                "Calculating Object Link Counts", extra={"wikibase": wikibase.id}
+            )
             object_link_dict = compile_link_dict(clean_data, all_nodes, reverse=True)
             object_link_counts = counts([len(a) for a in object_link_dict.values()])
             for link_count, object_count in object_link_counts.items():
@@ -86,7 +92,7 @@ async def compile_connectivity_observation(
                     )
                 )
 
-            print("\tCalculating Distance Dict")
+            logger.debug("Calculating Distance Dict", extra={"wikibase": wikibase.id})
             distance_dict = await asyncio.to_thread(
                 compile_distance_dict, all_nodes, item_link_dict
             )
@@ -98,13 +104,16 @@ async def compile_connectivity_observation(
                 if distance > 0
             ]
 
-            print("\tCalculating Connectivity")
+            logger.debug("Calculating Connectivity", extra={"wikibase": wikibase.id})
             observation.connectivity = (
                 (len(all_nonzero_distances) / (len(all_nodes) * (len(all_nodes) - 1)))
                 if (len(all_nodes) * (len(all_nodes) - 1) != 0)
                 else None
             )
-            print("\tCalculating Average Connected Distance")
+            logger.debug(
+                "Calculating Average Connected Distance",
+                extra={"wikibase": wikibase.id},
+            )
             observation.average_connected_distance = (
                 numpy.mean(all_nonzero_distances)
                 if len(all_nonzero_distances) > 0
@@ -112,6 +121,9 @@ async def compile_connectivity_observation(
             )
 
     except (EndPointInternalError, JSONDecodeError, HTTPError, URLError):
+        logger.warning(
+            "ConnectivityDataError", stack_info=True, extra={"wikibase": wikibase.id}
+        )
         observation.returned_data = False
 
     return observation

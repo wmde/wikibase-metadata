@@ -15,6 +15,7 @@ from fetch_data.soup_data.software.get_software_model import (
 )
 from fetch_data.soup_data.software.get_update_software_data import update_software_data
 from fetch_data.utils import get_wikibase_from_database, parse_datetime
+from logger import logger
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareVersionModel,
@@ -76,6 +77,11 @@ async def create_software_version_observation_without_background_task(
             library_versions = await compile_library_versions(async_session, soup)
             observation.software_versions.extend(library_versions)
         except (HTTPError, SSLError):
+            logger.warning(
+                "SoftwareVersionDataError",
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
+            )
             observation.returned_data = False
 
         wikibase.software_version_observations.append(observation)
