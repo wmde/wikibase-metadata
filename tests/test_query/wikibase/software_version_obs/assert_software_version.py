@@ -5,7 +5,6 @@ from typing import Optional
 from tests.utils import assert_property_value, DATETIME_FORMAT
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_software_version(
     returned_software_version: dict,
     expected_id: str,

@@ -19,7 +19,7 @@ from model.database.wikibase_url_model import WikibaseURLModel
 from model.enum import WikibaseURLType
 
 
-# pylint: disable=too-many-instance-attributes
+# pylint: disable-next=too-many-instance-attributes
 class WikibaseModel(ModelBase):
     """Wikibase Table"""
 
@@ -267,7 +267,7 @@ class WikibaseModel(ModelBase):
     )
     """User Observations"""
 
-    # pylint: disable=too-many-arguments,too-many-positional-arguments
+    # pylint: disable-next=too-many-arguments,too-many-positional-arguments
     def __init__(
         self,
         wikibase_name: str,
