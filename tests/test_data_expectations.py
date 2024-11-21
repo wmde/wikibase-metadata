@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 import great_expectations as gx
 
+from logger import logger
+
 GREAT_EXPECTATIONS_PROJECT_ROOT = "./data"
 CHECKPOINT_DIRECTORY = "./data/gx/checkpoints"
 
@@ -28,7 +30,7 @@ def pytest_generate_tests(metafunc):
 def test_data_expectations(checkpoint_name: str):
     """Test Data Expectations with Great Expectations"""
 
-    print(f"\n{checkpoint_name}")
+    logger.debug(f"\n{checkpoint_name}")
     context = gx.get_context(project_root_dir=GREAT_EXPECTATIONS_PROJECT_ROOT)
     retrieved_checkpoint = context.checkpoints.get(checkpoint_name)
     result = retrieved_checkpoint.run()
