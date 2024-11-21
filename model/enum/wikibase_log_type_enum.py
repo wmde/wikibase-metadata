@@ -93,7 +93,7 @@ ITEM_REGEX = re.compile(r"Item:Q\d+")
 PROPERTY_REGEX = re.compile(r"(Property|WikibaseProperty):P\d+")
 
 
-# pylint: disable=too-many-branches,too-many-statements
+# pylint: disable-next=too-many-branches,too-many-statements
 def compile_log_type(record: dict) -> WikibaseLogType:
     """Compile Log Type"""
 
