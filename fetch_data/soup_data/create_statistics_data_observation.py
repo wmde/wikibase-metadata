@@ -1,5 +1,6 @@
 """Create Special:Statistics Observation"""
 
+import asyncio
 from typing import Optional
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
@@ -24,7 +25,8 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
         observation = WikibaseStatisticsObservationModel()
 
         try:
-            result = requests.get(
+            result = await asyncio.to_thread(
+                requests.get,
                 wikibase.special_statistics_url.url,
                 headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,

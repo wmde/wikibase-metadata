@@ -1,5 +1,6 @@
 """Create Software Version Observation"""
 
+import asyncio
 from collections.abc import Iterable
 from datetime import datetime
 from urllib.error import HTTPError
@@ -40,7 +41,8 @@ async def create_software_version_observation(
         observation = WikibaseSoftwareVersionObservationModel()
 
         try:
-            result = requests.get(
+            result = await asyncio.to_thread(
+                requests.get,
                 wikibase.special_version_url.url,
                 headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,

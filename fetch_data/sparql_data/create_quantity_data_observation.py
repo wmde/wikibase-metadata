@@ -3,7 +3,7 @@
 from urllib.error import HTTPError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 from data import get_async_session
-from fetch_data.sparql_data.pull_wikidata import get_results
+from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import (
     COUNT_ITEMS_QUERY,
     COUNT_LEXEMES_QUERY,
@@ -25,7 +25,9 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = compile_quantity_observation(wikibase.sparql_endpoint_url.url)
+        observation = await compile_quantity_observation(
+            wikibase.sparql_endpoint_url.url
+        )
 
         wikibase.quantity_observations.append(observation)
 
@@ -33,7 +35,7 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         return observation.returned_data
 
 
-def compile_quantity_observation(
+async def compile_quantity_observation(
     sparql_endpoint_url: str,
 ) -> WikibaseQuantityObservationModel:
     """Compile Quantity Observation"""
@@ -41,7 +43,7 @@ def compile_quantity_observation(
     observation = WikibaseQuantityObservationModel()
     try:
         print("FETCHING PROPERTY COUNT")
-        property_count_results = get_results(
+        property_count_results = await get_sparql_results(
             sparql_endpoint_url, COUNT_PROPERTIES_QUERY, "COUNT_PROPERTIES_QUERY"
         )
         observation.total_properties = int(
@@ -49,7 +51,7 @@ def compile_quantity_observation(
         )
 
         print("FETCHING ITEM COUNT")
-        item_count_results = get_results(
+        item_count_results = await get_sparql_results(
             sparql_endpoint_url, COUNT_ITEMS_QUERY, "COUNT_ITEMS_QUERY"
         )
         observation.total_items = int(
@@ -57,7 +59,7 @@ def compile_quantity_observation(
         )
 
         print("FETCHING LEXEME COUNT")
-        lexeme_count_results = get_results(
+        lexeme_count_results = await get_sparql_results(
             sparql_endpoint_url, COUNT_LEXEMES_QUERY, "COUNT_LEXEMES_QUERY"
         )
         observation.total_lexemes = int(
@@ -65,7 +67,7 @@ def compile_quantity_observation(
         )
 
         print("FETCHING TRIPLE COUNT")
-        triple_count_results = get_results(
+        triple_count_results = await get_sparql_results(
             sparql_endpoint_url, COUNT_TRIPLES_QUERY, "COUNT_TRIPLES_QUERY"
         )
         observation.total_triples = int(
