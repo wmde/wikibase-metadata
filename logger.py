@@ -14,10 +14,10 @@ class OptionalExtraFormatter(logging.Formatter):
         """Format Record"""
 
         if "wikibase" in record.__dict__.keys():
-            self._style._fmt = "%(asctime)s | wikibase %(wikibase)d | %(message)s"  # pylint: disable=protected-access
+            self._style._fmt = "%(asctime)s | %(levelname)s | wikibase %(wikibase)d | %(message)s"  # pylint: disable=protected-access
         else:
             self._style._fmt = (  # pylint: disable=protected-access
-                "%(asctime)s | %(message)s"
+                "%(asctime)s | %(levelname)s | %(message)s"
             )
 
         return super().format(record)
