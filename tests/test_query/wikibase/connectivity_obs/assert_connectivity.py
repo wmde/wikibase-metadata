@@ -5,7 +5,7 @@ from typing import Optional
 from tests.utils import assert_layered_property_count, assert_property_value
 
 
-# pylint: disable=too-many-locals,dangerous-default-value
+# pylint: disable-next=too-many-locals,dangerous-default-value
 def assert_connectivity_observation(
     returned_connectivity_observation: dict,
     expected_id: str,

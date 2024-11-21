@@ -19,7 +19,7 @@ async def get_wikibase_list(
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
-            # pylint: disable=not-callable
+            # pylint: disable-next=not-callable
             select(func.count())
             .select_from(WikibaseModel)
             .where(WikibaseModel.checked)
