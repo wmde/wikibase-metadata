@@ -21,7 +21,6 @@ class WikibaseStatisticsAggregateStrawberryModel:
 
     wikibase_count: int = strawberry.field(description="Wikibases with Statistics Data")
 
-    # pylint: disable=too-many-arguments,too-many-positional-arguments
     def __init__(
         self,
         total_pages: int,
