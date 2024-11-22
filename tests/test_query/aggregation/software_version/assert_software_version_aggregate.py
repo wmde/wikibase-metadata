@@ -10,7 +10,6 @@ from tests.utils import (
 )
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_software_version_aggregate(
     returned: dict,
     expected_software_name: str,

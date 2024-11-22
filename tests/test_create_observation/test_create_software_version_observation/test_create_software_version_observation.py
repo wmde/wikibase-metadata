@@ -1,4 +1,4 @@
-"""Test create_property_popularity_observation"""
+"""Test create_software_version_observation"""
 
 import os
 import time
@@ -14,7 +14,9 @@ from tests.utils import MockResponse
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="software-version-success", depends=["add-wikibase"], scope="session"
+    name="software-version-success",
+    depends=["software-version-fail-ood"],
+    scope="session",
 )
 @pytest.mark.soup
 @pytest.mark.version
@@ -39,7 +41,9 @@ async def test_create_software_version_observation_success(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="software-version-failure", depends=["software-version-success"]
+    name="software-version-failure",
+    depends=["software-version-success"],
+    scope="session",
 )
 @pytest.mark.soup
 @pytest.mark.version

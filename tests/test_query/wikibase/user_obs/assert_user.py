@@ -3,7 +3,6 @@
 from tests.utils import assert_layered_property_value, assert_property_value
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
 def assert_user_group(
     returned_user_group: dict,
     expected_id: str,

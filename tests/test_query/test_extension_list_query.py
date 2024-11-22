@@ -79,7 +79,7 @@ async def test_extension_list_query():
             "Babel",
             "Babel",
             False,
-            # pylint: disable=line-too-long
+            # pylint: disable-next=line-too-long
             "Adds a parser function to inform other users about language proficiency and categorize users of the same levels and languages.",
             datetime(2024, 3, 1),
             "Continuous updates",
@@ -94,7 +94,7 @@ async def test_extension_list_query():
             "Google Analytics Integration",
             "Google_Analytics_Integration",
             False,
-            # pylint: disable=line-too-long
+            # pylint: disable-next=line-too-long
             "Automatically inserts Google Universal Analytics (and/or other web analytics) tracking code at the bottom of MediaWiki pages",
             datetime(2024, 3, 1),
             "3.0.1 (2017-10-29)",
@@ -137,7 +137,7 @@ async def test_extension_list_query():
             "ProofreadPage",
             "Proofread_Page",
             False,
-            # pylint: disable=line-too-long
+            # pylint: disable-next=line-too-long
             "The Proofread Page extension can render a book either as a column of OCR text beside a column of scanned images, or broken into its logical organization (such as chapters or poems) using transclusion.",
             datetime(2024, 3, 1),
             "Continuous updates",
@@ -232,7 +232,7 @@ async def test_extension_list_query():
         ),
     ],
 )
-# pylint: disable=too-many-arguments,too-many-positional-arguments
+# pylint: disable-next=too-many-arguments,too-many-positional-arguments
 async def test_extension_list_query_parameterized(
     idx: int,
     expected_id: str,

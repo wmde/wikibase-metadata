@@ -29,6 +29,15 @@ async def create_software_version_observation(
     """Create Software Version Observation"""
 
     info.context["background_tasks"].add_task(update_software_data)
+    return await create_software_version_observation_without_background_task(
+        wikibase_id
+    )
+
+
+async def create_software_version_observation_without_background_task(
+    wikibase_id: int,
+) -> bool:
+    """Create Software Version Observation"""
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(

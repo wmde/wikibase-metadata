@@ -39,7 +39,8 @@ query MyQuery($wikibaseId: Int!) {
 @freeze_time("2024-04-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["log-first-success-1", "log-first-failure"], scope="session"
+    depends=["log-first-success-ood", "log-first-success-1", "log-first-failure"],
+    scope="session",
 )
 @pytest.mark.log
 @pytest.mark.query
@@ -65,38 +66,77 @@ async def test_wikibase_log_first_month_all_observations_query():
                 "allObservations"
             ]
         )
-        == 2
+        == 3
     )
 
     assert_layered_property_value(log_observation_list, [0, "id"], "1")
     assert_layered_property_value(
         log_observation_list,
         [0, "observationDate"],
-        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
     # assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
     assert_layered_property_value(
         log_observation_list,
         [0, "firstLog", "date"],
-        datetime(2023, 10, 24).strftime(DATETIME_FORMAT),
+        datetime(2024, 1, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
         log_observation_list,
         [0, "lastLog", "date"],
-        datetime(2023, 11, 23).strftime(DATETIME_FORMAT),
+        datetime(2024, 1, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        log_observation_list, [0, "lastLog", "userType"], "USER"
+        log_observation_list, [0, "lastLog", "userType"], None
     )
-    assert_layered_property_value(log_observation_list, [0, "logCount"], 31)
-    assert_layered_property_value(log_observation_list, [0, "allUsers"], 3)
-    assert_layered_property_value(log_observation_list, [0, "humanUsers"], 1)
+    assert_layered_property_value(log_observation_list, [0, "logCount"], 1)
+    assert_layered_property_value(log_observation_list, [0, "allUsers"], 0)
+    assert_layered_property_value(log_observation_list, [0, "humanUsers"], 0)
 
     assert_layered_property_count(log_observation_list, [0, "logTypeRecords"], 1)
     assert_month_type_record(
         log_observation_list[0]["logTypeRecords"][0],
         expected_id="1",
+        expected_log_type="THANK",
+        expected_first_log_date=datetime(2024, 1, 1),
+        expected_last_log_date=datetime(2024, 1, 1),
+        expected_log_count=1,
+        expected_user_count=0,
+        expected_human_count=0,
+    )
+
+    assert_layered_property_count(log_observation_list, [0, "userTypeRecords"], 0)
+
+    assert_layered_property_value(log_observation_list, [1, "id"], "2")
+    assert_layered_property_value(
+        log_observation_list,
+        [1, "observationDate"],
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+    )
+    assert_layered_property_value(log_observation_list, [1, "returnedData"], True)
+    # assert_layered_property_value(log_observation_list, [1, "instanceAge"], 100)
+    assert_layered_property_value(
+        log_observation_list,
+        [1, "firstLog", "date"],
+        datetime(2023, 10, 24).strftime(DATETIME_FORMAT),
+    )
+    assert_layered_property_value(
+        log_observation_list,
+        [1, "lastLog", "date"],
+        datetime(2023, 11, 23).strftime(DATETIME_FORMAT),
+    )
+    assert_layered_property_value(
+        log_observation_list, [1, "lastLog", "userType"], "USER"
+    )
+    assert_layered_property_value(log_observation_list, [1, "logCount"], 31)
+    assert_layered_property_value(log_observation_list, [1, "allUsers"], 3)
+    assert_layered_property_value(log_observation_list, [1, "humanUsers"], 1)
+
+    assert_layered_property_count(log_observation_list, [1, "logTypeRecords"], 1)
+    assert_month_type_record(
+        log_observation_list[1]["logTypeRecords"][0],
+        expected_id="2",
         expected_log_type="THANK",
         expected_first_log_date=datetime(2023, 10, 24),
         expected_last_log_date=datetime(2023, 11, 23),
@@ -105,7 +145,7 @@ async def test_wikibase_log_first_month_all_observations_query():
         expected_human_count=1,
     )
 
-    assert_layered_property_count(log_observation_list, [0, "userTypeRecords"], 3)
+    assert_layered_property_count(log_observation_list, [1, "userTypeRecords"], 3)
     for index, (
         expected_id,
         expected_user_type,
@@ -121,7 +161,7 @@ async def test_wikibase_log_first_month_all_observations_query():
         ]
     ):
         assert_month_type_record(
-            log_observation_list[0]["userTypeRecords"][index],
+            log_observation_list[1]["userTypeRecords"][index],
             expected_id=expected_id,
             expected_user_type=expected_user_type,
             expected_first_log_date=expected_first_log_date,
@@ -130,10 +170,10 @@ async def test_wikibase_log_first_month_all_observations_query():
             expected_user_count=expected_user_count,
         )
 
-    assert_layered_property_value(log_observation_list, [1, "id"], "3")
+    assert_layered_property_value(log_observation_list, [2, "id"], "3")
     assert_layered_property_value(
         log_observation_list,
-        [1, "observationDate"],
+        [2, "observationDate"],
         datetime(2024, 3, 2).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [1, "returnedData"], False)
+    assert_layered_property_value(log_observation_list, [2, "returnedData"], False)
