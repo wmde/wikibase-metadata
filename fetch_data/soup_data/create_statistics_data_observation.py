@@ -8,6 +8,7 @@ import requests
 from requests.exceptions import SSLError
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database
+from logger import logger
 from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 
 
@@ -62,6 +63,9 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
             )
 
         except (ConnectionError, HTTPError, SSLError):
+            logger.warning(
+                "StatisticsDataError", stack_info=True, extra={"wikibase": wikibase.id}
+            )
             observation.returned_data = False
 
         wikibase.statistics_observations.append(observation)

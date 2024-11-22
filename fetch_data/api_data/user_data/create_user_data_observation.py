@@ -10,6 +10,7 @@ from fetch_data.api_data.user_data.compile_user_data import (
 from fetch_data.api_data.user_data.constants import WIKIBASE_DEFAULT_USER_GROUPS
 from fetch_data.api_data.user_data.fetch_all_user_data import get_all_user_data
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
+from logger import logger
 from model.database import (
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,
@@ -34,6 +35,9 @@ async def create_user_observation(wikibase_id: int) -> bool:
             site_user_data = await get_all_user_data(wikibase.action_api_url.url)
             observation.returned_data = True
         except (ReadTimeout, SSLError, ValueError):
+            logger.warning(
+                "UserDataError", stack_info=True, extra={"wikibase": wikibase.id}
+            )
             observation.returned_data = False
 
         if observation.returned_data:

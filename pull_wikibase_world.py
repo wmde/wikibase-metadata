@@ -5,6 +5,7 @@ import json
 
 from sqlalchemy import or_, select
 from data.database_connection import get_async_session
+from logger import logger
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_url_model import WikibaseURLModel
 
@@ -35,7 +36,7 @@ async def pull_wikibase_world():
     #     query=WIKIBASES_QUERY,
     #     query_name="Pull Wikibases",
     # )
-    # print(data)
+    # logger.debug(data)
 
     with open(
         "./data/wikibase_world_data.json", mode="r", encoding="utf-8"
@@ -57,7 +58,7 @@ async def pull_wikibase_world():
                     )
                 ).all()
                 if len(existing) == 0:
-                    print(record.get("itemLabel"))
+                    logger.debug(record.get("itemLabel"))
                     async_session.add(
                         WikibaseModel(
                             wikibase_name=record.get("itemLabel"),
