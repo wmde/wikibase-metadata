@@ -41,7 +41,7 @@ async def compile_property_popularity_observation(
     observation = WikibasePropertyPopularityObservationModel()
 
     try:
-        logger.info("Fetching Property Data", extra={"wikibase", wikibase.id})
+        logger.info("Fetching Property Data", extra={"wikibase": wikibase.id})
         property_count_results = await get_sparql_results(
             wikibase.sparql_endpoint_url.url,
             PROPERTY_POPULARITY_QUERY,
