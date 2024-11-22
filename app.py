@@ -54,9 +54,8 @@ scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
 
 # Ensure the scheduler shuts down properly on application exit.
 @asynccontextmanager
-async def lifespan(
-    app: FastAPI,
-):  # pylint: disable=redefined-outer-name,unused-argument
+# pylint: disable-next=redefined-outer-name,unused-argument
+async def lifespan(app: FastAPI):
     """Triggers at startup, yields, resumes at shutdown"""
 
     scheduler.start()
