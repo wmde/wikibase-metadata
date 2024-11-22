@@ -40,7 +40,7 @@ def get_created_query() -> Select[tuple[int, int]]:
             and_(
                 WikibaseLogMonthObservationModel.returned_data,
                 WikibaseLogMonthObservationModel.first_month,
-                # pylint: disable=singleton-comparison
+                # pylint: disable-next=singleton-comparison
                 WikibaseLogMonthObservationModel.first_log_date != None,
                 WikibaseLogMonthObservationModel.wikibase.has(WikibaseModel.checked),
             )
