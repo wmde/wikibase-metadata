@@ -11,8 +11,6 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-from model.database import WikibaseSoftwareModel, WikibaseSoftwareVersionModel, ModelBase
-
 
 # revision identifiers, used by Alembic.
 revision: str = "7fd538ca8735"
