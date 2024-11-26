@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Optional
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, assert_page_meta
+from tests.utils import assert_layered_property_value, assert_page_meta, DATETIME_FORMAT
 
 
 EXTENSION_LIST_QUERY = """
@@ -282,7 +282,7 @@ async def test_extension_list_query_parameterized(
     assert_layered_property_value(
         result.data,
         ["extensionList", "data", idx, "fetched"],
-        expected_fetched.strftime("%Y-%m-%dT%H:%M:%S"),
+        expected_fetched.strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
         result.data,
