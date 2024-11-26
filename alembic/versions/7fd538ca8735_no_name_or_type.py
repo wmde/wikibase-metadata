@@ -11,8 +11,6 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-from model.database import WikibaseSoftwareModel, WikibaseSoftwareVersionModel, ModelBase
-
 
 # revision identifiers, used by Alembic.
 revision: str = "7fd538ca8735"
@@ -53,7 +51,6 @@ def downgrade() -> None:
             ],
         )
 
-
     # update_query = sa.update(WikibaseSoftwareVersionModel).values(
     #     software_name=(
     #         sa.select(WikibaseSoftwareModel.software_name)
@@ -67,7 +64,8 @@ def downgrade() -> None:
     #     ),
     # )
     # Columns Unconsumed Error, because software_name and software_type are removed from ORM object
-    update_query = sa.text("""
+    update_query = sa.text(
+        """
 UPDATE wikibase_software_version 
 SET
     software_name=(
@@ -76,7 +74,8 @@ SET
     software_type=(
         SELECT wikibase_software.software_type FROM wikibase_software WHERE wikibase_software.id = wikibase_software_version.wikibase_software_id
     )
-""")
+"""
+    )
     op.execute(update_query)
 
     with op.batch_alter_table("wikibase_software_version") as batch_op:
