@@ -80,7 +80,7 @@ SET
 
     with op.batch_alter_table("wikibase_software_version") as batch_op:
         batch_op.alter_column(
-            "software_name", existing_type=sa.VARCHAR(length=9), nullable=False
+            "software_name", existing_type=sa.VARCHAR(), nullable=False
         )
         batch_op.alter_column(
             "software_type", existing_type=sa.VARCHAR(length=9), nullable=False
