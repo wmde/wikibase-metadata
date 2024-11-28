@@ -17,7 +17,7 @@ query MyQuery {
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["log-success-1", "log-success-2"], scope="session")
+@pytest.mark.dependency(depends=["log-first-success-1"], scope="session")
 @pytest.mark.log
 @pytest.mark.query
 async def test_aggregate_created_query():

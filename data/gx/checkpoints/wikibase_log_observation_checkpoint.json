@@ -11,20 +11,16 @@
 	"result_format": { "result_format": "COMPLETE" },
 	"validation_definitions": [
 		{
-			"id": "93e6d1cf-7d1a-4b77-bfe0-73b3b6b2835b",
-			"name": "obs_wikibase_log_observation_validation_definition"
-		},
-		{
-			"id": "4b10a864-7fa1-4a53-9c3d-9d83170a4f88",
-			"name": "wikibase_log_observation_validation_definition"
-		},
-		{
-			"id": "3b4b23fa-ae5d-4e56-826c-aff3d8692ea3",
-			"name": "valid_wikibase_log_observation_validation_definition"
+			"id": "5493f4ed-c5a0-4ef1-8c6f-27a213dbc067",
+			"name": "obs_wikibase_log_observation_month_validation_definition"
 		},
 		{
 			"id": "636b350a-c392-4fde-b855-4da9dae3378a",
 			"name": "wikibase_log_observation_month_validation_definition"
+		},
+		{
+			"id": "aaf9cfe1-62f8-4383-a467-ac16567c5ac1",
+			"name": "valid_wikibase_log_observation_month_validation_definition"
 		},
 		{
 			"id": "d7831039-f3ab-4726-a84a-ae6258d00931",

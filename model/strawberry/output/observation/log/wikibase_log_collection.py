@@ -6,7 +6,6 @@ import strawberry
 
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
-    WikibaseLogMonthObservationModel,
     WikibaseLogMonthUserTypeObservationModel,
 )
 from model.enum import WikibaseLogType, WikibaseUserType
@@ -74,48 +73,4 @@ class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryMod
             all_users=model.user_count,
             first_log_date=model.first_log_date,
             last_log_date=model.last_log_date,
-        )
-
-
-@strawberry.type
-class WikibaseLogMonthStrawberryModel(WikibaseLogCollectionStrawberryModel):
-    """Wikibase Log Month"""
-
-    log_type_records: list[WikibaseLogMonthLogTypeStrawberryModel] = strawberry.field(
-        description="Records of Each Type"
-    )
-    user_type_records: list[WikibaseLogMonthUserTypeStrawberryModel] = strawberry.field(
-        description="Records of Each Type"
-    )
-    human_users: int = strawberry.field(
-        description="Distinct (Probably) Human User Count", graphql_type=BigInt
-    )
-
-    @classmethod
-    def marshal(
-        cls, model: WikibaseLogMonthObservationModel
-    ) -> "WikibaseLogMonthStrawberryModel":
-        """Coerce Database Model to Strawberry Model"""
-
-        return cls(
-            id=strawberry.ID(model.id),
-            log_count=model.log_count,
-            all_users=model.user_count,
-            human_users=model.human_user_count,
-            first_log_date=model.first_log_date,
-            last_log_date=model.last_log_date,
-            log_type_records=sorted(
-                [
-                    WikibaseLogMonthLogTypeStrawberryModel.marshal(r)
-                    for r in model.log_type_records
-                ],
-                key=lambda x: x.log_type.value,
-            ),
-            user_type_records=sorted(
-                [
-                    WikibaseLogMonthUserTypeStrawberryModel.marshal(r)
-                    for r in model.user_type_records
-                ],
-                key=lambda x: x.user_type.value,
-            ),
         )

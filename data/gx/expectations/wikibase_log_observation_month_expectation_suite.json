@@ -1,22 +1,22 @@
 {
 	"expectations": [
 		{
-			"id": "1ce3d321-968f-409f-9d30-51b8262cdff4",
-			"kwargs": { "column": "id" },
+			"id": "92b373dc-4ca4-4e3b-82e8-240787026104",
+			"kwargs": { "column": "first" },
 			"meta": {},
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "702ce133-2ebc-46d4-a834-0662d54ef247",
-			"kwargs": { "column": "id" },
+			"id": "cd5da7b8-4d1f-4d83-b379-d8db3d4a9f57",
+			"kwargs": { "column": "first" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
 		{
-			"id": "b914888a-8125-4fbd-ab45-3c30cae5a687",
-			"kwargs": { "column": "id" },
+			"id": "8525b570-4478-455c-8567-01d84dd5c2ab",
+			"kwargs": { "column": "first", "value_set": [false, true] },
 			"meta": {},
-			"type": "expect_column_values_to_be_unique"
+			"type": "expect_column_values_to_be_in_set"
 		},
 		{
 			"id": "1fde4329-71b4-40a0-8f46-a9d5d71e6cc0",
@@ -31,28 +31,31 @@
 			"type": "expect_column_to_exist"
 		},
 		{
+			"id": "ca504c90-79db-46a8-8b81-c925e28b2d78",
+			"kwargs": { "column": "last_log_user_type" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "7f067007-4d86-4b6a-a1aa-046dea398761",
+			"kwargs": {
+				"column": "last_log_user_type",
+				"value_set": ["BOT", "MISSING", "USER", "NONE"]
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_in_set"
+		},
+		{
 			"id": "7e4800d9-4ab5-4dad-93fe-0ad77459c5b4",
 			"kwargs": { "column": "log_count" },
 			"meta": {},
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "e8a7b3ca-333b-4176-93c2-ab29b0d65a41",
-			"kwargs": { "column": "log_count" },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
 			"id": "92fc91e2-1682-424b-9cd6-44b72ea728d7",
 			"kwargs": { "column": "user_count" },
 			"meta": {},
 			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "7ff581fa-7fe4-4ba8-aee7-1b8b1703a391",
-			"kwargs": { "column": "user_count" },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
 		},
 		{
 			"id": "5a554d7e-cef1-4c5d-bba8-4d26d733137a",

@@ -37,8 +37,15 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
         }
       }
       logObservations {
-        mostRecent {
-          id
+        firstMonth {
+          mostRecent {
+            id
+          }
+        }
+        lastMonth {
+          mostRecent {
+            id
+          }
         }
       }
       propertyPopularityObservations {
