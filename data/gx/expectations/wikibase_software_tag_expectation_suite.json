@@ -1,0 +1,58 @@
+{
+	"expectations": [
+		{
+			"id": "6d2611be-976c-436c-955f-443992875712",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "24d9c05f-8a84-4aa8-bcba-89e4d1c78cb1",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "d858a203-8efe-4b41-b4fc-b9fe62cee442",
+			"kwargs": { "column": "id" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "2747ff12-3259-4071-825d-21330e6db6fa",
+			"kwargs": { "column": "tag" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "c322e1c0-b923-4dd7-95e8-464d2b05edd0",
+			"kwargs": { "column": "tag" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "5d4645fd-e469-43da-a7f5-ab7e4222fdf7",
+			"kwargs": { "column": "tag" },
+			"meta": {},
+			"type": "expect_column_values_to_be_unique"
+		},
+		{
+			"id": "5baeb31e-aa99-46b2-bd6e-035155afcbfc",
+			"kwargs": {
+				"column": "tag",
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_match_regex_list"
+		}
+	],
+	"id": "920eb0d9-1590-45e4-ad9b-29c41fdcfce0",
+	"meta": { "great_expectations_version": "1.1.3" },
+	"name": "wikibase_software_tag_expectation_suite",
+	"notes": null
+}

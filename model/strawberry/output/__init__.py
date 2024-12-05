@@ -11,3 +11,4 @@ from model.strawberry.output.observation import (
 )
 from model.strawberry.output.page import Page, PageNumberType, PageSizeType
 from model.strawberry.output.wikibase import WikibaseStrawberryModel
+from model.strawberry.output.wikibase_software import WikibaseSoftwareStrawberryModel
