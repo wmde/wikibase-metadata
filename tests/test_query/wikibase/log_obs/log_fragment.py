@@ -1,33 +1,20 @@
 """Log Observation Fragment"""
 
 WIKIBASE_LOG_OBSERVATION_FRAGMENT = """
-fragment WikibaseLogObservationStrawberryModelFragment on WikibaseLogObservationStrawberryModel {
+fragment WikibaseLogMonthStrawberryModelFragment on WikibaseLogMonthStrawberryModel {
   id
   observationDate
   returnedData
-  instanceAge
+  logCount
+  allUsers
+  humanUsers
   firstLog {
     date
-  }
-  firstMonth {
-    ...WikibaseLogMonthStrawberryModelFragment
   }
   lastLog {
     date
     userType
   }
-  lastMonth {
-    ...WikibaseLogMonthStrawberryModelFragment
-  }
-}
-
-fragment WikibaseLogMonthStrawberryModelFragment on WikibaseLogMonthStrawberryModel {
-  id
-  firstLogDate
-  lastLogDate
-  logCount
-  allUsers
-  humanUsers
   logTypeRecords {
     id
     logType

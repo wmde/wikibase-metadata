@@ -1,0 +1,26 @@
+{
+	"expectations": [
+		{
+			"id": "eed8d4dd-5c7f-4c5a-ad33-d988e95f41ac",
+			"kwargs": { "column": "log_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "2d60689d-96de-45fb-b9ad-e750676ce331",
+			"kwargs": { "column": "user_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "9a9e385e-6b2d-44dd-9b83-186806d5c17c",
+			"kwargs": { "column": "user_count_no_bot" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		}
+	],
+	"id": "e7cf9760-5c98-4050-be83-e93c5db55fda",
+	"meta": { "great_expectations_version": "1.2.0" },
+	"name": "valid_wikibase_log_observation_month_expetation_suite",
+	"notes": null
+}

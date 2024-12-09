@@ -1,6 +1,7 @@
 """Wikibase Log Strawberry Models"""
 
 from datetime import datetime
+from typing import Optional
 import strawberry
 
 
@@ -15,4 +16,6 @@ class WikibaseLogStrawberryModel:
 class WikibaseLogUserStrawberryModel(WikibaseLogStrawberryModel):
     """Wikibase Log"""
 
-    user_type: str = strawberry.field(description="User Type - Bot, User, or Missing?")
+    user_type: Optional[str] = strawberry.field(
+        description="User Type - Bot, User, or Missing?"
+    )

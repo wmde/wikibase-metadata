@@ -9,6 +9,3 @@ from model.database.wikibase_observation.log.wikibase_log_month_observation_mode
 from model.database.wikibase_observation.log.wikibase_log_month_user_type_observation_model import (
     WikibaseLogMonthUserTypeObservationModel,
 )
-from model.database.wikibase_observation.log.wikibase_log_observation_model import (
-    WikibaseLogObservationModel,
-)

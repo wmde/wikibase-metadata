@@ -68,9 +68,7 @@ class WikibaseStrawberryModel:
             )
 
     @strawberry.field(description="Log Data")
-    async def log_observations(
-        self,
-    ) -> WikibaseObservationSetStrawberryModel[WikibaseLogObservationStrawberryModel]:
+    async def log_observations(self) -> WikibaseLogObservationStrawberryModel:
         """Summon Log Data on Specific Request"""
 
         async with get_async_session() as async_session:
@@ -78,19 +76,14 @@ class WikibaseStrawberryModel:
                 (
                     await async_session.scalars(
                         select(WikibaseModel)
-                        .options(joinedload(WikibaseModel.log_observations))
+                        .options(joinedload(WikibaseModel.log_month_observations))
                         .where(WikibaseModel.id == int(self.id))
                     )
                 )
                 .unique()
                 .one()
             )
-            return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseLogObservationStrawberryModel.marshal(o)
-                    for o in model.log_observations
-                ]
-            )
+            return WikibaseLogObservationStrawberryModel.marshal(model)
 
     @strawberry.field(description="Property Popularity Data")
     async def property_popularity_observations(
