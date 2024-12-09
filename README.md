@@ -7,6 +7,7 @@ We aim to use this to guide future product development and engineering focus, as
 For more details, please see:
 
 - [List of metrics currently tracked](docs/data-list.md)
+- [Data Retrieval Schedule](docs/data-schedule.md)
 - [Development documentation](docs/development.md)
 
 ## Deployment Commands
