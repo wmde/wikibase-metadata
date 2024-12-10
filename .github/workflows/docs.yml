@@ -3,11 +3,11 @@ name: Docs Lint
 on:
   pull_request:
     paths:
-      - '*.md'
-      - '**/*.md'
-      - '*.yml'
-      - '**/*.yml'
-      - '.github/workflows/docs.yml'
+      - "*.md"
+      - "**/*.md"
+      - "*.yml"
+      - "**/*.yml"
+      - ".github/workflows/docs.yml"
 
 jobs:
   lint-check-frontend:
