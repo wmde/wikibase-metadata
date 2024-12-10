@@ -25,7 +25,5 @@ jobs:
       - name: npm check
         run: |
           npx prettier --check --use-tabs data/gx/**/*.json
-          npx prettier --check --use-tabs *.md
-          npx prettier --check --use-tabs docs/*.md
-          npx prettier --check --use-tabs *.yml
-          npx prettier --check --use-tabs **/*.yml
+          npx prettier --check --use-tabs *.md docs/*.md
+          npx prettier --check --use-tabs *.yml **/*.yml
