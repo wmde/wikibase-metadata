@@ -3,6 +3,7 @@ name: Docs Lint
 on:
   pull_request:
     paths:
+      - "data/gx/**/*.json"
       - "*.md"
       - "**/*.md"
       - "*.yml"
@@ -10,7 +11,7 @@ on:
       - ".github/workflows/docs.yml"
 
 jobs:
-  lint-check-frontend:
+  lint-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +24,7 @@ jobs:
 
       - name: npm check
         run: |
+          npx prettier --check --use-tabs data/gx/**/*.json
           npx prettier --check --use-tabs *.md
           npx prettier --check --use-tabs docs/*.md
           npx prettier --check --use-tabs *.yml
