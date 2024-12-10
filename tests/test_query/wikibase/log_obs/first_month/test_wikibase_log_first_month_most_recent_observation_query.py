@@ -58,11 +58,9 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
     assert "mostRecent" in result_wikibase["logObservations"]["firstMonth"]
     most_recent = result_wikibase["logObservations"]["firstMonth"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "1")
+    assert_property_value(most_recent, "id", "2")
     assert_property_value(
-        most_recent,
-        "observationDate",
-        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+        most_recent, "observationDate", datetime(2024, 3, 1).strftime(DATETIME_FORMAT)
     )
     assert_property_value(most_recent, "returnedData", True)
     # assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
@@ -84,7 +82,7 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
     assert_layered_property_count(most_recent, ["logTypeRecords"], 1)
     assert_month_type_record(
         most_recent["logTypeRecords"][0],
-        expected_id="1",
+        expected_id="2",
         expected_log_type="THANK",
         expected_first_log_date=datetime(2023, 10, 24),
         expected_last_log_date=datetime(2023, 11, 23),

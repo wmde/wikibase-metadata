@@ -22,6 +22,6 @@ def test_get_log_param_string():
     )
     assert (
         get_log_param_string(offset="20200101000000|1")
-        # pylint: disable=line-too-long
+        # pylint: disable-next=line-too-long
         == "?action=query&format=json&list=logevents&formatversion=2&ledir=older&lecontinue=20200101000000|1"
     )

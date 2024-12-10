@@ -14,7 +14,8 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
         assert (
             await async_session.scalar(
-                select(func.count()).where(  # pylint: disable=not-callable
+                # pylint: disable-next=not-callable
+                select(func.count()).where(
                     WikibaseModel.wikibase_name == wikibase_input.wikibase_name.strip()
                 )
             )
@@ -35,7 +36,8 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
                 stripped_input_url: str = input_url.strip()
                 assert (
                     await async_session.scalar(
-                        select(func.count()).where(  # pylint: disable=not-callable
+                        # pylint: disable-next=not-callable
+                        select(func.count()).where(
                             WikibaseURLModel.url == stripped_input_url
                         )
                     )

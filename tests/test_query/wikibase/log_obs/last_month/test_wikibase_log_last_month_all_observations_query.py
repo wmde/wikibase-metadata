@@ -39,7 +39,12 @@ query MyQuery($wikibaseId: Int!) {
 @freeze_time("2024-04-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["log-last-success-1", "log-last-success-2", "log-last-failure"],
+    depends=[
+        "log-last-success-ood",
+        "log-last-success-1",
+        "log-last-success-2",
+        "log-last-failure",
+    ],
     scope="session",
 )
 @pytest.mark.log
@@ -66,39 +71,39 @@ async def test_wikibase_log_last_month_all_observations_query():
                 "allObservations"
             ]
         )
-        == 3
+        == 4
     )
 
-    assert_layered_property_value(log_observation_list, [0, "id"], "2")
+    assert_layered_property_value(log_observation_list, [0, "id"], "4")
     assert_layered_property_value(
         log_observation_list,
         [0, "observationDate"],
-        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
     # assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
     assert_layered_property_value(
         log_observation_list,
         [0, "firstLog", "date"],
-        datetime(2024, 1, 31).strftime(DATETIME_FORMAT),
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
         log_observation_list,
         [0, "lastLog", "date"],
-        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
         log_observation_list, [0, "lastLog", "userType"], None
     )
-    assert_layered_property_value(log_observation_list, [0, "logCount"], 31)
+    assert_layered_property_value(log_observation_list, [0, "logCount"], 1)
     assert_layered_property_count(log_observation_list, [0, "logTypeRecords"], 1)
     assert_month_type_record(
         log_observation_list[0]["logTypeRecords"][0],
-        expected_id="2",
+        expected_id="3",
         expected_log_type="THANK",
-        expected_first_log_date=datetime(2024, 1, 31),
-        expected_last_log_date=datetime(2024, 3, 1),
-        expected_log_count=31,
+        expected_first_log_date=datetime(2024, 2, 1),
+        expected_last_log_date=datetime(2024, 2, 1),
+        expected_log_count=1,
         expected_user_count=0,
         expected_human_count=0,
     )
@@ -106,26 +111,63 @@ async def test_wikibase_log_last_month_all_observations_query():
     assert_layered_property_value(log_observation_list, [0, "humanUsers"], 0)
     assert_layered_property_count(log_observation_list, [0, "userTypeRecords"], 0)
 
-    assert_layered_property_value(log_observation_list, [1, "id"], "4")
+    assert_layered_property_value(log_observation_list, [1, "id"], "5")
     assert_layered_property_value(
         log_observation_list,
         [1, "observationDate"],
-        datetime(2024, 3, 2).strftime(DATETIME_FORMAT),
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [1, "returnedData"], False)
+    assert_layered_property_value(log_observation_list, [1, "returnedData"], True)
+    # assert_layered_property_value(log_observation_list, [1, "instanceAge"], 100)
+    assert_layered_property_value(
+        log_observation_list,
+        [1, "firstLog", "date"],
+        datetime(2024, 1, 31).strftime(DATETIME_FORMAT),
+    )
+    assert_layered_property_value(
+        log_observation_list,
+        [1, "lastLog", "date"],
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
+    )
+    assert_layered_property_value(
+        log_observation_list, [1, "lastLog", "userType"], None
+    )
+    assert_layered_property_value(log_observation_list, [1, "logCount"], 31)
+    assert_layered_property_count(log_observation_list, [1, "logTypeRecords"], 1)
+    assert_month_type_record(
+        log_observation_list[1]["logTypeRecords"][0],
+        expected_id="4",
+        expected_log_type="THANK",
+        expected_first_log_date=datetime(2024, 1, 31),
+        expected_last_log_date=datetime(2024, 3, 1),
+        expected_log_count=31,
+        expected_user_count=0,
+        expected_human_count=0,
+    )
+    assert_layered_property_value(log_observation_list, [1, "allUsers"], 0)
+    assert_layered_property_value(log_observation_list, [1, "humanUsers"], 0)
+    assert_layered_property_count(log_observation_list, [1, "userTypeRecords"], 0)
 
-    assert_layered_property_value(log_observation_list, [2, "id"], "5")
+    assert_layered_property_value(log_observation_list, [2, "id"], "6")
     assert_layered_property_value(
         log_observation_list,
         [2, "observationDate"],
+        datetime(2024, 3, 2).strftime(DATETIME_FORMAT),
+    )
+    assert_layered_property_value(log_observation_list, [2, "returnedData"], False)
+
+    assert_layered_property_value(log_observation_list, [3, "id"], "7")
+    assert_layered_property_value(
+        log_observation_list,
+        [3, "observationDate"],
         datetime(2024, 3, 3).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [2, "returnedData"], True)
-    # assert_layered_property_value(log_observation_list, [2, "instanceAge"], 160)
-    assert_layered_property_value(log_observation_list, [2, "firstLog"], None)
-    assert_layered_property_value(log_observation_list, [2, "lastLog"], None)
-    assert_layered_property_value(log_observation_list, [2, "logCount"], 0)
-    assert_layered_property_count(log_observation_list, [2, "logTypeRecords"], 0)
-    assert_layered_property_value(log_observation_list, [2, "allUsers"], 0)
-    assert_layered_property_value(log_observation_list, [2, "humanUsers"], 0)
-    assert_layered_property_count(log_observation_list, [2, "userTypeRecords"], 0)
+    assert_layered_property_value(log_observation_list, [3, "returnedData"], True)
+    # assert_layered_property_value(log_observation_list, [3, "instanceAge"], 160)
+    assert_layered_property_value(log_observation_list, [3, "firstLog"], None)
+    assert_layered_property_value(log_observation_list, [3, "lastLog"], None)
+    assert_layered_property_value(log_observation_list, [3, "logCount"], 0)
+    assert_layered_property_count(log_observation_list, [3, "logTypeRecords"], 0)
+    assert_layered_property_value(log_observation_list, [3, "allUsers"], 0)
+    assert_layered_property_value(log_observation_list, [3, "humanUsers"], 0)
+    assert_layered_property_count(log_observation_list, [3, "userTypeRecords"], 0)

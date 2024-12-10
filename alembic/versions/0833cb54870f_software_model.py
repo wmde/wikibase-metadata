@@ -10,6 +10,9 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.orm import mapped_column
+
+from model.database import WikibaseSoftwareVersionModel, WikibaseSoftwareModel
 
 
 # revision identifiers, used by Alembic.
@@ -75,24 +78,51 @@ def upgrade() -> None:
         batch_op.create_foreign_key(
             "software", "wikibase_software", ["wikibase_software_id"], ["id"]
         )
-    with op.get_bind() as conn:
-        conn.execute(
-            sa.text(
-                """INSERT INTO wikibase_software (software_type, software_name)
-SELECT DISTINCT software_type, software_name
-FROM wikibase_software_version
-ORDER BY software_type, software_name"""
-            )
+
+    select_cte = (
+        sa.text(
+            "SELECT id, software_name, software_type FROM wikibase_software_version"
         )
-        conn.execute(
-            sa.text(
-                """UPDATE wikibase_software_version
-SET wikibase_software_id = wikibase_software.id
-FROM wikibase_software
-WHERE wikibase_software_version.software_name = wikibase_software.software_name AND wikibase_software_version.software_type = wikibase_software.software_type"""
-            )
+        .columns(
+            WikibaseSoftwareVersionModel.id,
+            mapped_column("software_name", sa.String, nullable=False),
+            mapped_column("software_type", sa.String, nullable=False),
         )
-        conn.commit()
+        .cte()
+    )
+    insert_query = sa.insert(WikibaseSoftwareModel).from_select(
+        [WikibaseSoftwareModel.software_type, WikibaseSoftwareModel.software_name],
+        sa.select(select_cte.c.software_type, select_cte.c.software_name)
+        .group_by(select_cte.c.software_type, select_cte.c.software_name)
+        .order_by(select_cte.c.software_type, select_cte.c.software_name),
+    )
+    op.execute(insert_query)
+
+    software_id_subq = (
+        sa.select(
+            WikibaseSoftwareModel.id.label("software_id"),
+            select_cte.c.id.label("software_version_id"),
+        )
+        .join(
+            select_cte,
+            onclause=sa.and_(
+                WikibaseSoftwareModel.software_name == select_cte.c.software_name,
+                WikibaseSoftwareModel.software_type == select_cte.c.software_type,
+            ),
+        )
+        .subquery()
+    )
+    update_query = sa.update(WikibaseSoftwareVersionModel).values(
+        software_id=(
+            sa.select(software_id_subq.c.software_id)
+            .where(
+                WikibaseSoftwareVersionModel.id
+                == software_id_subq.c.software_version_id,
+            )
+            .scalar_subquery()
+        )
+    )
+    op.execute(update_query)
     # ### end Alembic commands ###
 
 

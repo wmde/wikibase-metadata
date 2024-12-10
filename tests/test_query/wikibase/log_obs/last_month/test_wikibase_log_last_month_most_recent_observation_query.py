@@ -37,8 +37,7 @@ query MyQuery($wikibaseId: Int!) {
 @freeze_time("2024-04-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["log-last-success-1", "log-last-success-2"],
-    scope="session",
+    depends=["log-last-success-1", "log-last-success-2"], scope="session"
 )
 @pytest.mark.log
 @pytest.mark.query
@@ -59,7 +58,7 @@ async def test_wikibase_log_last_month_most_recent_observation_query():
     assert "mostRecent" in result_wikibase["logObservations"]["lastMonth"]
     most_recent = result_wikibase["logObservations"]["lastMonth"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "5")
+    assert_property_value(most_recent, "id", "7")
     assert_property_value(
         most_recent, "observationDate", datetime(2024, 3, 3).strftime(DATETIME_FORMAT)
     )
