@@ -11,6 +11,7 @@ from fetch_data.sparql_data.sparql_queries import (
     COUNT_TRIPLES_QUERY,
 )
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
+from logger import logger
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 
 
@@ -25,9 +26,7 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = await compile_quantity_observation(
-            wikibase.sparql_endpoint_url.url
-        )
+        observation = await compile_quantity_observation(wikibase)
 
         wikibase.quantity_observations.append(observation)
 
@@ -36,39 +35,41 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
 
 
 async def compile_quantity_observation(
-    sparql_endpoint_url: str,
+    wikibase: WikibaseModel,
 ) -> WikibaseQuantityObservationModel:
     """Compile Quantity Observation"""
 
     observation = WikibaseQuantityObservationModel()
     try:
-        print("FETCHING PROPERTY COUNT")
+        logger.info("Fetching Property Count", extra={"wikibase": wikibase.id})
         property_count_results = await get_sparql_results(
-            sparql_endpoint_url, COUNT_PROPERTIES_QUERY, "COUNT_PROPERTIES_QUERY"
+            wikibase.sparql_endpoint_url.url,
+            COUNT_PROPERTIES_QUERY,
+            "COUNT_PROPERTIES_QUERY",
         )
         observation.total_properties = int(
             property_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        print("FETCHING ITEM COUNT")
+        logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
         item_count_results = await get_sparql_results(
-            sparql_endpoint_url, COUNT_ITEMS_QUERY, "COUNT_ITEMS_QUERY"
+            wikibase.sparql_endpoint_url.url, COUNT_ITEMS_QUERY, "COUNT_ITEMS_QUERY"
         )
         observation.total_items = int(
             item_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        print("FETCHING LEXEME COUNT")
+        logger.info("Fetching Lexeme Count", extra={"wikibase": wikibase.id})
         lexeme_count_results = await get_sparql_results(
-            sparql_endpoint_url, COUNT_LEXEMES_QUERY, "COUNT_LEXEMES_QUERY"
+            wikibase.sparql_endpoint_url.url, COUNT_LEXEMES_QUERY, "COUNT_LEXEMES_QUERY"
         )
         observation.total_lexemes = int(
             lexeme_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        print("FETCHING TRIPLE COUNT")
+        logger.info("Fetching Triple Count", extra={"wikibase": wikibase.id})
         triple_count_results = await get_sparql_results(
-            sparql_endpoint_url, COUNT_TRIPLES_QUERY, "COUNT_TRIPLES_QUERY"
+            wikibase.sparql_endpoint_url.url, COUNT_TRIPLES_QUERY, "COUNT_TRIPLES_QUERY"
         )
         observation.total_triples = int(
             triple_count_results["results"]["bindings"][0]["count"]["value"]
@@ -76,6 +77,9 @@ async def compile_quantity_observation(
 
         observation.returned_data = True
     except (HTTPError, EndPointInternalError):
+        logger.warning(
+            "QuantityDataError", stack_info=True, extra={"wikibase": wikibase.id}
+        )
         observation.returned_data = False
 
     return observation

@@ -16,6 +16,7 @@ from fetch_data.api_data.user_data import (
     get_user_type_from_user_data,
 )
 from fetch_data.utils import get_wikibase_from_database
+from logger import logger
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
@@ -41,7 +42,7 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
         )
 
         try:
-            print("FETCHING LOGS")
+            logger.info("Fetching Logs", extra={"wikibase": wikibase.id})
             log_list = await get_month_log_list(
                 wikibase.action_api_url.url,
                 comparison_date=await get_log_list_comparison_date(
@@ -52,6 +53,9 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
             observation = await create_log_month(wikibase, log_list, observation)
             observation.returned_data = True
         except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
+            logger.warning(
+                "LogDataError", stack_info=True, extra={"wikibase": wikibase.id}
+            )
             observation.returned_data = False
 
         wikibase.log_month_observations.append(observation)
@@ -66,7 +70,7 @@ async def get_log_list_comparison_date(
     """Return either date of first log or today"""
 
     if first:
-        print("FETCHING OLDEST LOG")
+        logger.info("Fetching Oldest Log", extra={"wikibase": wikibase.id})
         oldest_log = (
             await get_log_list_from_url(
                 wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
@@ -101,7 +105,7 @@ async def create_log_month(
     user_type_dict: dict[str, WikibaseUserType] = {}
 
     if len(users) > 0:
-        print("FETCHING USER DATA")
+        logger.info("Fetching User Data", extra={"wikibase": wikibase.id})
         user_data = await get_multiple_user_data(wikibase, users)
         for u in user_data:
             user_type_dict[u["name"]] = get_user_type_from_user_data(u)

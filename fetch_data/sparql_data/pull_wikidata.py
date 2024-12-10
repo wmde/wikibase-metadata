@@ -5,7 +5,9 @@ from datetime import datetime
 from json import JSONDecodeError
 import os
 import sys
-from SPARQLWrapper import SPARQLWrapper, JSON
+from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
+
+from logger import logger
 
 
 async def get_sparql_results(endpoint_url: str, query: str, query_name: str) -> dict:
@@ -22,10 +24,19 @@ def _get_results(endpoint_url: str, query: str, query_name: str) -> dict:
     # TODO adjust user agent; see https://w.wiki/CX6
     sparql = SPARQLWrapper(endpoint_url, agent=user_agent, returnFormat=JSON)
     sparql.setQuery(query)
-    query_result = sparql.query()
+    query_result: QueryResult = sparql.query()
     try:
         return query_result.convert()
     except JSONDecodeError as exc:
+        logger.warning(
+            "SPARQLError",
+            stack_info=True,
+            extra={
+                "query": query,
+                "endpoint": endpoint_url,
+                "result": str(query_result),
+            },
+        )
         failed_dir = (
             f"fetch_data/sparql_data/sparql_queries/failed_queries/{query_name}"
         )

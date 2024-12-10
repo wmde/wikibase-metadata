@@ -6,10 +6,12 @@ from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import PROPERTY_POPULARITY_QUERY
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
+from logger import logger
 from model.database import (
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
 )
+from model.database import WikibaseModel
 
 
 async def create_property_popularity_observation(wikibase_id: int) -> bool:
@@ -23,9 +25,7 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
             require_sparql_endpoint=True,
         )
 
-        observation = await compile_property_popularity_observation(
-            wikibase.sparql_endpoint_url.url
-        )
+        observation = await compile_property_popularity_observation(wikibase)
 
         wikibase.property_popularity_observations.append(observation)
 
@@ -34,16 +34,18 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
 
 
 async def compile_property_popularity_observation(
-    sparql_endpoint_url: str,
+    wikibase: WikibaseModel,
 ) -> WikibasePropertyPopularityObservationModel:
     """Compile Property Popularity Observation"""
 
     observation = WikibasePropertyPopularityObservationModel()
 
     try:
-        print("FETCHING PROPERTY DATA")
+        logger.info("Fetching Property Data", extra={"wikibase": wikibase.id})
         property_count_results = await get_sparql_results(
-            sparql_endpoint_url, PROPERTY_POPULARITY_QUERY, "PROPERTY_POPULARITY_QUERY"
+            wikibase.sparql_endpoint_url.url,
+            PROPERTY_POPULARITY_QUERY,
+            "PROPERTY_POPULARITY_QUERY",
         )
 
         observation.returned_data = True
@@ -55,5 +57,10 @@ async def compile_property_popularity_observation(
             )
             observation.property_count_observations.append(record)
     except (HTTPError, EndPointInternalError):
+        logger.warning(
+            "PropertyPopularityDataError",
+            stack_info=True,
+            extra={"wikibase": wikibase.id},
+        )
         observation.returned_data = False
     return observation
