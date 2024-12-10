@@ -5,6 +5,7 @@ on:
     paths:
       - '**.md'
       - '**/*.md'
+      - '.github/workflows/docs.yml'
 
 jobs:
   lint-check-frontend:
