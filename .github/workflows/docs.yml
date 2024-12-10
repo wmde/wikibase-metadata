@@ -3,8 +3,10 @@ name: Docs Lint
 on:
   pull_request:
     paths:
-      - '**.md'
+      - '*.md'
       - '**/*.md'
+      - '*.yml'
+      - '**/*.yml'
       - '.github/workflows/docs.yml'
 
 jobs:
@@ -23,3 +25,5 @@ jobs:
         run: |
           npx prettier --check --use-tabs *.md
           npx prettier --check --use-tabs docs/*.md
+          npx prettier --check --use-tabs *.yml
+          npx prettier --check --use-tabs **/*.yml
