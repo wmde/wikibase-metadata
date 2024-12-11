@@ -8,7 +8,7 @@ from model.database.base import ModelBase
 from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
-    WikibaseLogObservationModel,
+    WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
     WikibaseSoftwareVersionObservationModel,
@@ -221,10 +221,12 @@ class WikibaseModel(ModelBase):
     )
     """Connectivity Observations"""
 
-    log_observations: Mapped[list[WikibaseLogObservationModel]] = relationship(
-        "WikibaseLogObservationModel", back_populates="wikibase", lazy="select"
+    log_month_observations: Mapped[list[WikibaseLogMonthObservationModel]] = (
+        relationship(
+            "WikibaseLogMonthObservationModel", back_populates="wikibase", lazy="select"
+        )
     )
-    """Log Observations"""
+    """Log Month Observations"""
 
     property_popularity_observations: Mapped[
         list[WikibasePropertyPopularityObservationModel]
