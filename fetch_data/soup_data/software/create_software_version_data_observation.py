@@ -92,6 +92,8 @@ async def compile_extension_versions(
             ]
         },
     )
+    assert len(extensions_tables) >= 1, "Extension Table(s) Not Found"
+
     return unique_versions(
         [
             await get_software_version_from_row(
