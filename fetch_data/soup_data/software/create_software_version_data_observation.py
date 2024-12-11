@@ -49,6 +49,8 @@ async def create_software_version_observation(
 
             observation.returned_data = True
 
+            # Refers only to the "Installed Software" list in the Special:Version page
+            # Does not include skins, extensions, or libraries, which are compiled below
             installed_software_versions = await compile_installed_software_versions(
                 async_session, soup
             )
