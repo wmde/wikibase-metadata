@@ -10,7 +10,6 @@ from model.database.wikibase_observation import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthUserTypeObservationModel,
-    WikibaseLogObservationModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
