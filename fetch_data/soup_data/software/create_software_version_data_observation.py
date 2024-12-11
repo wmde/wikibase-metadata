@@ -78,14 +78,26 @@ async def compile_extension_versions(
 ) -> list[WikibaseSoftwareVersionModel]:
     """Compile Extension Version List"""
 
-    extensions_table = soup.find(
-        "table", attrs={"id": ["sv-ext", "sv-credits-specialpage"]}
+    extensions_tables = soup.find_all(
+        "table",
+        attrs={
+            "id": [
+                "sv-ext",
+                "sv-credits-specialpage",
+                "sv-credits-editor",
+                "sv-credits-parserhook",
+                "sv-credits-antispam",
+                "sv-credits-wikibase",
+                "sv-credits-other",
+            ]
+        },
     )
     return unique_versions(
         [
             await get_software_version_from_row(
                 async_session, row, WikibaseSoftwareType.EXTENSION
             )
+            for extensions_table in extensions_tables
             for row in extensions_table.find_all(
                 "tr", attrs={"class": "mw-version-ext"}
             )
