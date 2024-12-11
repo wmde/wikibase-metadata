@@ -12,7 +12,8 @@ def clean_string(input_str: str) -> str:
     - Ensures the first character is capitalized while keeping the rest unchanged.
     """
 
-    stripped = re.sub(r"[ ]{2,}|[ ]", r" ", input_str).strip()
+    breaking = re.sub(r"[ ]+", r" ", input_str).strip()
+    stripped = re.sub(r"[ ]{2,}", r" ", breaking).strip()
     if len(stripped) < 2:
         return stripped.upper()
 
