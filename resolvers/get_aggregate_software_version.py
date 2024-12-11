@@ -8,6 +8,7 @@ from sqlalchemy import Select, and_, select, func
 from data import get_async_session
 from model.database import (
     WikibaseModel,
+    WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
@@ -95,15 +96,15 @@ def get_query(
         )
         .subquery()
     )
-    query = (
+
+    next_subquery = (
         select(
-            WikibaseSoftwareVersionModel.software_name,
             WikibaseSoftwareVersionModel.version,
             WikibaseSoftwareVersionModel.version_date,
             WikibaseSoftwareVersionModel.version_hash,
-            # pylint: disable-next=not-callable
-            func.count().label("wikibase_count"),
+            WikibaseSoftwareModel.software_name,
         )
+        .join(WikibaseSoftwareModel)
         .join(
             rank_subquery,
             onclause=and_(
@@ -112,13 +113,21 @@ def get_query(
                 rank_subquery.c.rank == 1,
             ),
         )
-        .where(WikibaseSoftwareVersionModel.software_type == software_type)
-        .group_by(
-            WikibaseSoftwareVersionModel.software_name,
-            WikibaseSoftwareVersionModel.version,
-            WikibaseSoftwareVersionModel.version_date,
-            WikibaseSoftwareVersionModel.version_hash,
-        )
-        .order_by("id")
+        .where(WikibaseSoftwareModel.software_type == software_type)
+        .subquery()
+    )
+
+    query = select(
+        next_subquery.c.software_name,
+        next_subquery.c.version,
+        next_subquery.c.version_date,
+        next_subquery.c.version_hash,
+        # pylint: disable-next=not-callable
+        func.count().label("wikibase_count"),
+    ).group_by(
+        next_subquery.c.software_name,
+        next_subquery.c.version,
+        next_subquery.c.version_date,
+        next_subquery.c.version_hash,
     )
     return query
