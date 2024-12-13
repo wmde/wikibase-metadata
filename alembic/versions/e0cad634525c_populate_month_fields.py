@@ -6,8 +6,7 @@ Create Date: 2024-11-18 13:21:35.815575
 
 """
 
-from datetime import datetime
-from typing import Optional, Sequence, Union
+from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
@@ -15,65 +14,7 @@ import sqlalchemy as sa
 from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
     WikibaseLogMonthObservationModel,
 )
-from model.database.wikibase_observation.wikibase_observation_model import (
-    WikibaseObservationModel,
-)
 from model.enum import WikibaseUserType
-
-
-class WikibaseLogObservationModel(WikibaseObservationModel):
-    """Wikibase Log Observation Table"""
-
-    __tablename__ = "wikibase_log_observation"
-
-    first_log_date: sa.orm.Mapped[Optional[datetime]] = sa.orm.mapped_column(
-        "first_log_date", sa.DateTime(timezone=True), nullable=True
-    )
-    """Oldest Log Date"""
-
-    last_log_date: sa.orm.Mapped[Optional[datetime]] = sa.orm.mapped_column(
-        "last_log_date", sa.DateTime(timezone=True), nullable=True
-    )
-    """Most Recent Log Date"""
-
-    last_log_user_type: sa.orm.Mapped[Optional[WikibaseUserType]] = (
-        sa.orm.mapped_column(
-            "last_log_user_type", sa.Enum(WikibaseUserType), nullable=True
-        )
-    )
-    """Most Recent Log User Type - User or Bot?"""
-
-    first_month_id: sa.orm.Mapped[Optional[int]] = sa.orm.mapped_column(
-        "first_month_id",
-        sa.ForeignKey(column="wikibase_log_observation_month.id", name="first_month"),
-        nullable=True,
-    )
-    """First Month ID"""
-
-    first_month: sa.orm.Mapped[Optional[WikibaseLogMonthObservationModel]] = (
-        sa.orm.relationship(
-            "WikibaseLogMonthObservationModel",
-            lazy="selectin",
-            primaryjoin=first_month_id == WikibaseLogMonthObservationModel.id,
-        )
-    )
-    """First Month Log Record"""
-
-    last_month_id: sa.orm.Mapped[Optional[int]] = sa.orm.mapped_column(
-        "last_month_id",
-        sa.ForeignKey(column="wikibase_log_observation_month.id", name="last_month"),
-        nullable=True,
-    )
-    """Last Month ID"""
-
-    last_month: sa.orm.Mapped[Optional[WikibaseLogMonthObservationModel]] = (
-        sa.orm.relationship(
-            "WikibaseLogMonthObservationModel",
-            lazy="selectin",
-            primaryjoin=last_month_id == WikibaseLogMonthObservationModel.id,
-        )
-    )
-    """Last Month Log Record"""
 
 
 # revision identifiers, used by Alembic.
@@ -83,15 +24,45 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+WikibaseLogObservationModel = (
+    sa.text(
+        """
+SELECT
+    id,
+    wikibase_id,
+    anything AS returned_data,
+    date AS observation_date,
+    first_log_date,
+    last_log_date,
+    last_log_user_type,
+    first_month_id,
+    last_month_id
+FROM wikibase_log_observation"""
+    )
+    .columns(
+        sa.Column("id", sa.Integer, nullable=False),
+        sa.Column("wikibase_id", sa.Integer, nullable=False),
+        sa.Column("returned_data", sa.Boolean, nullable=False),
+        sa.Column("observation_date", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("first_log_date", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("last_log_date", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("last_log_user_type", sa.Enum(WikibaseUserType), nullable=True),
+        sa.Column("first_month_id", sa.Integer, nullable=True),
+        sa.Column("last_month_id", sa.Integer, nullable=True),
+    )
+    .cte()
+)
+
+
 def upgrade() -> None:
     # Update existing records
     wikibase_id_scalar_subq = (
-        sa.select(WikibaseLogObservationModel.wikibase_id)
+        sa.select(WikibaseLogObservationModel.c.wikibase_id)
         .where(
             sa.or_(
-                WikibaseLogObservationModel.first_month_id
+                WikibaseLogObservationModel.c.first_month_id
                 == WikibaseLogMonthObservationModel.id,
-                WikibaseLogObservationModel.last_month_id
+                WikibaseLogObservationModel.c.last_month_id
                 == WikibaseLogMonthObservationModel.id,
             )
         )
@@ -99,12 +70,12 @@ def upgrade() -> None:
         .scalar_subquery()
     )
     returned_data_scalar_subq = (
-        sa.select(WikibaseLogObservationModel.returned_data)
+        sa.select(WikibaseLogObservationModel.c.returned_data)
         .where(
             sa.or_(
-                WikibaseLogObservationModel.first_month_id
+                WikibaseLogObservationModel.c.first_month_id
                 == WikibaseLogMonthObservationModel.id,
-                WikibaseLogObservationModel.last_month_id
+                WikibaseLogObservationModel.c.last_month_id
                 == WikibaseLogMonthObservationModel.id,
             )
         )
@@ -112,12 +83,12 @@ def upgrade() -> None:
         .scalar_subquery()
     )
     observation_date_scalar_subq = (
-        sa.select(WikibaseLogObservationModel.observation_date)
+        sa.select(WikibaseLogObservationModel.c.observation_date)
         .where(
             sa.or_(
-                WikibaseLogObservationModel.first_month_id
+                WikibaseLogObservationModel.c.first_month_id
                 == WikibaseLogMonthObservationModel.id,
-                WikibaseLogObservationModel.last_month_id
+                WikibaseLogObservationModel.c.last_month_id
                 == WikibaseLogMonthObservationModel.id,
             )
         )
@@ -128,17 +99,17 @@ def upgrade() -> None:
         sa.select(
             (
                 sa.and_(
-                    WikibaseLogObservationModel.first_month_id != None,
-                    WikibaseLogObservationModel.first_month_id
+                    WikibaseLogObservationModel.c.first_month_id != None,
+                    WikibaseLogObservationModel.c.first_month_id
                     == WikibaseLogMonthObservationModel.id,
                 )
             ).label("first_month")
         )
         .where(
             sa.or_(
-                WikibaseLogObservationModel.first_month_id
+                WikibaseLogObservationModel.c.first_month_id
                 == WikibaseLogMonthObservationModel.id,
-                WikibaseLogObservationModel.last_month_id
+                WikibaseLogObservationModel.c.last_month_id
                 == WikibaseLogMonthObservationModel.id,
             )
         )
@@ -150,20 +121,20 @@ def upgrade() -> None:
             sa.case(
                 (
                     sa.and_(
-                        WikibaseLogObservationModel.last_month_id != None,
-                        WikibaseLogObservationModel.last_month_id
+                        WikibaseLogObservationModel.c.last_month_id != None,
+                        WikibaseLogObservationModel.c.last_month_id
                         == WikibaseLogMonthObservationModel.id,
                     ),
-                    WikibaseLogObservationModel.last_log_user_type,
+                    WikibaseLogObservationModel.c.last_log_user_type,
                 ),
                 else_=None,
             ).label("last_log_user_type")
         )
         .where(
             sa.or_(
-                WikibaseLogObservationModel.first_month_id
+                WikibaseLogObservationModel.c.first_month_id
                 == WikibaseLogMonthObservationModel.id,
-                WikibaseLogObservationModel.last_month_id
+                WikibaseLogObservationModel.c.last_month_id
                 == WikibaseLogMonthObservationModel.id,
             )
         )
@@ -191,17 +162,17 @@ def upgrade() -> None:
             ],
             sa.union_all(
                 sa.select(
-                    WikibaseLogObservationModel.wikibase_id,
-                    WikibaseLogObservationModel.returned_data,
-                    WikibaseLogObservationModel.observation_date,
+                    WikibaseLogObservationModel.c.wikibase_id,
+                    WikibaseLogObservationModel.c.returned_data,
+                    WikibaseLogObservationModel.c.observation_date,
                     False,
-                ).where(sa.not_(WikibaseLogObservationModel.returned_data)),
+                ).where(sa.not_(WikibaseLogObservationModel.c.returned_data)),
                 sa.select(
-                    WikibaseLogObservationModel.wikibase_id,
-                    WikibaseLogObservationModel.returned_data,
-                    WikibaseLogObservationModel.observation_date,
+                    WikibaseLogObservationModel.c.wikibase_id,
+                    WikibaseLogObservationModel.c.returned_data,
+                    WikibaseLogObservationModel.c.observation_date,
                     True,
-                ).where(sa.not_(WikibaseLogObservationModel.returned_data)),
+                ).where(sa.not_(WikibaseLogObservationModel.c.returned_data)),
             ),
         )
     )
@@ -266,14 +237,14 @@ def downgrade() -> None:
     op.execute(
         sa.insert(WikibaseLogObservationModel).from_select(
             [
-                WikibaseLogObservationModel.wikibase_id,
-                WikibaseLogObservationModel.returned_data,
-                WikibaseLogObservationModel.observation_date,
-                WikibaseLogObservationModel.first_log_date,
-                WikibaseLogObservationModel.last_log_date,
-                WikibaseLogObservationModel.last_log_user_type,
-                WikibaseLogObservationModel.first_month_id,
-                WikibaseLogObservationModel.last_month_id,
+                WikibaseLogObservationModel.c.wikibase_id,
+                WikibaseLogObservationModel.c.returned_data,
+                WikibaseLogObservationModel.c.observation_date,
+                WikibaseLogObservationModel.c.first_log_date,
+                WikibaseLogObservationModel.c.last_log_date,
+                WikibaseLogObservationModel.c.last_log_user_type,
+                WikibaseLogObservationModel.c.first_month_id,
+                WikibaseLogObservationModel.c.last_month_id,
             ],
             sa.select(
                 first_month_subq.c.wikibase_id,
