@@ -146,16 +146,6 @@ fluent_datasources:
             partitioner:
         table_name: wikibase_connectivity_observation_object_relationship_count
         schema_name:
-      wikibase_log_observation_table:
-        type: table
-        id: 66094242-25ea-4a8a-be00-0b21cdea786c
-        batch_metadata: {}
-        batch_definitions:
-          FULL_TABLE:
-            id: 09db6e09-83a0-4906-a910-94a4f40218bc
-            partitioner:
-        table_name: wikibase_log_observation
-        schema_name:
       wikibase_log_observation_month_table:
         type: table
         id: 254c7785-cfcf-4f90-b564-42cb429eea6e
@@ -304,15 +294,15 @@ fluent_datasources:
             id: b2549e79-5908-4abe-8fb4-544dde87cded
             partitioner:
         query: SELECT * FROM wikibase_connectivity_observation WHERE anything
-      valid_wikibase_log_observations:
+      valid_wikibase_log_observation_months:
         type: query
-        id: 0f77d1c3-5227-49a5-b347-020f5cd85a28
+        id: c9935b87-4498-49b6-a9fe-c64705045d8a
         batch_metadata: {}
         batch_definitions:
           FULL_TABLE:
-            id: f46678c3-344e-4c04-9869-52f8692c7e03
+            id: a119863d-469e-49eb-8f10-4a0303545a76
             partitioner:
-        query: SELECT * FROM wikibase_log_observation WHERE anything
+        query: SELECT * FROM wikibase_log_observation_month WHERE anything
       valid_wikibase_quantity_observations:
         type: query
         id: 0b2995ed-52af-4e48-8b4e-27379c8e9f83
