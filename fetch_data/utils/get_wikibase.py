@@ -21,7 +21,7 @@ async def get_wikibase_from_database(
     if include_observations:
         query = query.options(
             joinedload(WikibaseModel.connectivity_observations),
-            joinedload(WikibaseModel.log_observations),
+            joinedload(WikibaseModel.log_month_observations),
             joinedload(WikibaseModel.property_popularity_observations),
             joinedload(WikibaseModel.quantity_observations),
             joinedload(WikibaseModel.software_version_observations),
