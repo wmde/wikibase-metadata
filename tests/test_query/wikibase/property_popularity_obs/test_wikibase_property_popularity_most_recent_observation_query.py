@@ -50,7 +50,7 @@ async def test_wikibase_property_popularity_most_recent_observation_query():
     assert "mostRecent" in result_wikibase["propertyPopularityObservations"]
     most_recent = result_wikibase["propertyPopularityObservations"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "1")
+    assert_property_value(most_recent, "id", "2")
     assert "observationDate" in most_recent
     assert_property_value(most_recent, "returnedData", True)
     assert_layered_property_count(most_recent, ["propertyPopularityCounts"], 2)

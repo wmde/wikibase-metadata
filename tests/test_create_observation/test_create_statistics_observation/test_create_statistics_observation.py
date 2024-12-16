@@ -1,4 +1,4 @@
-"""Test create_property_popularity_observation"""
+"""Test create_special_statistics_observation"""
 
 import os
 import time
@@ -13,7 +13,7 @@ DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observati
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="statistics-success", depends=["add-wikibase"], scope="session"
+    name="statistics-success", depends=["statistics-fail-ood"], scope="session"
 )
 @pytest.mark.soup
 @pytest.mark.statistics
@@ -33,7 +33,9 @@ async def test_create_statistics_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="statistics-failure", depends=["statistics-success"])
+@pytest.mark.dependency(
+    name="statistics-failure", depends=["statistics-success"], scope="session"
+)
 @pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_failure(mocker):
