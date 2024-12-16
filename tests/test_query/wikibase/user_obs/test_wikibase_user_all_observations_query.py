@@ -33,7 +33,7 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["user-empty", "user-failure", "user-20", "user-2000"], scope="session"
+    depends=["user-empty-ood", "user-failure", "user-20", "user-2000"], scope="session"
 )
 @pytest.mark.query
 @pytest.mark.user

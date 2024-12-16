@@ -1,4 +1,4 @@
-"""Test get_month_log_list_from_url"""
+"""Test create_log_observation"""
 
 from datetime import datetime, timedelta
 import json
@@ -13,7 +13,7 @@ from tests.utils import MockResponse, ParsedUrl
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-first-success-1", depends=["add-wikibase"], scope="session"
+    name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_observation_first_success(mocker):
@@ -99,7 +99,7 @@ async def test_create_log_observation_first_success(mocker):
 @freeze_time("2024-03-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-last-success-1", depends=["add-wikibase"], scope="session"
+    name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_observation_last_success(mocker):
@@ -163,7 +163,7 @@ async def test_create_log_observation_last_success(mocker):
 @freeze_time("2024-03-02")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-first-failure", depends=["add-wikibase"], scope="session"
+    name="log-first-failure", depends=["log-first-success-1"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_first_observation_error(mocker):
@@ -184,7 +184,7 @@ async def test_create_log_first_observation_error(mocker):
 @freeze_time("2024-03-02")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-last-failure", depends=["add-wikibase"], scope="session"
+    name="log-last-failure", depends=["log-last-success-1"], scope="session"
 )
 @pytest.mark.log
 async def test_create_log_last_observation_error(mocker):
@@ -211,6 +211,7 @@ async def test_create_log_last_observation_error(mocker):
         "log-first-failure",
         "log-last-failure",
     ],
+    scope="session",
 )
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(mocker):
@@ -255,9 +256,7 @@ async def test_create_log_last_observation_no_last_month(mocker):
                 {
                     "query": {
                         "logevents": sorted(
-                            mock_logs,
-                            key=lambda x: x.get("timestamp"),
-                            reverse=True,
+                            mock_logs, key=lambda x: x.get("timestamp"), reverse=True
                         )
                     }
                 }
