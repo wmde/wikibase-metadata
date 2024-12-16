@@ -11,6 +11,7 @@ from sqlalchemy import Select, and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from data import get_async_session
 from fetch_data.utils import clean_string
+from logger import logger
 from model.database import WikibaseSoftwareModel, WikibaseSoftwareTagModel
 from model.enum import WikibaseSoftwareType
 
@@ -53,7 +54,7 @@ async def compile_data_from_url(
     ) as response:
 
         ext.data_fetched = datetime.now(timezone.utc)
-        print(f"{response.url}: {response.status_code}")
+        logger.info(f"{response.url}: {response.status_code}")
 
         if response.status_code == 200:
 
