@@ -12,7 +12,5 @@ database_connection_string = os.path.expandvars(
 )
 
 log_level = (
-    os.path.expandvars(config.get("logging", "log_level"))
-    if config.has_section("logging")
-    else "INFO"
+    config.get("logging", "log_level") if config.has_section("logging") else "INFO"
 )
