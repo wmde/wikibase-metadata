@@ -14,9 +14,14 @@ from model.database import *
 config = context.config
 
 if (
-    override_db_path := context.get_x_argument(as_dictionary=True).get("dbPath")
+    override_db_path := context.get_x_argument(as_dictionary=True).get("db_path")
 ) is not None:
-    config.set_main_option("sqlalchemy.url", os.path.expandvars(override_db_path))
+    config.set_section_option(
+        section=config.config_ini_section,
+        name="sqlalchemy.url",
+        value=os.path.expandvars(override_db_path),
+    )
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
