@@ -43,6 +43,16 @@ async def merge_software_by_id(base_id: int, additional_id: int) -> bool:
         return len(remaining) == 1
 
 
+def get_select_software_query(id_list: list[int]) -> Select[WikibaseSoftwareModel]:
+    """Select WikibaseSoftwareModel in ID list"""
+
+    software_query = select(WikibaseSoftwareModel).where(
+        WikibaseSoftwareModel.id.in_(id_list)
+    )
+
+    return software_query
+
+
 def get_update_software_tags_query(base_id: int, additional_id: int) -> Update:
     """Add Additional Software Tags to Base"""
 
@@ -64,16 +74,6 @@ def get_update_software_tags_query(base_id: int, additional_id: int) -> Update:
     )
 
     return update_software_tags_query
-
-
-def get_select_software_query(id_list: list[int]) -> Select[WikibaseSoftwareModel]:
-    """Select WikibaseSoftwareModel in ID list"""
-
-    software_query = select(WikibaseSoftwareModel).where(
-        WikibaseSoftwareModel.id.in_(id_list)
-    )
-
-    return software_query
 
 
 def get_update_software_version_query(base_id: int, additional_id: int) -> Update:
