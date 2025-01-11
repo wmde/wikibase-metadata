@@ -90,7 +90,7 @@ async def test_extension_list_query():
         ),
         (
             1,
-            "17",
+            "18",
             "Google Analytics Integration",
             "Google_Analytics_Integration",
             False,
@@ -105,7 +105,7 @@ async def test_extension_list_query():
         ),
         (
             2,
-            "11",
+            "12",
             "LabeledSectionTransclusion",
             "Labeled_Section_Transclusion",
             False,
@@ -133,7 +133,7 @@ async def test_extension_list_query():
         ),
         (
             4,
-            "18",
+            "19",
             "ProofreadPage",
             "Proofread_Page",
             False,
@@ -148,7 +148,7 @@ async def test_extension_list_query():
         ),
         (
             5,
-            "12",
+            "13",
             "Scribunto",
             "Scribunto",
             False,
@@ -162,7 +162,7 @@ async def test_extension_list_query():
         ),
         (
             6,
-            "19",
+            "20",
             "UniversalLanguageSelector",
             "UniversalLanguageSelector",
             False,
@@ -176,7 +176,7 @@ async def test_extension_list_query():
         ),
         (
             7,
-            "13",
+            "14",
             "WikibaseClient",
             "Wikibase_Client",
             False,
@@ -190,7 +190,7 @@ async def test_extension_list_query():
         ),
         (
             8,
-            "14",
+            "15",
             "WikibaseLib",
             "WikibaseLib",
             True,
@@ -204,7 +204,7 @@ async def test_extension_list_query():
         ),
         (
             9,
-            "15",
+            "16",
             "WikibaseRepository",
             "Wikibase_Repository",
             False,
@@ -218,7 +218,7 @@ async def test_extension_list_query():
         ),
         (
             10,
-            "16",
+            "17",
             "WikibaseView",
             "WikibaseView",
             False,
