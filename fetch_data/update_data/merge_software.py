@@ -51,10 +51,7 @@ def get_update_software_tags_query(base_id: int, additional_id: int) -> Update:
             software_tag_xref_table.c.wikibase_software_id,
             software_tag_xref_table.c.wikibase_software_tag_id,
         ],
-        select(
-            software_tag_xref_table.c.wikibase_software_id,
-            software_tag_xref_table.c.wikibase_software_tag_id,
-        ).where(
+        select(base_id, software_tag_xref_table.c.wikibase_software_tag_id).where(
             and_(
                 software_tag_xref_table.c.wikibase_software_id == additional_id,
                 software_tag_xref_table.c.wikibase_software_tag_id.not_in(
