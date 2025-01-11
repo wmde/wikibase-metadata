@@ -129,7 +129,7 @@ async def test_extension_list_query():
             None,
             None,
             None,
-            [],
+            ["Magic", "extensionname"],
         ),
         (
             4,
