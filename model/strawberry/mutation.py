@@ -12,6 +12,7 @@ from fetch_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     create_user_observation,
+    merge_software_by_id,
 )
 
 
@@ -56,4 +57,9 @@ class Mutation:
     fetch_version_data = strawberry.mutation(
         description="Scrape data from Special:Version page",
         resolver=create_software_version_observation,
+    )
+
+    merge_software_by_id = strawberry.mutation(
+        description="Merge Software",
+        resolver=merge_software_by_id,
     )
