@@ -20,4 +20,6 @@ async def test_merge_software_by_id_mutation():
     result = await test_schema.execute(
         MERGE_SOFTWARE_QUERY, variable_values={"baseId": 1, "additionalId": 3}
     )
+    assert result.errors is None
+    assert result.data is not None
     assert result.data.get("mergeSoftwareById")
