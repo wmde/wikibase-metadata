@@ -1,6 +1,5 @@
 """Wikibase Software Version Observation Strawberry Model"""
 
-from typing import List
 import strawberry
 
 from model.database import WikibaseSoftwareVersionObservationModel
@@ -19,19 +18,19 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
 ):
     """Wikibase Software Version Observation"""
 
-    installed_extensions: List[WikibaseSoftwareVersionStrawberryModel] = (
+    installed_extensions: list[WikibaseSoftwareVersionStrawberryModel] = (
         strawberry.field(description="Installed Extensions w/ Versions")
     )
 
-    installed_libraries: List[WikibaseSoftwareVersionStrawberryModel] = (
+    installed_libraries: list[WikibaseSoftwareVersionStrawberryModel] = (
         strawberry.field(description="Installed Libraries w/ Versions")
     )
 
-    installed_skins: List[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
+    installed_skins: list[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
         description="Installed Skins w/ Versions"
     )
 
-    installed_software: List[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
+    installed_software: list[WikibaseSoftwareVersionStrawberryModel] = strawberry.field(
         description="Installed Software Versions"
     )
 
@@ -49,7 +48,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareType.EXTENSION
+                    if o.software.software_type == WikibaseSoftwareType.EXTENSION
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -57,7 +56,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareType.LIBRARY
+                    if o.software.software_type == WikibaseSoftwareType.LIBRARY
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -65,7 +64,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareType.SKIN
+                    if o.software.software_type == WikibaseSoftwareType.SKIN
                 ],
                 key=lambda x: x.software_name,
             ),
@@ -73,7 +72,7 @@ class WikibaseSoftwareVersionObservationStrawberryModel(
                 [
                     WikibaseSoftwareVersionStrawberryModel.marshal(o)
                     for o in model.software_versions
-                    if o.software_type == WikibaseSoftwareType.SOFTWARE
+                    if o.software.software_type == WikibaseSoftwareType.SOFTWARE
                 ],
                 key=lambda x: x.software_name,
             ),

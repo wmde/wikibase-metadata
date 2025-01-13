@@ -9,7 +9,7 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_layered_property_value
+from tests.utils import assert_layered_property_count, assert_page_meta
 
 
 AGGREGATE_EXTENSIONS_QUERY = (
@@ -39,18 +39,7 @@ async def test_aggregate_extensions_query_page_one():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageNumber"], 1
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageSize"], 5
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalCount"], 10
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalPages"], 2
-    )
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 5, 11, 3)
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
     )
@@ -79,13 +68,19 @@ async def test_aggregate_extensions_query_page_one():
                 "f621799",
             ),
             (
+                "Miraheze Magic",
+                "e742444",
+                (None, None, None),
+                datetime(2024, 10, 17, 15, 21),
+                "e742444",
+            ),
+            (
                 "ProofreadPage",
                 "cb0a218",
                 (None, None, None),
                 datetime(2019, 9, 30, 9, 20),
                 "cb0a218",
             ),
-            ("Scribunto", None, (None, None, None), None, None),
         ]
     ):
 
@@ -113,18 +108,7 @@ async def test_aggregate_extensions_query_page_two():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageNumber"], 2
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "pageSize"], 5
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalCount"], 10
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateExtensionPopularity", "meta", "totalPages"], 2
-    )
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 5, 11, 3)
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
     )
@@ -137,6 +121,7 @@ async def test_aggregate_extensions_query_page_two():
         expected_version_hash,
     ) in enumerate(
         [
+            ("Scribunto", None, (None, None, None), None, None),
             (
                 "UniversalLanguageSelector",
                 "2020-01-23",
@@ -165,6 +150,46 @@ async def test_aggregate_extensions_query_page_two():
                 datetime(2019, 12, 10, 12, 52),
                 "dbbcdd8",
             ),
+        ]
+    ):
+
+        assert_software_version_aggregate(
+            result.data["aggregateExtensionPopularity"]["data"][index],
+            expected_software_name,
+            expected_version_string,
+            expected_version_semver,
+            expected_version_date,
+            expected_version_hash,
+        )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.dependency(depends=["software-version-success"], scope="session")
+@pytest.mark.query
+@pytest.mark.version
+async def test_aggregate_extensions_query_page_three():
+    """Test Aggregated Extensions Query - 11"""
+
+    result = await test_schema.execute(
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 3, "pageSize": 5}
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 3, 5, 11, 3)
+    assert_layered_property_count(
+        result.data, ["aggregateExtensionPopularity", "data"], 1
+    )
+
+    for index, (
+        expected_software_name,
+        expected_version_string,
+        expected_version_semver,
+        expected_version_date,
+        expected_version_hash,
+    ) in enumerate(
+        [
             (
                 "WikibaseView",
                 "dbbcdd8",

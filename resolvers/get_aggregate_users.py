@@ -1,7 +1,5 @@
 """Get Aggregate Users"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, or_, select, func
 
 from data import get_async_session
@@ -36,13 +34,13 @@ async def get_aggregate_users() -> WikibaseUserAggregateStrawberryModel:
         )
 
 
-def get_total_admin_query() -> Select[Tuple[int]]:
+def get_total_admin_query() -> Select[tuple[int, int]]:
     """Get Total Admin Query"""
 
     rank_subquery = (
         select(
             WikibaseUserObservationModel.id,
-            # pylint: disable=not-callable
+            # pylint: disable-next=not-callable
             func.rank()
             .over(
                 partition_by=WikibaseUserObservationModel.wikibase_id,
@@ -83,20 +81,20 @@ def get_total_admin_query() -> Select[Tuple[int]]:
 
     query = select(
         func.sum(group_subquery.c.admins).label("total_admins"),
-        # pylint: disable=not-callable
+        # pylint: disable-next=not-callable
         func.count().label("wikibase_count"),
     )
 
     return query
 
 
-def get_total_user_query() -> Select[Tuple[int, int]]:
+def get_total_user_query() -> Select[tuple[int, int]]:
     """Get Total User Query"""
 
     rank_subquery = (
         select(
             WikibaseUserObservationModel,
-            # pylint: disable=not-callable
+            # pylint: disable-next=not-callable
             func.rank()
             .over(
                 partition_by=WikibaseUserObservationModel.wikibase_id,
@@ -114,7 +112,7 @@ def get_total_user_query() -> Select[Tuple[int, int]]:
     )
     query = select(
         func.sum(WikibaseUserObservationModel.total_users).label("total_users"),
-        # pylint: disable=not-callable
+        # pylint: disable-next=not-callable
         func.count().label("wikibase_count"),
     ).join(
         rank_subquery,

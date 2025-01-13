@@ -2,7 +2,11 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, assert_property_value
+from tests.utils import (
+    assert_layered_property_value,
+    assert_page_meta,
+    assert_property_value,
+)
 
 
 WIKIBASE_LIST_QUERY = """
@@ -33,8 +37,15 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
         }
       }
       logObservations {
-        mostRecent {
-          id
+        firstMonth {
+          mostRecent {
+            id
+          }
+        }
+        lastMonth {
+          mostRecent {
+            id
+          }
         }
       }
       propertyPopularityObservations {
@@ -70,6 +81,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.query
+@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
 async def test_wikibase_list_query():
     """Test Wikibase List"""
 
@@ -80,17 +92,7 @@ async def test_wikibase_list_query():
     assert result.errors is None
     assert result.data is not None
     assert "wikibaseList" in result.data
-    assert "meta" in result.data["wikibaseList"]
-    assert_layered_property_value(
-        result.data, ["wikibaseList", "meta", "pageNumber"], 1
-    )
-    assert_layered_property_value(result.data, ["wikibaseList", "meta", "pageSize"], 1)
-    assert_layered_property_value(
-        result.data, ["wikibaseList", "meta", "totalCount"], 1
-    )
-    assert_layered_property_value(
-        result.data, ["wikibaseList", "meta", "totalPages"], 1
-    )
+    assert_page_meta(result.data["wikibaseList"], 1, 1, 1, 1)
     assert "data" in result.data["wikibaseList"]
     assert len(result.data["wikibaseList"]["data"]) == 1
     result_datum = result.data["wikibaseList"]["data"][0]

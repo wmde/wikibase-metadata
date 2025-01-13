@@ -46,7 +46,12 @@
 			"id": "77b293b1-73c2-437a-a035-3adfb66294bd",
 			"kwargs": {
 				"column": "property_url",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": [
+					"^[ \t\r\n]*$",
+					"^[ \t\r\n]+",
+					"[ \t\r\n]+$",
+					"[ \t\r\n]{2,}"
+				]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"

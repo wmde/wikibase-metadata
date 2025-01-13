@@ -1,4 +1,4 @@
-"""Test create_property_popularity_observation"""
+"""Test create_special_statistics_observation"""
 
 import os
 import time
@@ -12,7 +12,10 @@ DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observati
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="statistics-success")
+@pytest.mark.dependency(
+    name="statistics-success", depends=["statistics-fail-ood"], scope="session"
+)
+@pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(mocker):
     """Test Data Returned Scenario"""
@@ -23,14 +26,17 @@ async def test_create_statistics_observation_success(mocker):
 
         mocker.patch(
             "fetch_data.soup_data.create_statistics_data_observation.requests.get",
-            side_effect=[MockResponse(200, version_html.read())],
+            side_effect=[MockResponse("", 200, version_html.read())],
         )
         success = await create_special_statistics_observation(1)
         assert success
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="statistics-failure", depends=["statistics-success"])
+@pytest.mark.dependency(
+    name="statistics-failure", depends=["statistics-success"], scope="session"
+)
+@pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_failure(mocker):
     """Test Failure Scenario"""

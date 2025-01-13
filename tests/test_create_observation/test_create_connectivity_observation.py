@@ -1,6 +1,5 @@
 """Test create_connectivity_observation"""
 
-from typing import List
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_connectivity_observation
@@ -8,15 +7,27 @@ from fetch_data import create_connectivity_observation
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(name="connectivity-success-simple")
 @pytest.mark.sparql
 @pytest.mark.parametrize(
     ["links"],
     [
-        ([],),
-        ([("Q1", "Q1")],),
-        ([("Q1", "Q2")],),
-        (
+        pytest.param(
+            [("Q1", "Q1")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-1",
+                depends=["connectivity-success-ood"],
+                scope="session",
+            ),
+        ),
+        pytest.param(
+            [("Q1", "Q2")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-2",
+                depends=["connectivity-success-simple-1"],
+                scope="session",
+            ),
+        ),
+        pytest.param(
             [
                 ("Q1", "Q2"),
                 ("Q1", "Q2"),
@@ -25,13 +36,32 @@ from fetch_data import create_connectivity_observation
                 ("Q1", "Q2"),
                 ("Q1", "Q2"),
             ],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-3",
+                depends=["connectivity-success-simple-2"],
+                scope="session",
+            ),
         ),
-        ([("Q1", "Q2"), ("Q2", "Q1")],),
-        ([("Q1", "Q2"), ("Q2", "Q3")],),
+        pytest.param(
+            [("Q1", "Q2"), ("Q2", "Q1")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-4",
+                depends=["connectivity-success-simple-3"],
+                scope="session",
+            ),
+        ),
+        pytest.param(
+            [("Q1", "Q2"), ("Q2", "Q3")],
+            marks=pytest.mark.dependency(
+                name="connectivity-success-simple-5",
+                depends=["connectivity-success-simple-4"],
+                scope="session",
+            ),
+        ),
     ],
 )
 async def test_create_connectivity_observation_success(
-    mocker, links: List[tuple[str, str]]
+    mocker, links: list[tuple[str, str]]
 ):
     """Test"""
 
@@ -42,7 +72,7 @@ async def test_create_connectivity_observation_success(
         )
 
     mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
+        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
     success = await create_connectivity_observation(1)
@@ -51,7 +81,11 @@ async def test_create_connectivity_observation_success(
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(name="connectivity-success-complex")
+@pytest.mark.dependency(
+    name="connectivity-success-complex",
+    depends=["connectivity-success-simple-5"],
+    scope="session",
+)
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(mocker):
     """Test"""
@@ -72,7 +106,7 @@ async def test_create_connectivity_observation_success_complex(mocker):
             )
 
     mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
+        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
     success = await create_connectivity_observation(1)
@@ -81,13 +115,17 @@ async def test_create_connectivity_observation_success_complex(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(name="connectivity-failure")
+@pytest.mark.dependency(
+    name="connectivity-failure",
+    depends=["connectivity-success-complex"],
+    scope="session",
+)
 @pytest.mark.sparql
 async def test_create_connectivity_observation_failure(mocker):
     """Test"""
 
     mocker.patch(
-        "fetch_data.sparql_data.create_connectivity_data_observation.get_results",
+        "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[
             HTTPError(
                 url="query.example.com/sparql", code=500, msg="Error", hdrs="", fp=None

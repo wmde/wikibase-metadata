@@ -35,7 +35,11 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["property-popularity-success", "property-popularity-failure"],
+    depends=[
+        "property-popularity-success-ood",
+        "property-popularity-success",
+        "property-popularity-failure",
+    ],
     scope="session",
 )
 @pytest.mark.property
@@ -62,7 +66,7 @@ async def test_wikibase_property_popularity_all_observations_query():
                 "propertyPopularityObservations"
             ]["allObservations"]
         )
-        == 2
+        == 3
     )
 
     assert_layered_property_value(property_popularity_observation_list, [0, "id"], "1")
@@ -71,7 +75,16 @@ async def test_wikibase_property_popularity_all_observations_query():
         property_popularity_observation_list, [0, "returnedData"], True
     )
     assert_layered_property_count(
-        property_popularity_observation_list, [0, "propertyPopularityCounts"], 2
+        property_popularity_observation_list, [0, "propertyPopularityCounts"], 0
+    )
+
+    assert_layered_property_value(property_popularity_observation_list, [1, "id"], "2")
+    assert "observationDate" in property_popularity_observation_list[1]
+    assert_layered_property_value(
+        property_popularity_observation_list, [1, "returnedData"], True
+    )
+    assert_layered_property_count(
+        property_popularity_observation_list, [1, "propertyPopularityCounts"], 2
     )
 
     for index, (expected_id, expected_property_url, expected_usage_count) in enumerate(
@@ -81,17 +94,17 @@ async def test_wikibase_property_popularity_all_observations_query():
         ]
     ):
         assert_property_count(
-            property_popularity_observation_list[0]["propertyPopularityCounts"][index],
+            property_popularity_observation_list[1]["propertyPopularityCounts"][index],
             expected_id,
             expected_property_url,
             expected_usage_count,
         )
 
-    assert_layered_property_value(property_popularity_observation_list, [1, "id"], "2")
-    assert "observationDate" in property_popularity_observation_list[1]
+    assert_layered_property_value(property_popularity_observation_list, [2, "id"], "3")
+    assert "observationDate" in property_popularity_observation_list[2]
     assert_layered_property_value(
-        property_popularity_observation_list, [1, "returnedData"], False
+        property_popularity_observation_list, [2, "returnedData"], False
     )
     assert_layered_property_count(
-        property_popularity_observation_list, [1, "propertyPopularityCounts"], 0
+        property_popularity_observation_list, [2, "propertyPopularityCounts"], 0
     )

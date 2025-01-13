@@ -1,6 +1,5 @@
 """Wikibase Property Popularity Observation Strawberry Model"""
 
-from typing import List
 import strawberry
 
 from model.database import WikibasePropertyPopularityObservationModel
@@ -18,7 +17,7 @@ class WikibasePropertyPopularityObservationStrawberryModel(
 ):
     """Wikibase Property Popularity Observation"""
 
-    property_popularity_counts: List[WikibasePropertyPopularityCountStrawberryModel] = (
+    property_popularity_counts: list[WikibasePropertyPopularityCountStrawberryModel] = (
         strawberry.field(description="Number of Items with Number of Relationships")
     )
 

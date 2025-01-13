@@ -1,11 +1,11 @@
 """Compile Link Dictionary"""
 
-from typing import List
+from collections.abc import Iterable
 from fetch_data.sparql_data.sparql_queries import ItemLink
 
 
 def compile_link_dict(
-    clean_data: List[ItemLink], all_nodes: List[str], reverse: bool = False
+    clean_data: Iterable[ItemLink], all_nodes: Iterable[str], reverse: bool = False
 ) -> dict[str, set[str]]:
     """Compile Link Dictionary
 

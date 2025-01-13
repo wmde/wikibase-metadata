@@ -1,6 +1,6 @@
 """Wikibase Table"""
 
-from typing import List, Optional
+from typing import Optional
 from sqlalchemy import Boolean, ForeignKey, Integer, String, and_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -8,7 +8,7 @@ from model.database.base import ModelBase
 from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
-    WikibaseLogObservationModel,
+    WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
     WikibaseSoftwareVersionObservationModel,
@@ -19,7 +19,7 @@ from model.database.wikibase_url_model import WikibaseURLModel
 from model.enum import WikibaseURLType
 
 
-# pylint: disable=too-many-instance-attributes
+# pylint: disable-next=too-many-instance-attributes
 class WikibaseModel(ModelBase):
     """Wikibase Table"""
 
@@ -212,7 +212,7 @@ class WikibaseModel(ModelBase):
     )
     """Special:Version URL"""
 
-    connectivity_observations: Mapped[List[WikibaseConnectivityObservationModel]] = (
+    connectivity_observations: Mapped[list[WikibaseConnectivityObservationModel]] = (
         relationship(
             "WikibaseConnectivityObservationModel",
             back_populates="wikibase",
@@ -221,13 +221,15 @@ class WikibaseModel(ModelBase):
     )
     """Connectivity Observations"""
 
-    log_observations: Mapped[List[WikibaseLogObservationModel]] = relationship(
-        "WikibaseLogObservationModel", back_populates="wikibase", lazy="select"
+    log_month_observations: Mapped[list[WikibaseLogMonthObservationModel]] = (
+        relationship(
+            "WikibaseLogMonthObservationModel", back_populates="wikibase", lazy="select"
+        )
     )
-    """Log Observations"""
+    """Log Month Observations"""
 
     property_popularity_observations: Mapped[
-        List[WikibasePropertyPopularityObservationModel]
+        list[WikibasePropertyPopularityObservationModel]
     ] = relationship(
         "WikibasePropertyPopularityObservationModel",
         back_populates="wikibase",
@@ -235,7 +237,7 @@ class WikibaseModel(ModelBase):
     )
     """Property Popularity Observations"""
 
-    quantity_observations: Mapped[List[WikibaseQuantityObservationModel]] = (
+    quantity_observations: Mapped[list[WikibaseQuantityObservationModel]] = (
         relationship(
             "WikibaseQuantityObservationModel", back_populates="wikibase", lazy="select"
         )
@@ -243,7 +245,7 @@ class WikibaseModel(ModelBase):
     """Quantity Observations"""
 
     software_version_observations: Mapped[
-        List[WikibaseSoftwareVersionObservationModel]
+        list[WikibaseSoftwareVersionObservationModel]
     ] = relationship(
         "WikibaseSoftwareVersionObservationModel",
         back_populates="wikibase",
@@ -251,7 +253,7 @@ class WikibaseModel(ModelBase):
     )
     """Software Version Observations"""
 
-    statistics_observations: Mapped[List[WikibaseStatisticsObservationModel]] = (
+    statistics_observations: Mapped[list[WikibaseStatisticsObservationModel]] = (
         relationship(
             "WikibaseStatisticsObservationModel",
             back_populates="wikibase",
@@ -260,28 +262,44 @@ class WikibaseModel(ModelBase):
     )
     """Statistics Observations"""
 
-    user_observations: Mapped[List[WikibaseUserObservationModel]] = relationship(
+    user_observations: Mapped[list[WikibaseUserObservationModel]] = relationship(
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="select"
     )
     """User Observations"""
 
-    # pylint: disable=too-many-arguments,too-many-positional-arguments
+    # pylint: disable-next=too-many-arguments,too-many-positional-arguments
     def __init__(
         self,
         wikibase_name: str,
         base_url: str,
+        description: Optional[str] = None,
         organization: Optional[str] = None,
         country: Optional[str] = None,
         region: Optional[str] = None,
+        action_api_url: Optional[str] = None,
+        index_api_url: Optional[str] = None,
         sparql_query_url: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
+        special_statistics_url: Optional[str] = None,
+        special_version_url: Optional[str] = None,
     ):
         self.wikibase_name = wikibase_name
+        self.description = description
         self.organization = organization
         self.country = country
         self.region = region
         self.checked = False
+        self.test = False
+
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
+        if action_api_url is not None:
+            self.action_api_url = WikibaseURLModel(
+                url=action_api_url, url_type=WikibaseURLType.ACTION_QUERY_URL
+            )
+        if index_api_url is not None:
+            self.index_api_url = WikibaseURLModel(
+                url=index_api_url, url_type=WikibaseURLType.INDEX_QUERY_URL
+            )
         if sparql_endpoint_url is not None:
             self.sparql_endpoint_url = WikibaseURLModel(
                 url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
@@ -289,4 +307,13 @@ class WikibaseModel(ModelBase):
         if sparql_query_url is not None:
             self.sparql_query_url = WikibaseURLModel(
                 url=sparql_query_url, url_type=WikibaseURLType.SPARQL_QUERY_URL
+            )
+        if special_statistics_url is not None:
+            self.special_statistics_url = WikibaseURLModel(
+                url=special_statistics_url,
+                url_type=WikibaseURLType.SPECIAL_STATISTICS_URL,
+            )
+        if special_version_url is not None:
+            self.special_version_url = WikibaseURLModel(
+                url=special_version_url, url_type=WikibaseURLType.SPECIAL_VERSION_URL
             )

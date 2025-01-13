@@ -146,16 +146,6 @@ fluent_datasources:
             partitioner:
         table_name: wikibase_connectivity_observation_object_relationship_count
         schema_name:
-      wikibase_log_observation_table:
-        type: table
-        id: 66094242-25ea-4a8a-be00-0b21cdea786c
-        batch_metadata: {}
-        batch_definitions:
-          FULL_TABLE:
-            id: 09db6e09-83a0-4906-a910-94a4f40218bc
-            partitioner:
-        table_name: wikibase_log_observation
-        schema_name:
       wikibase_log_observation_month_table:
         type: table
         id: 254c7785-cfcf-4f90-b564-42cb429eea6e
@@ -304,15 +294,15 @@ fluent_datasources:
             id: b2549e79-5908-4abe-8fb4-544dde87cded
             partitioner:
         query: SELECT * FROM wikibase_connectivity_observation WHERE anything
-      valid_wikibase_log_observations:
+      valid_wikibase_log_observation_months:
         type: query
-        id: 0f77d1c3-5227-49a5-b347-020f5cd85a28
+        id: c9935b87-4498-49b6-a9fe-c64705045d8a
         batch_metadata: {}
         batch_definitions:
           FULL_TABLE:
-            id: f46678c3-344e-4c04-9869-52f8692c7e03
+            id: a119863d-469e-49eb-8f10-4a0303545a76
             partitioner:
-        query: SELECT * FROM wikibase_log_observation WHERE anything
+        query: SELECT * FROM wikibase_log_observation_month WHERE anything
       valid_wikibase_quantity_observations:
         type: query
         id: 0b2995ed-52af-4e48-8b4e-27379c8e9f83
@@ -360,5 +350,44 @@ fluent_datasources:
             id: 1ae4e957-b4b4-42fc-b22a-381ea6e8bceb
             partitioner:
         query: SELECT * FROM wikibase_log_observation_month WHERE log_count > 0
+      wikibase_software_table:
+        type: table
+        id: c93da63e-392d-443c-879e-902c2692b41e
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 550b72d7-9aca-40cc-9d2a-7f94fcb44828
+            partitioner:
+        table_name: wikibase_software
+        schema_name:
+      wikibase_software_tag_table:
+        type: table
+        id: d27a75dc-0e2e-43b2-91da-a1f2e9e0590a
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 3b69d250-8f9a-4d11-b5a2-82463d829103
+            partitioner:
+        table_name: wikibase_software_tag
+        schema_name:
+      wikibase_software_tag_xref_table:
+        type: table
+        id: 7f899383-9ce6-4afa-8dbb-0e49c30f3fd5
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: ce729967-02a8-4e8f-b43a-c0d4ac078e44
+            partitioner:
+        table_name: wikibase_software_tag_xref
+        schema_name:
+      populated_wikibase_software_records:
+        type: query
+        id: 97690d4d-e26a-4c89-807c-98e2a760e648
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 17906408-5608-45ff-95fe-45ae29b85630
+            partitioner:
+        query: SELECT * FROM wikibase_software WHERE url IS NOT NULL
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

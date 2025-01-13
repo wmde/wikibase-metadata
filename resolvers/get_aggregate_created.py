@@ -1,15 +1,13 @@
 """Get Aggregate Year Created"""
 
-from typing import List, Tuple
-
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database import WikibaseLogObservationModel, WikibaseModel
+from model.database import WikibaseLogMonthObservationModel, WikibaseModel
 from model.strawberry.output import WikibaseYearCreatedAggregateStrawberryModel
 
 
-async def get_aggregate_created() -> List[WikibaseYearCreatedAggregateStrawberryModel]:
+async def get_aggregate_created() -> list[WikibaseYearCreatedAggregateStrawberryModel]:
     """Get Aggregate Year Created"""
 
     total_quantity_query = get_created_query()
@@ -24,38 +22,43 @@ async def get_aggregate_created() -> List[WikibaseYearCreatedAggregateStrawberry
         ]
 
 
-def get_created_query() -> Select[Tuple[int, int]]:
+def get_created_query() -> Select[tuple[int, int]]:
     """Get Year Created Query"""
 
     rank_subquery = (
         select(
-            WikibaseLogObservationModel.id,
-            # pylint: disable=not-callable
+            WikibaseLogMonthObservationModel.id,
+            # pylint: disable-next=not-callable
             func.rank()
             .over(
-                partition_by=WikibaseLogObservationModel.wikibase_id,
-                order_by=WikibaseLogObservationModel.observation_date.desc(),
+                partition_by=WikibaseLogMonthObservationModel.wikibase_id,
+                order_by=WikibaseLogMonthObservationModel.observation_date.desc(),
             )
             .label("rank"),
         )
         .where(
             and_(
-                WikibaseLogObservationModel.returned_data,
-                WikibaseLogObservationModel.wikibase.has(WikibaseModel.checked),
+                WikibaseLogMonthObservationModel.returned_data,
+                WikibaseLogMonthObservationModel.first_month,
+                # pylint: disable-next=singleton-comparison
+                WikibaseLogMonthObservationModel.first_log_date != None,
+                WikibaseLogMonthObservationModel.wikibase.has(WikibaseModel.checked),
             )
         )
         .subquery()
     )
     query = (
         select(
-            func.substr(WikibaseLogObservationModel.first_log_date, 1, 4).label("year"),
-            # pylint: disable=not-callable
+            func.substr(WikibaseLogMonthObservationModel.first_log_date, 1, 4).label(
+                "year"
+            ),
+            # pylint: disable-next=not-callable
             func.count().label("wikibase_count"),
         )
         .join(
             rank_subquery,
             onclause=and_(
-                WikibaseLogObservationModel.id == rank_subquery.c.id,
+                WikibaseLogMonthObservationModel.id == rank_subquery.c.id,
                 rank_subquery.c.rank == 1,
             ),
         )

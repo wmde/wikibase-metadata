@@ -5,6 +5,7 @@ import json
 
 from sqlalchemy import or_, select
 from data.database_connection import get_async_session
+from logger import logger
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_url_model import WikibaseURLModel
 
@@ -30,12 +31,12 @@ SELECT ?itemLabel ?url ?host ?hostLabel ?available ?availableLabel ?sparqlUIUrl 
 
 async def pull_wikibase_world():
     """Pull Wikibase World Data"""
-    # data = get_results(
+    # data = await get_sparql_results(
     #     endpoint_url="https://wikibase.world/query/sparql",
     #     query=WIKIBASES_QUERY,
     #     query_name="Pull Wikibases",
     # )
-    # print(data)
+    # logger.debug(data)
 
     with open(
         "./data/wikibase_world_data.json", mode="r", encoding="utf-8"
@@ -57,7 +58,7 @@ async def pull_wikibase_world():
                     )
                 ).all()
                 if len(existing) == 0:
-                    print(record.get("itemLabel"))
+                    logger.debug(record.get("itemLabel"))
                     async_session.add(
                         WikibaseModel(
                             wikibase_name=record.get("itemLabel"),

@@ -1,6 +1,5 @@
 """Wikibase Property Popularity Observation Table"""
 
-from typing import List
 from sqlalchemy.orm import Mapped, relationship
 
 from model.database.base import ModelBase
@@ -17,7 +16,7 @@ class WikibasePropertyPopularityObservationModel(ModelBase, WikibaseObservationM
 
     __tablename__ = "wikibase_property_usage_observation"
 
-    property_count_observations: Mapped[List[WikibasePropertyPopularityCountModel]] = (
+    property_count_observations: Mapped[list[WikibasePropertyPopularityCountModel]] = (
         relationship(
             "WikibasePropertyPopularityCountModel",
             back_populates="wikibase_property_popularity_observation",

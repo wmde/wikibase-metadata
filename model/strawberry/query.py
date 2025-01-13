@@ -1,6 +1,5 @@
 """Query"""
 
-from typing import List
 import strawberry
 
 from model.enum import WikibaseSoftwareType
@@ -11,6 +10,7 @@ from model.strawberry.output import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
+    WikibaseSoftwareStrawberryModel,
     WikibaseStatisticsAggregateStrawberryModel,
     WikibaseStrawberryModel,
     WikibaseUserAggregateStrawberryModel,
@@ -23,6 +23,7 @@ from resolvers import (
     get_aggregate_statistics,
     get_aggregate_users,
     get_aggregate_version,
+    get_software_list,
     get_wikibase,
     get_wikibase_list,
 )
@@ -43,10 +44,20 @@ class Query:
 
         return await get_wikibase_list(page_number, page_size)
 
+    @strawberry.field(description="List of Extensions")
+    async def extension_list(
+        self, page_number: PageNumberType, page_size: PageSizeType
+    ) -> Page[WikibaseSoftwareStrawberryModel]:
+        """List of Wikibases"""
+
+        return await get_software_list(
+            page_number, page_size, WikibaseSoftwareType.EXTENSION
+        )
+
     @strawberry.field(description="Aggregated Year of First Log Date")
     async def aggregate_created(
         self,
-    ) -> List[WikibaseYearCreatedAggregateStrawberryModel]:
+    ) -> list[WikibaseYearCreatedAggregateStrawberryModel]:
         """Aggregated Year of First Log Date"""
 
         return await get_aggregate_created()

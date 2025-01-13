@@ -1,8 +1,8 @@
 """Create Log Observation"""
 
+from collections.abc import Iterable
 from datetime import datetime
 from json.decoder import JSONDecodeError
-from typing import List
 from requests.exceptions import ReadTimeout, SSLError
 from data import get_async_session
 from fetch_data.api_data.log_data.fetch_log_data import (
@@ -13,21 +13,20 @@ from fetch_data.api_data.log_data.fetch_log_data import (
 from fetch_data.api_data.log_data.wikibase_log_record import WikibaseLogRecord
 from fetch_data.api_data.user_data import (
     get_multiple_user_data,
-    get_user_type_from_wikibase,
     get_user_type_from_user_data,
 )
 from fetch_data.utils import get_wikibase_from_database
+from logger import logger
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthUserTypeObservationModel,
-    WikibaseLogObservationModel,
     WikibaseModel,
 )
 from model.enum import WikibaseUserType
 
 
-async def create_log_observation(wikibase_id: int) -> bool:
+async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
     """Create Log Observation"""
 
     async with get_async_session() as async_session:
@@ -38,58 +37,58 @@ async def create_log_observation(wikibase_id: int) -> bool:
             require_action_api=True,
         )
 
-        observation = WikibaseLogObservationModel()
+        observation = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=first_month
+        )
 
         try:
-            print("FETCHING OLDEST LOG")
-            oldest_log = get_log_list_from_url(
-                wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
-            )[0]
-            observation.first_log_date = oldest_log.log_date
-
-            print("FETCHING NEWEST LOG")
-            most_recent_log = get_log_list_from_url(
-                wikibase.action_api_url.url + get_log_param_string(limit=1)
-            )[0]
-            observation.last_log_date = most_recent_log.log_date
-            observation.last_log_user_type = get_user_type_from_wikibase(
-                wikibase, most_recent_log.user
-            )
-
-            print("FETCHING FIRST MONTH'S LOGS")
-            first_month_log_list = get_month_log_list(
+            logger.info("Fetching Logs", extra={"wikibase": wikibase.id})
+            log_list = await get_month_log_list(
                 wikibase.action_api_url.url,
-                comparison_date=oldest_log.log_date,
-                oldest=True,
+                comparison_date=await get_log_list_comparison_date(
+                    wikibase, first_month
+                ),
+                oldest=first_month,
             )
-            observation.first_month = await create_log_month(
-                wikibase, first_month_log_list
-            )
-
-            print("FETCHING LAST MONTH'S LOGS")
-            last_month_log_list = get_month_log_list(
-                wikibase.action_api_url.url, comparison_date=datetime.today()
-            )
-            observation.last_month = await create_log_month(
-                wikibase, last_month_log_list
-            )
-
+            observation = await create_log_month(wikibase, log_list, observation)
             observation.returned_data = True
         except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
+            logger.warning(
+                "LogDataError", stack_info=True, extra={"wikibase": wikibase.id}
+            )
             observation.returned_data = False
 
-        wikibase.log_observations.append(observation)
+        wikibase.log_month_observations.append(observation)
 
         await async_session.commit()
         return observation.returned_data
 
 
+async def get_log_list_comparison_date(
+    wikibase: WikibaseModel, first: bool
+) -> datetime:
+    """Return either date of first log or today"""
+
+    if first:
+        logger.info("Fetching Oldest Log", extra={"wikibase": wikibase.id})
+        oldest_log = (
+            await get_log_list_from_url(
+                wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
+            )
+        )[0]
+        return oldest_log.log_date
+
+    return datetime.today()
+
+
 async def create_log_month(
-    wikibase: WikibaseModel, log_list: List[WikibaseLogRecord]
+    wikibase: WikibaseModel,
+    log_list: Iterable[WikibaseLogRecord],
+    result: WikibaseLogMonthObservationModel,
 ) -> WikibaseLogMonthObservationModel:
     """Create Log Month"""
 
-    result = WikibaseLogMonthObservationModel(log_count=len(log_list))
+    result.log_count = len(log_list)
 
     if len(log_list) > 0:
         result.first_log_date = min(log.log_date for log in log_list)
@@ -106,10 +105,14 @@ async def create_log_month(
     user_type_dict: dict[str, WikibaseUserType] = {}
 
     if len(users) > 0:
-        print("FETCHING USER DATA")
-        user_data = get_multiple_user_data(wikibase, users)
+        logger.info("Fetching User Data", extra={"wikibase": wikibase.id})
+        user_data = await get_multiple_user_data(wikibase, users)
         for u in user_data:
             user_type_dict[u["name"]] = get_user_type_from_user_data(u)
+
+        result.last_log_user_type = user_type_dict.get(
+            max(log_list, key=lambda log: log.log_date).user
+        )
 
     result.human_user_count = len(
         [u for u in users if user_type_dict.get(u) == WikibaseUserType.USER]

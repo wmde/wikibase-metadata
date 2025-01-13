@@ -1,7 +1,5 @@
 """Get Aggregate Quantity"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
@@ -28,13 +26,13 @@ async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
         )
 
 
-def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
+def get_total_quantity_query() -> Select[tuple[int, int, int, int, int]]:
     """Get Total Quantity Query"""
 
     rank_subquery = (
         select(
             WikibaseQuantityObservationModel.id,
-            # pylint: disable=not-callable
+            # pylint: disable-next=not-callable
             func.rank()
             .over(
                 partition_by=WikibaseQuantityObservationModel.wikibase_id,
@@ -57,7 +55,7 @@ def get_total_quantity_query() -> Select[Tuple[int, int, int, int, int]]:
             "total_properties"
         ),
         func.sum(WikibaseQuantityObservationModel.total_triples).label("total_triples"),
-        # pylint: disable=not-callable
+        # pylint: disable-next=not-callable
         func.count().label("wikibase_count"),
     ).join(
         rank_subquery,

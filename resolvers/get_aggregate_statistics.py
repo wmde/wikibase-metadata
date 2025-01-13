@@ -1,7 +1,5 @@
 """Get Aggregate Statistics"""
 
-from typing import Tuple
-
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
@@ -41,14 +39,14 @@ async def get_aggregate_statistics() -> WikibaseStatisticsAggregateStrawberryMod
 
 
 def get_total_statistics_query() -> (
-    Select[Tuple[int, int, int, int, int, int, int, int, int]]
+    Select[tuple[int, int, int, int, int, int, int, int, int]]
 ):
     """Get Total Statistics Query"""
 
     rank_subquery = (
         select(
             WikibaseStatisticsObservationModel.id,
-            # pylint: disable=not-callable
+            # pylint: disable-next=not-callable
             func.rank()
             .over(
                 partition_by=WikibaseStatisticsObservationModel.wikibase_id,
@@ -77,7 +75,7 @@ def get_total_statistics_query() -> (
         func.sum(WikibaseStatisticsObservationModel.total_users).label("total_users"),
         func.sum(WikibaseStatisticsObservationModel.active_users).label("active_users"),
         func.sum(WikibaseStatisticsObservationModel.total_admin).label("total_admin"),
-        # pylint: disable=not-callable
+        # pylint: disable-next=not-callable
         func.count().label("wikibase_count"),
     ).join(
         rank_subquery,

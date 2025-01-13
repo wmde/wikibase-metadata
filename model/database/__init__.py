@@ -10,7 +10,6 @@ from model.database.wikibase_observation import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthUserTypeObservationModel,
-    WikibaseLogObservationModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
@@ -20,5 +19,9 @@ from model.database.wikibase_observation import (
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
+)
+from model.database.wikibase_software import (
+    WikibaseSoftwareModel,
+    WikibaseSoftwareTagModel,
 )
 from model.database.wikibase_url_model import WikibaseURLModel

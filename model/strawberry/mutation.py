@@ -2,6 +2,8 @@
 
 import strawberry
 
+from resolvers import add_wikibase
+
 from fetch_data import (
     create_connectivity_observation,
     create_log_observation,
@@ -16,6 +18,10 @@ from fetch_data import (
 @strawberry.type
 class Mutation:
     """Mutation"""
+
+    add_wikibase = strawberry.mutation(
+        description="Add Wikibase", resolver=add_wikibase
+    )
 
     fetch_connectivity_data = strawberry.mutation(
         description="Fetch Connectivity Data from Specified Wikibase Instance",

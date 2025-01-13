@@ -1,6 +1,5 @@
 """Wikibase Software Version Observation Table"""
 
-from typing import List
 from sqlalchemy.orm import Mapped, relationship
 
 from model.database.base import ModelBase
@@ -17,7 +16,7 @@ class WikibaseSoftwareVersionObservationModel(ModelBase, WikibaseObservationMode
 
     __tablename__ = "wikibase_software_version_observation"
 
-    software_versions: Mapped[List[WikibaseSoftwareVersionModel]] = relationship(
+    software_versions: Mapped[list[WikibaseSoftwareVersionModel]] = relationship(
         "WikibaseSoftwareVersionModel",
         back_populates="wikibase_software_version_observation",
         lazy="selectin",

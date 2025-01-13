@@ -6,6 +6,8 @@ from typing import Optional
 
 import strawberry
 
+from logger import logger
+
 
 @strawberry.enum
 class WikibaseLogType(enum.Enum):
@@ -57,6 +59,7 @@ class WikibaseLogType(enum.Enum):
     PAGE_TRANSLATE_DELETE_LOK = 44
     PAGE_TRANSLATE_MARK = 45
     PAGE_TRANSLATE_UNMARK = 46
+    PAGE_TRANSLATE_REVIEW = 76
     PAGE_UPDATE_LANGUAGE = 47
     PATROL = 48
     PATROL_AUTO = 49
@@ -93,7 +96,7 @@ ITEM_REGEX = re.compile(r"Item:Q\d+")
 PROPERTY_REGEX = re.compile(r"(Property|WikibaseProperty):P\d+")
 
 
-# pylint: disable=too-many-branches,too-many-statements
+# pylint: disable-next=too-many-branches,too-many-statements
 def compile_log_type(record: dict) -> WikibaseLogType:
     """Compile Log Type"""
 
@@ -239,6 +242,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK
         case ("pagetranslation", "mark"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_MARK
+        case ("translationreview", "message"):
+            log_type = WikibaseLogType.PAGE_TRANSLATE_REVIEW
         case ("pagetranslation", "unmark"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_UNMARK
         case ("pagelang", "pagelang"):
@@ -306,5 +311,6 @@ def compile_log_type(record: dict) -> WikibaseLogType:
     try:
         assert log_type is not None
     except AssertionError as exc:
+        logger.error("LogTypeError", extra={"log": record})
         raise NotImplementedError(record) from exc
     return log_type
