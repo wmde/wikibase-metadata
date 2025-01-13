@@ -41,9 +41,5 @@ services:
     command:
       - -m 
       - data
-      - --cov=. 
-      - --cov-report 
-      - html:cov_html 
-      - --order-dependencies
     environment:
       SETTINGS_FILE: test-settings.ini
