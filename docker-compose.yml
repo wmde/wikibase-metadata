@@ -12,6 +12,9 @@ services:
     ports:
       - 8000:8000
 
+  # docker compose run --build test-not-data
+  # MAKE SURE TO RESET YOUR DATA WITH
+  # $ git checkout data/wikibase-test-data.db
   test-not-data:
     build: .
     volumes:
@@ -30,6 +33,7 @@ services:
     environment:
       SETTINGS_FILE: test-settings.ini
 
+  # docker compose run --build test-data
   test-data:
     build: .
     volumes:
