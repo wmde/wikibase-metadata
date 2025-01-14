@@ -11,4 +11,7 @@ database_connection_string = os.path.expandvars(
     config.get("database", "database_connection_string")
 )
 
+log_directory = os.path.expandvars(
+    config.get("logging", "log_directory", fallback="logs")
+)
 log_level = config.get("logging", "log_level", fallback="INFO")
