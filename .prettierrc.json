@@ -5,8 +5,7 @@
 			"files": "*.ini",
 			"options": {
 				"plugins": ["prettier-plugin-ini"],
-				"iniSpaceAroundEquals": true,
-				"tabWidth": 4
+				"iniSpaceAroundEquals": true
 			}
 		}
 	]
