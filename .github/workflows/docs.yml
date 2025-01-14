@@ -29,4 +29,4 @@ jobs:
           npx prettier --check --use-tabs data/gx/**/*.json
           npx prettier --check --use-tabs *.md **/*.md
           npx prettier --check --use-tabs *.yml **/*.yml
-          npx prettier --check --plugin ./node_modules/prettier-plugin-ini/src/plugin.js --ini-space-around-equals true --tab-width 4 *.ini **/*.ini
+          npx prettier --check --plugin=prettier-plugin-ini --ini-space-around-equals true --tab-width 4 *.ini **/*.ini
