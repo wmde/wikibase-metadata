@@ -9,6 +9,8 @@ on:
       - "*.yml"
       - "**/*.yml"
       - ".github/workflows/docs.yml"
+      - "*.ini"
+      - "**/*.ini"
 
 jobs:
   lint-check:
@@ -20,10 +22,11 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: npm install
-        run: npm install prettier
+        run: npm install prettier prettier-plugin-ini
 
       - name: npm check
         run: |
           npx prettier --check --use-tabs data/gx/**/*.json
           npx prettier --check --use-tabs *.md **/*.md
           npx prettier --check --use-tabs *.yml **/*.yml
+          npx prettier --check --plugin ./node_modules/prettier-plugin-ini/src/plugin.js --ini-space-around-equals true --tab-width 4 *.ini **/*.ini
