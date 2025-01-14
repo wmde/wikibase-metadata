@@ -2,16 +2,6 @@ name: Docs Lint
 
 on:
   pull_request:
-    paths:
-      - ".prettierrc.json"
-      - "data/gx/**/*.json"
-      - "*.md"
-      - "**/*.md"
-      - "*.yml"
-      - "**/*.yml"
-      - ".github/workflows/docs.yml"
-      - "*.ini"
-      - "**/*.ini"
 
 jobs:
   lint-check:
@@ -27,7 +17,4 @@ jobs:
 
       - name: npm check
         run: |
-          npx prettier --check .prettierrc.json data/gx/**/*.json
-          npx prettier --check *.md **/*.md
-          npx prettier --check *.yml **/*.yml
-          npx prettier --check --plugin=prettier-plugin-ini *.ini **/*.ini
+          npx prettier --check .
