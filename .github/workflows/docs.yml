@@ -3,6 +3,7 @@ name: Docs Lint
 on:
   pull_request:
     paths:
+      - ".prettierrc.json"
       - "data/gx/**/*.json"
       - "*.md"
       - "**/*.md"
@@ -26,7 +27,7 @@ jobs:
 
       - name: npm check
         run: |
-          npx prettier --check --use-tabs data/gx/**/*.json
-          npx prettier --check --use-tabs *.md **/*.md
-          npx prettier --check --use-tabs *.yml **/*.yml
-          npx prettier --check --plugin=prettier-plugin-ini --ini-space-around-equals true --tab-width 4 *.ini **/*.ini
+          npx prettier --check .prettierrc.json data/gx/**/*.json
+          npx prettier --check *.md **/*.md
+          npx prettier --check *.yml **/*.yml
+          npx prettier --check --plugin=prettier-plugin-ini *.ini **/*.ini

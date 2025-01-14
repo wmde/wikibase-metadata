@@ -1,0 +1,13 @@
+{
+	"overrides": [
+		{ "files": "*.json", "options": { "useTabs": true } },
+		{
+			"files": "*.ini",
+			"options": {
+				"plugins": ["prettier-plugin-ini"],
+				"iniSpaceAroundEquals": true,
+				"tabWidth": 4
+			}
+		}
+	]
+}
