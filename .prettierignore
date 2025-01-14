@@ -3,3 +3,4 @@ node_modules/
 .ipynb_checkpoints/
 .pytest_cache/
 tests/**/data/*.html
+package*.json
