@@ -1,6 +1,6 @@
 {
+	"useTabs": true,
 	"overrides": [
-		{ "files": "*.json", "options": { "useTabs": true } },
 		{
 			"files": "*.ini",
 			"options": {
