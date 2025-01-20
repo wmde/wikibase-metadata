@@ -35,6 +35,7 @@ def _get_results(endpoint_url: str, query: str, query_name: str) -> dict:
                 "query": query,
                 "endpoint": endpoint_url,
                 "result": str(query_result),
+                "exception": exc,
             },
         )
         failed_dir = (
