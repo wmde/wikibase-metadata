@@ -1,4 +1,4 @@
-# pylint: disable=bare-except
+# pylint: disable=broad-exception-caught
 """Update Out of Date Observations"""
 
 from fetch_data.api_data import create_log_observation, create_user_observation
@@ -32,11 +32,11 @@ async def update_out_of_date_connectivity_observations():
     for wikibase in ood_con_obs:
         try:
             await create_connectivity_observation(wikibase.id)
-        except:
+        except Exception as exc:
             logger.error(
                 "ConnectivityDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id},
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -48,9 +48,11 @@ async def update_out_of_date_log_first_observations():
     for wikibase in ood_log_obs:
         try:
             await create_log_observation(wikibase.id, first_month=True)
-        except:
+        except Exception as exc:
             logger.error(
-                "LogDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "LogDataError",
+                stack_info=True,
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -62,9 +64,11 @@ async def update_out_of_date_log_last_observations():
     for wikibase in ood_log_obs:
         try:
             await create_log_observation(wikibase.id, first_month=False)
-        except:
+        except Exception as exc:
             logger.error(
-                "LogDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "LogDataError",
+                stack_info=True,
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -78,11 +82,11 @@ async def update_out_of_date_property_observations():
     for wikibase in ood_prop_obs:
         try:
             await create_property_popularity_observation(wikibase.id)
-        except:
+        except Exception as exc:
             logger.error(
                 "PropertyPopularityDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id},
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -94,9 +98,11 @@ async def update_out_of_date_quantity_observations():
     for wikibase in ood_quant_obs:
         try:
             await create_quantity_observation(wikibase.id)
-        except:
+        except Exception as exc:
             logger.error(
-                "QuantityDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "QuantityDataError",
+                stack_info=True,
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -110,11 +116,11 @@ async def update_out_of_date_software_observations():
             await create_software_version_observation_without_background_task(
                 wikibase.id
             )
-        except:
+        except Exception as exc:
             logger.error(
                 "SoftwareVersionDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id},
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -126,9 +132,11 @@ async def update_out_of_date_stats_observations():
     for wikibase in ood_stats_obs:
         try:
             await create_special_statistics_observation(wikibase.id)
-        except:
+        except Exception as exc:
             logger.error(
-                "StatisticsDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "StatisticsDataError",
+                stack_info=True,
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
 
 
@@ -140,7 +148,9 @@ async def update_out_of_date_user_observations():
     for wikibase in ood_user_obs:
         try:
             await create_user_observation(wikibase.id)
-        except:
+        except Exception as exc:
             logger.error(
-                "UserDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "UserDataError",
+                stack_info=True,
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
