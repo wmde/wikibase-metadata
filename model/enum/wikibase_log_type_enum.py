@@ -101,6 +101,11 @@ def compile_log_type(record: dict) -> WikibaseLogType:
     """Compile Log Type"""
 
     log_type: Optional[WikibaseLogType] = None
+    
+    match record['type']:
+        case 'achievementbadges':
+            log_type = WikibaseLogType.ACHIEVEMENT_BADGE
+
     match (record["type"], record["action"]):
         case ("create", "create"):
             if ITEM_REGEX.match(record["title"]) is not None:
@@ -120,23 +125,6 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.ABUSE_FILTER_CREATE
         case ("abusefilter", "modify"):
             log_type = WikibaseLogType.ABUSE_FILTER_MODIFIY
-        case (
-            ("achievementbadges", "be-thanked")
-            | ("achievementbadges", "contribs-sunday")
-            | ("achievementbadges", "contribs-monday")
-            | ("achievementbadges", "contribs-tuesday")
-            | ("achievementbadges", "contribs-thursday")
-            | ("achievementbadges", "contribs-friday")
-            | ("achievementbadges", "contribs-saturday")
-            | ("achievementbadges", "create-page")
-            | ("achievementbadges", "edit-page")
-            | ("achievementbadges", "edit-size")
-            | ("achievementbadges", "long-user-page")
-            | ("achievementbadges", "sign-up")
-            | ("achievementbadges", "thanks")
-            | ("achievementbadges", "visual-edit")
-        ):
-            log_type = WikibaseLogType.ACHIEVEMENT_BADGE
         case ("approval", "approve"):
             log_type = WikibaseLogType.APPROVE
         case ("comments", "add"):
