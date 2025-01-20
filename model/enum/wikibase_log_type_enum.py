@@ -311,6 +311,6 @@ def compile_log_type(record: dict) -> WikibaseLogType:
     try:
         assert log_type is not None
     except AssertionError as exc:
-        logger.error("LogTypeError", extra={"log": record})
+        logger.error("LogTypeError", extra={"log": record, "exception": exc})
         raise NotImplementedError(record) from exc
     return log_type
