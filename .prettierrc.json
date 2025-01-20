@@ -1,0 +1,12 @@
+{
+	"useTabs": true,
+	"overrides": [
+		{
+			"files": "*.ini",
+			"options": {
+				"plugins": ["prettier-plugin-ini"],
+				"iniSpaceAroundEquals": true
+			}
+		}
+	]
+}
