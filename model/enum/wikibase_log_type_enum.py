@@ -101,9 +101,9 @@ def compile_log_type(record: dict) -> WikibaseLogType:
     """Compile Log Type"""
 
     log_type: Optional[WikibaseLogType] = None
-    
-    match record['type']:
-        case 'achievementbadges':
+
+    match record["type"]:
+        case "achievementbadges":
             log_type = WikibaseLogType.ACHIEVEMENT_BADGE
 
     match (record["type"], record["action"]):
