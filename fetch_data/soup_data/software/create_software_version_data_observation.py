@@ -76,11 +76,11 @@ async def create_software_version_observation_without_background_task(
 
             library_versions = await compile_library_versions(async_session, soup)
             observation.software_versions.extend(library_versions)
-        except (HTTPError, SSLError):
+        except (HTTPError, SSLError) as exc:
             logger.warning(
                 "SoftwareVersionDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id},
+                extra={"wikibase": wikibase.id, "exception": exc},
             )
             observation.returned_data = False
 
