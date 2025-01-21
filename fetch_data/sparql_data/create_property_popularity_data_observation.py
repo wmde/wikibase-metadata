@@ -60,7 +60,7 @@ async def compile_property_popularity_observation(
         logger.warning(
             "PropertyPopularityDataError",
             stack_info=True,
-            extra={"wikibase": wikibase.id, "exception": exc},
+            extra={"wikibase": wikibase.id, "exception": str(exc)},
         )
         observation.returned_data = False
     return observation

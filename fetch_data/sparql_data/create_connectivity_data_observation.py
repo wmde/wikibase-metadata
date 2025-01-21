@@ -124,7 +124,7 @@ async def compile_connectivity_observation(
         logger.warning(
             "ConnectivityDataError",
             stack_info=True,
-            extra={"wikibase": wikibase.id, "exception": exc},
+            extra={"wikibase": wikibase.id, "exception": str(exc)},
         )
         observation.returned_data = False
 

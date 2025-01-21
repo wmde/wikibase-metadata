@@ -80,7 +80,7 @@ async def create_software_version_observation_without_background_task(
             logger.warning(
                 "SoftwareVersionDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": exc},
+                extra={"wikibase": wikibase.id, "exception": str(exc)},
             )
             observation.returned_data = False
 

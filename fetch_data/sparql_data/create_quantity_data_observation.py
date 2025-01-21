@@ -80,7 +80,7 @@ async def compile_quantity_observation(
         logger.warning(
             "QuantityDataError",
             stack_info=True,
-            extra={"wikibase": wikibase.id, "exception": exc},
+            extra={"wikibase": wikibase.id, "exception": str(exc)},
         )
         observation.returned_data = False
 
