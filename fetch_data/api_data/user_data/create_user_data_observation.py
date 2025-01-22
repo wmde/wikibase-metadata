@@ -38,7 +38,8 @@ async def create_user_observation(wikibase_id: int) -> bool:
             logger.warning(
                 "UserDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": exc},
+                extra={"wikibase": wikibase.id},
+                exc_info=True,
             )
             observation.returned_data = False
 

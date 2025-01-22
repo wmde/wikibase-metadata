@@ -30,12 +30,12 @@ def _get_results(endpoint_url: str, query: str, query_name: str) -> dict:
     except JSONDecodeError as exc:
         logger.warning(
             "SPARQLError",
+            exc_info=True,
             stack_info=True,
             extra={
                 "query": query,
                 "endpoint": endpoint_url,
                 "result": str(query_result),
-                "exception": str(exc),
             },
         )
         failed_dir = (

@@ -36,7 +36,8 @@ async def update_out_of_date_connectivity_observations():
             logger.error(
                 "ConnectivityDataError",
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
+                exc_info=True,
             )
 
 
@@ -51,8 +52,9 @@ async def update_out_of_date_log_first_observations():
         except Exception as exc:
             logger.error(
                 "LogDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
 
 
@@ -67,8 +69,9 @@ async def update_out_of_date_log_last_observations():
         except Exception as exc:
             logger.error(
                 "LogDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
 
 
@@ -85,8 +88,9 @@ async def update_out_of_date_property_observations():
         except Exception as exc:
             logger.error(
                 "PropertyPopularityDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
 
 
@@ -101,8 +105,9 @@ async def update_out_of_date_quantity_observations():
         except Exception as exc:
             logger.error(
                 "QuantityDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
 
 
@@ -119,8 +124,9 @@ async def update_out_of_date_software_observations():
         except Exception as exc:
             logger.error(
                 "SoftwareVersionDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
 
 
@@ -135,8 +141,9 @@ async def update_out_of_date_stats_observations():
         except Exception as exc:
             logger.error(
                 "StatisticsDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
 
 
@@ -151,6 +158,7 @@ async def update_out_of_date_user_observations():
         except Exception as exc:
             logger.error(
                 "UserDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )

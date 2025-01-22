@@ -79,8 +79,9 @@ async def create_software_version_observation_without_background_task(
         except (HTTPError, SSLError) as exc:
             logger.warning(
                 "SoftwareVersionDataError",
+                exc_info=True,
                 stack_info=True,
-                extra={"wikibase": wikibase.id, "exception": str(exc)},
+                extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False
 

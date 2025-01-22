@@ -59,8 +59,9 @@ async def compile_property_popularity_observation(
     except (HTTPError, EndPointInternalError) as exc:
         logger.warning(
             "PropertyPopularityDataError",
+            exc_info=True,
             stack_info=True,
-            extra={"wikibase": wikibase.id, "exception": str(exc)},
+            extra={"wikibase": wikibase.id},
         )
         observation.returned_data = False
     return observation
