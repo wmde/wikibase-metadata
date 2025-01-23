@@ -122,7 +122,10 @@ async def compile_connectivity_observation(
 
     except (EndPointInternalError, JSONDecodeError, HTTPError, URLError):
         logger.warning(
-            "ConnectivityDataError", stack_info=True, extra={"wikibase": wikibase.id}
+            "ConnectivityDataError",
+            exc_info=True,
+            stack_info=True,
+            extra={"wikibase": wikibase.id},
         )
         observation.returned_data = False
 

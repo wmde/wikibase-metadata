@@ -54,7 +54,10 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
             observation.returned_data = True
         except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
             logger.warning(
-                "LogDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "LogDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False
 

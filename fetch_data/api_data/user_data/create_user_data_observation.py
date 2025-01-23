@@ -36,7 +36,10 @@ async def create_user_observation(wikibase_id: int) -> bool:
             observation.returned_data = True
         except (ReadTimeout, SSLError, ValueError):
             logger.warning(
-                "UserDataError", stack_info=True, extra={"wikibase": wikibase.id}
+                "UserDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False
 
