@@ -35,9 +35,9 @@ async def update_out_of_date_connectivity_observations():
         except Exception:
             logger.error(
                 "ConnectivityDataError",
+                exc_info=True,
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
-                exc_info=True,
             )
 
 
