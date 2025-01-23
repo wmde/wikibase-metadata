@@ -32,7 +32,7 @@ async def update_out_of_date_connectivity_observations():
     for wikibase in ood_con_obs:
         try:
             await create_connectivity_observation(wikibase.id)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "ConnectivityDataError",
                 stack_info=True,
@@ -49,7 +49,7 @@ async def update_out_of_date_log_first_observations():
     for wikibase in ood_log_obs:
         try:
             await create_log_observation(wikibase.id, first_month=True)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "LogDataError",
                 exc_info=True,
@@ -66,7 +66,7 @@ async def update_out_of_date_log_last_observations():
     for wikibase in ood_log_obs:
         try:
             await create_log_observation(wikibase.id, first_month=False)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "LogDataError",
                 exc_info=True,
@@ -85,7 +85,7 @@ async def update_out_of_date_property_observations():
     for wikibase in ood_prop_obs:
         try:
             await create_property_popularity_observation(wikibase.id)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "PropertyPopularityDataError",
                 exc_info=True,
@@ -102,7 +102,7 @@ async def update_out_of_date_quantity_observations():
     for wikibase in ood_quant_obs:
         try:
             await create_quantity_observation(wikibase.id)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "QuantityDataError",
                 exc_info=True,
@@ -121,7 +121,7 @@ async def update_out_of_date_software_observations():
             await create_software_version_observation_without_background_task(
                 wikibase.id
             )
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "SoftwareVersionDataError",
                 exc_info=True,
@@ -138,7 +138,7 @@ async def update_out_of_date_stats_observations():
     for wikibase in ood_stats_obs:
         try:
             await create_special_statistics_observation(wikibase.id)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "StatisticsDataError",
                 exc_info=True,
@@ -155,7 +155,7 @@ async def update_out_of_date_user_observations():
     for wikibase in ood_user_obs:
         try:
             await create_user_observation(wikibase.id)
-        except Exception as exc:
+        except Exception:
             logger.error(
                 "UserDataError",
                 exc_info=True,

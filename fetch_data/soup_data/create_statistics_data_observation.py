@@ -62,7 +62,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 table, row_id="mw-cirrussearch-article-words", optional=True
             )
 
-        except (ConnectionError, HTTPError, SSLError) as exc:
+        except (ConnectionError, HTTPError, SSLError):
             logger.warning(
                 "StatisticsDataError",
                 exc_info=True,

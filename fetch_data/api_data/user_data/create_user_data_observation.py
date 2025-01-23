@@ -34,7 +34,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
         try:
             site_user_data = await get_all_user_data(wikibase.action_api_url.url)
             observation.returned_data = True
-        except (ReadTimeout, SSLError, ValueError) as exc:
+        except (ReadTimeout, SSLError, ValueError):
             logger.warning(
                 "UserDataError",
                 stack_info=True,

@@ -56,7 +56,7 @@ async def compile_property_popularity_observation(
                 usage_count=result["propertyCount"]["value"],
             )
             observation.property_count_observations.append(record)
-    except (HTTPError, EndPointInternalError) as exc:
+    except (HTTPError, EndPointInternalError):
         logger.warning(
             "PropertyPopularityDataError",
             exc_info=True,

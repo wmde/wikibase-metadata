@@ -76,7 +76,7 @@ async def create_software_version_observation_without_background_task(
 
             library_versions = await compile_library_versions(async_session, soup)
             observation.software_versions.extend(library_versions)
-        except (HTTPError, SSLError) as exc:
+        except (HTTPError, SSLError):
             logger.warning(
                 "SoftwareVersionDataError",
                 exc_info=True,

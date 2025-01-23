@@ -76,7 +76,7 @@ async def compile_quantity_observation(
         )
 
         observation.returned_data = True
-    except (HTTPError, EndPointInternalError) as exc:
+    except (HTTPError, EndPointInternalError):
         logger.warning(
             "QuantityDataError",
             exc_info=True,
