@@ -14,6 +14,8 @@ from model.database.wikibase_software.software_tag_xref_model import (
 async def merge_software_by_id(base_id: int, additional_id: int) -> bool:
     """Merge Software by ID"""
 
+    assert base_id != additional_id, "Software IDs Must Be Distinct"
+
     software_query = get_select_software_query([base_id, additional_id])
     update_software_version_query = get_update_software_version_query(
         base_id, additional_id
@@ -28,7 +30,14 @@ async def merge_software_by_id(base_id: int, additional_id: int) -> bool:
 
     async with get_async_session() as async_session:
         software_list = (await async_session.scalars(software_query)).all()
-        assert len({s.software_type for s in software_list}) == 1
+        assert (
+            len({s.software_type for s in software_list}) == 1
+        ), "Cannot Merge Differently-Typed Software"
+        assert (
+            software_count := len(software_list)
+        ) == 2, (
+            f"{software_count} Record{maybe_s(software_count)} Found, 2 Needed to Merge"
+        )
 
         await async_session.execute(update_software_version_query)
         await async_session.execute(update_software_tags_query)
@@ -86,3 +95,8 @@ def get_update_software_version_query(base_id: int, additional_id: int) -> Updat
     )
 
     return update_software_version_query
+
+
+def maybe_s(quantity: int):
+    """Plural or Not?"""
+    return "" if quantity == 1 else "s"
