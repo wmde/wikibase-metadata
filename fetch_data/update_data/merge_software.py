@@ -35,7 +35,9 @@ async def merge_software_by_id(base_id: int, additional_id: int) -> bool:
         ), "Cannot Merge Differently-Typed Software"
         assert (
             software_count := len(software_list)
-        ) == 2, f"{software_count} Records Found, 2 Needed to Merge"
+        ) == 2, (
+            f"{software_count} Record{maybe_s(software_count)} Found, 2 Needed to Merge"
+        )
 
         await async_session.execute(update_software_version_query)
         await async_session.execute(update_software_tags_query)
@@ -93,3 +95,8 @@ def get_update_software_version_query(base_id: int, additional_id: int) -> Updat
     )
 
     return update_software_version_query
+
+
+def maybe_s(quantity: int):
+    """Plural or Not?"""
+    return "" if quantity == 1 else "s"
