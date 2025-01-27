@@ -14,6 +14,8 @@ from model.database.wikibase_software.software_tag_xref_model import (
 async def merge_software_by_id(base_id: int, additional_id: int) -> bool:
     """Merge Software by ID"""
 
+    assert base_id != additional_id
+
     software_query = get_select_software_query([base_id, additional_id])
     update_software_version_query = get_update_software_version_query(
         base_id, additional_id
@@ -29,6 +31,7 @@ async def merge_software_by_id(base_id: int, additional_id: int) -> bool:
     async with get_async_session() as async_session:
         software_list = (await async_session.scalars(software_query)).all()
         assert len({s.software_type for s in software_list}) == 1
+        assert (len(software_list)) == 2
 
         await async_session.execute(update_software_version_query)
         await async_session.execute(update_software_tags_query)
