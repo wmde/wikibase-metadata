@@ -29,7 +29,12 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["statistics-success", "statistics-failure"], scope="session"
+    depends=[
+        "statistics-success",
+        "statistics-failure-500",
+        "statistics-failure-not-found",
+    ],
+    scope="session",
 )
 @pytest.mark.query
 @pytest.mark.statistics
