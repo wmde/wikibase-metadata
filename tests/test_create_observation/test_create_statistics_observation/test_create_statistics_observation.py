@@ -22,11 +22,11 @@ async def test_create_statistics_observation_success(mocker):
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Statistics.html"), "rb"
-    ) as version_html:
+    ) as statistics_html:
 
         mocker.patch(
             "fetch_data.soup_data.create_statistics_data_observation.requests.get",
-            side_effect=[MockResponse("", 200, version_html.read())],
+            side_effect=[MockResponse("", 200, statistics_html.read())],
         )
         success = await create_special_statistics_observation(1)
         assert success
@@ -74,11 +74,11 @@ async def test_create_statistics_observation_fail_not_found(mocker):
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Statistics_fail.html"), "rb"
-    ) as version_html:
+    ) as statistics_html:
 
         mocker.patch(
             "fetch_data.soup_data.create_statistics_data_observation.requests.get",
-            side_effect=[MockResponse("", 200, version_html.read())],
+            side_effect=[MockResponse("", 200, statistics_html.read())],
         )
         success = await create_special_statistics_observation(1)
-        assert success
+        assert success is False
