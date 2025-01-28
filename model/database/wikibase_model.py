@@ -69,8 +69,9 @@ class WikibaseModel(ModelBase):
     languages: Mapped[list[WikibaseLanguageModel]] = relationship(
         "WikibaseLanguageModel",
         back_populates="wikibase",
-        lazy="select",
+        lazy="selectin",
         overlaps="primary_language,additional_languages,wikibase",
+        cascade='delete-orphan,merge,save-update'
     )
     """Languages"""
 
