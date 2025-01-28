@@ -6,7 +6,12 @@ from model.database import WikibaseLanguageModel, WikibaseModel
 
 
 async def add_wikibase_language(wikibase_id: int, language: str) -> bool:
-    """Add Additional Language to Wikibase"""
+    """
+    Add Additional Language to Wikibase
+
+    Will return `True` if language present in Wikibase's list -
+    regardless of whether previously existing or newly inserted
+    """
 
     clean_language = clean_up_language(language)
 
@@ -30,7 +35,12 @@ async def add_wikibase_language(wikibase_id: int, language: str) -> bool:
 
 
 async def remove_wikibase_language(wikibase_id: int, language: str) -> bool:
-    """Remove Language from Wikibase"""
+    """
+    Remove Language from Wikibase
+
+    Will return `True` if language absent in Wikibase's list -
+    regardless of whether never present or newly removed
+    """
 
     clean_language = clean_up_language(language)
 
@@ -61,7 +71,16 @@ async def remove_wikibase_language(wikibase_id: int, language: str) -> bool:
 
 
 async def update_wikibase_primary_language(wikibase_id: int, language: str) -> bool:
-    """Update Wikibase Language"""
+    """
+    Update Wikibase Language
+
+    Will add language if not already in `additional` list
+
+    Will move previous primary language to `additional` list
+
+    Will return `True` if language is Wikibase's primary -
+    regardless of whether previously recorded or newly updated
+    """
 
     clean_language = clean_up_language(language)
 
