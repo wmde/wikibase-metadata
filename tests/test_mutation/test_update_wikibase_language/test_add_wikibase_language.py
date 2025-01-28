@@ -96,7 +96,7 @@ async def test_add_wikibase_language_two():
     assert_layered_property_value(
         before_adding_result.data,
         ["wikibase", "languages", "primary"],
-        expected_value='French',
+        expected_value="French",
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -104,7 +104,7 @@ async def test_add_wikibase_language_two():
         expected_value=[],
     )
 
-    for lang in ['Deutsch', 'Cymru', 'French', 'Albanian', 'English', 'Babylonian']:
+    for lang in ["Deutsch", "Cymru", "French", "Albanian", "English", "Babylonian"]:
         add_result = await test_schema.execute(
             ADD_WIKIBASE_LANGUAGE_QUERY,
             variable_values={"wikibaseId": 1, "language": lang},
@@ -129,5 +129,5 @@ async def test_add_wikibase_language_two():
     assert_layered_property_value(
         after_adding_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=['Albanian', 'Babylonian', 'Cymru', 'Deutsch', 'English'],
+        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "English"],
     )
