@@ -30,7 +30,7 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
     scope="session",
 )
 async def test_remove_wikibase_language_one():
-    """Add Wikibase Language"""
+    """Remove Wikibase Language - Primary"""
 
     before_removing_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
@@ -65,7 +65,7 @@ async def test_remove_wikibase_language_one():
     scope="session",
 )
 async def test_remove_wikibase_language_two():
-    """Add Wikibase Language"""
+    """Remove Wikibase Language"""
 
     before_removing_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
@@ -122,7 +122,7 @@ async def test_remove_wikibase_language_two():
     scope="session",
 )
 async def test_remove_wikibase_language_three():
-    """Add Wikibase Language"""
+    """Remove Wikibase Language - Does Not Exist in List"""
 
     before_removing_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
