@@ -71,7 +71,7 @@ class WikibaseModel(ModelBase):
         back_populates="wikibase",
         lazy="selectin",
         overlaps="primary_language,additional_languages,wikibase",
-        cascade="delete-orphan,merge,save-update",
+        cascade="delete,delete-orphan,merge,save-update",
     )
     """Languages"""
 
