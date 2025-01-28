@@ -1,0 +1,108 @@
+{
+  "expectations": [
+    {
+      "id": "e0fddf5c-80f9-4c05-909c-d3380280627f",
+      "kwargs": {
+        "column": "id"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "1a65f1b0-1dbb-4473-9506-576b1ca344c0",
+      "kwargs": {
+        "column": "id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "701f7aae-f0f4-4c37-9500-dd8e54eb2396",
+      "kwargs": {
+        "column": "id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_unique"
+    },
+    {
+      "id": "92486feb-40b6-4b0b-8dab-ac4deec45130",
+      "kwargs": {
+        "column": "wikibase_id"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "4c4fdcb7-a938-42bb-a57a-c6b30b157e6a",
+      "kwargs": {
+        "column": "wikibase_id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "7677ea79-f7fe-4335-97b3-6f7a20583a2e",
+      "kwargs": {
+        "column": "language"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "0d92131d-d654-4825-b8df-f5ca15e68109",
+      "kwargs": {
+        "column": "language"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "95fc7a1e-8c53-4415-9cbd-d9b5875ad698",
+      "kwargs": {
+        "column": "language",
+        "regex_list": [
+          "^[ \t\r\n]*$",
+          "^[ \t\r\n]+",
+          "[ \t\r\n]+$",
+          "[ \t\r\n]{2,}"
+        ]
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_match_regex_list"
+    },
+    {
+      "id": "ad053b4c-9d8f-4c53-95b6-b39ffc52ede1",
+      "kwargs": {
+        "column": "primary"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "72b92e2a-763a-4e77-9390-f0a07e9d6e9e",
+      "kwargs": {
+        "column": "primary"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "89b68f0e-f861-4071-a25e-ebec03f48e2f",
+      "kwargs": {
+        "column": "primary",
+        "value_set": [
+          true,
+          false
+        ]
+      },
+      "meta": {},
+      "type": "expect_column_distinct_values_to_be_in_set"
+    }
+  ],
+  "id": "5599fa3b-2819-4c5d-9b52-4882576b7832",
+  "meta": {
+    "great_expectations_version": "1.3.3"
+  },
+  "name": "wikibase_language_expectation_suite",
+  "notes": null
+}

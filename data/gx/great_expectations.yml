@@ -338,8 +338,7 @@ fluent_datasources:
           FULL_TABLE:
             id: e37914cf-131d-41dd-baea-5a25dbde7ddb
             partitioner:
-        query:
-          SELECT * FROM wikibase_connectivity_observation WHERE anything AND
+        query: SELECT * FROM wikibase_connectivity_observation WHERE anything AND
           link_count > 0
       nonzero_wikibase_log_observation_months:
         type: query
@@ -389,5 +388,26 @@ fluent_datasources:
             id: 17906408-5608-45ff-95fe-45ae29b85630
             partitioner:
         query: SELECT * FROM wikibase_software WHERE url IS NOT NULL
+      wikibase_language_table:
+        type: table
+        id: bf9ac0e5-2242-4350-b9b9-3bb9ffe09dd7
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: ef258a6b-943c-4e72-97d6-48205e388e01
+            partitioner:
+        table_name: wikibase_language
+        schema_name:
+      wikibase_language_count:
+        type: query
+        id: de236522-ceb5-4822-a550-388b53c8dfb6
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 7948822f-014c-440e-a0b0-7823e2ab85d9
+            partitioner:
+        query: "SELECT\n\twikibase_id,\n\tSUM(CASE WHEN \"primary\" THEN 1 ELSE 0
+          END) AS primary_language_count,\n\tSUM(CASE WHEN \"primary\" THEN 0 ELSE
+          1 END) AS additional_language_count\nFROM wikibase_language\nGROUP BY wikibase_id"
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
