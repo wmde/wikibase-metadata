@@ -97,4 +97,6 @@ async def update_wikibase_primary_language(wikibase_id: int, language: str) -> b
 
 
 def clean_up_language(language: str) -> str:
+    """Clean Language Name"""
+
     return language.strip()
