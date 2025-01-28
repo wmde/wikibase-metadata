@@ -13,6 +13,7 @@ from fetch_data import (
     create_special_statistics_observation,
     create_user_observation,
     merge_software_by_id,
+    update_wikibase_primary_language,
 )
 
 
@@ -62,4 +63,9 @@ class Mutation:
     merge_software_by_id = strawberry.mutation(
         description="Merge Software",
         resolver=merge_software_by_id,
+    )
+
+    update_wikibase_primary_language = strawberry.mutation(
+        description="Update Wikibase Primary Language",
+        resolver=update_wikibase_primary_language,
     )
