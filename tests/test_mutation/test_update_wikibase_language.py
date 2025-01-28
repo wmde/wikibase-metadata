@@ -1,3 +1,5 @@
+"""Test Update Wikibase Language"""
+
 import pytest
 
 from tests.test_schema import test_schema
