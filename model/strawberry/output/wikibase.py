@@ -18,7 +18,9 @@ from model.strawberry.output.observation import (
     WikibaseStatisticsObservationStrawberryModel,
     WikibaseUserObservationStrawberryModel,
 )
-from model.strawberry.output.wikibase_language_set import WikibaseLanguageSetStrawberryModel
+from model.strawberry.output.wikibase_language_set import (
+    WikibaseLanguageSetStrawberryModel,
+)
 from model.strawberry.output.wikibase_location import WikibaseLocationStrawberryModel
 from model.strawberry.output.wikibase_url_set import WikibaseURLSetStrawberryModel
 
@@ -39,7 +41,9 @@ class WikibaseStrawberryModel:
         description="Wikibase Location"
     )
 
-    languages: WikibaseLanguageSetStrawberryModel = strawberry.field(description='Languages')
+    languages: WikibaseLanguageSetStrawberryModel = strawberry.field(
+        description="Languages"
+    )
 
     urls: WikibaseURLSetStrawberryModel = strawberry.field(description="URLs")
 
