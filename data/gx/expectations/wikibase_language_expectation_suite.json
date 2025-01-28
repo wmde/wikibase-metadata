@@ -73,6 +73,12 @@
 			"kwargs": { "column": "primary", "value_set": [true, false] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
+		},
+		{
+			"id": "022203b3-ac36-4c8a-99b0-29d9e256a0e2",
+			"kwargs": { "column_list": ["wikibase_id", "language"] },
+			"meta": {},
+			"type": "expect_compound_columns_to_be_unique"
 		}
 	],
 	"id": "5599fa3b-2819-4c5d-9b52-4882576b7832",
