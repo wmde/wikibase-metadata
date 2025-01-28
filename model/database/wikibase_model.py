@@ -1,11 +1,12 @@
 """Wikibase Table"""
 
 from typing import Optional
-from sqlalchemy import Boolean, ForeignKey, Integer, String, and_
+from sqlalchemy import Boolean, ForeignKey, Integer, String, and_, not_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
 from model.database.wikibase_category_model import WikibaseCategoryModel
+from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
     WikibaseLogMonthObservationModel,
@@ -64,6 +65,27 @@ class WikibaseModel(ModelBase):
 
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
     """Test Wikibase?"""
+
+    languages: Mapped[list[WikibaseLanguageModel]] = relationship(
+        "WikibaseLanguageModel", back_populates="wikibase", lazy="select"
+    )
+    """Languages"""
+
+    primary_language: Mapped[Optional[WikibaseLanguageModel]] = relationship(
+        "WikibaseLanguageModel",
+        primaryjoin=and_(
+            id == WikibaseLanguageModel.wikibase_id, WikibaseLanguageModel.primary
+        ),
+        lazy="selectin",
+    )
+
+    additional_languages: Mapped[list[WikibaseLanguageModel]] = relationship(
+        "WikibaseLanguageModel",
+        primaryjoin=and_(
+            id == WikibaseLanguageModel.wikibase_id, not_(WikibaseLanguageModel.primary)
+        ),
+        lazy="selectin",
+    )
 
     url: Mapped[WikibaseURLModel] = relationship(
         "WikibaseURLModel",
@@ -276,6 +298,8 @@ class WikibaseModel(ModelBase):
         organization: Optional[str] = None,
         country: Optional[str] = None,
         region: Optional[str] = None,
+        primary_language: Optional[str] = None,
+        additional_languages: Optional[list[str]] = None,
         action_api_url: Optional[str] = None,
         index_api_url: Optional[str] = None,
         sparql_query_url: Optional[str] = None,
@@ -290,6 +314,14 @@ class WikibaseModel(ModelBase):
         self.region = region
         self.checked = False
         self.test = False
+        if primary_language is not None:
+            self.languages.append(
+                WikibaseLanguageModel(language=primary_language, primary=True)
+            )
+        if additional_languages is not None:
+            self.languages.extend(
+                [WikibaseLanguageModel(language=l) for l in additional_languages]
+            )
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
         if action_api_url is not None:
