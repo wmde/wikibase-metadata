@@ -67,7 +67,10 @@ class WikibaseModel(ModelBase):
     """Test Wikibase?"""
 
     languages: Mapped[list[WikibaseLanguageModel]] = relationship(
-        "WikibaseLanguageModel", back_populates="wikibase", lazy="select"
+        "WikibaseLanguageModel",
+        back_populates="wikibase",
+        lazy="select",
+        overlaps="primary_language,additional_languages,wikibase",
     )
     """Languages"""
 
@@ -77,6 +80,7 @@ class WikibaseModel(ModelBase):
             id == WikibaseLanguageModel.wikibase_id, WikibaseLanguageModel.primary
         ),
         lazy="selectin",
+        overlaps="languages,additional_languages,wikibase",
     )
 
     additional_languages: Mapped[list[WikibaseLanguageModel]] = relationship(
@@ -85,6 +89,7 @@ class WikibaseModel(ModelBase):
             id == WikibaseLanguageModel.wikibase_id, not_(WikibaseLanguageModel.primary)
         ),
         lazy="selectin",
+        overlaps="languages,primary_language,wikibase",
     )
 
     url: Mapped[WikibaseURLModel] = relationship(
