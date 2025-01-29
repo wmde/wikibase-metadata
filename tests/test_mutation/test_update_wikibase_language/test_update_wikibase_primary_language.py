@@ -124,3 +124,55 @@ async def test_update_wikibase_primary_language_two():
         ["wikibase", "languages", "additional"],
         expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "French"],
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(
+    name="update-wikibase-primary-language-3",
+    depends=["update-wikibase-primary-language-2"],
+    scope="session",
+)
+async def test_update_wikibase_primary_language_three():
+    """Test Updating to Already Primary Language"""
+
+    before_updating_result = await test_schema.execute(
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+    )
+    assert before_updating_result.errors is None
+    assert before_updating_result.data is not None
+    assert_layered_property_value(
+        before_updating_result.data, ["wikibase", "id"], expected_value="1"
+    )
+    assert_layered_property_value(
+        before_updating_result.data,
+        ["wikibase", "languages", "primary"],
+        expected_value="Hindi",
+    )
+    assert_layered_property_value(
+        before_updating_result.data,
+        ["wikibase", "languages", "additional"],
+        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "French"],
+    )
+
+    update_result = await update_wikibase_primary_language(1, "Hindi")
+    assert update_result
+
+    after_updating_result = await test_schema.execute(
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+    )
+    assert after_updating_result.errors is None
+    assert after_updating_result.data is not None
+    assert_layered_property_value(
+        after_updating_result.data, ["wikibase", "id"], expected_value="1"
+    )
+    assert_layered_property_value(
+        after_updating_result.data,
+        ["wikibase", "languages", "primary"],
+        expected_value="Hindi",
+    )
+    assert_layered_property_value(
+        after_updating_result.data,
+        ["wikibase", "languages", "additional"],
+        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "French"],
+    )
