@@ -2,19 +2,12 @@
 
 import pytest
 
+from tests.test_mutation.test_update_wikibase_language.query import (
+    WIKIBASE_LANGUAGES_QUERY,
+)
 from tests.test_schema import test_schema
 from tests.utils.assert_property_value import assert_layered_property_value
 
-WIKIBASE_LANGUAGES_QUERY = """
-query MyQuery($wikibaseId: Int!) {
-  wikibase(wikibaseId: $wikibaseId) {
-    id
-    languages {
-      primary
-      additional
-    }
-  }
-}"""
 
 REMOVE_WIKIBASE_LANGUAGE_QUERY = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {
