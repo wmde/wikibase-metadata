@@ -2,6 +2,7 @@
 
 import pytest
 
+from fetch_data.update_data.update_wikibase_language import remove_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
@@ -79,13 +80,8 @@ async def test_remove_wikibase_language_two():
         expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "English"],
     )
 
-    remove_result = await test_schema.execute(
-        REMOVE_WIKIBASE_LANGUAGE_QUERY,
-        variable_values={"wikibaseId": 1, "language": "English"},
-    )
-    assert remove_result.errors is None
-    assert remove_result.data is not None
-    assert remove_result.data["removeWikibaseLanguage"] is True
+    remove_result = await remove_wikibase_language(wikibase_id=1, language="English")
+    assert remove_result
 
     after_removing_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
@@ -136,13 +132,8 @@ async def test_remove_wikibase_language_three():
         expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch"],
     )
 
-    remove_result = await test_schema.execute(
-        REMOVE_WIKIBASE_LANGUAGE_QUERY,
-        variable_values={"wikibaseId": 1, "language": "Greek"},
-    )
-    assert remove_result.errors is None
-    assert remove_result.data is not None
-    assert remove_result.data["removeWikibaseLanguage"] is True
+    remove_result = await remove_wikibase_language(wikibase_id=1, language="Greek")
+    assert remove_result
 
     after_removing_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}

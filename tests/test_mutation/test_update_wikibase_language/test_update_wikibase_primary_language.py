@@ -2,6 +2,9 @@
 
 import pytest
 
+from fetch_data.update_data.update_wikibase_language import (
+    update_wikibase_primary_language,
+)
 from tests.test_schema import test_schema
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
@@ -100,13 +103,8 @@ async def test_update_wikibase_primary_language_two():
         expected_value=["Albanian", "Babylonian", "Deutsch", "French"],
     )
 
-    update_result = await test_schema.execute(
-        UPDATE_WIKIBASE_PRIMARY_LANGUAGE_QUERY,
-        variable_values={"wikibaseId": 1, "language": "Hindi"},
-    )
-    assert update_result.errors is None
-    assert update_result.data is not None
-    assert update_result.data["updateWikibasePrimaryLanguage"] is True
+    update_result = await update_wikibase_primary_language(1, "Hindi")
+    assert update_result
 
     after_updating_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}

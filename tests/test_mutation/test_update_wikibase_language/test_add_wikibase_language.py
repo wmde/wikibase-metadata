@@ -2,6 +2,7 @@
 
 import pytest
 
+from fetch_data.update_data.update_wikibase_language import add_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
@@ -98,13 +99,8 @@ async def test_add_wikibase_language_two():
     )
 
     for lang in ["Deutsch", "Cymru", "French", "Albanian", "English", "Babylonian"]:
-        add_result = await test_schema.execute(
-            ADD_WIKIBASE_LANGUAGE_QUERY,
-            variable_values={"wikibaseId": 1, "language": lang},
-        )
-        assert add_result.errors is None
-        assert add_result.data is not None
-        assert add_result.data["addWikibaseLanguage"] is True
+        add_result = await add_wikibase_language(wikibase_id=1, language=lang)
+        assert add_result
 
     after_adding_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
