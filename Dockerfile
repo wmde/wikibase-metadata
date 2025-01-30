@@ -2,7 +2,7 @@
 # Accompanied by a docker compose file for conveniently mounting 
 # the project directory into the container and opening ports.
 
-FROM python:3.10.12-slim
+FROM python:3.12-slim
 
 RUN mkdir /workspace
 WORKDIR /workspace
