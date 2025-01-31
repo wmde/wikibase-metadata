@@ -4,17 +4,17 @@ from sqlalchemy import Select, func, not_, select
 from data.database_connection import get_async_session
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.strawberry.output import (
-    AggregateLanguageStrawberryModel,
     Page,
     PageNumberType,
     PageSizeType,
+    WikibaseLanguageAggregateStrawberryModel,
 )
 
 
 async def get_language_list(
     page_number: PageNumberType,
     page_size: PageSizeType,
-) -> Page[AggregateLanguageStrawberryModel]:
+) -> Page[WikibaseLanguageAggregateStrawberryModel]:
     """List of Languages"""
 
     total_query = (
@@ -77,7 +77,7 @@ async def get_language_list(
             page_size=page_size,
             total_count=total_count,
             page_data=[
-                AggregateLanguageStrawberryModel(
+                WikibaseLanguageAggregateStrawberryModel(
                     language=r[0],
                     total_wikibases=r[1],
                     primary_wikibases=r[2] or 0,
