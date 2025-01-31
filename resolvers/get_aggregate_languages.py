@@ -59,7 +59,7 @@ async def get_language_list(
             )
         )
         .order_by(
-            total_query.c.primary_wikibases.desc(),
+            primary_query.c.primary_wikibases.desc(),
             total_query.c.total_wikibases.desc(),
             total_query.c.language,
         )

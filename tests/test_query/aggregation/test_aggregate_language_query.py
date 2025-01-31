@@ -55,12 +55,12 @@ async def test_aggregate_languages_query():
         expected_additional,
     ) in enumerate(
         [
+            ("Hindi", 1, 1, 0),
             ("Albanian", 1, 0, 1),
             ("Babylonian", 1, 0, 1),
             ("Cymru", 1, 0, 1),
             ("Deutsch", 1, 0, 1),
             ("French", 1, 0, 1),
-            ("Hindi", 1, 1, 0),
         ]
     ):
         assert_layered_property_value(
