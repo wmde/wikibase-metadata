@@ -4,6 +4,7 @@ import strawberry
 
 from model.enum import WikibaseSoftwareType
 from model.strawberry.output import (
+    AggregateLanguageStrawberryModel,
     Page,
     PageNumberType,
     PageSizeType,
@@ -23,6 +24,7 @@ from resolvers import (
     get_aggregate_statistics,
     get_aggregate_users,
     get_aggregate_version,
+    get_language_list,
     get_software_list,
     get_wikibase,
     get_wikibase_list,
@@ -71,6 +73,14 @@ class Query:
         return await get_aggregate_version(
             WikibaseSoftwareType.EXTENSION, page_number, page_size
         )
+
+    @strawberry.field(description="Aggregated Language Popularity")
+    async def aggregate_language_popularity(
+        self, page_number: PageNumberType, page_size: PageSizeType
+    ) -> Page[AggregateLanguageStrawberryModel]:
+        """Aggregated Language Popularity"""
+
+        return await get_language_list(page_number, page_size)
 
     @strawberry.field(description="Aggregated Library Popularity")
     async def aggregate_library_popularity(
