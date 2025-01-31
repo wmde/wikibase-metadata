@@ -29,6 +29,8 @@ class WikibaseLanguageSetStrawberryModel:
 
 @strawberry.type
 class AggregateLanguageStrawberryModel:
+    """Wikibase Language Aggregate"""
+
     language: str = strawberry.field(description="Language")
     total_wikibases: int = strawberry.field(
         description="Wikibases that include this language"

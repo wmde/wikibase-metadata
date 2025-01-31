@@ -18,11 +18,13 @@ async def get_language_list(
     """List of Languages"""
 
     total_query = (
+        # pylint: disable-next=not-callable
         select(WikibaseLanguageModel.language, func.count().label("total_wikibases"))
         .group_by(WikibaseLanguageModel.language)
         .subquery()
     )
     primary_query = (
+        # pylint: disable-next=not-callable
         select(WikibaseLanguageModel.language, func.count().label("primary_wikibases"))
         .where(WikibaseLanguageModel.primary)
         .group_by(WikibaseLanguageModel.language)
@@ -30,7 +32,9 @@ async def get_language_list(
     )
     additional_query = (
         select(
-            WikibaseLanguageModel.language, func.count().label("additional_wikibases")
+            WikibaseLanguageModel.language,
+            # pylint: disable-next=not-callable
+            func.count().label("additional_wikibases"),
         )
         .where(not_(WikibaseLanguageModel.primary))
         .group_by(WikibaseLanguageModel.language)
@@ -64,6 +68,7 @@ async def get_language_list(
 
         result = (await async_session.execute(final_query)).all()
         total_count = await async_session.scalar(
+            # pylint: disable-next=not-callable
             select(func.count()).select_from(total_query)
         )
 
