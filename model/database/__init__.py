@@ -2,6 +2,7 @@
 
 from model.database.base import ModelBase
 from model.database.wikibase_category_model import WikibaseCategoryModel
+from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
