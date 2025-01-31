@@ -4,6 +4,21 @@ on:
   pull_request:
 
 jobs:
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: npm install
+        run: npm install prettier prettier-plugin-ini
+
+      - name: npm check
+        run: |
+          npx prettier --check .
+          
   format-check-backend:
     runs-on: ubuntu-latest
     steps:
