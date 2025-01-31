@@ -25,6 +25,14 @@
 		{
 			"id": "cc0fac73-9df0-4962-b78a-b28f033eb2d4",
 			"name": "wikibase_url_validation_definition"
+		},
+		{
+			"id": "2a80d595-c12e-4c56-ad29-290e800dfe72",
+			"name": "wikibase_language_validation_definition"
+		},
+		{
+			"id": "4bc400ce-a637-4699-9095-123cee9c018a",
+			"name": "wikibase_language_count_validation_definition"
 		}
 	]
 }
