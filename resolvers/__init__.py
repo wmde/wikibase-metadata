@@ -9,6 +9,7 @@ from resolvers.get_aggregate_quantity import get_aggregate_quantity
 from resolvers.get_aggregate_software_version import get_aggregate_version
 from resolvers.get_aggregate_statistics import get_aggregate_statistics
 from resolvers.get_aggregate_users import get_aggregate_users
+from resolvers.get_language_list import get_language_list
 from resolvers.get_software_list import get_software_list
 from resolvers.get_wikibase import get_wikibase
 from resolvers.get_wikibase_list import get_wikibase_list
