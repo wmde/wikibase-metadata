@@ -27,6 +27,10 @@ query MyQuery {
     id
     title
     organization
+    languages {
+      primary
+      additional
+    }
     location {
       country
       region
@@ -52,6 +56,15 @@ Results:
       "id": "10",
       "title": "ELTEdata",
       "organization": "Digital Humanities Department of ELTE BTK (Eötvös Loránd University Faculty of Humanities)",
+      "languages": {
+        "primary": "Korean",
+        "additional": [
+          "English",
+          "German",
+          "Japanese",
+          "Spanish"
+        ]
+      },
       "location": {
         "country": "Hungary",
         "region": "Europe"
