@@ -1,5 +1,7 @@
 """Scheduler"""
 
+from datetime import datetime
+import os
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
@@ -61,3 +63,11 @@ scheduler.add_job(
     max_instances=1,
 )
 scheduler.add_job(update_software_data, IntervalTrigger(hours=2), max_instances=1)
+
+
+def hello_world():
+    """Test Function"""
+    print(f"Hello World - {os.getpid()} - {datetime.now()}")
+
+
+scheduler.add_job(hello_world, IntervalTrigger(seconds=5), max_instances=1)
