@@ -2,9 +2,11 @@
 
 from datetime import datetime
 import os
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
+from config import jobs_db_connection_string
 
 from fetch_data import (
     update_out_of_date_connectivity_observations,
@@ -20,7 +22,9 @@ from fetch_data import (
 
 
 # Set up the scheduler
-scheduler = AsyncIOScheduler()
+scheduler = AsyncIOScheduler(
+    jobstores={"default": SQLAlchemyJobStore(url=jobs_db_connection_string)}
+)
 
 scheduler.add_job(
     update_out_of_date_connectivity_observations, CronTrigger(day_of_week=0, hour=0)
