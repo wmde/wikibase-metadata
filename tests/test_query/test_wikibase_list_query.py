@@ -22,6 +22,10 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
         country
         region
       }
+      languages {
+        primary
+        additional
+      }
       urls {
         baseUrl
         actionApi
@@ -81,7 +85,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
+@pytest.mark.dependency(
+    depends=["add-wikibase", "update-wikibase-primary-language-3"], scope="session"
+)
 async def test_wikibase_list_query():
     """Test Wikibase List"""
 
@@ -109,6 +115,13 @@ async def test_wikibase_list_query():
     )
     assert_layered_property_value(result_datum, ["location", "country"], "Germany")
     assert_layered_property_value(result_datum, ["location", "region"], "Europe")
+
+    assert_layered_property_value(result_datum, ["languages", "primary"], "Hindi")
+    assert_layered_property_value(
+        result_datum,
+        ["languages", "additional"],
+        ["Albanian", "Babylonian", "Cymru", "Deutsch", "French"],
+    )
 
     for url_name, url in [
         ("baseUrl", "example.com"),

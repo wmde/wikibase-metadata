@@ -5,6 +5,7 @@ import strawberry
 from resolvers import add_wikibase
 
 from fetch_data import (
+    add_wikibase_language,
     create_connectivity_observation,
     create_log_observation,
     create_property_popularity_observation,
@@ -13,6 +14,8 @@ from fetch_data import (
     create_special_statistics_observation,
     create_user_observation,
     merge_software_by_id,
+    remove_wikibase_language,
+    update_wikibase_primary_language,
 )
 
 
@@ -62,4 +65,17 @@ class Mutation:
     merge_software_by_id = strawberry.mutation(
         description="Merge Software",
         resolver=merge_software_by_id,
+    )
+
+    add_wikibase_language = strawberry.mutation(
+        description="Add Language to Wikibase", resolver=add_wikibase_language
+    )
+
+    remove_wikibase_language = strawberry.mutation(
+        description="Remove Language from Wikibase", resolver=remove_wikibase_language
+    )
+
+    update_wikibase_primary_language = strawberry.mutation(
+        description="Update Wikibase Primary Language",
+        resolver=update_wikibase_primary_language,
     )
