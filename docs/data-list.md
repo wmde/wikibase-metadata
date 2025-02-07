@@ -6,6 +6,9 @@
 
 - Title
 - Organization
+- Languages
+  - Primary Language
+  - Additional Languages
 - Location
   - Country
   - Region
@@ -27,6 +30,10 @@ query MyQuery {
     id
     title
     organization
+    languages {
+      primary
+      additional
+    }
     location {
       country
       region
@@ -52,6 +59,15 @@ Results:
       "id": "10",
       "title": "ELTEdata",
       "organization": "Digital Humanities Department of ELTE BTK (Eötvös Loránd University Faculty of Humanities)",
+      "languages": {
+        "primary": "Korean",
+        "additional": [
+          "English",
+          "German",
+          "Japanese",
+          "Spanish"
+        ]
+      },
       "location": {
         "country": "Hungary",
         "region": "Europe"
@@ -1010,6 +1026,78 @@ Result:
           ]
         },
         ...
+      ]
+    }
+  }
+}
+```
+
+### Aggregated Language Popularity:
+
+Aggregated from the manually-entered languages above. The data is paginated as above in Wikibase List; the Page Number and Page Size arguments are the same, and the queries return Meta and Data as above.
+
+- Language
+- Primary Wikibases: Number of Wikibases with this as their primary languages
+- Additional Wikibases: Number of Wikibases with this as an additional language
+- Total Wikibases: Number of Wikibase with this as a primary or additional language
+
+The data is ordered by Primary Wikibases descending, then Total Wikibases descending, then alphabetically by Language
+
+#### Example:
+
+Query:
+
+```
+query MyQuery($pageNumber: Int!, $pageSize: Int!) {
+  aggregateLanguagePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+    meta {
+      pageNumber
+      pageSize
+      totalCount
+      totalPages
+    }
+    data {
+      language
+      primaryWikibases
+      additionalWikibases
+      totalWikibases
+    }
+  }
+}
+```
+
+Result:
+
+```
+{
+  "data": {
+    "aggregateLanguagePopularity": {
+      "meta": {
+        "pageNumber": 1,
+        "pageSize": 20,
+        "totalCount": 16,
+        "totalPages": 1
+      },
+      "data": [
+        {
+          "language": "English",
+          "primaryWikibases": 28,
+          "additionalWikibases": 3,
+          "totalWikibases": 31
+        },
+        {
+          "language": "German",
+          "primaryWikibases": 5,
+          "additionalWikibases": 3,
+          "totalWikibases": 8
+        },
+        ...
+        {
+          "language": "Svenska",
+          "primaryWikibases": 0,
+          "additionalWikibases": 1,
+          "totalWikibases": 1
+        }
       ]
     }
   }
