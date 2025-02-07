@@ -1,7 +1,9 @@
 """Scheduler"""
 
+import asyncio
 from datetime import datetime
 import os
+import time
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -27,35 +29,72 @@ scheduler = AsyncIOScheduler(
 )
 
 scheduler.add_job(
-    update_out_of_date_connectivity_observations, CronTrigger(day_of_week=0, hour=0)
+    update_out_of_date_connectivity_observations,
+    id="update_out_of_date_connectivity_observations",
+    trigger=CronTrigger(day_of_week=0, hour=0),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_log_first_observations, CronTrigger(day_of_week=0, hour=1)
+    update_out_of_date_log_first_observations,
+    id="update_out_of_date_log_first_observations",
+    trigger=CronTrigger(day_of_week=0, hour=1),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_log_last_observations, CronTrigger(day_of_week=0, hour=2)
+    update_out_of_date_log_last_observations,
+    id="update_out_of_date_log_last_observations",
+    trigger=CronTrigger(day_of_week=0, hour=2),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_property_observations, CronTrigger(day_of_week=0, hour=3)
+    update_out_of_date_property_observations,
+    id="update_out_of_date_property_observations",
+    trigger=CronTrigger(day_of_week=0, hour=3),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_quantity_observations, CronTrigger(day_of_week=0, hour=4)
+    update_out_of_date_quantity_observations,
+    id="update_out_of_date_quantity_observations",
+    trigger=CronTrigger(day_of_week=0, hour=4),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_software_observations, CronTrigger(day_of_week=0, hour=5)
+    update_out_of_date_software_observations,
+    id="update_out_of_date_software_observations",
+    trigger=CronTrigger(day_of_week=0, hour=5),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_stats_observations, CronTrigger(day_of_week=0, hour=6)
+    update_out_of_date_stats_observations,
+    id="update_out_of_date_stats_observations",
+    trigger=CronTrigger(day_of_week=0, hour=6),
+    replace_existing=True,
 )
 scheduler.add_job(
-    update_out_of_date_user_observations, CronTrigger(day_of_week=0, hour=7)
+    update_out_of_date_user_observations,
+    id="update_out_of_date_user_observations",
+    trigger=CronTrigger(day_of_week=0, hour=7),
+    replace_existing=True,
 )
-scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
+scheduler.add_job(
+    update_software_data,
+    id="update_software_data",
+    trigger=IntervalTrigger(hours=2),
+    replace_existing=True,
+)
 
 
-def hello_world():
+async def hello_world():
     """Test Function"""
-    print(f"Hello World - {os.getpid()} - {datetime.now()}")
+
+    print(f"Hello World start - {os.getpid()} - {datetime.now()}")
+    await asyncio.to_thread(time.sleep, 1)
+    print(f"Hello World end - {os.getpid()} - {datetime.now()}")
 
 
-scheduler.add_job(hello_world, IntervalTrigger(seconds=5))
+scheduler.add_job(
+    hello_world,
+    id="hello_world",
+    trigger=IntervalTrigger(seconds=5),
+    replace_existing=True,
+)
