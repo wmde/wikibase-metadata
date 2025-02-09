@@ -34,6 +34,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
             )
             soup = BeautifulSoup(result.content, "html.parser")
             table = soup.find("table", attrs={"class": "mw-statistics-table"})
+            assert table is not None, "Could Not Find Statistics Table"
 
             observation.returned_data = True
 
@@ -62,7 +63,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 table, row_id="mw-cirrussearch-article-words", optional=True
             )
 
-        except (ConnectionError, HTTPError, SSLError):
+        except (AssertionError, ConnectionError, HTTPError, SSLError):
             logger.warning(
                 "StatisticsDataError",
                 exc_info=True,

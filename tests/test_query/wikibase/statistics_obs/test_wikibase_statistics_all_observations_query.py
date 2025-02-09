@@ -29,7 +29,12 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["statistics-success", "statistics-failure"], scope="session"
+    depends=[
+        "statistics-success",
+        "statistics-failure-500",
+        "statistics-failure-not-found",
+    ],
+    scope="session",
 )
 @pytest.mark.query
 @pytest.mark.statistics
@@ -54,7 +59,7 @@ async def test_wikibase_statistics_all_observations_query():
                 "allObservations"
             ]
         )
-        == 2
+        == 3
     )
 
     assert_statistics(
@@ -67,3 +72,4 @@ async def test_wikibase_statistics_all_observations_query():
         (5, 17, 465),
     )
     assert_statistics(statistics_observation_list[1], "2", False)
+    assert_statistics(statistics_observation_list[2], "3", False)
