@@ -311,7 +311,7 @@ async def test_extension_list_query_parameterized(
     assert_layered_property_value(
         result.data,
         ["extensionList", "data", idx, "wikibaseSuiteBundled"],
-        expected_wbs_bundled
+        expected_wbs_bundled,
     )
     assert_layered_property_value(
         result.data,
