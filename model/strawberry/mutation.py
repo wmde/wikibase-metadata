@@ -15,6 +15,7 @@ from fetch_data import (
     create_user_observation,
     merge_software_by_id,
     remove_wikibase_language,
+    set_extension_wbs_bundled,
     update_wikibase_primary_language,
 )
 
@@ -73,6 +74,10 @@ class Mutation:
 
     remove_wikibase_language = strawberry.mutation(
         description="Remove Language from Wikibase", resolver=remove_wikibase_language
+    )
+
+    set_extension_wbs_bundled = strawberry.mutation(
+        description="Set Extension Bundled with WBS", resolver=set_extension_wbs_bundled
     )
 
     update_wikibase_primary_language = strawberry.mutation(
