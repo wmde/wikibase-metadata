@@ -26,6 +26,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
       fetched
       latestVersion
       mediawikiBundled
+      wikibaseSuiteBundled
       publicWikiCount
       quarterlyDownloadCount
       tags
@@ -68,6 +69,7 @@ async def test_extension_list_query():
         "expected_fetched",
         "expected_latest_version",
         "expected_mediawiki_bundled",
+        "expected_wbs_bundled",
         "expected_public_wiki_count",
         "expected_quarterly_download_count",
         "expected_tags",
@@ -84,6 +86,7 @@ async def test_extension_list_query():
             datetime(2024, 3, 1),
             "Continuous updates",
             False,
+            None,
             2416,
             63,
             ["Parser function"],
@@ -99,6 +102,7 @@ async def test_extension_list_query():
             datetime(2024, 3, 1),
             "3.0.1 (2017-10-29)",
             False,
+            None,
             1302,
             None,
             ["User activity", "Hook"],
@@ -113,6 +117,7 @@ async def test_extension_list_query():
             datetime(2024, 3, 1),
             None,
             False,
+            None,
             6919,
             None,
             ["Parser function", "Tag"],
@@ -125,6 +130,7 @@ async def test_extension_list_query():
             None,
             None,
             datetime(2024, 3, 1),
+            None,
             None,
             None,
             None,
@@ -144,6 +150,7 @@ async def test_extension_list_query():
             False,
             None,
             None,
+            None,
             ["Tag", "Page action", "ContentHandler", "API", "Database"],
         ),
         (
@@ -155,6 +162,7 @@ async def test_extension_list_query():
             "Provides a framework for embedding scripting languages into MediaWiki pages",
             datetime(2024, 3, 1),
             "Continuous updates",
+            True,
             True,
             8789,
             450,
@@ -170,6 +178,7 @@ async def test_extension_list_query():
             datetime(2024, 3, 1),
             "2024-07-16",
             False,
+            None,
             1237,
             243,
             ["Skin", "Beta Feature"],
@@ -186,6 +195,7 @@ async def test_extension_list_query():
             False,
             None,
             None,
+            None,
             ["Parser function", "Ajax"],
         ),
         (
@@ -198,6 +208,7 @@ async def test_extension_list_query():
             datetime(2024, 3, 1),
             "Continuous updates",
             False,
+            None,
             None,
             None,
             [],
@@ -214,6 +225,7 @@ async def test_extension_list_query():
             False,
             None,
             None,
+            None,
             ["ContentHandler", "API", "Ajax"],
         ),
         (
@@ -224,6 +236,7 @@ async def test_extension_list_query():
             False,
             None,
             datetime(2024, 3, 1),
+            None,
             None,
             None,
             None,
@@ -243,6 +256,7 @@ async def test_extension_list_query_parameterized(
     expected_fetched: datetime,
     expected_latest_version: Optional[str],
     expected_mediawiki_bundled: Optional[bool],
+    expected_wbs_bundled: Optional[bool],
     expected_public_wiki_count: Optional[int],
     expected_quarterly_download_count: Optional[int],
     expected_tags: list[str],
@@ -293,6 +307,11 @@ async def test_extension_list_query_parameterized(
         result.data,
         ["extensionList", "data", idx, "mediawikiBundled"],
         expected_mediawiki_bundled,
+    )
+    assert_layered_property_value(
+        result.data,
+        ["extensionList", "data", idx, "wikibaseSuiteBundled"],
+        expected_wbs_bundled
     )
     assert_layered_property_value(
         result.data,
