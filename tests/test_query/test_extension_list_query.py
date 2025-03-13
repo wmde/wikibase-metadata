@@ -57,7 +57,7 @@ async def test_extension_list_query():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-@pytest.mark.dependency(depends=["update-software-data"], scope="session")
+@pytest.mark.dependency(depends=["update-software-data", "test-set-bundled"], scope="session")
 @pytest.mark.parametrize(
     [
         "idx",
@@ -86,7 +86,7 @@ async def test_extension_list_query():
             datetime(2024, 3, 1),
             "Continuous updates",
             False,
-            None,
+            True,
             2416,
             63,
             ["Parser function"],
