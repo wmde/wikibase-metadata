@@ -71,6 +71,11 @@ class WikibaseSoftwareModel(ModelBase):
     )
     """Bundled with Mediawiki"""
 
+    wikibase_suite_bundled: Mapped[Optional[bool]] = mapped_column(
+        "wbs_bundled", Boolean, nullable=True
+    )
+    """Bundled with Wikibase Suite"""
+
     archived: Mapped[Optional[bool]] = mapped_column("archived", Boolean, nullable=True)
     """Archived Extension"""
 
