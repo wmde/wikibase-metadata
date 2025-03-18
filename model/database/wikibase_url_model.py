@@ -1,6 +1,6 @@
 """Wikibase URL Table"""
 
-from sqlalchemy import Enum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import Boolean, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -36,3 +36,6 @@ class WikibaseURLModel(ModelBase):
 
     url: Mapped[str] = mapped_column("url", String, nullable=False)
     """URL"""
+
+    non_functional: Mapped[bool] = mapped_column("non_func", Boolean, nullable=True)
+    """Non-Functional"""
