@@ -36,16 +36,28 @@ async def get_wikibase_from_database(
 
     if require_action_api:
         assert wikibase.action_api_url is not None, "Action API Must Be Populated"
+        assert (
+            not wikibase.action_api_url.non_functional
+        ), "Action API Must Be Functional"
     if require_sparql_endpoint:
         assert (
             wikibase.sparql_endpoint_url is not None
         ), "SPARQL Endpoint Must Be Populated"
+        assert (
+            not wikibase.sparql_endpoint_url.non_functional
+        ), "SPARQL Endpoint Must Be Functional"
     if require_special_statistics:
         assert (
             wikibase.special_statistics_url is not None
         ), "Special:Statistics URL Must Be Populated"
+        assert (
+            not wikibase.special_statistics_url.non_functional
+        ), "Special:Statistics URL Must Be Functional"
     if require_special_version:
         assert (
             wikibase.special_version_url is not None
         ), "Special:Version URL Must Be Populated"
+        assert (
+            not wikibase.special_version_url.non_functional
+        ), "Special:Version URL Must Be Functional"
     return wikibase
