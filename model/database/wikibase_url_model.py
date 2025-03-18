@@ -26,7 +26,9 @@ class WikibaseURLModel(ModelBase):
     )
     """Wikibase ID"""
 
-    wikibase: Mapped["WikibaseModel"] = relationship("WikibaseModel", lazy="selectin")  # type: ignore
+    wikibase: Mapped["WikibaseModel"] = relationship(  # type: ignore
+        "WikibaseModel", lazy="selectin"
+    )
     """Wikibase"""
 
     url_type: Mapped[WikibaseURLType] = mapped_column(
