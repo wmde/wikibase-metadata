@@ -329,29 +329,42 @@ class WikibaseModel(ModelBase):
                 [WikibaseLanguageModel(language=l) for l in additional_languages]
             )
 
-        self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
+        self.url = WikibaseURLModel(
+            url=base_url, url_type=WikibaseURLType.BASE_URL, non_functional=False
+        )
         if action_api_url is not None:
             self.action_api_url = WikibaseURLModel(
-                url=action_api_url, url_type=WikibaseURLType.ACTION_QUERY_URL
+                url=action_api_url,
+                url_type=WikibaseURLType.ACTION_QUERY_URL,
+                non_functional=False,
             )
         if index_api_url is not None:
             self.index_api_url = WikibaseURLModel(
-                url=index_api_url, url_type=WikibaseURLType.INDEX_QUERY_URL
+                url=index_api_url,
+                url_type=WikibaseURLType.INDEX_QUERY_URL,
+                non_functional=False,
             )
         if sparql_endpoint_url is not None:
             self.sparql_endpoint_url = WikibaseURLModel(
-                url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
+                url=sparql_endpoint_url,
+                url_type=WikibaseURLType.SPARQL_ENDPOINT_URL,
+                non_functional=False,
             )
         if sparql_query_url is not None:
             self.sparql_query_url = WikibaseURLModel(
-                url=sparql_query_url, url_type=WikibaseURLType.SPARQL_QUERY_URL
+                url=sparql_query_url,
+                url_type=WikibaseURLType.SPARQL_QUERY_URL,
+                non_functional=False,
             )
         if special_statistics_url is not None:
             self.special_statistics_url = WikibaseURLModel(
                 url=special_statistics_url,
                 url_type=WikibaseURLType.SPECIAL_STATISTICS_URL,
+                non_functional=False,
             )
         if special_version_url is not None:
             self.special_version_url = WikibaseURLModel(
-                url=special_version_url, url_type=WikibaseURLType.SPECIAL_VERSION_URL
+                url=special_version_url,
+                url_type=WikibaseURLType.SPECIAL_VERSION_URL,
+                non_functional=False,
             )
