@@ -226,6 +226,24 @@
 			"kwargs": { "column": "archived", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_values_to_be_in_set"
+		},
+		{
+			"id": "f249273f-fc2d-4f7c-8701-71e4d8e4dc37",
+			"kwargs": { "column": "wbs_bundled" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "4f167c64-5a66-4733-aef8-5e95a0dac3f9",
+			"kwargs": { "column": "wbs_bundled", "mostly": 0 },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "b9b684c7-3982-4e5a-a22b-5fc3cf82a1ad",
+			"kwargs": { "column": "wbs_bundled", "value_set": [false, true] },
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
 	"id": "a4fe5870-c78d-433d-af64-76b02603e528",

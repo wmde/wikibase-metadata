@@ -172,6 +172,18 @@
 			"kwargs": { "column": "archived", "value_set": [false, true] },
 			"meta": {},
 			"type": "expect_column_values_to_be_in_set"
+		},
+		{
+			"id": "797c35da-aa4e-45d1-8abd-878692de60ed",
+			"kwargs": { "column": "wbs_bundled" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "733ff4f9-28e9-41a6-9036-cd227bbc4ecc",
+			"kwargs": { "column": "wbs_bundled", "value_set": [false, true] },
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
 	"id": "072a1275-09e6-4835-85f7-8f55e99dcc3e",

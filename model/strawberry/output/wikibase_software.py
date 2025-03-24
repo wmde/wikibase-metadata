@@ -42,6 +42,10 @@ class WikibaseSoftwareStrawberryModel:
         description="Bundled with MediaWiki"
     )
 
+    wikibase_suite_bundled: Optional[bool] = strawberry.field(
+        description="Bundled with Wikibase Suite"
+    )
+
     archived: Optional[bool] = strawberry.field(description="Archived Extension")
 
     @classmethod
@@ -60,5 +64,8 @@ class WikibaseSoftwareStrawberryModel:
             quarterly_download_count=model.quarterly_download_count,
             public_wiki_count=model.public_wiki_count,
             mediawiki_bundled=model.mediawiki_bundled,
+            wikibase_suite_bundled=(
+                model.mediawiki_bundled or model.wikibase_suite_bundled
+            ),
             archived=model.archived,
         )
