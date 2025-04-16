@@ -18,6 +18,7 @@ from update_data import (
     remove_wikibase_language,
     set_extension_wbs_bundled,
     update_wikibase_primary_language,
+    update_wikibase_type,
 )
 
 
@@ -84,4 +85,9 @@ class Mutation:
     update_wikibase_primary_language = strawberry.mutation(
         description="Update Wikibase Primary Language",
         resolver=update_wikibase_primary_language,
+    )
+
+    update_wikibase_type = strawberry.mutation(
+        description="Update Wikibase Type",
+        resolver=update_wikibase_type,
     )

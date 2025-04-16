@@ -7,3 +7,4 @@ from update_data.update_wikibase_language import (
     remove_wikibase_language,
     update_wikibase_primary_language,
 )
+from update_data.update_wikibase_type import update_wikibase_type
