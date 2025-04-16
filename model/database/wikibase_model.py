@@ -1,7 +1,7 @@
 """Wikibase Table"""
 
 from typing import Optional
-from sqlalchemy import Boolean, ForeignKey, Integer, String, and_, not_
+from sqlalchemy import Boolean, Enum, ForeignKey, Integer, String, and_, not_
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -17,7 +17,7 @@ from model.database.wikibase_observation import (
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_url_model import WikibaseURLModel
-from model.enum import WikibaseURLType
+from model.enum import WikibaseType, WikibaseURLType
 
 
 # pylint: disable-next=too-many-instance-attributes
@@ -42,12 +42,14 @@ class WikibaseModel(ModelBase):
     )
     """Description"""
 
+    # LOCATION
     country: Mapped[Optional[str]] = mapped_column("country", String, nullable=True)
     """Country"""
 
     region: Mapped[Optional[str]] = mapped_column("region", String, nullable=True)
     """Region"""
 
+    # CATEGORY
     category_id: Mapped[Optional[int]] = mapped_column(
         "wikibase_category_id",
         ForeignKey(column="wikibase_category.id", name="wikibase_category"),
@@ -60,12 +62,18 @@ class WikibaseModel(ModelBase):
     )
     """Wikibase Category"""
 
+    wikibase_type: Mapped[Optional[WikibaseType]] = mapped_column(
+        "wb_type", Enum(WikibaseType), nullable=True
+    )
+    """Suite, Cloud, Etc"""
+
     checked: Mapped[bool] = mapped_column("valid", Boolean, nullable=False)
     """Checked"""
 
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
     """Test Wikibase?"""
 
+    # LANGUAGES
     languages: Mapped[list[WikibaseLanguageModel]] = relationship(
         "WikibaseLanguageModel",
         back_populates="wikibase",
@@ -93,6 +101,7 @@ class WikibaseModel(ModelBase):
         overlaps="languages,primary_language,wikibase",
     )
 
+    # URLS
     url: Mapped[WikibaseURLModel] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
@@ -240,6 +249,7 @@ class WikibaseModel(ModelBase):
     )
     """Special:Version URL"""
 
+    # OBSERVATIONS
     connectivity_observations: Mapped[list[WikibaseConnectivityObservationModel]] = (
         relationship(
             "WikibaseConnectivityObservationModel",
