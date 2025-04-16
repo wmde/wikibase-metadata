@@ -3,9 +3,7 @@
 import strawberry
 
 from resolvers import add_wikibase
-
 from fetch_data import (
-    add_wikibase_language,
     create_connectivity_observation,
     create_log_observation,
     create_property_popularity_observation,
@@ -13,6 +11,9 @@ from fetch_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     create_user_observation,
+)
+from update_data import (
+    add_wikibase_language,
     merge_software_by_id,
     remove_wikibase_language,
     set_extension_wbs_bundled,
