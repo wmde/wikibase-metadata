@@ -7,7 +7,7 @@ import strawberry
 
 from data.database_connection import get_async_session
 from model.database import WikibaseModel
-from model.enum import WikibaseCategory
+from model.enum import WikibaseCategory, WikibaseType
 from model.strawberry.output.observation import (
     WikibaseConnectivityObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,
@@ -35,6 +35,9 @@ class WikibaseStrawberryModel:
     description: Optional[str] = strawberry.field(description="Description")
     category: Optional[WikibaseCategory] = strawberry.field(
         description="Wikibase Category"
+    )
+    wikibase_type: Optional[WikibaseType] = strawberry.field(
+        description="Cloud, Suite, Other"
     )
 
     location: WikibaseLocationStrawberryModel = strawberry.field(
@@ -242,4 +245,5 @@ class WikibaseStrawberryModel:
             location=WikibaseLocationStrawberryModel.marshal(model),
             languages=WikibaseLanguageSetStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
+            wikibase_type=model.wikibase_type,
         )
