@@ -36,3 +36,8 @@ class WikibaseURLModel(ModelBase):
 
     url: Mapped[str] = mapped_column("url", String, nullable=False)
     """URL"""
+
+    def __init__(self, wikibase_id: int, url_type: WikibaseURLType, url: str):
+        self.wikibase_id = wikibase_id
+        self.url_type = url_type
+        self.url = url

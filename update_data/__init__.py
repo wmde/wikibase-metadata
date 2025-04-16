@@ -8,3 +8,4 @@ from update_data.update_wikibase_language import (
     update_wikibase_primary_language,
 )
 from update_data.update_wikibase_type import update_wikibase_type
+from update_data.update_wikibase_url import remove_wikibase_url, upsert_wikibase_url
