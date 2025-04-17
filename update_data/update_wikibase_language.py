@@ -1,4 +1,4 @@
-"""Merge Software"""
+"""Update Wikibase Language"""
 
 from data.database_connection import get_async_session
 from fetch_data.utils import get_wikibase_from_database

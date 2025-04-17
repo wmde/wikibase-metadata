@@ -1,4 +1,4 @@
-"""Merge Software"""
+"""Update Wikibase URL"""
 
 import re
 from typing import Optional

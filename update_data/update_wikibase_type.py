@@ -1,4 +1,4 @@
-"""Merge Software"""
+"""Update Wikibase Type"""
 
 from typing import Optional
 from data.database_connection import get_async_session
@@ -10,9 +10,7 @@ from model.enum import WikibaseType
 async def update_wikibase_type(
     wikibase_id: int, wikibase_type: Optional[WikibaseType]
 ) -> bool:
-    """
-    Update Wikibase Type
-    """
+    """Update Wikibase Type"""
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
