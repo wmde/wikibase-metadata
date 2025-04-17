@@ -21,7 +21,7 @@ class WikibaseUserObservationGroupModel(ModelBase):
     )
     """Wikibase User Observation ID"""
 
-    user_observation: Mapped["WikibaseUserObservationModel"] = relationship(
+    user_observation: Mapped["WikibaseUserObservationModel"] = relationship(  # type: ignore
         "WikibaseUserObservationModel",
         back_populates="user_group_observations",
         lazy="selectin",
@@ -35,7 +35,7 @@ class WikibaseUserObservationGroupModel(ModelBase):
     )
     """Wikibase User Group ID"""
 
-    user_group: Mapped["WikibaseUserGroupModel"] = relationship(
+    user_group: Mapped["WikibaseUserGroupModel"] = relationship(  # type: ignore
         "WikibaseUserGroupModel",
         back_populates="user_group_observations",
         lazy="selectin",
