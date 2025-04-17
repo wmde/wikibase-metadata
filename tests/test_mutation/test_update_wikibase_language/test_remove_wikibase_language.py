@@ -2,12 +2,12 @@
 
 import pytest
 
-from fetch_data.update_data.update_wikibase_language import remove_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.test_schema import test_schema
 from tests.utils.assert_property_value import assert_layered_property_value
+from update_data import remove_wikibase_language
 
 
 REMOVE_WIKIBASE_LANGUAGE_QUERY = """
