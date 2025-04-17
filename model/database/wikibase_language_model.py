@@ -25,7 +25,9 @@ class WikibaseLanguageModel(ModelBase):
     )
     """Wikibase ID"""
 
-    wikibase: Mapped["WikibaseModel"] = relationship("WikibaseModel", lazy="selectin")  # type: ignore
+    wikibase: Mapped["WikibaseModel"] = relationship(  # type: ignore
+        "WikibaseModel", lazy="selectin"
+    )
     """Wikibase"""
 
     language: Mapped[str] = mapped_column("language", String, nullable=False)
