@@ -27,9 +27,3 @@ async def update_wikibase_type(
             async_session, wikibase_id=wikibase_id
         )
         return wikibase_type == wikibase.wikibase_type
-
-
-def clean_up_language(language: str) -> str:
-    """Clean Language Name"""
-
-    return language.strip()
