@@ -3,9 +3,7 @@
 import strawberry
 
 from resolvers import add_wikibase
-
 from fetch_data import (
-    add_wikibase_language,
     create_connectivity_observation,
     create_log_observation,
     create_property_popularity_observation,
@@ -13,10 +11,16 @@ from fetch_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     create_user_observation,
+)
+from update_data import (
+    add_wikibase_language,
     merge_software_by_id,
     remove_wikibase_language,
+    remove_wikibase_url,
     set_extension_wbs_bundled,
     update_wikibase_primary_language,
+    update_wikibase_type,
+    upsert_wikibase_url,
 )
 
 
@@ -76,6 +80,10 @@ class Mutation:
         description="Remove Language from Wikibase", resolver=remove_wikibase_language
     )
 
+    remove_wikibase_url = strawberry.mutation(
+        description="Remove URL from Wikibase", resolver=remove_wikibase_url
+    )
+
     set_extension_wbs_bundled = strawberry.mutation(
         description="Set Extension Bundled with WBS", resolver=set_extension_wbs_bundled
     )
@@ -83,4 +91,12 @@ class Mutation:
     update_wikibase_primary_language = strawberry.mutation(
         description="Update Wikibase Primary Language",
         resolver=update_wikibase_primary_language,
+    )
+
+    update_wikibase_type = strawberry.mutation(
+        description="Update Wikibase Type", resolver=update_wikibase_type
+    )
+
+    upsert_wikibase_url = strawberry.mutation(
+        description="Add / Update Wikibase URL", resolver=upsert_wikibase_url
     )

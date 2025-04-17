@@ -6,3 +6,5 @@ fetch_data/sparql_data/sparql_queries/failed_queries/
 .coverage
 cov_html/
 logs/
+node_modules
+venv*

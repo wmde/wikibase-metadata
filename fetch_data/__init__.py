@@ -29,10 +29,3 @@ from fetch_data.soup_data import (
     create_special_statistics_observation,
     update_software_data,
 )
-from fetch_data.update_data import (
-    add_wikibase_language,
-    merge_software_by_id,
-    set_extension_wbs_bundled,
-    remove_wikibase_language,
-    update_wikibase_primary_language,
-)

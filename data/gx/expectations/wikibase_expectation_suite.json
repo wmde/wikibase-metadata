@@ -165,6 +165,21 @@
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
+		},
+		{
+			"id": "ea443285-eb6f-483d-bbe1-f478838236ca",
+			"kwargs": { "column": "wb_type" },
+			"meta": {},
+			"type": "expect_column_to_exist"
+		},
+		{
+			"id": "fcc64458-fe20-4755-a63b-5d494cd5dd40",
+			"kwargs": {
+				"column": "wb_type",
+				"value_set": ["CLOUD", "SUITE", "OTHER"]
+			},
+			"meta": {},
+			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
 	"id": "a6baca9d-df1f-4221-834d-a5c1cd1b23d3",
