@@ -64,8 +64,7 @@ class Mutation:
     )
 
     merge_software_by_id = strawberry.mutation(
-        description="Merge Software",
-        resolver=merge_software_by_id,
+        description="Merge Software", resolver=merge_software_by_id
     )
 
     add_wikibase_language = strawberry.mutation(

@@ -2,10 +2,7 @@
 
 from sqlalchemy import Select, Update, and_, delete, select, update
 from data.database_connection import get_async_session
-from model.database import (
-    WikibaseSoftwareVersionModel,
-)
-from model.database import WikibaseSoftwareModel
+from model.database import WikibaseSoftwareModel, WikibaseSoftwareVersionModel
 from model.database.wikibase_software.software_tag_xref_model import (
     software_tag_xref_table,
 )
