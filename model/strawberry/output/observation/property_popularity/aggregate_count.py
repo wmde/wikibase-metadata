@@ -8,7 +8,7 @@ from model.strawberry.output.observation.property_popularity.count import (
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibasePropertyPopularityAggregateCount")
 class WikibasePropertyPopularityAggregateCountStrawberryModel(
     WikibasePropertyPopularityCountStrawberryModel
 ):

@@ -10,7 +10,7 @@ from model.strawberry.output.observation.statistics.component import (
 )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseStatisticsAggregate")
 class WikibaseStatisticsAggregateStrawberryModel:
     """Aggregate Statistics"""
 

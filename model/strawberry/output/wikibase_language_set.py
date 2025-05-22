@@ -6,7 +6,7 @@ import strawberry
 from model.database import WikibaseModel
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLanguageSet")
 class WikibaseLanguageSetStrawberryModel:
     """Wikibase Language Set"""
 
@@ -27,7 +27,7 @@ class WikibaseLanguageSetStrawberryModel:
         )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLanguageAggregate")
 class WikibaseLanguageAggregateStrawberryModel:
     """Wikibase Language Aggregate"""
 

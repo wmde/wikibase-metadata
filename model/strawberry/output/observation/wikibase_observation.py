@@ -4,7 +4,7 @@ from datetime import datetime
 import strawberry
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseObservation")
 class WikibaseObservationStrawberryModel:
     """Wikibase Data Observation - ABSTRACT"""
 

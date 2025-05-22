@@ -9,7 +9,7 @@ from model.strawberry.output.semver import Semver
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwareVersionAggregate")
 class WikibaseSoftwareVersionAggregateStrawberryModel:
     """Wikibase Software Version Aggregate"""
 
@@ -48,7 +48,7 @@ class WikibaseSoftwareVersionAggregateStrawberryModel:
                 )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwareMidVersionAggregate")
 class WikibaseSoftwareMidVersionAggregateStrawberryModel:
     """Aggregated to X Version - ABSTRACT"""
 
@@ -65,7 +65,7 @@ class WikibaseSoftwareMidVersionAggregateStrawberryModel:
         return sum(v.wikibase_count for v in self.private_versions)
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwarePatchVersionAggregate")
 class WikibaseSoftwarePatchVersionAggregateStrawberryModel(
     WikibaseSoftwareMidVersionAggregateStrawberryModel
 ):
@@ -92,7 +92,7 @@ class WikibaseSoftwarePatchVersionAggregateStrawberryModel(
         )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwareMinorVersionAggregate")
 class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
     WikibaseSoftwareMidVersionAggregateStrawberryModel
 ):
@@ -126,7 +126,7 @@ class WikibaseSoftwareMinorVersionAggregateStrawberryModel(
         return sorted(temp.values(), key=lambda x: x.wikibase_count(), reverse=True)
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwareMajorVersionAggregate")
 class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
     WikibaseSoftwareMidVersionAggregateStrawberryModel
 ):
@@ -154,7 +154,7 @@ class WikibaseSoftwareMajorVersionAggregateStrawberryModel(
         return sorted(temp.values(), key=lambda x: x.wikibase_count(), reverse=True)
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwareVersionDoubleAggregate")
 class WikibaseSoftwareVersionDoubleAggregateStrawberryModel:
     """Wikibase Software Version Aggregate"""
 

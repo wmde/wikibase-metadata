@@ -6,7 +6,7 @@ import strawberry
 from model.database import WikibaseModel
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLocation")
 class WikibaseLocationStrawberryModel:
     """Wikibase Location"""
 

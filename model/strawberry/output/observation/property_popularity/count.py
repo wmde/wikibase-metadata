@@ -6,7 +6,7 @@ from model.database import WikibasePropertyPopularityCountModel
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibasePropertyPopularityCount")
 class WikibasePropertyPopularityCountStrawberryModel:
     """Wikibase Property Popularity Count"""
 

@@ -9,7 +9,7 @@ from model.strawberry.output.observation.user.wikibase_user_group import (
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseUserObservationGroup")
 class WikibaseUserObservationGroupStrawberryModel:
     """Wikibase Observed User Group"""
 
