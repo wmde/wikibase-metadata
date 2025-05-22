@@ -9,7 +9,7 @@ from model.database import (
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseConnectivityObservationRelationshipCount")
 class WikibaseConnectivityObservationRelationshipCountStrawberryModel:
     """Wikibase Connectivity Observation Relationship Counts"""
 
@@ -19,7 +19,7 @@ class WikibaseConnectivityObservationRelationshipCountStrawberryModel:
     )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseConnectivityObservationItemRelationshipCount")
 class WikibaseConnectivityObservationItemRelationshipCountStrawberryModel(
     WikibaseConnectivityObservationRelationshipCountStrawberryModel
 ):
@@ -42,7 +42,7 @@ class WikibaseConnectivityObservationItemRelationshipCountStrawberryModel(
         )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseConnectivityObservationObjectRelationshipCount")
 class WikibaseConnectivityObservationObjectRelationshipCountStrawberryModel(
     WikibaseConnectivityObservationRelationshipCountStrawberryModel
 ):

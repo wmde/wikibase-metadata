@@ -10,7 +10,7 @@ from model.strawberry.output.observation.wikibase_observation import (
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseQuantityObservation")
 class WikibaseQuantityObservationStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Quantity Data Observation"""
 

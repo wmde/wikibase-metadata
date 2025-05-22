@@ -16,7 +16,7 @@ AGGREGATE_EXTENSIONS_QUERY = (
     """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   aggregateExtensionPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
-    ...WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
+    ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
 

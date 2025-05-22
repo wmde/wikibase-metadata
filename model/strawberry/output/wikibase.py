@@ -25,7 +25,7 @@ from model.strawberry.output.wikibase_location import WikibaseLocationStrawberry
 from model.strawberry.output.wikibase_url_set import WikibaseURLSetStrawberryModel
 
 
-@strawberry.type
+@strawberry.type(name="Wikibase")
 class WikibaseStrawberryModel:
     """Wikibase Instance"""
 

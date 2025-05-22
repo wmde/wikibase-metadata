@@ -8,7 +8,7 @@ from model.database import WikibaseSoftwareVersionModel
 from model.strawberry.output.wikibase_software import WikibaseSoftwareStrawberryModel
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftwareVersion")
 class WikibaseSoftwareVersionStrawberryModel:
     """Wikibase Software Version"""
 

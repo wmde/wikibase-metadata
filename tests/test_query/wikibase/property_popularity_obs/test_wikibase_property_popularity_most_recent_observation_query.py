@@ -18,7 +18,7 @@ query MyQuery($wikibaseId: Int!) {
     id
     propertyPopularityObservations {
       mostRecent {
-        ...WikibasePropertyPopularityObservationStrawberryModelFragment
+        ...WikibasePropertyPopularityObservationFragment
       }
     }
   }

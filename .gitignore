@@ -1,6 +1,7 @@
 __pycache__
 .~lock*
 virtualenv/
+venv*/
 .ipynb_checkpoints/
 fetch_data/sparql_data/sparql_queries/failed_queries/
 .coverage

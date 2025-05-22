@@ -6,7 +6,7 @@ from model.database import WikibaseStatisticsObservationModel
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseStatisticsUsersObservation")
 class WikibaseStatisticsUsersObservationStrawberryModel:
     """Wikibase Statistics User Data"""
 

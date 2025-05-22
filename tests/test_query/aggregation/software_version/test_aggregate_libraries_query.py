@@ -15,7 +15,7 @@ AGGREGATE_LIBRARIES_QUERY = (
     """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   aggregateLibraryPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
-    ...WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
+    ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
 

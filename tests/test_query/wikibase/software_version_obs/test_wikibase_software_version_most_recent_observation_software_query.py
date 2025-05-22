@@ -23,7 +23,7 @@ query MyQuery($wikibaseId: Int!) {
         observationDate
         returnedData
         installedSoftware {
-          ...WikibaseSoftwareVersionStrawberryModelFragment
+          ...WikibaseSoftwareVersionFragment
         }
       }
     }

@@ -5,7 +5,7 @@ import strawberry
 from model.database import WikibaseUserGroupModel
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseUserGroup")
 class WikibaseUserGroupStrawberryModel:
     """Wikibase User Group"""
 

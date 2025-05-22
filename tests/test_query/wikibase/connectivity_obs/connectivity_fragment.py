@@ -1,7 +1,7 @@
 """Connectivity Observation Fragment"""
 
 WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT = """
-fragment WikibaseConnectivityObservationStrawberryModelFragment on WikibaseConnectivityObservationStrawberryModel {
+fragment WikibaseConnectivityObservationFragment on WikibaseConnectivityObservation {
   id
   observationDate
   returnedData

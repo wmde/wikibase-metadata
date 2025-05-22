@@ -22,7 +22,7 @@ query MyQuery($wikibaseId: Int!) {
     logObservations {
       lastMonth {
         mostRecent {
-          ...WikibaseLogMonthStrawberryModelFragment
+          ...WikibaseLogMonthFragment
         }
       }
     }

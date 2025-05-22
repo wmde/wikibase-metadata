@@ -15,7 +15,7 @@ query MyQuery($wikibaseId: Int!) {
     id
     softwareVersionObservations {
       allObservations {
-        ...WikibaseSoftwareVersionObservationStrawberryModelFragment
+        ...WikibaseSoftwareVersionObservationFragment
       }
     }
   }

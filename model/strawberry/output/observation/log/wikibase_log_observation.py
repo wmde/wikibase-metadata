@@ -11,7 +11,7 @@ from model.strawberry.output.observation.wikibase_observation_set import (
 )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLogObservation")
 class WikibaseLogObservationStrawberryModel:
     """Wikibase Log Data Observation"""
 

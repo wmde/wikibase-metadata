@@ -11,7 +11,7 @@ from model.strawberry.output.observation.wikibase_observation import (
 T = TypeVar("T", bound=WikibaseObservationStrawberryModel)
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseObservationSet")
 class WikibaseObservationSetStrawberryModel(Generic[T]):
     """Wikibase Observation Set"""
 

@@ -5,7 +5,7 @@ import strawberry
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseUserAggregate")
 class WikibaseUserAggregateStrawberryModel:
     """Aggregate User"""
 

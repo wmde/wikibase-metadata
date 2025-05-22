@@ -8,7 +8,7 @@ from model.database import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseSoftware")
 class WikibaseSoftwareStrawberryModel:
     """Wikibase Software"""
 

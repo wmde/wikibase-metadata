@@ -22,7 +22,7 @@ query MyQuery($wikibaseId: Int!) {
     id
     propertyPopularityObservations {
       allObservations {
-        ...WikibasePropertyPopularityObservationStrawberryModelFragment
+        ...WikibasePropertyPopularityObservationFragment
       }
     }
   }

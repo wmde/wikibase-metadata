@@ -12,7 +12,7 @@ from model.enum import WikibaseLogType, WikibaseUserType
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLogCollection")
 class WikibaseLogCollectionStrawberryModel:
     """Wikibase Log Collection"""
 
@@ -28,7 +28,7 @@ class WikibaseLogCollectionStrawberryModel:
     last_log_date: datetime = strawberry.field(description="Last Log Date")
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLogMonthLogType")
 class WikibaseLogMonthLogTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month, specific Log Type"""
 
@@ -54,7 +54,7 @@ class WikibaseLogMonthLogTypeStrawberryModel(WikibaseLogCollectionStrawberryMode
         )
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLogMonthUserType")
 class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryModel):
     """Wikibase Log Month, specific User Type"""
 

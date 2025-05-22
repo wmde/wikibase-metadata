@@ -1,7 +1,7 @@
 """Statistics Observation Fragment"""
 
 WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT = """
-fragment WikibaseStatisticsObservationStrawberryModelFragment on WikibaseStatisticsObservationStrawberryModel {
+fragment WikibaseStatisticsObservationFragment on WikibaseStatisticsObservation {
   id
   observationDate
   returnedData

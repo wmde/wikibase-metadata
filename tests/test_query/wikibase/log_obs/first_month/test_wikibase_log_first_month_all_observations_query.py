@@ -24,7 +24,7 @@ query MyQuery($wikibaseId: Int!) {
     logObservations {
       firstMonth {
         allObservations {
-          ...WikibaseLogMonthStrawberryModelFragment
+          ...WikibaseLogMonthFragment
         }
       }
     }
