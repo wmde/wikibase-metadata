@@ -28,7 +28,7 @@ class WikibaseConnectivityObservationRelationshipCountModel:
     @declared_attr
     def connectivity_observation(
         self,
-    ) -> Mapped["WikibaseConnectivityObservationModel"]:
+    ) -> Mapped["WikibaseConnectivityObservationModel"]:  # type: ignore
         """Connectivity Observation"""
         return relationship("WikibaseConnectivityObservationModel", lazy="selectin")
 

@@ -19,7 +19,7 @@ class WikibaseObservationModel:
     """Wikibase ID"""
 
     @declared_attr
-    def wikibase(self) -> Mapped["WikibaseModel"]:
+    def wikibase(self) -> Mapped["WikibaseModel"]:  # type: ignore
         """Wikibase"""
         return relationship("WikibaseModel", lazy="selectin")
 
