@@ -1,7 +1,7 @@
 """Property Popularity Observation Fragment"""
 
 WIKIBASE_PROPERTY_POPULARITY_OBSERVATION_FRAGMENT = """
-fragment WikibasePropertyPopularityObservationStrawberryModelFragment on WikibasePropertyPopularityObservationStrawberryModel {
+fragment WikibasePropertyPopularityObservationFragment on WikibasePropertyPopularityObservation {
   id
   observationDate
   returnedData

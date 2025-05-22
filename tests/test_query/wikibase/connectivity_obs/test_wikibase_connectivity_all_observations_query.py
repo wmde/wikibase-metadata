@@ -19,7 +19,7 @@ query MyQuery($wikibaseId: Int!) {
     id
     connectivityObservations {
       allObservations {
-        ...WikibaseConnectivityObservationStrawberryModelFragment
+        ...WikibaseConnectivityObservationFragment
       }
     }
   }

@@ -16,7 +16,7 @@ AGGREGATE_SKINS_QUERY = (
     """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   aggregateSkinPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
-    ...WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
+    ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
 

@@ -1,7 +1,7 @@
 """Quantity Observation Fragment"""
 
 WIKIBASE_QUANTITY_OBSERVATION_FRAGMENT = """
-fragment WikibaseQuantityObservationStrawberryModelFragment on WikibaseQuantityObservationStrawberryModel {
+fragment WikibaseQuantityObservationFragment on WikibaseQuantityObservation {
   id
   observationDate
   returnedData

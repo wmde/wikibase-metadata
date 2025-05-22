@@ -1,7 +1,7 @@
 """Log Observation Fragment"""
 
 WIKIBASE_LOG_OBSERVATION_FRAGMENT = """
-fragment WikibaseLogMonthStrawberryModelFragment on WikibaseLogMonthStrawberryModel {
+fragment WikibaseLogMonthFragment on WikibaseLogMonth {
   id
   observationDate
   returnedData

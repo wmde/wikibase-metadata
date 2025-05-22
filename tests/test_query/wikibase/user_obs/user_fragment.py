@@ -1,7 +1,7 @@
 """User Observation Fragment"""
 
 WIKIBASE_USER_OBSERVATION_FRAGMENT = """
-fragment WikibaseUserObservationStrawberryModelFragment on WikibaseUserObservationStrawberryModel {
+fragment WikibaseUserObservationFragment on WikibaseUserObservation {
   id
   observationDate
   returnedData

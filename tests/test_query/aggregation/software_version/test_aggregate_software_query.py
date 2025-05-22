@@ -16,7 +16,7 @@ AGGREGATE_SOFTWARE_QUERY = (
     """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   aggregateSoftwarePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
-    ...WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
+    ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
 

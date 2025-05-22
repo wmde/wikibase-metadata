@@ -1,8 +1,8 @@
 """Software Version Observation Fragment"""
 
 WIKIBASE_SOFTWARE_VERSION_FRAGMENT = """
-fragment WikibaseSoftwareVersionStrawberryModelFragment
- on WikibaseSoftwareVersionStrawberryModel {
+fragment WikibaseSoftwareVersionFragment
+ on WikibaseSoftwareVersion {
   id
   softwareName
   version
@@ -14,13 +14,13 @@ fragment WikibaseSoftwareVersionStrawberryModelFragment
 
 WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT = (
     """
-fragment WikibaseSoftwareVersionObservationStrawberryModelFragment
- on WikibaseSoftwareVersionObservationStrawberryModel {
+fragment WikibaseSoftwareVersionObservationFragment
+ on WikibaseSoftwareVersionObservation {
   id
   observationDate
   returnedData
   installedSoftware {
-    ...WikibaseSoftwareVersionStrawberryModelFragment
+    ...WikibaseSoftwareVersionFragment
   }
 }
 

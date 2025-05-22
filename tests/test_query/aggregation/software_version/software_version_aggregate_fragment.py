@@ -1,8 +1,8 @@
 """Software Version Aggregation Fragment"""
 
 SOFTWARE_VERSION_AGGREGATE_FRAGMENT = """
-fragment WikibaseSoftwareVersionAggregateStrawberryModelFragment
- on WikibaseSoftwareVersionAggregateStrawberryModel {
+fragment WikibaseSoftwareVersionAggregateFragment
+ on WikibaseSoftwareVersionAggregate {
   version
   versionDate
   versionHash
@@ -13,8 +13,8 @@ fragment WikibaseSoftwareVersionAggregateStrawberryModelFragment
 
 SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT = (
     """
-fragment WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
- on WikibaseSoftwareVersionDoubleAggregateStrawberryModelPage {
+fragment WikibaseSoftwareVersionDoubleAggregatePageFragment
+ on WikibaseSoftwareVersionDoubleAggregatePage {
   meta {
     pageNumber
     pageSize
@@ -25,7 +25,7 @@ fragment WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
     softwareName
     wikibaseCount
     versions {
-      ...WikibaseSoftwareVersionAggregateStrawberryModelFragment
+      ...WikibaseSoftwareVersionAggregateFragment
     }
     majorVersions {
       version
@@ -37,7 +37,7 @@ fragment WikibaseSoftwareVersionDoubleAggregateStrawberryModelPageFragment
           version
           wikibaseCount
           subVersions {
-            ...WikibaseSoftwareVersionAggregateStrawberryModelFragment
+            ...WikibaseSoftwareVersionAggregateFragment
           }
         }
       }
