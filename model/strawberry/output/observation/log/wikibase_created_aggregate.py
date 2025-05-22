@@ -5,7 +5,7 @@ import strawberry
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseYearCreatedAggregate")
 class WikibaseYearCreatedAggregateStrawberryModel:
     """Aggregate Year Created"""
 

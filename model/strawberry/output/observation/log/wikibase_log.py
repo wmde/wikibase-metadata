@@ -5,14 +5,14 @@ from typing import Optional
 import strawberry
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLog")
 class WikibaseLogStrawberryModel:
     """Wikibase Log"""
 
     date: datetime = strawberry.field(description="Log Date")
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLogUser")
 class WikibaseLogUserStrawberryModel(WikibaseLogStrawberryModel):
     """Wikibase Log"""
 

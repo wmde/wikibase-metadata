@@ -18,7 +18,7 @@ from model.strawberry.output.observation.wikibase_observation import (
 from model.strawberry.scalars import BigInt
 
 
-@strawberry.type
+@strawberry.type(name="WikibaseLogMonth")
 class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
     """Wikibase Log Month"""
 
