@@ -10,6 +10,7 @@ from model.database import WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType
 from model.strawberry.output.observation import (
     WikibaseConnectivityObservationStrawberryModel,
+    WikibaseInitialValueObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
@@ -74,6 +75,33 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseConnectivityObservationStrawberryModel.marshal(o)
                     for o in model.connectivity_observations
+                ]
+            )
+
+    @strawberry.field(description="Initial Value Data")
+    async def initial_value_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseInitialValueObservationStrawberryModel
+    ]:
+        """Summon Initial Value Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(joinedload(WikibaseModel.initial_value_observations))
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseInitialValueObservationStrawberryModel.marshal(o)
+                    for o in model.initial_value_observations
                 ]
             )
 
