@@ -1,6 +1,6 @@
 """Wikibase Connectivity Observation Table"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from sqlalchemy import DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -25,7 +25,12 @@ class WikibaseInitialValueObservationModel(ModelBase, WikibaseObservationModel):
 
     item_date_models: Mapped[list[WikibaseItemDateModel]] = relationship(
         "WikibaseItemDateModel",
-        back_populates="initial_value_observation",
+        # back_populates="initial_value_observation",
         lazy="selectin",
     )
     """Item Date Records"""
+
+    def __init__(self, wikibase_id: int):
+        self.wikibase_id = wikibase_id
+        self.observation_date = datetime.now(timezone.utc)
+        self.item_date_models = []
