@@ -11,6 +11,7 @@ async def get_wikibase_from_database(
     wikibase_id: int,
     include_observations: bool = False,
     require_action_api: bool = False,
+    require_index_api: bool = False,
     require_sparql_endpoint: bool = False,
     require_special_statistics: bool = False,
     require_special_version: bool = False,
@@ -36,6 +37,8 @@ async def get_wikibase_from_database(
 
     if require_action_api:
         assert wikibase.action_api_url is not None, "Action API Must Be Populated"
+    if require_index_api:
+        assert wikibase.index_api_url is not None, "Index API Must Be Populated"
     if require_sparql_endpoint:
         assert (
             wikibase.sparql_endpoint_url is not None

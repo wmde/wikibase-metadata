@@ -5,6 +5,10 @@ from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseConnectivityObservationModel,
 )
+from model.database.wikibase_observation.initial_value import (
+    WikibaseInitialValueObservationModel,
+    WikibaseItemDateModel,
+)
 from model.database.wikibase_observation.log import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,

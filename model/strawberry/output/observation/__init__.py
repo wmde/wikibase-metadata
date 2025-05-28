@@ -3,6 +3,9 @@
 from model.strawberry.output.observation.connectivity import (
     WikibaseConnectivityObservationStrawberryModel,
 )
+from model.strawberry.output.observation.initial_value import (
+    WikibaseInitialValueObservationStrawberryModel,
+)
 from model.strawberry.output.observation.log import (
     WikibaseLogObservationStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
