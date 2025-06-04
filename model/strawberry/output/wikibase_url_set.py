@@ -55,25 +55,13 @@ class WikibaseURLSetStrawberryModel:
                 if model.sparql_frontend_url is not None
                 else None
             ),
-            action_api=(
-                model.action_api_url.url if model.action_api_url is not None else None
-            ),
-            index_api=(
-                model.index_api_url.url if model.index_api_url is not None else None
-            ),
+            action_api=model.action_api_url(),
+            index_api=model.index_api_url(),
             sparql_url=(
                 model.sparql_frontend_url.url
                 if model.sparql_frontend_url is not None
                 else None
             ),
-            special_statistics_url=(
-                model.special_statistics_url.url
-                if model.special_statistics_url is not None
-                else None
-            ),
-            special_version_url=(
-                model.special_version_url.url
-                if model.special_version_url is not None
-                else None
-            ),
+            special_statistics_url=model.special_statistics_url(),
+            special_version_url=model.special_version_url(),
         )

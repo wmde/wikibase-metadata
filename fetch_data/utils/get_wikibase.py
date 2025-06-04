@@ -35,17 +35,12 @@ async def get_wikibase_from_database(
     assert wikibase.checked, "Wikibase Invalid"
 
     if require_action_api:
-        assert wikibase.action_api_url is not None, "Action API Must Be Populated"
+        assert wikibase.script_path is not None, "Script Path Must Be Populated"
     if require_sparql_endpoint:
         assert (
             wikibase.sparql_endpoint_url is not None
         ), "SPARQL Endpoint Must Be Populated"
-    if require_special_statistics:
-        assert (
-            wikibase.special_statistics_url is not None
-        ), "Special:Statistics URL Must Be Populated"
-    if require_special_version:
-        assert (
-            wikibase.special_version_url is not None
-        ), "Special:Version URL Must Be Populated"
+    if require_special_statistics or require_special_version:
+        assert wikibase.article_path is not None, "Article Path Must Be Populated"
+
     return wikibase

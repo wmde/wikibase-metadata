@@ -28,5 +28,5 @@ async def get_multiple_user_data(
             )
         return data
 
-    data = await fetch_api_data(wikibase.action_api_url.url + user_url("|".join(users)))
+    data = await fetch_api_data(wikibase.action_api_url() + user_url("|".join(users)))
     return data["query"]["users"]
