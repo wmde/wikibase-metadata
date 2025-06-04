@@ -31,12 +31,10 @@ async def test_add_wikibase_mutation():
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
                     "baseUrl": "example.com",
-                    "actionApiUrl": "example.com/w/api.php",
-                    "indexApiUrl": "example.com/w/index.php",
+                    "articlePath": "example.com/wiki",
+                    "scriptPath": "example.com/w",
                     "sparqlEndpointUrl": "query.example.com/sparql",
-                    "sparqlQueryUrl": "query.example.com",
-                    "specialStatisticsUrl": "example.com/wiki/Special:Statistics",
-                    "specialVersionUrl": "example.com/wiki/Special:Version",
+                    "sparqlFrontendUrl": "query.example.com",
                 },
             }
         },

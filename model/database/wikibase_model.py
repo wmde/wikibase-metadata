@@ -176,14 +176,14 @@ class WikibaseModel(ModelBase):
 
         if self.script_path is None:
             return None
-        return join_url(self.script_path.url, "/api.php")
+        return join_url(self.script_path.url, "api.php")
 
     def index_api_url(self) -> Optional[str]:
         """Index API URL - `/w/index.php`"""
 
         if self.script_path is None:
             return None
-        return join_url(self.script_path.url, "/index.php")
+        return join_url(self.script_path.url, "index.php")
 
     sparql_endpoint_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
