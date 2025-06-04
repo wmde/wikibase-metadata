@@ -111,80 +111,79 @@ class WikibaseModel(ModelBase):
         lazy="selectin",
         overlaps=",".join(
             [
-                "action_api_url",
-                "index_api_url",
+                "article_path",
+                "script_path",
                 "sparql_endpoint_url",
-                "sparql_query_url",
-                "special_statistics_url",
-                "special_version_url",
+                "sparql_frontend_url",
                 "wikibase",
             ]
         ),
     )
     """Base URL"""
 
-    action_api_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+    article_path: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLType.ACTION_QUERY_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.ARTICLE_PATH == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
             [
-                "index_api_url",
+                "script_path",
                 "sparql_endpoint_url",
-                "sparql_query_url",
-                "special_statistics_url",
-                "special_version_url",
+                "sparql_frontend_url",
                 "url",
                 "wikibase",
             ]
         ),
     )
-    """Action Query API"""
+    """Article Path - `/wiki`"""
 
-    index_api_url: Mapped[Optional[WikibaseURLModel]] = relationship(
-        "WikibaseURLModel",
-        primaryjoin=and_(
-            id == WikibaseURLModel.wikibase_id,
-            WikibaseURLType.INDEX_QUERY_URL == WikibaseURLModel.url_type,
-        ),
-        lazy="selectin",
-        overlaps=",".join(
-            [
-                "action_api_url",
-                "sparql_endpoint_url",
-                "sparql_query_url",
-                "special_statistics_url",
-                "special_version_url",
-                "url",
-                "wikibase",
-            ]
-        ),
-    )
-    """Index Query API"""
+    def special_statistics_url(self) -> Optional[str]:
+        """Special:Statistics url - `/wiki/Special:Statistics`"""
+        if self.article_path is None:
+            return None
+        return join_url(self.article_path.url, "Special:Statistics")
 
-    sparql_query_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+    def special_version_url(self) -> Optional[str]:
+        """Special:Version url - `/wiki/Special:Version`"""
+        if self.article_path is None:
+            return None
+        return join_url(self.article_path.url, "Special:Version")
+
+    script_path: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLType.SPARQL_QUERY_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.SCRIPT_PATH == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
             [
-                "action_api_url",
-                "index_api_url",
+                "article_path",
                 "sparql_endpoint_url",
-                "special_statistics_url",
-                "special_version_url",
+                "sparql_frontend_url",
                 "url",
                 "wikibase",
             ]
         ),
     )
-    """SPARQL Query API"""
+    """Script Path - `/w`"""
+
+    def action_api_url(self) -> Optional[str]:
+        """Action API URL - `/w/api.php`"""
+
+        if self.script_path is None:
+            return None
+        return join_url(self.script_path.url, "/api.php")
+
+    def index_api_url(self) -> Optional[str]:
+        """Index API URL - `/w/index.php`"""
+
+        if self.script_path is None:
+            return None
+        return join_url(self.script_path.url, "/index.php")
 
     sparql_endpoint_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
@@ -194,60 +193,23 @@ class WikibaseModel(ModelBase):
         ),
         lazy="selectin",
         overlaps=",".join(
-            [
-                "action_api_url",
-                "index_api_url",
-                "sparql_query_url",
-                "special_statistics_url",
-                "special_version_url",
-                "url",
-                "wikibase",
-            ]
+            ["article_path", "script_path", "sparql_frontend_url", "url", "wikibase"]
         ),
     )
     """SPARQL Endpoint"""
 
-    special_statistics_url: Mapped[Optional[WikibaseURLModel]] = relationship(
+    sparql_frontend_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(
             id == WikibaseURLModel.wikibase_id,
-            WikibaseURLType.SPECIAL_STATISTICS_URL == WikibaseURLModel.url_type,
+            WikibaseURLType.SPARQL_FRONTEND_URL == WikibaseURLModel.url_type,
         ),
         lazy="selectin",
         overlaps=",".join(
-            [
-                "action_api_url",
-                "index_api_url",
-                "sparql_endpoint_url",
-                "sparql_query_url",
-                "special_version_url",
-                "url",
-                "wikibase",
-            ]
+            ["article_path", "script_path", "sparql_endpoint_url", "url", "wikibase"]
         ),
     )
-    """Special:Statistics URL"""
-
-    special_version_url: Mapped[Optional[WikibaseURLModel]] = relationship(
-        "WikibaseURLModel",
-        primaryjoin=and_(
-            id == WikibaseURLModel.wikibase_id,
-            WikibaseURLType.SPECIAL_VERSION_URL == WikibaseURLModel.url_type,
-        ),
-        lazy="selectin",
-        overlaps=",".join(
-            [
-                "action_api_url",
-                "index_api_url",
-                "sparql_endpoint_url",
-                "sparql_query_url",
-                "special_statistics_url",
-                "url",
-                "wikibase",
-            ]
-        ),
-    )
-    """Special:Version URL"""
+    """SPARQL Frontend"""
 
     # OBSERVATIONS
     connectivity_observations: Mapped[list[WikibaseConnectivityObservationModel]] = (
@@ -316,12 +278,10 @@ class WikibaseModel(ModelBase):
         region: Optional[str] = None,
         primary_language: Optional[str] = None,
         additional_languages: Optional[list[str]] = None,
-        action_api_url: Optional[str] = None,
-        index_api_url: Optional[str] = None,
-        sparql_query_url: Optional[str] = None,
+        article_path: Optional[str] = None,
+        script_path: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
-        special_statistics_url: Optional[str] = None,
-        special_version_url: Optional[str] = None,
+        sparql_frontend_url: Optional[str] = None,
     ):
         self.wikibase_name = wikibase_name
         self.description = description
@@ -340,28 +300,27 @@ class WikibaseModel(ModelBase):
             )
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
-        if action_api_url is not None:
-            self.action_api_url = WikibaseURLModel(
-                url=action_api_url, url_type=WikibaseURLType.ACTION_QUERY_URL
+        if article_path is not None:
+            self.article_path = WikibaseURLModel(
+                url=article_path, url_type=WikibaseURLType.ARTICLE_PATH
             )
-        if index_api_url is not None:
-            self.index_api_url = WikibaseURLModel(
-                url=index_api_url, url_type=WikibaseURLType.INDEX_QUERY_URL
+        if script_path is not None:
+            self.script_path = WikibaseURLModel(
+                url=script_path, url_type=WikibaseURLType.SCRIPT_PATH
             )
         if sparql_endpoint_url is not None:
             self.sparql_endpoint_url = WikibaseURLModel(
                 url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
             )
-        if sparql_query_url is not None:
-            self.sparql_query_url = WikibaseURLModel(
-                url=sparql_query_url, url_type=WikibaseURLType.SPARQL_QUERY_URL
+        if sparql_frontend_url is not None:
+            self.sparql_frontend_url = WikibaseURLModel(
+                url=sparql_frontend_url, url_type=WikibaseURLType.SPARQL_FRONTEND_URL
             )
-        if special_statistics_url is not None:
-            self.special_statistics_url = WikibaseURLModel(
-                url=special_statistics_url,
-                url_type=WikibaseURLType.SPECIAL_STATISTICS_URL,
-            )
-        if special_version_url is not None:
-            self.special_version_url = WikibaseURLModel(
-                url=special_version_url, url_type=WikibaseURLType.SPECIAL_VERSION_URL
-            )
+
+
+def join_url(base: str, ext: str) -> str:
+    """Join URL"""
+
+    if base[-1] != "/":
+        return base + "/" + ext
+    return base + ext
