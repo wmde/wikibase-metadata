@@ -89,7 +89,7 @@ jobs:
           pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Run tests (except data)
-        run: pytest -m "not data" --cov=. --order-dependencies
+        run: pytest -m "not data" --cov=. --cov-fail-under=95 --order-dependencies
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
