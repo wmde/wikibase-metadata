@@ -142,8 +142,8 @@ async def test_wikibase_list_query():
         ("sparqlEndpointUrl", "https://query.example.com/sparql"),
         ("sparqlFrontendUrl", None),
         ("sparqlUrl", None),
-        ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
-        ("specialVersionUrl", "example.com/wiki/Special:Version"),
+        ("specialStatisticsUrl", "https://example.com/wiki/Special:Statistics"),
+        ("specialVersionUrl", "https://example.com/wiki/Special:Version"),
     ]:
         assert_layered_property_value(result_datum, ["urls", url_name], url)
 
