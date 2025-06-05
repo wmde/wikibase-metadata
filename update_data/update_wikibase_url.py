@@ -25,7 +25,7 @@ async def upsert_wikibase_url(
         if wikibase_url is not None:
             wikibase_url.url = clean_url
         else:
-            await async_session.add(
+            async_session.add(
                 WikibaseURLModel(wikibase_id=wikibase_id, url=url, url_type=url_type)
             )
 
