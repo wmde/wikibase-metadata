@@ -31,7 +31,7 @@ async def test_add_wikibase_mutation():
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
                     "baseUrl": "example.com",
-                    "actionApiUrl": "example.com/w/api.php",
+                    # "actionApiUrl": "example.com/w/api.php",
                     "indexApiUrl": "example.com/w/index.php",
                     "sparqlEndpointUrl": "query.example.com/sparql",
                     "sparqlQueryUrl": "query.example.com",
