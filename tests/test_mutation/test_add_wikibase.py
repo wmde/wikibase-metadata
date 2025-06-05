@@ -32,8 +32,8 @@ async def test_add_wikibase_mutation():
                 "urls": {
                     "baseUrl": "example.com",
                     "articlePath": "example.com/wiki",
-                    "scriptPath": "example.com/w",
-                    "sparqlEndpointUrl": "query.example.com/sparql",
+                    # "scriptPath": "example.com/w",
+                    "sparqlEndpointUrl": "query.example.com/sparql-wrong",
                     "sparqlFrontendUrl": "query.example.com",
                 },
             }

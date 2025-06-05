@@ -45,7 +45,7 @@ async def test_create_log_observation_first_success(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "example.com/w/api.php"
+        assert query.base_url == "https://example.com/w/api.php"
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
 
@@ -127,7 +127,7 @@ async def test_create_log_observation_last_success(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "example.com/w/api.php"
+        assert query.base_url == "https://example.com/w/api.php"
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
         assert query.params.get("list") == "logevents"
@@ -241,7 +241,7 @@ async def test_create_log_last_observation_no_last_month(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "example.com/w/api.php"
+        assert query.base_url == "https://example.com/w/api.php"
         assert query.params.get("format") == "json"
         assert query.params.get("formatversion") == 2
         assert query.params.get("action") == "query"
