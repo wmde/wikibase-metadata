@@ -33,7 +33,7 @@ async def test_add_wikibase_mutation():
                     "baseUrl": "example.com",
                     # "actionApiUrl": "example.com/w/api.php",
                     "indexApiUrl": "example.com/w/index.php",
-                    "sparqlEndpointUrl": "query.example.com/sparql",
+                    "sparqlEndpointUrl": "query.example.com/sparql-wrong",
                     "sparqlQueryUrl": "query.example.com",
                     "specialStatisticsUrl": "example.com/wiki/Special:Statistics",
                     "specialVersionUrl": "example.com/wiki/Special:Version",
