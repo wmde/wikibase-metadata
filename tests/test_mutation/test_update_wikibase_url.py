@@ -92,7 +92,7 @@ async def test_add_wikibase_url():
     name="update-wikibase-url", depends=["add-wikibase"], scope="session"
 )
 async def test_update_wikibase_url():
-    """update Wikibase URL"""
+    """Update Wikibase URL"""
 
     before_updating_result = await test_schema.execute(
         WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
