@@ -133,18 +133,6 @@ async def test_wikibase_list_query():
         ["Albanian", "Babylonian", "Cymru", "Deutsch", "French"],
     )
 
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
     for url_name, url in [
         ("baseUrl", "example.com"),
         ("actionApi", "https://example.com/w/api.php"),
