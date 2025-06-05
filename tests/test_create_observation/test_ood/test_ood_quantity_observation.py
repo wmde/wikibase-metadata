@@ -6,7 +6,9 @@ from fetch_data import update_out_of_date_quantity_observations
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="quantity-success-ood", depends=["add-wikibase"], scope="session"
+    name="quantity-success-ood",
+    depends=["add-wikibase", "update-wikibase-url"],
+    scope="session",
 )
 @pytest.mark.quantity
 @pytest.mark.sparql

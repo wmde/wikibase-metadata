@@ -15,7 +15,9 @@ from tests.utils import MockResponse, ParsedUrl
 @freeze_time("2024-02-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-first-success-ood", depends=["add-wikibase"], scope="session"
+    name="log-first-success-ood",
+    depends=["add-wikibase", "add-wikibase-url"],
+    scope="session",
 )
 @pytest.mark.log
 async def test_update_out_of_date_log_first_observations_success(mocker):
@@ -37,7 +39,7 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "example.com/w/api.php"
+        assert query.base_url == "https://example.com/w/api.php"
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
 
@@ -78,7 +80,9 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
 @freeze_time("2024-02-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-last-success-ood", depends=["add-wikibase"], scope="session"
+    name="log-last-success-ood",
+    depends=["add-wikibase", "add-wikibase-url"],
+    scope="session",
 )
 @pytest.mark.log
 async def test_update_out_of_date_log_last_observations_success(mocker):
@@ -99,7 +103,7 @@ async def test_update_out_of_date_log_last_observations_success(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "example.com/w/api.php"
+        assert query.base_url == "https://example.com/w/api.php"
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
 
