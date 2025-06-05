@@ -86,7 +86,13 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
-    depends=["add-wikibase", "add-wikibase-url", "remove-wikibase-url", "update-wikibase-url", "update-wikibase-primary-language-3"],
+    depends=[
+        "add-wikibase",
+        "add-wikibase-url",
+        "remove-wikibase-url",
+        "update-wikibase-url",
+        "update-wikibase-primary-language-3",
+    ],
     scope="session",
 )
 async def test_wikibase_list_query():
