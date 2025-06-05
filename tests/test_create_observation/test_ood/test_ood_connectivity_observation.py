@@ -7,9 +7,7 @@ from fetch_data import update_out_of_date_connectivity_observations
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.dependency(
-    name="connectivity-success-ood",
-    depends=["add-wikibase", "update-wikibase-url"],
-    scope="session",
+    name="connectivity-success-ood", depends=["add-wikibase"], scope="session"
 )
 @pytest.mark.sparql
 async def test_update_out_of_date_connectivity_observations(mocker):
