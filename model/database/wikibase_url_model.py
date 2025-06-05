@@ -38,3 +38,11 @@ class WikibaseURLModel(ModelBase):
 
     url: Mapped[str] = mapped_column("url", String, nullable=False)
     """URL"""
+
+
+def join_url(base: str, ext: str) -> str:
+    """Join URL"""
+
+    if base[-1] != "/":
+        return base + "/" + ext
+    return base + ext

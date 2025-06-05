@@ -16,7 +16,7 @@ from model.database.wikibase_observation import (
     WikibaseStatisticsObservationModel,
     WikibaseUserObservationModel,
 )
-from model.database.wikibase_url_model import WikibaseURLModel
+from model.database.wikibase_url_model import WikibaseURLModel, join_url
 from model.enum import WikibaseType, WikibaseURLType
 
 
@@ -316,11 +316,3 @@ class WikibaseModel(ModelBase):
             self.sparql_frontend_url = WikibaseURLModel(
                 url=sparql_frontend_url, url_type=WikibaseURLType.SPARQL_FRONTEND_URL
             )
-
-
-def join_url(base: str, ext: str) -> str:
-    """Join URL"""
-
-    if base[-1] != "/":
-        return base + "/" + ext
-    return base + ext
