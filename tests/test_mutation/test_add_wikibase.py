@@ -30,9 +30,9 @@ async def test_add_wikibase_mutation():
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": "example.com",
-                    "articlePath": "example.com/wiki",
-                    # "scriptPath": "example.com/w",
+                    "baseUrl": "https://example.com/",
+                    "articlePath": "/wiki",
+                    # "scriptPath": "/w",
                     "sparqlEndpointUrl": "query.example.com/sparql-wrong",
                     "sparqlFrontendUrl": "query.example.com",
                 },

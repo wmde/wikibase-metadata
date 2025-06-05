@@ -134,11 +134,11 @@ async def test_wikibase_list_query():
     )
 
     for url_name, url in [
-        ("baseUrl", "example.com"),
+        ("baseUrl", "https://example.com/"),
         ("actionApi", "https://example.com/w/api.php"),
-        ("articlePath", "example.com/wiki"),
+        ("articlePath", "/wiki"),
         ("indexApi", "https://example.com/w/index.php"),
-        ("scriptPath", "https://example.com/w/"),
+        ("scriptPath", "/w/"),
         ("sparqlEndpointUrl", "https://query.example.com/sparql"),
         ("sparqlFrontendUrl", None),
         ("sparqlUrl", None),

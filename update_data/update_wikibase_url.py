@@ -25,7 +25,7 @@ async def upsert_wikibase_url(
     ), "Please use `ARTICLE_PATH`"
     assert url_type != WikibaseURLType.SPECIAL_VERSION_URL, "Please use `ARTICLE_PATH`"
 
-    clean_url = clean_up_url(url)
+    clean_url = clean_up_url(url, url_type)
 
     async with get_async_session() as async_session:
         wikibase_url: Optional[WikibaseURLModel] = await fetch_wikibase_url(
@@ -73,10 +73,15 @@ async def remove_wikibase_url(wikibase_id: int, url_type: WikibaseURLType) -> bo
         return wikibase_url is None
 
 
-def clean_up_url(url: str) -> str:
+def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
     """Clean URL"""
 
-    assert re.match(r"https?://[A-z0-9\-_.\?=]+", url)
+    if (
+        url_type == WikibaseURLType.BASE_URL
+        or url_type == WikibaseURLType.SPARQL_ENDPOINT_URL
+        or url_type == WikibaseURLType.SPARQL_FRONTEND_URL
+    ):
+        assert re.match(r"https?://[A-z0-9\-_.\?=]+", url)
 
     return url.strip()
 

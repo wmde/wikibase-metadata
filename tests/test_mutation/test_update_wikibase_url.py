@@ -49,7 +49,7 @@ async def test_add_wikibase_url():
     assert_layered_property_value(
         before_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -61,7 +61,7 @@ async def test_add_wikibase_url():
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
             "wikibaseId": 1,
-            "url": "https://example.com/w/",
+            "url": "/w/",
             "urlType": "SCRIPT_PATH",
         },
     )
@@ -80,12 +80,12 @@ async def test_add_wikibase_url():
     assert_layered_property_value(
         after_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         after_adding_result.data,
         ["wikibase", "urls", "scriptPath"],
-        expected_value="https://example.com/w/",
+        expected_value="/w/",
     )
 
 
@@ -108,7 +108,7 @@ async def test_remove_wikibase_url():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -138,7 +138,7 @@ async def test_remove_wikibase_url():
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -166,7 +166,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -197,7 +197,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         after_updating_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         after_updating_result.data,
