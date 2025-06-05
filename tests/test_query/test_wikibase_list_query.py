@@ -29,8 +29,11 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
       urls {
         baseUrl
         actionApi
+        articlePath
         indexApi
+        scriptPath
         sparqlEndpointUrl
+        sparqlFrontendUrl
         sparqlUrl
         specialStatisticsUrl
         specialVersionUrl
@@ -130,11 +133,26 @@ async def test_wikibase_list_query():
         ["Albanian", "Babylonian", "Cymru", "Deutsch", "French"],
     )
 
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
     for url_name, url in [
         ("baseUrl", "example.com"),
         ("actionApi", "https://example.com/w/api.php"),
+        ("articlePath", "example.com/wiki"),
         ("indexApi", "https://example.com/w/index.php"),
+        ("scriptPath", "https://example.com/w/"),
         ("sparqlEndpointUrl", "https://query.example.com/sparql"),
+        ("sparqlFrontendUrl", None),
         ("sparqlUrl", None),
         ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
         ("specialVersionUrl", "example.com/wiki/Special:Version"),
