@@ -86,7 +86,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
-    depends=["add-wikibase", "add-wikibase-url", "update-wikibase-primary-language-3"],
+    depends=["add-wikibase", "add-wikibase-url", "remove-wikibase-url", "update-wikibase-url", "update-wikibase-primary-language-3"],
     scope="session",
 )
 async def test_wikibase_list_query():
@@ -129,7 +129,7 @@ async def test_wikibase_list_query():
         ("actionApi", "https://example.com/w/api.php"),
         ("indexApi", "example.com/w/index.php"),
         ("sparqlEndpointUrl", "https://query.example.com/sparql"),
-        ("sparqlUrl", "query.example.com"),
+        ("sparqlUrl", None),
         ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
         ("specialVersionUrl", "example.com/wiki/Special:Version"),
     ]:

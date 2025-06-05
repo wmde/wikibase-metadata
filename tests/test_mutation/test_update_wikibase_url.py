@@ -26,6 +26,11 @@ mutation MyMutation($url: String!, $urlType: WikibaseURLType!, $wikibaseId: Int!
   upsertWikibaseUrl(url: $url, urlType: $urlType, wikibaseId: $wikibaseId)
 }"""
 
+REMOVE_WIKIBASE_URL_MUTATION = """
+mutation MyMutation($urlType: WikibaseURLType!, $wikibaseId: Int!) {
+  removeWikibaseUrl(urlType: $urlType, wikibaseId: $wikibaseId)
+}"""
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
@@ -83,6 +88,64 @@ async def test_add_wikibase_url():
         after_adding_result.data,
         ["wikibase", "urls", "actionApi"],
         expected_value="https://example.com/w/api.php",
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(
+    name="remove-wikibase-url", depends=["add-wikibase"], scope="session"
+)
+async def test_remove_wikibase_url():
+    """Remove Wikibase URL"""
+
+    before_removing_result = await test_schema.execute(
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+    )
+    assert before_removing_result.errors is None
+    assert before_removing_result.data is not None
+    assert_layered_property_value(
+        before_removing_result.data, ["wikibase", "id"], expected_value="1"
+    )
+    assert_layered_property_value(
+        before_removing_result.data,
+        ["wikibase", "urls", "baseUrl"],
+        expected_value="example.com",
+    )
+    assert_layered_property_value(
+        before_removing_result.data,
+        ["wikibase", "urls", "sparqlUrl"],
+        expected_value="query.example.com",
+    )
+
+    remove_result = await test_schema.execute(
+        REMOVE_WIKIBASE_URL_MUTATION,
+        variable_values={
+            "wikibaseId": 1,
+            "urlType": "SPARQL_QUERY_URL",
+        },
+    )
+    assert remove_result.errors is None
+    assert remove_result.data is not None
+    assert remove_result.data["removeWikibaseUrl"] is True
+
+    after_removing_result = await test_schema.execute(
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+    )
+    assert after_removing_result.errors is None
+    assert after_removing_result.data is not None
+    assert_layered_property_value(
+        after_removing_result.data, ["wikibase", "id"], expected_value="1"
+    )
+    assert_layered_property_value(
+        after_removing_result.data,
+        ["wikibase", "urls", "baseUrl"],
+        expected_value="example.com",
+    )
+    assert_layered_property_value(
+        after_removing_result.data,
+        ["wikibase", "urls", "sparqlUrl"],
+        expected_value=None,
     )
 
 
