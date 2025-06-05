@@ -125,9 +125,9 @@ async def test_wikibase_list_query():
 
     for url_name, url in [
         ("baseUrl", "example.com"),
-        ("actionApi", "example.com/w/api.php"),
+        ("actionApi", "https://example.com/w/api.php"),
         ("indexApi", "example.com/w/index.php"),
-        ("sparqlEndpointUrl", "query.example.com/sparql"),
+        ("sparqlEndpointUrl", "https://query.example.com/sparql"),
         ("sparqlUrl", "query.example.com"),
         ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
         ("specialVersionUrl", "example.com/wiki/Special:Version"),
