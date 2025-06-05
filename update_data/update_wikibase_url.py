@@ -15,6 +15,16 @@ async def upsert_wikibase_url(
 ) -> bool:
     """Add or Update Wikibase URL"""
 
+    assert url_type != WikibaseURLType.ACTION_QUERY_URL, "Please use `SCRIPT_PATH`"
+    assert url_type != WikibaseURLType.INDEX_QUERY_URL, "Please use `SCRIPT_PATH`"
+    assert (
+        url_type != WikibaseURLType.SPARQL_QUERY_URL
+    ), "Please use `SPARQL_FRONTEND_URL`"
+    assert (
+        url_type != WikibaseURLType.SPECIAL_STATISTICS_URL
+    ), "Please use `ARTICLE_PATH`"
+    assert url_type != WikibaseURLType.SPECIAL_VERSION_URL, "Please use `ARTICLE_PATH`"
+
     clean_url = clean_up_url(url)
 
     async with get_async_session() as async_session:
