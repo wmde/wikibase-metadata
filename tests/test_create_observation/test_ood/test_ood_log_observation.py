@@ -15,7 +15,9 @@ from tests.utils import MockResponse, ParsedUrl
 @freeze_time("2024-02-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-first-success-ood", depends=["add-wikibase", "add-wikibase-url"], scope="session"
+    name="log-first-success-ood",
+    depends=["add-wikibase", "add-wikibase-url"],
+    scope="session",
 )
 @pytest.mark.log
 async def test_update_out_of_date_log_first_observations_success(mocker):
@@ -78,7 +80,9 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
 @freeze_time("2024-02-01")
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="log-last-success-ood", depends=["add-wikibase", "add-wikibase-url"], scope="session"
+    name="log-last-success-ood",
+    depends=["add-wikibase", "add-wikibase-url"],
+    scope="session",
 )
 @pytest.mark.log
 async def test_update_out_of_date_log_last_observations_success(mocker):
