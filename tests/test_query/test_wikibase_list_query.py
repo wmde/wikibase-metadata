@@ -29,8 +29,11 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
       urls {
         baseUrl
         actionApi
+        articlePath
         indexApi
+        scriptPath
         sparqlEndpointUrl
+        sparqlFrontendUrl
         sparqlUrl
         specialStatisticsUrl
         specialVersionUrl
@@ -86,7 +89,14 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
-    depends=["add-wikibase", "update-wikibase-primary-language-3"], scope="session"
+    depends=[
+        "add-wikibase",
+        "add-wikibase-url",
+        "remove-wikibase-url",
+        "update-wikibase-url",
+        "update-wikibase-primary-language-3",
+    ],
+    scope="session",
 )
 async def test_wikibase_list_query():
     """Test Wikibase List"""
@@ -124,13 +134,16 @@ async def test_wikibase_list_query():
     )
 
     for url_name, url in [
-        ("baseUrl", "example.com"),
-        ("actionApi", "example.com/w/api.php"),
-        ("indexApi", "example.com/w/index.php"),
-        ("sparqlEndpointUrl", "query.example.com/sparql"),
-        ("sparqlUrl", "query.example.com"),
-        ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
-        ("specialVersionUrl", "example.com/wiki/Special:Version"),
+        ("baseUrl", "https://example.com/"),
+        ("actionApi", "https://example.com/w/api.php"),
+        ("articlePath", "/wiki"),
+        ("indexApi", "https://example.com/w/index.php"),
+        ("scriptPath", "/w/"),
+        ("sparqlEndpointUrl", "https://query.example.com/sparql"),
+        ("sparqlFrontendUrl", None),
+        ("sparqlUrl", None),
+        ("specialStatisticsUrl", "https://example.com/wiki/Special:Statistics"),
+        ("specialVersionUrl", "https://example.com/wiki/Special:Version"),
     ]:
         assert_layered_property_value(result_datum, ["urls", url_name], url)
 

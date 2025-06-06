@@ -124,7 +124,7 @@ def get_wikibase_with_out_of_date_log_first_obs_query() -> Select[tuple[Wikibase
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
-            WikibaseModel.action_api_url.has(WikibaseURLModel.id),
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
                 WikibaseModel.log_month_observations.any(
                     and_(
@@ -167,7 +167,7 @@ def get_wikibase_with_out_of_date_log_last_obs_query() -> Select[tuple[WikibaseM
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
-            WikibaseModel.action_api_url.has(WikibaseURLModel.id),
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
                 WikibaseModel.log_month_observations.any(
                     and_(
@@ -294,7 +294,7 @@ def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseM
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
-            WikibaseModel.special_version_url.has(WikibaseURLModel.id),
+            WikibaseModel.article_path.has(WikibaseURLModel.id),
             not_(
                 WikibaseModel.software_version_observations.any(
                     or_(
@@ -334,7 +334,7 @@ def get_wikibase_with_out_of_date_stats_obs_query() -> Select[tuple[WikibaseMode
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
-            WikibaseModel.special_statistics_url.has(WikibaseURLModel.id),
+            WikibaseModel.article_path.has(WikibaseURLModel.id),
             not_(
                 WikibaseModel.statistics_observations.any(
                     or_(
@@ -374,7 +374,7 @@ def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
-            WikibaseModel.action_api_url.has(WikibaseURLModel.id),
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
                 WikibaseModel.user_observations.any(
                     or_(

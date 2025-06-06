@@ -53,7 +53,7 @@ async def create_software_version_observation_without_background_task(
         try:
             result = await asyncio.to_thread(
                 requests.get,
-                wikibase.special_version_url.url,
+                wikibase.special_version_url(),
                 headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,
             )

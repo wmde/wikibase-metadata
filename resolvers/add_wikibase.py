@@ -24,13 +24,11 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
 
         for input_url in [
-            wikibase_input.urls.action_api_url,
+            wikibase_input.urls.article_path,
             wikibase_input.urls.base_url,
-            wikibase_input.urls.index_api_url,
+            wikibase_input.urls.script_path,
             wikibase_input.urls.sparql_endpoint_url,
-            wikibase_input.urls.sparql_query_url,
-            wikibase_input.urls.special_statistics_url,
-            wikibase_input.urls.special_version_url,
+            wikibase_input.urls.sparql_frontend_url,
         ]:
             if input_url is not None:
                 stripped_input_url: str = input_url.strip()
@@ -50,12 +48,10 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             country=wikibase_input.country,
             region=wikibase_input.region,
             base_url=wikibase_input.urls.base_url,
-            action_api_url=wikibase_input.urls.action_api_url,
-            index_api_url=wikibase_input.urls.index_api_url,
+            article_path=wikibase_input.urls.article_path,
+            script_path=wikibase_input.urls.script_path,
             sparql_endpoint_url=wikibase_input.urls.sparql_endpoint_url,
-            sparql_query_url=wikibase_input.urls.sparql_query_url,
-            special_statistics_url=wikibase_input.urls.special_statistics_url,
-            special_version_url=wikibase_input.urls.special_version_url,
+            sparql_frontend_url=wikibase_input.urls.sparql_frontend_url,
         )
         model.checked = True
         model.category = (

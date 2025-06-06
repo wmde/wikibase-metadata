@@ -28,7 +28,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
         try:
             result = await asyncio.to_thread(
                 requests.get,
-                wikibase.special_statistics_url.url,
+                wikibase.special_statistics_url(),
                 headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,
             )

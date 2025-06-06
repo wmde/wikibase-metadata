@@ -1,5 +1,6 @@
 """Wikibase URL Table"""
 
+import re
 from sqlalchemy import Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -38,3 +39,12 @@ class WikibaseURLModel(ModelBase):
 
     url: Mapped[str] = mapped_column("url", String, nullable=False)
     """URL"""
+
+
+def join_url(*args: str) -> str:
+    """Join URL"""
+
+    if len(args) < 1:
+        raise ValueError("Must Pass At Least One Arg")
+
+    return "/".join([re.sub(r"^/?(.*?)/?$", r"\1", arg) for arg in args])
