@@ -11,11 +11,9 @@ from model.database import (
     WikibaseQuantityObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
     WikibaseURLModel,
     WikibaseUserObservationModel,
-)
-from model.database.wikibase_observation.initial_value.initial_value_observation_model import (
-    WikibaseInitialValueObservationModel,
 )
 
 
@@ -74,26 +72,26 @@ async def get_wikibase_list_with_out_of_date_connectivity_observations() -> (
     )
 
 
-def get_wikibase_with_out_of_date_initial_value_obs_query() -> (
+def get_wikibase_with_out_of_date_time_to_first_value_obs_query() -> (
     Select[tuple[WikibaseModel]]
 ):
-    """Query Wikibases with Out of Date Initial Value Observations"""
+    """Query Wikibases with Out of Date Time to First Value Observations"""
 
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
-            WikibaseModel.index_api_url.has(WikibaseURLModel.id),
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
-                WikibaseModel.initial_value_observations.any(
+                WikibaseModel.time_to_first_value_observations.any(
                     or_(
-                        WikibaseInitialValueObservationModel.observation_date
+                        WikibaseTimeToFirstValueObservationModel.observation_date
                         > (
                             datetime.now(tz=timezone.utc)
                             - timedelta(weeks=40, hours=SAFE_HOUR_MARGIN)
                         ),
                         and_(
-                            WikibaseInitialValueObservationModel.returned_data,
-                            WikibaseInitialValueObservationModel.observation_date
+                            WikibaseTimeToFirstValueObservationModel.returned_data,
+                            WikibaseTimeToFirstValueObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
                                 - timedelta(weeks=52, hours=SAFE_HOUR_MARGIN)
@@ -108,13 +106,13 @@ def get_wikibase_with_out_of_date_initial_value_obs_query() -> (
     return query
 
 
-async def get_wikibase_list_with_out_of_date_initial_value_observations() -> (
+async def get_wikibase_list_with_out_of_date_time_to_first_value_observations() -> (
     list[WikibaseModel]
 ):
-    """Get List of Wikibases with Out of Date Initial Value Observations"""
+    """Get List of Wikibases with Out of Date Time to First Value Observations"""
 
     return await get_wikibase_list(
-        get_wikibase_with_out_of_date_initial_value_obs_query()
+        get_wikibase_with_out_of_date_time_to_first_value_obs_query()
     )
 
 

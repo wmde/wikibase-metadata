@@ -1,4 +1,4 @@
-"""Wikibase Connectivity Observation Table"""
+"""Wikibase Item Creation Date Table"""
 
 from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, Integer, UniqueConstraint
@@ -21,12 +21,14 @@ class WikibaseItemDateModel(ModelBase):
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
     """ID"""
 
-    wikibase_initial_value_observation_id: Mapped[int] = mapped_column(
-        "wikibase_initial_value_observation_id",
-        ForeignKey(column="wikibase_initial_value_observation.id", name="observation"),
+    wikibase_time_to_first_value_observation_id: Mapped[int] = mapped_column(
+        "wikibase_time_to_first_value_observation_id",
+        ForeignKey(
+            column="wikibase_time_to_first_value_observation.id", name="observation"
+        ),
         nullable=False,
     )
-    """Wikibase Initial Value Observation ID"""
+    """Wikibase Time to First Value Observation ID"""
 
     item_number: Mapped[int] = mapped_column("q", Integer, nullable=False)
     """Q#"""

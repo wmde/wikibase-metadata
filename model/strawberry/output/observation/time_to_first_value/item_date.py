@@ -4,9 +4,7 @@ from datetime import datetime
 import strawberry
 
 
-from model.database.wikibase_observation.initial_value.item_date_model import (
-    WikibaseItemDateModel,
-)
+from model.database import WikibaseItemDateModel
 from model.strawberry.scalars import BigInt
 
 

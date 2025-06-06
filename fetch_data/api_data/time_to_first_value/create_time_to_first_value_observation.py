@@ -1,4 +1,4 @@
-"""Create Initial Value Observation"""
+"""Create Time to First Value Observation"""
 
 import asyncio
 from datetime import datetime
@@ -10,14 +10,14 @@ from data import get_async_session
 from fetch_data.utils import dict_to_url, get_wikibase_from_database
 from logger import logger
 from model.database import (
-    WikibaseInitialValueObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
     WikibaseItemDateModel,
     WikibaseModel,
 )
 
 
-async def create_initial_value_observation(wikibase_id: int) -> bool:
-    """Create Initial Value Observation"""
+async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
+    """Create Time to First Value Observation"""
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
@@ -27,7 +27,7 @@ async def create_initial_value_observation(wikibase_id: int) -> bool:
             require_index_api=True,
         )
 
-        observation = WikibaseInitialValueObservationModel(wikibase_id=wikibase.id)
+        observation = WikibaseTimeToFirstValueObservationModel(wikibase_id=wikibase.id)
 
         try:
             logger.info("Fetching Creation Date", extra={"wikibase": wikibase.id})
@@ -53,14 +53,14 @@ async def create_initial_value_observation(wikibase_id: int) -> bool:
             observation.returned_data = True
         except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
             logger.warning(
-                "InitialValueDataError",
+                "TimeToFirstValueDataError",
                 exc_info=True,
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False
 
-        wikibase.initial_value_observations.append(observation)
+        wikibase.time_to_first_value_observations.append(observation)
 
         await async_session.commit()
         return observation.returned_data

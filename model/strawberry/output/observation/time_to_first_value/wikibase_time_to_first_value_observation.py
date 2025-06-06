@@ -4,8 +4,8 @@ from datetime import datetime
 from typing import Optional
 import strawberry
 
-from model.database import WikibaseInitialValueObservationModel
-from model.strawberry.output.observation.initial_value.item_date import (
+from model.database import WikibaseTimeToFirstValueObservationModel
+from model.strawberry.output.observation.time_to_first_value.item_date import (
     WikibaseItemDateStrawberryModel,
 )
 from model.strawberry.output.observation.wikibase_observation import (
@@ -13,11 +13,11 @@ from model.strawberry.output.observation.wikibase_observation import (
 )
 
 
-@strawberry.type(name="WikibaseInitialValueObservation")
-class WikibaseInitialValueObservationStrawberryModel(
+@strawberry.type(name="WikibaseTimeToFirstValueObservation")
+class WikibaseTimeToFirstValueObservationStrawberryModel(
     WikibaseObservationStrawberryModel
 ):
-    """Wikibase Initial Value Data Observation"""
+    """Wikibase Time to First Value Data Observation"""
 
     initiation_date: Optional[datetime] = strawberry.field(
         description="Wikibase Initiation Date"
@@ -29,8 +29,8 @@ class WikibaseInitialValueObservationStrawberryModel(
 
     @classmethod
     def marshal(
-        cls, model: WikibaseInitialValueObservationModel
-    ) -> "WikibaseInitialValueObservationStrawberryModel":
+        cls, model: WikibaseTimeToFirstValueObservationModel
+    ) -> "WikibaseTimeToFirstValueObservationStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
 
         return cls(

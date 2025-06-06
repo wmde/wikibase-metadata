@@ -3,9 +3,6 @@
 from model.strawberry.output.observation.connectivity import (
     WikibaseConnectivityObservationStrawberryModel,
 )
-from model.strawberry.output.observation.initial_value import (
-    WikibaseInitialValueObservationStrawberryModel,
-)
 from model.strawberry.output.observation.log import (
     WikibaseLogObservationStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
@@ -28,6 +25,9 @@ from model.strawberry.output.observation.software_version import (
 from model.strawberry.output.observation.statistics import (
     WikibaseStatisticsAggregateStrawberryModel,
     WikibaseStatisticsObservationStrawberryModel,
+)
+from model.strawberry.output.observation.time_to_first_value import (
+    WikibaseTimeToFirstValueObservationStrawberryModel,
 )
 from model.strawberry.output.observation.user import (
     WikibaseUserAggregateStrawberryModel,
