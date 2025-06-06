@@ -14,7 +14,9 @@ class WikibaseItemDateModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint(
-            "wikibase_time_to_first_value_observation_id", "q", name="unique_observation_q"
+            "wikibase_time_to_first_value_observation_id",
+            "q",
+            name="unique_observation_q",
         ),
     )
 
