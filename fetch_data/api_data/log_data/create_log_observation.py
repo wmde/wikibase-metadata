@@ -44,7 +44,7 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
         try:
             logger.info("Fetching Logs", extra={"wikibase": wikibase.id})
             log_list = await get_month_log_list(
-                wikibase.action_api_url.url,
+                wikibase.action_api_url(),
                 comparison_date=await get_log_list_comparison_date(
                     wikibase, first_month
                 ),
@@ -76,7 +76,7 @@ async def get_log_list_comparison_date(
         logger.info("Fetching Oldest Log", extra={"wikibase": wikibase.id})
         oldest_log = (
             await get_log_list_from_url(
-                wikibase.action_api_url.url + get_log_param_string(limit=1, oldest=True)
+                wikibase.action_api_url() + get_log_param_string(limit=1, oldest=True)
             )
         )[0]
         return oldest_log.log_date

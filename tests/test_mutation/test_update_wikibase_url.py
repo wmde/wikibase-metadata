@@ -10,13 +10,11 @@ WIKIBASE_URLS_QUERY = """query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
     urls {
-      actionApi
+      articlePath
       baseUrl
-      indexApi
+      scriptPath
       sparqlEndpointUrl
-      sparqlUrl
-      specialStatisticsUrl
-      specialVersionUrl
+      sparqlFrontendUrl
     }
   }
 }"""
@@ -51,11 +49,11 @@ async def test_add_wikibase_url():
     assert_layered_property_value(
         before_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         before_adding_result.data,
-        ["wikibase", "urls", "actionApi"],
+        ["wikibase", "urls", "scriptPath"],
         expected_value=None,
     )
 
@@ -63,8 +61,8 @@ async def test_add_wikibase_url():
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
             "wikibaseId": 1,
-            "url": "https://example.com/w/api.php",
-            "urlType": "ACTION_QUERY_URL",
+            "url": "/w/",
+            "urlType": "SCRIPT_PATH",
         },
     )
     assert add_result.errors is None
@@ -82,12 +80,12 @@ async def test_add_wikibase_url():
     assert_layered_property_value(
         after_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         after_adding_result.data,
-        ["wikibase", "urls", "actionApi"],
-        expected_value="https://example.com/w/api.php",
+        ["wikibase", "urls", "scriptPath"],
+        expected_value="/w/",
     )
 
 
@@ -110,11 +108,11 @@ async def test_remove_wikibase_url():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         before_removing_result.data,
-        ["wikibase", "urls", "sparqlUrl"],
+        ["wikibase", "urls", "sparqlFrontendUrl"],
         expected_value="query.example.com",
     )
 
@@ -122,7 +120,7 @@ async def test_remove_wikibase_url():
         REMOVE_WIKIBASE_URL_MUTATION,
         variable_values={
             "wikibaseId": 1,
-            "urlType": "SPARQL_QUERY_URL",
+            "urlType": "SPARQL_FRONTEND_URL",
         },
     )
     assert remove_result.errors is None
@@ -140,11 +138,11 @@ async def test_remove_wikibase_url():
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         after_removing_result.data,
-        ["wikibase", "urls", "sparqlUrl"],
+        ["wikibase", "urls", "sparqlFrontendUrl"],
         expected_value=None,
     )
 
@@ -168,7 +166,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -199,7 +197,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         after_updating_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="example.com",
+        expected_value="https://example.com/",
     )
     assert_layered_property_value(
         after_updating_result.data,

@@ -10,14 +10,10 @@ class WikibaseURLSetInput:
 
     base_url: str
 
-    action_api_url: Optional[str] = None
+    article_path: Optional[str] = None
 
-    index_api_url: Optional[str] = None
+    script_path: Optional[str] = None
 
     sparql_endpoint_url: Optional[str] = None
 
-    sparql_query_url: Optional[str] = None
-
-    special_statistics_url: Optional[str] = None
-
-    special_version_url: Optional[str] = None
+    sparql_frontend_url: Optional[str] = None

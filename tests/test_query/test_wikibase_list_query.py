@@ -29,8 +29,11 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
       urls {
         baseUrl
         actionApi
+        articlePath
         indexApi
+        scriptPath
         sparqlEndpointUrl
+        sparqlFrontendUrl
         sparqlUrl
         specialStatisticsUrl
         specialVersionUrl
@@ -131,13 +134,16 @@ async def test_wikibase_list_query():
     )
 
     for url_name, url in [
-        ("baseUrl", "example.com"),
+        ("baseUrl", "https://example.com/"),
         ("actionApi", "https://example.com/w/api.php"),
-        ("indexApi", "example.com/w/index.php"),
+        ("articlePath", "/wiki"),
+        ("indexApi", "https://example.com/w/index.php"),
+        ("scriptPath", "/w/"),
         ("sparqlEndpointUrl", "https://query.example.com/sparql"),
+        ("sparqlFrontendUrl", None),
         ("sparqlUrl", None),
-        ("specialStatisticsUrl", "example.com/wiki/Special:Statistics"),
-        ("specialVersionUrl", "example.com/wiki/Special:Version"),
+        ("specialStatisticsUrl", "https://example.com/wiki/Special:Statistics"),
+        ("specialVersionUrl", "https://example.com/wiki/Special:Version"),
     ]:
         assert_layered_property_value(result_datum, ["urls", url_name], url)
 
