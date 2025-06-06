@@ -9,6 +9,7 @@ from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
     WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
@@ -220,6 +221,15 @@ class WikibaseModel(ModelBase):
         )
     )
     """Connectivity Observations"""
+
+    time_to_first_value_observations: Mapped[
+        list[WikibaseTimeToFirstValueObservationModel]
+    ] = relationship(
+        "WikibaseTimeToFirstValueObservationModel",
+        back_populates="wikibase",
+        lazy="select",
+    )
+    """Time to First Value Observations"""
 
     log_month_observations: Mapped[list[WikibaseLogMonthObservationModel]] = (
         relationship(

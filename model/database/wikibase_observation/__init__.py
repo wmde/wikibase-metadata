@@ -20,6 +20,10 @@ from model.database.wikibase_observation.quantity import (
 from model.database.wikibase_observation.statistics import (
     WikibaseStatisticsObservationModel,
 )
+from model.database.wikibase_observation.time_to_first_value import (
+    WikibaseTimeToFirstValueObservationModel,
+    WikibaseItemDateModel,
+)
 from model.database.wikibase_observation.user import (
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,

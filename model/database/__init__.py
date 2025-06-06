@@ -8,6 +8,8 @@ from model.database.wikibase_observation import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseConnectivityObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
+    WikibaseItemDateModel,
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
     WikibaseLogMonthUserTypeObservationModel,

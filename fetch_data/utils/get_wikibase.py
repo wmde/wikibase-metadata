@@ -11,6 +11,7 @@ async def get_wikibase_from_database(
     wikibase_id: int,
     include_observations: bool = False,
     require_action_api: bool = False,
+    require_index_api: bool = False,
     require_sparql_endpoint: bool = False,
     require_special_statistics: bool = False,
     require_special_version: bool = False,
@@ -34,7 +35,7 @@ async def get_wikibase_from_database(
 
     assert wikibase.checked, "Wikibase Invalid"
 
-    if require_action_api:
+    if require_action_api or require_index_api:
         assert wikibase.script_path is not None, "Script Path Must Be Populated"
     if require_sparql_endpoint:
         assert (
