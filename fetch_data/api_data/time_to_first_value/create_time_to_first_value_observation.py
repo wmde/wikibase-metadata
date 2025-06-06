@@ -47,7 +47,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
                                 WikibaseItemDateModel(item_number=i, creation_date=c)
                             )
                             returned = True
-                        except:
+                        except requests.HTTPError:
                             pass
 
             observation.returned_data = True
@@ -67,6 +67,8 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
 
 async def get_creation_date(wikibase: WikibaseModel, title: str) -> datetime:
+    """Get Wikibase Page Date"""
+
     result = await asyncio.to_thread(
         requests.get,
         wikibase.index_api_url.url

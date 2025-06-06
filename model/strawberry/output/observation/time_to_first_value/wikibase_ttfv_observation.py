@@ -1,4 +1,4 @@
-"""Wikibase Connectivity Data Observation Strawberry Model"""
+"""Wikibase Time to First Value Data Observation Strawberry Model"""
 
 from datetime import datetime
 from typing import Optional
