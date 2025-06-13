@@ -9,28 +9,18 @@ from model.enum import WikibaseType
 from fetch_data.utils import fetch_api_data
 
 from logger import logger
+from dataclasses import dataclass
 
 
+@dataclass
 class WikibaseCloudInstance:
+    """cloud instance as fetched from the wikibase cloud dashboard api"""
+
     id: int
     description: str | None
     domain: str
     domain_decoded: str
     sitename: str | None
-
-    def __init__(
-        self,
-        id: int,
-        description: str | None,
-        domain: str,
-        domain_decoded: str,
-        sitename: str | None,
-    ):
-        self.id = id
-        self.description = description
-        self.domain = domain
-        self.domain_decoded = domain_decoded
-        self.sitename = sitename
 
 
 async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
