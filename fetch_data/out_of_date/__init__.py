@@ -19,4 +19,5 @@ from fetch_data.out_of_date.update_out_of_date import (
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
     update_out_of_date_user_observations,
+    update_out_of_date_cloud_instances,
 )

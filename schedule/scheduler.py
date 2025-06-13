@@ -14,6 +14,7 @@ from fetch_data import (
     update_out_of_date_stats_observations,
     update_out_of_date_user_observations,
     update_software_data,
+    update_out_of_date_cloud_instances,
 )
 
 
@@ -45,3 +46,7 @@ scheduler.add_job(
     update_out_of_date_user_observations, CronTrigger(day_of_week=0, hour=7)
 )
 scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
+
+scheduler.add_job(
+    update_out_of_date_cloud_instances, CronTrigger(day_of_week=6, hour=20) # before data pulls
+)
