@@ -1,0 +1,23 @@
+{
+  "data": [
+    {
+      "id": 167,
+      "description": null,
+      "domain": "osloddt.wikibase.cloud",
+      "domain_decoded": "osloddt.wikibase.cloud",
+      "sitename": "Doelgericht Digitaal Transformeren",
+      "wiki_site_stats": {
+        "pages": 880923,
+        "articles": 880496,
+        "edits": 10876042,
+        "images": 0,
+        "users": 5,
+        "activeusers": 0,
+        "admins": 1,
+        "jobs": 0,
+        "cirrussearch-article-words": 4955
+      },
+      "logo_url": null
+    }
+  ]
+}
