@@ -1,3 +1,5 @@
+"""fetch list of wikibase cloud instances from api and update local database"""
+
 from data import get_async_session
 from sqlalchemy import select
 from model.database import WikibaseModel
@@ -112,4 +114,3 @@ async def update_cloud_instances():
                 logger.debug("inserted")
 
         await async_session.commit()
-

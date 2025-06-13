@@ -180,6 +180,7 @@ async def update_out_of_date_cloud_instances():
     logger.info("Pulling cloud instances and updating local database")
     try:
         await update_cloud_instances()
+    # pylint: disable-next=bare-except
     except:
         logger.error(
             "CloudInstancesError",

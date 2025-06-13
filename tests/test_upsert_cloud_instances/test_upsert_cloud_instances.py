@@ -2,7 +2,6 @@
 
 import os
 import pytest
-from logger import logger
 from tests.utils import MockResponse
 from data import get_async_session
 from sqlalchemy import select
@@ -40,13 +39,13 @@ async def test_fetch_cloud_instances(mocker):
         assert instances[0].sitename == "Doelgericht Digitaal Transformeren"
         assert instances[0].domain == "osloddt.wikibase.cloud"
         assert instances[0].domain_decoded == "osloddt.wikibase.cloud"
-        assert instances[0].description == None
+        assert instances[0].description is None
 
         assert instances[42].id == 326
         assert instances[42].sitename == "MetaBase"
         assert instances[42].domain == "metabase.wikibase.cloud"
         assert instances[42].domain_decoded == "metabase.wikibase.cloud"
-        assert instances[42].description == None
+        assert instances[42].description is None
 
 
 @pytest.mark.asyncio
@@ -89,14 +88,12 @@ async def test_update_cloud_instances(mocker):
             "requests.get",
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
-        MOCK_INSTANCE_DOMAIN = "osloddt.wikibase.cloud"
-        MOCK_INSTANCE_NAME = "Doelgericht Digitaal Transformeren"
 
         async with get_async_session() as async_session:
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == MOCK_INSTANCE_DOMAIN)
+                .where(WikibaseURLModel.url == "osloddt.wikibase.cloud")
             )
             result = await async_session.execute(stmt)
             found = result.scalars().first()
@@ -108,12 +105,12 @@ async def test_update_cloud_instances(mocker):
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == MOCK_INSTANCE_DOMAIN)
+                .where(WikibaseURLModel.url == "osloddt.wikibase.cloud")
             )
             result = await async_session.execute(stmt)
             found = result.scalars().first()
             assert found is not None
-            assert found.wikibase_name == MOCK_INSTANCE_NAME
+            assert found.wikibase_name == "Doelgericht Digitaal Transformeren"
 
     with open(
         os.path.join(DATA_DIRECTORY, "instances-one-updated.json"), "rb"
@@ -123,14 +120,12 @@ async def test_update_cloud_instances(mocker):
             "requests.get",
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
-        MOCK_INSTANCE_DOMAIN = "osloddt.wikibase.cloud"
-        MOCK_INSTANCE_NAME_RENAMED = "Doelgericht Digitaal Transformeren RENAMED"
 
         async with get_async_session() as async_session:
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == MOCK_INSTANCE_DOMAIN)
+                .where(WikibaseURLModel.url == "osloddt.wikibase.cloud")
             )
             result = await async_session.execute(stmt)
             found = result.scalars().first()
@@ -142,9 +137,9 @@ async def test_update_cloud_instances(mocker):
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == MOCK_INSTANCE_DOMAIN)
+                .where(WikibaseURLModel.url == "osloddt.wikibase.cloud")
             )
             result = await async_session.execute(stmt)
             found = result.scalars().first()
             assert found is not None
-            assert found.wikibase_name == MOCK_INSTANCE_NAME_RENAMED
+            assert found.wikibase_name == "Doelgericht Digitaal Transformeren RENAMED"
