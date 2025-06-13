@@ -2,7 +2,7 @@
   "data": [
     {
       "id": 167,
-      "description": null,
+      "description": "This is the description of the wikibase instance",
       "domain": "osloddt.wikibase.cloud",
       "domain_decoded": "osloddt.wikibase.cloud",
       "sitename": "Doelgericht Digitaal Transformeren RENAMED",
