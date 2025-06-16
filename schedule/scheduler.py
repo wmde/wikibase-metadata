@@ -48,5 +48,6 @@ scheduler.add_job(
 scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
 
 scheduler.add_job(
-    update_out_of_date_cloud_instances, CronTrigger(day_of_week=6, hour=20) # before data pulls
+    update_out_of_date_cloud_instances,
+    CronTrigger(day_of_week=6, hour=20),  # before data pulls
 )
