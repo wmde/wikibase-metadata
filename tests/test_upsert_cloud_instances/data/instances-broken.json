@@ -1,40 +1,40 @@
 {
-  "data": [
-    {
-      "id": 167,
-      "description": null,
-      "sitename": "Doelgericht Digitaal Transformeren",
-      "wiki_site_stats": {
-        "pages": 880923,
-        "articles": 880496,
-        "edits": 10876042,
-        "images": 0,
-        "users": 5,
-        "activeusers": 0,
-        "admins": 1,
-        "jobs": 0,
-        "cirrussearch-article-words": 4955
-      },
-      "logo_url": null
-    },
-    {
-      "id": 32,
-      "description": null,
-      "domain": "lexbib.elex.is",
-      "domain_decoded": "lexbib.elex.is",
-      "sitename": "LexBib",
-      "wiki_site_stats": {
-        "pages": 693452,
-        "articles": 692423,
-        "edits": 2633589,
-        "images": 0,
-        "users": 730,
-        "activeusers": 1,
-        "admins": 2,
-        "jobs": 0,
-        "cirrussearch-article-words": 61780
-      },
-      "logo_url": "https:\/\/storage.googleapis.com\/wikibase-cloud-static\/sites\/10e4a593f3f5e9c2b658bd4e321a4469\/logos\/135.png?u=1651065740"
-    }
-  ]
+	"data": [
+		{
+			"id": 167,
+			"description": null,
+			"sitename": "Doelgericht Digitaal Transformeren",
+			"wiki_site_stats": {
+				"pages": 880923,
+				"articles": 880496,
+				"edits": 10876042,
+				"images": 0,
+				"users": 5,
+				"activeusers": 0,
+				"admins": 1,
+				"jobs": 0,
+				"cirrussearch-article-words": 4955
+			},
+			"logo_url": null
+		},
+		{
+			"id": 32,
+			"description": null,
+			"domain": "lexbib.elex.is",
+			"domain_decoded": "lexbib.elex.is",
+			"sitename": "LexBib",
+			"wiki_site_stats": {
+				"pages": 693452,
+				"articles": 692423,
+				"edits": 2633589,
+				"images": 0,
+				"users": 730,
+				"activeusers": 1,
+				"admins": 2,
+				"jobs": 0,
+				"cirrussearch-article-words": 61780
+			},
+			"logo_url": "https:\/\/storage.googleapis.com\/wikibase-cloud-static\/sites\/10e4a593f3f5e9c2b658bd4e321a4469\/logos\/135.png?u=1651065740"
+		}
+	]
 }
