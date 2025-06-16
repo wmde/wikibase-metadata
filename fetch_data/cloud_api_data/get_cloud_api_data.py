@@ -1,5 +1,9 @@
 """fetch list of wikibase cloud instances from api and update local database"""
 
+from dataclasses import dataclass
+from logger import logger
+from typing import Optional
+
 from data import get_async_session
 from sqlalchemy import select
 from model.database import WikibaseModel
@@ -7,9 +11,6 @@ from model.database.wikibase_url_model import WikibaseURLModel
 from model.enum import WikibaseType
 
 from fetch_data.utils import fetch_api_data
-
-from logger import logger
-from dataclasses import dataclass
 
 
 @dataclass
@@ -77,10 +78,11 @@ async def update_cloud_instances():
                 .join(WikibaseModel.url)  # Join using the predefined 'url' relationship
                 .where(WikibaseURLModel.url == f"https://{cloud_instance.domain}")
             )
-            result = await async_session.execute(stmt)
-            existing_wikibase: WikibaseModel | None = result.scalars().first()
+            existing_wikibase: Optional[WikibaseModel] = (
+                await async_session.scalars(stmt)
+            ).one_or_none()
 
-            if existing_wikibase:
+            if existing_wikibase is not None:
                 # name of a cloud instance changed
                 if existing_wikibase.wikibase_name != cloud_instance.sitename:
                     existing_wikibase.wikibase_name = cloud_instance.sitename

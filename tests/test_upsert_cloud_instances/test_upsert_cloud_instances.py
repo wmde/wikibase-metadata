@@ -96,8 +96,7 @@ async def test_insert_cloud_instances(mocker):
                 .join(WikibaseModel.url)
                 .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
             )
-            result = await async_session.execute(stmt)
-            found = result.scalars().first()
+            found = (await async_session.scalars(stmt)).one_or_none()
             assert found is None
 
         # update from the API
@@ -110,8 +109,7 @@ async def test_insert_cloud_instances(mocker):
                 .join(WikibaseModel.url)
                 .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
             )
-            result = await async_session.execute(stmt)
-            found = result.scalars().first()
+            found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
             assert found.wikibase_name == "Doelgericht Digitaal Transformeren"
             assert found.description is None
@@ -150,8 +148,7 @@ async def test_update_cloud_instances(mocker):
                 .join(WikibaseModel.url)
                 .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
             )
-            result = await async_session.execute(stmt)
-            found = result.scalars().first()
+            found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
 
         await update_cloud_instances()
@@ -162,8 +159,7 @@ async def test_update_cloud_instances(mocker):
                 .join(WikibaseModel.url)
                 .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
             )
-            result = await async_session.execute(stmt)
-            found = result.scalars().first()
+            found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
             assert found.wikibase_name == "Doelgericht Digitaal Transformeren RENAMED"
             assert (
@@ -216,8 +212,7 @@ async def test_transform_to_cloud_instance(mocker):
                 .join(WikibaseModel.url)
                 .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
             )
-            result = await async_session.execute(stmt)
-            found = result.scalars().first()
+            found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
             assert found.wikibase_name == "Doelgericht Digitaal Transformeren"
             assert found.description is None
