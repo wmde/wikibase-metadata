@@ -30,3 +30,6 @@ from fetch_data.soup_data import (
     create_special_statistics_observation,
     update_software_data,
 )
+from fetch_data.cloud_api_data import (
+    update_cloud_instances,
+)

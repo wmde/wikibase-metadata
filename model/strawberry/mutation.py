@@ -11,6 +11,7 @@ from fetch_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     create_user_observation,
+    update_cloud_instances,
 )
 from update_data import (
     add_wikibase_language,
@@ -100,3 +101,9 @@ class Mutation:
     upsert_wikibase_url = strawberry.mutation(
         description="Add / Update Wikibase URL", resolver=upsert_wikibase_url
     )
+
+    update_cloud_instances = strawberry.mutation(
+        description="Update the list of known Wikibase Cloud instances from API",
+        resolver=update_cloud_instances
+    )
+

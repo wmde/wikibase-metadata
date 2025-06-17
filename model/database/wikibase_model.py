@@ -118,6 +118,7 @@ class WikibaseModel(ModelBase):
                 "wikibase",
             ]
         ),
+        cascade="all, delete-orphan",
     )
     """Base URL"""
 
@@ -137,6 +138,7 @@ class WikibaseModel(ModelBase):
                 "wikibase",
             ]
         ),
+        cascade="all, delete-orphan",
     )
     """Article Path - `/wiki`"""
 
@@ -168,6 +170,7 @@ class WikibaseModel(ModelBase):
                 "wikibase",
             ]
         ),
+        cascade="all, delete-orphan",
     )
     """Script Path - `/w`"""
 
@@ -195,6 +198,7 @@ class WikibaseModel(ModelBase):
         overlaps=",".join(
             ["article_path", "script_path", "sparql_frontend_url", "url", "wikibase"]
         ),
+        cascade="all, delete-orphan",
     )
     """SPARQL Endpoint"""
 
@@ -208,6 +212,7 @@ class WikibaseModel(ModelBase):
         overlaps=",".join(
             ["article_path", "script_path", "sparql_endpoint_url", "url", "wikibase"]
         ),
+        cascade="all, delete-orphan",
     )
     """SPARQL Frontend"""
 
@@ -290,29 +295,72 @@ class WikibaseModel(ModelBase):
         self.region = region
         self.checked = False
         self.test = False
-        if primary_language is not None:
-            self.languages.append(
-                WikibaseLanguageModel(language=primary_language, primary=True)
-            )
-        if additional_languages is not None:
-            self.languages.extend(
-                [WikibaseLanguageModel(language=l) for l in additional_languages]
-            )
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
+
+        if primary_language is not None:
+            self.set_primary_language(primary_language)
+
+        if additional_languages is not None and len(additional_languages) > 0:
+            self.set_additional_languages(additional_languages)
+
         if article_path is not None:
+            self.set_article_path(article_path)
+
+        if script_path is not None:
+            self.set_script_path(script_path)
+
+        if sparql_endpoint_url is not None:
+            self.set_sparql_endpoint_url(sparql_endpoint_url)
+
+        if sparql_frontend_url is not None:
+            self.set_sparql_frontend_url(sparql_frontend_url)
+
+    def set_primary_language(self, primary_language: str):
+        """Sets the primary language."""
+        self.languages.append(
+            WikibaseLanguageModel(language=primary_language, primary=True)
+        )
+
+    def set_additional_languages(self, additional_languages: list[str]):
+        """Adds additional languages."""
+        self.languages.extend(
+            [WikibaseLanguageModel(language=l) for l in additional_languages]
+        )
+
+    def set_article_path(self, article_path: str):
+        """Sets the article path URL attribute."""
+        if self.article_path is not None:
+            self.article_path.url = article_path
+        else:
             self.article_path = WikibaseURLModel(
                 url=article_path, url_type=WikibaseURLType.ARTICLE_PATH
             )
-        if script_path is not None:
+
+    def set_script_path(self, script_path: str):
+        """Sets the script path URL attribute."""
+        if self.script_path is not None:
+            self.script_path.url = script_path
+        else:
             self.script_path = WikibaseURLModel(
                 url=script_path, url_type=WikibaseURLType.SCRIPT_PATH
             )
-        if sparql_endpoint_url is not None:
+
+    def set_sparql_endpoint_url(self, sparql_endpoint_url: str):
+        """Sets the SPARQL endpoint URL attribute."""
+        if self.sparql_endpoint_url is not None:
+            self.sparql_endpoint_url.url = sparql_endpoint_url
+        else:
             self.sparql_endpoint_url = WikibaseURLModel(
-                url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
+                url=sparql_endpoint_url,
+                url_type=WikibaseURLType.SPARQL_ENDPOINT_URL,
             )
-        if sparql_frontend_url is not None:
+
+    def set_sparql_frontend_url(self, sparql_frontend_url: str):
+        """Sets the SPARQL frontend URL attribute."""
+        if self.sparql_frontend_url is not None:
+            self.sparql_endpoint_url.url = sparql_frontend_url
+        else:
             self.sparql_frontend_url = WikibaseURLModel(
                 url=sparql_frontend_url, url_type=WikibaseURLType.SPARQL_FRONTEND_URL
             )
