@@ -126,6 +126,8 @@ async def update_cloud_instances():
                     sparql_endpoint_url=f"https://{cloud_instance.domain}/query/sparql",
                 )
                 new_wikibase.wikibase_type = WikibaseType.CLOUD
+                # TODO: what is this checked for? is it reasonable to set it to checked here?
+                new_wikibase.checked = True 
 
                 async_session.add(new_wikibase)
                 logger.debug(

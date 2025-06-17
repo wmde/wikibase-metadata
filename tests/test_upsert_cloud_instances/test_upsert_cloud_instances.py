@@ -3,6 +3,7 @@
 import os
 import pytest
 from tests.utils import MockResponse
+from tests.test_schema import test_schema
 from data import get_async_session
 from sqlalchemy import select
 from model.enum import WikibaseType
@@ -72,6 +73,7 @@ async def test_fetch_cloud_instances_broken_response(mocker):
         assert instances[0].id == 32
 
 
+@pytest.mark.dependency(name="insert-cloud-instances", scope="session")
 @pytest.mark.asyncio
 async def test_insert_cloud_instances(mocker):
     """
@@ -126,6 +128,9 @@ async def test_insert_cloud_instances(mocker):
             )
 
 
+@pytest.mark.dependency(
+    name="update-cloud-instances", depends=["insert-cloud-instances"], scope="session"
+)
 @pytest.mark.asyncio
 async def test_update_cloud_instances(mocker):
     """
@@ -178,6 +183,11 @@ async def test_update_cloud_instances(mocker):
             )
 
 
+@pytest.mark.dependency(
+    name="transform-cloud-instances",
+    depends=["update-cloud-instances"],
+    scope="session",
+)
 @pytest.mark.asyncio
 async def test_transform_to_cloud_instance(mocker):
     """
@@ -227,3 +237,42 @@ async def test_transform_to_cloud_instance(mocker):
                 found.sparql_endpoint_url.url
                 == "https://osloddt.wikibase.cloud/query/sparql"
             )
+
+
+WIKIBASE_LIST_QUERY = """
+query MyQuery {
+  wikibaseList(pageNumber: 1, pageSize: 10000) {
+    data {
+      id
+      urls {
+        baseUrl
+      }
+    }
+  }
+}
+"""
+
+
+@pytest.mark.dependency(
+    name="query-cloud-instances", depends=["transform-cloud-instances"], scope="session"
+)
+@pytest.mark.asyncio
+async def test_query_cloud_instance(mocker):
+    """
+    test whether querying the wikibase list via graphql returns a cloud instance
+    """
+    result = await test_schema.execute(WIKIBASE_LIST_QUERY)
+    assert result.errors is None
+    assert result.data is not None
+    data = result.data
+    assert "wikibaseList" in data
+    wikibase_list = data["wikibaseList"]
+    assert "data" in wikibase_list
+    wikibase_list_data = wikibase_list["data"]
+
+    found = [
+        wikibase
+        for wikibase in wikibase_list_data
+        if wikibase["urls"]["baseUrl"] == "https://osloddt.wikibase.cloud"
+    ]
+    assert len(found) == 1
