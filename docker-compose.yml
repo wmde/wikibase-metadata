@@ -11,6 +11,7 @@ services:
         target: /workspace
     ports:
       - 8000:8000
+    user: "${UID}:${GID}"
 
   # docker compose run --build test-not-data
   # MAKE SURE TO RESET YOUR DATA WITH
@@ -32,6 +33,7 @@ services:
       - --order-dependencies
     environment:
       SETTINGS_FILE: test-settings.ini
+    user: "${UID}:${GID}"
 
   # docker compose run --build test-data
   test-data:
@@ -47,3 +49,4 @@ services:
       - data
     environment:
       SETTINGS_FILE: test-settings.ini
+    user: "${UID}:${GID}"

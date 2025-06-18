@@ -18,6 +18,7 @@ from fetch_data.out_of_date import (
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
     update_out_of_date_user_observations,
+    update_out_of_date_cloud_instances,
 )
 from fetch_data.sparql_data import (
     create_connectivity_observation,
@@ -28,4 +29,7 @@ from fetch_data.soup_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     update_software_data,
+)
+from fetch_data.cloud_api_data import (
+    update_cloud_instances,
 )
