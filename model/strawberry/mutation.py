@@ -104,6 +104,5 @@ class Mutation:
 
     update_cloud_instances = strawberry.mutation(
         description="Update the list of known Wikibase Cloud instances from API",
-        resolver=update_cloud_instances
+        resolver=update_cloud_instances,
     )
-

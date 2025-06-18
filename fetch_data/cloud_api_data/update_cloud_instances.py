@@ -7,7 +7,7 @@ from data import get_async_session
 from sqlalchemy import select
 from model.database import WikibaseModel
 from model.database.wikibase_url_model import WikibaseURLModel
-from model.enum import WikibaseType 
+from model.enum import WikibaseType
 
 from fetch_data.cloud_api_data import fetch_cloud_instances
 
