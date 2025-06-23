@@ -35,17 +35,16 @@ class Mutation:
 
     @strawberry.mutation(description="Add Wikibase")
     async def add_wikibase(
-        self, wikibase_input: WikibaseInput, info: Info
+        self, wikibase_input: WikibaseInput
     ) -> WikibaseStrawberryModel:
         """Add Wikibase"""
 
-        authenticate(info)
         return await add_wikibase(wikibase_input)
 
     @strawberry.mutation(
         description="Fetch Connectivity Data from Specified Wikibase Instance"
     )
-    async def fetch_connectivity_data(self, wikibase_id: int, info: Info) -> bool:
+    async def fetch_connectivity_data(self, info: Info, wikibase_id: int) -> bool:
         """Fetch Connectivity Data from Specified Wikibase Instance"""
 
         authenticate(info)
@@ -53,7 +52,7 @@ class Mutation:
 
     @strawberry.mutation(description="Fetch Log Data from Specified Wikibase Instance")
     async def fetch_log_data(
-        self, wikibase_id: int, first_month: bool, info: Info
+        self, info: Info, wikibase_id: int, first_month: bool
     ) -> bool:
         """Fetch Log Data from Specified Wikibase Instance"""
 
@@ -64,7 +63,7 @@ class Mutation:
         description="Fetch Property Popularity from Specified Wikibase Instance"
     )
     async def fetch_property_popularity_data(
-        self, wikibase_id: int, info: Info
+        self, info: Info, wikibase_id: int
     ) -> bool:
         """Fetch Property Popularity from Specified Wikibase Instance"""
 
@@ -74,28 +73,28 @@ class Mutation:
     @strawberry.mutation(
         description="Fetch Quantity Data from Specified Wikibase Instance"
     )
-    async def fetch_quantity_data(self, wikibase_id: int, info: Info) -> bool:
+    async def fetch_quantity_data(self, info: Info, wikibase_id: int) -> bool:
         """Fetch Quantity Data from Specified Wikibase Instance"""
 
         authenticate(info)
         return await create_quantity_observation(wikibase_id)
 
     @strawberry.mutation(description="Fetch Special:Statistics Data")
-    async def fetch_statistics_data(self, wikibase_id: int, info: Info) -> bool:
+    async def fetch_statistics_data(self, info: Info, wikibase_id: int) -> bool:
         """Fetch Special:Statistics Data"""
 
         authenticate(info)
         return await create_special_statistics_observation(wikibase_id)
 
     @strawberry.mutation(description="Fetch User Data from Specified Wikibase Instance")
-    async def fetch_user_data(self, wikibase_id: int, info: Info) -> bool:
+    async def fetch_user_data(self, info: Info, wikibase_id: int) -> bool:
         """Fetch User Data from Specified Wikibase Instance"""
 
         authenticate(info)
         return await create_user_observation(wikibase_id)
 
     @strawberry.mutation(description="Scrape data from Special:Version page")
-    async def fetch_version_data(self, wikibase_id: int, info: Info) -> bool:
+    async def fetch_version_data(self, info: Info, wikibase_id: int) -> bool:
         """Scrape data from Special:Version page"""
 
         authenticate(info)
@@ -103,7 +102,7 @@ class Mutation:
 
     @strawberry.mutation(description="Merge Software")
     async def merge_software_by_id(
-        self, base_id: int, additional_id: int, info: Info
+        self, info: Info, base_id: int, additional_id: int
     ) -> bool:
         """Merge Software"""
 
@@ -112,7 +111,7 @@ class Mutation:
 
     @strawberry.mutation(description="Add Language to Wikibase")
     async def add_wikibase_language(
-        self, wikibase_id: int, language: str, info: Info
+        self, info: Info, wikibase_id: int, language: str
     ) -> bool:
         """Add Language to Wikibase"""
 
@@ -121,7 +120,7 @@ class Mutation:
 
     @strawberry.mutation(description="Remove Language from Wikibase")
     async def remove_wikibase_language(
-        self, wikibase_id: int, language: str, info: Info
+        self, info: Info, wikibase_id: int, language: str
     ) -> bool:
         """Remove Language from Wikibase"""
 
@@ -130,7 +129,7 @@ class Mutation:
 
     @strawberry.mutation(description="Remove URL from Wikibase")
     async def remove_wikibase_url(
-        self, wikibase_id: int, url_type: WikibaseURLType, info: Info
+        self, info: Info, wikibase_id: int, url_type: WikibaseURLType
     ) -> bool:
         """Remove URL from Wikibase"""
 
@@ -139,7 +138,7 @@ class Mutation:
 
     @strawberry.mutation(description="Set Extension Bundled with WBS")
     async def set_extension_wbs_bundled(
-        self, extension_id: int, bundled: bool, info: Info
+        self, info: Info, extension_id: int, bundled: bool = True
     ) -> bool:
         """Set Extension Bundled with WBS"""
 
@@ -148,7 +147,7 @@ class Mutation:
 
     @strawberry.mutation(description="Update Wikibase Primary Language")
     async def update_wikibase_primary_language(
-        self, wikibase_id: int, language: str, info: Info
+        self, info: Info, wikibase_id: int, language: str
     ) -> bool:
         """Update Wikibase Primary Language"""
 
@@ -157,7 +156,7 @@ class Mutation:
 
     @strawberry.mutation(description="Update Wikibase Type")
     async def update_wikibase_type(
-        self, wikibase_id: int, wikibase_type: Optional[WikibaseType], info: Info
+        self, info: Info, wikibase_id: int, wikibase_type: Optional[WikibaseType]
     ) -> bool:
         """Update Wikibase Type"""
 
@@ -166,7 +165,7 @@ class Mutation:
 
     @strawberry.mutation(description="Add / Update Wikibase URL")
     async def upsert_wikibase_url(
-        self, wikibase_id: int, url: str, url_type: WikibaseURLType, info: Info
+        self, info: Info, wikibase_id: int, url: str, url_type: WikibaseURLType
     ) -> bool:
         """Add / Update Wikibase URL"""
 
