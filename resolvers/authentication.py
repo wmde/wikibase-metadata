@@ -12,8 +12,8 @@ def authenticate(info: Info[BaseContext]):
 
     assert info is not None
     assert info.context is not None
-    assert 'request' in info.context
-    assert info.context['request'] is not None
+    assert "request" in info.context
+    assert info.context["request"] is not None
 
     authenticate_request(info.context["request"])
 
