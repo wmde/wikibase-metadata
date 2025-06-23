@@ -1,6 +1,9 @@
 """Fetch Data"""
 
 from fetch_data.api_data import create_log_observation, create_user_observation
+from fetch_data.cloud_api_data import (
+    update_cloud_instances,
+)
 from fetch_data.out_of_date import (
     get_wikibase_list_with_out_of_date_connectivity_observations,
     get_wikibase_list_with_out_of_date_log_first_observations,
@@ -29,7 +32,4 @@ from fetch_data.soup_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     update_software_data,
-)
-from fetch_data.cloud_api_data import (
-    update_cloud_instances,
 )
