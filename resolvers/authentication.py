@@ -10,8 +10,7 @@ from config import auth_token
 def authenticate(info: Info[BaseContext]):
     """Authenticate"""
 
-    authenticate_request(info.context['request'])
-
+    authenticate_request(info.context["request"])
 
 
 def authenticate_request(request: Request):
@@ -19,4 +18,6 @@ def authenticate_request(request: Request):
 
     print(request.headers.get("authorization", None))
     print(auth_token)
-    assert request.headers.get("authorization", None) == auth_token, "Authorisation Failed"
+    assert (
+        request.headers.get("authorization", None) == auth_token
+    ), "Authorisation Failed"
