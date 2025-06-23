@@ -5,7 +5,10 @@ import os
 
 
 config = configparser.ConfigParser()
-config.read(os.environ.get("SETTINGS_FILE") or "settings.ini")
+config.read(os.environ.get("SETTINGS_FILE", "settings.ini"))
+
+auth_token = os.path.expandvars(config.get("auth", "auth_token"))
+assert auth_token is not None, "No Authentication Token Found"
 
 database_connection_string = os.path.expandvars(
     config.get("database", "database_connection_string")
