@@ -257,7 +257,7 @@ query MyQuery {
     name="query-cloud-instances", depends=["transform-cloud-instances"], scope="session"
 )
 @pytest.mark.asyncio
-async def test_query_cloud_instance(mocker):
+async def test_query_cloud_instance():
     """
     test whether querying the wikibase list via graphql returns a cloud instance
     """
