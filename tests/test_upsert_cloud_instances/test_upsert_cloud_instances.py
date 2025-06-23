@@ -35,7 +35,7 @@ async def test_fetch_cloud_instances(mocker):
         instances = await fetch_cloud_instances()
 
         assert instances
-        assert len(instances) == 1554
+        assert len(instances) == 8
 
         assert instances[0].id == 167
         assert instances[0].sitename == "Doelgericht Digitaal Transformeren"
@@ -43,11 +43,11 @@ async def test_fetch_cloud_instances(mocker):
         assert instances[0].domain_decoded == "osloddt.wikibase.cloud"
         assert instances[0].description is None
 
-        assert instances[42].id == 326
-        assert instances[42].sitename == "MetaBase"
-        assert instances[42].domain == "metabase.wikibase.cloud"
-        assert instances[42].domain_decoded == "metabase.wikibase.cloud"
-        assert instances[42].description is None
+        assert instances[7].id == 326
+        assert instances[7].sitename == "MetaBase"
+        assert instances[7].domain == "metabase.wikibase.cloud"
+        assert instances[7].domain_decoded == "metabase.wikibase.cloud"
+        assert instances[7].description is None
 
 
 @pytest.mark.asyncio
