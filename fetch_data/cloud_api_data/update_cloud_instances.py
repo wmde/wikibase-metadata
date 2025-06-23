@@ -21,10 +21,11 @@ async def update_cloud_instances() -> bool:
 
     async with get_async_session() as async_session:
         for cloud_instance in cloud_instances:
+            search = "%{}%".format(cloud_instance.domain)
             stmt = (
                 select(WikibaseModel)
-                .join(WikibaseModel.url)  # Join using the predefined 'url' relationship
-                .where(WikibaseURLModel.url == f"https://{cloud_instance.domain}")
+                .join(WikibaseModel.url)
+                .where(WikibaseURLModel.url.like(search))
             )
             existing_wikibase: Optional[WikibaseModel] = (
                 await async_session.scalars(stmt)
@@ -65,7 +66,7 @@ async def update_cloud_instances() -> bool:
                         f"https://{cloud_instance.domain}/query/sparql"
                     )
                     logger.debug(
-                        f"Updated instance to be a cloud instance or {cloud_instance.domain}"
+                        f"Updated instance to be a cloud instance {cloud_instance.domain}"
                     )
 
             else:

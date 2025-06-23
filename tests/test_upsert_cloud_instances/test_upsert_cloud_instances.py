@@ -91,12 +91,13 @@ async def test_insert_cloud_instances(mocker):
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
 
-        # check the wikibase instance is not in the database
+        # check the wikibase instance is NOT in the database
         async with get_async_session() as async_session:
+            search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
+                .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
             assert found is None
@@ -106,25 +107,26 @@ async def test_insert_cloud_instances(mocker):
 
         # check the wikibase instance is in the database
         async with get_async_session() as async_session:
+            search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
+                .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
-            assert found.wikibase_name == "Doelgericht Digitaal Transformeren"
+            assert found.wikibase_name == "Teochew Dictionary"
             assert found.description is None
             assert found.wikibase_type == WikibaseType.CLOUD
-            assert found.url.url == "https://osloddt.wikibase.cloud"
+            assert found.url.url == "https://tcdict.wikibase.cloud"
             assert found.script_path.url == "/w"
             assert found.article_path.url == "/wiki"
             assert (
-                found.sparql_frontend_url.url == "https://osloddt.wikibase.cloud/query/"
+                found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
             )
             assert (
                 found.sparql_endpoint_url.url
-                == "https://osloddt.wikibase.cloud/query/sparql"
+                == "https://tcdict.wikibase.cloud/query/sparql"
             )
 
 
@@ -148,10 +150,11 @@ async def test_update_cloud_instances(mocker):
         )
 
         async with get_async_session() as async_session:
+            search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
+                .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
@@ -159,27 +162,26 @@ async def test_update_cloud_instances(mocker):
         await update_cloud_instances()
 
         async with get_async_session() as async_session:
+            search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
+                .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
-            assert found.wikibase_name == "Doelgericht Digitaal Transformeren RENAMED"
-            assert (
-                found.description == "This is the description of the wikibase instance"
-            )
+            assert found.wikibase_name == "Teochew Dictionary UPDATED"
+            assert found.description is None
             assert found.wikibase_type == WikibaseType.CLOUD
-            assert found.url.url == "https://osloddt.wikibase.cloud"
+            assert found.url.url == "https://tcdict.wikibase.cloud"
             assert found.script_path.url == "/w"
             assert found.article_path.url == "/wiki"
             assert (
-                found.sparql_frontend_url.url == "https://osloddt.wikibase.cloud/query/"
+                found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
             )
             assert (
                 found.sparql_endpoint_url.url
-                == "https://osloddt.wikibase.cloud/query/sparql"
+                == "https://tcdict.wikibase.cloud/query/sparql"
             )
 
 
@@ -207,8 +209,8 @@ async def test_transform_to_cloud_instance(mocker):
         async with get_async_session() as async_session:
 
             existing_instance = WikibaseModel(
-                wikibase_name="Doelgericht Digitaal Transformeren",
-                base_url="https://osloddt.wikibase.cloud",
+                wikibase_name="Teochew Dictionary Self-hosted",
+                base_url="https://tcdict.wikibase.cloud",
             )
             existing_instance.wikibase_type = WikibaseType.SUITE
 
@@ -217,25 +219,26 @@ async def test_transform_to_cloud_instance(mocker):
         await update_cloud_instances()
 
         async with get_async_session() as async_session:
+            search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url == "https://osloddt.wikibase.cloud")
+                .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
-            assert found.wikibase_name == "Doelgericht Digitaal Transformeren"
+            assert found.wikibase_name == "Teochew Dictionary"
             assert found.description is None
             assert found.wikibase_type == WikibaseType.CLOUD
-            assert found.url.url == "https://osloddt.wikibase.cloud"
+            assert found.url.url == "https://tcdict.wikibase.cloud"
             assert found.script_path.url == "/w"
             assert found.article_path.url == "/wiki"
             assert (
-                found.sparql_frontend_url.url == "https://osloddt.wikibase.cloud/query/"
+                found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
             )
             assert (
                 found.sparql_endpoint_url.url
-                == "https://osloddt.wikibase.cloud/query/sparql"
+                == "https://tcdict.wikibase.cloud/query/sparql"
             )
 
 
@@ -273,6 +276,6 @@ async def test_query_cloud_instance():
     found = [
         wikibase
         for wikibase in wikibase_list_data
-        if wikibase["urls"]["baseUrl"] == "https://osloddt.wikibase.cloud"
+        if wikibase["urls"]["baseUrl"] == "https://tcdict.wikibase.cloud"
     ]
     assert len(found) == 1
