@@ -3,7 +3,7 @@
 import pytest
 
 from tests.test_schema import test_schema
-from tests.utils.assert_property_value import assert_layered_property_value
+from tests.utils import assert_layered_property_value, get_mock_context
 
 
 WIKIBASE_URLS_QUERY = """query MyQuery($wikibaseId: Int!) {
@@ -64,6 +64,7 @@ async def test_add_wikibase_url():
             "url": "/w/",
             "urlType": "SCRIPT_PATH",
         },
+        context_value=get_mock_context("test-auth-token"),
     )
     assert add_result.errors is None
     assert add_result.data is not None
@@ -122,6 +123,7 @@ async def test_remove_wikibase_url():
             "wikibaseId": 1,
             "urlType": "SPARQL_FRONTEND_URL",
         },
+        context_value=get_mock_context("test-auth-token"),
     )
     assert remove_result.errors is None
     assert remove_result.data is not None
@@ -181,6 +183,7 @@ async def test_update_wikibase_url():
             "url": "https://query.example.com/sparql",
             "urlType": "SPARQL_ENDPOINT_URL",
         },
+        context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None
     assert update_result.data is not None

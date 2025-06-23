@@ -7,6 +7,7 @@ from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.utils import assert_layered_property_value
+from tests.utils.mock_request import get_mock_context
 from update_data import update_wikibase_primary_language
 
 UPDATE_WIKIBASE_PRIMARY_LANGUAGE_QUERY = """
@@ -47,6 +48,7 @@ async def test_update_wikibase_primary_language_one():
     update_result = await test_schema.execute(
         UPDATE_WIKIBASE_PRIMARY_LANGUAGE_QUERY,
         variable_values={"wikibaseId": 1, "language": "Cymru"},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None
     assert update_result.data is not None

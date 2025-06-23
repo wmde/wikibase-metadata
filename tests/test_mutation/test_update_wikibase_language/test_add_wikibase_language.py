@@ -6,7 +6,7 @@ from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.test_schema import test_schema
-from tests.utils.assert_property_value import assert_layered_property_value
+from tests.utils import assert_layered_property_value, get_mock_context
 from update_data import add_wikibase_language
 
 
@@ -46,6 +46,7 @@ async def test_add_wikibase_language_one():
     add_result = await test_schema.execute(
         ADD_WIKIBASE_LANGUAGE_QUERY,
         variable_values={"wikibaseId": 1, "language": "French"},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert add_result.errors is None
     assert add_result.data is not None
