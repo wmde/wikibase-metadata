@@ -3,7 +3,7 @@
 import pytest
 
 from tests.test_schema import test_schema
-from tests.utils.test_request import TestRequest
+from tests.utils import TestRequest, get_test_context
 
 
 WIKIBASE_QUERY = """
@@ -42,9 +42,7 @@ async def test_wikibase_query_authorized():
     result = await test_schema.execute(
         WIKIBASE_QUERY,
         variable_values={"wikibaseId": 1},
-        context_value={
-            "request": TestRequest(headers={"authorization": "test-auth-token"})
-        },
+        context_value=get_test_context("test-auth-token"),
     )
 
     assert result.errors is None
