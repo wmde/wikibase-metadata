@@ -61,8 +61,8 @@ class Query:
 
         authenticate(info)
         return await get_software_list(
-                page_number, page_size, WikibaseSoftwareType.EXTENSION
-            )
+            page_number, page_size, WikibaseSoftwareType.EXTENSION
+        )
 
     @strawberry.field(description="Aggregated Year of First Log Date")
     async def aggregate_created(
@@ -81,8 +81,8 @@ class Query:
 
         authenticate(info)
         return await get_aggregate_version(
-                WikibaseSoftwareType.EXTENSION, page_number, page_size
-            )
+            WikibaseSoftwareType.EXTENSION, page_number, page_size
+        )
 
     @strawberry.field(description="Aggregated Language Popularity")
     async def aggregate_language_popularity(
@@ -101,8 +101,8 @@ class Query:
 
         authenticate(info)
         return await get_aggregate_version(
-                WikibaseSoftwareType.LIBRARY, page_number, page_size
-            )
+            WikibaseSoftwareType.LIBRARY, page_number, page_size
+        )
 
     @strawberry.field(description="Aggregated Property Popularity")
     async def aggregate_property_popularity(
@@ -130,8 +130,8 @@ class Query:
 
         authenticate(info)
         return await get_aggregate_version(
-                WikibaseSoftwareType.SKIN, page_number, page_size
-            )
+            WikibaseSoftwareType.SKIN, page_number, page_size
+        )
 
     @strawberry.field(description="Aggregated Software Popularity")
     async def aggregate_software_popularity(
@@ -141,8 +141,8 @@ class Query:
 
         authenticate(info)
         return await get_aggregate_version(
-                WikibaseSoftwareType.SOFTWARE, page_number, page_size
-            )
+            WikibaseSoftwareType.SOFTWARE, page_number, page_size
+        )
 
     @strawberry.field(description="Aggregated Statistics")
     async def aggregate_statistics(
