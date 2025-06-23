@@ -33,7 +33,8 @@ async def update_cloud_instances() -> bool:
 
             if existing_wikibase is not None:
                 logger.debug(
-                    f"Found existing Wikibase ID {existing_wikibase.id} {existing_wikibase.wikibase_name}"
+                    "Found existing Wikibase ID "
+                    + f"{existing_wikibase.id} {existing_wikibase.wikibase_name}"
                 )
 
                 # name of a cloud instance changed
