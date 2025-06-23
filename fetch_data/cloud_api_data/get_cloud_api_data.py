@@ -17,13 +17,14 @@ class WikibaseCloudInstance:
     sitename: str | None
 
 
+URL = "https://www.wikibase.cloud/api/wiki?page=1&per_page=10000"
+
 async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
     """
     Get the list of currently known wikibase cloud instances
     from the wikibase cloud dashboard api
     """
-    url = "https://www.wikibase.cloud/api/wiki?page=1&per_page=10000"
-    query_data = await fetch_api_data(url)
+    query_data = await fetch_api_data(URL)
 
     instances: list[WikibaseCloudInstance] = []
     if query_data and "data" in query_data:
