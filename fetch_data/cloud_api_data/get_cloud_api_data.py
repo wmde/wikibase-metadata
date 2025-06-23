@@ -14,7 +14,7 @@ class WikibaseCloudInstance:
     description: str | None
 
     # domain is PUNYcode, domain_decoded is unicode.
-    #  e.g. 
+    #  e.g.
     #   "domain":"xn--brgerspitalzinshaus-59b.wikibase.cloud"
     #   "domain_decoded":"b\u00fcrgerspitalzinshaus.wikibase.cloud"
     domain: str
@@ -24,6 +24,7 @@ class WikibaseCloudInstance:
 
 
 URL = "https://www.wikibase.cloud/api/wiki?page=1&per_page=10000"
+
 
 async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
     """
