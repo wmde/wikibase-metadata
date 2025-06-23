@@ -21,7 +21,7 @@ async def update_cloud_instances() -> bool:
 
     async with get_async_session() as async_session:
         for cloud_instance in cloud_instances:
-            search = "%{}%".format(cloud_instance.domain)
+            search = f"%{cloud_instance.domain}%"
             stmt = (
                 select(WikibaseModel)
                 .join(WikibaseModel.url)

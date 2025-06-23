@@ -318,15 +318,47 @@ class WikibaseModel(ModelBase):
 
     def set_primary_language(self, primary_language: str):
         """Sets the primary language."""
-        self.languages.append(
-            WikibaseLanguageModel(language=primary_language, primary=True)
-        )
+
+        # if the language is already the primary one, nothing to do
+        if self.primary_language == primary_language:
+            return
+
+        # otherwise, lets mark all exising languages as non primary first
+        for l in self.languages:
+            l.primary = False
+
+        # reuse existing if this language already exists as non primary
+        try:
+            existing_language_item = next(
+                filter(lambda l: l.language == primary_language, self.languages)
+            )
+            existing_language_item.primary = True
+
+        # add a new one otherwise
+        except StopIteration:
+            self.languages.append(
+                WikibaseLanguageModel(language=primary_language, primary=True)
+            )
 
     def set_additional_languages(self, additional_languages: list[str]):
         """Adds additional languages."""
-        self.languages.extend(
-            [WikibaseLanguageModel(language=l) for l in additional_languages]
-        )
+
+        # for all the languages to add
+        for additional_language in additional_languages:
+
+            # check if it is there, ensure it is non primary, if it is there
+            try:
+                existing_language_item = next(
+                    filter(
+                        lambda l, lang=additional_language: l.language == lang,
+                        self.languages,
+                    )
+                )
+                existing_language_item.primary = False
+
+            # otherwise add it
+            except StopIteration:
+                self.languages.append(WikibaseLanguageModel(additional_language))
 
     def set_article_path(self, article_path: str):
         """Sets the article path URL attribute."""
