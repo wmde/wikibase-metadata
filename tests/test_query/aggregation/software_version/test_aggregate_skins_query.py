@@ -9,7 +9,11 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_page_meta
+from tests.utils import (
+    assert_layered_property_count,
+    assert_page_meta,
+    get_mock_context,
+)
 
 
 AGGREGATE_SKINS_QUERY = (
@@ -34,7 +38,9 @@ async def test_aggregate_skins_query_page_one():
     """Test Aggregated Skins Query"""
 
     result = await test_schema.execute(
-        AGGREGATE_SKINS_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
+        AGGREGATE_SKINS_QUERY,
+        variable_values={"pageNumber": 1, "pageSize": 5},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

@@ -27,7 +27,9 @@ async def test_update_wikibase_primary_language_one():
     """Test Updating to Existing Language"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
@@ -55,7 +57,9 @@ async def test_update_wikibase_primary_language_one():
     assert update_result.data["updateWikibasePrimaryLanguage"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
@@ -85,7 +89,9 @@ async def test_update_wikibase_primary_language_two():
     """Test Updating to New Language"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
@@ -107,7 +113,9 @@ async def test_update_wikibase_primary_language_two():
     assert update_result
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
@@ -137,7 +145,9 @@ async def test_update_wikibase_primary_language_three():
     """Test Updating to Already Primary Language"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
@@ -159,7 +169,9 @@ async def test_update_wikibase_primary_language_three():
     assert update_result
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None

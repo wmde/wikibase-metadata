@@ -27,7 +27,9 @@ async def test_remove_wikibase_language_one():
     """Remove Wikibase Language - Primary"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -63,7 +65,9 @@ async def test_remove_wikibase_language_two():
     """Remove Wikibase Language"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -85,7 +89,9 @@ async def test_remove_wikibase_language_two():
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
@@ -115,7 +121,9 @@ async def test_remove_wikibase_language_three():
     """Remove Wikibase Language - Does Not Exist in List"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -137,7 +145,9 @@ async def test_remove_wikibase_language_three():
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None

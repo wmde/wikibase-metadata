@@ -8,7 +8,7 @@ from tests.test_query.wikibase.statistics_obs.assert_statistics import (
     assert_users,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value
+from tests.utils import assert_layered_property_value, get_mock_context
 
 
 AGGREGATED_STATISTICS_QUERY = """
@@ -46,7 +46,9 @@ query MyQuery {
 async def test_aggregate_statistics_query():
     """Test Aggregate Statistics Query"""
 
-    result = await test_schema.execute(AGGREGATED_STATISTICS_QUERY)
+    result = await test_schema.execute(
+        AGGREGATED_STATISTICS_QUERY, context_value=get_mock_context("test-auth-token")
+    )
 
     assert result.errors is None
     assert result.data is not None

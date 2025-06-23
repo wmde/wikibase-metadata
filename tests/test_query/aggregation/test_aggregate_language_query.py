@@ -2,8 +2,11 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value
-from tests.utils.assert_meta import assert_page_meta
+from tests.utils import (
+    assert_layered_property_value,
+    assert_page_meta,
+    get_mock_context,
+)
 
 
 AGGREGATED_LANGUAGES_QUERY = """
@@ -34,7 +37,9 @@ async def test_aggregate_languages_query():
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(
-        AGGREGATED_LANGUAGES_QUERY, variable_values={"pageNumber": 1, "pageSize": 10}
+        AGGREGATED_LANGUAGES_QUERY,
+        variable_values={"pageNumber": 1, "pageSize": 10},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

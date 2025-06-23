@@ -6,6 +6,7 @@ from tests.utils import (
     assert_layered_property_value,
     assert_page_meta,
     assert_property_value,
+    get_mock_context,
 )
 
 
@@ -102,7 +103,9 @@ async def test_wikibase_list_query():
     """Test Wikibase List"""
 
     result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 1}
+        WIKIBASE_LIST_QUERY,
+        variable_values={"pageNumber": 1, "pageSize": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

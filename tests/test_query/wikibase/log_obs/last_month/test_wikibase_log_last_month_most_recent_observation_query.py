@@ -11,6 +11,7 @@ from tests.utils import (
     assert_layered_property_count,
     assert_property_value,
     DATETIME_FORMAT,
+    get_mock_context,
 )
 
 
@@ -45,7 +46,9 @@ async def test_wikibase_log_last_month_most_recent_observation_query():
     """Test Wikibase Most Recent Log Observation"""
 
     result = await test_schema.execute(
-        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

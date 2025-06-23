@@ -25,7 +25,9 @@ async def test_add_wikibase_language_one():
     """Add Wikibase Language"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -53,7 +55,9 @@ async def test_add_wikibase_language_one():
     assert add_result.data["addWikibaseLanguage"] is True
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
@@ -81,7 +85,9 @@ async def test_add_wikibase_language_two():
     """Add Wikibase Language"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -104,7 +110,9 @@ async def test_add_wikibase_language_two():
         assert add_result
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
