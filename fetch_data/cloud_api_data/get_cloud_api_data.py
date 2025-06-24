@@ -1,26 +1,8 @@
 """fetch list of wikibase cloud instances from api and update local database"""
 
-from dataclasses import dataclass
 from logger import logger
-
 from fetch_data.utils import fetch_api_data
-
-
-@dataclass
-class WikibaseCloudInstance:
-    """cloud instance as fetched from the wikibase cloud dashboard api"""
-
-    id: int
-    description: str | None
-
-    # domain is PUNYcode, domain_decoded is unicode.
-    #  e.g.
-    #   "domain":"xn--brgerspitalzinshaus-59b.wikibase.cloud"
-    #   "domain_decoded":"b\u00fcrgerspitalzinshaus.wikibase.cloud"
-    domain: str
-    domain_decoded: str
-
-    sitename: str | None
+from fetch_data.cloud_api_data.wikibase_cloud_instance import WikibaseCloudInstance
 
 
 URL = "https://www.wikibase.cloud/api/wiki?page=1&per_page=10000"

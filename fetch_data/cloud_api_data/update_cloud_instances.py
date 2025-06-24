@@ -1,14 +1,79 @@
 """fetch list of wikibase cloud instances from api and update local database"""
 
-from logger import logger
 from typing import Optional
 
-from data import get_async_session
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from data import get_async_session
+from fetch_data.cloud_api_data.get_cloud_api_data import fetch_cloud_instances
+from fetch_data.cloud_api_data.wikibase_cloud_instance import WikibaseCloudInstance
+from logger import logger
 from model.database import WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseType
 
-from fetch_data.cloud_api_data import fetch_cloud_instances
+
+async def _find_existing_wikibase(
+    async_session: AsyncSession, cloud: WikibaseCloudInstance
+) -> Optional[WikibaseModel]:
+    """Finds an existing WikibaseModel based on the cloud instance domain."""
+    search = f"%{cloud.domain}%"
+    stmt = (
+        select(WikibaseModel)
+        .join(WikibaseModel.url)
+        .where(WikibaseURLModel.url.like(search))
+    )
+    return (await async_session.scalars(stmt)).one_or_none()
+
+
+def _update_existing_wikibase_if_needed(
+    existing: WikibaseModel, cloud: WikibaseCloudInstance
+) -> None:
+    """Updates an existing WikibaseModel if changes are detected."""
+
+    # name of a cloud instance changed
+    if existing.wikibase_name != cloud.sitename:
+        existing.wikibase_name = cloud.sitename
+        logger.debug(
+            "Updated cloud instance name to " f"{cloud.sitename} for {cloud.domain}"
+        )
+
+    # description of a cloud instance changed
+    if existing.description != cloud.description:
+        existing.description = cloud.description
+        logger.debug(
+            "Updated cloud instance description to "
+            f"{cloud.description} for {cloud.domain}"
+        )
+
+    # instance moved from selfhosted to cloud
+    if existing.wikibase_type != WikibaseType.CLOUD:
+        existing.wikibase_type = WikibaseType.CLOUD
+        existing.base_url = f"https://{cloud.domain}"
+        existing.set_script_path("/w")
+        existing.set_article_path("/wiki")
+        existing.set_sparql_frontend_url(f"https://{cloud.domain}/query/")
+        existing.set_sparql_endpoint_url(f"https://{cloud.domain}/query/sparql")
+        logger.debug(f"Updated instance to be a cloud instance: {cloud.domain}")
+
+
+def _create_new_wikibase(cloud: WikibaseCloudInstance) -> WikibaseModel:
+    """Creates a new WikibaseModel from a cloud instance."""
+    new_wikibase = WikibaseModel(
+        wikibase_name=cloud.sitename,
+        description=cloud.description,
+        base_url=f"https://{cloud.domain}",
+        script_path="/w",
+        article_path="/wiki",
+        sparql_frontend_url=f"https://{cloud.domain}/query/",
+        sparql_endpoint_url=f"https://{cloud.domain}/query/sparql",
+    )
+    new_wikibase.wikibase_type = WikibaseType.CLOUD
+    new_wikibase.checked = True
+    logger.debug(
+        f"Added new cloud instance {cloud.sitename} {cloud.domain}"
+    )
+    return new_wikibase
 
 
 async def update_cloud_instances() -> bool:
@@ -20,73 +85,19 @@ async def update_cloud_instances() -> bool:
     cloud_instances = await fetch_cloud_instances()
 
     async with get_async_session() as async_session:
-        for cloud_instance in cloud_instances:
-            search = f"%{cloud_instance.domain}%"
-            stmt = (
-                select(WikibaseModel)
-                .join(WikibaseModel.url)
-                .where(WikibaseURLModel.url.like(search))
-            )
-            existing_wikibase: Optional[WikibaseModel] = (
-                await async_session.scalars(stmt)
-            ).one_or_none()
+        for cloud in cloud_instances:
+            existing = await _find_existing_wikibase(async_session, cloud)
 
-            if existing_wikibase is not None:
+            if existing is not None:
                 logger.debug(
                     "Found existing Wikibase ID "
-                    + f"{existing_wikibase.id} {existing_wikibase.wikibase_name}"
+                    + f"{existing.id} {existing.wikibase_name}"
                 )
-
-                # name of a cloud instance changed
-                if existing_wikibase.wikibase_name != cloud_instance.sitename:
-                    existing_wikibase.wikibase_name = cloud_instance.sitename
-                    logger.debug(
-                        "Updated cloud instance name to "
-                        f"{cloud_instance.sitename} for {cloud_instance.domain}"
-                    )
-
-                # description of a cloud instance changed
-                if existing_wikibase.description != cloud_instance.description:
-                    existing_wikibase.description = cloud_instance.description
-                    logger.debug(
-                        "Updated cloud instance description to "
-                        f"{cloud_instance.description} for {cloud_instance.domain}"
-                    )
-
-                # instance moved from selfhosted to cloud
-                if existing_wikibase.wikibase_type != WikibaseType.CLOUD:
-                    existing_wikibase.wikibase_type = WikibaseType.CLOUD
-                    existing_wikibase.base_url = (f"https://{cloud_instance.domain}",)
-                    existing_wikibase.set_script_path("/w")
-                    existing_wikibase.set_article_path("/wiki")
-                    existing_wikibase.set_sparql_frontend_url(
-                        f"https://{cloud_instance.domain}/query/"
-                    )
-                    existing_wikibase.set_sparql_endpoint_url(
-                        f"https://{cloud_instance.domain}/query/sparql"
-                    )
-                    logger.debug(
-                        f"Updated instance to be a cloud instance {cloud_instance.domain}"
-                    )
-
+                _update_existing_wikibase_if_needed(existing, cloud)
             else:
-                new_wikibase = WikibaseModel(
-                    wikibase_name=cloud_instance.sitename,
-                    description=cloud_instance.description,
-                    base_url=f"https://{cloud_instance.domain}",
-                    script_path="/w",
-                    article_path="/wiki",
-                    sparql_frontend_url=f"https://{cloud_instance.domain}/query/",
-                    sparql_endpoint_url=f"https://{cloud_instance.domain}/query/sparql",
-                )
-                new_wikibase.wikibase_type = WikibaseType.CLOUD
-                # TODO: what is this checked for? is it reasonable to set it to checked here?
-                new_wikibase.checked = True
-
+                new_wikibase = _create_new_wikibase(cloud)
                 async_session.add(new_wikibase)
-                logger.debug(
-                    f"Added new cloud instance {cloud_instance.sitename} {cloud_instance.domain}"
-                )
 
         await async_session.commit()
-        return True
+
+    return True
