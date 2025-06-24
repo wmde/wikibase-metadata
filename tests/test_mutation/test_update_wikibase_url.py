@@ -98,7 +98,9 @@ async def test_add_wikibase_script_path():
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="remove-wikibase-sparql-frontend-url", depends=["add-wikibase"], scope="session"
+    name="remove-wikibase-sparql-frontend-url",
+    depends=["add-wikibase"],
+    scope="session",
 )
 async def test_remove_wikibase_sparql_frontend_url():
     """Remove Wikibase URL"""
@@ -157,10 +159,13 @@ async def test_remove_wikibase_sparql_frontend_url():
         expected_value=None,
     )
 
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="remove-wikibase-article-path", depends=["mutate-cloud-instances"], scope="session"
+    name="remove-wikibase-article-path",
+    depends=["mutate-cloud-instances"],
+    scope="session",
 )
 async def test_remove_wikibase_article_path():
     """Remove Wikibase article path"""
