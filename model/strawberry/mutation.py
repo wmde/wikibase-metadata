@@ -16,6 +16,7 @@ from fetch_data import (
     create_software_version_observation,
     create_special_statistics_observation,
     create_user_observation,
+    update_cloud_instances,
 )
 from update_data import (
     add_wikibase_language,
@@ -144,6 +145,15 @@ class Mutation:
 
         authenticate(info)
         return await set_extension_wbs_bundled(extension_id, bundled)
+
+    @strawberry.mutation(
+        description="Update the list of known Wikibase Cloud instances from API"
+    )
+    async def update_cloud_instances(self, info: Info) -> bool:
+        """Update the list of known Wikibase Cloud instances from API"""
+
+        authenticate(info)
+        return await update_cloud_instances()
 
     @strawberry.mutation(description="Update Wikibase Primary Language")
     async def update_wikibase_primary_language(

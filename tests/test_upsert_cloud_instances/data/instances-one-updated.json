@@ -1,0 +1,23 @@
+{
+	"data": [
+		{
+			"id": 1074,
+			"description": null,
+			"domain": "tcdict.wikibase.cloud",
+			"domain_decoded": "tcdict.wikibase.cloud",
+			"sitename": "Teochew Dictionary UPDATED",
+			"wiki_site_stats": {
+				"pages": 24000,
+				"articles": 23968,
+				"edits": 135850,
+				"images": 0,
+				"users": 2,
+				"activeusers": 0,
+				"admins": 1,
+				"jobs": 0,
+				"cirrussearch-article-words": 216
+			},
+			"logo_url": "https:\/\/storage.googleapis.com\/wikibase-cloud-static\/sites\/e4eedf984f8ab92a960522815974fa5e\/logos\/135.png?u=1714333570"
+		}
+	]
+}
