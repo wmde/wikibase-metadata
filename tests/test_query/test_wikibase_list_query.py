@@ -92,8 +92,8 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.dependency(
     depends=[
         "add-wikibase",
-        "add-wikibase-url",
-        "remove-wikibase-url",
+        "add-wikibase-script-path",
+        "remove-wikibase-sparql-frontend-url",
         "update-wikibase-url",
         "update-wikibase-primary-language-3",
     ],

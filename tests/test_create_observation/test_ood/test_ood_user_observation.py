@@ -6,7 +6,7 @@ from fetch_data import update_out_of_date_user_observations
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="user-empty-ood", depends=["add-wikibase", "add-wikibase-url"], scope="session"
+    name="user-empty-ood", depends=["add-wikibase", "add-wikibase-script-path"], scope="session"
 )
 @pytest.mark.user
 async def test_update_out_of_date_user_observations_empty(mocker):
