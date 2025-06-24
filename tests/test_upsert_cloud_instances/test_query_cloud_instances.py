@@ -7,7 +7,6 @@ from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
 from tests.utils import get_mock_context
 
 
-
 @pytest.mark.dependency(
     name="query-cloud-instances", depends=["transform-cloud-instances"], scope="session"
 )
@@ -34,4 +33,4 @@ async def test_query_cloud_instance():
     ]
     assert len(found) == 1
     for f in found:
-        assert f['wikibaseType'] == 'CLOUD'
+        assert f["wikibaseType"] == "CLOUD"
