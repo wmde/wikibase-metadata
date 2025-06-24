@@ -3,7 +3,7 @@
 import pytest
 
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value,get_mock_context
+from tests.utils import assert_layered_property_value, get_mock_context
 
 WIKIBASE_QUERY = """
 query MyQuery($wikibaseId: Int!) {
@@ -67,10 +67,7 @@ async def test_update_wikibase_type():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    depends=["mutate-cloud-instances"],
-    scope="session"
-)
+@pytest.mark.dependency(depends=["mutate-cloud-instances"], scope="session")
 async def test_update_wikibase_type_to_same():
     """Test Update to Current Value"""
 
