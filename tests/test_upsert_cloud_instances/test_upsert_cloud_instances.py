@@ -11,6 +11,7 @@ from model.database import WikibaseModel
 from model.database.wikibase_url_model import WikibaseURLModel
 
 from fetch_data.cloud_api_data import fetch_cloud_instances, update_cloud_instances
+from tests.utils import get_mock_context
 
 
 DATA_DIRECTORY = "tests/test_upsert_cloud_instances/data"
@@ -264,7 +265,9 @@ async def test_query_cloud_instance():
     """
     test whether querying the wikibase list via graphql returns a cloud instance
     """
-    result = await test_schema.execute(WIKIBASE_LIST_QUERY)
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY, context_value=get_mock_context("test-auth-token")
+    )
     assert result.errors is None
     assert result.data is not None
     data = result.data
