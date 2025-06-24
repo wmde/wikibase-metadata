@@ -7,7 +7,12 @@ from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
 from fetch_data import create_log_observation
-from tests.utils import MockResponse, ParsedUrl
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context, MockResponse, ParsedUrl
+
+LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boolean!) {
+  fetchLogData(wikibaseId: $wikibaseId, firstMonth: $firstMonth)
+}"""
 
 
 @freeze_time("2024-03-01")
@@ -16,6 +21,7 @@ from tests.utils import MockResponse, ParsedUrl
     name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
 )
 @pytest.mark.log
+@pytest.mark.mutation
 async def test_create_log_observation_first_success(mocker):
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -92,8 +98,16 @@ async def test_create_log_observation_first_success(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(1, first_month=True)
-    assert success
+
+    result = await test_schema.execute(
+        LOG_DATA_MUTATION,
+        variable_values={"wikibaseId": 1, "firstMonth": True},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchLogData"]
 
 
 @freeze_time("2024-03-01")
@@ -102,6 +116,7 @@ async def test_create_log_observation_first_success(mocker):
     name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
 )
 @pytest.mark.log
+@pytest.mark.mutation
 async def test_create_log_observation_last_success(mocker):
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -156,8 +171,16 @@ async def test_create_log_observation_last_success(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(1, first_month=False)
-    assert success
+
+    result = await test_schema.execute(
+        LOG_DATA_MUTATION,
+        variable_values={"wikibaseId": 1, "firstMonth": False},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchLogData"]
 
 
 @freeze_time("2024-03-02")

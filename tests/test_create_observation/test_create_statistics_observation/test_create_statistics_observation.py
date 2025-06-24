@@ -5,7 +5,13 @@ import time
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_special_statistics_observation
-from tests.utils import MockResponse
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context, MockResponse
+
+
+FETCH_STATISTICS_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
+  fetchStatisticsData(wikibaseId: $wikibaseId)
+}"""
 
 
 DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observation/data"
@@ -15,6 +21,7 @@ DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observati
 @pytest.mark.dependency(
     name="statistics-success", depends=["statistics-fail-ood"], scope="session"
 )
+@pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(mocker):
@@ -28,8 +35,16 @@ async def test_create_statistics_observation_success(mocker):
             "fetch_data.soup_data.create_statistics_data_observation.requests.get",
             side_effect=[MockResponse("", 200, version_html.read())],
         )
-        success = await create_special_statistics_observation(1)
-        assert success
+
+    result = await test_schema.execute(
+        FETCH_STATISTICS_MUTATION,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchStatisticsData"]
 
 
 @pytest.mark.asyncio

@@ -5,6 +5,13 @@ import time
 import pytest
 from requests import ReadTimeout
 from fetch_data import create_user_observation
+from tests.test_schema import test_schema
+from tests.utils.mock_request import get_mock_context
+
+
+FETCH_USER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
+  fetchUserData(wikibaseId: $wikibaseId)
+}"""
 
 
 TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
@@ -32,6 +39,7 @@ async def test_create_user_observation_failure(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(name="user-20", depends=["user-failure"], scope="session")
+@pytest.mark.mutation
 @pytest.mark.user
 async def test_create_user_observation_single_pull(mocker):
     """Test Data, Single Pull Scenario"""
@@ -55,8 +63,16 @@ async def test_create_user_observation_single_pull(mocker):
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=[{"query": {"allusers": users}}],
     )
-    success = await create_user_observation(1)
-    assert success
+
+    result = await test_schema.execute(
+        FETCH_USER_MUTATION,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchUserData"]
 
 
 @pytest.mark.asyncio

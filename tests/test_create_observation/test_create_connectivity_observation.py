@@ -3,6 +3,12 @@
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_connectivity_observation
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context
+
+FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
+  fetchConnectivityData(wikibaseId: $wikibaseId)
+}"""
 
 
 @pytest.mark.asyncio
@@ -86,6 +92,7 @@ async def test_create_connectivity_observation_success(
     depends=["connectivity-success-simple-5"],
     scope="session",
 )
+@pytest.mark.mutation
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(mocker):
     """Test"""
@@ -109,8 +116,16 @@ async def test_create_connectivity_observation_success_complex(mocker):
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
-    success = await create_connectivity_observation(1)
-    assert success
+
+    result = await test_schema.execute(
+        FETCH_CONNECTIVITY_MUTATION,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchConnectivityData"]
 
 
 @pytest.mark.asyncio
