@@ -2,16 +2,14 @@
 
 import os
 import pytest
-from tests.utils import MockResponse
-from tests.test_schema import test_schema
-from data import get_async_session
 from sqlalchemy import select
-from model.enum import WikibaseType
-from model.database import WikibaseModel
-from model.database.wikibase_url_model import WikibaseURLModel
 
-from fetch_data.cloud_api_data import fetch_cloud_instances, update_cloud_instances
-from tests.utils import get_mock_context
+from data.database_connection import get_async_session
+from fetch_data import fetch_cloud_instances, update_cloud_instances
+from model.database import WikibaseModel, WikibaseURLModel
+from model.enum import WikibaseType
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context, MockResponse
 
 
 DATA_DIRECTORY = "tests/test_upsert_cloud_instances/data"
