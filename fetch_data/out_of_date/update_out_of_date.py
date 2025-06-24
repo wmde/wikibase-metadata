@@ -20,6 +20,9 @@ from fetch_data.sparql_data import (
     create_property_popularity_observation,
     create_quantity_observation,
 )
+from fetch_data.cloud_api_data import (
+    update_cloud_instances,
+)
 from logger import logger
 
 
@@ -169,3 +172,18 @@ async def update_out_of_date_user_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+
+
+async def update_out_of_date_cloud_instances():
+    """Pull cloud instaces and update our local database"""
+
+    logger.info("Pulling cloud instances and updating local database")
+    try:
+        await update_cloud_instances()
+    # pylint: disable-next=bare-except
+    except:
+        logger.error(
+            "CloudInstancesError",
+            exc_info=True,
+            stack_info=True,
+        )
