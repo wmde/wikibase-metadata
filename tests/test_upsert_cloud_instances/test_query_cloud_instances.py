@@ -3,21 +3,9 @@
 import pytest
 
 from tests.test_schema import test_schema
+from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
 from tests.utils import get_mock_context
 
-
-WIKIBASE_LIST_QUERY = """
-query MyQuery {
-  wikibaseList(pageNumber: 1, pageSize: 10000) {
-    data {
-      id
-      urls {
-        baseUrl
-      }
-    }
-  }
-}
-"""
 
 
 @pytest.mark.dependency(
@@ -45,3 +33,5 @@ async def test_query_cloud_instance():
         if wikibase["urls"]["baseUrl"] == "https://tcdict.wikibase.cloud"
     ]
     assert len(found) == 1
+    for f in found:
+        assert f['wikibaseType'] == 'CLOUD'
