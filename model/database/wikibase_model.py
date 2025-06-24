@@ -320,7 +320,7 @@ class WikibaseModel(ModelBase):
         """Sets the primary language."""
 
         # if the language is already the primary one, nothing to do
-        if self.primary_language == primary_language:
+        if self.primary_language and self.primary_language.language == primary_language:
             return
 
         # otherwise, lets mark all exising languages as non primary first

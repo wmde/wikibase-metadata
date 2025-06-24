@@ -77,3 +77,28 @@ def test_setting_two_identical_languages():
     assert len(wikibase.languages) == 2
     wikibase.set_additional_languages(["ko", "ja"])
     assert len(wikibase.languages) == 2
+
+
+@pytest.mark.asyncio
+async def test_setting_primary_language_again_does_not_do_anything():
+    """
+    the existing primary language object should be reused
+    if this language is already set as primary
+    """
+
+    async with get_async_session() as async_session:
+        wikibase = WikibaseModel(
+            wikibase_name="Some Wikibase",
+            base_url="https://unique.wikibase.example",
+        )
+        async_session.add(wikibase)
+        await async_session.flush()
+        await async_session.refresh(wikibase)
+        wikibase.set_primary_language("ko")
+
+        await async_session.flush()
+        await async_session.refresh(wikibase)
+        old_language = wikibase.primary_language
+
+        wikibase.set_primary_language("ko")
+        assert wikibase.primary_language is old_language
