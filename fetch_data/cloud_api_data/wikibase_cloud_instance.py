@@ -1,3 +1,5 @@
+"""the data class for a wikibase cloud instance"""
+
 from dataclasses import dataclass
 
 

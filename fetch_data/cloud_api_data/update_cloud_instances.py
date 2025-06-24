@@ -70,9 +70,7 @@ def _create_new_wikibase(cloud: WikibaseCloudInstance) -> WikibaseModel:
     )
     new_wikibase.wikibase_type = WikibaseType.CLOUD
     new_wikibase.checked = True
-    logger.debug(
-        f"Added new cloud instance {cloud.sitename} {cloud.domain}"
-    )
+    logger.debug(f"Added new cloud instance {cloud.sitename} {cloud.domain}")
     return new_wikibase
 
 
