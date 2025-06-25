@@ -69,7 +69,7 @@ def test_setting_two_identical_languages():
     wikibase = WikibaseModel(
         wikibase_name="Some Wikibase",
         base_url="https://wikibase.example",
-        additional_languages=['ko']
+        additional_languages=["ko"],
     )
     wikibase.set_additional_languages(["ko"])
     assert len(wikibase.languages) == 1
@@ -90,7 +90,7 @@ async def test_setting_primary_language_again_does_not_do_anything():
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",
-            primary_language='ko'
+            primary_language="ko",
         )
         async_session.add(wikibase)
         await async_session.flush()

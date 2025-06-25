@@ -6,8 +6,7 @@ from tests.test_schema import test_schema
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
-from tests.utils import assert_layered_property_value
-from tests.utils.mock_request import get_mock_context
+from tests.utils import assert_layered_property_value, get_mock_context
 from update_data import update_wikibase_primary_language
 
 UPDATE_WIKIBASE_PRIMARY_LANGUAGE_QUERY = """
@@ -156,7 +155,6 @@ async def test_update_wikibase_primary_language_to_same():
     Primary exists; new Primary same as Primary
     """
 
-
     before_updating_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY,
         variable_values={"wikibaseId": 1},
@@ -217,7 +215,6 @@ async def test_update_wikibase_new_primary_language():
     Primary does not exist
     """
 
-
     before_updating_result = await test_schema.execute(
         WIKIBASE_LANGUAGES_QUERY,
         variable_values={"wikibaseId": 5},
@@ -231,7 +228,7 @@ async def test_update_wikibase_new_primary_language():
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "languages", "primary"],
-        expected_value=None
+        expected_value=None,
     )
     assert_layered_property_value(
         before_updating_result.data,
