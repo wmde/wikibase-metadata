@@ -2,7 +2,7 @@
 	"data": [
 		{
 			"id": 1074,
-			"description": null,
+			"description": "A new description",
 			"domain": "tcdict.wikibase.cloud",
 			"domain_decoded": "tcdict.wikibase.cloud",
 			"sitename": "Teochew Dictionary UPDATED",

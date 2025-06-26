@@ -13,6 +13,7 @@ from tests.utils import (
     assert_layered_property_value,
     assert_property_value,
     DATETIME_FORMAT,
+    get_mock_context,
 )
 
 
@@ -36,7 +37,7 @@ query MyQuery($wikibaseId: Int!) {
 )
 
 
-@freeze_time("2024-04-01")
+@freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(depends=["log-first-success-1"], scope="session")
 @pytest.mark.log
@@ -45,7 +46,9 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
     """Test Wikibase Most Recent Log Observation"""
 
     result = await test_schema.execute(
-        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

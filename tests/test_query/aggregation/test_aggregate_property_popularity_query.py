@@ -6,6 +6,7 @@ from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
     assert_page_meta,
+    get_mock_context,
 )
 
 
@@ -40,6 +41,7 @@ async def test_aggregate_property_popularity_query():
     result = await test_schema.execute(
         AGGREGATED_PROPERTY_POPULARITY_QUERY,
         variable_values={"pageNumber": 1, "pageSize": 30},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

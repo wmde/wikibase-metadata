@@ -2,7 +2,11 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_layered_property_value
+from tests.utils import (
+    assert_layered_property_count,
+    assert_layered_property_value,
+    get_mock_context,
+)
 
 
 AGGREGATED_CREATED_QUERY = """
@@ -23,7 +27,9 @@ query MyQuery {
 async def test_aggregate_created_query():
     """Test Aggregate Created Query"""
 
-    result = await test_schema.execute(AGGREGATED_CREATED_QUERY)
+    result = await test_schema.execute(
+        AGGREGATED_CREATED_QUERY, context_value=get_mock_context("test-auth-token")
+    )
 
     assert result.errors is None
     assert result.data is not None

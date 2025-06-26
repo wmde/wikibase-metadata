@@ -391,7 +391,7 @@ class WikibaseModel(ModelBase):
     def set_sparql_frontend_url(self, sparql_frontend_url: str):
         """Sets the SPARQL frontend URL attribute."""
         if self.sparql_frontend_url is not None:
-            self.sparql_endpoint_url.url = sparql_frontend_url
+            self.sparql_frontend_url.url = sparql_frontend_url
         else:
             self.sparql_frontend_url = WikibaseURLModel(
                 url=sparql_frontend_url, url_type=WikibaseURLType.SPARQL_FRONTEND_URL

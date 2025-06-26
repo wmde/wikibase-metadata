@@ -5,6 +5,13 @@ import time
 from urllib.error import HTTPError
 import pytest
 from fetch_data import create_property_popularity_observation
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context
+
+
+FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
+  fetchPropertyPopularityData(wikibaseId: $wikibaseId)
+}"""
 
 
 @pytest.mark.asyncio
@@ -13,6 +20,7 @@ from fetch_data import create_property_popularity_observation
     depends=["property-popularity-success-ood"],
     scope="session",
 )
+@pytest.mark.mutation
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_success(mocker):
@@ -33,8 +41,16 @@ async def test_create_property_popularity_observation_success(mocker):
             }
         ],
     )
-    success = await create_property_popularity_observation(1)
-    assert success
+
+    result = await test_schema.execute(
+        FETCH_PROPERTY_POPULARITY_MUTATION,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchPropertyPopularityData"]
 
 
 @pytest.mark.asyncio
