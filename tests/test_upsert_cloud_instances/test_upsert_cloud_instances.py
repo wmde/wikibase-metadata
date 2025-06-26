@@ -110,7 +110,7 @@ async def test_update_cloud_instances(mocker):
             found = (await async_session.scalars(stmt)).one_or_none()
             assert found is not None
             assert found.wikibase_name == "Teochew Dictionary UPDATED"
-            assert found.description is None
+            assert found.description == "A new description"
             assert found.wikibase_type == WikibaseType.CLOUD
             assert found.url.url == "https://tcdict.wikibase.cloud"
             assert found.script_path.url == "/w"
@@ -146,15 +146,19 @@ async def test_transform_to_cloud_instance(mocker):
         )
 
         async with get_async_session() as async_session:
-
-            existing_instance = WikibaseModel(
-                wikibase_name="Teochew Dictionary Self-hosted",
-                base_url="https://tcdict.wikibase.cloud",
+            search = "%tcdict.wikibase.cloud%"
+            stmt = (
+                select(WikibaseModel)
+                .join(WikibaseModel.url)
+                .where(WikibaseURLModel.url.like(search))
             )
-            existing_instance.wikibase_type = WikibaseType.SUITE
+            found = (await async_session.scalars(stmt)).one_or_none()
+            assert found is not None
+            # mark the existing instance as non-cloud instance
+            found.wikibase_type = WikibaseType.SUITE
+            await async_session.commit()
 
-            async_session.add(existing_instance)
-
+        # breakpoint()
         await update_cloud_instances()
 
         async with get_async_session() as async_session:
