@@ -15,4 +15,4 @@ class MockRequest:
 def get_mock_context(auth_token: str) -> dict[str, Any]:
     """Return test context with provided token"""
 
-    return {"request": MockRequest({"authorization": auth_token})}
+    return {"request": MockRequest({"authorization": f"Bearer: {auth_token}"})}
