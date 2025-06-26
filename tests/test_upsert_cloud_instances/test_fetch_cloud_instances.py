@@ -48,10 +48,7 @@ async def test_fetch_cloud_instances_fail(mocker):
     test fetching no data
     """
 
-    mocker.patch(
-        "requests.get",
-        side_effect=[MockResponse("", 200, "{}")],
-    )
+    mocker.patch("requests.get", side_effect=[MockResponse("", 200, "{}")])
 
     instances = await fetch_cloud_instances()
 
