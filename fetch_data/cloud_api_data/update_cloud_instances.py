@@ -17,13 +17,25 @@ async def _find_existing_wikibase(
     async_session: AsyncSession, cloud: WikibaseCloudInstance
 ) -> Optional[WikibaseModel]:
     """Finds an existing WikibaseModel based on the cloud instance domain."""
-    search = f"%{cloud.domain}%"
-    stmt = (
-        select(WikibaseModel)
-        .join(WikibaseModel.url)
-        .where(WikibaseURLModel.url.like(search))
-    )
-    return (await async_session.scalars(stmt)).one_or_none()
+
+    variants = [
+        f"https://{cloud.domain}",
+        f"https://{cloud.domain}/",
+        f"{cloud.domain}",
+        f"{cloud.domain}/",
+        f"http://{cloud.domain}",
+        f"http://{cloud.domain}/",
+    ]
+
+    for search in variants:
+        stmt = (
+            select(WikibaseModel)
+            .join(WikibaseModel.url)
+            .where(WikibaseURLModel.url.like(search))
+        )
+        result = (await async_session.scalars(stmt)).one_or_none()
+        if result is not None:
+            return result
 
 
 def _update_existing_wikibase_if_needed(
