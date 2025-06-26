@@ -12,7 +12,7 @@ from fetch_data import (
 from tests.utils import MockResponse, ParsedUrl
 
 
-@freeze_time("2024-02-01")
+@freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-first-success-ood",
@@ -77,7 +77,7 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
     await update_out_of_date_log_first_observations()
 
 
-@freeze_time("2024-02-01")
+@freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-success-ood",

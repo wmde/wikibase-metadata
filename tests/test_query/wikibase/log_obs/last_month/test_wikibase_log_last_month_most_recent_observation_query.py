@@ -35,7 +35,7 @@ query MyQuery($wikibaseId: Int!) {
 )
 
 
-@freeze_time("2024-04-01")
+@freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     depends=["log-last-success-1", "log-last-success-2"], scope="session"

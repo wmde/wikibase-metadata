@@ -15,7 +15,7 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
 }"""
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
@@ -110,7 +110,7 @@ async def test_create_log_observation_first_success(mocker):
     assert result.data["fetchLogData"]
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
@@ -183,7 +183,7 @@ async def test_create_log_observation_last_success(mocker):
     assert result.data["fetchLogData"]
 
 
-@freeze_time("2024-03-02")
+@freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-first-failure", depends=["log-first-success-1"], scope="session"
@@ -204,7 +204,7 @@ async def test_create_log_first_observation_error(mocker):
     assert success is False
 
 
-@freeze_time("2024-03-02")
+@freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-failure", depends=["log-last-success-1"], scope="session"
@@ -224,7 +224,7 @@ async def test_create_log_last_observation_error(mocker):
     assert success is False
 
 
-@freeze_time("2024-03-03")
+@freeze_time(datetime(2024, 3, 3))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-success-2",

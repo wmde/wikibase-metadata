@@ -1,5 +1,6 @@
 """Test Wikibase All Connectivity Observations Query"""
 
+from datetime import datetime
 from freezegun import freeze_time
 import pytest
 from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
@@ -30,7 +31,7 @@ query MyQuery($wikibaseId: Int!) {
 )
 
 
-@freeze_time("2024-04-01")
+@freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.dependency(
