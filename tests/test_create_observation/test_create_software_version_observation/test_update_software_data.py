@@ -4,10 +4,8 @@ from datetime import datetime
 
 from freezegun import freeze_time
 import pytest
-from fetch_data import update_software_data
-from fetch_data.soup_data.software.get_update_software_data import (
-    get_update_extension_query,
-)
+
+from fetch_data import get_update_extension_query, update_software_data
 from tests.test_create_observation.test_create_software_version_observation.test_constants import (
     DATA_DIRECTORY,
 )
