@@ -43,6 +43,23 @@ async def test_fetch_cloud_instances(mocker):
 
 
 @pytest.mark.asyncio
+async def test_fetch_cloud_instances_fail(mocker):
+    """
+    test fetching no data
+    """
+
+    mocker.patch(
+        "requests.get",
+        side_effect=[MockResponse("", 200, "{}")],
+    )
+
+    instances = await fetch_cloud_instances()
+
+    assert instances is not None
+    assert len(instances) == 0
+
+
+@pytest.mark.asyncio
 async def test_fetch_cloud_instances_broken_response(mocker):
     """
     test fetching a list with one broken cloud instance and
