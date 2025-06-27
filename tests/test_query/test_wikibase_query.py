@@ -30,7 +30,7 @@ async def test_wikibase_query_unauthorized():
     )
 
     assert result.errors is not None
-    assert result.errors[0].message == "Invalid authentication header, expected 'bearer'"
+    assert result.errors[0].message == "Invalid authorization header, expected 'bearer'"
 
 
 @pytest.mark.asyncio

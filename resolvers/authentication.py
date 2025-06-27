@@ -27,15 +27,15 @@ def authenticate_request(request: Request):
 
     auth_header_value = request.headers.get("authorization", None)
     if auth_header_value is None:
-        raise ValueError("Authentication header missing")
+        raise ValueError("Authorization header missing")
 
     if not "bearer" in auth_header_value.lower():
-        raise ValueError("Invalid authentication header, expected 'bearer'")
+        raise ValueError("Invalid authorization header, expected 'bearer'")
 
     auth_header_value_split = auth_header_value.split(" ")
 
     if len(auth_header_value_split) != 2:
-        raise ValueError("Invalid authentication header, expected 'bearer <token>'")
+        raise ValueError("Invalid authorization header, expected 'bearer <token>'")
 
     auth_header_token = auth_header_value_split[1]
 
