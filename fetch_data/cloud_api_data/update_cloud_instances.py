@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
@@ -18,24 +18,21 @@ async def _find_existing_wikibase(
 ) -> Optional[WikibaseModel]:
     """Finds an existing WikibaseModel based on the cloud instance domain."""
 
-    variants = [
-        f"https://{cloud.domain}",
-        f"https://{cloud.domain}/",
-        f"{cloud.domain}",
-        f"{cloud.domain}/",
-        f"http://{cloud.domain}",
-        f"http://{cloud.domain}/",
-    ]
-
-    for search in variants:
-        stmt = (
-            select(WikibaseModel)
-            .join(WikibaseModel.url)
-            .where(WikibaseURLModel.url.like(search))
+    stmt = (
+        select(WikibaseModel)
+        .join(WikibaseModel.url)
+        .where(
+            or_(
+                WikibaseURLModel.url == f"https://{cloud.domain}",
+                WikibaseURLModel.url == f"https://{cloud.domain}/",
+                WikibaseURLModel.url == f"http://{cloud.domain}",
+                WikibaseURLModel.url == f"http://{cloud.domain}/",
+                WikibaseURLModel.url == f"{cloud.domain}",
+                WikibaseURLModel.url == f"{cloud.domain}/",
+            )
         )
-        result = (await async_session.scalars(stmt)).one_or_none()
-        if result is not None:
-            return result
+    )
+    return (await async_session.scalars(stmt)).one_or_none()
 
 
 def _update_existing_wikibase_if_needed(
