@@ -24,9 +24,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
 
         for input_url in [
-            wikibase_input.urls.article_path,
             wikibase_input.urls.base_url,
-            wikibase_input.urls.script_path,
             wikibase_input.urls.sparql_endpoint_url,
             wikibase_input.urls.sparql_frontend_url,
         ]:
