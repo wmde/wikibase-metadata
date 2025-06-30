@@ -24,13 +24,49 @@ async def test_wikibase_query_unauthorized():
     result = await test_schema.execute(
         WIKIBASE_QUERY,
         variable_values={"wikibaseId": 1},
+        context_value={"request": MockRequest(headers={})},
+    )
+
+    assert result.errors is not None
+    assert result.errors[0].message == "Authorization header missing"
+
+    result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 1},
         context_value={
-            "request": MockRequest(headers={"authorization": "unauthorized"})
+            "request": MockRequest(headers={"authorization": "wrong-header-value"})
         },
     )
 
     assert result.errors is not None
-    assert result.errors[0].message == "Authorisation Failed"
+    assert result.errors[0].message == "Invalid authorization header, expected 'bearer'"
+
+    result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value={
+            "request": MockRequest(
+                headers={"authorization": "bearer: wrong token with spaces"}
+            )
+        },
+    )
+
+    assert result.errors is not None
+    assert (
+        result.errors[0].message
+        == "Invalid authorization header, expected 'bearer <token>'"
+    )
+
+    result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value={
+            "request": MockRequest(headers={"authorization": "bearer: wrong-token"})
+        },
+    )
+
+    assert result.errors is not None
+    assert result.errors[0].message == "Authorization Failed"
 
 
 @pytest.mark.asyncio

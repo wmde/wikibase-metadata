@@ -43,7 +43,7 @@ async def test_create_software_version_observation_success(mocker):
 
     test_context = {
         "background_tasks": MockBackgroundClassList(),
-        "request": MockRequest({"authorization": "test-auth-token"}),
+        "request": MockRequest({"authorization": "Bearer: test-auth-token"}),
     }
 
     result = await test_schema.execute(
