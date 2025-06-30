@@ -19,8 +19,24 @@ def authenticate(info: Info[BaseContext]):
 
 
 def authenticate_request(request: Request):
-    """Authenticate Request"""
+    """
+    Authenticate Request
+    Extract the token from an "Authorization: bearer <token>" header
+    and check it against the configured authentication token.
+    """
 
-    assert (
-        request.headers.get("authorization", None) == auth_token
-    ), "Authorisation Failed"
+    auth_header_value = request.headers.get("authorization", None)
+    if auth_header_value is None:
+        raise ValueError("Authorization header missing")
+
+    if not "bearer" in auth_header_value.lower():
+        raise ValueError("Invalid authorization header, expected 'bearer'")
+
+    auth_header_value_split = auth_header_value.split(" ")
+
+    if len(auth_header_value_split) != 2:
+        raise ValueError("Invalid authorization header, expected 'bearer <token>'")
+
+    auth_header_token = auth_header_value_split[1]
+
+    assert auth_header_token == auth_token, "Authorization Failed"
