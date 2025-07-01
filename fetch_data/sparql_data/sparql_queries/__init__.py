@@ -11,13 +11,13 @@ from fetch_data.sparql_data.sparql_queries.count_lexemes import COUNT_LEXEMES_QU
 from fetch_data.sparql_data.sparql_queries.count_properties import (
     COUNT_PROPERTIES_QUERY,
 )
+from fetch_data.sparql_data.sparql_queries.count_triples import COUNT_TRIPLES_QUERY
 from fetch_data.sparql_data.sparql_queries.count_url_properties import (
     COUNT_URL_PROPERTIES_QUERY,
 )
 from fetch_data.sparql_data.sparql_queries.count_url_statements import (
     COUNT_URL_STATEMENTS_QUERY,
 )
-from fetch_data.sparql_data.sparql_queries.count_triples import COUNT_TRIPLES_QUERY
 from fetch_data.sparql_data.sparql_queries.item_links import (
     ITEM_LINKS_QUERY,
     ItemLink,
