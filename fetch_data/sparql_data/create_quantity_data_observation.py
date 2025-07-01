@@ -135,9 +135,7 @@ async def compile_quantity_observation(
             "COUNT_URL_STATEMENTS_QUERY",
         )
         observation.total_url_statements = int(
-            url_statements_count_results["results"]["bindings"][0][
-                "count"
-            ]["value"]
+            url_statements_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
         observation.returned_data = True
