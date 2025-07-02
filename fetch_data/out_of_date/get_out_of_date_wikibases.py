@@ -324,30 +324,34 @@ async def get_wikibase_list_with_out_of_date_stats_observations() -> (
 def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date User Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.user_observations.any(
-                    or_(
-                        WikibaseUserObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseUserObservationModel.returned_data,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                WikibaseModel.script_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.user_observations.any(
+                        or_(
                             WikibaseUserObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseUserObservationModel.returned_data,
+                                WikibaseUserObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .limit(1)
     )
 
     return query
