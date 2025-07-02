@@ -21,6 +21,9 @@ from model.database.wikibase_model import WikibaseModel
 
 async def create_user_observation(wikibase_id: int) -> bool:
     """Create User Data Observation"""
+
+    logger.info("User: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
@@ -28,10 +31,14 @@ async def create_user_observation(wikibase_id: int) -> bool:
             include_observations=True,
             require_action_api=True,
         )
+        logger.debug("User: Retrieved Wikibase", extra={"wikibase": wikibase_id})
         observation = WikibaseUserObservationModel()
 
         site_user_data: list[dict]
         try:
+            logger.debug(
+                "User: Attempting to Fetch Data", extra={"wikibase": wikibase_id}
+            )
             site_user_data = await get_all_user_data(wikibase.action_api_url())
             observation.returned_data = True
         except (ReadTimeout, SSLError, ValueError):
@@ -44,8 +51,10 @@ async def create_user_observation(wikibase_id: int) -> bool:
             observation.returned_data = False
 
         if observation.returned_data:
+            logger.debug("User: Data Fetch Success", extra={"wikibase": wikibase_id})
             observation.total_users = len(site_user_data)
 
+            logger.debug("User: Compiling Groups", extra={"wikibase": wikibase_id})
             site_implicit_user_groups = compile_all_implicit_user_groups(site_user_data)
             site_group_counts = compile_user_group_counts(site_user_data)
             for group, count in site_group_counts.items():
@@ -71,7 +80,9 @@ async def create_user_observation(wikibase_id: int) -> bool:
                     )
                 )
 
+        logger.debug("User: Saving Data", extra={"wikibase": wikibase_id})
         wikibase.user_observations.append(observation)
 
         await async_session.commit()
+        logger.debug("User: SQL Committed", extra={"wikibase": wikibase_id})
         return observation.returned_data
