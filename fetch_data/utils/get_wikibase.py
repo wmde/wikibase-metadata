@@ -32,7 +32,12 @@ async def get_wikibase_from_database(
             joinedload(WikibaseModel.user_observations),
         )
 
-    wikibase = (await async_session.scalars(query)).unique().one_or_none()
+    try:
+        wikibase = (await async_session.scalars(query)).unique().one_or_none()
+    except Exception as  exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+
     logger.debug(f"Wikibase Is Not None: {wikibase is not None}", extra={"wikibase": wikibase_id})
     assert wikibase is not None, "Wikibase Not Found"
 
