@@ -42,7 +42,7 @@ scheduler.add_job(
 scheduler.add_job(
     update_out_of_date_stats_observations, CronTrigger(day_of_week=0, hour=6)
 )
-scheduler.add_job(update_out_of_date_user_observations, IntervalTrigger(hours=1))
+scheduler.add_job(update_out_of_date_user_observations, IntervalTrigger(minutes=1))
 scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
 
 scheduler.add_job(
