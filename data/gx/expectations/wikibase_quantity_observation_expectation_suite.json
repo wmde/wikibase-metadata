@@ -1,32 +1,74 @@
 {
-	"expectations": [
-		{
-			"id": "4817d508-f3ef-4487-9cb6-a4b0a3437082",
-			"kwargs": { "column": "total_items" },
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "c5d2650c-5024-4be1-88ee-f07dfddbafe4",
-			"kwargs": { "column": "total_properties" },
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "70a84621-bc7a-4df4-b964-005f7c615a0b",
-			"kwargs": { "column": "total_lexemes" },
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "3bde70f2-3f47-4741-9db7-359ba9c6cfd2",
-			"kwargs": { "column": "total_triples" },
-			"meta": {},
-			"type": "expect_column_to_exist"
-		}
-	],
-	"id": "5a75aff7-053b-4351-9952-04466e0fbdad",
-	"meta": { "great_expectations_version": "1.0.0" },
-	"name": "wikibase_quantity_observation_expectation_suite",
-	"notes": null
+  "expectations": [
+    {
+      "id": "4817d508-f3ef-4487-9cb6-a4b0a3437082",
+      "kwargs": {
+        "column": "total_items"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "c5d2650c-5024-4be1-88ee-f07dfddbafe4",
+      "kwargs": {
+        "column": "total_properties"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "70a84621-bc7a-4df4-b964-005f7c615a0b",
+      "kwargs": {
+        "column": "total_lexemes"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "3bde70f2-3f47-4741-9db7-359ba9c6cfd2",
+      "kwargs": {
+        "column": "total_triples"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "6f19141b-9fc4-4981-86f0-a7fdc4c1971a",
+      "kwargs": {
+        "column": "total_external_identifier_properties"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "c3eac164-13a1-4bb2-a49b-43175030b0a6",
+      "kwargs": {
+        "column": "total_external_identifier_statements"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "d2a76e95-ebec-4417-ba21-ac6d3b01153c",
+      "kwargs": {
+        "column": "total_url_properties"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "00a7a757-b549-4cbb-b2af-5036634210cf",
+      "kwargs": {
+        "column": "total_url_statements"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    }
+  ],
+  "id": "5a75aff7-053b-4351-9952-04466e0fbdad",
+  "meta": {
+    "great_expectations_version": "1.0.0"
+  },
+  "name": "wikibase_quantity_observation_expectation_suite",
+  "notes": null
 }
