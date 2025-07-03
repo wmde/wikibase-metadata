@@ -30,6 +30,8 @@ from model.enum import WikibaseUserType
 async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
     """Create Log Observation"""
 
+    logger.debug("Log: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,

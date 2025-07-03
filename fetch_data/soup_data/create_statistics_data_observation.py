@@ -17,6 +17,8 @@ from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 async def create_special_statistics_observation(wikibase_id: int) -> bool:
     """Create Special:Statistics Observation"""
 
+    logger.debug("Statistics: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,

@@ -19,6 +19,8 @@ from model.database import WikibaseModel, WikibaseQuantityObservationModel
 async def create_quantity_observation(wikibase_id: int) -> bool:
     """Create Quantity Data Observation"""
 
+    logger.debug("Quantity: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
