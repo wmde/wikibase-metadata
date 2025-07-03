@@ -11,6 +11,10 @@ def assert_quantity(
     expected_lexemes: int,
     expected_properties: int,
     expected_triples: int,
+    expected_external_identifier_properties: int,
+    expected_external_identifier_statements: int,
+    expected_url_properties: int,
+    expected_url_statements: int,
 ):
     """Assert Quantity Observation"""
 
@@ -21,3 +25,19 @@ def assert_quantity(
     assert_property_value(returned_quantity, "totalLexemes", expected_lexemes)
     assert_property_value(returned_quantity, "totalProperties", expected_properties)
     assert_property_value(returned_quantity, "totalTriples", expected_triples)
+    assert_property_value(
+        returned_quantity,
+        "totalExternalIdentifierProperties",
+        expected_external_identifier_properties,
+    )
+    assert_property_value(
+        returned_quantity,
+        "totalExternalIdentifierStatements",
+        expected_external_identifier_statements,
+    )
+    assert_property_value(
+        returned_quantity, "totalUrlProperties", expected_url_properties
+    )
+    assert_property_value(
+        returned_quantity, "totalUrlStatements", expected_url_statements
+    )
