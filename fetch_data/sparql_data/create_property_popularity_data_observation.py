@@ -24,7 +24,7 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
         wikibase = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            join_property_observations=True,
+            join_property_popularity_observations=True,
             require_sparql_endpoint=True,
         )
 
