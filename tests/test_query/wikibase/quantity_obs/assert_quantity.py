@@ -3,6 +3,7 @@
 from tests.utils import assert_property_value
 
 
+# pylint: disable-next=too-many-arguments,too-many-positional-arguments
 def assert_quantity(
     returned_quantity: dict,
     expected_id: str,
