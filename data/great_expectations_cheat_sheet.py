@@ -13,9 +13,5 @@ suite.expectations.append(
 suite.expectations.append(
     gxe.ExpectColumnToExist(column="total_external_identifier_statements")
 )
-suite.expectations.append(
-    gxe.ExpectColumnToExist(column="total_url_properties")
-)
-suite.expectations.append(
-    gxe.ExpectColumnToExist(column="total_url_statements")
-)
+suite.expectations.append(gxe.ExpectColumnToExist(column="total_url_properties"))
+suite.expectations.append(gxe.ExpectColumnToExist(column="total_url_statements"))
