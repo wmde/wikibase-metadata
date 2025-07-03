@@ -26,7 +26,9 @@ from model.database import (
 async def create_connectivity_observation(wikibase_id: int) -> bool:
     """Create Connectivity Data Observation"""
 
-    logger.debug("Connectivity: Attempting Observation", extra={"wikibase": wikibase_id})
+    logger.debug(
+        "Connectivity: Attempting Observation", extra={"wikibase": wikibase_id}
+    )
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
