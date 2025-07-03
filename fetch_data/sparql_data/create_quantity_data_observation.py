@@ -116,5 +116,5 @@ async def fetch_wikibase(
         logger.error(exc, extra={"wikibase": wikibase_id})
         raise exc
 
-    logger.debug("User: Retrieved Wikibase", extra={"wikibase": wikibase_id})
+    logger.debug("Quantity: Retrieved Wikibase", extra={"wikibase": wikibase_id})
     return wikibase
