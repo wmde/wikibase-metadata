@@ -1,7 +1,12 @@
 """Create Quantity Data Observation"""
 
+from typing import Optional
+from sqlalchemy import select
+from sqlalchemy.orm import joinedload
+from sqlalchemy.ext.asyncio import AsyncSession
 from urllib.error import HTTPError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import (
@@ -10,7 +15,6 @@ from fetch_data.sparql_data.sparql_queries import (
     COUNT_PROPERTIES_QUERY,
     COUNT_TRIPLES_QUERY,
 )
-from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from logger import logger
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 
@@ -19,11 +23,8 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
     """Create Quantity Data Observation"""
 
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await get_wikibase_from_database(
-            async_session=async_session,
-            wikibase_id=wikibase_id,
-            include_observations=True,
-            require_sparql_endpoint=True,
+        wikibase: WikibaseModel = await fetch_wikibase(
+            async_session=async_session, wikibase_id=wikibase_id
         )
 
         observation = await compile_quantity_observation(wikibase)
@@ -86,3 +87,34 @@ async def compile_quantity_observation(
         observation.returned_data = False
 
     return observation
+
+
+async def fetch_wikibase(
+    async_session: AsyncSession, wikibase_id: int
+) -> WikibaseModel:
+    """Fetch Wikibase"""
+
+    try:
+        wikibase: Optional[WikibaseModel] = (
+            (
+                await async_session.scalars(
+                    select(WikibaseModel)
+                    .options(joinedload(WikibaseModel.quantity_observations))
+                    .where(WikibaseModel.id == wikibase_id)
+                )
+            )
+            .unique()
+            .one_or_none()
+        )
+    except Exception as exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+    try:
+        assert wikibase is not None
+        assert wikibase.sparql_endpoint_url is not None
+    except AssertionError as exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+
+    logger.debug("User: Retrieved Wikibase", extra={"wikibase": wikibase_id})
+    return wikibase

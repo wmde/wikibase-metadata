@@ -2,8 +2,14 @@
 
 from collections.abc import Iterable
 from datetime import datetime
-from json.decoder import JSONDecodeError
+from json import JSONDecodeError
+from typing import Optional
+
 from requests.exceptions import ReadTimeout, SSLError
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
+
 from data import get_async_session
 from fetch_data.api_data.log_data.fetch_log_data import (
     get_log_list_from_url,
@@ -15,7 +21,6 @@ from fetch_data.api_data.user_data import (
     get_multiple_user_data,
     get_user_type_from_user_data,
 )
-from fetch_data.utils import get_wikibase_from_database
 from logger import logger
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
@@ -30,12 +35,7 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
     """Create Log Observation"""
 
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await get_wikibase_from_database(
-            async_session=async_session,
-            wikibase_id=wikibase_id,
-            include_observations=True,
-            require_action_api=True,
-        )
+        wikibase: WikibaseModel = await fetch_wikibase(async_session, wikibase_id)
 
         observation = WikibaseLogMonthObservationModel(
             wikibase_id=wikibase.id, first_month=first_month
@@ -151,3 +151,34 @@ async def create_log_month(
         user_type_record.user_count = len({log.user for log in user_type_logs})
         result.user_type_records.append(user_type_record)
     return result
+
+
+async def fetch_wikibase(
+    async_session: AsyncSession, wikibase_id: int
+) -> WikibaseModel:
+    """Fetch Wikibase"""
+
+    try:
+        wikibase: Optional[WikibaseModel] = (
+            (
+                await async_session.scalars(
+                    select(WikibaseModel)
+                    .options(joinedload(WikibaseModel.log_month_observations))
+                    .where(WikibaseModel.id == wikibase_id)
+                )
+            )
+            .unique()
+            .one_or_none()
+        )
+    except Exception as exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+    try:
+        assert wikibase is not None
+        assert wikibase.action_api_url() is not None
+    except AssertionError as exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+
+    logger.debug("User: Retrieved Wikibase", extra={"wikibase": wikibase_id})
+    return wikibase

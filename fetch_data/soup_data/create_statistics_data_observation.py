@@ -3,11 +3,15 @@
 import asyncio
 from typing import Optional
 from urllib.error import HTTPError
+
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import SSLError
+from sqlalchemy import select
+from sqlalchemy.orm import joinedload
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from data import get_async_session
-from fetch_data.utils import get_wikibase_from_database
 from logger import logger
 from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 
@@ -16,11 +20,8 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
     """Create Special:Statistics Observation"""
 
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await get_wikibase_from_database(
-            async_session=async_session,
-            wikibase_id=wikibase_id,
-            include_observations=True,
-            require_special_statistics=True,
+        wikibase: WikibaseModel = await fetch_wikibase(
+            async_session=async_session, wikibase_id=wikibase_id
         )
 
         observation = WikibaseStatisticsObservationModel()
@@ -103,3 +104,34 @@ def get_number_from_row(
         .replace(".", "")
         .replace("\xa0", "")
     )
+
+
+async def fetch_wikibase(
+    async_session: AsyncSession, wikibase_id: int
+) -> WikibaseModel:
+    """Fetch Wikibase"""
+
+    try:
+        wikibase: Optional[WikibaseModel] = (
+            (
+                await async_session.scalars(
+                    select(WikibaseModel)
+                    .options(joinedload(WikibaseModel.statistics_observations))
+                    .where(WikibaseModel.id == wikibase_id)
+                )
+            )
+            .unique()
+            .one_or_none()
+        )
+    except Exception as exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+    try:
+        assert wikibase is not None
+        assert wikibase.special_statistics_url() is not None
+    except AssertionError as exc:
+        logger.error(exc, extra={"wikibase": wikibase_id})
+        raise exc
+
+    logger.debug("User: Retrieved Wikibase", extra={"wikibase": wikibase_id})
+    return wikibase
