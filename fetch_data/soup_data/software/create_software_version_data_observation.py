@@ -41,7 +41,9 @@ async def create_software_version_observation_without_background_task(
 ) -> bool:
     """Create Software Version Observation"""
 
-    logger.debug("Software Version: Attempting Observation", extra={"wikibase": wikibase_id})
+    logger.debug(
+        "Software Version: Attempting Observation", extra={"wikibase": wikibase_id}
+    )
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
