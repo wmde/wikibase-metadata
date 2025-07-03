@@ -3,8 +3,9 @@
 import asyncio
 from json import JSONDecodeError
 from urllib.error import HTTPError, URLError
-from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 import numpy
+from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+
 from data import get_async_session
 from fetch_data.sparql_data.connectivity_math import (
     compile_distance_dict,
@@ -15,9 +16,9 @@ from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_l
 from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
 from model.database import (
+    WikibaseConnectivityObservationModel,
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
-    WikibaseConnectivityObservationModel,
     WikibaseModel,
 )
 
@@ -25,11 +26,15 @@ from model.database import (
 async def create_connectivity_observation(wikibase_id: int) -> bool:
     """Create Connectivity Data Observation"""
 
+    logger.debug(
+        "Connectivity: Attempting Observation", extra={"wikibase": wikibase_id}
+    )
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
+            join_connectivity_observations=True,
             require_sparql_endpoint=True,
         )
 

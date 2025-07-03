@@ -2,26 +2,29 @@
 
 from urllib.error import HTTPError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import PROPERTY_POPULARITY_QUERY
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from logger import logger
 from model.database import (
+    WikibaseModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
 )
-from model.database import WikibaseModel
 
 
 async def create_property_popularity_observation(wikibase_id: int) -> bool:
     """Create Property Popularity Observation"""
 
+    logger.debug("Property: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
+            join_property_popularity_observations=True,
             require_sparql_endpoint=True,
         )
 
