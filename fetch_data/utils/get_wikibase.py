@@ -34,26 +34,39 @@ async def get_wikibase_from_database(
 
     try:
         wikibase = (await async_session.scalars(query)).unique().one_or_none()
-    except Exception as  exc:
+    except Exception as exc:
         logger.error(exc, extra={"wikibase": wikibase_id})
         raise exc
 
-    logger.debug(f"Wikibase Is Not None: {wikibase is not None}", extra={"wikibase": wikibase_id})
+    logger.debug(
+        f"Wikibase Is Not None: {wikibase is not None}", extra={"wikibase": wikibase_id}
+    )
     assert wikibase is not None, "Wikibase Not Found"
 
-    logger.debug(f"Wikibase Is Checked: {wikibase.checked}", extra={"wikibase": wikibase_id})
+    logger.debug(
+        f"Wikibase Is Checked: {wikibase.checked}", extra={"wikibase": wikibase_id}
+    )
     assert wikibase.checked, "Wikibase Invalid"
 
     if require_action_api:
-        logger.debug(f"Wikibase Has scriptPath: {wikibase.script_path is not None}", extra={"wikibase": wikibase_id})
+        logger.debug(
+            f"Wikibase Has scriptPath: {wikibase.script_path is not None}",
+            extra={"wikibase": wikibase_id},
+        )
         assert wikibase.script_path is not None, "Script Path Must Be Populated"
     if require_sparql_endpoint:
-        logger.debug(f"Wikibase Has sparqlEndpointUrl: {wikibase.sparql_endpoint_url is not None}", extra={"wikibase": wikibase_id})
+        logger.debug(
+            f"Wikibase Has sparqlEndpointUrl: {wikibase.sparql_endpoint_url is not None}",
+            extra={"wikibase": wikibase_id},
+        )
         assert (
             wikibase.sparql_endpoint_url is not None
         ), "SPARQL Endpoint Must Be Populated"
     if require_special_statistics or require_special_version:
-        logger.debug(f"Wikibase Has articlePath: {wikibase.article_path is not None}", extra={"wikibase": wikibase_id})
+        logger.debug(
+            f"Wikibase Has articlePath: {wikibase.article_path is not None}",
+            extra={"wikibase": wikibase_id},
+        )
         assert wikibase.article_path is not None, "Article Path Must Be Populated"
 
     return wikibase
