@@ -4,6 +4,7 @@ omit =
     alembic/*
     tests/*
     app.py
+    data/great_expectations_cheat_sheet.py
 
 [report]
 fail_under=95
