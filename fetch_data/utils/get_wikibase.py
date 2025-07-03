@@ -17,7 +17,7 @@ async def get_wikibase_from_database(
     join_quantity_observations: bool = False,
     join_statistics_observations: bool = False,
     join_user_observations: bool = False,
-    join_version_observations: bool = False,
+    join_software_version_observations: bool = False,
     require_article_path: bool = False,
     require_script_path: bool = False,
     require_sparql_endpoint: bool = False,
@@ -37,12 +37,12 @@ async def get_wikibase_from_database(
         )
     if join_quantity_observations:
         query = query.options(joinedload(WikibaseModel.quantity_observations))
+    if join_software_version_observations:
+        query = query.options(joinedload(WikibaseModel.software_version_observations))
     if join_statistics_observations:
         query = query.options(joinedload(WikibaseModel.statistics_observations))
     if join_user_observations:
         query = query.options(joinedload(WikibaseModel.user_observations))
-    if join_version_observations:
-        query = query.options(joinedload(WikibaseModel.software_version_observations))
 
     try:
         wikibase = (await async_session.scalars(query)).unique().one_or_none()
