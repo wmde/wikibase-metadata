@@ -7,6 +7,7 @@ from logger import logger
 from model.database import WikibaseModel
 
 
+# pylint: disable-next=too-many-arguments,too-many-positional-arguments
 async def get_wikibase_from_database(
     async_session: AsyncSession,
     wikibase_id: int,
