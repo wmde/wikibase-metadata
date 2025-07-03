@@ -3,13 +3,10 @@
 import asyncio
 from collections.abc import Iterable
 from datetime import datetime
-from typing import Optional
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
 from requests.exceptions import SSLError
-from sqlalchemy import select
-from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
 
@@ -18,7 +15,7 @@ from fetch_data.soup_data.software.get_software_model import (
     get_or_create_software_model,
 )
 from fetch_data.soup_data.software.get_update_software_data import update_software_data
-from fetch_data.utils import parse_datetime
+from fetch_data.utils import get_wikibase_from_database, parse_datetime
 from logger import logger
 from model.database import (
     WikibaseModel,
@@ -45,8 +42,11 @@ async def create_software_version_observation_without_background_task(
     """Create Software Version Observation"""
 
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await fetch_wikibase(
-            async_session=async_session, wikibase_id=wikibase_id
+        wikibase: WikibaseModel = await get_wikibase_from_database(
+            async_session=async_session,
+            wikibase_id=wikibase_id,
+            join_version_observations=True,
+            require_article_path=True,
         )
 
         observation = WikibaseSoftwareVersionObservationModel()
@@ -90,37 +90,6 @@ async def create_software_version_observation_without_background_task(
 
         await async_session.commit()
         return observation.returned_data
-
-
-async def fetch_wikibase(
-    async_session: AsyncSession, wikibase_id: int
-) -> WikibaseModel:
-    """Fetch Wikibase"""
-
-    try:
-        wikibase: Optional[WikibaseModel] = (
-            (
-                await async_session.scalars(
-                    select(WikibaseModel)
-                    .options(joinedload(WikibaseModel.software_version_observations))
-                    .where(WikibaseModel.id == wikibase_id)
-                )
-            )
-            .unique()
-            .one_or_none()
-        )
-    except Exception as exc:
-        logger.error(exc, extra={"wikibase": wikibase_id})
-        raise exc
-    try:
-        assert wikibase is not None
-        assert wikibase.special_version_url() is not None
-    except AssertionError as exc:
-        logger.error(exc, extra={"wikibase": wikibase_id})
-        raise exc
-
-    logger.debug("Version: Retrieved Wikibase", extra={"wikibase": wikibase_id})
-    return wikibase
 
 
 async def compile_extension_versions(

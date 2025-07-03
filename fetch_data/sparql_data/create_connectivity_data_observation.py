@@ -2,12 +2,8 @@
 
 import asyncio
 from json import JSONDecodeError
-from typing import Optional
 from urllib.error import HTTPError, URLError
 import numpy
-from sqlalchemy import select
-from sqlalchemy.orm import joinedload
-from sqlalchemy.ext.asyncio import AsyncSession
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 
 from data import get_async_session
@@ -17,13 +13,13 @@ from fetch_data.sparql_data.connectivity_math import (
 )
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
-from fetch_data.utils import counts
+from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
 from model.database import (
-    WikibaseModel,
     WikibaseConnectivityObservationModel,
     WikibaseConnectivityObservationItemRelationshipCountModel,
     WikibaseConnectivityObservationObjectRelationshipCountModel,
+    WikibaseModel,
 )
 
 
@@ -31,8 +27,11 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
     """Create Connectivity Data Observation"""
 
     async with get_async_session() as async_session:
-        wikibase: WikibaseModel = await fetch_wikibase(
-            async_session=async_session, wikibase_id=wikibase_id
+        wikibase: WikibaseModel = await get_wikibase_from_database(
+            async_session=async_session,
+            wikibase_id=wikibase_id,
+            join_connectivity_observations=True,
+            require_sparql_endpoint=True,
         )
 
         observation = await compile_connectivity_observation(wikibase)
@@ -132,34 +131,3 @@ async def compile_connectivity_observation(
         observation.returned_data = False
 
     return observation
-
-
-async def fetch_wikibase(
-    async_session: AsyncSession, wikibase_id: int
-) -> WikibaseModel:
-    """Fetch Wikibase"""
-
-    try:
-        wikibase: Optional[WikibaseModel] = (
-            (
-                await async_session.scalars(
-                    select(WikibaseModel)
-                    .options(joinedload(WikibaseModel.connectivity_observations))
-                    .where(WikibaseModel.id == wikibase_id)
-                )
-            )
-            .unique()
-            .one_or_none()
-        )
-    except Exception as exc:
-        logger.error(exc, extra={"wikibase": wikibase_id})
-        raise exc
-    try:
-        assert wikibase is not None
-        assert wikibase.sparql_endpoint_url is not None
-    except AssertionError as exc:
-        logger.error(exc, extra={"wikibase": wikibase_id})
-        raise exc
-
-    logger.debug("Connectivity: Retrieved Wikibase", extra={"wikibase": wikibase_id})
-    return wikibase
