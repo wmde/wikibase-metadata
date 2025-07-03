@@ -1,3 +1,5 @@
+"""Example code adding new expectations to Great Expectations"""
+
 # python data/great_expectations_cheat_sheet.py
 
 import great_expectations as gx
