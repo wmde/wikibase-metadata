@@ -30,13 +30,13 @@ async def test_create_quantity_observation_success(mocker):
             {"results": {"bindings": [{"count": {"value": 4}}]}},  # Lexemes
             {"results": {"bindings": [{"count": {"value": 8}}]}},  # Triples
             {
-                "results": {"bindings": [{"count": {"value": 8}}]}
+                "results": {"bindings": [{"count": {"value": 16}}]}
             },  # External Identifier Properties
             {
-                "results": {"bindings": [{"count": {"value": 8}}]}
+                "results": {"bindings": [{"count": {"value": 32}}]}
             },  # External Identifier Statements
-            {"results": {"bindings": [{"count": {"value": 8}}]}},  # URL Properties
-            {"results": {"bindings": [{"count": {"value": 8}}]}},  # URL Statements
+            {"results": {"bindings": [{"count": {"value": 64}}]}},  # URL Properties
+            {"results": {"bindings": [{"count": {"value": 128}}]}},  # URL Statements
         ],
     )
 
