@@ -36,11 +36,11 @@ def test_data_expectations(checkpoint_name: str):
     result = retrieved_checkpoint.run()
 
     # debug output
-    for k, v in result.run_results.items():
-        if v["success"] is not True:
-            for r in v["results"]:
-                if r["success"] is not True:
-                    print(f"\nExpectation failed:{r}")
+    for _, validation_definition_result in result.run_results.items():
+        if validation_definition_result["success"] is not True:
+            for expectation_result in validation_definition_result["results"]:
+                if expectation_result["success"] is not True:
+                    print(f"\nExpectation failed: {expectation_result}")
 
     assert result.success, result.run_results
 
