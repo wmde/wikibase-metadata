@@ -34,6 +34,14 @@ def test_data_expectations(checkpoint_name: str):
     context = gx.get_context(project_root_dir=GREAT_EXPECTATIONS_PROJECT_ROOT)
     retrieved_checkpoint = context.checkpoints.get(checkpoint_name)
     result = retrieved_checkpoint.run()
+
+    # debug output
+    for _, validation_definition_result in result.run_results.items():
+        if validation_definition_result["success"] is not True:
+            for expectation_result in validation_definition_result["results"]:
+                if expectation_result["success"] is not True:
+                    print(f"\nExpectation failed: {expectation_result}")
+
     assert result.success, result.run_results
 
     context.build_data_docs()
