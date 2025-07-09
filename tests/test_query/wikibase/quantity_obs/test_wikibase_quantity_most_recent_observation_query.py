@@ -49,4 +49,4 @@ async def test_wikibase_quantity_most_recent_observation_query():
     assert "mostRecent" in result_wikibase["quantityObservations"]
     most_recent = result_wikibase["quantityObservations"]["mostRecent"]
 
-    assert_quantity(most_recent, "1", True, 2, 4, 1, 8)
+    assert_quantity(most_recent, "1", True, 2, 4, 1, 8, 16, 32, 64, 128)
