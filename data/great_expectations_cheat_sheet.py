@@ -23,7 +23,9 @@ suite.save()
 valid_suite = context.suites.get(
     name="valid_wikibase_quantity_observation_expectation_suite"
 )
-# valid_suite.expectations.append(gx.expectations.ExpectColumnValuesToNotBeNull(column='total_external_identifier_properties'))
+# valid_suite.expectations.append(
+#   gx.expectations.ExpectColumnValuesToNotBeNull(
+#     column='total_external_identifier_properties'))
 valid_suite.add_expectation(
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="total_external_identifier_properties", min_value=0
