@@ -1,115 +1,115 @@
 {
-  "expectations": [
-    {
-      "id": "030c4365-94ba-4704-a4ac-212d047ef911",
-      "kwargs": {
-        "column": "total_items"
-      },
-      "meta": {},
-      "type": "expect_column_values_to_not_be_null"
-    },
-    {
-      "id": "6462e799-997a-42d4-887a-2c7e33ecdc6f",
-      "kwargs": {
-        "column": "total_items",
-        "min_value": 1.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "2fceba81-d74e-4a64-a4f2-0ab360e10620",
-      "kwargs": {
-        "column": "total_properties"
-      },
-      "meta": {},
-      "type": "expect_column_values_to_not_be_null"
-    },
-    {
-      "id": "98c5cd25-268b-49c5-b21c-c4dc69981e19",
-      "kwargs": {
-        "column": "total_properties",
-        "min_value": 1.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "176253ae-7b09-4e5c-bb7b-c24d23eb67b8",
-      "kwargs": {
-        "column": "total_lexemes"
-      },
-      "meta": {},
-      "type": "expect_column_values_to_not_be_null"
-    },
-    {
-      "id": "81c4b614-44d8-4d50-b9af-247d63b69b48",
-      "kwargs": {
-        "column": "total_lexemes",
-        "min_value": 0.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "78391df0-b4f6-4c10-80bf-5c42db266b23",
-      "kwargs": {
-        "column": "total_triples",
-        "mostly": 0.4
-      },
-      "meta": {},
-      "type": "expect_column_values_to_not_be_null"
-    },
-    {
-      "id": "d75bb644-8373-48a2-9fd9-3a51dd55379b",
-      "kwargs": {
-        "column": "total_triples",
-        "min_value": 1.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "5df58eae-1f39-42c1-bb21-a6bcd54d0f85",
-      "kwargs": {
-        "column": "total_external_identifier_properties",
-        "min_value": 0.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "f2e34344-5092-4f36-9462-30be0d3ff732",
-      "kwargs": {
-        "column": "total_external_identifier_statements",
-        "min_value": 0.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "98f027e4-045b-4cd9-8dc2-b22f9ddf2e50",
-      "kwargs": {
-        "column": "total_url_properties",
-        "min_value": 0.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    },
-    {
-      "id": "4623f88d-884c-43ff-8000-47126beb9ace",
-      "kwargs": {
-        "column": "total_url_statements",
-        "min_value": 0.0
-      },
-      "meta": {},
-      "type": "expect_column_values_to_be_between"
-    }
-  ],
-  "id": "34e1e210-4866-42f5-aeff-a64b8c53673c",
-  "meta": {
-    "great_expectations_version": "1.0.0"
-  },
-  "name": "valid_wikibase_quantity_observation_expectation_suite",
-  "notes": null
+	"expectations": [
+		{
+			"id": "030c4365-94ba-4704-a4ac-212d047ef911",
+			"kwargs": {
+				"column": "total_items"
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "6462e799-997a-42d4-887a-2c7e33ecdc6f",
+			"kwargs": {
+				"column": "total_items",
+				"min_value": 1.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "2fceba81-d74e-4a64-a4f2-0ab360e10620",
+			"kwargs": {
+				"column": "total_properties"
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "98c5cd25-268b-49c5-b21c-c4dc69981e19",
+			"kwargs": {
+				"column": "total_properties",
+				"min_value": 1.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "176253ae-7b09-4e5c-bb7b-c24d23eb67b8",
+			"kwargs": {
+				"column": "total_lexemes"
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "81c4b614-44d8-4d50-b9af-247d63b69b48",
+			"kwargs": {
+				"column": "total_lexemes",
+				"min_value": 0.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "78391df0-b4f6-4c10-80bf-5c42db266b23",
+			"kwargs": {
+				"column": "total_triples",
+				"mostly": 0.4
+			},
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "d75bb644-8373-48a2-9fd9-3a51dd55379b",
+			"kwargs": {
+				"column": "total_triples",
+				"min_value": 1.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "5df58eae-1f39-42c1-bb21-a6bcd54d0f85",
+			"kwargs": {
+				"column": "total_external_identifier_properties",
+				"min_value": 0.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "f2e34344-5092-4f36-9462-30be0d3ff732",
+			"kwargs": {
+				"column": "total_external_identifier_statements",
+				"min_value": 0.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "98f027e4-045b-4cd9-8dc2-b22f9ddf2e50",
+			"kwargs": {
+				"column": "total_url_properties",
+				"min_value": 0.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "4623f88d-884c-43ff-8000-47126beb9ace",
+			"kwargs": {
+				"column": "total_url_statements",
+				"min_value": 0.0
+			},
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		}
+	],
+	"id": "34e1e210-4866-42f5-aeff-a64b8c53673c",
+	"meta": {
+		"great_expectations_version": "1.0.0"
+	},
+	"name": "valid_wikibase_quantity_observation_expectation_suite",
+	"notes": null
 }
