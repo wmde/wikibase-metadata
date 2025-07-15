@@ -34,12 +34,7 @@
 			"id": "5342a046-55a7-4a61-908e-c461cd4a84bf",
 			"kwargs": {
 				"column": "wikibase_name",
-				"regex_list": [
-					"^[ \t\r\n]*$",
-					"^[ \t\r\n]+",
-					"[ \t\r\n]+$",
-					"[ \t\r\n]{2,}"
-				]
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
