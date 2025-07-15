@@ -47,10 +47,13 @@
 			"kwargs": {
 				"column": "url_type",
 				"value_set": [
-					"BASE_URL",
 					"ACTION_QUERY_URL",
+					"ARTICLE_PATH",
+					"BASE_URL",
 					"INDEX_QUERY_URL",
+					"SCRIPT_PATH",
 					"SPARQL_ENDPOINT_URL",
+					"SPARQL_FRONTEND_URL",
 					"SPARQL_QUERY_URL",
 					"SPECIAL_STATISTICS_URL",
 					"SPECIAL_VERSION_URL"
