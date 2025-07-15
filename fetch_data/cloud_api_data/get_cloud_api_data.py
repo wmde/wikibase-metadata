@@ -9,6 +9,9 @@ URL = "https://www.wikibase.cloud/api/wiki?page=1&per_page=10000"
 
 
 def strip_sitename(raw_sitename: str) -> str:
+    """
+    Strip spaces around the sitename
+    """
     return raw_sitename.strip(" ")
 
 
