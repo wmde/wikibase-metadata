@@ -8,6 +8,10 @@ from fetch_data.cloud_api_data.wikibase_cloud_instance import WikibaseCloudInsta
 URL = "https://www.wikibase.cloud/api/wiki?page=1&per_page=10000"
 
 
+def strip_sitename(raw_sitename: str) -> str:
+    return raw_sitename.strip(" ")
+
+
 async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
     """
     Get the list of currently known wikibase cloud instances
@@ -36,7 +40,7 @@ async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
                     description=raw_description,
                     domain=raw_domain,
                     domain_decoded=raw_domain_decoded,
-                    sitename=raw_sitename,
+                    sitename=strip_sitename(raw_sitename),
                 )
                 instances.append(instance)
             else:
