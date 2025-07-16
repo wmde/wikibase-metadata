@@ -6,8 +6,8 @@ from tests.utils import assert_layered_property_value, get_mock_context
 
 
 AGGREGATED_USERS_QUERY = """
-query MyQuery {
-  aggregateUsers {
+query MyQuery($wikibaseFilter: WikibaseFilterInput) {
+  aggregateUsers(wikibaseFilter: $wikibaseFilter) {
     totalAdmin
     totalUsers
     wikibaseCount

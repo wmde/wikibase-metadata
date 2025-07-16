@@ -10,8 +10,8 @@ from tests.utils import (
 
 
 AGGREGATED_CREATED_QUERY = """
-query MyQuery {
-  aggregateCreated {
+query MyQuery($wikibaseFilter: WikibaseFilterInput) {
+  aggregateCreated(wikibaseFilter: $wikibaseFilter) {
     year
     wikibaseCount
   }

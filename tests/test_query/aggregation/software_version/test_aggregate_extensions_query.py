@@ -18,8 +18,12 @@ from tests.utils import (
 
 AGGREGATE_EXTENSIONS_QUERY = (
     """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateExtensionPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregateExtensionPopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }

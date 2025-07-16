@@ -17,8 +17,12 @@ from tests.utils import (
 
 AGGREGATE_LIBRARIES_QUERY = (
     """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateLibraryPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregateLibraryPopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }

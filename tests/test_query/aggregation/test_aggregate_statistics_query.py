@@ -12,8 +12,8 @@ from tests.utils import assert_layered_property_value, get_mock_context
 
 
 AGGREGATED_STATISTICS_QUERY = """
-query MyQuery {
-  aggregateStatistics {
+query MyQuery($wikibaseFilter: WikibaseFilterInput) {
+  aggregateStatistics(wikibaseFilter: $wikibaseFilter) {
     wikibaseCount
     edits {
       editsPerPageAvg

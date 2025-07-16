@@ -10,8 +10,12 @@ from tests.utils import (
 
 
 AGGREGATED_LANGUAGES_QUERY = """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateLanguagePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregateLanguagePopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     meta {
       pageNumber
       pageSize

@@ -6,8 +6,8 @@ from tests.utils import assert_layered_property_value, get_mock_context
 
 
 AGGREGATED_QUANTITY_QUERY = """
-query MyQuery {
-  aggregateQuantity {
+query MyQuery($wikibaseFilter: WikibaseFilterInput) {
+  aggregateQuantity(wikibaseFilter: $wikibaseFilter) {
     totalItems
     totalLexemes
     totalProperties

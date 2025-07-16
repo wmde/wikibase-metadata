@@ -11,8 +11,12 @@ from tests.utils import (
 
 
 AGGREGATED_PROPERTY_POPULARITY_QUERY = """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregatePropertyPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregatePropertyPopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     meta {
       pageNumber
       pageSize
