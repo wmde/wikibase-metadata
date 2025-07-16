@@ -67,6 +67,50 @@ async def test_update_wikibase_type():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
+@pytest.mark.dependency(
+    name="update-wikibase-type-ii",
+    depends=["mutate-cloud-instances"],
+    scope="session",
+)
+async def test_update_wikibase_type_ii():
+    """Test Update to Suite"""
+
+    before_updating_result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert before_updating_result.errors is None
+    assert before_updating_result.data is not None
+    assert_layered_property_value(
+        before_updating_result.data, ["wikibase", "wikibaseType"], None
+    )
+
+    update_result = await test_schema.execute(
+        UPDATE_WIKIBASE_TYPE_QUERY,
+        variable_values={"wikibaseId": 1, "wikibaseType": "SUITE"},
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert update_result.errors is None
+    assert update_result.data is not None
+    assert update_result.data["updateWikibaseType"] is True
+
+    after_updating_result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert after_updating_result.errors is None
+    assert after_updating_result.data is not None
+    assert_layered_property_value(
+        after_updating_result.data, ["wikibase", "wikibaseType"], "SUITE"
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.dependency(depends=["mutate-cloud-instances"], scope="session")
 async def test_update_wikibase_type_to_same():
     """Test Update to Current Value"""

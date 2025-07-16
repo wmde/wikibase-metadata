@@ -167,10 +167,21 @@ async def test_wikibase_list_query():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(depends=["update-wikibase-type"], scope="session")
+@pytest.mark.dependency(
+    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+)
 @pytest.mark.parametrize(
     ["exclude", "expected_total"],
-    [([], 10), (["CLOUD"], 2), (["OTHER"], 9), (["CLOUD", "OTHER"], 1)],
+    [
+        ([], 10),
+        (["CLOUD"], 2),
+        (["OTHER"], 9),
+        (["SUITE"], 9),
+        (["CLOUD", "OTHER"], 1),
+        (["CLOUD", "SUITE"], 1),
+        (["OTHER", "SUITE"], 8),
+        (["CLOUD", "OTHER", "SUITE"], 0),
+    ],
 )
 async def test_wikibase_list_query_filtered(exclude, expected_total):
     """Test Null Scenario"""
