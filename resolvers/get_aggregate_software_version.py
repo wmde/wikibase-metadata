@@ -77,6 +77,8 @@ def get_query(
 ) -> Select[tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
     """Get Software Version Query"""
 
+    filtered_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
+
     rank_subquery = (
         select(
             WikibaseSoftwareVersionObservationModel.id,
@@ -89,9 +91,7 @@ def get_query(
             .label("rank"),
         )
         .join(
-            filtered_subquery := get_filtered_wikibase_query(
-                wikibase_filter
-            ).subquery(),
+            filtered_subquery,
             onclause=WikibaseSoftwareVersionObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )

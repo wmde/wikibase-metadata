@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from sqlalchemy import Select, select
+from sqlalchemy import Select, or_, select
 
 from model.database import (
     WikibaseModel,
@@ -22,8 +22,12 @@ def get_filtered_wikibase_query(
     if wikibase_filter.wikibase_type is not None:
         if wikibase_filter.wikibase_type.exclude is not None:
             query = query.where(
-                WikibaseModel.wikibase_type.not_in(
-                    wikibase_filter.wikibase_type.exclude
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    WikibaseModel.wikibase_type.notin_(
+                        wikibase_filter.wikibase_type.exclude
+                    ),
                 )
             )
         # if filter.wikibase_type.include is not None:

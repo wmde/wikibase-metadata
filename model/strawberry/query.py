@@ -1,9 +1,11 @@
 """Query"""
 
+from typing import Optional
 import strawberry
 from strawberry import Info
 
 from model.enum import WikibaseSoftwareType
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -135,13 +137,20 @@ class Query:
 
     @strawberry.field(description="Aggregated Software Popularity")
     async def aggregate_software_popularity(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        info: Info,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Software Popularity"""
 
         authenticate(info)
         return await get_aggregate_version(
-            WikibaseSoftwareType.SOFTWARE, page_number, page_size
+            software_type=WikibaseSoftwareType.SOFTWARE,
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
         )
 
     @strawberry.field(description="Aggregated Statistics")
