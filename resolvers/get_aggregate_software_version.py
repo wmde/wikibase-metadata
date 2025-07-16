@@ -13,7 +13,7 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
-from model.strawberry.input import WikibaseTypeInput
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -23,15 +23,32 @@ from model.strawberry.output import (
 )
 
 
+def get_filtered_wikibase_query(wikibase_filter: Optional[WikibaseFilterInput] = None) -> Select[tuple[WikibaseModel]]:
+    """Filtered list of Wikibases"""
+
+    query = select(WikibaseModel).where(WikibaseModel.checked)
+    if wikibase_filter is None:
+        return query
+
+    if wikibase_filter.wikibase_type is not None:
+        if wikibase_filter.wikibase_type.exclude is not None:
+            query = query.where(
+                WikibaseModel.wikibase_type.not_in(wikibase_filter.wikibase_type.exclude)
+            )
+        # if filter.wikibase_type.include is not None:
+        #     query = query.where(WikibaseModel.wikibase_type.in_(filter.wikibase_type.include))
+    return query
+
+
 async def get_aggregate_version(
     software_type: WikibaseSoftwareType,
     page_number: PageNumberType,
     page_size: PageSizeType,
-    wikibase_type: Optional[WikibaseTypeInput] = None,
+    wikibase_filter: Optional[WikibaseFilterInput] = None,
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
     """Get Aggregate Software Version"""
 
-    query = get_query(software_type, wikibase_type)
+    query = get_query(software_type, wikibase_filter)
 
     async with get_async_session() as async_session:
         results = (await async_session.execute(query)).all()
@@ -73,7 +90,7 @@ async def get_aggregate_version(
 
 
 def get_query(
-    software_type: WikibaseSoftwareType, wikibase_type: Optional[WikibaseTypeInput]
+    software_type: WikibaseSoftwareType, wikibase_filter: Optional[WikibaseFilterInput]
 ) -> Select[tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
     """Get Software Version Query"""
 
@@ -88,19 +105,13 @@ def get_query(
             )
             .label("rank"),
         )
+        .join(
+            filtered_subquery := get_filtered_wikibase_query(wikibase_filter).subquery(),
+            onclause=WikibaseSoftwareVersionObservationModel.wikibase_id
+            == filtered_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseSoftwareVersionObservationModel.returned_data,
-                WikibaseSoftwareVersionObservationModel.wikibase.has(
-                    WikibaseModel.checked
-                    if wikibase_type is None
-                    else and_(
-                        WikibaseModel.checked,
-                        WikibaseModel.wikibase_type.in_(wikibase_type.include) if wikibase_type.include is not None else True,
-                        WikibaseModel.wikibase_type.not_in(wikibase_type.exclude) if wikibase_type.exclude is not None else True,
-                    )
-                ),
-            )
+            WikibaseSoftwareVersionObservationModel.returned_data,
         )
         .subquery()
     )
