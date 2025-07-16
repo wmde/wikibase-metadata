@@ -10,6 +10,7 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
 from tests.test_schema import test_schema
 from tests.utils import (
     assert_layered_property_count,
+    assert_layered_property_value,
     assert_page_meta,
     get_mock_context,
 )
@@ -169,3 +170,42 @@ async def test_aggregate_libraries_query_page_two():
             None,
             None,
         )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 59),
+        (["CLOUD"], 59),
+        (["OTHER"], 59),
+        (["CLOUD", "OTHER"], 59),
+    ],
+)
+@pytest.mark.version
+async def test_aggregate_libraries_query_filtered(exclude: list, expected_count: int):
+    """Test Aggregate Library Query"""
+
+    result = await test_schema.execute(
+        AGGREGATE_LIBRARIES_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data,
+        ["aggregateLibraryPopularity", "meta", "totalCount"],
+        expected_count,
+    )

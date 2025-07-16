@@ -38,3 +38,36 @@ async def test_aggregate_created_query():
     assert_layered_property_value(
         result.data, ["aggregateCreated", 0, "wikibaseCount"], 1
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 1),
+        (["CLOUD"], 1),
+        (["OTHER"], 1),
+        (["CLOUD", "OTHER"], 1),
+    ],
+)
+@pytest.mark.user
+async def test_aggregate_created_query_filtered(exclude: list, expected_count: int):
+    """Test Aggregate Created Query"""
+
+    result = await test_schema.execute(
+        AGGREGATED_CREATED_QUERY,
+        variable_values={"wikibaseFilter": {"wikibaseType": {"exclude": exclude}}},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data, ["aggregateCreated", 0, "wikibaseCount"], expected_count
+    )
