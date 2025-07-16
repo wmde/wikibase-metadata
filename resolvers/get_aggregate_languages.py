@@ -22,8 +22,10 @@ async def get_language_list(
     """List of Languages"""
 
     wikibase_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
-    language_subquery = select(WikibaseLanguageModel).where(
-        WikibaseLanguageModel.wikibase_id.in_(select(wikibase_subquery.c.id))
+    language_subquery = (
+        select(WikibaseLanguageModel)
+        .where(WikibaseLanguageModel.wikibase_id.in_(select(wikibase_subquery.c.id)))
+        .subquery()
     )
 
     total_query = (
