@@ -1,16 +1,21 @@
 """Get Aggregate Statistics"""
 
+from typing import Optional
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database import WikibaseModel, WikibaseStatisticsObservationModel
+from model.database import WikibaseStatisticsObservationModel
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import WikibaseStatisticsAggregateStrawberryModel
+from resolvers.util import get_filtered_wikibase_query
 
 
-async def get_aggregate_statistics() -> WikibaseStatisticsAggregateStrawberryModel:
+async def get_aggregate_statistics(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> WikibaseStatisticsAggregateStrawberryModel:
     """Get Aggregate Statistics"""
 
-    total_statistics_query = get_total_statistics_query()
+    total_statistics_query = get_total_statistics_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         (
@@ -38,10 +43,12 @@ async def get_aggregate_statistics() -> WikibaseStatisticsAggregateStrawberryMod
         )
 
 
-def get_total_statistics_query() -> (
-    Select[tuple[int, int, int, int, int, int, int, int, int]]
-):
+def get_total_statistics_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, int, int, int, int, int, int, int, int]]:
     """Get Total Statistics Query"""
+
+    filtered_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -54,11 +61,13 @@ def get_total_statistics_query() -> (
             )
             .label("rank"),
         )
+        .join(
+            filtered_subquery,
+            onclause=WikibaseStatisticsObservationModel.wikibase_id
+            == filtered_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseStatisticsObservationModel.returned_data,
-                WikibaseStatisticsObservationModel.wikibase.has(WikibaseModel.checked),
-            )
+            WikibaseStatisticsObservationModel.returned_data,
         )
         .subquery()
     )

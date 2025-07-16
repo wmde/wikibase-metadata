@@ -1,16 +1,21 @@
 """Get Aggregate Quantity"""
 
+from typing import Optional
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database import WikibaseModel, WikibaseQuantityObservationModel
+from model.database import WikibaseQuantityObservationModel
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import WikibaseQuantityAggregateStrawberryModel
+from resolvers.util import get_filtered_wikibase_query
 
 
-async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
+async def get_aggregate_quantity(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> WikibaseQuantityAggregateStrawberryModel:
     """Get Aggregate Quantity"""
 
-    total_quantity_query = get_total_quantity_query()
+    total_quantity_query = get_total_quantity_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         total_items, total_lexemes, total_properties, total_triples, wikibase_count = (
@@ -26,8 +31,12 @@ async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
         )
 
 
-def get_total_quantity_query() -> Select[tuple[int, int, int, int, int]]:
+def get_total_quantity_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, int, int, int, int]]:
     """Get Total Quantity Query"""
+
+    filtered_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -40,11 +49,13 @@ def get_total_quantity_query() -> Select[tuple[int, int, int, int, int]]:
             )
             .label("rank"),
         )
+        .join(
+            filtered_subquery,
+            onclause=WikibaseQuantityObservationModel.wikibase_id
+            == filtered_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseQuantityObservationModel.returned_data,
-                WikibaseQuantityObservationModel.wikibase.has(WikibaseModel.checked),
-            )
+            WikibaseQuantityObservationModel.returned_data,
         )
         .subquery()
     )

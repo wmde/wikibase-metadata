@@ -1,22 +1,26 @@
 """Get Aggregate Users"""
 
+from typing import Optional
 from sqlalchemy import Select, and_, or_, select, func
 
 from data import get_async_session
 from model.database import (
-    WikibaseModel,
     WikibaseUserGroupModel,
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
 )
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import WikibaseUserAggregateStrawberryModel
+from resolvers.util import get_filtered_wikibase_query
 
 
-async def get_aggregate_users() -> WikibaseUserAggregateStrawberryModel:
+async def get_aggregate_users(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> WikibaseUserAggregateStrawberryModel:
     """Get Aggregate Users"""
 
-    total_user_query = get_total_user_query()
-    total_admin_query = get_total_admin_query()
+    total_user_query = get_total_user_query(wikibase_filter)
+    total_admin_query = get_total_admin_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         total_users, users_wikibase_count = (
@@ -34,8 +38,12 @@ async def get_aggregate_users() -> WikibaseUserAggregateStrawberryModel:
         )
 
 
-def get_total_admin_query() -> Select[tuple[int, int]]:
+def get_total_admin_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, int]]:
     """Get Total Admin Query"""
+
+    filtered_wikibase_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -48,12 +56,12 @@ def get_total_admin_query() -> Select[tuple[int, int]]:
             )
             .label("rank"),
         )
-        .where(
-            and_(
-                WikibaseUserObservationModel.returned_data,
-                WikibaseUserObservationModel.wikibase.has(WikibaseModel.checked),
-            )
+        .join(
+            filtered_wikibase_subquery,
+            onclause=WikibaseUserObservationModel.wikibase_id
+            == filtered_wikibase_subquery.c.id,
         )
+        .where(WikibaseUserObservationModel.returned_data)
         .subquery()
     )
 
@@ -88,8 +96,12 @@ def get_total_admin_query() -> Select[tuple[int, int]]:
     return query
 
 
-def get_total_user_query() -> Select[tuple[int, int]]:
+def get_total_user_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, int]]:
     """Get Total User Query"""
+
+    filtered_wikibase_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -102,11 +114,13 @@ def get_total_user_query() -> Select[tuple[int, int]]:
             )
             .label("rank"),
         )
+        .join(
+            filtered_wikibase_subquery,
+            onclause=WikibaseUserObservationModel.wikibase_id
+            == filtered_wikibase_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseUserObservationModel.returned_data,
-                WikibaseUserObservationModel.wikibase.has(WikibaseModel.checked),
-            )
+            WikibaseUserObservationModel.returned_data,
         )
         .subquery()
     )

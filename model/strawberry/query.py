@@ -48,12 +48,20 @@ class Query:
 
     @strawberry.field(description="List of Wikibases")
     async def wikibase_list(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        info: Info,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseStrawberryModel]:
         """List of Wikibases"""
 
         authenticate(info)
-        return await get_wikibase_list(page_number, page_size)
+        return await get_wikibase_list(
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
+        )
 
     @strawberry.field(description="List of Extensions")
     async def extension_list(
@@ -68,79 +76,116 @@ class Query:
 
     @strawberry.field(description="Aggregated Year of First Log Date")
     async def aggregate_created(
-        self, info: Info
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
     ) -> list[WikibaseYearCreatedAggregateStrawberryModel]:
         """Aggregated Year of First Log Date"""
 
         authenticate(info)
-        return await get_aggregate_created()
+        return await get_aggregate_created(wikibase_filter)
 
     @strawberry.field(description="Aggregated Extension Popularity")
     async def aggregate_extension_popularity(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        info: Info,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Extension Popularity"""
 
         authenticate(info)
         return await get_aggregate_version(
-            WikibaseSoftwareType.EXTENSION, page_number, page_size
+            software_type=WikibaseSoftwareType.EXTENSION,
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
         )
 
     @strawberry.field(description="Aggregated Language Popularity")
     async def aggregate_language_popularity(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        info: Info,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseLanguageAggregateStrawberryModel]:
         """Aggregated Language Popularity"""
 
         authenticate(info)
-        return await get_language_list(page_number, page_size)
+        return await get_language_list(
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
+        )
 
     @strawberry.field(description="Aggregated Library Popularity")
     async def aggregate_library_popularity(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        info: Info,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Library Popularity"""
 
         authenticate(info)
         return await get_aggregate_version(
-            WikibaseSoftwareType.LIBRARY, page_number, page_size
+            software_type=WikibaseSoftwareType.LIBRARY,
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
         )
 
     @strawberry.field(description="Aggregated Property Popularity")
     async def aggregate_property_popularity(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        info: Info,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibasePropertyPopularityAggregateCountStrawberryModel]:
         """Aggregated Property Popularity"""
 
         authenticate(info)
-        return await get_aggregate_property_popularity(page_number, page_size)
+        return await get_aggregate_property_popularity(
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
+        )
 
     @strawberry.field(description="Aggregated Quantity")
     async def aggregate_quantity(
-        self, info: Info
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
     ) -> WikibaseQuantityAggregateStrawberryModel:
         """Aggregated Quantity"""
 
         authenticate(info)
-        return await get_aggregate_quantity()
+        return await get_aggregate_quantity(wikibase_filter)
 
     @strawberry.field(description="Aggregated Skin Popularity")
     async def aggregate_skin_popularity(
-        self, page_number: PageNumberType, page_size: PageSizeType, info: Info
+        self,
+        info: Info,
+        page_number: PageNumberType,
+        page_size: PageSizeType,
+        wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Skin Popularity"""
 
         authenticate(info)
         return await get_aggregate_version(
-            WikibaseSoftwareType.SKIN, page_number, page_size
+            software_type=WikibaseSoftwareType.SKIN,
+            page_number=page_number,
+            page_size=page_size,
+            wikibase_filter=wikibase_filter,
         )
 
     @strawberry.field(description="Aggregated Software Popularity")
     async def aggregate_software_popularity(
         self,
+        info: Info,
         page_number: PageNumberType,
         page_size: PageSizeType,
-        info: Info,
         wikibase_filter: Optional[WikibaseFilterInput] = None,
     ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
         """Aggregated Software Popularity"""
@@ -155,16 +200,18 @@ class Query:
 
     @strawberry.field(description="Aggregated Statistics")
     async def aggregate_statistics(
-        self, info: Info
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
     ) -> WikibaseStatisticsAggregateStrawberryModel:
         """Aggregated Statistics"""
 
         authenticate(info)
-        return await get_aggregate_statistics()
+        return await get_aggregate_statistics(wikibase_filter)
 
     @strawberry.field(description="Aggregated Users")
-    async def aggregate_users(self, info: Info) -> WikibaseUserAggregateStrawberryModel:
+    async def aggregate_users(
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
+    ) -> WikibaseUserAggregateStrawberryModel:
         """Aggregated Users"""
 
         authenticate(info)
-        return await get_aggregate_users()
+        return await get_aggregate_users(wikibase_filter)

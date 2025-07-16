@@ -1,27 +1,31 @@
 """Get Aggregate Property Popularity"""
 
+from typing import Optional
 from sqlalchemy import Select, and_, desc, select, func
 
 from data import get_async_session
 from model.database import (
-    WikibaseModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
 )
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
     PageSizeType,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
 )
+from resolvers.util import get_filtered_wikibase_query
 
 
 async def get_aggregate_property_popularity(
-    page_number: PageNumberType, page_size: PageSizeType
+    page_number: PageNumberType,
+    page_size: PageSizeType,
+    wikibase_filter: Optional[WikibaseFilterInput],
 ) -> Page[WikibasePropertyPopularityAggregateCountStrawberryModel]:
     """Get Aggregate Property Popularity"""
 
-    query = get_unordered_query()
+    query = get_unordered_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
@@ -54,8 +58,12 @@ async def get_aggregate_property_popularity(
         )
 
 
-def get_unordered_query() -> Select[tuple[int, str, int, int]]:
+def get_unordered_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, str, int, int]]:
     """Get Unordered Property Popularity Query"""
+
+    filtered_wikibase_subquery = get_filtered_wikibase_query(wikibase_filter)
 
     rank_subquery = (
         select(
@@ -68,14 +76,12 @@ def get_unordered_query() -> Select[tuple[int, str, int, int]]:
             )
             .label("rank"),
         )
-        .where(
-            and_(
-                WikibasePropertyPopularityObservationModel.returned_data,
-                WikibasePropertyPopularityObservationModel.wikibase.has(
-                    WikibaseModel.checked
-                ),
-            )
+        .join(
+            filtered_wikibase_subquery,
+            onclause=WikibasePropertyPopularityObservationModel.wikibase_id
+            == filtered_wikibase_subquery.c.id,
         )
+        .where(WikibasePropertyPopularityObservationModel.returned_data)
         .subquery()
     )
     query = (
