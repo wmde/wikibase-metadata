@@ -11,8 +11,12 @@ from tests.utils import (
 
 
 WIKIBASE_LIST_QUERY = """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  wikibaseList(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  wikibaseList(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     data {
       id
       title
@@ -159,3 +163,29 @@ async def test_wikibase_list_query():
         "userObservations",
     ]:
         assert obs in result_datum
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.dependency(depends=["update-wikibase-type"], scope="session")
+@pytest.mark.parametrize(
+    ["exclude", "expected_total"],
+    [([], 10), (["CLOUD"], 2), (["OTHER"], 9), (["CLOUD", "OTHER"], 1)],
+)
+async def test_wikibase_list_query_filtered(exclude, expected_total):
+    """Test Null Scenario"""
+
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibaseList" in result.data
+    assert_page_meta(result.data["wikibaseList"], 1, 1, expected_total, expected_total)
