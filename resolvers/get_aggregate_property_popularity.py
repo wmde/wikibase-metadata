@@ -63,7 +63,7 @@ def get_unordered_query(
 ) -> Select[tuple[int, str, int, int]]:
     """Get Unordered Property Popularity Query"""
 
-    filtered_wikibase_subquery = get_filtered_wikibase_query(wikibase_filter)
+    filtered_wikibase_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
