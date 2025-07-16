@@ -21,23 +21,7 @@ from model.strawberry.output import (
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
 )
-
-
-def get_filtered_wikibase_query(wikibase_filter: Optional[WikibaseFilterInput] = None) -> Select[tuple[WikibaseModel]]:
-    """Filtered list of Wikibases"""
-
-    query = select(WikibaseModel).where(WikibaseModel.checked)
-    if wikibase_filter is None:
-        return query
-
-    if wikibase_filter.wikibase_type is not None:
-        if wikibase_filter.wikibase_type.exclude is not None:
-            query = query.where(
-                WikibaseModel.wikibase_type.not_in(wikibase_filter.wikibase_type.exclude)
-            )
-        # if filter.wikibase_type.include is not None:
-        #     query = query.where(WikibaseModel.wikibase_type.in_(filter.wikibase_type.include))
-    return query
+from resolvers.util import get_filtered_wikibase_query
 
 
 async def get_aggregate_version(
@@ -106,7 +90,9 @@ def get_query(
             .label("rank"),
         )
         .join(
-            filtered_subquery := get_filtered_wikibase_query(wikibase_filter).subquery(),
+            filtered_subquery := get_filtered_wikibase_query(
+                wikibase_filter
+            ).subquery(),
             onclause=WikibaseSoftwareVersionObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )
