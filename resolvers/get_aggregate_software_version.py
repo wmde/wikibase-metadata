@@ -13,6 +13,7 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
+from model.strawberry.input import WikibaseTypeInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -26,10 +27,11 @@ async def get_aggregate_version(
     software_type: WikibaseSoftwareType,
     page_number: PageNumberType,
     page_size: PageSizeType,
+    wikibase_type: Optional[WikibaseTypeInput] = None,
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
     """Get Aggregate Software Version"""
 
-    query = get_query(software_type)
+    query = get_query(software_type, wikibase_type)
 
     async with get_async_session() as async_session:
         results = (await async_session.execute(query)).all()
@@ -71,7 +73,7 @@ async def get_aggregate_version(
 
 
 def get_query(
-    software_type: WikibaseSoftwareType,
+    software_type: WikibaseSoftwareType, wikibase_type: Optional[WikibaseTypeInput]
 ) -> Select[tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
     """Get Software Version Query"""
 
@@ -91,6 +93,12 @@ def get_query(
                 WikibaseSoftwareVersionObservationModel.returned_data,
                 WikibaseSoftwareVersionObservationModel.wikibase.has(
                     WikibaseModel.checked
+                    if wikibase_type is None
+                    else and_(
+                        WikibaseModel.checked,
+                        WikibaseModel.wikibase_type.in_(wikibase_type.include) if wikibase_type.include is not None else True,
+                        WikibaseModel.wikibase_type.not_in(wikibase_type.exclude) if wikibase_type.exclude is not None else True,
+                    )
                 ),
             )
         )
