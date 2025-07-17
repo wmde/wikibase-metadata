@@ -32,8 +32,8 @@ async def get_aggregate_users(
         assert users_wikibase_count == admin_wikibase_count
 
         return WikibaseUserAggregateStrawberryModel(
-            total_admin=total_admin,
-            total_users=total_users,
+            total_admin=total_admin or 0,
+            total_users=total_users or 0,
             wikibase_count=users_wikibase_count,
         )
 

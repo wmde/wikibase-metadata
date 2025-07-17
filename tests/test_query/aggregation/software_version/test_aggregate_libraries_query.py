@@ -184,7 +184,11 @@ async def test_aggregate_libraries_query_page_two():
         ([], 59),
         (["CLOUD"], 59),
         (["OTHER"], 59),
+        (["SUITE"], 0),
         (["CLOUD", "OTHER"], 59),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.version

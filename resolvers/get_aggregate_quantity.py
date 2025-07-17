@@ -24,10 +24,10 @@ async def get_aggregate_quantity(
 
         return WikibaseQuantityAggregateStrawberryModel(
             wikibase_count=wikibase_count,
-            total_items=total_items,
-            total_lexemes=total_lexemes,
-            total_properties=total_properties,
-            total_triples=total_triples,
+            total_items=total_items or 0,
+            total_lexemes=total_lexemes or 0,
+            total_properties=total_properties or 0,
+            total_triples=total_triples or 0,
         )
 
 

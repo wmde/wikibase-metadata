@@ -47,16 +47,22 @@ async def test_aggregate_created_query():
     depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
 )
 @pytest.mark.parametrize(
-    ["exclude", "expected_count"],
+    ["exclude", "expected_count", "expected_wikibase_count"],
     [
-        ([], 1),
-        (["CLOUD"], 1),
-        (["OTHER"], 1),
-        (["CLOUD", "OTHER"], 1),
+        ([], 1, 1),
+        (["CLOUD"], 1, 1),
+        (["OTHER"], 1, 1),
+        (["SUITE"], 0, 0),
+        (["CLOUD", "OTHER"], 1, 1),
+        (["CLOUD", "SUITE"], 0, 0),
+        (["OTHER", "SUITE"], 0, 0),
+        (["CLOUD", "OTHER", "SUITE"], 0, 0),
     ],
 )
 @pytest.mark.user
-async def test_aggregate_created_query_filtered(exclude: list, expected_count: int):
+async def test_aggregate_created_query_filtered(
+    exclude: list, expected_count: int, expected_wikibase_count: int
+):
     """Test Aggregate Created Query"""
 
     result = await test_schema.execute(
@@ -68,6 +74,10 @@ async def test_aggregate_created_query_filtered(exclude: list, expected_count: i
     assert result.errors is None
     assert result.data is not None
 
-    assert_layered_property_value(
-        result.data, ["aggregateCreated", 0, "wikibaseCount"], expected_count
-    )
+    assert_layered_property_count(result.data, ["aggregateCreated"], expected_count)
+    if expected_count > 0:
+        assert_layered_property_value(
+            result.data,
+            ["aggregateCreated", 0, "wikibaseCount"],
+            expected_wikibase_count,
+        )

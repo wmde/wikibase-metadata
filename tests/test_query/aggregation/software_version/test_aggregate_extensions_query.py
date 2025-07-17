@@ -237,7 +237,11 @@ async def test_aggregate_extensions_query_page_three():
         ([], 11),
         (["CLOUD"], 11),
         (["OTHER"], 11),
+        (["SUITE"], 0),
         (["CLOUD", "OTHER"], 11),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.version

@@ -87,7 +87,11 @@ async def test_aggregate_skins_query_page_one():
         ([], 3),
         (["CLOUD"], 3),
         (["OTHER"], 3),
+        (["SUITE"], 0),
         (["CLOUD", "OTHER"], 3),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.user

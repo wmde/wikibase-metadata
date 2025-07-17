@@ -94,7 +94,11 @@ async def test_aggregate_property_popularity_query():
         ([], 2),
         (["CLOUD"], 2),
         (["OTHER"], 2),
+        (["SUITE"], 0),
         (["CLOUD", "OTHER"], 2),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.user

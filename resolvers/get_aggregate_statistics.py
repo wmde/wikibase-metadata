@@ -32,14 +32,14 @@ async def get_aggregate_statistics(
 
         return WikibaseStatisticsAggregateStrawberryModel(
             wikibase_count=wikibase_count,
-            total_pages=total_pages,
-            content_pages=content_pages,
-            total_files=total_files,
-            total_edits=total_edits,
-            total_users=total_users,
-            active_users=active_users,
-            total_admin=total_admin,
-            content_page_word_count_total=content_page_word_count_total,
+            total_pages=total_pages or 0,
+            content_pages=content_pages or 0,
+            total_files=total_files or 0,
+            total_edits=total_edits or 0,
+            total_users=total_users or 0,
+            active_users=active_users or 0,
+            total_admin=total_admin or 0,
+            content_page_word_count_total=content_page_word_count_total or 0,
         )
 
 

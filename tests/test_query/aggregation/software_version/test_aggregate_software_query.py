@@ -93,7 +93,11 @@ async def test_aggregate_software_query():
         ([], 5),
         (["CLOUD"], 5),
         (["OTHER"], 5),
+        (["SUITE"], 0),
         (["CLOUD", "OTHER"], 5),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.version

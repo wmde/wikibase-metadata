@@ -48,7 +48,11 @@ async def test_aggregate_users_query():
         ([], 1),
         (["CLOUD"], 1),
         (["OTHER"], 1),
+        (["SUITE"], 0),
         (["CLOUD", "OTHER"], 1),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.user
