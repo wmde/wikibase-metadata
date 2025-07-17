@@ -36,8 +36,10 @@ async def get_aggregate_quantity(
             total_lexemes=total_lexemes or 0,
             total_properties=total_properties or 0,
             total_triples=total_triples or 0,
-            total_external_identifier_properties=total_external_identifier_properties or 0,
-            total_external_identifier_statements=total_external_identifier_statements or 0,
+            total_external_identifier_properties=total_external_identifier_properties
+            or 0,
+            total_external_identifier_statements=total_external_identifier_statements
+            or 0,
             total_url_properties=total_url_properties or 0,
             total_url_statements=total_url_statements or 0,
         )
