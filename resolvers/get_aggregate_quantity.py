@@ -18,9 +18,17 @@ async def get_aggregate_quantity(
     total_quantity_query = get_total_quantity_query(wikibase_filter)
 
     async with get_async_session() as async_session:
-        total_items, total_lexemes, total_properties, total_triples, wikibase_count = (
-            await async_session.execute(total_quantity_query)
-        ).one()
+        (
+            total_items,
+            total_lexemes,
+            total_properties,
+            total_triples,
+            total_external_identifier_properties,
+            total_external_identifier_statements,
+            total_url_properties,
+            total_url_statements,
+            wikibase_count,
+        ) = (await async_session.execute(total_quantity_query)).one()
 
         return WikibaseQuantityAggregateStrawberryModel(
             wikibase_count=wikibase_count,
@@ -28,6 +36,10 @@ async def get_aggregate_quantity(
             total_lexemes=total_lexemes or 0,
             total_properties=total_properties or 0,
             total_triples=total_triples or 0,
+            total_external_identifier_properties=total_external_identifier_properties or 0,
+            total_external_identifier_statements=total_external_identifier_statements or 0,
+            total_url_properties=total_url_properties or 0,
+            total_url_statements=total_url_statements or 0,
         )
 
 
@@ -66,6 +78,18 @@ def get_total_quantity_query(
             "total_properties"
         ),
         func.sum(WikibaseQuantityObservationModel.total_triples).label("total_triples"),
+        func.sum(
+            WikibaseQuantityObservationModel.total_external_identifier_properties
+        ).label("total_external_identifier_properties"),
+        func.sum(
+            WikibaseQuantityObservationModel.total_external_identifier_statements
+        ).label("total_external_identifier_statements"),
+        func.sum(WikibaseQuantityObservationModel.total_url_properties).label(
+            "total_url_properties"
+        ),
+        func.sum(WikibaseQuantityObservationModel.total_url_statements).label(
+            "total_url_statements"
+        ),
         # pylint: disable-next=not-callable
         func.count().label("wikibase_count"),
     ).join(
