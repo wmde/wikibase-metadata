@@ -30,6 +30,4 @@ def get_filtered_wikibase_query(
                     ),
                 )
             )
-        # if filter.wikibase_type.include is not None:
-        #     query = query.where(WikibaseModel.wikibase_type.in_(filter.wikibase_type.include))
     return query
