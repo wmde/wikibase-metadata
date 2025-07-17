@@ -1,34 +1,37 @@
 """Get Wikibase List"""
 
+from typing import Optional
 from sqlalchemy import func, select
 
 from data import get_async_session
 from model.database import WikibaseModel
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
     PageSizeType,
     WikibaseStrawberryModel,
 )
+from resolvers.util import get_filtered_wikibase_query
 
 
 async def get_wikibase_list(
-    page_number: PageNumberType, page_size: PageSizeType
+    page_number: PageNumberType,
+    page_size: PageSizeType,
+    wikibase_filter: Optional[WikibaseFilterInput],
 ) -> Page[WikibaseStrawberryModel]:
     """Get Wikibase List"""
+
+    query = get_filtered_wikibase_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
             # pylint: disable-next=not-callable
-            select(func.count())
-            .select_from(WikibaseModel)
-            .where(WikibaseModel.checked)
+            select(func.count()).select_from(query.subquery())
         )
         results = (
             await async_session.scalars(
-                select(WikibaseModel)
-                .where(WikibaseModel.checked)
-                .order_by(WikibaseModel.id)
+                query.order_by(WikibaseModel.id)
                 .offset((page_number - 1) * page_size)
                 .limit(page_size)
             )

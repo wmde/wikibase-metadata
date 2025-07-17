@@ -7,12 +7,12 @@ from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
 from model.database import (
-    WikibaseModel,
     WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -20,16 +20,18 @@ from model.strawberry.output import (
     WikibaseSoftwareVersionAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
 )
+from resolvers.util import get_filtered_wikibase_query
 
 
 async def get_aggregate_version(
     software_type: WikibaseSoftwareType,
     page_number: PageNumberType,
     page_size: PageSizeType,
+    wikibase_filter: Optional[WikibaseFilterInput] = None,
 ) -> Page[WikibaseSoftwareVersionDoubleAggregateStrawberryModel]:
     """Get Aggregate Software Version"""
 
-    query = get_query(software_type)
+    query = get_query(software_type, wikibase_filter)
 
     async with get_async_session() as async_session:
         results = (await async_session.execute(query)).all()
@@ -71,9 +73,11 @@ async def get_aggregate_version(
 
 
 def get_query(
-    software_type: WikibaseSoftwareType,
+    software_type: WikibaseSoftwareType, wikibase_filter: Optional[WikibaseFilterInput]
 ) -> Select[tuple[str, Optional[str], Optional[datetime], Optional[str], int]]:
     """Get Software Version Query"""
+
+    filtered_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -86,13 +90,13 @@ def get_query(
             )
             .label("rank"),
         )
+        .join(
+            filtered_subquery,
+            onclause=WikibaseSoftwareVersionObservationModel.wikibase_id
+            == filtered_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseSoftwareVersionObservationModel.returned_data,
-                WikibaseSoftwareVersionObservationModel.wikibase.has(
-                    WikibaseModel.checked
-                ),
-            )
+            WikibaseSoftwareVersionObservationModel.returned_data,
         )
         .subquery()
     )

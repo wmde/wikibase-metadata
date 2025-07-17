@@ -6,8 +6,8 @@ from tests.utils import assert_layered_property_value, get_mock_context
 
 
 AGGREGATED_QUANTITY_QUERY = """
-query MyQuery {
-  aggregateQuantity {
+query MyQuery($wikibaseFilter: WikibaseFilterInput) {
+  aggregateQuantity(wikibaseFilter: $wikibaseFilter) {
     totalItems
     totalLexemes
     totalProperties
@@ -57,4 +57,41 @@ async def test_aggregate_quantity_query():
     )
     assert_layered_property_value(
         result.data, ["aggregateQuantity", "wikibaseCount"], 1
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 1),
+        (["CLOUD"], 1),
+        (["OTHER"], 1),
+        (["SUITE"], 0),
+        (["CLOUD", "OTHER"], 1),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
+    ],
+)
+@pytest.mark.user
+async def test_aggregate_quantity_query_filtered(exclude: list, expected_count: int):
+    """Test Aggregate Quantity Query"""
+
+    result = await test_schema.execute(
+        AGGREGATED_QUANTITY_QUERY,
+        variable_values={"wikibaseFilter": {"wikibaseType": {"exclude": exclude}}},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data, ["aggregateQuantity", "wikibaseCount"], expected_count
     )
