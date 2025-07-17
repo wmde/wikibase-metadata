@@ -9,5 +9,9 @@ fragment WikibaseQuantityObservationFragment on WikibaseQuantityObservation {
   totalLexemes
   totalProperties
   totalTriples
+  totalExternalIdentifierProperties
+  totalExternalIdentifierStatements
+  totalUrlProperties
+  totalUrlStatements
 }
 """
