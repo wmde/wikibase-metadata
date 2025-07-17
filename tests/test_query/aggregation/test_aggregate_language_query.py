@@ -10,8 +10,12 @@ from tests.utils import (
 
 
 AGGREGATED_LANGUAGES_QUERY = """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateLanguagePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregateLanguagePopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     meta {
       pageNumber
       pageSize
@@ -88,3 +92,46 @@ async def test_aggregate_languages_query():
             ["aggregateLanguagePopularity", "data", i, "additionalWikibases"],
             expected_additional,
         )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 7),
+        (["CLOUD"], 7),
+        (["OTHER"], 6),
+        (["SUITE"], 1),
+        (["CLOUD", "OTHER"], 6),
+        (["CLOUD", "SUITE"], 1),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
+    ],
+)
+@pytest.mark.user
+async def test_aggregate_languages_query_filtered(exclude: list, expected_count: int):
+    """Test Aggregate Languages Query"""
+
+    result = await test_schema.execute(
+        AGGREGATED_LANGUAGES_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data,
+        ["aggregateLanguagePopularity", "meta", "totalCount"],
+        expected_count,
+    )

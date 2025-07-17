@@ -11,6 +11,7 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
 from tests.test_schema import test_schema
 from tests.utils import (
     assert_layered_property_count,
+    assert_layered_property_value,
     assert_page_meta,
     get_mock_context,
 )
@@ -18,8 +19,12 @@ from tests.utils import (
 
 AGGREGATE_EXTENSIONS_QUERY = (
     """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateExtensionPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregateExtensionPopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
@@ -218,3 +223,46 @@ async def test_aggregate_extensions_query_page_three():
             expected_version_date,
             expected_version_hash,
         )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 11),
+        (["CLOUD"], 11),
+        (["OTHER"], 11),
+        (["SUITE"], 0),
+        (["CLOUD", "OTHER"], 11),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
+    ],
+)
+@pytest.mark.version
+async def test_aggregate_extensions_query_filtered(exclude: list, expected_count: int):
+    """Test Aggregate Users Query"""
+
+    result = await test_schema.execute(
+        AGGREGATE_EXTENSIONS_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data,
+        ["aggregateExtensionPopularity", "meta", "totalCount"],
+        expected_count,
+    )

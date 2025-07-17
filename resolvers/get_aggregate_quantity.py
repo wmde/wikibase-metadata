@@ -1,16 +1,21 @@
 """Get Aggregate Quantity"""
 
+from typing import Optional
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database import WikibaseModel, WikibaseQuantityObservationModel
+from model.database import WikibaseQuantityObservationModel
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import WikibaseQuantityAggregateStrawberryModel
+from resolvers.util import get_filtered_wikibase_query
 
 
-async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
+async def get_aggregate_quantity(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> WikibaseQuantityAggregateStrawberryModel:
     """Get Aggregate Quantity"""
 
-    total_quantity_query = get_total_quantity_query()
+    total_quantity_query = get_total_quantity_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         (
@@ -27,19 +32,25 @@ async def get_aggregate_quantity() -> WikibaseQuantityAggregateStrawberryModel:
 
         return WikibaseQuantityAggregateStrawberryModel(
             wikibase_count=wikibase_count,
-            total_items=total_items,
-            total_lexemes=total_lexemes,
-            total_properties=total_properties,
-            total_triples=total_triples,
-            total_external_identifier_properties=total_external_identifier_properties,
-            total_external_identifier_statements=total_external_identifier_statements,
-            total_url_properties=total_url_properties,
-            total_url_statements=total_url_statements,
+            total_items=total_items or 0,
+            total_lexemes=total_lexemes or 0,
+            total_properties=total_properties or 0,
+            total_triples=total_triples or 0,
+            total_external_identifier_properties=total_external_identifier_properties
+            or 0,
+            total_external_identifier_statements=total_external_identifier_statements
+            or 0,
+            total_url_properties=total_url_properties or 0,
+            total_url_statements=total_url_statements or 0,
         )
 
 
-def get_total_quantity_query() -> Select[tuple[int, int, int, int, int]]:
+def get_total_quantity_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, int, int, int, int]]:
     """Get Total Quantity Query"""
+
+    filtered_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -52,11 +63,13 @@ def get_total_quantity_query() -> Select[tuple[int, int, int, int, int]]:
             )
             .label("rank"),
         )
+        .join(
+            filtered_subquery,
+            onclause=WikibaseQuantityObservationModel.wikibase_id
+            == filtered_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseQuantityObservationModel.returned_data,
-                WikibaseQuantityObservationModel.wikibase.has(WikibaseModel.checked),
-            )
+            WikibaseQuantityObservationModel.returned_data,
         )
         .subquery()
     )
