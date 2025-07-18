@@ -24,11 +24,11 @@ mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="update-wikibase-type",
+    name="update-wikibase-type-other",
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_type():
+async def test_update_wikibase_type_to_other():
     """Test Update to Other"""
 
     before_updating_result = await test_schema.execute(
@@ -68,11 +68,11 @@ async def test_update_wikibase_type():
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="update-wikibase-type-ii",
+    name="update-wikibase-type-suite",
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_type_ii():
+async def test_update_wikibase_type_to_suite():
     """Test Update to Suite"""
 
     before_updating_result = await test_schema.execute(
@@ -106,6 +106,50 @@ async def test_update_wikibase_type_ii():
     assert after_updating_result.data is not None
     assert_layered_property_value(
         after_updating_result.data, ["wikibase", "wikibaseType"], "SUITE"
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(
+    name="update-wikibase-type-test",
+    depends=["mutate-cloud-instances"],
+    scope="session",
+)
+async def test_update_wikibase_type_to_test():
+    """Test Update to Suite"""
+
+    before_updating_result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 4},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert before_updating_result.errors is None
+    assert before_updating_result.data is not None
+    assert_layered_property_value(
+        before_updating_result.data, ["wikibase", "wikibaseType"], "CLOUD"
+    )
+
+    update_result = await test_schema.execute(
+        UPDATE_WIKIBASE_TYPE_QUERY,
+        variable_values={"wikibaseId": 4, "wikibaseType": "TEST"},
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert update_result.errors is None
+    assert update_result.data is not None
+    assert update_result.data["updateWikibaseType"] is True
+
+    after_updating_result = await test_schema.execute(
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": 4},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert after_updating_result.errors is None
+    assert after_updating_result.data is not None
+    assert_layered_property_value(
+        after_updating_result.data, ["wikibase", "wikibaseType"], "TEST"
     )
 
 

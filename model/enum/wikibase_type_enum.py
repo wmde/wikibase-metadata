@@ -12,3 +12,4 @@ class WikibaseType(enum.Enum):
     SUITE = 0
     CLOUD = 1
     OTHER = 2
+    TEST = 3
