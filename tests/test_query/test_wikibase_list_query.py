@@ -171,6 +171,7 @@ async def test_wikibase_list_query():
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
+        "update-wikibase-type-test",
     ],
     scope="session",
 )
@@ -178,13 +179,21 @@ async def test_wikibase_list_query():
     ["exclude", "expected_total"],
     [
         ([], 10),
-        (["CLOUD"], 2),
+        (["CLOUD"], 3),
         (["OTHER"], 9),
         (["SUITE"], 9),
-        (["CLOUD", "OTHER"], 1),
-        (["CLOUD", "SUITE"], 1),
+        (["TEST"], 9),
+        (["CLOUD", "OTHER"], 2),
+        (["CLOUD", "SUITE"], 2),
+        (["CLOUD", "TEST"], 2),
         (["OTHER", "SUITE"], 8),
-        (["CLOUD", "OTHER", "SUITE"], 0),
+        (["OTHER", "TEST"], 8),
+        (["SUITE", "TEST"], 8),
+        (["CLOUD", "OTHER", "SUITE"], 1),
+        (["CLOUD", "OTHER", "TEST"], 1),
+        (["CLOUD", "SUITE", "TEST"], 1),
+        (["OTHER", "SUITE", "TEST"], 7),
+        (["CLOUD", "OTHER", "SUITE", "TEST"], 0),
     ],
 )
 async def test_wikibase_list_query_filtered(exclude, expected_total):
