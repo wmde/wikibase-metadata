@@ -24,11 +24,11 @@ mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="update-wikibase-type",
+    name="update-wikibase-type-other",
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_type():
+async def test_update_wikibase_type_to_other():
     """Test Update to Other"""
 
     before_updating_result = await test_schema.execute(
@@ -68,11 +68,11 @@ async def test_update_wikibase_type():
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="update-wikibase-type-ii",
+    name="update-wikibase-type-suite",
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_type_ii():
+async def test_update_wikibase_type_to_suite():
     """Test Update to Suite"""
 
     before_updating_result = await test_schema.execute(

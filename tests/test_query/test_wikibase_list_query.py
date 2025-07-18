@@ -168,7 +168,11 @@ async def test_wikibase_list_query():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
-    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+    depends=[
+        "update-wikibase-type-other",
+        "update-wikibase-type-suite",
+    ],
+    scope="session",
 )
 @pytest.mark.parametrize(
     ["exclude", "expected_total"],
