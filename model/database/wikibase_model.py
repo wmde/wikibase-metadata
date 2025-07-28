@@ -12,6 +12,7 @@ from model.database.wikibase_observation import (
     WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
     WikibaseUserObservationModel,
@@ -225,6 +226,15 @@ class WikibaseModel(ModelBase):
         )
     )
     """Connectivity Observations"""
+
+    recent_changes_observations: Mapped[
+        list[WikibaseRecentChangesObservationModel]
+    ] = relationship(
+        "WikibaseRecentChangesObservationModel",
+        back_populates="wikibase",
+        lazy="select",
+    )
+    """Recent Changes Observations"""
 
     log_month_observations: Mapped[list[WikibaseLogMonthObservationModel]] = (
         relationship(
