@@ -26,12 +26,3 @@ class WikibaseRecentChangesObservationModel(ModelBase, WikibaseObservationModel)
 
     last_change_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     """Date of last change"""
-
-    # wikibase_id = Column(
-    #     Integer,
-    #     ForeignKey("wikibase.id", name="foreign_key_wikibase_id"),
-    #     nullable=False,
-    #     index=True,
-    # )
-    #
-    # __mapper_args__ = {"polymorphic_identity": "recent_changes"}
