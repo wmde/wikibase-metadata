@@ -90,8 +90,10 @@ async def create_recent_changes(
         {rc.user for rc in list_with_bots if rc.user is not None}
     )
 
-    if list_with_bots:
-        result.first_change_date = min(rc.timestamp for rc in list_with_bots)
-        result.last_change_date = max(rc.timestamp for rc in list_with_bots)
+    list_total = [*list_with_bots, *list_no_bots]
+
+    if len(list_total) > 0:
+        result.first_change_date = min(rc.timestamp for rc in list_total)
+        result.last_change_date = max(rc.timestamp for rc in list_total)
 
     return result

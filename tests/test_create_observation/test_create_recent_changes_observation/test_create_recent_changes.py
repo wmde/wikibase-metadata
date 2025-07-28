@@ -10,15 +10,13 @@ from fetch_data.api_data.recent_changes_data.create_recent_changes_observation i
 from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
     WikibaseRecentChangeRecord,
 )
-from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 
 
 @pytest.mark.asyncio
 async def test_create_recent_changes_empty():
     """Test empty list scenario"""
-    wikibase = WikibaseModel(wikibase_name="Test", base_url="http://test.com")
     observation = WikibaseRecentChangesObservationModel()
-    result = await create_recent_changes(wikibase, [], observation)
+    result = await create_recent_changes([], [], observation)
     assert result.change_count == 0
     assert result.user_count == 0
     assert result.first_change_date is None
@@ -28,7 +26,6 @@ async def test_create_recent_changes_empty():
 @pytest.mark.asyncio
 async def test_create_recent_changes_counts():
     """Test that user and change counts are calculated correctly"""
-    wikibase = WikibaseModel(wikibase_name="Test", base_url="http://test.com")
     observation = WikibaseRecentChangesObservationModel()
     records = [
         WikibaseRecentChangeRecord(
@@ -88,9 +85,34 @@ async def test_create_recent_changes_counts():
             }
         ),
     ]
-    result = await create_recent_changes(wikibase, records, observation)
+
+    records_bot = [
+        WikibaseRecentChangeRecord(
+            {
+                "type": "edit",
+                "ns": 0,
+                "title": "Page 1",
+                "comment": "bot edit",
+                "timestamp": "2024-03-02T00:00:01Z",
+                "user": "BOT_1",
+                "userid": 1001,
+            }
+        ),
+        WikibaseRecentChangeRecord(
+            {
+                "type": "edit",
+                "ns": 0,
+                "title": "Page 2",
+                "comment": "bot edit",
+                "timestamp": "2024-03-12T00:00:01Z",
+                "user": "BOT_1",
+                "userid": 1001,
+            }
+        ),
+    ]
+    result = await create_recent_changes(records, records_bot, observation)
 
     assert result.change_count == 5
     assert result.user_count == 3  # User:A, User:B, 127.0.0.1
     assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
-    assert result.last_change_date == datetime(2024, 3, 5, 12, 0, 0)
+    assert result.last_change_date == datetime(2024, 3, 12, 0, 0, 1)
