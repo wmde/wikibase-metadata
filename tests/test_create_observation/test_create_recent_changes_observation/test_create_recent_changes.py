@@ -16,7 +16,6 @@ from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 @pytest.mark.asyncio
 async def test_create_recent_changes_empty():
     """Test empty list scenario"""
-    wikibase = WikibaseModel(wikibase_name="Test", base_url="http://test.com")
     observation = WikibaseRecentChangesObservationModel()
     result = await create_recent_changes([], observation)
     assert result.change_count == 0
@@ -28,7 +27,6 @@ async def test_create_recent_changes_empty():
 @pytest.mark.asyncio
 async def test_create_recent_changes_counts():
     """Test that user and change counts are calculated correctly"""
-    wikibase = WikibaseModel(wikibase_name="Test", base_url="http://test.com")
     observation = WikibaseRecentChangesObservationModel()
     records = [
         WikibaseRecentChangeRecord(
