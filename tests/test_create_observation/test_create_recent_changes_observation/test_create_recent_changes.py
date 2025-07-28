@@ -17,7 +17,7 @@ from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 async def test_create_recent_changes_empty():
     """Test empty list scenario"""
     observation = WikibaseRecentChangesObservationModel()
-    result = await create_recent_changes([], observation)
+    result = await create_recent_changes(wikibase, [], observation)
     assert result.change_count == 0
     assert result.user_count == 0
     assert result.first_change_date is None
@@ -86,7 +86,7 @@ async def test_create_recent_changes_counts():
             }
         ),
     ]
-    result = await create_recent_changes(records, observation)
+    result = await create_recent_changes(wikibase, records, observation)
 
     assert result.change_count == 5
     assert result.user_count == 3  # User:A, User:B, 127.0.0.1
