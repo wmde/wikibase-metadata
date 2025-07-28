@@ -82,9 +82,7 @@ async def create_recent_changes(
 
     list_no_bots = list(recent_changes_list_no_bots)
     result.change_count = len(list_no_bots)
-    result.user_count = len(
-        {rc.user for rc in list_no_bots if rc.user is not None}
-    )
+    result.user_count = len({rc.user for rc in list_no_bots if rc.user is not None})
 
     list_with_bots = list(recent_changes_list_with_bots)
     result.total_change_count = len(list_with_bots)
