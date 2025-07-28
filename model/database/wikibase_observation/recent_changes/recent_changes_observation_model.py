@@ -1,7 +1,7 @@
 """Wikibase Recent Changes Observation Table"""
 
 from datetime import datetime
-from sqlalchemy import Column, DateTime, ForeignKey, Integer
+from sqlalchemy import DateTime, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from model.database.base import ModelBase

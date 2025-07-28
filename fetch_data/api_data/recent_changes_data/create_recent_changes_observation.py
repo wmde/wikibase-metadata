@@ -41,9 +41,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
             recent_changes_list = await get_recent_changes_list(
                 wikibase.action_api_url()
             )
-            observation = await create_recent_changes(
-                wikibase, recent_changes_list, observation
-            )
+            observation = await create_recent_changes(recent_changes_list, observation)
             observation.returned_data = True
         except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
             logger.warning(
@@ -61,7 +59,6 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
 
 
 async def create_recent_changes(
-    wikibase: WikibaseModel,
     recent_changes_list: Iterable[WikibaseRecentChangeRecord],
     result: WikibaseRecentChangesObservationModel,
 ) -> WikibaseRecentChangesObservationModel:
