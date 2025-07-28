@@ -10,6 +10,7 @@ from fetch_data.api_data.recent_changes_data.create_recent_changes_observation i
 from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
     WikibaseRecentChangeRecord,
 )
+from model.database import WikibaseRecentChangesObservationModel
 
 
 @pytest.mark.asyncio
