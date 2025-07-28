@@ -7,8 +7,7 @@ from tests.test_schema import test_schema
 from tests.utils import DATETIME_FORMAT, assert_layered_property_value, get_mock_context
 
 
-WIKIBASE_QUERY = (
-    """
+WIKIBASE_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -26,7 +25,6 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 """
-)
 
 
 @pytest.mark.asyncio

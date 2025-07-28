@@ -20,9 +20,9 @@ async def test_get_recent_changes_list_one_pull(mocker):
                 "ns": 0,
                 "title": f"Page {i}",
                 "comment": "comment",
-                "timestamp": (
-                    datetime(2024, 3, 1) - timedelta(hours=i * 24)
-                ).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "timestamp": (datetime(2024, 3, 1) - timedelta(hours=i * 24)).strftime(
+                    "%Y-%m-%dT%H:%M:%SZ"
+                ),
                 "user": "User:A",
                 "userid": 1,
             }
@@ -60,9 +60,9 @@ async def test_get_recent_changes_list_multiple_pulls(mocker):
                 "ns": 0,
                 "title": f"Page {i}",
                 "comment": "comment",
-                "timestamp": (
-                    datetime(2024, 3, 1) - timedelta(hours=i * 12)
-                ).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "timestamp": (datetime(2024, 3, 1) - timedelta(hours=i * 12)).strftime(
+                    "%Y-%m-%dT%H:%M:%SZ"
+                ),
                 "user": "User:A",
                 "userid": 1,
             }

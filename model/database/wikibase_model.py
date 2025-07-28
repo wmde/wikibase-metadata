@@ -227,12 +227,12 @@ class WikibaseModel(ModelBase):
     )
     """Connectivity Observations"""
 
-    recent_changes_observations: Mapped[
-        list[WikibaseRecentChangesObservationModel]
-    ] = relationship(
-        "WikibaseRecentChangesObservationModel",
-        back_populates="wikibase",
-        lazy="select",
+    recent_changes_observations: Mapped[list[WikibaseRecentChangesObservationModel]] = (
+        relationship(
+            "WikibaseRecentChangesObservationModel",
+            back_populates="wikibase",
+            lazy="select",
+        )
     )
     """Recent Changes Observations"""
 

@@ -12,7 +12,9 @@ from model.strawberry.scalars import BigInt
 
 
 @strawberry.type(name="WikibaseRecentChangesObservation")
-class WikibaseRecentChangesObservationStrawberryModel(WikibaseObservationStrawberryModel):
+class WikibaseRecentChangesObservationStrawberryModel(
+    WikibaseObservationStrawberryModel
+):
     """Wikibase Recent Changes Observation"""
 
     change_count: Optional[int] = strawberry.field(
