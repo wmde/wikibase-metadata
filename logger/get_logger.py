@@ -29,7 +29,7 @@ logger.addHandler(file_handler)
 file_error_handler = TimedRotatingFileHandler(
     f"{log_directory}/error/suite-scraper-error.log",
     encoding="utf-8",
-    when="w0",
+    when="w5",
     utc=True,
 )
 file_error_handler.setLevel(logging.WARNING)
