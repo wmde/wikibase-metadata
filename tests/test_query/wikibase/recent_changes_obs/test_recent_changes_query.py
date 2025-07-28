@@ -18,6 +18,8 @@ query MyQuery($wikibaseId: Int!) {
         returnedData
         changeCount
         userCount
+        totalChangeCount
+        totalUserCount
         firstChangeDate
         lastChangeDate
       }
@@ -62,7 +64,29 @@ async def test_wikibase_query_recent_changes_success():
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
+            "totalChangeCount",
+        ],
+        5,
+    )
+
+    assert_layered_property_value(
+        result.data,
+        [
+            "wikibase",
+            "recentChangesObservations",
+            "mostRecent",
             "userCount",
+        ],
+        3,
+    )
+
+    assert_layered_property_value(
+        result.data,
+        [
+            "wikibase",
+            "recentChangesObservations",
+            "mostRecent",
+            "totalUserCount",
         ],
         3,
     )

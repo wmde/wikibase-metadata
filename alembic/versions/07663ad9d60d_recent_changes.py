@@ -1,8 +1,8 @@
 """recent changes
 
-Revision ID: 9236d87cd01c
+Revision ID: 07663ad9d60d
 Revises: bcc81afe3bc3
-Create Date: 2025-07-28 12:20:56.572359
+Create Date: 2025-07-28 14:47:55.185419
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "9236d87cd01c"
+revision: str = "07663ad9d60d"
 down_revision: Union[str, None] = "bcc81afe3bc3"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,6 +25,8 @@ def upgrade() -> None:
         "wikibase_recent_changes_observation",
         sa.Column("change_count", sa.Integer(), nullable=False),
         sa.Column("user_count", sa.Integer(), nullable=False),
+        sa.Column("total_change_count", sa.Integer(), nullable=False),
+        sa.Column("total_user_count", sa.Integer(), nullable=False),
         sa.Column("first_change_date", sa.DateTime(), nullable=True),
         sa.Column("last_change_date", sa.DateTime(), nullable=True),
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
