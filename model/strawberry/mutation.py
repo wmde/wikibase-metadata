@@ -13,6 +13,7 @@ from fetch_data import (
     create_log_observation,
     create_property_popularity_observation,
     create_quantity_observation,
+    create_recent_changes_observation,
     create_software_version_observation,
     create_special_statistics_observation,
     create_user_observation,
@@ -79,6 +80,15 @@ class Mutation:
 
         authenticate(info)
         return await create_quantity_observation(wikibase_id)
+
+    @strawberry.mutation(
+        description="Fetch Recent Changes Data from Specified Wikibase Instance"
+    )
+    async def fetch_recent_changes_data(self, info: Info, wikibase_id: int) -> bool:
+        """Fetch Recent Changes Data from Specified Wikibase Instance"""
+
+        authenticate(info)
+        return await create_recent_changes_observation(wikibase_id)
 
     @strawberry.mutation(description="Fetch Special:Statistics Data")
     async def fetch_statistics_data(self, info: Info, wikibase_id: int) -> bool:
