@@ -52,7 +52,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
                 wikibase.action_api_url(), exclude_bots=False
             )
 
-            observation = await create_recent_changes(
+            observation = create_recent_changes(
                 recent_changes_list_no_bots,
                 recent_changes_list_with_bots,
                 observation,
@@ -73,7 +73,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
         return observation.returned_data
 
 
-async def create_recent_changes(
+def create_recent_changes(
     recent_changes_list_no_bots: Iterable[WikibaseRecentChangeRecord],
     recent_changes_list_with_bots: Iterable[WikibaseRecentChangeRecord],
     result: WikibaseRecentChangesObservationModel,

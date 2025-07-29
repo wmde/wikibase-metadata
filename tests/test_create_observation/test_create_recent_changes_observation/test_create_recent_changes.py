@@ -17,7 +17,7 @@ from model.database import WikibaseRecentChangesObservationModel
 async def test_create_recent_changes_empty():
     """Test empty list scenario"""
     observation = WikibaseRecentChangesObservationModel()
-    result = await create_recent_changes([], [], observation)
+    result = create_recent_changes([], [], observation)
     assert result.change_count == 0
     assert result.user_count == 0
     assert result.first_change_date is None
@@ -166,7 +166,7 @@ async def test_create_recent_changes_counts():
             }
         ),
     ]
-    result = await create_recent_changes(
+    result = create_recent_changes(
         mock_changes_without_bots, mock_changes_with_bots, observation
     )
 
