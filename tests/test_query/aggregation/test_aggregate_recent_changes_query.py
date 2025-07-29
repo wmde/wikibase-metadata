@@ -9,9 +9,9 @@ AGGREGATED_RECENT_CHANGES_QUERY = """
 query MyQuery($wikibaseFilter: WikibaseFilterInput) {
   aggregateRecentChanges(wikibaseFilter: $wikibaseFilter) {
     humanChangeCount
-    humanUserCount
+    humanChangeUserCount
     botChangeCount
-    botUserCount
+    botChangeUserCount
     wikibaseCount
   }
 }
@@ -26,7 +26,8 @@ async def test_aggregate_recent_changes_query():
     """Test Aggregate Recent Changes Query"""
 
     result = await test_schema.execute(
-        AGGREGATED_RECENT_CHANGES_QUERY, context_value=get_mock_context("test-auth-token")
+        AGGREGATED_RECENT_CHANGES_QUERY,
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
@@ -36,13 +37,13 @@ async def test_aggregate_recent_changes_query():
         result.data, ["aggregateRecentChanges", "humanChangeCount"], 5
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "humanUserCount"], 4
+        result.data, ["aggregateRecentChanges", "humanChangeUserCount"], 4
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "botChangeCount"], 1
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "botUserCount"], 1
+        result.data, ["aggregateRecentChanges", "botChangeUserCount"], 1
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "wikibaseCount"], 1

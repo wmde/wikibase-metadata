@@ -10,15 +10,16 @@ class WikibaseRecentChangesAggregateStrawberryModel:
     """Aggregate Recent Changes"""
 
     human_change_count: int = strawberry.field(
-        description="Total Human Changes", graphql_type=BigInt
+        description="Total Human Changes in the last 30 days accross",
+        graphql_type=BigInt,
     )
-    human_user_count: int = strawberry.field(
+    human_change_user_count: int = strawberry.field(
         description="Total Human Users", graphql_type=BigInt
     )
     bot_change_count: int = strawberry.field(
         description="Total Bot Changes", graphql_type=BigInt
     )
-    bot_user_count: int = strawberry.field(
+    bot_change_user_count: int = strawberry.field(
         description="Total Bot Users", graphql_type=BigInt
     )
 
@@ -29,13 +30,13 @@ class WikibaseRecentChangesAggregateStrawberryModel:
     def __init__(
         self,
         human_change_count: int,
-        human_user_count: int,
+        human_change_user_count: int,
         bot_change_count: int,
-        bot_user_count: int,
+        bot_change_user_count: int,
         wikibase_count: int,
     ) -> "WikibaseRecentChangesAggregateStrawberryModel":
         self.human_change_count = human_change_count
-        self.human_user_count = human_user_count
+        self.human_change_user_count = human_change_user_count
         self.bot_change_count = bot_change_count
-        self.bot_user_count = bot_user_count
+        self.bot_change_user_count = bot_change_user_count
         self.wikibase_count = wikibase_count
