@@ -12,7 +12,7 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 def get_recent_changes_param_string(
     limit: Optional[int] = None,
     continue_from: Optional[str] = None,
-    exclude_bots: bool = True,
+    bots: bool = False,
 ) -> str:
     """Recent Changes Page URL Parameters"""
     parameters: dict = {
@@ -23,7 +23,9 @@ def get_recent_changes_param_string(
         "rcprop": "user|userid|timestamp",
         "rclimit": limit,
     }
-    if exclude_bots:
+    if bots:
+        parameters["rcshow"] = "bot"
+    if bots:
         parameters["rcshow"] = "!bot"
     if continue_from is not None:
         parameters["rccontinue"] = continue_from
@@ -31,7 +33,7 @@ def get_recent_changes_param_string(
 
 
 async def get_recent_changes_list(
-    api_url: str, exclude_bots: bool = True
+    api_url: str, bots: bool = False
 ) -> list[WikibaseRecentChangeRecord]:
     """Get Recent Changes List from api_url, for the last 30 days"""
 
@@ -46,7 +48,7 @@ async def get_recent_changes_list(
         query_data = await fetch_api_data(
             api_url
             + get_recent_changes_param_string(
-                limit=limit, continue_from=next_from, exclude_bots=exclude_bots
+                limit=limit, continue_from=next_from, bots=bots
             )
         )
 

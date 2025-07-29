@@ -19,7 +19,7 @@ from model.database import WikibaseRecentChangesObservationModel
 async def test_update_out_of_date_recent_changes_observations_success(mocker):
     """Test success scenario"""
 
-    mock_changes = [
+    mock_changes_human = [
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
@@ -72,9 +72,25 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
             }
         ),
     ]
+
+    mock_changes_bots = [
+        WikibaseRecentChangeRecord(
+            {
+                "type": "edit",
+                "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
+                    "%Y-%m-%dT%H:%M:%SZ"
+                ),
+                "userid": 1001,
+                "user": "BOT_USER_1",
+            }
+        ),
+    ]
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.create_recent_changes_observation.get_recent_changes_list",
-        return_value=mock_changes,
+        side_effect=[
+            mock_changes_human,
+            mock_changes_bots,
+        ],
     )
 
     await update_out_of_date_recent_changes_observations()
@@ -91,5 +107,7 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         assert (
             observation.human_change_user_count == 4
         )  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
+        assert observation.bot_change_count == 1
+        assert observation.bot_change_user_count == 1
         assert observation.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
         assert observation.last_change_date == datetime(2024, 3, 5, 12, 0, 0)

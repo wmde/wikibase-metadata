@@ -41,20 +41,20 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
                 "Fetching Recent Changes (without bots)",
                 extra={"wikibase": wikibase.id},
             )
-            recent_changes_list_no_bots = await get_recent_changes_list(
-                wikibase.action_api_url(), exclude_bots=True
+            recent_changes_list_humans = await get_recent_changes_list(
+                wikibase.action_api_url(), bots=False
             )
 
             logger.info(
                 "Fetching Recent Changes (with bots)", extra={"wikibase": wikibase.id}
             )
-            recent_changes_list_with_bots = await get_recent_changes_list(
-                wikibase.action_api_url(), exclude_bots=False
+            recent_changes_list_bots = await get_recent_changes_list(
+                wikibase.action_api_url(), bots=True
             )
 
             observation = create_recent_changes(
-                recent_changes_list_no_bots,
-                recent_changes_list_with_bots,
+                recent_changes_list_humans,
+                recent_changes_list_bots,
                 observation,
             )
             observation.returned_data = True
@@ -74,26 +74,25 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
 
 
 def create_recent_changes(
-    recent_changes_list_no_bots: Iterable[WikibaseRecentChangeRecord],
-    recent_changes_list_with_bots: Iterable[WikibaseRecentChangeRecord],
+    recent_changes_list_humans: Iterable[WikibaseRecentChangeRecord],
+    recent_changes_list_bots: Iterable[WikibaseRecentChangeRecord],
     result: WikibaseRecentChangesObservationModel,
 ) -> WikibaseRecentChangesObservationModel:
     """Create Recent Changes"""
 
-    list_no_bots = list(recent_changes_list_no_bots)
-    result.human_change_count = len(list_no_bots)
+    list_humans = list(recent_changes_list_humans)
+    result.human_change_count = len(list_humans)
     result.human_change_user_count = len(
-        {rc.user for rc in list_no_bots if rc.user is not None}
+        {rc.user for rc in list_humans if rc.user is not None}
     )
 
-    list_with_bots = list(recent_changes_list_with_bots)
-    total_change_count = len(list_with_bots)
-    total_user_count = len({rc.user for rc in list_with_bots if rc.user is not None})
+    list_bots = list(recent_changes_list_bots)
+    result.bot_change_count = len(list_bots)
+    result.bot_change_user_count = len(
+        {rc.user for rc in list_bots if rc.user is not None}
+    )
 
-    result.bot_change_count = total_change_count - result.human_change_count
-    result.bot_change_user_count = total_user_count - result.human_change_user_count
-
-    list_total = [*list_with_bots, *list_no_bots]
+    list_total = [*list_humans, *list_bots]
 
     if len(list_total) > 0:
         result.first_change_date = min(rc.timestamp for rc in list_total)

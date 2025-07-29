@@ -35,7 +35,7 @@ async def test_create_recent_changes_counts():
     """Test that user and change counts are calculated correctly"""
     observation = WikibaseRecentChangesObservationModel()
 
-    mock_changes_without_bots = [
+    mock_changes_humans = [
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
@@ -89,37 +89,7 @@ async def test_create_recent_changes_counts():
         ),
     ]
 
-    mock_changes_with_bots = [
-        WikibaseRecentChangeRecord(
-            {
-                "type": "edit",
-                "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
-                ),
-                "userid": 1,
-                "user": "UserA",
-            }
-        ),
-        WikibaseRecentChangeRecord(
-            {
-                "type": "edit",
-                "timestamp": datetime(2024, 3, 2, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
-                ),
-                "userid": 2,
-                "user": "UserB",
-            }
-        ),
-        WikibaseRecentChangeRecord(
-            {
-                "type": "edit",
-                "timestamp": datetime(2024, 3, 3, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
-                ),
-                "userid": 1,
-                "user": "UserA",
-            }
-        ),
+    mock_changes_bots = [
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
@@ -130,35 +100,14 @@ async def test_create_recent_changes_counts():
                 "userid": 1001,
             }
         ),
-        WikibaseRecentChangeRecord(  # an anonymous user
-            {
-                "type": "edit",
-                "timestamp": datetime(2024, 3, 4, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
-                ),
-                "user": "127.0.0.1",
-                "userid": 0,
-                "anon": "",
-            }
-        ),
-        WikibaseRecentChangeRecord(  # userhidden, so no 'user' field
-            {
-                "type": "edit",
-                "timestamp": datetime(2024, 3, 5, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
-                ),
-                "userid": 3,
-                "userhidden": "",
-            }
-        ),
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 5, 15, 2, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": "BOT_USER_1",
                 "userid": 1001,
+                "user": "BOT_USER_1",
             }
         ),
         WikibaseRecentChangeRecord(
@@ -167,14 +116,13 @@ async def test_create_recent_changes_counts():
                 "timestamp": datetime(2024, 3, 6, 0, 0, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": "BOT_USER_2",
-                "userid": 1002,
+                # intentianally same as the human user above
+                "userid": 1,
+                "user": "UserA",
             }
         ),
     ]
-    result = create_recent_changes(
-        mock_changes_without_bots, mock_changes_with_bots, observation
-    )
+    result = create_recent_changes(mock_changes_humans, mock_changes_bots, observation)
 
     assert result.human_change_count == 5
     assert (
