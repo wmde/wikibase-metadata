@@ -1304,3 +1304,51 @@ Get the list of recent changes from a Wikibase instance. The [Recent Changes Med
 | `bot_change_user_count`   | Number of unique bots found in changes requested with `bot` flag, derived from all bot/usernames.                                                                            |
 | `first_change_date`       | Date of first change, no matter if it was made by a human or bot.                                                                                                            |
 | `last_change_date`        | Date of last change, no matter if it was made by a human or bot.                                                                                                             |
+
+#### Example:
+
+Query:
+
+```graphql
+query MyQuery {
+  wikibase(wikibaseId: 1) {
+    id
+    recentChangesObservations {
+      mostRecent {
+        observationDate
+        humanChangeCount
+        humanChangeUserCount
+        botChangeCount
+        botChangeUserCount
+        firstChangeDate
+        lastChangeDate
+        returnedData
+      }
+    }
+  }
+}
+```
+
+Result:
+```json
+{
+  "data": {
+    "wikibase": {
+      "id": "1",
+      "recentChangesObservations": {
+        "mostRecent": {
+          "observationDate": "2025-07-29T13:36:00",
+          "humanChangeCount": 2302,
+          "humanChangeUserCount": 1,
+          "botChangeCount": 4,
+          "botChangeUserCount": 1,
+          "firstChangeDate": "2025-07-03T08:31:51",
+          "lastChangeDate": "2025-07-25T15:41:47",
+          "returnedData": true
+        }
+      }
+    }
+  }
+}
+```
+
