@@ -15,20 +15,16 @@ class WikibaseRecentChangesObservationModel(ModelBase, WikibaseObservationModel)
 
     __tablename__ = "wikibase_recent_changes_observation"
 
-    human_change_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    human_change_count: Mapped[int] = mapped_column(Integer, nullable=True)
     """Number of changes (excluding bots)"""
 
-    human_change_user_count: Mapped[int] = mapped_column(
-        Integer, nullable=False, default=0
-    )
+    human_change_user_count: Mapped[int] = mapped_column(Integer, nullable=True)
     """Number of unique users (excluding bots)"""
 
-    bot_change_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    bot_change_count: Mapped[int] = mapped_column(Integer, nullable=True)
     """Total number of changes (including bots)"""
 
-    bot_change_user_count: Mapped[int] = mapped_column(
-        Integer, nullable=False, default=0
-    )
+    bot_change_user_count: Mapped[int] = mapped_column(Integer, nullable=True)
     """Total number of unique users (including bots)"""
 
     first_change_date: Mapped[datetime] = mapped_column(
