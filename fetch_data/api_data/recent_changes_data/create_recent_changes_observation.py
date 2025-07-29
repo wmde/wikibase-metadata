@@ -82,13 +82,13 @@ def create_recent_changes(
 
     list_no_bots = list(recent_changes_list_no_bots)
     result.human_change_count = len(list_no_bots)
-    result.human_change_user_count = len({rc.user for rc in list_no_bots if rc.user is not None})
+    result.human_change_user_count = len(
+        {rc.user for rc in list_no_bots if rc.user is not None}
+    )
 
     list_with_bots = list(recent_changes_list_with_bots)
     total_change_count = len(list_with_bots)
-    total_user_count = len(
-        {rc.user for rc in list_with_bots if rc.user is not None}
-    )
+    total_user_count = len({rc.user for rc in list_with_bots if rc.user is not None})
 
     result.bot_change_count = total_change_count - result.human_change_count
     result.bot_change_user_count = total_user_count - result.human_change_user_count
