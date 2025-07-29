@@ -24,7 +24,7 @@
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 10) {
     id
@@ -52,7 +52,7 @@ query MyQuery {
 
 Results:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -112,7 +112,7 @@ We want to measure the connectivity of the network of Wikidata items in the Wiki
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 43) {
     id
@@ -148,7 +148,7 @@ fragment WikibaseConnectivityObservationStrawberryModelFragment on WikibaseConne
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -228,7 +228,7 @@ Using the Action API, we query for the first log and the last 30 days'.
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 10) {
     logObservations {
@@ -256,7 +256,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -295,7 +295,7 @@ Using SPARQL, we query for all properties in the Wikibase, and the number of tim
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 43) {
     id
@@ -317,7 +317,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -374,7 +374,7 @@ Using SPARQL, we query for the total number of items, lexemes, and properties in
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 43) {
     id
@@ -394,7 +394,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -439,7 +439,7 @@ Some Wikibases remain on MediaWiki versions that do not include all of these sta
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 1) {
     id
@@ -476,7 +476,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -535,7 +535,7 @@ For Extensions, if possible, the server will pull additional data from MediaWiki
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 43) {
     id
@@ -592,7 +592,7 @@ fragment WikibaseSoftwareVersionStrawberryModelFragment on WikibaseSoftwareVersi
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -729,7 +729,7 @@ _We do not save the names of any users in the database._
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibase(wikibaseId: 43) {
     id
@@ -757,7 +757,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -823,7 +823,7 @@ Results:
 
 Query:
 
-```
+```graphql
 query MyQuery {
   wikibaseList(pageNumber: 2, pageSize: 10) {
     meta {
@@ -852,7 +852,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibaseList": {
@@ -908,7 +908,7 @@ This aggregates the number of wikibases created by year. The creation date is de
 
 Query:
 
-```
+```graphql
 query MyQuery {
   aggregateCreated {
     wikibaseCount
@@ -919,7 +919,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateCreated": [
@@ -962,7 +962,7 @@ Aggregated from the Software Version Observations above. The data is paginated a
 
 Query:
 
-```
+```graphql
 query MyQuery {
   aggregateSoftwarePopularity(pageSize: 10, pageNumber: 1) {
     meta {
@@ -984,7 +984,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateSoftwarePopularity": {
@@ -1047,7 +1047,7 @@ The data is ordered by Primary Wikibases descending, then Total Wikibases descen
 
 Query:
 
-```
+```graphql
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   aggregateLanguagePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
     meta {
@@ -1068,7 +1068,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateLanguagePopularity": {
@@ -1118,7 +1118,7 @@ The data is ordered by Wikibase Count descending, then Usage Count descending, t
 
 Query:
 
-```
+```graphql
 query MyQuery {
   aggregatePropertyPopularity(pageNumber: 1, pageSize: 10) {
     meta {
@@ -1135,7 +1135,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregatePropertyPopularity": {
@@ -1168,7 +1168,7 @@ Data aggregated from the Quantity Observations above.
 
 Query:
 
-```
+```graphql
 query MyQuery {
   aggregateQuantity {
     totalItems
@@ -1182,7 +1182,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateQuantity": {
@@ -1204,7 +1204,7 @@ Aggregated from the Statistics Observations above. As indicated above, averages 
 
 Query:
 
-```
+```graphql
 query MyQuery {
   aggregateStatistics {
     wikibaseCount
@@ -1232,7 +1232,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateStatistics": {
@@ -1268,7 +1268,7 @@ Data aggregated ffrom the User Observations above.
 
 Query:
 
-```
+```graphql
 query MyQuery {
   aggregateUsers {
     totalAdmin
@@ -1280,7 +1280,7 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateUsers": {
