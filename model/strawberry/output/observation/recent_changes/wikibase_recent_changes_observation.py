@@ -18,19 +18,32 @@ class WikibaseRecentChangesObservationStrawberryModel(
     """Wikibase Recent Changes Observation"""
 
     human_change_count: Optional[int] = strawberry.field(
-        description="Number of changes made by humans as reported by the MediaWiki Recent Changes API when called with the !bot flag.",
+        description=(
+            "Number of changes made by humans as reported by the "
+            "MediaWiki Recent Changes API when called with the !bot flag."
+        ),
         graphql_type=Optional[BigInt],
     )
     human_change_user_count: Optional[int] = strawberry.field(
-        description="Number of unique users found in changes requested with !bot flag, derived from all usernames, IP addresses for anonymous edits as well as userid in the userhidden case.",
+        description=(
+            "Number of unique users found in changes requested "
+            "with !bot flag, derived from all usernames, IP addresses "
+            "for anonymous edits as well as userid in the userhidden case."
+        ),
         graphql_type=Optional[BigInt],
     )
     bot_change_count: Optional[int] = strawberry.field(
-        description="Number of changes made by bots as reported by the MediaWiki Recent Changes API when called with the bot flag.",
+        description=(
+            "Number of changes made by bots as reported by the "
+            "MediaWiki Recent Changes API when called with the bot flag."
+        ),
         graphql_type=Optional[BigInt],
     )
     bot_change_user_count: Optional[int] = strawberry.field(
-        description="Number of unique bots found in changes requested with bot flag, derived from all bot/usernames.",
+        description=(
+            "Number of unique bots found in changes requested with "
+            "bot flag, derived from all bot/usernames."
+        ),
         graphql_type=Optional[BigInt],
     )
     first_change_date: Optional[datetime] = strawberry.field(
