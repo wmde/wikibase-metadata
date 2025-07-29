@@ -338,9 +338,8 @@ fluent_datasources:
           FULL_TABLE:
             id: e37914cf-131d-41dd-baea-5a25dbde7ddb
             partitioner:
-        query:
-          SELECT * FROM wikibase_connectivity_observation WHERE anything AND
-          link_count > 0
+        query: SELECT * FROM wikibase_connectivity_observation WHERE anything 
+          AND link_count > 0
       nonzero_wikibase_log_observation_months:
         type: query
         id: 2b5c8b28-9fa1-4c9c-914a-8607c1f0f7c1
@@ -407,9 +406,27 @@ fluent_datasources:
           FULL_TABLE:
             id: 7948822f-014c-440e-a0b0-7823e2ab85d9
             partitioner:
-        query:
-          "SELECT\n\twikibase_id,\n\tSUM(CASE WHEN \"primary\" THEN 1 ELSE 0
+        query: "SELECT\n\twikibase_id,\n\tSUM(CASE WHEN \"primary\" THEN 1 ELSE 0
           END) AS primary_language_count,\n\tSUM(CASE WHEN \"primary\" THEN 0 ELSE
           1 END) AS additional_language_count\nFROM wikibase_language\nGROUP BY wikibase_id"
+      wikibase_recent_changes_observation_table:
+        type: table
+        id: eb9de273-7336-45db-bab5-151b37863a2d
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: a71651ed-6dd3-4505-9d48-74e3460fbdbe
+            partitioner:
+        table_name: wikibase_recent_changes_observation
+        schema_name:
+      valid_wikibase_recent_changes_observation:
+        type: query
+        id: 196cd05d-8531-4a31-a37a-dffe52e07120
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 4b17b2bc-4aad-43bb-9dc7-9293a6ffa4e1
+            partitioner:
+        query: SELECT * FROM wikibase_recent_changes_observation WHERE anything
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

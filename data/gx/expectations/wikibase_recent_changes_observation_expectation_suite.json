@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "id": "0dae9489-36a0-4dba-878f-811b648a5574",
+      "kwargs": {
+        "column": "human_change_count"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "58fa52b3-b492-4af7-95b2-8c0785d1fe32",
+      "kwargs": {
+        "column": "human_change_user_count"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "26aa8d8e-a952-4a97-a000-9877190ca1df",
+      "kwargs": {
+        "column": "bot_change_count"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "832afd96-ab26-45d8-9264-e20137411fbe",
+      "kwargs": {
+        "column": "bot_change_user_count"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "ac86453e-d02d-434d-a275-5fedb5b0a0c3",
+      "kwargs": {
+        "column": "first_change_date"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    },
+    {
+      "id": "daeb476f-c5ec-4db0-9243-c153c84b088e",
+      "kwargs": {
+        "column": "last_change_date"
+      },
+      "meta": {},
+      "type": "expect_column_to_exist"
+    }
+  ],
+  "id": "e13c4d5d-5f9f-4424-92b6-cc95afc0a370",
+  "meta": {
+    "great_expectations_version": "1.5.1"
+  },
+  "name": "wikibase_recent_changes_observation_expectation_suite",
+  "notes": null
+}
