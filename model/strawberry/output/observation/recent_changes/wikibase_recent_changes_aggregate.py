@@ -10,17 +10,20 @@ class WikibaseRecentChangesAggregateStrawberryModel:
     """Aggregate Recent Changes"""
 
     human_change_count: int = strawberry.field(
-        description="Total Human Changes in the last 30 days accross",
+        description="Total Human Changes in the last 30 days across Wikibase instances",
         graphql_type=BigInt,
     )
     human_change_user_count: int = strawberry.field(
-        description="Total Human Users", graphql_type=BigInt
+        description="Total Human Editors in the last 30 days across Wikibase instances",
+        graphql_type=BigInt,
     )
     bot_change_count: int = strawberry.field(
-        description="Total Bot Changes", graphql_type=BigInt
+        description="Total Bot Changes in the last 30 days across Wikibase instances",
+        graphql_type=BigInt,
     )
     bot_change_user_count: int = strawberry.field(
-        description="Total Bot Users", graphql_type=BigInt
+        description="Total Bot Editors in the last 30 days across Wikibase instances",
+        graphql_type=BigInt,
     )
 
     wikibase_count: int = strawberry.field(
