@@ -13,6 +13,7 @@ from model.strawberry.output import (
     WikibaseLanguageAggregateStrawberryModel,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
+    WikibaseRecentChangesAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseSoftwareStrawberryModel,
     WikibaseStatisticsAggregateStrawberryModel,
@@ -25,6 +26,7 @@ from resolvers import (
     get_aggregate_created,
     get_aggregate_property_popularity,
     get_aggregate_quantity,
+    get_aggregate_recent_changes,
     get_aggregate_statistics,
     get_aggregate_users,
     get_aggregate_version,
@@ -161,6 +163,15 @@ class Query:
 
         authenticate(info)
         return await get_aggregate_quantity(wikibase_filter)
+
+    @strawberry.field(description="Aggregated Recent Changes")
+    async def aggregate_recent_changes(
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
+    ) -> WikibaseRecentChangesAggregateStrawberryModel:
+        """Aggregated Recent Changes"""
+
+        authenticate(info)
+        return await get_aggregate_recent_changes(wikibase_filter)
 
     @strawberry.field(description="Aggregated Skin Popularity")
     async def aggregate_skin_popularity(

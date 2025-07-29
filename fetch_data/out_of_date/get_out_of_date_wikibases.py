@@ -9,6 +9,7 @@ from model.database import (
     WikibaseModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
     WikibaseURLModel,
@@ -265,6 +266,50 @@ async def get_wikibase_list_with_out_of_date_quantity_observations() -> (
     """Get List of Wikibases with Out of Date Quantity Observations"""
 
     return await get_wikibase_list(get_wikibase_with_out_of_date_quantity_obs_query())
+
+
+def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
+    Select[tuple[WikibaseModel]]
+):
+    """Query Wikibases with Out of Date Recent Changes Observations"""
+
+    query = select(WikibaseModel).where(
+        and_(
+            WikibaseModel.checked,
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            not_(
+                WikibaseModel.recent_changes_observations.any(
+                    or_(
+                        WikibaseRecentChangesObservationModel.observation_date
+                        > (
+                            datetime.now(tz=timezone.utc)
+                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
+                        ),
+                        and_(
+                            WikibaseRecentChangesObservationModel.returned_data,
+                            WikibaseRecentChangesObservationModel.observation_date
+                            > (
+                                datetime.now(tz=timezone.utc)
+                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                            ),
+                        ),
+                    )
+                )
+            ),
+        )
+    )
+
+    return query
+
+
+async def get_wikibase_list_with_out_of_date_recent_changes_observations() -> (
+    list[WikibaseModel]
+):
+    """Get List of Wikibases with Out of Date Recent Changes Observations"""
+
+    return await get_wikibase_list(
+        get_wikibase_with_out_of_date_recent_changes_obs_query()
+    )
 
 
 def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseModel]]:

@@ -1,0 +1,56 @@
+{
+	"expectations": [
+		{
+			"id": "7d2b3db3-2ca4-4675-8d3d-8df094c07f2d",
+			"kwargs": { "column": "human_change_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "a89f1201-47f2-4a56-9831-9ff6afd2b7b1",
+			"kwargs": { "column": "human_change_count", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "1ec4da0c-552c-447e-aea8-879b3227ecf3",
+			"kwargs": { "column": "human_change_user_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "652dee7e-bff5-49dc-ba09-ed8bc3e473db",
+			"kwargs": { "column": "human_change_user_count", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "2d13634e-611f-47a7-ae8a-82f983bf4be7",
+			"kwargs": { "column": "bot_change_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "e8e84be9-145b-4e28-894c-2a7e261073c0",
+			"kwargs": { "column": "bot_change_count", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "b9e255fa-2882-475d-9864-56f7092ac0ca",
+			"kwargs": { "column": "bot_change_user_count" },
+			"meta": {},
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "69af4d30-ec69-4fe7-9471-1e997f3f363e",
+			"kwargs": { "column": "bot_change_user_count", "min_value": 0.0 },
+			"meta": {},
+			"type": "expect_column_values_to_be_between"
+		}
+	],
+	"id": "f16b7073-1214-4817-af7b-5c5d46459016",
+	"meta": { "great_expectations_version": "1.5.1" },
+	"name": "valid_wikibase_recent_changes_observation_expectation_suite",
+	"notes": null
+}

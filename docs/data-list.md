@@ -24,64 +24,59 @@
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 10) {
-    id
-    title
-    organization
-    languages {
-      primary
-      additional
-    }
-    location {
-      country
-      region
-    }
-    urls {
-      baseUrl
-      actionApi
-      indexApi
-      sparqlEndpointUrl
-      sparqlUrl
-      specialVersionUrl
-    }
-  }
+	wikibase(wikibaseId: 10) {
+		id
+		title
+		organization
+		languages {
+			primary
+			additional
+		}
+		location {
+			country
+			region
+		}
+		urls {
+			baseUrl
+			actionApi
+			indexApi
+			sparqlEndpointUrl
+			sparqlUrl
+			specialVersionUrl
+		}
+	}
 }
 ```
 
 Results:
 
-```
+```json
 {
-  "data": {
-    "wikibase": {
-      "id": "10",
-      "title": "ELTEdata",
-      "organization": "Digital Humanities Department of ELTE BTK (Eötvös Loránd University Faculty of Humanities)",
-      "languages": {
-        "primary": "Korean",
-        "additional": [
-          "English",
-          "German",
-          "Japanese",
-          "Spanish"
-        ]
-      },
-      "location": {
-        "country": "Hungary",
-        "region": "Europe"
-      },
-      "urls": {
-        "baseUrl": "https://eltedata.elte-dh.hu",
-        "actionApi": "https://eltedata.elte-dh.hu/w/api.php",
-        "indexApi": "https://eltedata.elte-dh.hu/w/index.php",
-        "sparqlEndpointUrl": "https://query.elte-dh.hu/proxy/wdqs/bigdata/namespace/wdq/sparql",
-        "sparqlUrl": "https://query.elte-dh.hu/",
-        "specialVersionUrl": "https://eltedata.elte-dh.hu/wiki/Special:Version"
-      }
-    }
-  }
+	"data": {
+		"wikibase": {
+			"id": "10",
+			"title": "ELTEdata",
+			"organization": "Digital Humanities Department of ELTE BTK (Eötvös Loránd University Faculty of Humanities)",
+			"languages": {
+				"primary": "Korean",
+				"additional": ["English", "German", "Japanese", "Spanish"]
+			},
+			"location": {
+				"country": "Hungary",
+				"region": "Europe"
+			},
+			"urls": {
+				"baseUrl": "https://eltedata.elte-dh.hu",
+				"actionApi": "https://eltedata.elte-dh.hu/w/api.php",
+				"indexApi": "https://eltedata.elte-dh.hu/w/index.php",
+				"sparqlEndpointUrl": "https://query.elte-dh.hu/proxy/wdqs/bigdata/namespace/wdq/sparql",
+				"sparqlUrl": "https://query.elte-dh.hu/",
+				"specialVersionUrl": "https://eltedata.elte-dh.hu/wiki/Special:Version"
+			}
+		}
+	}
 }
 ```
 
@@ -112,43 +107,43 @@ We want to measure the connectivity of the network of Wikidata items in the Wiki
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 43) {
-    id
-    connectivityObservations {
-      mostRecent {
-        ...WikibaseConnectivityObservationStrawberryModelFragment
-      }
-      allObservations {
-        ...WikibaseConnectivityObservationStrawberryModelFragment
-      }
-    }
-  }
+	wikibase(wikibaseId: 43) {
+		id
+		connectivityObservations {
+			mostRecent {
+				...WikibaseConnectivityObservationStrawberryModelFragment
+			}
+			allObservations {
+				...WikibaseConnectivityObservationStrawberryModelFragment
+			}
+		}
+	}
 }
 
 fragment WikibaseConnectivityObservationStrawberryModelFragment on WikibaseConnectivityObservationStrawberryModel {
-  id
-  observationDate
-  returnedData
-  returnedLinks
-  totalConnections
-  averageConnectedDistance
-  connectivity
-  relationshipItemCounts {
-    relationshipCount
-    itemCount
-  }
-  relationshipObjectCounts {
-    relationshipCount
-    objectCount
-  }
+	id
+	observationDate
+	returnedData
+	returnedLinks
+	totalConnections
+	averageConnectedDistance
+	connectivity
+	relationshipItemCounts {
+		relationshipCount
+		itemCount
+	}
+	relationshipObjectCounts {
+		relationshipCount
+		objectCount
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -228,59 +223,59 @@ Using the Action API, we query for the first log and the last 30 days'.
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 10) {
-    logObservations {
-      mostRecent {
-        id
-        observationDate
-        returnedData
-        firstLog {
-          date
-        }
-        lastLog {
-          date
-          userType
-        }
-        lastMonth {
-          allUsers
-          humanUsers
-          logCount
-        }
-      }
-    }
-  }
+	wikibase(wikibaseId: 10) {
+		logObservations {
+			mostRecent {
+				id
+				observationDate
+				returnedData
+				firstLog {
+					date
+				}
+				lastLog {
+					date
+					userType
+				}
+				lastMonth {
+					allUsers
+					humanUsers
+					logCount
+				}
+			}
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
-  "data": {
-    "wikibase": {
-      "logObservations": {
-        "mostRecent": {
-          "id": "39",
-          "observationDate": "2024-07-03T21:18:08",
-          "returnedData": true,
-          "firstLog": {
-            "date": "2021-03-19T09:20:21"
-          },
-          "lastLog": {
-            "date": "2024-07-03T14:45:01",
-            "userType": "BOT"
-          },
-          "lastMonth": {
-            "allUsers": 2,
-            "humanUsers": 1,
-            "logCount": 387
-          }
-        }
-      }
-    }
-  }
+	"data": {
+		"wikibase": {
+			"logObservations": {
+				"mostRecent": {
+					"id": "39",
+					"observationDate": "2024-07-03T21:18:08",
+					"returnedData": true,
+					"firstLog": {
+						"date": "2021-03-19T09:20:21"
+					},
+					"lastLog": {
+						"date": "2024-07-03T14:45:01",
+						"userType": "BOT"
+					},
+					"lastMonth": {
+						"allUsers": 2,
+						"humanUsers": 1,
+						"logCount": 387
+					}
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -295,29 +290,29 @@ Using SPARQL, we query for all properties in the Wikibase, and the number of tim
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 43) {
-    id
-    propertyPopularityObservations {
-      mostRecent {
-        id
-        observationDate
-        returnedData
-        propertyPopularityCounts {
-          id
-          propertyUrl
-          usageCount
-        }
-      }
-    }
-  }
+	wikibase(wikibaseId: 43) {
+		id
+		propertyPopularityObservations {
+			mostRecent {
+				id
+				observationDate
+				returnedData
+				propertyPopularityCounts {
+					id
+					propertyUrl
+					usageCount
+				}
+			}
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -374,43 +369,43 @@ Using SPARQL, we query for the total number of items, lexemes, and properties in
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 43) {
-    id
-    quantityObservations {
-      mostRecent {
-        id
-        observationDate
-        returnedData
-        totalItems
-        totalLexemes
-        totalProperties
-      }
-    }
-  }
+	wikibase(wikibaseId: 43) {
+		id
+		quantityObservations {
+			mostRecent {
+				id
+				observationDate
+				returnedData
+				totalItems
+				totalLexemes
+				totalProperties
+			}
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
-  "data": {
-    "wikibase": {
-      "id": "43",
-      "quantityObservations": {
-        "mostRecent": {
-          "id": "76",
-          "observationDate": "2024-06-24T08:58:24",
-          "returnedData": true,
-          "totalItems": 86,
-          "totalLexemes": 0,
-          "totalProperties": 48
-        }
-      }
-    }
-  }
+	"data": {
+		"wikibase": {
+			"id": "43",
+			"quantityObservations": {
+				"mostRecent": {
+					"id": "76",
+					"observationDate": "2024-06-24T08:58:24",
+					"returnedData": true,
+					"totalItems": 86,
+					"totalLexemes": 0,
+					"totalProperties": 48
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -439,36 +434,36 @@ Some Wikibases remain on MediaWiki versions that do not include all of these sta
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 1) {
-    id
-    statisticsObservations {
-      mostRecent {
-        id
-        observationDate
-        returnedData
-        edits {
-          editsPerPageAvg
-          totalEdits
-        }
-        files {
-          totalFiles
-        }
-        pages {
-          contentPageWordCountAvg
-          contentPageWordCountTotal
-          contentPages
-          totalPages
-        }
-        users {
-          activeUsers
-          totalAdmin
-          totalUsers
-        }
-      }
-    }
-  }
+	wikibase(wikibaseId: 1) {
+		id
+		statisticsObservations {
+			mostRecent {
+				id
+				observationDate
+				returnedData
+				edits {
+					editsPerPageAvg
+					totalEdits
+				}
+				files {
+					totalFiles
+				}
+				pages {
+					contentPageWordCountAvg
+					contentPageWordCountTotal
+					contentPages
+					totalPages
+				}
+				users {
+					activeUsers
+					totalAdmin
+					totalUsers
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -476,38 +471,38 @@ query MyQuery {
 
 Result:
 
-```
+```json
 {
-  "data": {
-    "wikibase": {
-      "id": "1",
-      "statisticsObservations": {
-        "mostRecent": {
-          "id": "96",
-          "observationDate": "2024-08-21T19:29:12",
-          "returnedData": true,
-          "edits": {
-            "editsPerPageAvg": 2.8565157050360703,
-            "totalEdits": 36150983
-          },
-          "files": {
-            "totalFiles": 30
-          },
-          "pages": {
-            "contentPageWordCountAvg": 0.032581015189210576,
-            "contentPageWordCountTotal": 27750,
-            "contentPages": 851723,
-            "totalPages": 12655622
-          },
-          "users": {
-            "activeUsers": 5,
-            "totalAdmin": 17,
-            "totalUsers": 465
-          }
-        }
-      }
-    }
-  }
+	"data": {
+		"wikibase": {
+			"id": "1",
+			"statisticsObservations": {
+				"mostRecent": {
+					"id": "96",
+					"observationDate": "2024-08-21T19:29:12",
+					"returnedData": true,
+					"edits": {
+						"editsPerPageAvg": 2.8565157050360703,
+						"totalEdits": 36150983
+					},
+					"files": {
+						"totalFiles": 30
+					},
+					"pages": {
+						"contentPageWordCountAvg": 0.032581015189210576,
+						"contentPageWordCountTotal": 27750,
+						"contentPages": 851723,
+						"totalPages": 12655622
+					},
+					"users": {
+						"activeUsers": 5,
+						"totalAdmin": 17,
+						"totalUsers": 465
+					}
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -535,64 +530,64 @@ For Extensions, if possible, the server will pull additional data from MediaWiki
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 43) {
-    id
-    softwareVersionObservations {
-      mostRecent {
-        id
-        observationDate
-        returnedData
-        installedExtensions {
-          id
-          software {
-            id
-            softwareName
-            softwareType
-            fetched
-            archived
-            description
-            latestVersion
-            mediawikiBundled
-            publicWikiCount
-            quarterlyDownloadCount
-            tags
-            url
-          }
-          version
-          versionDate
-          versionHash
-        }
-        installedLibraries {
-          ...WikibaseSoftwareVersionStrawberryModelFragment
-        }
-        installedSkins {
-          ...WikibaseSoftwareVersionStrawberryModelFragment
-        }
-        installedSoftware {
-          ...WikibaseSoftwareVersionStrawberryModelFragment
-        }
-      }
-    }
-  }
+	wikibase(wikibaseId: 43) {
+		id
+		softwareVersionObservations {
+			mostRecent {
+				id
+				observationDate
+				returnedData
+				installedExtensions {
+					id
+					software {
+						id
+						softwareName
+						softwareType
+						fetched
+						archived
+						description
+						latestVersion
+						mediawikiBundled
+						publicWikiCount
+						quarterlyDownloadCount
+						tags
+						url
+					}
+					version
+					versionDate
+					versionHash
+				}
+				installedLibraries {
+					...WikibaseSoftwareVersionStrawberryModelFragment
+				}
+				installedSkins {
+					...WikibaseSoftwareVersionStrawberryModelFragment
+				}
+				installedSoftware {
+					...WikibaseSoftwareVersionStrawberryModelFragment
+				}
+			}
+		}
+	}
 }
 
 fragment WikibaseSoftwareVersionStrawberryModelFragment on WikibaseSoftwareVersionStrawberryModel {
-  id
-  software {
-    id
-    softwareName
-  }
-  version
-  versionDate
-  versionHash
+	id
+	software {
+		id
+		softwareName
+	}
+	version
+	versionDate
+	versionHash
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -729,35 +724,35 @@ _We do not save the names of any users in the database._
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibase(wikibaseId: 43) {
-    id
-    userObservations {
-      mostRecent {
-        id
-        observationDate
-        returnedData
-        totalUsers
-        userGroups {
-          id
-          group {
-            id
-            groupName
-            wikibaseDefault
-          }
-          groupImplicit
-          userCount
-        }
-      }
-    }
-  }
+	wikibase(wikibaseId: 43) {
+		id
+		userObservations {
+			mostRecent {
+				id
+				observationDate
+				returnedData
+				totalUsers
+				userGroups {
+					id
+					group {
+						id
+						groupName
+						wikibaseDefault
+					}
+					groupImplicit
+					userCount
+				}
+			}
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibase": {
@@ -823,36 +818,36 @@ Results:
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  wikibaseList(pageNumber: 2, pageSize: 10) {
-    meta {
-      pageNumber
-      pageSize
-      totalCount
-      totalPages
-    }
-    data {
-      id
-      title
-      urls {
-        baseUrl
-      }
-      quantityObservations {
-        mostRecent {
-          totalItems
-          totalLexemes
-          totalProperties
-        }
-      }
-    }
-  }
+	wikibaseList(pageNumber: 2, pageSize: 10) {
+		meta {
+			pageNumber
+			pageSize
+			totalCount
+			totalPages
+		}
+		data {
+			id
+			title
+			urls {
+				baseUrl
+			}
+			quantityObservations {
+				mostRecent {
+					totalItems
+					totalLexemes
+					totalProperties
+				}
+			}
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "wikibaseList": {
@@ -908,18 +903,18 @@ This aggregates the number of wikibases created by year. The creation date is de
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  aggregateCreated {
-    wikibaseCount
-    year
-  }
+	aggregateCreated {
+		wikibaseCount
+		year
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateCreated": [
@@ -962,29 +957,29 @@ Aggregated from the Software Version Observations above. The data is paginated a
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  aggregateSoftwarePopularity(pageSize: 10, pageNumber: 1) {
-    meta {
-      totalCount
-    }
-    data {
-      softwareName
-      wikibaseCount
-      versions {
-        version
-        versionDate
-        versionHash
-        wikibaseCount
-      }
-    }
-  }
+	aggregateSoftwarePopularity(pageSize: 10, pageNumber: 1) {
+		meta {
+			totalCount
+		}
+		data {
+			softwareName
+			wikibaseCount
+			versions {
+				version
+				versionDate
+				versionHash
+				wikibaseCount
+			}
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateSoftwarePopularity": {
@@ -1047,28 +1042,28 @@ The data is ordered by Primary Wikibases descending, then Total Wikibases descen
 
 Query:
 
-```
+```graphql
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateLanguagePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
-    meta {
-      pageNumber
-      pageSize
-      totalCount
-      totalPages
-    }
-    data {
-      language
-      primaryWikibases
-      additionalWikibases
-      totalWikibases
-    }
-  }
+	aggregateLanguagePopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+		meta {
+			pageNumber
+			pageSize
+			totalCount
+			totalPages
+		}
+		data {
+			language
+			primaryWikibases
+			additionalWikibases
+			totalWikibases
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregateLanguagePopularity": {
@@ -1118,24 +1113,24 @@ The data is ordered by Wikibase Count descending, then Usage Count descending, t
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  aggregatePropertyPopularity(pageNumber: 1, pageSize: 10) {
-    meta {
-      totalCount
-    }
-    data {
-      propertyUrl
-      usageCount
-      wikibaseCount
-    }
-  }
+	aggregatePropertyPopularity(pageNumber: 1, pageSize: 10) {
+		meta {
+			totalCount
+		}
+		data {
+			propertyUrl
+			usageCount
+			wikibaseCount
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
   "data": {
     "aggregatePropertyPopularity": {
@@ -1168,31 +1163,31 @@ Data aggregated from the Quantity Observations above.
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  aggregateQuantity {
-    totalItems
-    totalLexemes
-    totalProperties
-    totalTriples
-    wikibaseCount
-  }
+	aggregateQuantity {
+		totalItems
+		totalLexemes
+		totalProperties
+		totalTriples
+		wikibaseCount
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
-  "data": {
-    "aggregateQuantity": {
-      "totalItems": 123291236,
-      "totalLexemes": 1314076,
-      "totalProperties": 20368,
-      "totalTriples": 17745095804,
-      "wikibaseCount": 17
-    }
-  }
+	"data": {
+		"aggregateQuantity": {
+			"totalItems": 123291236,
+			"totalLexemes": 1314076,
+			"totalProperties": 20368,
+			"totalTriples": 17745095804,
+			"wikibaseCount": 17
+		}
+	}
 }
 ```
 
@@ -1204,59 +1199,59 @@ Aggregated from the Statistics Observations above. As indicated above, averages 
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  aggregateStatistics {
-    wikibaseCount
-    edits {
-      editsPerPageAvg
-      totalEdits
-    }
-    files {
-      totalFiles
-    }
-    pages {
-      contentPageWordCountAvg
-      contentPageWordCountTotal
-      contentPages
-      totalPages
-    }
-    users {
-      activeUsers
-      totalAdmin
-      totalUsers
-    }
-  }
+	aggregateStatistics {
+		wikibaseCount
+		edits {
+			editsPerPageAvg
+			totalEdits
+		}
+		files {
+			totalFiles
+		}
+		pages {
+			contentPageWordCountAvg
+			contentPageWordCountTotal
+			contentPages
+			totalPages
+		}
+		users {
+			activeUsers
+			totalAdmin
+			totalUsers
+		}
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
-  "data": {
-    "aggregateStatistics": {
-      "wikibaseCount": 39,
-      "edits": {
-        "editsPerPageAvg": 4.912389909272705,
-        "totalEdits": 102551430
-      },
-      "files": {
-        "totalFiles": 107936
-      },
-      "pages": {
-        "contentPageWordCountAvg": 5.910143746962713,
-        "contentPageWordCountTotal": 23289542,
-        "contentPages": 3940605,
-        "totalPages": 20876077
-      },
-      "users": {
-        "activeUsers": 912,
-        "totalAdmin": 347,
-        "totalUsers": 284827
-      }
-    }
-  }
+	"data": {
+		"aggregateStatistics": {
+			"wikibaseCount": 39,
+			"edits": {
+				"editsPerPageAvg": 4.912389909272705,
+				"totalEdits": 102551430
+			},
+			"files": {
+				"totalFiles": 107936
+			},
+			"pages": {
+				"contentPageWordCountAvg": 5.910143746962713,
+				"contentPageWordCountTotal": 23289542,
+				"contentPages": 3940605,
+				"totalPages": 20876077
+			},
+			"users": {
+				"activeUsers": 912,
+				"totalAdmin": 347,
+				"totalUsers": 284827
+			}
+		}
+	}
 }
 ```
 
@@ -1268,26 +1263,87 @@ Data aggregated ffrom the User Observations above.
 
 Query:
 
-```
+```graphql
 query MyQuery {
-  aggregateUsers {
-    totalAdmin
-    totalUsers
-    wikibaseCount
-  }
+	aggregateUsers {
+		totalAdmin
+		totalUsers
+		wikibaseCount
+	}
 }
 ```
 
 Result:
 
-```
+```json
 {
-  "data": {
-    "aggregateUsers": {
-      "totalAdmin": 366,
-      "totalUsers": 227834,
-      "wikibaseCount": 43
-    }
-  }
+	"data": {
+		"aggregateUsers": {
+			"totalAdmin": 366,
+			"totalUsers": 227834,
+			"wikibaseCount": 43
+		}
+	}
+}
+```
+
+### Recent Changes:
+
+Get the list of recent changes from a Wikibase instance. The [Recent Changes MediaWiki API is documented here](https://www.mediawiki.org/wiki/API:RecentChanges). A Recent Changes Observation is always calculated for the past 30 days. All change types are included; which are: `edit`, `new`, `log` and `categorize`. An Observation contains the following fields:
+
+| Field                     | Description                                                                                                                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `human_change_count`      | Number of changes made by humans as reported by the MediaWiki Recent Changes API when called with the `!bot` flag.                                                           |
+| `human_change_user_count` | Number of unique users found in changes requested with `!bot` flag, derived from all usernames, IP addresses for anonymous edits as well as userid in the "userhidden case". |
+| `bot_change_count`        | Number of changes made by bots as reported by the MediaWiki Recent Changes API when called with the `bot` flag.                                                              |
+| `bot_change_user_count`   | Number of unique bots found in changes requested with `bot` flag, derived from all bot/usernames.                                                                            |
+| `first_change_date`       | Date of first change, no matter if it was made by a human or bot.                                                                                                            |
+| `last_change_date`        | Date of last change, no matter if it was made by a human or bot.                                                                                                             |
+
+#### Example:
+
+Query:
+
+```graphql
+query MyQuery {
+	wikibase(wikibaseId: 1) {
+		id
+		recentChangesObservations {
+			mostRecent {
+				observationDate
+				humanChangeCount
+				humanChangeUserCount
+				botChangeCount
+				botChangeUserCount
+				firstChangeDate
+				lastChangeDate
+				returnedData
+			}
+		}
+	}
+}
+```
+
+Result:
+
+```json
+{
+	"data": {
+		"wikibase": {
+			"id": "1",
+			"recentChangesObservations": {
+				"mostRecent": {
+					"observationDate": "2025-07-29T13:36:00",
+					"humanChangeCount": 2302,
+					"humanChangeUserCount": 1,
+					"botChangeCount": 4,
+					"botChangeUserCount": 1,
+					"firstChangeDate": "2025-07-03T08:31:51",
+					"lastChangeDate": "2025-07-25T15:41:47",
+					"returnedData": true
+				}
+			}
+		}
+	}
 }
 ```

@@ -14,6 +14,7 @@ from model.database.wikibase_observation import (
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
