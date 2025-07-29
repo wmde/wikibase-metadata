@@ -31,8 +31,12 @@ class WikibaseRecentChangesObservationModel(ModelBase, WikibaseObservationModel)
     )
     """Total number of unique users (including bots)"""
 
-    first_change_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    first_change_date: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     """Date of first change"""
 
-    last_change_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_change_date: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     """Date of last change"""
