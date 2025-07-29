@@ -20,7 +20,7 @@ def get_recent_changes_param_string(
         "format": "json",
         "list": "recentchanges",
         "formatversion": 2,
-        "rcprop": "title|user|userid|timestamp|comment|ns",
+        "rcprop": "user|userid|timestamp",
         "rclimit": limit,
     }
     if exclude_bots:

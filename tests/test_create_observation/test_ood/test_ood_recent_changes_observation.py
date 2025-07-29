@@ -23,48 +23,36 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
-                "ns": 0,
-                "title": "Page 1",
-                "comment": "comment",
                 "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": "User:A",
                 "userid": 1,
+                "user": "UserA",
             }
         ),
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
-                "ns": 0,
-                "title": "Page 2",
-                "comment": "comment",
                 "timestamp": datetime(2024, 3, 2, 12, 0, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": "User:B",
                 "userid": 2,
+                "user": "UserB",
             }
         ),
         WikibaseRecentChangeRecord(
             {
                 "type": "edit",
-                "ns": 0,
-                "title": "Page 3",
-                "comment": "comment",
                 "timestamp": datetime(2024, 3, 3, 12, 0, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
-                "user": "User:A",
                 "userid": 1,
+                "user": "UserA",
             }
         ),
         WikibaseRecentChangeRecord(  # an anonymous user
             {
                 "type": "edit",
-                "ns": 0,
-                "title": "Page 4",
-                "comment": "c4",
                 "timestamp": datetime(2024, 3, 4, 12, 0, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
@@ -76,9 +64,6 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         WikibaseRecentChangeRecord(  # userhidden, so no 'user' field
             {
                 "type": "edit",
-                "ns": 0,
-                "title": "Page 5",
-                "comment": "c5",
                 "timestamp": datetime(2024, 3, 5, 12, 0, 0).strftime(
                     "%Y-%m-%dT%H:%M:%SZ"
                 ),
@@ -103,6 +88,6 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
         assert observation.change_count == 5
-        assert observation.user_count == 3  # User:A, User:B, 127.0.0.1
+        assert observation.user_count == 4  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
         assert observation.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
         assert observation.last_change_date == datetime(2024, 3, 5, 12, 0, 0)

@@ -77,7 +77,7 @@ async def test_wikibase_query_recent_changes_success():
             "mostRecent",
             "userCount",
         ],
-        3,
+        4,
     )
 
     assert_layered_property_value(
@@ -88,7 +88,7 @@ async def test_wikibase_query_recent_changes_success():
             "mostRecent",
             "totalUserCount",
         ],
-        3,
+        4,
     )
 
     assert_layered_property_value(

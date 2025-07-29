@@ -1,34 +1,35 @@
 """Wikibase Recent Change Record"""
 
 from datetime import datetime
-from typing import Optional
+
+from logger import logger
 
 
 class WikibaseRecentChangeRecord:
     """Wikibase Recent Change Record"""
 
     type: str
-    title: str
-    user: Optional[str]
-    userid: int
     timestamp: datetime
-    comment: str
-    ns: int
+    user: str  # username, IP, or __generated_user_string__user:<USERID>
 
     def __init__(self, record: dict):
         self.type = record["type"]
-        self.title = record["title"]
-        self.user = record.get("user")
-        self.userid = record["userid"]
         self.timestamp = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
-        self.comment = record["comment"]
-        self.ns = record["ns"]
+
+        # Sometimes the user field can be missing, we derive it from the userid then
+        # https://www.mediawiki.org/wiki/API:RecentChanges
+        # https://doc.wikimedia.org/mediawiki-core/1.43.1/php/classRevisionDeleteUser.html#details
+        if "user" in record:
+            self.user = record["user"]
+        elif "userid" in record:
+            self.user = f"__generated_user_string__user:{record['userid']}"
+        else:
+            logger.warning("No user or userid found in record: {record}")
 
     def __str__(self) -> str:
         return (
             f"WikibaseRecentChangeRecord("
             f"type={self.type}, "
-            f"title={self.title}, "
             f"user={self.user}, "
             f"timestamp={self.timestamp})"
         )
