@@ -176,6 +176,6 @@ async def test_create_recent_changes_counts():
     )  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
 
     assert result.total_change_count == 8
-    assert result.total_user_count == 6 # above plus BOT_USER_1 and BOT_USER_2
+    assert result.total_user_count == 6  # above plus BOT_USER_1 and BOT_USER_2
     assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
     assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0)

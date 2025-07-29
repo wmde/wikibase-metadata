@@ -88,6 +88,8 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
         assert observation.change_count == 5
-        assert observation.user_count == 4  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
+        assert (
+            observation.user_count == 4
+        )  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
         assert observation.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
         assert observation.last_change_date == datetime(2024, 3, 5, 12, 0, 0)
