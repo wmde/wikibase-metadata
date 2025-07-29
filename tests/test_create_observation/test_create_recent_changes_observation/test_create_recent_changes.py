@@ -3,9 +3,13 @@
 from datetime import datetime
 
 import pytest
+from requests.exceptions import ReadTimeout
+from sqlalchemy import select
 
+from data.database_connection import get_async_session
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
     create_recent_changes,
+    create_recent_changes_observation,
 )
 from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
     WikibaseRecentChangeRecord,
@@ -181,3 +185,30 @@ async def test_create_recent_changes_counts():
     assert result.bot_change_user_count == 2  # BOT_USER_1 and BOT_USER_2
     assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
     assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0)
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="recent-changes-failure-direct",
+    depends=["recent-changes-success-ood"],
+    scope="session",
+)
+async def test_create_recent_changes_observation_exception(mocker):
+    """Test exception handling in create_recent_changes_observation"""
+    mocker.patch(
+        "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
+        side_effect=ReadTimeout,
+    )
+
+    success = await create_recent_changes_observation(wikibase_id=1)
+    assert not success
+
+    async with get_async_session() as async_session:
+        query = (
+            select(WikibaseRecentChangesObservationModel)
+            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .order_by(WikibaseRecentChangesObservationModel.id.desc())
+        )
+        observation = (await async_session.scalars(query)).first()
+        assert observation is not None
+        assert not observation.returned_data
