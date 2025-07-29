@@ -16,9 +16,9 @@ class WikibaseRecentChangeRecord:
         self.type = record["type"]
         self.timestamp = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
 
-        # Sometimes the user field can be missing, we derive it from the userid then
-        # https://www.mediawiki.org/wiki/API:RecentChanges
-        # https://doc.wikimedia.org/mediawiki-core/1.43.1/php/classRevisionDeleteUser.html#details
+        # The user field can be missing, we derive it from the userid then. More info:
+        # - https://www.mediawiki.org/wiki/API:RecentChanges
+        # - https://doc.wikimedia.org/mediawiki-core/1.43.1/php/classRevisionDeleteUser.html#details
         if "user" in record:
             self.user = record["user"]
         elif "userid" in record:

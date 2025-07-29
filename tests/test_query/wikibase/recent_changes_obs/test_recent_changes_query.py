@@ -16,10 +16,10 @@ query MyQuery($wikibaseId: Int!) {
         id
         observationDate
         returnedData
-        changeCount
-        userCount
-        totalChangeCount
-        totalUserCount
+        humanChangeCount
+        humanChangeUserCount
+        botChangeCount
+        botChangeUserCount
         firstChangeDate
         lastChangeDate
       }
@@ -53,7 +53,7 @@ async def test_wikibase_query_recent_changes_success():
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
-            "changeCount",
+            "humanChangeCount",
         ],
         5,
     )
@@ -64,9 +64,9 @@ async def test_wikibase_query_recent_changes_success():
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
-            "totalChangeCount",
+            "botChangeCount",
         ],
-        5,
+        0,
     )
 
     assert_layered_property_value(
@@ -75,7 +75,7 @@ async def test_wikibase_query_recent_changes_success():
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
-            "userCount",
+            "humanChangeUserCount",
         ],
         4,
     )
@@ -86,9 +86,9 @@ async def test_wikibase_query_recent_changes_success():
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
-            "totalUserCount",
+            "botChangeUserCount",
         ],
-        4,
+        0,
     )
 
     assert_layered_property_value(

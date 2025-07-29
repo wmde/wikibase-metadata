@@ -17,19 +17,19 @@ class WikibaseRecentChangesObservationStrawberryModel(
 ):
     """Wikibase Recent Changes Observation"""
 
-    change_count: Optional[int] = strawberry.field(
+    human_change_count: Optional[int] = strawberry.field(
         description="Number of changes (excluding bots)", graphql_type=Optional[BigInt]
     )
-    user_count: Optional[int] = strawberry.field(
+    human_change_user_count: Optional[int] = strawberry.field(
         description="Number of unique users (excluding bots)",
         graphql_type=Optional[BigInt],
     )
-    total_change_count: Optional[int] = strawberry.field(
-        description="Total number of changes (including bots)",
+    bot_change_count: Optional[int] = strawberry.field(
+        description="Number of changes from bots",
         graphql_type=Optional[BigInt],
     )
-    total_user_count: Optional[int] = strawberry.field(
-        description="Total number of unique users (including bots)",
+    bot_change_user_count: Optional[int] = strawberry.field(
+        description="Total number of unique bot users",
         graphql_type=Optional[BigInt],
     )
     first_change_date: Optional[datetime] = strawberry.field(
@@ -49,10 +49,10 @@ class WikibaseRecentChangesObservationStrawberryModel(
             id=strawberry.ID(model.id),
             observation_date=model.observation_date,
             returned_data=model.returned_data,
-            change_count=model.change_count,
-            user_count=model.user_count,
-            total_change_count=model.total_change_count,
-            total_user_count=model.total_user_count,
+            human_change_count=model.human_change_count,
+            human_change_user_count=model.human_change_user_count,
+            bot_change_count=model.bot_change_count,
+            bot_change_user_count=model.bot_change_user_count,
             first_change_date=model.first_change_date,
             last_change_date=model.last_change_date,
         )

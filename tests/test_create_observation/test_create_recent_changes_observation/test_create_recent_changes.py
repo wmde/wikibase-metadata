@@ -18,8 +18,10 @@ async def test_create_recent_changes_empty():
     """Test empty list scenario"""
     observation = WikibaseRecentChangesObservationModel()
     result = create_recent_changes([], [], observation)
-    assert result.change_count == 0
-    assert result.user_count == 0
+    assert result.human_change_count == 0
+    assert result.human_change_user_count == 0
+    assert result.bot_change_count == 0
+    assert result.bot_change_user_count == 0
     assert result.first_change_date is None
     assert result.last_change_date is None
 
@@ -170,12 +172,12 @@ async def test_create_recent_changes_counts():
         mock_changes_without_bots, mock_changes_with_bots, observation
     )
 
-    assert result.change_count == 5
+    assert result.human_change_count == 5
     assert (
-        result.user_count == 4
+        result.human_change_user_count == 4
     )  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
 
-    assert result.total_change_count == 8
-    assert result.total_user_count == 6  # above plus BOT_USER_1 and BOT_USER_2
+    assert result.bot_change_count == 3
+    assert result.bot_change_user_count == 2  # BOT_USER_1 and BOT_USER_2
     assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
     assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0)
