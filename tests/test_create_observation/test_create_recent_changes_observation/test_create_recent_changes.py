@@ -160,7 +160,7 @@ async def test_create_recent_changes_observation_exception(mocker):
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
         assert not observation.returned_data
-        assert not observation.human_change_count
-        assert not observation.human_change_user_count
-        assert not observation.bot_change_count
-        assert not observation.bot_change_user_count
+        assert observation.human_change_count is None
+        assert observation.human_change_user_count is None
+        assert observation.bot_change_count is None
+        assert observation.bot_change_user_count is None
