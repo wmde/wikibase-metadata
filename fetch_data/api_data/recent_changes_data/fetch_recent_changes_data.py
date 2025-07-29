@@ -1,6 +1,6 @@
 """Fetch Recent Changes Data"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from typing import Optional
 
 from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
@@ -40,7 +40,7 @@ async def get_recent_changes_list(
 
     should_query = True
     next_from: Optional[str] = None
-    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+    thirty_days_ago = datetime.now(UTC) - timedelta(days=30)
 
     while should_query:
         query_data = await fetch_api_data(

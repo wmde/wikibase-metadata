@@ -14,7 +14,7 @@ class WikibaseRecentChangeRecord:
 
     def __init__(self, record: dict):
         self.type = record["type"]
-        self.timestamp = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+        self.timestamp = datetime.fromisoformat(record["timestamp"])
 
         # The user field can be missing, we derive it from the userid then. More info:
         # - https://www.mediawiki.org/wiki/API:RecentChanges

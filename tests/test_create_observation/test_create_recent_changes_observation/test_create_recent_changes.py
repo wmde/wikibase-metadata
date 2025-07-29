@@ -1,6 +1,6 @@
 """Test create_recent_changes"""
 
-from datetime import datetime
+from datetime import datetime, UTC
 
 import pytest
 from requests.exceptions import ReadTimeout
@@ -183,8 +183,8 @@ async def test_create_recent_changes_counts():
 
     assert result.bot_change_count == 3
     assert result.bot_change_user_count == 2  # BOT_USER_1 and BOT_USER_2
-    assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
-    assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0)
+    assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0, tzinfo=UTC)
+    assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0, tzinfo=UTC)
 
 
 @pytest.mark.asyncio

@@ -1,6 +1,6 @@
 """Test get_recent_changes_list"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 from freezegun import freeze_time
 import pytest
@@ -42,9 +42,9 @@ async def test_get_recent_changes_list_one_pull(mocker):
     assert len(results) == 31
 
     newest_change = max(results, key=lambda x: x.timestamp)
-    assert newest_change.timestamp == datetime(2024, 3, 1)
+    assert newest_change.timestamp == datetime(2024, 3, 1, tzinfo=UTC)
     oldest_change = min(results, key=lambda x: x.timestamp)
-    assert oldest_change.timestamp == datetime(2024, 1, 31)
+    assert oldest_change.timestamp == datetime(2024, 1, 31, tzinfo=UTC)
 
 
 @freeze_time(datetime(2024, 3, 1))
@@ -81,6 +81,6 @@ async def test_get_recent_changes_list_multiple_pulls(mocker):
     assert len(results) == 61
 
     newest_change = max(results, key=lambda x: x.timestamp)
-    assert newest_change.timestamp == datetime(2024, 3, 1)
+    assert newest_change.timestamp == datetime(2024, 3, 1, tzinfo=UTC)
     oldest_change = min(results, key=lambda x: x.timestamp)
-    assert oldest_change.timestamp == datetime(2024, 1, 31)
+    assert oldest_change.timestamp == datetime(2024, 1, 31, tzinfo=UTC)

@@ -1,6 +1,6 @@
 """Test WikibaseRecentChangeRecord"""
 
-from datetime import datetime
+from datetime import datetime, UTC
 import pytest
 
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
@@ -81,4 +81,4 @@ def test_wikibase_recent_change_record_user_creation(
     else:
         assert change_record.user == expected_user
         assert change_record.type == "edit"
-        assert change_record.timestamp == datetime(2024, 1, 1, 0, 0, 0)
+        assert change_record.timestamp == datetime(2024, 1, 1, 0, 0, 0, tzinfo=UTC)
