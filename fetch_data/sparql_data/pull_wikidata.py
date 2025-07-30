@@ -10,20 +10,27 @@ from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
 from logger import logger
 
 
-async def get_sparql_results(endpoint_url: str, query: str, query_name: str) -> dict:
+async def get_sparql_results(
+    endpoint_url: str, query: str, query_name: str, timeout: int = 60
+) -> dict:
     """Get SPARQL Data from Wikidata ASYNC"""
     return await asyncio.to_thread(
-        _get_results, endpoint_url=endpoint_url, query=query, query_name=query_name
+        _get_results,
+        endpoint_url=endpoint_url,
+        query=query,
+        query_name=query_name,
+        timeout=timeout,
     )
 
 
 # retrieve results from a given endpoint given a distinct SPARQL query
-def _get_results(endpoint_url: str, query: str, query_name: str) -> dict:
+def _get_results(endpoint_url: str, query: str, query_name: str, timeout: int) -> dict:
     """Get SPARQL Data from Wikidata"""
     user_agent = f"WDQS-example Python/{sys.version_info[0]}.{sys.version_info[1]}"
     # TODO adjust user agent; see https://w.wiki/CX6
     sparql = SPARQLWrapper(endpoint_url, agent=user_agent, returnFormat=JSON)
     sparql.setQuery(query)
+    sparql.setTimeout(timeout)
     query_result: QueryResult = sparql.query()
     try:
         return query_result.convert()
