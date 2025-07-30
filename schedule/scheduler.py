@@ -32,7 +32,7 @@ scheduler.add_job(
 )
 scheduler.add_job(
     update_out_of_date_connectivity_observations,
-    CronTrigger(day_of_week=0, hour=0),
+    IntervalTrigger(minutes=5),
 )
 scheduler.add_job(
     update_out_of_date_log_first_observations,

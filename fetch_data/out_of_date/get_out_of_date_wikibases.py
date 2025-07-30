@@ -34,35 +34,39 @@ def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
 ):
     """Query Wikibases with Out of Date Connectivity Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
-            ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.connectivity_observations.any(
-                    or_(
-                        WikibaseConnectivityObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseConnectivityObservationModel.returned_data,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
+                WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.connectivity_observations.any(
+                        or_(
                             WikibaseConnectivityObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseConnectivityObservationModel.returned_data,
+                                WikibaseConnectivityObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .limit(5)
     )
 
     return query
