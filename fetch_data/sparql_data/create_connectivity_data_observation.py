@@ -125,7 +125,13 @@ async def compile_connectivity_observation(
                 else None
             )
 
-    except (EndPointInternalError, JSONDecodeError, HTTPError, URLError):
+    except (
+        ConnectionError,
+        EndPointInternalError,
+        JSONDecodeError,
+        HTTPError,
+        URLError,
+    ):
         logger.warning(
             "ConnectivityDataError",
             exc_info=True,
