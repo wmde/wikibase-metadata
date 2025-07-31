@@ -142,8 +142,8 @@ async def compile_quantity_observation(
     except (HTTPError, EndPointInternalError):
         logger.warning(
             "QuantityDataError",
-            exc_info=True,
-            stack_info=True,
+            # exc_info=True,
+            # stack_info=True,
             extra={"wikibase": wikibase.id},
         )
         observation.returned_data = False

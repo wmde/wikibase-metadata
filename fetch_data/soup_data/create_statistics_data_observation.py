@@ -69,8 +69,8 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
         except (ConnectionError, HTTPError, SSLError):
             logger.warning(
                 "StatisticsDataError",
-                exc_info=True,
-                stack_info=True,
+                # exc_info=True,
+                # stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False

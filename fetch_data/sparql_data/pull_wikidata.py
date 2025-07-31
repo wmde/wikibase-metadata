@@ -37,8 +37,8 @@ def _get_results(endpoint_url: str, query: str, query_name: str, timeout: int) -
     except JSONDecodeError as exc:
         logger.warning(
             "SPARQLError",
-            exc_info=True,
-            stack_info=True,
+            # exc_info=True,
+            # stack_info=True,
             extra={
                 "query": query,
                 "endpoint": endpoint_url,
