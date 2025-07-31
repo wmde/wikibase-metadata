@@ -1,6 +1,6 @@
 """Create User Data Observation"""
 
-from requests.exceptions import ReadTimeout, SSLError
+from requests.exceptions import ReadTimeout, TooManyRedirects, SSLError
 from sqlalchemy import select
 
 from data import get_async_session
@@ -41,7 +41,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
             )
             site_user_data = await get_all_user_data(wikibase.action_api_url())
             observation.returned_data = True
-        except (ReadTimeout, SSLError, ValueError):
+        except (ReadTimeout, SSLError, TooManyRedirects, ValueError):
             logger.warning(
                 "UserDataError",
                 # exc_info=True,
