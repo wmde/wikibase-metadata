@@ -64,5 +64,6 @@ scheduler.add_job(
 )
 scheduler.add_job(
     update_out_of_date_user_observations,
-    CronTrigger(day_of_week=0, hour=7),
+    # CronTrigger(day_of_week=0, hour=7),
+    IntervalTrigger(minutes=5),
 )
