@@ -1,8 +1,6 @@
 """Create Quantity Data Observation"""
 
-from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib.error import HTTPError
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
 
 from data import get_async_session
@@ -141,17 +139,6 @@ async def compile_quantity_observation(
         )
 
         observation.returned_data = True
-    except (
-        ConnectTimeoutError,
-        ConnectionError,
-        MaxRetryError,
-        NameResolutionError,
-        ReadTimeout,
-        SSLError,
-        TooManyRedirects,
-    ) as exc:
-        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
-        raise exc
     except (HTTPError, EndPointInternalError):
         logger.warning(
             "QuantityDataError",
