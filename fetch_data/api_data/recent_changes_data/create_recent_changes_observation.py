@@ -2,7 +2,8 @@
 
 from collections.abc import Iterable
 from json import JSONDecodeError
-from requests.exceptions import ReadTimeout, SSLError
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data.database_connection import get_async_session
 from fetch_data.api_data.recent_changes_data.fetch_recent_changes_data import (
@@ -58,7 +59,18 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
                 observation,
             )
             observation.returned_data = True
-        except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ) as exc:
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            raise exc
+        except JSONDecodeError:
             logger.warning(
                 "RecentChangesDataError",
                 # exc_info=True,

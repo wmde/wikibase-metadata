@@ -6,9 +6,10 @@ from datetime import datetime
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
-from requests.exceptions import SSLError
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.soup_data.software.get_software_model import (
@@ -81,7 +82,18 @@ async def create_software_version_observation_without_background_task(
 
             library_versions = await compile_library_versions(async_session, soup)
             observation.software_versions.extend(library_versions)
-        except (HTTPError, SSLError):
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ) as exc:
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            raise exc
+        except HTTPError:
             logger.warning(
                 "SoftwareVersionDataError",
                 # exc_info=True,

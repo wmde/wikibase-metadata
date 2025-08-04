@@ -6,7 +6,8 @@ from urllib.error import HTTPError
 
 from bs4 import BeautifulSoup
 import requests
-from requests.exceptions import SSLError
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database
@@ -66,7 +67,18 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 table, row_id="mw-cirrussearch-article-words", optional=True
             )
 
-        except (ConnectionError, HTTPError, SSLError):
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ) as exc:
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            raise exc
+        except HTTPError:
             logger.warning(
                 "StatisticsDataError",
                 # exc_info=True,
