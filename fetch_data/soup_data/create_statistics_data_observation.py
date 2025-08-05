@@ -38,6 +38,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 timeout=10,
                 allow_redirects=True,
             )
+            result.raise_for_status()
             soup = BeautifulSoup(result.content, "html.parser")
             table = soup.find("table", attrs={"class": "mw-statistics-table"})
             assert table is not None, "Could Not Find Statistics Table"
