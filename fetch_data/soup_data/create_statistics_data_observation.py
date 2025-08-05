@@ -39,6 +39,12 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
             )
             result.raise_for_status()
             soup = BeautifulSoup(result.content, "html.parser")
+            if (heading := soup.find("h1", attrs={"id": "firstHeading"})) is not None:
+                if heading.text == "Login required":
+                    logger.warning(
+                        "WikibaseRequiredLogin", extra={"wikibase": wikibase.id}
+                    )
+                    raise HTTPError("Login Required")
             table = soup.find("table", attrs={"class": "mw-statistics-table"})
             assert table is not None, "Could Not Find Statistics Table"
 
