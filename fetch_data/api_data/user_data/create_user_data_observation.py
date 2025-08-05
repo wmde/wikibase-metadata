@@ -1,6 +1,8 @@
 """Create User Data Observation"""
 
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from sqlalchemy import select
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.api_data.user_data.compile_user_data import (
@@ -40,6 +42,17 @@ async def create_user_observation(wikibase_id: int) -> bool:
             )
             site_user_data = await get_all_user_data(wikibase.action_api_url())
             observation.returned_data = True
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ):
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            observation.returned_data = False
         except ValueError:
             logger.warning(
                 "UserDataError",

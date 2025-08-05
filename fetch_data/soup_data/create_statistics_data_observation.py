@@ -1,8 +1,10 @@
 """Create Special:Statistics Observation"""
 
 import asyncio
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from typing import Optional
 from urllib.error import HTTPError
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from bs4 import BeautifulSoup
 import requests
@@ -65,6 +67,17 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 table, row_id="mw-cirrussearch-article-words", optional=True
             )
 
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ):
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            observation.returned_data = False
         except HTTPError:
             logger.warning(
                 "StatisticsDataError",
