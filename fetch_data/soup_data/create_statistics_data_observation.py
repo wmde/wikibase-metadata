@@ -1,9 +1,8 @@
 """Create Special:Statistics Observation"""
 
 import asyncio
-from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from typing import Optional
-from urllib.error import HTTPError
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from bs4 import BeautifulSoup, Tag
