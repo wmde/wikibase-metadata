@@ -40,7 +40,8 @@ scheduler.add_job(
 )
 scheduler.add_job(
     update_out_of_date_log_last_observations,
-    CronTrigger(day_of_week=0, hour=1, minute=40),
+    IntervalTrigger(minutes=5),
+    # CronTrigger(day_of_week=0, hour=1, minute=40),
 )
 scheduler.add_job(
     update_out_of_date_recent_changes_observations,
@@ -56,8 +57,7 @@ scheduler.add_job(
 )
 scheduler.add_job(
     update_out_of_date_software_observations,
-    # CronTrigger(day_of_week=0, hour=5),
-    IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=5),
 )
 scheduler.add_job(
     update_out_of_date_stats_observations,
@@ -65,6 +65,5 @@ scheduler.add_job(
 )
 scheduler.add_job(
     update_out_of_date_user_observations,
-    # CronTrigger(day_of_week=0, hour=7),
-    IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=7),
 )
