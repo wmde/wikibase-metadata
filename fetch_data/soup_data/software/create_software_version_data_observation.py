@@ -5,10 +5,9 @@ from collections.abc import Iterable
 from datetime import datetime
 from bs4 import BeautifulSoup, Tag
 import requests
-from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
-from urllib.error import HTTPError
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
@@ -63,6 +62,7 @@ async def create_software_version_observation_without_background_task(
                 headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,
             )
+            result.raise_for_status()
             soup = BeautifulSoup(result.content, "html.parser")
 
             observation.returned_data = True
@@ -148,6 +148,7 @@ async def compile_installed_software_versions(
     """Compile Installed Software Version List"""
 
     installed_software_table: Tag = soup.find("table", attrs={"id": "sv-software"})
+    assert installed_software_table is not None, "Installed Software Table Not Found"
 
     software_versions: list[WikibaseSoftwareVersionModel] = []
     row: Tag
@@ -196,6 +197,7 @@ async def compile_library_versions(
     """Compile Library Version List"""
 
     libraries_table = soup.find("table", attrs={"id": "sv-libraries"})
+    assert libraries_table is not None, "Libraries Table Not Found"
 
     library_versions: list[WikibaseSoftwareVersionModel] = []
     row: Tag
@@ -226,6 +228,8 @@ async def compile_skin_versions(
     installed_skin_table: Tag = soup.find(
         "table", attrs={"id": ["sv-skin", "sv-credits-skin"]}
     )
+    assert installed_skin_table is not None, "Installed Skin Table Not Found"
+
     return unique_versions(
         [
             await get_software_version_from_row(
@@ -246,7 +250,7 @@ async def get_software_version_from_row(
     software_name = (
         row.find("a", attrs={"class": "mw-version-ext-name"}) or row.find_all("td")[0]
     ).string
-    assert software_name is not None, f"Could Not Find Software Name: {row.prettify()}"
+    assert software_name is not None, f"Software Name Not Found: {row.prettify()}"
 
     version: str | None = None
     if (
