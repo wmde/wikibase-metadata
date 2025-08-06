@@ -174,8 +174,10 @@ async def compile_installed_software_versions(
             elif len(version_strings) == 2:
                 version = version_strings[0].strip()
                 version_hash = version_strings[1].strip()
+            elif len(version_strings) == 1:
+                version = version_strings[0].strip()
             else:
-                raise NotImplementedError(f"{version_strings}")
+                version = "None"
 
             software_versions.append(
                 WikibaseSoftwareVersionModel(
