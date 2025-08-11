@@ -1,6 +1,9 @@
 """Add Wikibase"""
 
+from typing import Optional
 from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from data.database_connection import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseURLType
@@ -25,19 +28,19 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             f"Wikibase with name {wikibase_input.wikibase_name.strip()} already exists"
         )
 
-        for input_url in [
-            wikibase_input.urls.base_url,
+        await assert_new_url(
+            async_session, wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
+        )
+        await assert_new_url(
+            async_session,
             wikibase_input.urls.sparql_endpoint_url,
+            WikibaseURLType.SPARQL_ENDPOINT_URL,
+        )
+        await assert_new_url(
+            async_session,
             wikibase_input.urls.sparql_frontend_url,
-        ]:
-            if input_url is not None:
-                clean_url: str = clean_up_url(input_url, WikibaseURLType.BASE_URL)
-                assert (
-                    await async_session.scalar(
-                        # pylint: disable-next=not-callable
-                        select(func.count()).where(WikibaseURLModel.url == clean_url)
-                    )
-                ) == 0, f"URL {clean_url} already exists"
+            WikibaseURLType.SPARQL_FRONTEND_URL,
+        )
 
         model = WikibaseModel(
             wikibase_name=wikibase_input.wikibase_name,
@@ -102,3 +105,18 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         await async_session.commit()
 
         return returning
+
+
+async def assert_new_url(
+    async_session: AsyncSession, input_url: Optional[str], url_type: WikibaseURLType
+):
+    """Assert URL Not in Database"""
+
+    if input_url is not None:
+        clean_url: str = clean_up_url(input_url, url_type)
+        assert (
+            await async_session.scalar(
+                # pylint: disable-next=not-callable
+                select(func.count()).where(WikibaseURLModel.url == clean_url)
+            )
+        ) == 0, f"URL {clean_url} already exists"
