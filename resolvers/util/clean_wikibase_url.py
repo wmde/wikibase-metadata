@@ -5,7 +5,7 @@ import re
 from model.enum import WikibaseURLType
 
 
-FULL_URL_PATTERN = re.compile(r"https?://[A-z0-9\-_.\?=]+", re.IGNORECASE)
+FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=]+", re.IGNORECASE)
 
 
 def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
@@ -18,8 +18,12 @@ def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
         WikibaseURLType.SPARQL_ENDPOINT_URL,
         WikibaseURLType.SPARQL_FRONTEND_URL,
     ]:
-        assert FULL_URL_PATTERN.match(stripped_url)
+        assert FULL_URL_PATTERN.match(
+            stripped_url
+        ), f"{url_type} must be full URL, {stripped_url}"
     else:
-        assert not FULL_URL_PATTERN.match(stripped_url)
+        assert not FULL_URL_PATTERN.match(
+            stripped_url
+        ), f"{url_type} must not be full URL, {stripped_url}"
 
     return stripped_url
