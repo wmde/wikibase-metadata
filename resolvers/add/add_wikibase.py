@@ -45,11 +45,39 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             organization=wikibase_input.organization,
             country=wikibase_input.country,
             region=wikibase_input.region,
-            base_url=wikibase_input.urls.base_url,
-            article_path=wikibase_input.urls.article_path,
-            script_path=wikibase_input.urls.script_path,
-            sparql_endpoint_url=wikibase_input.urls.sparql_endpoint_url,
-            sparql_frontend_url=wikibase_input.urls.sparql_frontend_url,
+            base_url=clean_up_url(
+                wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
+            ),
+            article_path=(
+                clean_up_url(
+                    wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH
+                )
+                if wikibase_input.urls.article_path is not None
+                else None
+            ),
+            script_path=(
+                clean_up_url(
+                    wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH
+                )
+                if wikibase_input.urls.script_path is not None
+                else None
+            ),
+            sparql_endpoint_url=(
+                clean_up_url(
+                    wikibase_input.urls.sparql_endpoint_url,
+                    WikibaseURLType.SPARQL_ENDPOINT_URL,
+                )
+                if wikibase_input.urls.sparql_endpoint_url is not None
+                else None
+            ),
+            sparql_frontend_url=(
+                clean_up_url(
+                    wikibase_input.urls.sparql_frontend_url,
+                    WikibaseURLType.SPARQL_FRONTEND_URL,
+                )
+                if wikibase_input.urls.sparql_frontend_url is not None
+                else None
+            ),
         )
         model.checked = True
         model.category = (
