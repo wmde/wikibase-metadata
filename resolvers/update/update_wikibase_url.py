@@ -1,6 +1,5 @@
 """Update Wikibase URL"""
 
-import re
 from typing import Optional
 
 from sqlalchemy import and_, delete, select
@@ -8,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from data.database_connection import get_async_session
 from model.database.wikibase_url_model import WikibaseURLModel
 from model.enum import WikibaseURLType
+from resolvers.util.clean_wikibase_url import clean_up_url
 
 
 async def upsert_wikibase_url(
@@ -71,19 +71,6 @@ async def remove_wikibase_url(wikibase_id: int, url_type: WikibaseURLType) -> bo
         )
 
         return wikibase_url is None
-
-
-def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
-    """Clean URL"""
-
-    if url_type in [
-        WikibaseURLType.BASE_URL,
-        WikibaseURLType.SPARQL_ENDPOINT_URL,
-        WikibaseURLType.SPARQL_FRONTEND_URL,
-    ]:
-        assert re.match(r"https?://[A-z0-9\-_.\?=]+", url)
-
-    return url.strip()
 
 
 async def fetch_wikibase_url(

@@ -3,8 +3,10 @@
 from sqlalchemy import func, select
 from data.database_connection import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
+from model.enum import WikibaseURLType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
+from resolvers.util.clean_wikibase_url import clean_up_url
 
 
 async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel:
@@ -29,15 +31,13 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             wikibase_input.urls.sparql_frontend_url,
         ]:
             if input_url is not None:
-                stripped_input_url: str = input_url.strip()
+                clean_url: str = clean_up_url(input_url, WikibaseURLType.BASE_URL)
                 assert (
                     await async_session.scalar(
                         # pylint: disable-next=not-callable
-                        select(func.count()).where(
-                            WikibaseURLModel.url == stripped_input_url
-                        )
+                        select(func.count()).where(WikibaseURLModel.url == clean_url)
                     )
-                ) == 0, f"URL {stripped_input_url} already exists"
+                ) == 0, f"URL {clean_url} already exists"
 
         model = WikibaseModel(
             wikibase_name=wikibase_input.wikibase_name,
