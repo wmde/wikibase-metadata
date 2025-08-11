@@ -71,7 +71,7 @@ async def fetch_wikibase_script_path(wikibase: WikibaseModel):
         assert entrypoints_table is not None, "Could Not Find Entry Points Table"
 
         for row in entrypoints_table.find_all("tr"):
-            if row.find('td') is not None:
+            if row.find("td") is not None:
                 left = row.find_all("td")[0]
                 right = row.find_all("td")[1]
                 if "$wgScriptPath" in left.find("a").attrs.get("href"):
