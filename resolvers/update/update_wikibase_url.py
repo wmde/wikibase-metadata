@@ -4,9 +4,11 @@ from typing import Optional
 
 from sqlalchemy import and_, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from data.database_connection import get_async_session
 from model.database.wikibase_url_model import WikibaseURLModel
 from model.enum import WikibaseURLType
+from logger import logger
 from resolvers.util.clean_wikibase_url import clean_up_url
 
 
@@ -26,6 +28,8 @@ async def upsert_wikibase_url(
     assert url_type != WikibaseURLType.SPECIAL_VERSION_URL, "Please use `ARTICLE_PATH`"
 
     clean_url = clean_up_url(url, url_type)
+
+    logger.info(f"Upserting {url_type}: {clean_url}", extra={"wikibase": wikibase_id})
 
     async with get_async_session() as async_session:
         wikibase_url: Optional[WikibaseURLModel] = await fetch_wikibase_url(
@@ -53,6 +57,8 @@ async def remove_wikibase_url(wikibase_id: int, url_type: WikibaseURLType) -> bo
     """Remove URL from Wikibase"""
 
     assert url_type != WikibaseURLType.BASE_URL, "CANNOT DELETE BASE URL"
+
+    logger.info(f"Removing {url_type}", extra={"wikibase": wikibase_id})
 
     async with get_async_session() as async_session:
         await async_session.execute(
