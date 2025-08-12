@@ -1,7 +1,7 @@
 """Fix"""
 
 from requests.exceptions import HTTPError
-from sqlalchemy import and_, or_, select
+from sqlalchemy import Select, and_, or_, select
 
 from data import get_async_session
 from fetch_data.utils.fetch_data_from_api import fetch_api_data
@@ -20,6 +20,21 @@ from resolvers.update.update_wikibase_url import upsert_wikibase_url
 async def update_missing_sparql_urls():
     """Attempt to Fetch SPARQL Paths from Manifest"""
 
+    query = missing_sparql_urls_query()
+
+    async with get_async_session() as async_session:
+        wikis = (await async_session.scalars(query)).all()
+
+        logger.info(f"Missing SPARQL Path: {len(wikis)}")
+
+        for wikibase in wikis:
+            await update_wikibase_sparql_urls(wikibase)
+        return len(wikis)
+
+
+def missing_sparql_urls_query() -> Select[tuple[WikibaseModel]]:
+    """Wikibases Missing SPARQL URLS"""
+
     script_path_subquery = (
         select(WikibaseURLModel)
         .where(WikibaseURLModel.url_type == WikibaseURLType.SCRIPT_PATH)
@@ -37,7 +52,6 @@ async def update_missing_sparql_urls():
     )
     query = (
         select(WikibaseModel)
-        .where(WikibaseModel.checked)
         .join(
             script_path_subquery,
             onclause=WikibaseModel.id == script_path_subquery.c.wikibase_id,
@@ -55,6 +69,7 @@ async def update_missing_sparql_urls():
         )
         .where(
             and_(
+                WikibaseModel.checked,
                 WikibaseModel.software_version_observations.any(
                     WikibaseSoftwareVersionObservationModel.software_versions.any(
                         WikibaseSoftwareVersionModel.software.has(
@@ -72,17 +87,10 @@ async def update_missing_sparql_urls():
         )
     )
 
-    async with get_async_session() as async_session:
-        wikis = (await async_session.scalars(query)).all()
-
-        logger.info(f"Missing SPARQL Path: {len(wikis)}")
-
-        for wikibase in wikis:
-            await fetch_wikibase_sparql_urls(wikibase)
-        return len(wikis)
+    return query
 
 
-async def fetch_wikibase_sparql_urls(wikibase: WikibaseModel):
+async def update_wikibase_sparql_urls(wikibase: WikibaseModel):
     """Attempt to Fetch SPARQL Paths from Manifest"""
 
     assert wikibase.rest_api_url() is not None
@@ -92,16 +100,32 @@ async def fetch_wikibase_sparql_urls(wikibase: WikibaseModel):
             wikibase.rest_api_url() + "/wikibase-manifest/v0/manifest"
         )
         if "external_services" in manifest_data:
-            if wikibase.sparql_endpoint_url is None:
+            if (
+                wikibase.sparql_endpoint_url is None
+                and (
+                    sparql_endpoint_url := manifest_data["external_services"].get(
+                        "queryservice"
+                    )
+                )
+                is not None
+            ):
                 assert await upsert_wikibase_url(
                     wikibase.id,
-                    manifest_data["external_services"].get("queryservice"),
+                    sparql_endpoint_url,
                     WikibaseURLType.SPARQL_ENDPOINT_URL,
                 )
-            if wikibase.sparql_frontend_url is None:
+            if (
+                wikibase.sparql_frontend_url is None
+                and (
+                    sparql_frontend_url := manifest_data["external_services"].get(
+                        "queryservice_ui"
+                    )
+                )
+                is not None
+            ):
                 assert await upsert_wikibase_url(
                     wikibase.id,
-                    manifest_data["external_services"].get("queryservice_ui"),
+                    sparql_frontend_url,
                     WikibaseURLType.SPARQL_FRONTEND_URL,
                 )
 
