@@ -7,7 +7,7 @@ from tests.test_mutation.test_update_wikibase_language.query import (
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
-from update_data import remove_wikibase_language
+from resolvers import remove_wikibase_language
 
 
 REMOVE_WIKIBASE_LANGUAGE_QUERY = """

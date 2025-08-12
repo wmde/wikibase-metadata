@@ -7,7 +7,7 @@ from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.utils import assert_layered_property_value, get_mock_context
-from update_data import update_wikibase_primary_language
+from resolvers import update_wikibase_primary_language
 
 UPDATE_WIKIBASE_PRIMARY_LANGUAGE_QUERY = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {

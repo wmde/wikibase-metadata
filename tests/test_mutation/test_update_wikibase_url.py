@@ -123,7 +123,7 @@ async def test_remove_wikibase_sparql_frontend_url():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "sparqlFrontendUrl"],
-        expected_value="query.example.com",
+        expected_value="http://query.example.com",
     )
 
     remove_result = await test_schema.execute(
@@ -261,7 +261,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "sparqlEndpointUrl"],
-        expected_value="query.example.com/sparql-wrong",
+        expected_value="http://query.example.com/sparql-wrong",
     )
 
     update_result = await test_schema.execute(
