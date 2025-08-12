@@ -17,7 +17,7 @@ from model.enum import WikibaseURLType
 from resolvers.update.update_wikibase_url import upsert_wikibase_url
 
 
-async def fix_missing_sparql_path():
+async def update_missing_sparql_urls():
     """Attempt to Fetch SPARQL Paths from Manifest"""
 
     script_path_subquery = (
