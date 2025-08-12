@@ -1,6 +1,7 @@
 """Create Recent Changes Observation"""
 
 from collections.abc import Iterable
+from http.client import IncompleteRead
 from json import JSONDecodeError
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
@@ -70,7 +71,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
         ):
             logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
             observation.returned_data = False
-        except JSONDecodeError:
+        except (IncompleteRead, JSONDecodeError):
             logger.warning(
                 "RecentChangesDataError",
                 # exc_info=True,

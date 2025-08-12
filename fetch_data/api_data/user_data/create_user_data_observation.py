@@ -1,5 +1,6 @@
 """Create User Data Observation"""
 
+from http.client import IncompleteRead
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from sqlalchemy import select
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
@@ -53,7 +54,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
         ):
             logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
             observation.returned_data = False
-        except ValueError:
+        except (IncompleteRead, ValueError):
             logger.warning(
                 "UserDataError",
                 # exc_info=True,

@@ -2,6 +2,7 @@
 
 from collections.abc import Iterable
 from datetime import datetime
+from http.client import IncompleteRead
 from json import JSONDecodeError
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
@@ -67,7 +68,7 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
         ):
             logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
             observation.returned_data = False
-        except JSONDecodeError:
+        except (IncompleteRead, JSONDecodeError):
             logger.warning(
                 "LogDataError",
                 # exc_info=True,
