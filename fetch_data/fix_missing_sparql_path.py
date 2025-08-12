@@ -18,6 +18,8 @@ from resolvers.update.update_wikibase_url import upsert_wikibase_url
 
 
 async def fix_missing_sparql_path():
+    """Attempt to Fetch SPARQL Paths from Manifest"""
+
     script_path_subquery = (
         select(WikibaseURLModel)
         .where(WikibaseURLModel.url_type == WikibaseURLType.SCRIPT_PATH)
@@ -61,7 +63,9 @@ async def fix_missing_sparql_path():
                     )
                 ),
                 or_(
+                    # pylint: disable-next=singleton-comparison
                     sparql_endpoint_subquery.c.id == None,
+                    # pylint: disable-next=singleton-comparison
                     sparql_frontend_subquery.c.id == None,
                 ),
             )
@@ -72,7 +76,6 @@ async def fix_missing_sparql_path():
         wikis = (await async_session.scalars(query)).all()
 
         logger.info(f"Missing SPARQL Path: {len(wikis)}")
-        print(f"Missing SPARQL Path: {len(wikis)}")
 
         for wikibase in wikis:
             await fetch_wikibase_sparql_urls(wikibase)
@@ -80,6 +83,8 @@ async def fix_missing_sparql_path():
 
 
 async def fetch_wikibase_sparql_urls(wikibase: WikibaseModel):
+    """Attempt to Fetch SPARQL Paths from Manifest"""
+
     assert wikibase.rest_api_url() is not None
 
     try:

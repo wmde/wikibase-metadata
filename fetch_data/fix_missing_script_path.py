@@ -15,6 +15,8 @@ from resolvers.update.update_wikibase_url import upsert_wikibase_url
 
 
 async def fix_missing_script_path():
+    """Attempt to Fetch Missing scriptPaths"""
+
     article_path_subquery = (
         select(WikibaseURLModel)
         .where(WikibaseURLModel.url_type == WikibaseURLType.ARTICLE_PATH)
@@ -38,6 +40,7 @@ async def fix_missing_script_path():
             onclause=WikibaseModel.id == script_path_subquery.c.wikibase_id,
             isouter=True,
         )
+        # pylint: disable-next=singleton-comparison
         .where(script_path_subquery.c.id == None)
     )
 
@@ -52,9 +55,10 @@ async def fix_missing_script_path():
 
 
 async def fetch_wikibase_script_path(wikibase: WikibaseModel):
+    """Attempt to Fetch scriptPath from Special:Version"""
+
     assert wikibase.action_api_url() is None
     assert wikibase.special_version_url() is not None
-    print(wikibase.special_version_url())
 
     try:
         result = await asyncio.to_thread(
