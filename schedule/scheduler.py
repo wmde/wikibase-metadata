@@ -36,38 +36,38 @@ scheduler.add_job(
 )
 scheduler.add_job(
     update_out_of_date_log_first_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=1, minute=0),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=1, minute=0),
 )
 scheduler.add_job(
     update_out_of_date_log_last_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=1, minute=40),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=1, minute=40),
 )
 scheduler.add_job(
     update_out_of_date_recent_changes_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=2, minute=20),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=2, minute=20),
 )
 scheduler.add_job(
     update_out_of_date_property_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=3),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=3),
 )
 scheduler.add_job(
     update_out_of_date_quantity_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=4),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=4),
 )
 scheduler.add_job(
     update_out_of_date_software_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=5),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=5),
 )
 scheduler.add_job(
     update_out_of_date_stats_observations,
-    IntervalTrigger(minutes=5),
-    # CronTrigger(day_of_week=0, hour=6),
+    # IntervalTrigger(minutes=5),
+    CronTrigger(day_of_week=0, hour=6),
 )
 scheduler.add_job(
     update_out_of_date_user_observations,
