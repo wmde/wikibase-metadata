@@ -3,6 +3,7 @@
 from datetime import datetime
 from typing import Optional
 
+from logger import logger
 from model.enum import WikibaseLogType, compile_log_type
 
 
@@ -22,7 +23,11 @@ class WikibaseLogRecord:
         self.id = record["logid"]
         self.log_date = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
         self.user = record["user"] if "user" in record else None
-        self.log_type = compile_log_type(record)
+        try:
+            self.log_type = compile_log_type(record)
+        except AssertionError as exc:
+            logger.warning(exc, extra={"log": record})
+            self.log_type = WikibaseLogType.UNCLASSIFIED
 
     def __str__(self) -> str:
         return (
