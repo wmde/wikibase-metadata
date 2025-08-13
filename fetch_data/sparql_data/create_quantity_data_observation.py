@@ -3,7 +3,7 @@
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib.error import HTTPError
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
-from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
@@ -144,6 +144,7 @@ async def compile_quantity_observation(
     except (
         ConnectTimeoutError,
         ConnectionError,
+        EndPointNotFound,
         MaxRetryError,
         NameResolutionError,
         ReadTimeout,
