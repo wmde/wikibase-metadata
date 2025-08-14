@@ -34,38 +34,42 @@ def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
 ):
     """Query Wikibases with Out of Date Connectivity Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
-            ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.connectivity_observations.any(
-                    or_(
-                        WikibaseConnectivityObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseConnectivityObservationModel.returned_data,
+                WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.connectivity_observations.any(
+                        or_(
                             WikibaseConnectivityObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseConnectivityObservationModel.returned_data,
+                                WikibaseConnectivityObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -84,41 +88,45 @@ async def get_wikibase_list_with_out_of_date_connectivity_observations() -> (
 def get_wikibase_with_out_of_date_log_first_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Log (First Month) Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
-                ),
-            ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.log_month_observations.any(
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
                     and_(
-                        WikibaseLogMonthObservationModel.first_month,
-                        or_(
-                            WikibaseLogMonthObservationModel.observation_date
-                            > (
-                                datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=40, hours=SAFE_HOUR_MARGIN)
-                            ),
-                            and_(
-                                WikibaseLogMonthObservationModel.returned_data,
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
+                ),
+                WikibaseModel.script_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.log_month_observations.any(
+                        and_(
+                            WikibaseLogMonthObservationModel.first_month,
+                            or_(
                                 WikibaseLogMonthObservationModel.observation_date
                                 > (
                                     datetime.now(tz=timezone.utc)
-                                    - timedelta(weeks=52, hours=SAFE_HOUR_MARGIN)
+                                    - timedelta(weeks=40, hours=SAFE_HOUR_MARGIN)
+                                ),
+                                and_(
+                                    WikibaseLogMonthObservationModel.returned_data,
+                                    WikibaseLogMonthObservationModel.observation_date
+                                    > (
+                                        datetime.now(tz=timezone.utc)
+                                        - timedelta(weeks=52, hours=SAFE_HOUR_MARGIN)
+                                    ),
                                 ),
                             ),
-                        ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -135,41 +143,45 @@ async def get_wikibase_list_with_out_of_date_log_first_observations() -> (
 def get_wikibase_with_out_of_date_log_last_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Log (Last Month) Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
-                ),
-            ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.log_month_observations.any(
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
                     and_(
-                        not_(WikibaseLogMonthObservationModel.first_month),
-                        or_(
-                            WikibaseLogMonthObservationModel.observation_date
-                            > (
-                                datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                            ),
-                            and_(
-                                WikibaseLogMonthObservationModel.returned_data,
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
+                ),
+                WikibaseModel.script_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.log_month_observations.any(
+                        and_(
+                            not_(WikibaseLogMonthObservationModel.first_month),
+                            or_(
                                 WikibaseLogMonthObservationModel.observation_date
                                 > (
                                     datetime.now(tz=timezone.utc)
-                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                    - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
+                                ),
+                                and_(
+                                    WikibaseLogMonthObservationModel.returned_data,
+                                    WikibaseLogMonthObservationModel.observation_date
+                                    > (
+                                        datetime.now(tz=timezone.utc)
+                                        - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                    ),
                                 ),
                             ),
-                        ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -188,38 +200,42 @@ def get_wikibase_with_out_of_date_property_popularity_obs_query() -> (
 ):
     """Query Wikibases with Out of Date Property Popularity Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
-            ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.property_popularity_observations.any(
-                    or_(
-                        WikibasePropertyPopularityObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibasePropertyPopularityObservationModel.returned_data,
+                WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.property_popularity_observations.any(
+                        or_(
                             WikibasePropertyPopularityObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibasePropertyPopularityObservationModel.returned_data,
+                                WikibasePropertyPopularityObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -238,35 +254,39 @@ async def get_wikibase_list_with_out_of_date_property_popularity_observations() 
 def get_wikibase_with_out_of_date_quantity_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Quantity Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
-            ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.quantity_observations.any(
-                    or_(
-                        WikibaseQuantityObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseQuantityObservationModel.returned_data,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
+                WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.quantity_observations.any(
+                        or_(
                             WikibaseQuantityObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseQuantityObservationModel.returned_data,
+                                WikibaseQuantityObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -285,38 +305,42 @@ def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
 ):
     """Query Wikibases with Out of Date Recent Changes Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
-            ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.recent_changes_observations.any(
-                    or_(
-                        WikibaseRecentChangesObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseRecentChangesObservationModel.returned_data,
+                WikibaseModel.script_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.recent_changes_observations.any(
+                        or_(
                             WikibaseRecentChangesObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseRecentChangesObservationModel.returned_data,
+                                WikibaseRecentChangesObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -335,38 +359,42 @@ async def get_wikibase_list_with_out_of_date_recent_changes_observations() -> (
 def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Software Version Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
-            ),
-            WikibaseModel.article_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.software_version_observations.any(
-                    or_(
-                        WikibaseSoftwareVersionObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseSoftwareVersionObservationModel.returned_data,
+                WikibaseModel.article_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.software_version_observations.any(
+                        or_(
                             WikibaseSoftwareVersionObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseSoftwareVersionObservationModel.returned_data,
+                                WikibaseSoftwareVersionObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -383,38 +411,42 @@ async def get_wikibase_list_with_out_of_date_software_observations() -> (
 def get_wikibase_with_out_of_date_stats_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Special:Statistics Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
-            ),
-            WikibaseModel.article_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.statistics_observations.any(
-                    or_(
-                        WikibaseStatisticsObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseStatisticsObservationModel.returned_data,
+                WikibaseModel.article_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.statistics_observations.any(
+                        or_(
                             WikibaseStatisticsObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseStatisticsObservationModel.returned_data,
+                                WikibaseStatisticsObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
@@ -431,38 +463,42 @@ async def get_wikibase_list_with_out_of_date_stats_observations() -> (
 def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date User Observations"""
 
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+    query = (
+        select(WikibaseModel)
+        .where(
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
-            ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.user_observations.any(
-                    or_(
-                        WikibaseUserObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseUserObservationModel.returned_data,
+                WikibaseModel.script_path.has(WikibaseURLModel.id),
+                not_(
+                    WikibaseModel.user_observations.any(
+                        or_(
                             WikibaseUserObservationModel.observation_date
                             > (
                                 datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
                             ),
-                        ),
+                            and_(
+                                WikibaseUserObservationModel.returned_data,
+                                WikibaseUserObservationModel.observation_date
+                                > (
+                                    datetime.now(tz=timezone.utc)
+                                    - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                                ),
+                            ),
+                        )
                     )
-                )
-            ),
+                ),
+            )
         )
+        .order_by(WikibaseModel.id.desc())
     )
 
     return query
