@@ -2,7 +2,6 @@
 
 import os
 import time
-from urllib.error import HTTPError
 import pytest
 from fetch_data import create_special_statistics_observation
 from tests.test_schema import test_schema
