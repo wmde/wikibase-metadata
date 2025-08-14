@@ -1,7 +1,7 @@
 """Create Property Popularity Data Observation"""
 
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
@@ -73,7 +73,7 @@ async def compile_property_popularity_observation(
     ):
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
         observation.returned_data = False
-    except (HTTPError, EndPointInternalError):
+    except (EndPointInternalError,HTTPError, URLError):
         logger.warning(
             "PropertyPopularityDataError",
             # exc_info=True,

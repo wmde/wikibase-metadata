@@ -4,7 +4,7 @@ import asyncio
 from json import JSONDecodeError
 import numpy
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
@@ -139,7 +139,7 @@ async def compile_connectivity_observation(
     ):
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
         observation.returned_data = False
-    except (EndPointInternalError, JSONDecodeError, HTTPError):
+    except (EndPointInternalError, HTTPError, JSONDecodeError, URLError):
         logger.warning(
             "ConnectivityDataError",
             # exc_info=True,
