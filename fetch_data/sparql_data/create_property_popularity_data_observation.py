@@ -73,7 +73,7 @@ async def compile_property_popularity_observation(
     ):
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
         observation.returned_data = False
-    except (EndPointInternalError,HTTPError, URLError):
+    except (EndPointInternalError, HTTPError, URLError):
         logger.warning(
             "PropertyPopularityDataError",
             # exc_info=True,
