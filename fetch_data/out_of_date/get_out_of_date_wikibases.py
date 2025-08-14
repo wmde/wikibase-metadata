@@ -9,6 +9,7 @@ from model.database import (
     WikibaseModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
     WikibaseURLModel,
@@ -318,25 +319,27 @@ def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
                     ),
                 ),
                 WikibaseModel.script_path.has(WikibaseURLModel.id),
-                # not_(
-                #     WikibaseModel.recent_changes_observations.any(
-                #         or_(
-                #             WikibaseRecentChangesObservationModel.observation_date
-                #             > (
-                #                 datetime.now(tz=timezone.utc)
-                #                 - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
-                #             ),
-                #             and_(
-                #                 WikibaseRecentChangesObservationModel.returned_data,
-                #                 WikibaseRecentChangesObservationModel.observation_date
-                #                 > (
-                #                     datetime.now(tz=timezone.utc)
-                #                     - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
-                #                 ),
-                #             ),
-                #         )
-                #     )
-                # ),
+                not_(
+                    WikibaseModel.recent_changes_observations.any(
+                        WikibaseRecentChangesObservationModel.observation_date
+                        > datetime(2025, 8, 14, 13, tzinfo=timezone.utc)
+                        # or_(
+                        #     WikibaseRecentChangesObservationModel.observation_date
+                        #     > (
+                        #         datetime.now(tz=timezone.utc)
+                        #         - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
+                        #     ),
+                        #     and_(
+                        #         WikibaseRecentChangesObservationModel.returned_data,
+                        #         WikibaseRecentChangesObservationModel.observation_date
+                        #         > (
+                        #             datetime.now(tz=timezone.utc)
+                        #             - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                        #         ),
+                        #     ),
+                        # )
+                    )
+                ),
             )
         )
         .order_by(WikibaseModel.id.desc())
