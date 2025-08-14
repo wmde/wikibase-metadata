@@ -30,9 +30,10 @@ class MockSPARQLWrapper:
     # pylint: disable-next=invalid-name,no-self-argument
     def setQuery(query: str):
         """Set Query"""
+        # pylint: disable-next=unnecessary-pass
         pass
 
-    # pylint: disable-next=no-self-argument
+    # pylint: disable-next=no-method-argument,no-self-argument
     def query():
         """Execute Query"""
         return MockQueryResult()
@@ -40,6 +41,7 @@ class MockSPARQLWrapper:
     # pylint: disable-next=invalid-name,no-self-argument
     def setTimeout(timeout: int):
         """Set Timeout"""
+        # pylint: disable-next=unnecessary-pass
         pass
 
 
@@ -55,7 +57,7 @@ async def test_sparql_fail(mocker):
 
     try:
         await get_sparql_results(
-            "https://example.com/query/rdf", "SELECT \{\}", "SELECT QUERY", timeout=20
+            "https://example.com/query/rdf", "SELECT {?c}", "SELECT QUERY", timeout=20
         )
         assert False
     except JSONDecodeError:
