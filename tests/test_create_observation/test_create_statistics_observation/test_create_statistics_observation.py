@@ -60,15 +60,7 @@ async def test_create_statistics_observation_failure(mocker):
 
     mocker.patch(
         "fetch_data.soup_data.create_statistics_data_observation.requests.get",
-        side_effect=[
-            HTTPError(
-                url="example.com/wiki/Special:Statistics",
-                code=500,
-                msg="Error",
-                hdrs="",
-                fp=None,
-            )
-        ],
+        side_effect=[MockResponse("", 500)],
     )
     success = await create_special_statistics_observation(1)
     assert success is False

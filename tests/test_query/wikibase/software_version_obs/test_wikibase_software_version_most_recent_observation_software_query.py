@@ -61,7 +61,7 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
     assert "mostRecent" in result_wikibase["softwareVersionObservations"]
     most_recent = result_wikibase["softwareVersionObservations"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "1")
+    assert_property_value(most_recent, "id", "2")
     assert "observationDate" in most_recent
     assert_property_value(most_recent, "returnedData", True)
 

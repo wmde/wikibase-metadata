@@ -56,16 +56,17 @@ async def test_wikibase_statistics_all_observations_query():
                 "allObservations"
             ]
         )
-        == 2
+        == 3
     )
 
+    assert_statistics(statistics_observation_list[0], "1", False)
     assert_statistics(
-        statistics_observation_list[0],
-        "1",
+        statistics_observation_list[1],
+        "2",
         True,
         (36150323, 36150323 / 12655622),
         (30,),
         (851723, 27750 / 851723, 27750, 12655622),
         (5, 17, 465),
     )
-    assert_statistics(statistics_observation_list[1], "2", False)
+    assert_statistics(statistics_observation_list[2], "3", False)

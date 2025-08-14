@@ -51,7 +51,7 @@ async def test_wikibase_statistics_most_recent_observation_query():
 
     assert_statistics(
         most_recent,
-        "1",
+        "2",
         True,
         (36150323, 36150323 / 12655622),  # edits
         (30,),  # files

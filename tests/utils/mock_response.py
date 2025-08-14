@@ -2,6 +2,8 @@
 
 from typing import Optional
 
+from requests import HTTPError
+
 
 class MockResponse:
     """Mock HTTP Response"""
@@ -9,6 +11,12 @@ class MockResponse:
     status_code: int
     content: bytes
     url: str
+
+    def raise_for_status(self):
+        """Raise Error for Status Code"""
+
+        if self.status_code is not None and self.status_code != 200:
+            raise HTTPError
 
     def __enter__(self):
         return self
