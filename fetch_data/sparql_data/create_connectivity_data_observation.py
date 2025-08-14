@@ -138,6 +138,7 @@ async def compile_connectivity_observation(
         NameResolutionError,
         ReadTimeout,
         SSLError,
+        TimeoutError,
         TooManyRedirects,
     ):
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
