@@ -57,9 +57,13 @@ async def compile_quantity_observation(
             "COUNT_PROPERTIES_QUERY",
             timeout=10,
         )
-        observation.total_properties = int(
+        try:
+            observation.total_properties = int(
             property_count_results["results"]["bindings"][0]["count"]["value"]
         )
+        except TypeError as exc:
+            logger.error( property_count_results, extra={"wikibase": wikibase.id} )
+            raise exc
 
         logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
         item_count_results = await get_sparql_results(
