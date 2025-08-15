@@ -6,8 +6,13 @@ from json import JSONDecodeError
 import os
 import sys
 from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
+from SPARQLWrapper.SPARQLExceptions import SPARQLWrapperException
 
 from logger import logger
+
+
+class SPARQLResponseMalformed(SPARQLWrapperException):
+    pass
 
 
 async def get_sparql_results(
@@ -33,7 +38,10 @@ def _get_results(endpoint_url: str, query: str, query_name: str, timeout: int) -
     sparql.setTimeout(timeout)
     query_result: QueryResult = sparql.query()
     try:
-        return query_result.convert()
+        converted_result = query_result.convert()
+        if not isinstance(converted_result, dict):
+            raise SPARQLResponseMalformed(converted_result)
+        return converted_result
     except JSONDecodeError as exc:
         logger.warning(
             "SPARQLError",

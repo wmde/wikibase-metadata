@@ -6,7 +6,10 @@ from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutio
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
 from data import get_async_session
-from fetch_data.sparql_data.pull_wikidata import get_sparql_results
+from fetch_data.sparql_data.pull_wikidata import (
+    SPARQLResponseMalformed,
+    get_sparql_results,
+)
 from fetch_data.sparql_data.sparql_queries import (
     COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
     COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
@@ -57,13 +60,9 @@ async def compile_quantity_observation(
             "COUNT_PROPERTIES_QUERY",
             timeout=10,
         )
-        try:
-            observation.total_properties = int(
+        observation.total_properties = int(
             property_count_results["results"]["bindings"][0]["count"]["value"]
         )
-        except TypeError as exc:
-            logger.error( property_count_results, extra={"wikibase": wikibase.id} )
-            raise exc
 
         logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
         item_count_results = await get_sparql_results(
@@ -172,7 +171,7 @@ async def compile_quantity_observation(
     ):
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
         observation.returned_data = False
-    except (EndPointInternalError, HTTPError, URLError):
+    except (EndPointInternalError, HTTPError, SPARQLResponseMalformed, URLError):
         logger.warning(
             "QuantityDataError",
             # exc_info=True,
