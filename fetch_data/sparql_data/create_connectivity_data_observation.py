@@ -13,7 +13,10 @@ from fetch_data.sparql_data.connectivity_math import (
     compile_distance_dict,
     compile_link_dict,
 )
-from fetch_data.sparql_data.pull_wikidata import SPARQLResponseMalformed, get_sparql_results
+from fetch_data.sparql_data.pull_wikidata import (
+    SPARQLResponseMalformed,
+    get_sparql_results,
+)
 from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
 from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
@@ -143,7 +146,13 @@ async def compile_connectivity_observation(
     ):
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
         observation.returned_data = False
-    except (EndPointInternalError, HTTPError, JSONDecodeError, SPARQLResponseMalformed, URLError):
+    except (
+        EndPointInternalError,
+        HTTPError,
+        JSONDecodeError,
+        SPARQLResponseMalformed,
+        URLError,
+    ):
         logger.warning(
             "ConnectivityDataError",
             # exc_info=True,

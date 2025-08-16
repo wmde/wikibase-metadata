@@ -6,7 +6,10 @@ from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutio
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
 from data import get_async_session
-from fetch_data.sparql_data.pull_wikidata import SPARQLResponseMalformed, get_sparql_results
+from fetch_data.sparql_data.pull_wikidata import (
+    SPARQLResponseMalformed,
+    get_sparql_results,
+)
 from fetch_data.sparql_data.sparql_queries import PROPERTY_POPULARITY_QUERY
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from logger import logger

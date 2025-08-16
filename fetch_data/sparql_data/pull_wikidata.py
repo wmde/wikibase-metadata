@@ -13,6 +13,7 @@ from logger import logger
 
 class SPARQLResponseMalformed(SPARQLWrapperException):
     """Response Unexpected Format"""
+
     pass
 
 
