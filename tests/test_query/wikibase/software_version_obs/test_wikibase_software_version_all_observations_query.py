@@ -59,17 +59,23 @@ async def test_wikibase_software_version_all_observations_query():
                 "softwareVersionObservations"
             ]["allObservations"]
         )
-        == 2
+        == 3
     )
 
     assert_layered_property_value(software_version_observation_list, [0, "id"], "1")
     assert "observationDate" in software_version_observation_list[0]
     assert_layered_property_value(
-        software_version_observation_list, [0, "returnedData"], True
+        software_version_observation_list, [0, "returnedData"], False
     )
 
     assert_layered_property_value(software_version_observation_list, [1, "id"], "2")
     assert "observationDate" in software_version_observation_list[1]
     assert_layered_property_value(
-        software_version_observation_list, [1, "returnedData"], False
+        software_version_observation_list, [1, "returnedData"], True
+    )
+
+    assert_layered_property_value(software_version_observation_list, [2, "id"], "3")
+    assert "observationDate" in software_version_observation_list[2]
+    assert_layered_property_value(
+        software_version_observation_list, [2, "returnedData"], False
     )

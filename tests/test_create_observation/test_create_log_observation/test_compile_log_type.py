@@ -256,13 +256,11 @@ def test_compile_log_type_success(
         ("pagelang", "pagelang", "", {"newlanguage": "a"}),
     ],
 )
-def test_compile_log_type_failure(log_type: str, action: str, title: str, params: dict):
+def test_compile_log_type_unclassified(
+    log_type: str, action: str, title: str, params: dict
+):
     """Test Log Type"""
 
     record = {"type": log_type, "action": action, "title": title, "params": params}
 
-    try:
-        compile_log_type(record)
-        assert False
-    except NotImplementedError as err:
-        assert str(err) == str(record)
+    assert compile_log_type(record) == WikibaseLogType.UNCLASSIFIED

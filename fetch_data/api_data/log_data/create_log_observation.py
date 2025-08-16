@@ -2,8 +2,20 @@
 
 from collections.abc import Iterable
 from datetime import datetime
+from http.client import IncompleteRead
 from json import JSONDecodeError
-from requests.exceptions import ReadTimeout, SSLError
+from requests.exceptions import (
+    ChunkedEncodingError,
+    ReadTimeout,
+    SSLError,
+    TooManyRedirects,
+)
+from urllib3.exceptions import (
+    ConnectTimeoutError,
+    MaxRetryError,
+    NameResolutionError,
+    ProtocolError,
+)
 
 from data.database_connection import get_async_session
 from fetch_data.api_data.log_data.fetch_log_data import (
@@ -55,11 +67,22 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
             )
             observation = await create_log_month(wikibase, log_list, observation)
             observation.returned_data = True
-        except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ):
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            observation.returned_data = False
+        except (ChunkedEncodingError, IncompleteRead, JSONDecodeError, ProtocolError):
             logger.warning(
                 "LogDataError",
-                exc_info=True,
-                stack_info=True,
+                # exc_info=True,
+                # stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False

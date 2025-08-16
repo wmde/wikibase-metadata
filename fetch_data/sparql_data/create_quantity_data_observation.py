@@ -1,10 +1,15 @@
 """Create Quantity Data Observation"""
 
-from urllib.error import HTTPError
-from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from urllib.error import HTTPError, URLError
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
+from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
 from data import get_async_session
-from fetch_data.sparql_data.pull_wikidata import get_sparql_results
+from fetch_data.sparql_data.pull_wikidata import (
+    SPARQLResponseMalformed,
+    get_sparql_results,
+)
 from fetch_data.sparql_data.sparql_queries import (
     COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
     COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
@@ -53,6 +58,7 @@ async def compile_quantity_observation(
             wikibase.sparql_endpoint_url.url,
             COUNT_PROPERTIES_QUERY,
             "COUNT_PROPERTIES_QUERY",
+            timeout=10,
         )
         observation.total_properties = int(
             property_count_results["results"]["bindings"][0]["count"]["value"]
@@ -60,7 +66,10 @@ async def compile_quantity_observation(
 
         logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
         item_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url, COUNT_ITEMS_QUERY, "COUNT_ITEMS_QUERY"
+            wikibase.sparql_endpoint_url.url,
+            COUNT_ITEMS_QUERY,
+            "COUNT_ITEMS_QUERY",
+            timeout=10,
         )
         observation.total_items = int(
             item_count_results["results"]["bindings"][0]["count"]["value"]
@@ -68,7 +77,10 @@ async def compile_quantity_observation(
 
         logger.info("Fetching Lexeme Count", extra={"wikibase": wikibase.id})
         lexeme_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url, COUNT_LEXEMES_QUERY, "COUNT_LEXEMES_QUERY"
+            wikibase.sparql_endpoint_url.url,
+            COUNT_LEXEMES_QUERY,
+            "COUNT_LEXEMES_QUERY",
+            timeout=10,
         )
         observation.total_lexemes = int(
             lexeme_count_results["results"]["bindings"][0]["count"]["value"]
@@ -76,7 +88,10 @@ async def compile_quantity_observation(
 
         logger.info("Fetching Triple Count", extra={"wikibase": wikibase.id})
         triple_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url, COUNT_TRIPLES_QUERY, "COUNT_TRIPLES_QUERY"
+            wikibase.sparql_endpoint_url.url,
+            COUNT_TRIPLES_QUERY,
+            "COUNT_TRIPLES_QUERY",
+            timeout=10,
         )
         observation.total_triples = int(
             triple_count_results["results"]["bindings"][0]["count"]["value"]
@@ -90,6 +105,7 @@ async def compile_quantity_observation(
             wikibase.sparql_endpoint_url.url,
             COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
             "COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY",
+            timeout=10,
         )
         observation.total_external_identifier_properties = int(
             external_identifier_properties_count_results["results"]["bindings"][0][
@@ -105,6 +121,7 @@ async def compile_quantity_observation(
             wikibase.sparql_endpoint_url.url,
             COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
             "COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY",
+            timeout=10,
         )
         observation.total_external_identifier_statements = int(
             external_identifier_statements_count_results["results"]["bindings"][0][
@@ -120,6 +137,7 @@ async def compile_quantity_observation(
             wikibase.sparql_endpoint_url.url,
             COUNT_URL_PROPERTIES_QUERY,
             "COUNT_URL_PROPERTIES_QUERY",
+            timeout=10,
         )
         observation.total_url_properties = int(
             url_properties_count_results["results"]["bindings"][0]["count"]["value"]
@@ -133,17 +151,31 @@ async def compile_quantity_observation(
             wikibase.sparql_endpoint_url.url,
             COUNT_URL_STATEMENTS_QUERY,
             "COUNT_URL_STATEMENTS_QUERY",
+            timeout=10,
         )
         observation.total_url_statements = int(
             url_statements_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
         observation.returned_data = True
-    except (HTTPError, EndPointInternalError):
+    except (
+        ConnectTimeoutError,
+        ConnectionError,
+        EndPointNotFound,
+        MaxRetryError,
+        NameResolutionError,
+        ReadTimeout,
+        SSLError,
+        TimeoutError,
+        TooManyRedirects,
+    ):
+        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+        observation.returned_data = False
+    except (EndPointInternalError, HTTPError, SPARQLResponseMalformed, URLError):
         logger.warning(
             "QuantityDataError",
-            exc_info=True,
-            stack_info=True,
+            # exc_info=True,
+            # stack_info=True,
             extra={"wikibase": wikibase.id},
         )
         observation.returned_data = False

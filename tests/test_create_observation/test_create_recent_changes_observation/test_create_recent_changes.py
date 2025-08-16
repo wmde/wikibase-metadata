@@ -1,6 +1,7 @@
 """Test create_recent_changes"""
 
 from datetime import datetime, UTC
+from json import JSONDecodeError
 
 import pytest
 from requests.exceptions import ReadTimeout
@@ -15,6 +16,13 @@ from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record impor
     WikibaseRecentChangeRecord,
 )
 from model.database import WikibaseRecentChangesObservationModel
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context
+
+
+FETCH_RECENT_CHANGES_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
+  fetchRecentChangesData(wikibaseId: $wikibaseId)
+}"""
 
 
 @pytest.mark.asyncio
@@ -136,12 +144,8 @@ async def test_create_recent_changes_counts():
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="recent-changes-failure-direct",
-    depends=["recent-changes-success-ood"],
-    scope="session",
-)
-async def test_create_recent_changes_observation_exception(mocker):
+@pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
+async def test_create_recent_changes_observation_exception_timeout(mocker):
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
@@ -159,6 +163,70 @@ async def test_create_recent_changes_observation_exception(mocker):
         )
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
+        assert observation.id == 2
+        assert not observation.returned_data
+        assert observation.human_change_count is None
+        assert observation.human_change_user_count is None
+        assert observation.bot_change_count is None
+        assert observation.bot_change_user_count is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
+async def test_create_recent_changes_observation_exception_decode(mocker):
+    """Test exception handling in create_recent_changes_observation"""
+    mocker.patch(
+        "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
+        side_effect=JSONDecodeError("Fail", "{]}", 1),
+    )
+
+    success = await create_recent_changes_observation(wikibase_id=1)
+    assert not success
+
+    async with get_async_session() as async_session:
+        query = (
+            select(WikibaseRecentChangesObservationModel)
+            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .order_by(WikibaseRecentChangesObservationModel.id.desc())
+        )
+        observation = (await async_session.scalars(query)).first()
+        assert observation is not None
+        assert observation.id == 3
+        assert not observation.returned_data
+        assert observation.human_change_count is None
+        assert observation.human_change_user_count is None
+        assert observation.bot_change_count is None
+        assert observation.bot_change_user_count is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
+async def test_create_recent_changes_observation_fail(mocker):
+    """Test exception handling in create_recent_changes_observation"""
+    mocker.patch(
+        "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
+        side_effect=ReadTimeout,
+    )
+
+    result = await test_schema.execute(
+        FETCH_RECENT_CHANGES_MUTATION,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchRecentChangesData"] is False
+
+    async with get_async_session() as async_session:
+        query = (
+            select(WikibaseRecentChangesObservationModel)
+            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .order_by(WikibaseRecentChangesObservationModel.id.desc())
+        )
+        observation = (await async_session.scalars(query)).first()
+        assert observation is not None
+        assert observation.id == 4
         assert not observation.returned_data
         assert observation.human_change_count is None
         assert observation.human_change_user_count is None

@@ -2,7 +2,6 @@
 
 import os
 import time
-from urllib.error import HTTPError
 import pytest
 from fetch_data import create_special_statistics_observation
 from tests.test_schema import test_schema
@@ -60,15 +59,7 @@ async def test_create_statistics_observation_failure(mocker):
 
     mocker.patch(
         "fetch_data.soup_data.create_statistics_data_observation.requests.get",
-        side_effect=[
-            HTTPError(
-                url="example.com/wiki/Special:Statistics",
-                code=500,
-                msg="Error",
-                hdrs="",
-                fp=None,
-            )
-        ],
+        side_effect=[MockResponse("", 500)],
     )
     success = await create_special_statistics_observation(1)
     assert success is False

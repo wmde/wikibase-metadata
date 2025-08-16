@@ -2,16 +2,21 @@
 
 import asyncio
 from json import JSONDecodeError
-from urllib.error import HTTPError, URLError
 import numpy
-from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from urllib.error import HTTPError, URLError
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
+from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
 from data import get_async_session
 from fetch_data.sparql_data.connectivity_math import (
     compile_distance_dict,
     compile_link_dict,
 )
-from fetch_data.sparql_data.pull_wikidata import get_sparql_results
+from fetch_data.sparql_data.pull_wikidata import (
+    SPARQLResponseMalformed,
+    get_sparql_results,
+)
 from fetch_data.sparql_data.sparql_queries import ITEM_LINKS_QUERY, clean_item_link_data
 from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
@@ -55,7 +60,10 @@ async def compile_connectivity_observation(
     try:
         logger.info("Fetching Item Links", extra={"wikibase": wikibase.id})
         item_link_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url, ITEM_LINKS_QUERY, "ITEM_LINKS_QUERY"
+            wikibase.sparql_endpoint_url.url,
+            ITEM_LINKS_QUERY,
+            "ITEM_LINKS_QUERY",
+            timeout=10,
         )
 
         clean_data = clean_item_link_data(item_link_results)
@@ -125,11 +133,30 @@ async def compile_connectivity_observation(
                 else None
             )
 
-    except (EndPointInternalError, JSONDecodeError, HTTPError, URLError):
+    except (
+        ConnectTimeoutError,
+        ConnectionError,
+        EndPointNotFound,
+        MaxRetryError,
+        NameResolutionError,
+        ReadTimeout,
+        SSLError,
+        TimeoutError,
+        TooManyRedirects,
+    ):
+        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+        observation.returned_data = False
+    except (
+        EndPointInternalError,
+        HTTPError,
+        JSONDecodeError,
+        SPARQLResponseMalformed,
+        URLError,
+    ):
         logger.warning(
             "ConnectivityDataError",
-            exc_info=True,
-            stack_info=True,
+            # exc_info=True,
+            # stack_info=True,
             extra={"wikibase": wikibase.id},
         )
         observation.returned_data = False
