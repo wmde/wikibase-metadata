@@ -172,13 +172,13 @@ async def test_remove_wikibase_article_path():
 
     before_removing_result = await test_schema.execute(
         WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 5},
+        variable_values={"wikibaseId": 6},
         context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="5"
+        before_removing_result.data, ["wikibase", "id"], expected_value="6"
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -199,7 +199,7 @@ async def test_remove_wikibase_article_path():
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 5,
+            "wikibaseId": 6,
             "urlType": "ARTICLE_PATH",
         },
         context_value=get_mock_context("test-auth-token"),
@@ -210,13 +210,13 @@ async def test_remove_wikibase_article_path():
 
     after_removing_result = await test_schema.execute(
         WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 5},
+        variable_values={"wikibaseId": 6},
         context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value="5"
+        after_removing_result.data, ["wikibase", "id"], expected_value="6"
     )
     assert_layered_property_value(
         after_removing_result.data,

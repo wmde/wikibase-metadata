@@ -100,6 +100,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
         "remove-wikibase-sparql-frontend-url",
         "update-wikibase-url",
         "update-wikibase-primary-language-3",
+        "add-wikibase-ii",
     ],
     scope="session",
 )
@@ -115,7 +116,7 @@ async def test_wikibase_list_query():
     assert result.errors is None
     assert result.data is not None
     assert "wikibaseList" in result.data
-    assert_page_meta(result.data["wikibaseList"], 1, 1, 1, 1)
+    assert_page_meta(result.data["wikibaseList"], 1, 1, 2, 2)
     assert "data" in result.data["wikibaseList"]
     assert len(result.data["wikibaseList"]["data"]) == 1
     result_datum = result.data["wikibaseList"]["data"][0]
@@ -178,22 +179,22 @@ async def test_wikibase_list_query():
 @pytest.mark.parametrize(
     ["exclude", "expected_total"],
     [
-        ([], 10),
-        (["CLOUD"], 3),
-        (["OTHER"], 9),
-        (["SUITE"], 9),
-        (["TEST"], 9),
-        (["CLOUD", "OTHER"], 2),
-        (["CLOUD", "SUITE"], 2),
-        (["CLOUD", "TEST"], 2),
-        (["OTHER", "SUITE"], 8),
-        (["OTHER", "TEST"], 8),
-        (["SUITE", "TEST"], 8),
-        (["CLOUD", "OTHER", "SUITE"], 1),
-        (["CLOUD", "OTHER", "TEST"], 1),
-        (["CLOUD", "SUITE", "TEST"], 1),
-        (["OTHER", "SUITE", "TEST"], 7),
-        (["CLOUD", "OTHER", "SUITE", "TEST"], 0),
+        ([], 11),
+        (["CLOUD"], 4),
+        (["OTHER"], 10),
+        (["SUITE"], 10),
+        (["TEST"], 10),
+        (["CLOUD", "OTHER"], 3),
+        (["CLOUD", "SUITE"], 3),
+        (["CLOUD", "TEST"], 3),
+        (["OTHER", "SUITE"], 9),
+        (["OTHER", "TEST"], 9),
+        (["SUITE", "TEST"], 9),
+        (["CLOUD", "OTHER", "SUITE"], 2),
+        (["CLOUD", "OTHER", "TEST"], 2),
+        (["CLOUD", "SUITE", "TEST"], 2),
+        (["OTHER", "SUITE", "TEST"], 8),
+        (["CLOUD", "OTHER", "SUITE", "TEST"], 1),
     ],
 )
 async def test_wikibase_list_query_filtered(exclude, expected_total):
