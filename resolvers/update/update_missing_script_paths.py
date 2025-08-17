@@ -5,7 +5,7 @@ from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import SSLError
-from sqlalchemy import select
+from sqlalchemy import Select, select
 
 from data import get_async_session
 from logger import logger
@@ -16,6 +16,21 @@ from resolvers.update.update_wikibase_url import upsert_wikibase_url
 
 async def update_missing_script_paths():
     """Attempt to Fetch Missing scriptPaths"""
+
+    query = missing_script_path_query()
+
+    async with get_async_session() as async_session:
+        wikis = (await async_session.scalars(query)).all()
+
+        logger.info(f"Missing Script Path: {len(wikis)}")
+
+        for wikibase in wikis:
+            await fetch_wikibase_script_path(wikibase)
+        return len(wikis)
+
+
+def missing_script_path_query() -> Select[tuple[WikibaseModel]]:
+    """Query for Wikibases with Article Paths but no Script Paths"""
 
     article_path_subquery = (
         select(WikibaseURLModel)
@@ -44,14 +59,7 @@ async def update_missing_script_paths():
         .where(script_path_subquery.c.id == None)
     )
 
-    async with get_async_session() as async_session:
-        wikis = (await async_session.scalars(query)).all()
-
-        logger.info(f"Missing Script Path: {len(wikis)}")
-
-        for wikibase in wikis:
-            await fetch_wikibase_script_path(wikibase)
-        return len(wikis)
+    return query
 
 
 async def fetch_wikibase_script_path(wikibase: WikibaseModel):
