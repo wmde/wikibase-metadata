@@ -25,7 +25,7 @@ def get_recent_changes_param_string(
     }
     if bots:
         parameters["rcshow"] = "bot"
-    if bots:
+    else:
         parameters["rcshow"] = "!bot"
     if continue_from is not None:
         parameters["rccontinue"] = continue_from
