@@ -23,7 +23,7 @@ async def test_get_log_list_from_url_empty(mocker):
     assert await get_log_list_from_url("example.com") == []
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_log_list_from_url_single(mocker):
@@ -52,7 +52,7 @@ async def test_get_log_list_from_url_single(mocker):
     )
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_log_list_from_url_several(mocker):

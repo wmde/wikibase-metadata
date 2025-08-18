@@ -7,7 +7,7 @@ import pytest
 from fetch_data.api_data.log_data.fetch_log_data import get_month_log_list
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_one_pull(mocker):
@@ -49,7 +49,7 @@ async def test_get_month_log_list_from_url_one_pull(mocker):
     assert oldest_log.age() == 30
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_two_pulls(mocker):
@@ -91,7 +91,7 @@ async def test_get_month_log_list_from_url_two_pulls(mocker):
     assert oldest_log.age() == 30
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_more_pulls(mocker):
@@ -139,7 +139,7 @@ async def test_get_month_log_list_from_url_more_pulls(mocker):
     assert oldest_log.age() == 30
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_oldest_one_pull(mocker):

@@ -1,5 +1,6 @@
 """Test Wikibase All Connectivity Observations Query"""
 
+from datetime import datetime
 from freezegun import freeze_time
 import pytest
 from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
@@ -9,7 +10,7 @@ from tests.test_query.wikibase.connectivity_obs.connectivity_fragment import (
     WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value
+from tests.utils import assert_property_value, get_mock_context
 
 
 WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY = (
@@ -30,7 +31,7 @@ query MyQuery($wikibaseId: Int!) {
 )
 
 
-@freeze_time("2024-04-01")
+@freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.dependency(
@@ -51,7 +52,9 @@ async def test_wikibase_connectivity_all_observations_query():
     """Test Wikibase All Connectivity Observations Query"""
 
     result = await test_schema.execute(
-        WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

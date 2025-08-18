@@ -6,7 +6,7 @@ from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
     WIKIBASE_QUANTITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value
+from tests.utils import assert_property_value, get_mock_context
 
 
 WIKIBASE_QUANTITY_MOST_RECENT_OBSERVATION_QUERY = (
@@ -37,6 +37,7 @@ async def test_wikibase_quantity_most_recent_observation_query():
     result = await test_schema.execute(
         WIKIBASE_QUANTITY_MOST_RECENT_OBSERVATION_QUERY,
         variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
@@ -48,4 +49,4 @@ async def test_wikibase_quantity_most_recent_observation_query():
     assert "mostRecent" in result_wikibase["quantityObservations"]
     most_recent = result_wikibase["quantityObservations"]["mostRecent"]
 
-    assert_quantity(most_recent, "1", True, 2, 4, 1, 8)
+    assert_quantity(most_recent, "1", True, 2, 4, 1, 8, 16, 32, 64, 128)

@@ -1,42 +1,54 @@
 """List of Languages"""
 
+from typing import Optional
 from sqlalchemy import Select, func, not_, select
 from data.database_connection import get_async_session
 from model.database.wikibase_language_model import WikibaseLanguageModel
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
     PageSizeType,
     WikibaseLanguageAggregateStrawberryModel,
 )
+from resolvers.util import get_filtered_wikibase_query
 
 
 async def get_language_list(
-    page_number: PageNumberType, page_size: PageSizeType
+    page_number: PageNumberType,
+    page_size: PageSizeType,
+    wikibase_filter: Optional[WikibaseFilterInput],
 ) -> Page[WikibaseLanguageAggregateStrawberryModel]:
     """List of Languages"""
 
+    wikibase_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
+    language_subquery = (
+        select(WikibaseLanguageModel)
+        .where(WikibaseLanguageModel.wikibase_id.in_(select(wikibase_subquery.c.id)))
+        .subquery()
+    )
+
     total_query = (
         # pylint: disable-next=not-callable
-        select(WikibaseLanguageModel.language, func.count().label("total_wikibases"))
-        .group_by(WikibaseLanguageModel.language)
+        select(language_subquery.c.language, func.count().label("total_wikibases"))
+        .group_by(language_subquery.c.language)
         .subquery()
     )
     primary_query = (
         # pylint: disable-next=not-callable
-        select(WikibaseLanguageModel.language, func.count().label("primary_wikibases"))
-        .where(WikibaseLanguageModel.primary)
-        .group_by(WikibaseLanguageModel.language)
+        select(language_subquery.c.language, func.count().label("primary_wikibases"))
+        .where(language_subquery.c.primary)
+        .group_by(language_subquery.c.language)
         .subquery()
     )
     additional_query = (
         select(
-            WikibaseLanguageModel.language,
+            language_subquery.c.language,
             # pylint: disable-next=not-callable
             func.count().label("additional_wikibases"),
         )
-        .where(not_(WikibaseLanguageModel.primary))
-        .group_by(WikibaseLanguageModel.language)
+        .where(not_(language_subquery.c.primary))
+        .group_by(language_subquery.c.language)
         .subquery()
     )
 

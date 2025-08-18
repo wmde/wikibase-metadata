@@ -6,7 +6,7 @@ from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.test_schema import test_schema
-from tests.utils.assert_property_value import assert_layered_property_value
+from tests.utils import assert_layered_property_value, get_mock_context
 from update_data import remove_wikibase_language
 
 
@@ -27,7 +27,9 @@ async def test_remove_wikibase_language_one():
     """Remove Wikibase Language - Primary"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -43,6 +45,7 @@ async def test_remove_wikibase_language_one():
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_LANGUAGE_QUERY,
         variable_values={"wikibaseId": 1, "language": "French"},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert remove_result.errors is not None
     assert (
@@ -62,7 +65,9 @@ async def test_remove_wikibase_language_two():
     """Remove Wikibase Language"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -84,7 +89,9 @@ async def test_remove_wikibase_language_two():
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
@@ -114,7 +121,9 @@ async def test_remove_wikibase_language_three():
     """Remove Wikibase Language - Does Not Exist in List"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -136,7 +145,9 @@ async def test_remove_wikibase_language_three():
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None

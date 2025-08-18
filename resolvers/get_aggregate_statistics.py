@@ -1,16 +1,21 @@
 """Get Aggregate Statistics"""
 
+from typing import Optional
 from sqlalchemy import Select, and_, select, func
 
 from data import get_async_session
-from model.database import WikibaseModel, WikibaseStatisticsObservationModel
+from model.database import WikibaseStatisticsObservationModel
+from model.strawberry.input import WikibaseFilterInput
 from model.strawberry.output import WikibaseStatisticsAggregateStrawberryModel
+from resolvers.util import get_filtered_wikibase_query
 
 
-async def get_aggregate_statistics() -> WikibaseStatisticsAggregateStrawberryModel:
+async def get_aggregate_statistics(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> WikibaseStatisticsAggregateStrawberryModel:
     """Get Aggregate Statistics"""
 
-    total_statistics_query = get_total_statistics_query()
+    total_statistics_query = get_total_statistics_query(wikibase_filter)
 
     async with get_async_session() as async_session:
         (
@@ -27,21 +32,23 @@ async def get_aggregate_statistics() -> WikibaseStatisticsAggregateStrawberryMod
 
         return WikibaseStatisticsAggregateStrawberryModel(
             wikibase_count=wikibase_count,
-            total_pages=total_pages,
-            content_pages=content_pages,
-            total_files=total_files,
-            total_edits=total_edits,
-            total_users=total_users,
-            active_users=active_users,
-            total_admin=total_admin,
-            content_page_word_count_total=content_page_word_count_total,
+            total_pages=total_pages or 0,
+            content_pages=content_pages or 0,
+            total_files=total_files or 0,
+            total_edits=total_edits or 0,
+            total_users=total_users or 0,
+            active_users=active_users or 0,
+            total_admin=total_admin or 0,
+            content_page_word_count_total=content_page_word_count_total or 0,
         )
 
 
-def get_total_statistics_query() -> (
-    Select[tuple[int, int, int, int, int, int, int, int, int]]
-):
+def get_total_statistics_query(
+    wikibase_filter: Optional[WikibaseFilterInput],
+) -> Select[tuple[int, int, int, int, int, int, int, int, int]]:
     """Get Total Statistics Query"""
+
+    filtered_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
 
     rank_subquery = (
         select(
@@ -54,11 +61,13 @@ def get_total_statistics_query() -> (
             )
             .label("rank"),
         )
+        .join(
+            filtered_subquery,
+            onclause=WikibaseStatisticsObservationModel.wikibase_id
+            == filtered_subquery.c.id,
+        )
         .where(
-            and_(
-                WikibaseStatisticsObservationModel.returned_data,
-                WikibaseStatisticsObservationModel.wikibase.has(WikibaseModel.checked),
-            )
+            WikibaseStatisticsObservationModel.returned_data,
         )
         .subquery()
     )

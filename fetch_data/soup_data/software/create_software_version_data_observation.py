@@ -9,6 +9,7 @@ import requests
 from requests.exceptions import SSLError
 from sqlalchemy.ext.asyncio import AsyncSession
 import strawberry
+
 from data import get_async_session
 from fetch_data.soup_data.software.get_software_model import (
     get_or_create_software_model,
@@ -40,12 +41,16 @@ async def create_software_version_observation_without_background_task(
 ) -> bool:
     """Create Software Version Observation"""
 
+    logger.debug(
+        "Software Version: Attempting Observation", extra={"wikibase": wikibase_id}
+    )
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
-            require_special_version=True,
+            join_software_version_observations=True,
+            require_article_path=True,
         )
 
         observation = WikibaseSoftwareVersionObservationModel()

@@ -3,9 +3,11 @@
 import asyncio
 from typing import Optional
 from urllib.error import HTTPError
+
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import SSLError
+
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database
 from logger import logger
@@ -15,12 +17,14 @@ from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 async def create_special_statistics_observation(wikibase_id: int) -> bool:
     """Create Special:Statistics Observation"""
 
+    logger.debug("Statistics: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
-            require_special_statistics=True,
+            join_statistics_observations=True,
+            require_article_path=True,
         )
 
         observation = WikibaseStatisticsObservationModel()

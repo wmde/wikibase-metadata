@@ -6,12 +6,17 @@ from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
     assert_page_meta,
+    get_mock_context,
 )
 
 
 AGGREGATED_PROPERTY_POPULARITY_QUERY = """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregatePropertyPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregatePropertyPopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     meta {
       pageNumber
       pageSize
@@ -40,6 +45,7 @@ async def test_aggregate_property_popularity_query():
     result = await test_schema.execute(
         AGGREGATED_PROPERTY_POPULARITY_QUERY,
         variable_values={"pageNumber": 1, "pageSize": 30},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
@@ -74,3 +80,49 @@ async def test_aggregate_property_popularity_query():
             ["aggregatePropertyPopularity", "data", index, "wikibaseCount"],
             1,
         )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
+    scope="session",
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 2),
+        (["CLOUD"], 2),
+        (["OTHER"], 2),
+        (["SUITE"], 0),
+        (["CLOUD", "OTHER"], 2),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
+    ],
+)
+@pytest.mark.user
+async def test_aggregate_property_popularity_query_filtered(
+    exclude: list, expected_count: int
+):
+    """Test Aggregate Property Popularity Query"""
+
+    result = await test_schema.execute(
+        AGGREGATED_PROPERTY_POPULARITY_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data,
+        ["aggregatePropertyPopularity", "meta", "totalCount"],
+        expected_count,
+    )

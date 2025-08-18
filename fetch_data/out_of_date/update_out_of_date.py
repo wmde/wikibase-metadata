@@ -2,6 +2,7 @@
 
 from fetch_data.api_data import (
     create_log_observation,
+    create_recent_changes_observation,
     create_time_to_first_value_observation,
     create_user_observation,
 )
@@ -12,6 +13,7 @@ from fetch_data.out_of_date.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_log_last_observations,
     get_wikibase_list_with_out_of_date_property_popularity_observations,
     get_wikibase_list_with_out_of_date_quantity_observations,
+    get_wikibase_list_with_out_of_date_recent_changes_observations,
     get_wikibase_list_with_out_of_date_software_observations,
     get_wikibase_list_with_out_of_date_stats_observations,
     get_wikibase_list_with_out_of_date_user_observations,
@@ -24,6 +26,9 @@ from fetch_data.sparql_data import (
     create_connectivity_observation,
     create_property_popularity_observation,
     create_quantity_observation,
+)
+from fetch_data.cloud_api_data import (
+    update_cloud_instances,
 )
 from logger import logger
 
@@ -140,6 +145,24 @@ async def update_out_of_date_quantity_observations():
             )
 
 
+async def update_out_of_date_recent_changes_observations():
+    """Update Out of Date Recent Changes Observations"""
+
+    ood_rc_obs = await get_wikibase_list_with_out_of_date_recent_changes_observations()
+    logger.info(f"Recent Changes: {len(ood_rc_obs)} Wikibases to Update")
+    for wikibase in ood_rc_obs:
+        try:
+            await create_recent_changes_observation(wikibase.id)
+        # pylint: disable-next=bare-except
+        except:
+            logger.error(
+                "RecentChangesDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
+            )
+
+
 async def update_out_of_date_software_observations():
     """Update Out of Date Software Version Observations"""
 
@@ -194,3 +217,18 @@ async def update_out_of_date_user_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+
+
+async def update_out_of_date_cloud_instances():
+    """Pull cloud instaces and update our local database"""
+
+    logger.info("Pulling cloud instances and updating local database")
+    try:
+        await update_cloud_instances()
+    # pylint: disable-next=bare-except
+    except:
+        logger.error(
+            "CloudInstancesError",
+            exc_info=True,
+            stack_info=True,
+        )

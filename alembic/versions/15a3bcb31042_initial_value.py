@@ -1,7 +1,7 @@
 """initial-value
 
 Revision ID: 15a3bcb31042
-Revises: 215716d3ef0e
+Revises: 07663ad9d60d
 Create Date: 2025-05-28 13:16:31.306053
 
 """
@@ -14,7 +14,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision: str = "15a3bcb31042"
-down_revision: Union[str, None] = "215716d3ef0e"
+down_revision: Union[str, None] = "07663ad9d60d"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

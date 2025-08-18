@@ -9,13 +9,22 @@ from tests.test_query.aggregation.software_version.software_version_aggregate_fr
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_count, assert_page_meta
+from tests.utils import (
+    assert_layered_property_count,
+    assert_layered_property_value,
+    assert_page_meta,
+    get_mock_context,
+)
 
 
 AGGREGATE_EXTENSIONS_QUERY = (
     """
-query MyQuery($pageNumber: Int!, $pageSize: Int!) {
-  aggregateExtensionPopularity(pageNumber: $pageNumber, pageSize: $pageSize) {
+query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  aggregateExtensionPopularity(
+    pageNumber: $pageNumber
+    pageSize: $pageSize
+    wikibaseFilter: $wikibaseFilter
+  ) {
     ...WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
@@ -34,7 +43,9 @@ async def test_aggregate_extensions_query_page_one():
     """Test Aggregated Extensions Query - 1-5"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
+        AGGREGATE_EXTENSIONS_QUERY,
+        variable_values={"pageNumber": 1, "pageSize": 5},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
@@ -103,7 +114,9 @@ async def test_aggregate_extensions_query_page_two():
     """Test Aggregated Extensions Query - 6-10"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 2, "pageSize": 5}
+        AGGREGATE_EXTENSIONS_QUERY,
+        variable_values={"pageNumber": 2, "pageSize": 5},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
@@ -172,7 +185,9 @@ async def test_aggregate_extensions_query_page_three():
     """Test Aggregated Extensions Query - 11"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 3, "pageSize": 5}
+        AGGREGATE_EXTENSIONS_QUERY,
+        variable_values={"pageNumber": 3, "pageSize": 5},
+        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
@@ -208,3 +223,47 @@ async def test_aggregate_extensions_query_page_three():
             expected_version_date,
             expected_version_hash,
         )
+
+
+@pytest.mark.asyncio
+@pytest.mark.agg
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
+    scope="session",
+)
+@pytest.mark.parametrize(
+    ["exclude", "expected_count"],
+    [
+        ([], 11),
+        (["CLOUD"], 11),
+        (["OTHER"], 11),
+        (["SUITE"], 0),
+        (["CLOUD", "OTHER"], 11),
+        (["CLOUD", "SUITE"], 0),
+        (["OTHER", "SUITE"], 0),
+        (["CLOUD", "OTHER", "SUITE"], 0),
+    ],
+)
+@pytest.mark.version
+async def test_aggregate_extensions_query_filtered(exclude: list, expected_count: int):
+    """Test Aggregate Users Query"""
+
+    result = await test_schema.execute(
+        AGGREGATE_EXTENSIONS_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    assert_layered_property_value(
+        result.data,
+        ["aggregateExtensionPopularity", "meta", "totalCount"],
+        expected_count,
+    )

@@ -3,7 +3,7 @@
 import pytest
 
 from tests.test_schema import test_schema
-from tests.utils.assert_property_value import assert_layered_property_value
+from tests.utils import assert_layered_property_value, get_mock_context
 
 
 WIKIBASE_URLS_QUERY = """query MyQuery($wikibaseId: Int!) {
@@ -15,6 +15,7 @@ WIKIBASE_URLS_QUERY = """query MyQuery($wikibaseId: Int!) {
       scriptPath
       sparqlEndpointUrl
       sparqlFrontendUrl
+      specialStatisticsUrl
     }
   }
 }"""
@@ -33,13 +34,15 @@ mutation MyMutation($urlType: WikibaseURLType!, $wikibaseId: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="add-wikibase-url", depends=["add-wikibase"], scope="session"
+    name="add-wikibase-script-path", depends=["add-wikibase"], scope="session"
 )
-async def test_add_wikibase_url():
+async def test_add_wikibase_script_path():
     """Add Wikibase URL"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -64,13 +67,16 @@ async def test_add_wikibase_url():
             "url": "/w/",
             "urlType": "SCRIPT_PATH",
         },
+        context_value=get_mock_context("test-auth-token"),
     )
     assert add_result.errors is None
     assert add_result.data is not None
     assert add_result.data["upsertWikibaseUrl"] is True
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
@@ -92,13 +98,17 @@ async def test_add_wikibase_url():
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="remove-wikibase-url", depends=["add-wikibase"], scope="session"
+    name="remove-wikibase-sparql-frontend-url",
+    depends=["add-wikibase"],
+    scope="session",
 )
-async def test_remove_wikibase_url():
+async def test_remove_wikibase_sparql_frontend_url():
     """Remove Wikibase URL"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -122,13 +132,16 @@ async def test_remove_wikibase_url():
             "wikibaseId": 1,
             "urlType": "SPARQL_FRONTEND_URL",
         },
+        context_value=get_mock_context("test-auth-token"),
     )
     assert remove_result.errors is None
     assert remove_result.data is not None
     assert remove_result.data["removeWikibaseUrl"] is True
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
@@ -150,13 +163,90 @@ async def test_remove_wikibase_url():
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
+    name="remove-wikibase-article-path",
+    depends=["mutate-cloud-instances"],
+    scope="session",
+)
+async def test_remove_wikibase_article_path():
+    """Remove Wikibase article path"""
+
+    before_removing_result = await test_schema.execute(
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 5},
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert before_removing_result.errors is None
+    assert before_removing_result.data is not None
+    assert_layered_property_value(
+        before_removing_result.data, ["wikibase", "id"], expected_value="5"
+    )
+    assert_layered_property_value(
+        before_removing_result.data,
+        ["wikibase", "urls", "baseUrl"],
+        expected_value="https://biodiversity.wikibase.cloud",
+    )
+    assert_layered_property_value(
+        before_removing_result.data,
+        ["wikibase", "urls", "articlePath"],
+        expected_value="/wiki",
+    )
+    assert_layered_property_value(
+        before_removing_result.data,
+        ["wikibase", "urls", "specialStatisticsUrl"],
+        expected_value="https://biodiversity.wikibase.cloud/wiki/Special:Statistics",
+    )
+
+    remove_result = await test_schema.execute(
+        REMOVE_WIKIBASE_URL_MUTATION,
+        variable_values={
+            "wikibaseId": 5,
+            "urlType": "ARTICLE_PATH",
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert remove_result.errors is None
+    assert remove_result.data is not None
+    assert remove_result.data["removeWikibaseUrl"] is True
+
+    after_removing_result = await test_schema.execute(
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 5},
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert after_removing_result.errors is None
+    assert after_removing_result.data is not None
+    assert_layered_property_value(
+        after_removing_result.data, ["wikibase", "id"], expected_value="5"
+    )
+    assert_layered_property_value(
+        after_removing_result.data,
+        ["wikibase", "urls", "baseUrl"],
+        expected_value="https://biodiversity.wikibase.cloud",
+    )
+    assert_layered_property_value(
+        after_removing_result.data,
+        ["wikibase", "urls", "articlePath"],
+        expected_value=None,
+    )
+    assert_layered_property_value(
+        after_removing_result.data,
+        ["wikibase", "urls", "specialStatisticsUrl"],
+        expected_value=None,
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(
     name="update-wikibase-url", depends=["add-wikibase"], scope="session"
 )
 async def test_update_wikibase_url():
     """Update Wikibase URL"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
@@ -181,13 +271,16 @@ async def test_update_wikibase_url():
             "url": "https://query.example.com/sparql",
             "urlType": "SPARQL_ENDPOINT_URL",
         },
+        context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None
     assert update_result.data is not None
     assert update_result.data["upsertWikibaseUrl"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY,
+        variable_values={"wikibaseId": 1},
+        context_value=get_mock_context("test-auth-token"),
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None

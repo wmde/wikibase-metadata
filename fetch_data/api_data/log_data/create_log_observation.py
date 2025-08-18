@@ -2,9 +2,10 @@
 
 from collections.abc import Iterable
 from datetime import datetime
-from json.decoder import JSONDecodeError
+from json import JSONDecodeError
 from requests.exceptions import ReadTimeout, SSLError
-from data import get_async_session
+
+from data.database_connection import get_async_session
 from fetch_data.api_data.log_data.fetch_log_data import (
     get_log_list_from_url,
     get_log_param_string,
@@ -29,12 +30,14 @@ from model.enum import WikibaseUserType
 async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
     """Create Log Observation"""
 
+    logger.debug("Log: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
-            require_action_api=True,
+            join_log_observations=True,
+            require_script_path=True,
         )
 
         observation = WikibaseLogMonthObservationModel(

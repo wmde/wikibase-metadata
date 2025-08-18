@@ -7,15 +7,21 @@ from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
 from fetch_data import create_log_observation
-from tests.utils import MockResponse, ParsedUrl
+from tests.test_schema import test_schema
+from tests.utils import get_mock_context, MockResponse, ParsedUrl
+
+LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boolean!) {
+  fetchLogData(wikibaseId: $wikibaseId, firstMonth: $firstMonth)
+}"""
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
 )
 @pytest.mark.log
+@pytest.mark.mutation
 async def test_create_log_observation_first_success(mocker):
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -92,16 +98,25 @@ async def test_create_log_observation_first_success(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(1, first_month=True)
-    assert success
+
+    result = await test_schema.execute(
+        LOG_DATA_MUTATION,
+        variable_values={"wikibaseId": 1, "firstMonth": True},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchLogData"]
 
 
-@freeze_time("2024-03-01")
+@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
 )
 @pytest.mark.log
+@pytest.mark.mutation
 async def test_create_log_observation_last_success(mocker):
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -156,11 +171,19 @@ async def test_create_log_observation_last_success(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(1, first_month=False)
-    assert success
+
+    result = await test_schema.execute(
+        LOG_DATA_MUTATION,
+        variable_values={"wikibaseId": 1, "firstMonth": False},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchLogData"]
 
 
-@freeze_time("2024-03-02")
+@freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-first-failure", depends=["log-first-success-1"], scope="session"
@@ -181,7 +204,7 @@ async def test_create_log_first_observation_error(mocker):
     assert success is False
 
 
-@freeze_time("2024-03-02")
+@freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-failure", depends=["log-last-success-1"], scope="session"
@@ -201,7 +224,7 @@ async def test_create_log_last_observation_error(mocker):
     assert success is False
 
 
-@freeze_time("2024-03-03")
+@freeze_time(datetime(2024, 3, 3))
 @pytest.mark.asyncio
 @pytest.mark.dependency(
     name="log-last-success-2",

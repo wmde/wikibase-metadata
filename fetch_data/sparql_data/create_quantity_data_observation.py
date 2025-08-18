@@ -2,15 +2,20 @@
 
 from urllib.error import HTTPError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
 from fetch_data.sparql_data.sparql_queries import (
+    COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
+    COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
     COUNT_ITEMS_QUERY,
     COUNT_LEXEMES_QUERY,
     COUNT_PROPERTIES_QUERY,
+    COUNT_URL_PROPERTIES_QUERY,
+    COUNT_URL_STATEMENTS_QUERY,
     COUNT_TRIPLES_QUERY,
 )
-from fetch_data.utils.get_wikibase import get_wikibase_from_database
+from fetch_data.utils import get_wikibase_from_database
 from logger import logger
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 
@@ -18,11 +23,13 @@ from model.database import WikibaseModel, WikibaseQuantityObservationModel
 async def create_quantity_observation(wikibase_id: int) -> bool:
     """Create Quantity Data Observation"""
 
+    logger.debug("Quantity: Attempting Observation", extra={"wikibase": wikibase_id})
+
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
+            join_quantity_observations=True,
             require_sparql_endpoint=True,
         )
 
@@ -73,6 +80,62 @@ async def compile_quantity_observation(
         )
         observation.total_triples = int(
             triple_count_results["results"]["bindings"][0]["count"]["value"]
+        )
+
+        logger.info(
+            "Fetching External Identifier Properties Count",
+            extra={"wikibase": wikibase.id},
+        )
+        external_identifier_properties_count_results = await get_sparql_results(
+            wikibase.sparql_endpoint_url.url,
+            COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
+            "COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY",
+        )
+        observation.total_external_identifier_properties = int(
+            external_identifier_properties_count_results["results"]["bindings"][0][
+                "count"
+            ]["value"]
+        )
+
+        logger.info(
+            "Fetching External Identifier Statements Count",
+            extra={"wikibase": wikibase.id},
+        )
+        external_identifier_statements_count_results = await get_sparql_results(
+            wikibase.sparql_endpoint_url.url,
+            COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
+            "COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY",
+        )
+        observation.total_external_identifier_statements = int(
+            external_identifier_statements_count_results["results"]["bindings"][0][
+                "count"
+            ]["value"]
+        )
+
+        logger.info(
+            "Fetching URL Properties Count",
+            extra={"wikibase": wikibase.id},
+        )
+        url_properties_count_results = await get_sparql_results(
+            wikibase.sparql_endpoint_url.url,
+            COUNT_URL_PROPERTIES_QUERY,
+            "COUNT_URL_PROPERTIES_QUERY",
+        )
+        observation.total_url_properties = int(
+            url_properties_count_results["results"]["bindings"][0]["count"]["value"]
+        )
+
+        logger.info(
+            "Fetching URL Statements Count",
+            extra={"wikibase": wikibase.id},
+        )
+        url_statements_count_results = await get_sparql_results(
+            wikibase.sparql_endpoint_url.url,
+            COUNT_URL_STATEMENTS_QUERY,
+            "COUNT_URL_STATEMENTS_QUERY",
+        )
+        observation.total_url_statements = int(
+            url_statements_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
         observation.returned_data = True

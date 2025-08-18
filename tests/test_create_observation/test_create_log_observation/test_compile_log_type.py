@@ -171,6 +171,7 @@ from model.enum import WikibaseLogType, compile_log_type
             WikibaseLogType.PAGE_TRANSLATE_DELETE_LOK,
         ),
         ("pagetranslation", "mark", "", {}, WikibaseLogType.PAGE_TRANSLATE_MARK),
+        ("translationreview", "message", "", {}, WikibaseLogType.PAGE_TRANSLATE_REVIEW),
         ("pagetranslation", "unmark", "", {}, WikibaseLogType.PAGE_TRANSLATE_UNMARK),
         (
             "pagelang",

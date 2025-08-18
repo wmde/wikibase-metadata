@@ -14,6 +14,7 @@ from model.strawberry.output.observation import (
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
+    WikibaseRecentChangesObservationStrawberryModel,
     WikibaseSoftwareVersionObservationStrawberryModel,
     WikibaseStatisticsObservationStrawberryModel,
     WikibaseTimeToFirstValueObservationStrawberryModel,
@@ -149,6 +150,33 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseQuantityObservationStrawberryModel.marshal(o)
                     for o in model.quantity_observations
+                ]
+            )
+
+    @strawberry.field(description="Recent Changes Data")
+    async def recent_changes_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseRecentChangesObservationStrawberryModel
+    ]:
+        """Summon Recent Changes Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(joinedload(WikibaseModel.recent_changes_observations))
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseRecentChangesObservationStrawberryModel.marshal(o)
+                    for o in model.recent_changes_observations
                 ]
             )
 

@@ -6,7 +6,7 @@ from model.database import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
 
 
-async def set_extension_wbs_bundled(extension_id: int, bundled: bool = True) -> bool:
+async def set_extension_wbs_bundled(extension_id: int, bundled: bool) -> bool:
     """Set Extensions WBS Bundled"""
 
     async with get_async_session() as async_session:

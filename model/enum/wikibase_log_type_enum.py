@@ -101,6 +101,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
     """Compile Log Type"""
 
     log_type: Optional[WikibaseLogType] = None
+    assert record.get("type") is not None, f"Record has no type: {record}"
+    assert record.get("action") is not None, f"Record has no action: {record}"
 
     match record["type"]:
         case "achievementbadges":
@@ -108,6 +110,7 @@ def compile_log_type(record: dict) -> WikibaseLogType:
 
     match (record["type"], record["action"]):
         case ("create", "create"):
+            assert record.get("title") is not None, f"Record has no title: {record}"
             if ITEM_REGEX.match(record["title"]) is not None:
                 log_type = WikibaseLogType.ITEM_CREATE
             elif PROPERTY_REGEX.match(record["title"]) is not None:
@@ -115,6 +118,7 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             else:
                 log_type = WikibaseLogType.PAGE_CREATE
         case ("delete", "delete"):
+            assert record.get("title") is not None, f"Record has no title: {record}"
             if ITEM_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.ITEM_DELETE
             elif PROPERTY_REGEX.match(record["title"]) is not None:
@@ -146,11 +150,13 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("mwoauthconsumer", "update"):
             log_type = WikibaseLogType.CONSUMER_UPDATE
         case ("contentmodel", "change"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
             if "oldmodel" in record["params"] and "newmodel" in record["params"]:
                 log_type = WikibaseLogType.CONTENT_MODEL_CHANGE
             else:
                 pass
         case ("contentmodel", "new"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
             if "oldmodel" in record["params"] and "newmodel" in record["params"]:
                 log_type = WikibaseLogType.CONTENT_MODEL_CREATE
             else:
@@ -190,26 +196,35 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("lock", "flow-lock-topic"):
             log_type = WikibaseLogType.LOCK_FLOW_LOCK_TOPIC
         case ("approval", "approvefile"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
+            assert record.get("title") is not None, f"Record has no title: {record}"
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_APPROVE
             else:
                 pass
         case ("upload", "overwrite"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
+            assert record.get("title") is not None, f"Record has no title: {record}"
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_OVERWRITE
             else:
                 pass
         case ("upload", "revert"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
+            assert record.get("title") is not None, f"Record has no title: {record}"
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_REVERT
             else:
                 pass
         case ("upload", "upload") | ("remoteupload", "file"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
+            assert record.get("title") is not None, f"Record has no title: {record}"
             if "img_sha1" in record["params"] or MEDIA_REGEX.match(record["title"]):
                 log_type = WikibaseLogType.MEDIA_UPLOAD
             else:
                 pass
         case ("remoteupload", "stashedfile"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
             if "remotetitle" in record["params"]:
                 if MEDIA_REGEX.match(record["params"]["remotetitle"]):
                     log_type = WikibaseLogType.MEDIA_UPLOAD
@@ -220,6 +235,7 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("move", "move"):
             log_type = WikibaseLogType.MOVE
         case ("pagetranslation", "prioritylanguages"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
             if "languages" in record["params"]:
                 log_type = WikibaseLogType.PAGE_TRANSLATE
             else:
@@ -235,6 +251,7 @@ def compile_log_type(record: dict) -> WikibaseLogType:
         case ("pagetranslation", "unmark"):
             log_type = WikibaseLogType.PAGE_TRANSLATE_UNMARK
         case ("pagelang", "pagelang"):
+            assert record.get("params") is not None, f"Record has no params: {record}"
             if "oldlanguage" in record["params"] and "newlanguage" in record["params"]:
                 log_type = WikibaseLogType.PAGE_UPDATE_LANGUAGE
             else:
