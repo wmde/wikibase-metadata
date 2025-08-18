@@ -14,8 +14,6 @@ from logger import logger
 class SPARQLResponseMalformed(SPARQLWrapperException):
     """Response Unexpected Format"""
 
-    pass
-
 
 async def get_sparql_results(
     endpoint_url: str, query: str, query_name: str, timeout: int = 60
