@@ -16,6 +16,7 @@ from tests.utils.assert_property_value import assert_layered_property_value
     scope="session",
 )
 async def test_update_missing_script_paths(mocker):
+    """Test update_missing_script_paths"""
 
     with open(f"{DATA_DIRECTORY}/Special_Version.html", mode="rb") as data:
         mocker.patch("requests.get", side_effect=[MockResponse("", 200, data.read())])

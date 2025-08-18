@@ -1,3 +1,5 @@
+"""Test Update Missing SPARQL Urls"""
+
 import pytest
 
 from resolvers.update import update_missing_sparql_urls
@@ -17,6 +19,7 @@ from tests.utils import MockResponse, assert_layered_property_value, get_mock_co
     scope="session",
 )
 async def test_update_missing_sparql_urls(mocker):
+    """Test update_missing_sparql_urls"""
 
     with open(f"{DATA_DIRECTORY}/manifest.json", mode="rb") as data:
         mocker.patch("requests.get", side_effect=[MockResponse("", 200, data.read())])
