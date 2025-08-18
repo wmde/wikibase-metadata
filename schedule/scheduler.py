@@ -13,6 +13,7 @@ from fetch_data import (
     update_out_of_date_recent_changes_observations,
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
+    update_out_of_date_time_to_first_value_observations,
     update_out_of_date_user_observations,
     update_software_data,
     update_out_of_date_cloud_instances,
@@ -63,6 +64,10 @@ scheduler.add_job(
     CronTrigger(day_of_week=0, hour=6),
 )
 scheduler.add_job(
-    update_out_of_date_user_observations,
+    update_out_of_date_time_to_first_value_observations,
     CronTrigger(day_of_week=0, hour=7),
+)
+scheduler.add_job(
+    update_out_of_date_user_observations,
+    CronTrigger(day_of_week=0, hour=8),
 )
