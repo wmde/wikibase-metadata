@@ -18,7 +18,7 @@ async def get_wikibase_from_database(
     join_recent_changes_observations: bool = False,
     join_software_version_observations: bool = False,
     join_statistics_observations: bool = False,
-    join_time_to_first_value_observations: bool  = False,
+    join_time_to_first_value_observations: bool = False,
     join_user_observations: bool = False,
     require_article_path: bool = False,
     require_script_path: bool = False,
@@ -46,7 +46,9 @@ async def get_wikibase_from_database(
     if join_statistics_observations:
         query = query.options(joinedload(WikibaseModel.statistics_observations))
     if join_time_to_first_value_observations:
-        query = query.options(joinedload(WikibaseModel.time_to_first_value_observations))
+        query = query.options(
+            joinedload(WikibaseModel.time_to_first_value_observations)
+        )
     if join_user_observations:
         query = query.options(joinedload(WikibaseModel.user_observations))
 

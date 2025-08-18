@@ -3,6 +3,7 @@
 from fetch_data.api_data import (
     create_log_observation,
     create_recent_changes_observation,
+    create_time_to_first_value_observation,
     create_user_observation,
 )
 from fetch_data.cloud_api_data import fetch_cloud_instances, update_cloud_instances

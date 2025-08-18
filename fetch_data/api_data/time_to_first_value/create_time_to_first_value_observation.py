@@ -39,7 +39,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             for exponent in range(0, 7):
                 returned = False
                 for nudge in range(0, 5):
-                    i = (10 ^ exponent) + nudge
+                    i = pow(10, exponent) + nudge
                     if not returned:
                         try:
                             c = await get_creation_date(wikibase, f"Item:Q{i}")
@@ -79,6 +79,6 @@ async def get_creation_date(wikibase: WikibaseModel, title: str) -> datetime:
     history = soup.find("ul", attrs={"id": "pagehistory"})
     date_links = history.find_all("a", attrs={"class": "mw-changeslist-date"})
     dates = [
-        datetime.strptime(a.string, "%H:%M, %d %b %Y") for a in date_links if a.string
+        datetime.strptime(a.string, "%H:%M, %d %B %Y") for a in date_links if a.string
     ]
     return min(dates)
