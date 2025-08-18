@@ -4,7 +4,6 @@ import asyncio
 from collections.abc import Iterable
 from datetime import datetime
 from typing import Optional
-from urllib.error import HTTPError
 from bs4 import BeautifulSoup, Tag
 import requests
 from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
