@@ -170,6 +170,72 @@ async def test_wikibase_list_query():
 @pytest.mark.query
 @pytest.mark.dependency(
     depends=[
+        "add-wikibase",
+        "add-wikibase-ii",
+        "update-missing-wikibase-script-path",
+        # "update-missing-wikibase-sparql"
+    ],
+    scope="session",
+)
+async def test_wikibase_list_query_page_two():
+    """Test Wikibase List"""
+
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY,
+        variable_values={"pageNumber": 2, "pageSize": 1},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibaseList" in result.data
+    assert_page_meta(result.data["wikibaseList"], 2, 1, 2, 2)
+    assert "data" in result.data["wikibaseList"]
+    assert len(result.data["wikibaseList"]["data"]) == 1
+    result_datum = result.data["wikibaseList"]["data"][0]
+    assert_property_value(result_datum, "id", "2")
+    assert_property_value(result_datum, "title", "Mock Wikibase II")
+    assert_property_value(
+        result_datum, "category", "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"
+    )
+    assert_property_value(
+        result_datum, "description", "Another Mock wikibase for testing this codebase"
+    )
+    assert_property_value(
+        result_datum, "organization", "Wikibase Mockery International"
+    )
+    assert_layered_property_value(result_datum, ["location", "country"], "Germany")
+    assert_layered_property_value(result_datum, ["location", "region"], "Europe")
+
+    assert_layered_property_value(result_datum, ["languages", "primary"], None)
+    assert_layered_property_value(result_datum, ["languages", "additional"], [])
+
+    for url_name, url in [
+        ("baseUrl", "https://mock-wikibase.com/"),
+        # ("actionApi", "https://mock-wikibase.com/w/api.php"),
+        ("articlePath", "wiki"),
+        # ("indexApi", "https://mock-wikibase.com/w/index.php"),
+        ("scriptPath", "/mockwiki"),
+        # ("sparqlEndpointUrl", None),
+        # ("sparqlFrontendUrl", None)
+    ]:
+        assert_layered_property_value(result_datum, ["urls", url_name], url)
+
+    for obs in [
+        "connectivityObservations",
+        "logObservations",
+        "propertyPopularityObservations",
+        "quantityObservations",
+        "softwareVersionObservations",
+        "userObservations",
+    ]:
+        assert obs in result_datum
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
