@@ -2,7 +2,6 @@
 
 import os
 import time
-from urllib.error import HTTPError
 import pytest
 from fetch_data import create_software_version_observation
 from tests.test_schema import test_schema
@@ -115,15 +114,7 @@ async def test_create_software_version_observation_failure(mocker):
 
     mocker.patch(
         "fetch_data.soup_data.software.create_software_version_data_observation.requests.get",
-        side_effect=[
-            HTTPError(
-                url="example.com/wiki/Special:Version",
-                code=500,
-                msg="Error",
-                hdrs="",
-                fp=None,
-            )
-        ],
+        side_effect=[MockResponse("", 500)],
     )
     mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
     success = await create_software_version_observation(1, mock_info)

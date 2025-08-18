@@ -10,7 +10,7 @@ class MockQueryResult:
     """Mock QueryResult"""
 
     def convert(self):
-        """Convert to return format"""
+        """Convert Results to JSON"""
 
         raise JSONDecodeError("Fail", "{]}", 1)
 
@@ -31,12 +31,19 @@ class MockSPARQLWrapper:
     # pylint: disable-next=invalid-name,no-self-argument
     def setQuery(query: str):
         """Set Query"""
+        # pylint: disable-next=unnecessary-pass
+        pass
 
-    # pylint: disable-next=no-method-argument
+    # pylint: disable-next=no-method-argument,no-self-argument
     def query():
-        """Submit Query"""
-
+        """Execute Query"""
         return MockQueryResult()
+
+    # pylint: disable-next=invalid-name,no-self-argument
+    def setTimeout(timeout: int):
+        """Set Timeout"""
+        # pylint: disable-next=unnecessary-pass
+        pass
 
 
 @pytest.mark.asyncio
@@ -51,7 +58,7 @@ async def test_sparql_fail(mocker):
 
     try:
         await get_sparql_results(
-            "https://example.com/query/rdf", r"SELECT {}", "SELECT QUERY"
+            "https://example.com/query/rdf", "SELECT {?c}", "SELECT QUERY", timeout=20
         )
         assert False
     except JSONDecodeError:
