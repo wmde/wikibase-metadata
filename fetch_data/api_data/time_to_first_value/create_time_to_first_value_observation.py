@@ -32,9 +32,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
         try:
             logger.info("Fetching Creation Date", extra={"wikibase": wikibase.id})
 
-            observation.initiation_date = await get_creation_date(
-                wikibase, "Project:Home"
-            )
+            observation.initiation_date = await get_creation_date(wikibase, "Main_Page")
 
             for exponent in range(0, 7):
                 returned = False
@@ -68,6 +66,11 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
 async def get_creation_date(wikibase: WikibaseModel, title: str) -> datetime:
     """Get Wikibase Page Date"""
+
+    print(
+        wikibase.index_api_url()
+        + dict_to_url({"title": title, "action": "history", "dir": "prev"}),
+    )
 
     result = await asyncio.to_thread(
         requests.get,
