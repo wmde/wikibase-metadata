@@ -10,19 +10,65 @@ from fetch_data.sparql_data.pull_wikidata import (
     SPARQLResponseMalformed,
     get_sparql_results,
 )
+from fetch_data.sparql_data.pull_wikidata import get_sparql_results_handle_429
 from fetch_data.sparql_data.sparql_queries import (
-    COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
-    COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
-    COUNT_ITEMS_QUERY,
-    COUNT_LEXEMES_QUERY,
-    COUNT_PROPERTIES_QUERY,
-    COUNT_URL_PROPERTIES_QUERY,
-    COUNT_URL_STATEMENTS_QUERY,
-    COUNT_TRIPLES_QUERY,
+    COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY_WHERE,
+    COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY_WHERE,
+    COUNT_ITEMS_QUERY_WHERE,
+    COUNT_LEXEMES_QUERY_WHERE,
+    COUNT_PROPERTIES_QUERY_WHERE,
+    COUNT_URL_PROPERTIES_QUERY_WHERE,
+    COUNT_URL_STATEMENTS_QUERY_WHERE,
+    COUNT_TRIPLES_QUERY_WHERE,
 )
 from fetch_data.utils import get_wikibase_from_database
-from logger import logger
+from logger.get_logger import logger
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
+import json
+
+
+COUNT_QUERIES_WHERE = [
+    # (
+    #     COUNT_PROPERTIES_QUERY_WHERE,
+    #     "Property Count",
+    #     "total_properties",
+    # ),
+    # (
+    #     COUNT_ITEMS_QUERY_WHERE,
+    #     "Item Count",
+    #     "total_items",
+    # ),
+    # (
+    #     COUNT_LEXEMES_QUERY_WHERE,
+    #     "Lexeme Count",
+    #     "total_lexemes",
+    # ),
+    # (
+    #     COUNT_TRIPLES_QUERY_WHERE,
+    #     "Triple Count",
+    #     "total_triples",
+    # ),
+    # (
+    #     COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY_WHERE,
+    #     "External Identifier Properties Count",
+    #     "total_external_identifier_properties",
+    # ),
+    (
+        COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY_WHERE,
+        "External Identifier Statements Count",
+        "total_external_identifier_statements",
+    ),
+    # (
+    #     COUNT_URL_PROPERTIES_QUERY_WHERE,
+    #     "URL Properties Count",
+    #     "total_url_properties",
+    # ),
+    (
+        COUNT_URL_STATEMENTS_QUERY_WHERE,
+        "URL Statements Count",
+        "total_url_statements",
+    ),
+]
 
 
 async def create_quantity_observation(wikibase_id: int) -> bool:
@@ -46,138 +92,108 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         return observation.returned_data
 
 
+async def try_to_get_result(wikibase, query, offset):
+    full_query = query + " LIMIT 1 OFFSET " + str(offset)
+    print(full_query)
+    logger.info(full_query)
+    results = await get_sparql_results_handle_429(
+        wikibase.sparql_endpoint_url.url, full_query, "TODO"
+    )
+    print(results)
+    print(json.dumps(results))
+    logger.info(json.dumps(results))
+    # TODO: identify whether we result  got a value
+    if results["results"]["bindings"]:
+        return True
+    return False
+
+
+async def find_count_limit1_last_offset(wikibase, query):
+    if not await try_to_get_result(wikibase, query, 0):
+        return 0
+
+    offset = 10
+
+    # find the magnitude we are aiming at
+    while await try_to_get_result(wikibase, query, offset):
+        offset *= 10
+
+    async def _find(min, max):
+        # Binary search for the highest offset that yields a result
+        left, right = min, max
+        result_offset = min - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+            print(
+                f"left: {left}, right: {right}, mid: {mid}, result_offset: {result_offset}"
+            )
+            if await try_to_get_result(wikibase, query, mid):
+                left = mid + 1
+                result_offset = mid
+            else:
+                right = mid - 1
+
+        return result_offset
+
+    return await _find(0, offset)
+
+
 async def compile_quantity_observation(
     wikibase: WikibaseModel,
 ) -> WikibaseQuantityObservationModel:
     """Compile Quantity Observation"""
 
     observation = WikibaseQuantityObservationModel()
-    try:
-        logger.info("Fetching Property Count", extra={"wikibase": wikibase.id})
-        property_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_PROPERTIES_QUERY,
-            "COUNT_PROPERTIES_QUERY",
-            timeout=10,
-        )
-        observation.total_properties = int(
-            property_count_results["results"]["bindings"][0]["count"]["value"]
-        )
+    observation.returned_data = False
 
-        logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
-        item_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_ITEMS_QUERY,
-            "COUNT_ITEMS_QUERY",
-            timeout=10,
-        )
-        observation.total_items = int(
-            item_count_results["results"]["bindings"][0]["count"]["value"]
-        )
+    async def _fetch_count_for_query(query_where, label, attribute_name):
+        logger.info(f"fetching {label} wikibase {wikibase.id}")
+        print(f"fetching {label} wikibase {wikibase.id}")
+        count_value = None
 
-        logger.info("Fetching Lexeme Count", extra={"wikibase": wikibase.id})
-        lexeme_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_LEXEMES_QUERY,
-            "COUNT_LEXEMES_QUERY",
-            timeout=10,
-        )
-        observation.total_lexemes = int(
-            lexeme_count_results["results"]["bindings"][0]["count"]["value"]
-        )
+        # straight query, just as it is, counting the number of rows
+        try:
+            query = "SELECT (COUNT(*) AS ?count) WHERE {"
+            query += query_where
+            query += "}"
+            results = await get_sparql_results_handle_429(
+                wikibase.sparql_endpoint_url.url, query, label
+            )
+            count_value = int(results["results"]["bindings"][0]["count"]["value"])
+        except (HTTPError, EndPointInternalError):
+            logger.warning(
+                f"QuantityDataError: straight query failed: {query}",
+                exc_info=True,
+                # stack_info=True,
+                extra={"wikibase": wikibase.id},
+            )
 
-        logger.info("Fetching Triple Count", extra={"wikibase": wikibase.id})
-        triple_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_TRIPLES_QUERY,
-            "COUNT_TRIPLES_QUERY",
-            timeout=10,
-        )
-        observation.total_triples = int(
-            triple_count_results["results"]["bindings"][0]["count"]["value"]
-        )
+        # straight query failed, try to find count via limit-1-offset binary search
+        if count_value is None:
+            logger.warning(
+                "Trying to find count via limit-1-offset binary search "
+                f"for label {label} on wikibase {wikibase.id}"
+            )
+            try:
+                query = "SELECT * WHERE {\n"
+                query += query_where
+                query += "\n}"
+                count_value = await find_count_limit1_last_offset(wikibase, query)
+            except (HTTPError, EndPointInternalError):
+                logger.warning(
+                    f"QuantityDataError: limit-1-offset query failed: {query}",
+                    exc_info=True,
+                    # stack_info=True,
+                    extra={"wikibase": wikibase.id},
+                )
 
-        logger.info(
-            "Fetching External Identifier Properties Count",
-            extra={"wikibase": wikibase.id},
-        )
-        external_identifier_properties_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY,
-            "COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY",
-            timeout=10,
-        )
-        observation.total_external_identifier_properties = int(
-            external_identifier_properties_count_results["results"]["bindings"][0][
-                "count"
-            ]["value"]
-        )
+        if count_value is not None:
+            logger.info(f"Resolved {count_value} for {attribute_name} on wikibase {wikibase.id}")
+            setattr(observation, attribute_name, count_value)
+            observation.returned_data = True
 
-        logger.info(
-            "Fetching External Identifier Statements Count",
-            extra={"wikibase": wikibase.id},
-        )
-        external_identifier_statements_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY,
-            "COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY",
-            timeout=10,
-        )
-        observation.total_external_identifier_statements = int(
-            external_identifier_statements_count_results["results"]["bindings"][0][
-                "count"
-            ]["value"]
-        )
-
-        logger.info(
-            "Fetching URL Properties Count",
-            extra={"wikibase": wikibase.id},
-        )
-        url_properties_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_URL_PROPERTIES_QUERY,
-            "COUNT_URL_PROPERTIES_QUERY",
-            timeout=10,
-        )
-        observation.total_url_properties = int(
-            url_properties_count_results["results"]["bindings"][0]["count"]["value"]
-        )
-
-        logger.info(
-            "Fetching URL Statements Count",
-            extra={"wikibase": wikibase.id},
-        )
-        url_statements_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            COUNT_URL_STATEMENTS_QUERY,
-            "COUNT_URL_STATEMENTS_QUERY",
-            timeout=10,
-        )
-        observation.total_url_statements = int(
-            url_statements_count_results["results"]["bindings"][0]["count"]["value"]
-        )
-
-        observation.returned_data = True
-    except (
-        ConnectTimeoutError,
-        ConnectionError,
-        EndPointNotFound,
-        MaxRetryError,
-        NameResolutionError,
-        ReadTimeout,
-        SSLError,
-        TimeoutError,
-        TooManyRedirects,
-    ):
-        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
-        observation.returned_data = False
-    except (EndPointInternalError, HTTPError, SPARQLResponseMalformed, URLError):
-        logger.warning(
-            "QuantityDataError",
-            # exc_info=True,
-            # stack_info=True,
-            extra={"wikibase": wikibase.id},
-        )
-        observation.returned_data = False
+    for query_where, label, attribute_name in COUNT_QUERIES_WHERE:
+        await _fetch_count_for_query(query_where, label, attribute_name)
 
     return observation

@@ -8,7 +8,41 @@ import sys
 from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
 from SPARQLWrapper.SPARQLExceptions import SPARQLWrapperException
 
-from logger import logger
+from logger.get_logger import logger
+
+import time
+from urllib.error import HTTPError
+
+async def get_sparql_results_handle_429(
+    endpoint_url: str,
+    query: str,
+    query_name: str,
+    max_retries=5,
+    backup_time_init=4,
+) -> dict:
+    backup_time = backup_time_init
+
+    retires = 0
+    while True:
+        try:
+            return await get_sparql_results(endpoint_url, query, query_name)
+
+        except HTTPError as exc:
+            logger.warning(
+                "SPARQLError",
+                exc_info=True,
+                # stack_info=True,
+            )
+
+            if exc.code != 429 or retires >= max_retries:
+                raise exc
+
+            else:
+                logger.warning(f"429, sleeping for {backup_time} seconds")
+                time.sleep(backup_time)
+                backup_time = backup_time * 2
+                retires += 1
+
 
 
 class SPARQLResponseMalformed(SPARQLWrapperException):
@@ -19,6 +53,7 @@ async def get_sparql_results(
     endpoint_url: str, query: str, query_name: str, timeout: int = 60
 ) -> dict:
     """Get SPARQL Data from Wikidata ASYNC"""
+    logger.info(f"running query {query_name} {query} against {endpoint_url}")
     return await asyncio.to_thread(
         _get_results,
         endpoint_url=endpoint_url,

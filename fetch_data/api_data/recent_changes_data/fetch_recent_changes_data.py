@@ -8,6 +8,8 @@ from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record impor
 )
 from fetch_data.utils import dict_to_url, fetch_api_data
 
+from logger import logger
+
 
 def get_recent_changes_param_string(
     limit: Optional[int] = None,
@@ -45,12 +47,11 @@ async def get_recent_changes_list(
     thirty_days_ago = datetime.now(UTC) - timedelta(days=30)
 
     while should_query:
-        query_data = await fetch_api_data(
-            api_url
-            + get_recent_changes_param_string(
-                limit=limit, continue_from=next_from, bots=bots
-            )
+        request_string = get_recent_changes_param_string(
+            limit=limit, continue_from=next_from, bots=bots
         )
+        logger.info(f"querying {api_url+request_string}")
+        query_data = await fetch_api_data(api_url + request_string)
 
         for record in query_data["query"]["recentchanges"]:
             data.append(WikibaseRecentChangeRecord(record))

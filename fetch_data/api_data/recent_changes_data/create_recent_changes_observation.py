@@ -50,7 +50,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
 
         try:
             logger.info(
-                "Fetching Recent Changes (without bots)",
+                "Fetching Recent Changes by made humans",
                 extra={"wikibase": wikibase.id},
             )
             recent_changes_list_humans = await get_recent_changes_list(
@@ -58,7 +58,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
             )
 
             logger.info(
-                "Fetching Recent Changes (with bots)", extra={"wikibase": wikibase.id}
+                "Fetching Recent Changes made by bots", extra={"wikibase": wikibase.id}
             )
             recent_changes_list_bots = await get_recent_changes_list(
                 wikibase.action_api_url(), bots=True
