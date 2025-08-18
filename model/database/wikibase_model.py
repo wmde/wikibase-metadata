@@ -9,13 +9,13 @@ from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
-    WikibaseTimeToFirstValueObservationModel,
     WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
     WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_url_model import WikibaseURLModel, join_url
