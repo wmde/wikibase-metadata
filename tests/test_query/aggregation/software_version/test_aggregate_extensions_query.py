@@ -50,7 +50,7 @@ async def test_aggregate_extensions_query_page_one():
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 5, 11, 3)
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 5, 12, 3)
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
     )
@@ -98,6 +98,7 @@ async def test_aggregate_extensions_query_page_one():
         assert_software_version_aggregate(
             result.data["aggregateExtensionPopularity"]["data"][index],
             expected_software_name,
+            1,
             expected_version_string,
             expected_version_semver,
             expected_version_date,
@@ -121,7 +122,7 @@ async def test_aggregate_extensions_query_page_two():
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 5, 11, 3)
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 5, 12, 3)
     assert_layered_property_count(
         result.data, ["aggregateExtensionPopularity", "data"], 5
     )
@@ -156,19 +157,14 @@ async def test_aggregate_extensions_query_page_two():
                 datetime(2019, 12, 10, 12, 52),
                 "dbbcdd8",
             ),
-            (
-                "WikibaseRepository",
-                "dbbcdd8",
-                (None, None, None),
-                datetime(2019, 12, 10, 12, 52),
-                "dbbcdd8",
-            ),
+            ("WikibaseManifest", "0.0.1", (0, 0, 1), None, None),
         ]
     ):
 
         assert_software_version_aggregate(
             result.data["aggregateExtensionPopularity"]["data"][index],
             expected_software_name,
+            1,
             expected_version_string,
             expected_version_semver,
             expected_version_date,
@@ -182,7 +178,7 @@ async def test_aggregate_extensions_query_page_two():
 @pytest.mark.query
 @pytest.mark.version
 async def test_aggregate_extensions_query_page_three():
-    """Test Aggregated Extensions Query - 11"""
+    """Test Aggregated Extensions Query - 11-12"""
 
     result = await test_schema.execute(
         AGGREGATE_EXTENSIONS_QUERY,
@@ -192,9 +188,9 @@ async def test_aggregate_extensions_query_page_three():
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 3, 5, 11, 3)
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 3, 5, 12, 3)
     assert_layered_property_count(
-        result.data, ["aggregateExtensionPopularity", "data"], 1
+        result.data, ["aggregateExtensionPopularity", "data"], 2
     )
 
     for index, (
@@ -205,6 +201,13 @@ async def test_aggregate_extensions_query_page_three():
         expected_version_hash,
     ) in enumerate(
         [
+            (
+                "WikibaseRepository",
+                "dbbcdd8",
+                (None, None, None),
+                datetime(2019, 12, 10, 12, 52),
+                "dbbcdd8",
+            ),
             (
                 "WikibaseView",
                 "dbbcdd8",
@@ -218,6 +221,7 @@ async def test_aggregate_extensions_query_page_three():
         assert_software_version_aggregate(
             result.data["aggregateExtensionPopularity"]["data"][index],
             expected_software_name,
+            1,
             expected_version_string,
             expected_version_semver,
             expected_version_date,
@@ -235,14 +239,14 @@ async def test_aggregate_extensions_query_page_three():
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
-        ([], 11),
-        (["CLOUD"], 11),
-        (["OTHER"], 11),
-        (["SUITE"], 0),
-        (["CLOUD", "OTHER"], 11),
-        (["CLOUD", "SUITE"], 0),
-        (["OTHER", "SUITE"], 0),
-        (["CLOUD", "OTHER", "SUITE"], 0),
+        ([], 12),
+        (["CLOUD"], 12),
+        (["OTHER"], 12),
+        (["SUITE"], 1),
+        (["CLOUD", "OTHER"], 12),
+        (["CLOUD", "SUITE"], 1),
+        (["OTHER", "SUITE"], 1),
+        (["CLOUD", "OTHER", "SUITE"], 1),
     ],
 )
 @pytest.mark.version

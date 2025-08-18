@@ -173,7 +173,7 @@ async def test_wikibase_list_query():
         "add-wikibase",
         "add-wikibase-ii",
         "update-missing-wikibase-script-path",
-        # "update-missing-wikibase-sparql"
+        "update-missing-wikibase-sparql",
     ],
     scope="session",
 )
@@ -216,8 +216,8 @@ async def test_wikibase_list_query_page_two():
         ("articlePath", "wiki"),
         # ("indexApi", "https://mock-wikibase.com/w/index.php"),
         ("scriptPath", "/mockwiki"),
-        # ("sparqlEndpointUrl", None),
-        # ("sparqlFrontendUrl", None)
+        ("sparqlEndpointUrl", "https://mock-wikibase.com/query/sparql"),
+        ("sparqlFrontendUrl", "https://mock-wikibase.com/query"),
     ]:
         assert_layered_property_value(result_datum, ["urls", url_name], url)
 

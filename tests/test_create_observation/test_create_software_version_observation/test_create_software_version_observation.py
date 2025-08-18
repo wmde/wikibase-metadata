@@ -61,6 +61,47 @@ async def test_create_software_version_observation_success(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
+    name="software-version-success-ii",
+    depends=["add-wikibase-ii"],
+    scope="session",
+)
+@pytest.mark.mutation
+@pytest.mark.soup
+@pytest.mark.version
+async def test_create_software_version_observation_success_ii(mocker):
+    """Test Data Returned Scenario"""
+
+    time.sleep(1)
+
+    with open(
+        os.path.join(DATA_DIRECTORY, "Special_Version_ii.html"), "rb"
+    ) as version_html:
+
+        mocker.patch(
+            "fetch_data.soup_data.software.create_software_version_data_observation.requests.get",
+            side_effect=[MockResponse("", 200, version_html.read())],
+        )
+
+    test_context = {
+        "background_tasks": MockBackgroundClassList(),
+        "request": MockRequest({"authorization": "Bearer: test-auth-token"}),
+    }
+
+    result = await test_schema.execute(
+        FETCH_SOFTWARE_MUTATION,
+        variable_values={"wikibaseId": 2},
+        context_value=test_context,
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchVersionData"]
+
+    assert len(test_context["background_tasks"].tasks) == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(
     name="software-version-failure",
     depends=["software-version-success"],
     scope="session",
