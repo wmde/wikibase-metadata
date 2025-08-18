@@ -8,7 +8,10 @@ from sqlalchemy.orm import sessionmaker
 from config import database_connection_string
 
 async_engine = create_async_engine(
-    database_connection_string, pool_size=10, max_overflow=20
+    database_connection_string,
+    pool_size=5,  # default
+    max_overflow=10,  # default
+    timeout=120,  # we need more time for big queries, toolforge is slow
 )
 
 async_session = sessionmaker(
