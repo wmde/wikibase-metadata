@@ -54,7 +54,8 @@ async def test_aggregate_recent_changes_query():
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.dependency(
-    depends=["update-wikibase-type", "update-wikibase-type-ii"], scope="session"
+    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
+    scope="session",
 )
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],

@@ -90,6 +90,8 @@ class WikibaseLogType(enum.Enum):
     WIKI_RIGHTS = 74
     WIKI_SETTINGS = 75
 
+    UNCLASSIFIED = 77
+
 
 MEDIA_REGEX = re.compile(r".*\.(flv|gif|jpe?g|pdf|png|svg|wav|webm)", re.IGNORECASE)
 ITEM_REGEX = re.compile(r"Item:Q\d+")
@@ -315,7 +317,8 @@ def compile_log_type(record: dict) -> WikibaseLogType:
             log_type = WikibaseLogType.WIKI_SETTINGS
     try:
         assert log_type is not None
-    except AssertionError as exc:
-        logger.error("LogTypeError", extra={"log": record})
-        raise NotImplementedError(record) from exc
+    except AssertionError:
+        logger.warning("LogTypeError", extra={"log": record})
+        log_type = WikibaseLogType.UNCLASSIFIED
+        # raise NotImplementedError(record) from exc
     return log_type
