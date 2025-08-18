@@ -1,10 +1,15 @@
 """Create Property Popularity Data Observation"""
 
-from urllib.error import HTTPError
-from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
+from urllib.error import HTTPError, URLError
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
+from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
 from data import get_async_session
-from fetch_data.sparql_data.pull_wikidata import get_sparql_results
+from fetch_data.sparql_data.pull_wikidata import (
+    SPARQLResponseMalformed,
+    get_sparql_results,
+)
 from fetch_data.sparql_data.sparql_queries import PROPERTY_POPULARITY_QUERY
 from fetch_data.utils.get_wikibase import get_wikibase_from_database
 from logger import logger
@@ -49,6 +54,7 @@ async def compile_property_popularity_observation(
             wikibase.sparql_endpoint_url.url,
             PROPERTY_POPULARITY_QUERY,
             "PROPERTY_POPULARITY_QUERY",
+            timeout=10,
         )
 
         observation.returned_data = True
@@ -59,11 +65,24 @@ async def compile_property_popularity_observation(
                 usage_count=result["propertyCount"]["value"],
             )
             observation.property_count_observations.append(record)
-    except (HTTPError, EndPointInternalError):
+    except (
+        ConnectTimeoutError,
+        ConnectionError,
+        EndPointNotFound,
+        MaxRetryError,
+        NameResolutionError,
+        ReadTimeout,
+        SSLError,
+        TimeoutError,
+        TooManyRedirects,
+    ):
+        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+        observation.returned_data = False
+    except (EndPointInternalError, HTTPError, SPARQLResponseMalformed, URLError):
         logger.warning(
             "PropertyPopularityDataError",
-            exc_info=True,
-            stack_info=True,
+            # exc_info=True,
+            # stack_info=True,
             extra={"wikibase": wikibase.id},
         )
         observation.returned_data = False

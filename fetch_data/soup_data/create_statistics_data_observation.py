@@ -1,12 +1,12 @@
 """Create Special:Statistics Observation"""
 
 import asyncio
+from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from typing import Optional
-from urllib.error import HTTPError
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 import requests
-from requests.exceptions import SSLError
 
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database
@@ -35,9 +35,18 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 wikibase.special_statistics_url(),
                 headers={"Cookie": "mediawikilanguage=en"},
                 timeout=10,
+                allow_redirects=True,
             )
+            result.raise_for_status()
             soup = BeautifulSoup(result.content, "html.parser")
+            if (heading := soup.find("h1", attrs={"id": "firstHeading"})) is not None:
+                if heading.text == "Login required":
+                    logger.warning(
+                        "WikibaseRequiredLogin", extra={"wikibase": wikibase.id}
+                    )
+                    raise HTTPError("Login Required")
             table = soup.find("table", attrs={"class": "mw-statistics-table"})
+            assert table is not None, "Could Not Find Statistics Table"
 
             observation.returned_data = True
 
@@ -66,11 +75,22 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 table, row_id="mw-cirrussearch-article-words", optional=True
             )
 
-        except (ConnectionError, HTTPError, SSLError):
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ):
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            observation.returned_data = False
+        except HTTPError:
             logger.warning(
                 "StatisticsDataError",
-                exc_info=True,
-                stack_info=True,
+                # exc_info=True,
+                # stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False
@@ -82,7 +102,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
 
 
 def get_number_from_row(
-    soup: BeautifulSoup,
+    table: Tag,
     row_class: Optional[str] = None,
     row_id: Optional[str] = None,
     optional: bool = False,
@@ -92,13 +112,13 @@ def get_number_from_row(
     assert (row_class or row_id) is not None, "No Identifiers Given"
 
     statistic_row = (
-        soup.find("tr", attrs={"class": row_class})
+        table.find("tr", attrs={"class": row_class})
         if row_class is not None
-        else soup.find("tr", attrs={"id": row_id})
+        else table.find("tr", attrs={"id": row_id})
     )
 
     if statistic_row is None:
-        assert optional, f"Could Not Find Row: {row_class}, {soup.prettify()}"
+        assert optional, f"Could Not Find Row: {row_class}, {table.prettify()}"
         return None
 
     return int(

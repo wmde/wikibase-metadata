@@ -1,6 +1,7 @@
 """Get Out of Date Wikibases"""
 
 from datetime import datetime, timedelta, timezone
+from random import shuffle
 from sqlalchemy import Select, and_, not_, or_, select
 from data.database_connection import get_async_session
 from model.database import (
@@ -27,6 +28,7 @@ async def get_wikibase_list(query: Select[tuple[WikibaseModel]]) -> list[Wikibas
 
     async with get_async_session() as async_session:
         wikibase_list = (await async_session.scalars(query)).unique().all()
+        shuffle(wikibase_list)
         return wikibase_list
 
 
@@ -41,8 +43,10 @@ def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
             not_(
@@ -133,8 +137,10 @@ def get_wikibase_with_out_of_date_log_first_obs_query() -> Select[tuple[Wikibase
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
@@ -182,8 +188,10 @@ def get_wikibase_with_out_of_date_log_last_obs_query() -> Select[tuple[WikibaseM
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
@@ -233,8 +241,10 @@ def get_wikibase_with_out_of_date_property_popularity_obs_query() -> (
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
             not_(
@@ -328,8 +338,10 @@ def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
@@ -376,8 +388,10 @@ def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseM
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.article_path.has(WikibaseURLModel.id),
             not_(
@@ -422,8 +436,10 @@ def get_wikibase_with_out_of_date_stats_obs_query() -> Select[tuple[WikibaseMode
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.article_path.has(WikibaseURLModel.id),
             not_(
@@ -468,8 +484,10 @@ def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                WikibaseModel.wikibase_type != WikibaseType.TEST,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
             ),
             WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
