@@ -23,8 +23,8 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            include_observations=True,
-            require_index_api=True,
+            join_time_to_first_value_observations=True,
+            require_script_path=True,
         )
 
         observation = WikibaseTimeToFirstValueObservationModel(wikibase_id=wikibase.id)
@@ -71,7 +71,7 @@ async def get_creation_date(wikibase: WikibaseModel, title: str) -> datetime:
 
     result = await asyncio.to_thread(
         requests.get,
-        wikibase.index_api_url.url
+        wikibase.index_api_url()
         + dict_to_url({"title": title, "action": "history", "dir": "prev"}),
     )
     result.raise_for_status()
