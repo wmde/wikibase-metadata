@@ -3,6 +3,7 @@
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import os
+import sys
 
 from config import log_directory, log_level
 from logger.extra_formatter import OptionalExtraFormatter
@@ -35,3 +36,10 @@ file_error_handler = TimedRotatingFileHandler(
 file_error_handler.setLevel(logging.WARNING)
 file_error_handler.setFormatter(wikibase_formatter)
 logger.addHandler(file_error_handler)
+
+# debug level logs to stdout, no matter what log level is set
+# makes sure that you always see the logs in the console
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.DEBUG)
+stdout_handler.setFormatter(wikibase_formatter)
+logger.addHandler(stdout_handler)
