@@ -86,6 +86,7 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         ),
     ]
     mocker.patch(
+        # pylint: disable-next=line-too-long
         "fetch_data.api_data.recent_changes_data.create_recent_changes_observation.get_recent_changes_list",
         side_effect=[
             mock_changes_human,
