@@ -36,7 +36,7 @@ class OptionalExtraFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """Format Record"""
-        
+
         fmt = "%(asctime)s | "
 
         if "wikibase" in record.__dict__.keys():
