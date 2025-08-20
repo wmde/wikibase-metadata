@@ -130,4 +130,10 @@ async def update_wikibase_sparql_urls(wikibase: WikibaseModel):
                 )
 
     except HTTPError:
-        pass
+        logger.warning(
+            "ManifestFetchingError",
+            exc_info=True,
+            stack_info=True,
+            extra={"wikibase": wikibase.id},
+        )
+
