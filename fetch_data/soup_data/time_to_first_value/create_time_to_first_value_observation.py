@@ -2,17 +2,18 @@
 
 import asyncio
 from datetime import datetime
-from json.decoder import JSONDecodeError
 from bs4 import BeautifulSoup
 import requests
-from requests.exceptions import ReadTimeout, SSLError
+from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
+
 from data import get_async_session
 from fetch_data.utils import dict_to_url, get_wikibase_from_database
 from logger import logger
 from model.database import (
-    WikibaseTimeToFirstValueObservationModel,
-    WikibaseItemDateModel,
     WikibaseModel,
+    WikibaseItemDateModel,
+    WikibaseTimeToFirstValueObservationModel,
 )
 
 
@@ -49,11 +50,22 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
                             pass
 
             observation.returned_data = True
-        except (ConnectionError, JSONDecodeError, ReadTimeout, SSLError):
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TooManyRedirects,
+        ):
+            logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+            observation.returned_data = False
+        except HTTPError:
             logger.warning(
                 "TimeToFirstValueDataError",
-                exc_info=True,
-                stack_info=True,
+                # exc_info=True,
+                # stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
             observation.returned_data = False

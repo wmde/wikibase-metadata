@@ -2,9 +2,6 @@
 
 from fetch_data.api_data.log_data import create_log_observation
 from fetch_data.api_data.recent_changes_data import create_recent_changes_observation
-from fetch_data.api_data.time_to_first_value import (
-    create_time_to_first_value_observation,
-)
 from fetch_data.api_data.user_data import (
     create_user_observation,
     get_multiple_user_data,
