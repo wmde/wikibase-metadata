@@ -11,6 +11,7 @@ class MockQueryResult:
 
     def convert(self):
         """Convert Results to JSON"""
+
         raise JSONDecodeError("Fail", "{]}", 1)
 
 

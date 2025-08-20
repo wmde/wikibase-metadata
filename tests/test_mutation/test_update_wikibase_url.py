@@ -123,7 +123,7 @@ async def test_remove_wikibase_sparql_frontend_url():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "sparqlFrontendUrl"],
-        expected_value="query.example.com",
+        expected_value="https://query.example.com",
     )
 
     remove_result = await test_schema.execute(
@@ -172,13 +172,13 @@ async def test_remove_wikibase_article_path():
 
     before_removing_result = await test_schema.execute(
         WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 5},
+        variable_values={"wikibaseId": 6},
         context_value=get_mock_context("test-auth-token"),
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="5"
+        before_removing_result.data, ["wikibase", "id"], expected_value="6"
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -199,7 +199,7 @@ async def test_remove_wikibase_article_path():
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 5,
+            "wikibaseId": 6,
             "urlType": "ARTICLE_PATH",
         },
         context_value=get_mock_context("test-auth-token"),
@@ -210,13 +210,13 @@ async def test_remove_wikibase_article_path():
 
     after_removing_result = await test_schema.execute(
         WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 5},
+        variable_values={"wikibaseId": 6},
         context_value=get_mock_context("test-auth-token"),
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value="5"
+        after_removing_result.data, ["wikibase", "id"], expected_value="6"
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -261,7 +261,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "sparqlEndpointUrl"],
-        expected_value="query.example.com/sparql-wrong",
+        expected_value="https://query.example.com/sparql-wrong",
     )
 
     update_result = await test_schema.execute(
@@ -296,4 +296,48 @@ async def test_update_wikibase_url():
         after_updating_result.data,
         ["wikibase", "urls", "sparqlEndpointUrl"],
         expected_value="https://query.example.com/sparql",
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
+async def test_update_wikibase_article_path_fail():
+    """Update Wikibase URL Fail"""
+
+    update_result = await test_schema.execute(
+        UPSERT_WIKIBASE_URL_MUTATION,
+        variable_values={
+            "wikibaseId": 1,
+            "url": "https://example.com/wiki",
+            "urlType": "ARTICLE_PATH",
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert update_result.errors is not None
+    assert (
+        update_result.errors[0].message
+        == "WikibaseURLType.ARTICLE_PATH must not be full URL, https://example.com/wiki"
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
+async def test_update_wikibase_base_url_fail():
+    """Update Wikibase URL Fail"""
+
+    update_result = await test_schema.execute(
+        UPSERT_WIKIBASE_URL_MUTATION,
+        variable_values={
+            "wikibaseId": 1,
+            "url": "localhost/wikibase",
+            "urlType": "BASE_URL",
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert update_result.errors is not None
+    assert (
+        update_result.errors[0].message
+        == "WikibaseURLType.BASE_URL must be full URL, localhost/wikibase"
     )

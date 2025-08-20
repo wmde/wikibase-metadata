@@ -100,6 +100,12 @@ async def test_update_software_data(mocker):
                     f"{DATA_DIRECTORY}/Mediawiki_WikibaseLib.html", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
+            # Wikibase Manifest
+            case "https://www.mediawiki.org/wiki/Extension:WikibaseManifest":
+                with open(
+                    f"{DATA_DIRECTORY}/Mediawiki_WikibaseManifest.html", mode="rb"
+                ) as data:
+                    return MockResponse(query, 200, data.read())
             # Wikibase Repository - redirect
             case "https://www.mediawiki.org/wiki/Extension:WikibaseRepository":
                 with open(

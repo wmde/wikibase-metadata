@@ -96,6 +96,7 @@ async def test_aggregate_libraries_query_page_one():
         assert_software_version_aggregate(
             result.data["aggregateLibraryPopularity"]["data"][index],
             expected_software_name,
+            1,
             expected_version_string,
             expected_version_semver,
             None,
@@ -165,6 +166,7 @@ async def test_aggregate_libraries_query_page_two():
         assert_software_version_aggregate(
             result.data["aggregateLibraryPopularity"]["data"][index],
             expected_software_name,
+            1,
             expected_version_string,
             expected_version_semver,
             None,

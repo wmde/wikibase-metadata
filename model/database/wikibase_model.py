@@ -190,6 +190,13 @@ class WikibaseModel(ModelBase):
             return None
         return join_url(self.url.url, self.script_path.url, "index.php")
 
+    def rest_api_url(self) -> Optional[str]:
+        """Rest API URL - `/w/rest.php`"""
+
+        if self.script_path is None:
+            return None
+        return join_url(self.url.url, self.script_path.url, "rest.php")
+
     sparql_endpoint_url: Mapped[Optional[WikibaseURLModel]] = relationship(
         "WikibaseURLModel",
         primaryjoin=and_(

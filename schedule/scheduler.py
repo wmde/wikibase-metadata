@@ -18,6 +18,7 @@ from fetch_data import (
     update_software_data,
     update_out_of_date_cloud_instances,
 )
+from resolvers.update import update_missing_script_paths, update_missing_sparql_urls
 
 
 # Set up the scheduler
@@ -30,6 +31,14 @@ scheduler.add_job(update_software_data, IntervalTrigger(hours=2))
 scheduler.add_job(
     update_out_of_date_cloud_instances,
     CronTrigger(day_of_week=6, hour=20),  # before data pulls
+)
+scheduler.add_job(
+    update_missing_script_paths,
+    CronTrigger(day_of_week=6, hour=22),  # before data pulls
+)
+scheduler.add_job(
+    update_missing_sparql_urls,
+    CronTrigger(day_of_week=6, hour=23),  # before data pulls
 )
 scheduler.add_job(
     update_out_of_date_connectivity_observations,

@@ -4,10 +4,6 @@ from typing import Optional
 import strawberry
 from strawberry import Info
 
-from model.enum import WikibaseType, WikibaseURLType
-from model.strawberry.input import WikibaseInput
-from model.strawberry.output import WikibaseStrawberryModel
-from resolvers import add_wikibase, authenticate
 from fetch_data import (
     create_connectivity_observation,
     create_log_observation,
@@ -20,8 +16,13 @@ from fetch_data import (
     create_user_observation,
     update_cloud_instances,
 )
-from update_data import (
+from model.enum import WikibaseType, WikibaseURLType
+from model.strawberry.input import WikibaseInput
+from model.strawberry.output import WikibaseStrawberryModel
+from resolvers import (
+    add_wikibase,
     add_wikibase_language,
+    authenticate,
     merge_software_by_id,
     remove_wikibase_language,
     remove_wikibase_url,

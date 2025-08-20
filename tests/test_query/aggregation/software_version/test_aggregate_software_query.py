@@ -57,23 +57,32 @@ async def test_aggregate_software_query():
 
     for index, (
         expected_software_name,
+        expected_wikibase_count,
         expected_version_string,
         expected_version_semver,
         expected_version_date,
         expected_version_hash,
     ) in enumerate(
         [
-            ("ICU", "60.2", (60, 2, None), None, None),
-            ("Lua", "5.1.5", (5, 1, 5), None, None),
-            ("MediaWiki", "1.39.8", (1, 39, 8), None, "fbca402"),
-            ("MySQL", "1.35.8", (1, 35, 8), datetime(2022, 12, 13, 5, 50), "e43140f"),
-            ("PHP", "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", (7, 2, 24), None, None),
+            ("ICU", 2, "60.2", (60, 2, None), None, None),
+            ("Lua", 2, "5.1.5", (5, 1, 5), None, None),
+            ("MediaWiki", 2, "1.39.8", (1, 39, 8), None, "fbca402"),
+            ("PHP", 2, "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", (7, 2, 24), None, None),
+            (
+                "MySQL",
+                1,
+                "1.35.8",
+                (1, 35, 8),
+                datetime(2022, 12, 13, 5, 50),
+                "e43140f",
+            ),
         ]
     ):
 
         assert_software_version_aggregate(
             result.data["aggregateSoftwarePopularity"]["data"][index],
             expected_software_name,
+            expected_wikibase_count,
             expected_version_string,
             expected_version_semver,
             expected_version_date,
@@ -94,11 +103,11 @@ async def test_aggregate_software_query():
         ([], 5),
         (["CLOUD"], 5),
         (["OTHER"], 5),
-        (["SUITE"], 0),
+        (["SUITE"], 4),
         (["CLOUD", "OTHER"], 5),
-        (["CLOUD", "SUITE"], 0),
-        (["OTHER", "SUITE"], 0),
-        (["CLOUD", "OTHER", "SUITE"], 0),
+        (["CLOUD", "SUITE"], 4),
+        (["OTHER", "SUITE"], 4),
+        (["CLOUD", "OTHER", "SUITE"], 4),
     ],
 )
 @pytest.mark.version

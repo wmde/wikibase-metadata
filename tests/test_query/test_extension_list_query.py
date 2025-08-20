@@ -56,7 +56,7 @@ async def test_extension_list_query():
     assert result.errors is None
     assert result.data is not None
     assert "extensionList" in result.data
-    assert_page_meta(result.data["extensionList"], 1, 10, 11, 2)
+    assert_page_meta(result.data["extensionList"], 1, 10, 12, 2)
     assert "data" in result.data["extensionList"]
     assert len(result.data["extensionList"]["data"]) == 10
 
@@ -224,6 +224,21 @@ async def test_extension_list_query():
         ),
         (
             9,
+            "80",
+            "WikibaseManifest",
+            "WikibaseManifest",
+            False,
+            "API provided metadata for structured data repository",
+            datetime(2024, 3, 1),
+            "0.0.1 (continuous updates)",
+            False,
+            None,
+            None,
+            None,
+            ["API"],
+        ),
+        (
+            10,
             "16",
             "WikibaseRepository",
             "Wikibase_Repository",
@@ -238,7 +253,7 @@ async def test_extension_list_query():
             ["ContentHandler", "API", "Ajax"],
         ),
         (
-            10,
+            11,
             "17",
             "WikibaseView",
             "WikibaseView",
@@ -281,9 +296,9 @@ async def test_extension_list_query_parameterized(
     assert result.errors is None
     assert result.data is not None
     assert "extensionList" in result.data
-    assert_page_meta(result.data["extensionList"], 1, 100, 11, 1)
+    assert_page_meta(result.data["extensionList"], 1, 100, 12, 1)
     assert "data" in result.data["extensionList"]
-    assert len(result.data["extensionList"]["data"]) == 11
+    assert len(result.data["extensionList"]["data"]) == 12
     assert_layered_property_value(
         result.data, ["extensionList", "data", idx, "id"], expected_id
     )

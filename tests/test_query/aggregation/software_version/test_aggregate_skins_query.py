@@ -68,6 +68,7 @@ async def test_aggregate_skins_query_page_one():
         assert_software_version_aggregate(
             result.data["aggregateSkinPopularity"]["data"][index],
             expected_software_name,
+            1,
             expected_version_string,
             expected_version_semver,
             None,

@@ -19,7 +19,7 @@ from fetch_data.out_of_date.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_user_observations,
 )
 from fetch_data.soup_data import (
-    create_software_version_observation_without_background_task,
+    create_software_version_observation,
     create_special_statistics_observation,
 )
 from fetch_data.sparql_data import (
@@ -170,9 +170,7 @@ async def update_out_of_date_software_observations():
     logger.info(f"Software Version: {len(ood_soft_obs)} Wikibases to Update")
     for wikibase in ood_soft_obs:
         try:
-            await create_software_version_observation_without_background_task(
-                wikibase.id
-            )
+            await create_software_version_observation(wikibase.id, None)
         # pylint: disable-next=bare-except
         except:
             logger.error(
