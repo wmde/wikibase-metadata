@@ -136,4 +136,3 @@ async def update_wikibase_sparql_urls(wikibase: WikibaseModel):
             stack_info=True,
             extra={"wikibase": wikibase.id},
         )
-
