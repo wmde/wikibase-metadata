@@ -6,7 +6,7 @@ from freezegun import freeze_time
 import pytest
 
 from fetch_data import get_update_extension_query, update_software_data
-from tests.test_create_observation.test_create_software_version_observation.test_constants import (
+from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
 )
 from tests.utils import MockResponse

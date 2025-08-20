@@ -13,7 +13,7 @@ FETCH_STATISTICS_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 }"""
 
 
-DATA_DIRECTORY = "tests/test_create_observation/test_create_statistics_observation/data"
+DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
 
 @pytest.mark.asyncio

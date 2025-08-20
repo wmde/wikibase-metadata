@@ -5,7 +5,7 @@ import time
 import pytest
 from fetch_data import create_software_version_observation
 from tests.test_schema import test_schema
-from tests.test_create_observation.test_create_software_version_observation.test_constants import (
+from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
 )
 from tests.mock_info import MockBackgroundClassList, MockInfo
