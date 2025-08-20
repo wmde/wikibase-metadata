@@ -74,7 +74,7 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    await update_out_of_date_log_first_observations()
+    assert await update_out_of_date_log_first_observations() == 1
 
 
 @freeze_time(datetime(2024, 2, 1))
@@ -133,4 +133,4 @@ async def test_update_out_of_date_log_last_observations_success(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    await update_out_of_date_log_last_observations()
+    assert await update_out_of_date_log_last_observations() == 1

@@ -19,4 +19,4 @@ async def test_update_out_of_date_quantity_observations_success(mocker):
         "fetch_data.sparql_data.create_quantity_data_observation.get_sparql_results",
         side_effect=[],
     )
-    await update_out_of_date_quantity_observations()
+    assert await update_out_of_date_quantity_observations() == 1

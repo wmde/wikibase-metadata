@@ -19,4 +19,4 @@ async def test_update_out_of_date_property_observations_success(mocker):
         "fetch_data.sparql_data.create_property_popularity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": []}}],
     )
-    await update_out_of_date_property_observations()
+    assert await update_out_of_date_property_observations() == 1

@@ -49,6 +49,7 @@ async def update_out_of_date_connectivity_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_con_obs)
 
 
 async def update_out_of_date_log_first_observations():
@@ -67,6 +68,7 @@ async def update_out_of_date_log_first_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_log_obs)
 
 
 async def update_out_of_date_log_last_observations():
@@ -85,6 +87,7 @@ async def update_out_of_date_log_last_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_log_obs)
 
 
 async def update_out_of_date_property_observations():
@@ -105,6 +108,7 @@ async def update_out_of_date_property_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_prop_obs)
 
 
 async def update_out_of_date_quantity_observations():
@@ -123,6 +127,7 @@ async def update_out_of_date_quantity_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_quant_obs)
 
 
 async def update_out_of_date_recent_changes_observations():
@@ -141,6 +146,7 @@ async def update_out_of_date_recent_changes_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_rc_obs)
 
 
 async def update_out_of_date_software_observations():
@@ -159,6 +165,7 @@ async def update_out_of_date_software_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_soft_obs)
 
 
 async def update_out_of_date_stats_observations():
@@ -177,6 +184,7 @@ async def update_out_of_date_stats_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_stats_obs)
 
 
 async def update_out_of_date_time_to_first_value_observations():
@@ -197,6 +205,7 @@ async def update_out_of_date_time_to_first_value_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_ttfv_obs)
 
 
 async def update_out_of_date_user_observations():
@@ -215,6 +224,7 @@ async def update_out_of_date_user_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_user_obs)
 
 
 async def update_out_of_date_cloud_instances():

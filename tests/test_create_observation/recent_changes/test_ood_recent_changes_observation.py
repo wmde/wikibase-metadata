@@ -93,7 +93,7 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         ],
     )
 
-    await update_out_of_date_recent_changes_observations()
+    assert await update_out_of_date_recent_changes_observations() == 1
 
     async with get_async_session() as async_session:
         query = (
