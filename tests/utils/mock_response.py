@@ -13,7 +13,7 @@ class MockResponse:
     url: str
 
     def raise_for_status(self):
-        """Raise Error for Status Code"""
+        """Raise Error if Status != 200"""
 
         if self.status_code is not None and self.status_code != 200:
             raise HTTPError

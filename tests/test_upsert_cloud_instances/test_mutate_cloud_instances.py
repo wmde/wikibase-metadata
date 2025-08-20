@@ -44,7 +44,7 @@ async def test_query_cloud_instance(mocker):
     assert before_update_result.errors is None
     assert before_update_result.data is not None
     assert_layered_property_count(
-        before_update_result.data, ["wikibaseList", "data"], 2
+        before_update_result.data, ["wikibaseList", "data"], 3
     )
     assert (
         len(
@@ -71,7 +71,7 @@ async def test_query_cloud_instance(mocker):
     assert after_update_result.errors is None
     assert after_update_result.data is not None
     assert_layered_property_count(
-        after_update_result.data, ["wikibaseList", "data"], 10
+        after_update_result.data, ["wikibaseList", "data"], 11
     )
     assert (
         len(

@@ -1,17 +1,27 @@
 """Resolvers"""
 
-from resolvers.add_wikibase import add_wikibase
+from resolvers.add import add_wikibase
 from resolvers.authentication import authenticate
-from resolvers.get_aggregate_created import get_aggregate_created
-from resolvers.get_aggregate_languages import get_language_list
-from resolvers.get_aggregate_property_popularity import (
+from resolvers.get_aggregate import (
+    get_aggregate_created,
     get_aggregate_property_popularity,
+    get_aggregate_quantity,
+    get_aggregate_recent_changes,
+    get_aggregate_statistics,
+    get_aggregate_users,
+    get_aggregate_version,
+    get_language_list,
 )
-from resolvers.get_aggregate_quantity import get_aggregate_quantity
-from resolvers.get_aggregate_recent_changes import get_aggregate_recent_changes
-from resolvers.get_aggregate_software_version import get_aggregate_version
-from resolvers.get_aggregate_statistics import get_aggregate_statistics
-from resolvers.get_aggregate_users import get_aggregate_users
 from resolvers.get_software_list import get_software_list
 from resolvers.get_wikibase import get_wikibase
 from resolvers.get_wikibase_list import get_wikibase_list
+from resolvers.update import (
+    add_wikibase_language,
+    merge_software_by_id,
+    remove_wikibase_language,
+    remove_wikibase_url,
+    set_extension_wbs_bundled,
+    update_wikibase_primary_language,
+    update_wikibase_type,
+    upsert_wikibase_url,
+)

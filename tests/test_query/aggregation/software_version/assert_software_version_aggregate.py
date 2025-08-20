@@ -13,6 +13,7 @@ from tests.utils import (
 def assert_software_version_aggregate(
     returned: dict,
     expected_software_name: str,
+    expected_wikibase_count: int,
     expected_version_string: str,
     expected_version_semver: tuple[Optional[int], Optional[int], Optional[int]],
     expected_version_date: Optional[datetime],
@@ -23,7 +24,7 @@ def assert_software_version_aggregate(
     assert_property_value(returned, "softwareName", expected_software_name)
 
     assert_property_value(returned, "softwareName", expected_software_name)
-    assert_property_value(returned, "wikibaseCount", 1)
+    assert_property_value(returned, "wikibaseCount", expected_wikibase_count)
     assert_layered_property_count(returned, ["versions"], 1)
 
     assert_layered_property_value(
@@ -41,13 +42,16 @@ def assert_software_version_aggregate(
     assert_layered_property_value(
         returned, ["versions", 0, "versionHash"], expected_version_hash
     )
-    assert_layered_property_value(returned, ["versions", 0, "wikibaseCount"], 1)
+    assert_layered_property_value(
+        returned, ["versions", 0, "wikibaseCount"], expected_wikibase_count
+    )
 
-    assert_semver_aggregate(returned, expected_version_semver)
+    assert_semver_aggregate(returned, expected_wikibase_count, expected_version_semver)
 
 
 def assert_semver_aggregate(
     returned: dict,
+    expected_wikibase_count: int,
     expected_version_semver: tuple[Optional[int], Optional[int], Optional[int]],
 ):
     """Assert SemVer Aggregate"""
@@ -62,7 +66,9 @@ def assert_semver_aggregate(
         ["majorVersions", 0, "version"],
         str(expected_version_major) if expected_version_major is not None else None,
     )
-    assert_layered_property_value(returned, ["majorVersions", 0, "wikibaseCount"], 1)
+    assert_layered_property_value(
+        returned, ["majorVersions", 0, "wikibaseCount"], expected_wikibase_count
+    )
     if expected_version_major is None:
         assert_layered_property_value(
             returned, ["majorVersions", 0, "minorVersions"], None
@@ -77,7 +83,9 @@ def assert_semver_aggregate(
             f"{expected_version_major}.{expected_version_minor}",
         )
         assert_layered_property_value(
-            returned, ["majorVersions", 0, "minorVersions", 0, "wikibaseCount"], 1
+            returned,
+            ["majorVersions", 0, "minorVersions", 0, "wikibaseCount"],
+            expected_wikibase_count,
         )
         assert_layered_property_count(
             returned, ["majorVersions", 0, "minorVersions", 0, "patchVersions"], 1
@@ -102,5 +110,5 @@ def assert_semver_aggregate(
                 0,
                 "wikibaseCount",
             ],
-            1,
+            expected_wikibase_count,
         )
