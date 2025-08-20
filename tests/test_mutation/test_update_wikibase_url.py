@@ -297,3 +297,47 @@ async def test_update_wikibase_url():
         ["wikibase", "urls", "sparqlEndpointUrl"],
         expected_value="https://query.example.com/sparql",
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
+async def test_update_wikibase_article_path_fail():
+    """Update Wikibase URL Fail"""
+
+    update_result = await test_schema.execute(
+        UPSERT_WIKIBASE_URL_MUTATION,
+        variable_values={
+            "wikibaseId": 1,
+            "url": "https://example.com/wiki",
+            "urlType": "ARTICLE_PATH",
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert update_result.errors is not None
+    assert (
+        update_result.errors[0].message
+        == "WikibaseURLType.ARTICLE_PATH must not be full URL, https://example.com/wiki"
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
+async def test_update_wikibase_base_url_fail():
+    """Update Wikibase URL Fail"""
+
+    update_result = await test_schema.execute(
+        UPSERT_WIKIBASE_URL_MUTATION,
+        variable_values={
+            "wikibaseId": 1,
+            "url": "localhost/wikibase",
+            "urlType": "BASE_URL",
+        },
+        context_value=get_mock_context("test-auth-token"),
+    )
+    assert update_result.errors is not None
+    assert (
+        update_result.errors[0].message
+        == "WikibaseURLType.BASE_URL must be full URL, localhost/wikibase"
+    )
