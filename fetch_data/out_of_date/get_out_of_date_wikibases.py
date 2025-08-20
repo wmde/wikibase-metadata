@@ -92,6 +92,14 @@ def get_wikibase_with_out_of_date_time_to_first_value_obs_query() -> (
     query = select(WikibaseModel).where(
         and_(
             WikibaseModel.checked,
+            or_(
+                # pylint: disable-next=singleton-comparison
+                WikibaseModel.wikibase_type == None,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
+            ),
             WikibaseModel.script_path.has(WikibaseURLModel.id),
             not_(
                 WikibaseModel.time_to_first_value_observations.any(

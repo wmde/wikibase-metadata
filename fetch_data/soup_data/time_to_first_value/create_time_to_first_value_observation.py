@@ -35,19 +35,23 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
             observation.initiation_date = await get_creation_date(wikibase, "Main_Page")
 
+            returned = True
             for exponent in range(0, 7):
-                returned = False
-                for nudge in range(0, 5):
-                    i = pow(10, exponent) + nudge
-                    if not returned:
-                        try:
-                            c = await get_creation_date(wikibase, f"Item:Q{i}")
-                            observation.item_date_models.append(
-                                WikibaseItemDateModel(item_number=i, creation_date=c)
-                            )
-                            returned = True
-                        except requests.HTTPError:
-                            pass
+                if returned:
+                    returned = False
+                    for nudge in range(0, 5):
+                        i = pow(10, exponent) + nudge
+                        if not returned:
+                            try:
+                                c = await get_creation_date(wikibase, f"Item:Q{i}")
+                                observation.item_date_models.append(
+                                    WikibaseItemDateModel(
+                                        item_number=i, creation_date=c
+                                    )
+                                )
+                                returned = True
+                            except requests.HTTPError:
+                                pass
 
             observation.returned_data = True
         except (
@@ -61,7 +65,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
         ):
             logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
             observation.returned_data = False
-        except HTTPError:
+        except (AssertionError, HTTPError):
             logger.warning(
                 "TimeToFirstValueDataError",
                 # exc_info=True,
@@ -88,10 +92,12 @@ async def get_creation_date(wikibase: WikibaseModel, title: str) -> datetime:
         requests.get,
         wikibase.index_api_url()
         + dict_to_url({"title": title, "action": "history", "dir": "prev"}),
+        timeout=10,
     )
     result.raise_for_status()
     soup = BeautifulSoup(result.content, "html.parser")
-    history = soup.find("ul", attrs={"id": "pagehistory"})
+    history = soup.find(["section", "ul"], attrs={"id": "pagehistory"})
+    assert history is not None
     date_links = history.find_all("a", attrs={"class": "mw-changeslist-date"})
     dates = [
         datetime.strptime(a.string, "%H:%M, %d %B %Y") for a in date_links if a.string
