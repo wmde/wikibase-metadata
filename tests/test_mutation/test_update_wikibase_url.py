@@ -261,7 +261,7 @@ async def test_update_wikibase_url():
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "sparqlEndpointUrl"],
-        expected_value="http://query.example.com/sparql-wrong",
+        expected_value="https://query.example.com/sparql-wrong",
     )
 
     update_result = await test_schema.execute(
