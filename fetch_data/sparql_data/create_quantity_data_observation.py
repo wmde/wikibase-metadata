@@ -96,7 +96,7 @@ async def try_to_get_result(wikibase, query, offset):
     full_query = query + " LIMIT 1 OFFSET " + str(offset)
     print(full_query)
     logger.info(full_query)
-    results = await get_sparql_results_handle_429(
+    results = await get_sparql_results(
         wikibase.sparql_endpoint_url.url, full_query, "TODO"
     )
     print(results)
@@ -157,7 +157,7 @@ async def compile_quantity_observation(
             query = "SELECT (COUNT(*) AS ?count) WHERE {"
             query += query_where
             query += "}"
-            results = await get_sparql_results_handle_429(
+            results = await get_sparql_results(
                 wikibase.sparql_endpoint_url.url, query, label
             )
             count_value = int(results["results"]["bindings"][0]["count"]["value"])
@@ -189,7 +189,9 @@ async def compile_quantity_observation(
                 )
 
         if count_value is not None:
-            logger.info(f"Resolved {count_value} for {attribute_name} on wikibase {wikibase.id}")
+            logger.info(
+                f"Resolved {count_value} for {attribute_name} on wikibase {wikibase.id}"
+            )
             setattr(observation, attribute_name, count_value)
             observation.returned_data = True
 
