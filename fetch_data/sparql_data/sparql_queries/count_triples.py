@@ -1,5 +1,5 @@
 """Count Triples"""
 
-COUNT_TRIPLES_QUERY = (
-    """SELECT (COUNT(*) AS ?count) WHERE { ?item ?property ?object. }"""
-)
+COUNT_TRIPLES_QUERY_WHERE = """
+    ?item ?property ?object.
+"""

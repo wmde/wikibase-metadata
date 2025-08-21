@@ -1,5 +1,5 @@
 """Count Properties"""
 
-COUNT_PROPERTIES_QUERY = """SELECT (COUNT(*) AS ?count) WHERE {
+COUNT_PROPERTIES_QUERY_WHERE = """
   ?property a wikibase:Property.
-}"""
+"""
