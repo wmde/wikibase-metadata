@@ -50,7 +50,6 @@ async def get_recent_changes_list(
         request_string = get_recent_changes_param_string(
             limit=limit, continue_from=next_from, bots=bots
         )
-        logger.info(f"querying {api_url+request_string}")
         query_data = await fetch_api_data(api_url + request_string)
 
         for record in query_data["query"]["recentchanges"]:

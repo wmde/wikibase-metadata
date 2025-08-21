@@ -10,7 +10,6 @@ from fetch_data.sparql_data.pull_wikidata import (
     SPARQLResponseMalformed,
     get_sparql_results,
 )
-from fetch_data.sparql_data.pull_wikidata import get_sparql_results_handle_429
 from fetch_data.sparql_data.sparql_queries import (
     COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY_WHERE,
     COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY_WHERE,
@@ -161,36 +160,91 @@ async def compile_quantity_observation(
                 wikibase.sparql_endpoint_url.url, query, label
             )
             count_value = int(results["results"]["bindings"][0]["count"]["value"])
-        except (HTTPError, EndPointInternalError):
-            logger.warning(
-                f"QuantityDataError: straight query failed: {query}",
-                exc_info=True,
-                # stack_info=True,
+
+        except (
+            ConnectTimeoutError,
+            ConnectionError,
+            EndPointNotFound,
+            MaxRetryError,
+            NameResolutionError,
+            ReadTimeout,
+            SSLError,
+            TimeoutError,
+            TooManyRedirects,
+        ):
+            logger.error(
+                "SuspectWikibaseOfflineError",
                 extra={"wikibase": wikibase.id},
+                exc_info=True,
+                stack_info=True,
             )
 
-        # straight query failed, try to find count via limit-1-offset binary search
+        except (HTTPError, SPARQLResponseMalformed, URLError):
+            logger.warning(
+                "QuantityDataError",
+                extra={"wikibase": wikibase.id},
+                exc_info=True,
+                stack_info=True,
+            )
+
+        except EndPointInternalError:
+            logger.warning(
+                f"Failed to get count via sparql with simple query: {query}",
+                extra={"wikibase": wikibase.id},
+                # exc_info=True,
+                # stack_info=True,
+            )
+
+        # simple query failed, try to find count via limit-1-offset binary search
         if count_value is None:
             logger.warning(
-                "Trying to find count via limit-1-offset binary search "
-                f"for label {label} on wikibase {wikibase.id}"
+                "Trying to get count via limit-1-offset binary search for '{query_where}'",
+                extra={"wikibase": wikibase.id},
             )
             try:
                 query = "SELECT * WHERE {\n"
                 query += query_where
                 query += "\n}"
                 count_value = await find_count_limit1_last_offset(wikibase, query)
-            except (HTTPError, EndPointInternalError):
+
+            except (
+                ConnectTimeoutError,
+                ConnectionError,
+                EndPointNotFound,
+                MaxRetryError,
+                NameResolutionError,
+                ReadTimeout,
+                SSLError,
+                TimeoutError,
+                TooManyRedirects,
+            ):
+                logger.error(
+                    "SuspectWikibaseOfflineError",
+                    extra={"wikibase": wikibase.id},
+                    exc_info=True,
+                    stack_info=True,
+                )
+
+            except (HTTPError, SPARQLResponseMalformed, URLError):
+                logger.warning(
+                    "QuantityDataError",
+                    extra={"wikibase": wikibase.id},
+                    exc_info=True,
+                    stack_info=True,
+                )
+
+            except EndPointInternalError:
                 logger.warning(
                     f"QuantityDataError: limit-1-offset query failed: {query}",
-                    exc_info=True,
+                    # exc_info=True,
                     # stack_info=True,
                     extra={"wikibase": wikibase.id},
                 )
 
         if count_value is not None:
-            logger.info(
-                f"Resolved {count_value} for {attribute_name} on wikibase {wikibase.id}"
+            logger.debug(
+                f"Got {attribute_name}={count_value}",
+                extra={"wikibase": wikibase.id},
             )
             setattr(observation, attribute_name, count_value)
             observation.returned_data = True
