@@ -7,11 +7,15 @@ from fetch_data.sparql_data.sparql_queries.count_external_identifier_statements 
     COUNT_EXTERNAL_IDENTIFIER_STATEMENTS_QUERY_WHERE,
 )
 from fetch_data.sparql_data.sparql_queries.count_items import COUNT_ITEMS_QUERY_WHERE
-from fetch_data.sparql_data.sparql_queries.count_lexemes import COUNT_LEXEMES_QUERY_WHERE
+from fetch_data.sparql_data.sparql_queries.count_lexemes import (
+    COUNT_LEXEMES_QUERY_WHERE,
+)
 from fetch_data.sparql_data.sparql_queries.count_properties import (
     COUNT_PROPERTIES_QUERY_WHERE,
 )
-from fetch_data.sparql_data.sparql_queries.count_triples import COUNT_TRIPLES_QUERY_WHERE
+from fetch_data.sparql_data.sparql_queries.count_triples import (
+    COUNT_TRIPLES_QUERY_WHERE,
+)
 from fetch_data.sparql_data.sparql_queries.count_url_properties import (
     COUNT_URL_PROPERTIES_QUERY_WHERE,
 )
