@@ -24,6 +24,7 @@ from fetch_data.out_of_date import (
     update_out_of_date_recent_changes_observations,
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
+    update_out_of_date_time_to_first_value_observations,
     update_out_of_date_user_observations,
     update_out_of_date_cloud_instances,
 )
@@ -35,6 +36,7 @@ from fetch_data.sparql_data import (
 from fetch_data.soup_data import (
     create_software_version_observation,
     create_special_statistics_observation,
+    create_time_to_first_value_observation,
     get_update_extension_query,
     update_software_data,
 )

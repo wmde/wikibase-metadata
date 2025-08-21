@@ -17,6 +17,7 @@ from model.strawberry.output.observation import (
     WikibaseRecentChangesObservationStrawberryModel,
     WikibaseSoftwareVersionObservationStrawberryModel,
     WikibaseStatisticsObservationStrawberryModel,
+    WikibaseTimeToFirstValueObservationStrawberryModel,
     WikibaseUserObservationStrawberryModel,
 )
 from model.strawberry.output.wikibase_language_set import (
@@ -232,6 +233,35 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseStatisticsObservationStrawberryModel.marshal(o)
                     for o in model.statistics_observations
+                ]
+            )
+
+    @strawberry.field(description="Time to First Value Data")
+    async def time_to_first_value_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseTimeToFirstValueObservationStrawberryModel
+    ]:
+        """Summon Time to First Value Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(
+                            joinedload(WikibaseModel.time_to_first_value_observations)
+                        )
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseTimeToFirstValueObservationStrawberryModel.marshal(o)
+                    for o in model.time_to_first_value_observations
                 ]
             )
 

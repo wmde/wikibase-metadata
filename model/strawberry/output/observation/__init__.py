@@ -30,6 +30,9 @@ from model.strawberry.output.observation.statistics import (
     WikibaseStatisticsAggregateStrawberryModel,
     WikibaseStatisticsObservationStrawberryModel,
 )
+from model.strawberry.output.observation.time_to_first_value import (
+    WikibaseTimeToFirstValueObservationStrawberryModel,
+)
 from model.strawberry.output.observation.user import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseUserGroupStrawberryModel,

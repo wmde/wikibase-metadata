@@ -13,6 +13,7 @@ from model.database import (
     WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
     WikibaseURLModel,
     WikibaseUserObservationModel,
 )
@@ -80,6 +81,58 @@ async def get_wikibase_list_with_out_of_date_connectivity_observations() -> (
 
     return await get_wikibase_list(
         get_wikibase_with_out_of_date_connectivity_obs_query()
+    )
+
+
+def get_wikibase_with_out_of_date_time_to_first_value_obs_query() -> (
+    Select[tuple[WikibaseModel]]
+):
+    """Query Wikibases with Out of Date Time to First Value Observations"""
+
+    query = select(WikibaseModel).where(
+        and_(
+            WikibaseModel.checked,
+            or_(
+                # pylint: disable-next=singleton-comparison
+                WikibaseModel.wikibase_type == None,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
+            ),
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            not_(
+                WikibaseModel.time_to_first_value_observations.any(
+                    or_(
+                        WikibaseTimeToFirstValueObservationModel.observation_date
+                        > (
+                            datetime.now(tz=timezone.utc)
+                            - timedelta(weeks=40, hours=SAFE_HOUR_MARGIN)
+                        ),
+                        and_(
+                            WikibaseTimeToFirstValueObservationModel.returned_data,
+                            WikibaseTimeToFirstValueObservationModel.observation_date
+                            > (
+                                datetime.now(tz=timezone.utc)
+                                - timedelta(weeks=52, hours=SAFE_HOUR_MARGIN)
+                            ),
+                        ),
+                    )
+                )
+            ),
+        )
+    )
+
+    return query
+
+
+async def get_wikibase_list_with_out_of_date_time_to_first_value_observations() -> (
+    list[WikibaseModel]
+):
+    """Get List of Wikibases with Out of Date Time to First Value Observations"""
+
+    return await get_wikibase_list(
+        get_wikibase_with_out_of_date_time_to_first_value_obs_query()
     )
 
 

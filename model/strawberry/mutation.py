@@ -12,6 +12,7 @@ from fetch_data import (
     create_recent_changes_observation,
     create_software_version_observation,
     create_special_statistics_observation,
+    create_time_to_first_value_observation,
     create_user_observation,
     update_cloud_instances,
 )
@@ -97,6 +98,17 @@ class Mutation:
 
         authenticate(info)
         return await create_special_statistics_observation(wikibase_id)
+
+    @strawberry.mutation(
+        description="Fetch Time to First Value Data from Specified Wikibase Instance"
+    )
+    async def fetch_time_to_first_value_data(
+        self, info: Info, wikibase_id: int
+    ) -> bool:
+        """Fetch Time to First Value Data from Specified Wikibase Instance"""
+
+        authenticate(info)
+        return await create_time_to_first_value_observation(wikibase_id)
 
     @strawberry.mutation(description="Fetch User Data from Specified Wikibase Instance")
     async def fetch_user_data(self, info: Info, wikibase_id: int) -> bool:

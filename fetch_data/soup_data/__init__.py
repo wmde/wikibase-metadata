@@ -8,3 +8,6 @@ from fetch_data.soup_data.software import (
     get_update_extension_query,
     update_software_data,
 )
+from fetch_data.soup_data.time_to_first_value import (
+    create_time_to_first_value_observation,
+)
