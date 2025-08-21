@@ -18,7 +18,7 @@ async def get_sparql_results(
     endpoint_url: str,
     query: str,
     query_name: str,
-    query_timeout: int = 60,
+    query_timeout: int = 0,
     max_retries: int = 5,
     backup_time_init: int = 8,
 ) -> dict:
