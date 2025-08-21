@@ -6,6 +6,8 @@ import logging
 DEFAULT_ARGS = {
     "name",
     "msg",
+    "message",
+    "asctime",
     "args",
     "levelname",
     "levelno",
@@ -22,6 +24,7 @@ DEFAULT_ARGS = {
     "relativeCreated",
     "thread",
     "threadName",
+    "taskName",
     "processName",
     "process",
     "wikibase",
@@ -34,19 +37,20 @@ class OptionalExtraFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """Format Record"""
 
-        base_fmt = "%(asctime)s | %(levelname)s | %(message)s"
-        wikibase_fmt = (
-            "%(asctime)s | %(levelname)s | wikibase %(wikibase)d | %(message)s"
-        )
+        fmt = "%(asctime)s | "
 
         if "wikibase" in record.__dict__.keys():
-            fmt = wikibase_fmt
-        else:
-            fmt = base_fmt
+            fmt += "wikibase:%(wikibase)d | "
+
+        if "taskName" in record.__dict__.keys():
+            fmt += "%(taskName)s | "
+
+        fmt += "%(levelname)s | "
+        fmt += "%(message)s"
 
         for k in record.__dict__.keys():
             if k not in DEFAULT_ARGS:
-                fmt += f"\n\t{k}: {record.__dict__.get(k)}"
+                fmt += f" | {k}:{record.__dict__.get(k)}"
 
         self._style._fmt = fmt  # pylint: disable=protected-access
 
