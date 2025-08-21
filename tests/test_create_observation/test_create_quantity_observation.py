@@ -1,12 +1,18 @@
 """Test create_quantity_observation"""
 
 import time
+from unittest.mock import AsyncMock, patch
 from urllib.error import HTTPError
+
 import pytest
+
 from fetch_data import create_quantity_observation
+from fetch_data.sparql_data.create_quantity_data_observation import (
+    find_count_limit1_last_offset,
+)
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
-from unittest.mock import AsyncMock, patch
+
 
 FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchQuantityData(wikibaseId: $wikibaseId)
@@ -81,11 +87,6 @@ async def test_create_quantity_observation_failure(mocker):
     assert success is False
 
 
-from fetch_data.sparql_data.create_quantity_data_observation import (
-    find_count_limit1_last_offset,
-)
-
-
 @pytest.mark.asyncio
 async def test_find_count_limit1_last_offset_success():
     """Test find_count_limit1_last_offset with successful results at various offsets"""
@@ -110,16 +111,17 @@ async def test_find_count_limit1_last_offset_success():
     call_counts = [3, 6, 5, 6, 5, 6, 10, 10, 10, 22, 27, 36, 36]
 
     for target_value, call_count in zip(target_values, call_counts):
-        print("---")
         with patch(
             "fetch_data.sparql_data.create_quantity_data_observation.try_to_get_result",
             new_callable=AsyncMock,
         ) as mock:
             # Mock the function to return True only when offset < target_value
+            # pylint: disable-next=cell-var-from-loop
             mock.side_effect = lambda wikibase, query, offset: offset <= target_value
 
             # Create a mock wikibase object
             class MockWikibase:
+                "A Wikibase that is just an illusion....... Happy now, pylint? -.-"
                 id = 1
                 sparql_endpoint_url = type(
                     "obj", (object,), {"url": "http://example.com/sparql"}

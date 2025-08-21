@@ -91,6 +91,8 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
 
 
 async def try_to_get_result(wikibase, query, offset, label):
+    """Try to get a sparql result for a query at a given offset"""
+
     full_query = query + " LIMIT 1 OFFSET " + str(offset)
     results = await get_sparql_results(
         wikibase.sparql_endpoint_url.url, full_query, label
@@ -101,6 +103,9 @@ async def try_to_get_result(wikibase, query, offset, label):
 
 
 async def find_count_limit1_last_offset(wikibase, query, label):
+    """Try to get the count of a query using binary searching
+    the last limit 1 offset value that returns a result"""
+
     if not await try_to_get_result(wikibase, query, 0, label):
         return 0
 
@@ -110,10 +115,10 @@ async def find_count_limit1_last_offset(wikibase, query, label):
     while await try_to_get_result(wikibase, query, offset, label):
         offset *= 10
 
-    async def _find(min, max):
+    async def _find(min_val, max_val):
         # Binary search for the highest offset that yields a result
-        left, right = min, max
-        result_offset = min - 1
+        left, right = min_val, max_val
+        result_offset = min_val - 1
 
         while left <= right:
             mid = (left + right) // 2
@@ -199,7 +204,9 @@ async def compile_quantity_observation(
                 query = "SELECT * WHERE {\n"
                 query += query_where
                 query += "\n}"
-                count_value = await find_count_limit1_last_offset(wikibase, query, label)
+                count_value = await find_count_limit1_last_offset(
+                    wikibase, query, label
+                )
 
             except (
                 ConnectTimeoutError,
