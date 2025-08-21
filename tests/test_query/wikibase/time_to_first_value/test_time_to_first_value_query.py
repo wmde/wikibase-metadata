@@ -1,6 +1,5 @@
 """Test Recent Changes Observation Query"""
 
-
 import pytest
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
