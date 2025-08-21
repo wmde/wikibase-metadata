@@ -46,13 +46,13 @@ async def get_sparql_results(
                 )
                 raise exc
 
-            else:
-                logger.warning(
-                    f"SparQL Query '{query_name}' on '{endpoint_url}' received 429, sleeping for {backup_time} seconds"
-                )
-                time.sleep(backup_time)
-                backup_time = backup_time * 2
-                retires += 1
+            logger.warning(
+                f"SparQL Query '{query_name}' on '{endpoint_url}' "
+                f"received 429, sleeping for {backup_time} seconds"
+            )
+            time.sleep(backup_time)
+            backup_time = backup_time * 2
+            retires += 1
 
 
 class SPARQLResponseMalformed(SPARQLWrapperException):
