@@ -90,6 +90,47 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         return observation.returned_data
 
 
+async def try_to_get_result(wikibase, query, offset, label):
+    full_query = query + " LIMIT 1 OFFSET " + str(offset)
+    results = await get_sparql_results(
+        wikibase.sparql_endpoint_url.url, full_query, label
+    )
+    if results["results"]["bindings"]:
+        return True
+    return False
+
+
+async def find_count_limit1_last_offset(wikibase, query, label):
+    if not await try_to_get_result(wikibase, query, 0, label):
+        return 0
+
+    offset = 10
+
+    # Find the magnitude we are aiming at
+    while await try_to_get_result(wikibase, query, offset, label):
+        offset *= 10
+
+    async def _find(min, max):
+        # Binary search for the highest offset that yields a result
+        left, right = min, max
+        result_offset = min - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+            # logger.debug(
+            #     f"left: {left}, right: {right}, mid: {mid}, result_offset: {result_offset}"
+            # )
+            if await try_to_get_result(wikibase, query, mid, label):
+                left = mid + 1
+                result_offset = mid
+            else:
+                right = mid - 1
+
+        return result_offset
+
+    return await _find(0, offset)
+
+
 async def compile_quantity_observation(
     wikibase: WikibaseModel,
 ) -> WikibaseQuantityObservationModel:
@@ -147,7 +188,55 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
-            continue  # try the other queries for what it is worth
+
+        # simple query failed, try to find count via limit-1-offset binary search
+        if count_value is None:
+            logger.warning(
+                f"Trying to get count via limit-1-offset binary search for '{query_where}'",
+                extra={"wikibase": wikibase.id},
+            )
+            try:
+                query = "SELECT * WHERE {\n"
+                query += query_where
+                query += "\n}"
+                count_value = await find_count_limit1_last_offset(wikibase, query, label)
+
+            except (
+                ConnectTimeoutError,
+                ConnectionError,
+                EndPointNotFound,
+                MaxRetryError,
+                NameResolutionError,
+                ReadTimeout,
+                SSLError,
+                TimeoutError,
+                TooManyRedirects,
+            ) as e:
+                logger.error(
+                    f"SuspectWikibaseOfflineError: {e}",
+                    extra={"wikibase": wikibase.id},
+                    # exc_info=True,
+                    # stack_info=True,
+                )
+                continue
+
+            except (HTTPError, SPARQLResponseMalformed, URLError) as e:
+                logger.warning(
+                    f"QuantityDataError: {e}",
+                    extra={"wikibase": wikibase.id},
+                    # exc_info=True,
+                    # stack_info=True,
+                )
+                continue
+
+            except EndPointInternalError:
+                logger.warning(
+                    f"QuantityDataError: limit-1-offset query failed: {query}",
+                    extra={"wikibase": wikibase.id},
+                    # exc_info=True,
+                    # stack_info=True,
+                )
+                continue
 
         assert count_value is not None
         logger.debug(
