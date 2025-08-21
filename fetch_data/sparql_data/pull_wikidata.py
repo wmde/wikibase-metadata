@@ -39,7 +39,11 @@ async def get_sparql_results(
 
         except HTTPError as exc:
             if exc.code != 429 or retires >= max_retries:
-                logger.warning("SPARQLError", exc_info=True, stack_info=True)
+                logger.warning(
+                    f"SPARQLError: {exc}",
+                    # exc_info=True,
+                    # stack_info=True,
+                )
                 raise exc
 
             else:

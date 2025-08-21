@@ -146,9 +146,8 @@ async def compile_quantity_observation(
     observation = WikibaseQuantityObservationModel()
     observation.returned_data = False
 
-    async def _fetch_count_for_query(query_where, label, attribute_name):
-        logger.info(f"fetching {label} wikibase {wikibase.id}")
-        print(f"fetching {label} wikibase {wikibase.id}")
+    for query_where, label, attribute_name in COUNT_QUERIES_WHERE:
+        logger.info(f"Fetching {label}", extra={"wikibase": wikibase.id})
         count_value = None
 
         # straight query, just as it is, counting the number of rows
@@ -171,21 +170,23 @@ async def compile_quantity_observation(
             SSLError,
             TimeoutError,
             TooManyRedirects,
-        ):
+        ) as e:
             logger.error(
-                "SuspectWikibaseOfflineError",
+                f"SuspectWikibaseOfflineError: {e}",
                 extra={"wikibase": wikibase.id},
-                exc_info=True,
-                stack_info=True,
+                # exc_info=True,
+                # stack_info=True,
             )
+            continue
 
-        except (HTTPError, SPARQLResponseMalformed, URLError):
+        except (HTTPError, SPARQLResponseMalformed, URLError) as e:
             logger.warning(
-                "QuantityDataError",
+                f"QuantityDataError: {e}",
                 extra={"wikibase": wikibase.id},
-                exc_info=True,
-                stack_info=True,
+                # exc_info=True,
+                # stack_info=True,
             )
+            continue
 
         except EndPointInternalError:
             logger.warning(
@@ -217,39 +218,39 @@ async def compile_quantity_observation(
                 SSLError,
                 TimeoutError,
                 TooManyRedirects,
-            ):
+            ) as e:
                 logger.error(
-                    "SuspectWikibaseOfflineError",
+                    f"SuspectWikibaseOfflineError: {e}",
                     extra={"wikibase": wikibase.id},
-                    exc_info=True,
-                    stack_info=True,
+                    # exc_info=True,
+                    # stack_info=True,
                 )
+                continue
 
-            except (HTTPError, SPARQLResponseMalformed, URLError):
+            except (HTTPError, SPARQLResponseMalformed, URLError) as e:
                 logger.warning(
-                    "QuantityDataError",
+                    f"QuantityDataError: {e}",
                     extra={"wikibase": wikibase.id},
-                    exc_info=True,
-                    stack_info=True,
+                    # exc_info=True,
+                    # stack_info=True,
                 )
+                continue
 
             except EndPointInternalError:
                 logger.warning(
                     f"QuantityDataError: limit-1-offset query failed: {query}",
+                    extra={"wikibase": wikibase.id},
                     # exc_info=True,
                     # stack_info=True,
-                    extra={"wikibase": wikibase.id},
                 )
+                continue
 
-        if count_value is not None:
-            logger.debug(
-                f"Got {attribute_name}={count_value}",
-                extra={"wikibase": wikibase.id},
-            )
-            setattr(observation, attribute_name, count_value)
-            observation.returned_data = True
-
-    for query_where, label, attribute_name in COUNT_QUERIES_WHERE:
-        await _fetch_count_for_query(query_where, label, attribute_name)
+        assert count_value is not None
+        logger.debug(
+            f"Got {attribute_name}={count_value}",
+            extra={"wikibase": wikibase.id},
+        )
+        setattr(observation, attribute_name, count_value)
+        observation.returned_data = True
 
     return observation
