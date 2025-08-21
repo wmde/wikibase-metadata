@@ -129,7 +129,7 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
-            continue
+            break # no need to try the other queries
 
         except (HTTPError, SPARQLResponseMalformed, URLError) as e:
             logger.warning(
@@ -138,7 +138,7 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
-            continue
+            continue # who knows, lets try the other queries
 
         except EndPointInternalError:
             logger.warning(
@@ -147,7 +147,7 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
-            continue
+            continue # try the other queries for what it is worth
 
         assert count_value is not None
         logger.debug(
