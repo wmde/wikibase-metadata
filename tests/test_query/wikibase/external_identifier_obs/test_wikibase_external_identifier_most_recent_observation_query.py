@@ -5,8 +5,7 @@ from tests.test_schema import test_schema
 from tests.utils import assert_property_value, get_mock_context
 
 
-WIKIBASE_EXTERNAL_IDENTIFIER_MOST_RECENT_OBSERVATION_QUERY = (
-    """
+WIKIBASE_EXTERNAL_IDENTIFIER_MOST_RECENT_OBSERVATION_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -22,7 +21,6 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 """
-)
 
 
 @pytest.mark.asyncio
@@ -51,4 +49,3 @@ async def test_wikibase_external_identifier_most_recent_observation_query():
     assert_property_value(most_recent, "returnedData", True)
     assert_property_value(most_recent, "totalExternalIdentifierProperties", 16)
     assert_property_value(most_recent, "totalExternalIdentifierStatements", 32)
-

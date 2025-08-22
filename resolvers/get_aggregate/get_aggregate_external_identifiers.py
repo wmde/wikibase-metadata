@@ -80,4 +80,3 @@ def get_total_external_identifiers_query(
         ),
     )
     return query
-

@@ -33,12 +33,15 @@ async def test_aggregate_external_identifiers_query():
     assert result.data is not None
 
     assert_layered_property_value(
-        result.data, ["aggregateExternalIdentifiers", "totalExternalIdentifierProperties"], 16
+        result.data,
+        ["aggregateExternalIdentifiers", "totalExternalIdentifierProperties"],
+        16,
     )
     assert_layered_property_value(
-        result.data, ["aggregateExternalIdentifiers", "totalExternalIdentifierStatements"], 32
+        result.data,
+        ["aggregateExternalIdentifiers", "totalExternalIdentifierStatements"],
+        32,
     )
     assert_layered_property_value(
         result.data, ["aggregateExternalIdentifiers", "wikibaseCount"], 1
     )
-

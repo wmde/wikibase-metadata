@@ -51,8 +51,7 @@ def get_total_urls_query(
         )
         .join(
             filtered_subquery,
-            onclause=WikibaseURLObservationModel.wikibase_id
-            == filtered_subquery.c.id,
+            onclause=WikibaseURLObservationModel.wikibase_id == filtered_subquery.c.id,
         )
         .where(
             WikibaseURLObservationModel.returned_data,
@@ -76,4 +75,3 @@ def get_total_urls_query(
         ),
     )
     return query
-

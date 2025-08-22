@@ -34,4 +34,3 @@ class WikibaseURLObservationStrawberryModel(WikibaseObservationStrawberryModel):
             total_url_properties=model.total_url_properties,
             total_url_statements=model.total_url_statements,
         )
-

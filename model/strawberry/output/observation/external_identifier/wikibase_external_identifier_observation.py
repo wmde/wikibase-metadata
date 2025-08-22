@@ -38,4 +38,3 @@ class WikibaseExternalIdentifierObservationStrawberryModel(
             total_external_identifier_properties=model.total_external_identifier_properties,
             total_external_identifier_statements=model.total_external_identifier_statements,
         )
-

@@ -19,4 +19,3 @@ class WikibaseExternalIdentifierAggregateStrawberryModel:
     wikibase_count: int = strawberry.field(
         description="Wikibases with External Identifier Data"
     )
-

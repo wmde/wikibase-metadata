@@ -6,4 +6,3 @@ from model.strawberry.output.observation.url.wikibase_url_aggregate import (
 from model.strawberry.output.observation.url.wikibase_url_observation import (
     WikibaseURLObservationStrawberryModel,
 )
-

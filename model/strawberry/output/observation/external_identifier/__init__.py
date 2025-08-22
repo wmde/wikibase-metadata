@@ -6,4 +6,3 @@ from model.strawberry.output.observation.external_identifier.wikibase_external_i
 from model.strawberry.output.observation.external_identifier.wikibase_external_identifier_observation import (
     WikibaseExternalIdentifierObservationStrawberryModel,
 )
-

@@ -24,4 +24,3 @@ class WikibaseURLObservationModel(ModelBase, WikibaseObservationModel):
         "total_url_statements", Integer, nullable=True
     )
     """Total Statements using Url Properties"""
-

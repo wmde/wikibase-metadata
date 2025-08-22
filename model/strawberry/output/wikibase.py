@@ -186,9 +186,7 @@ class WikibaseStrawberryModel:
     @strawberry.field(description="URL Data")
     async def url_observations(
         self,
-    ) -> WikibaseObservationSetStrawberryModel[
-        WikibaseURLObservationStrawberryModel
-    ]:
+    ) -> WikibaseObservationSetStrawberryModel[WikibaseURLObservationStrawberryModel]:
         """Summon URL Data on Specific Request"""
 
         async with get_async_session() as async_session:

@@ -17,4 +17,3 @@ class WikibaseURLAggregateStrawberryModel:
     )
 
     wikibase_count: int = strawberry.field(description="Wikibases with URL Data")
-

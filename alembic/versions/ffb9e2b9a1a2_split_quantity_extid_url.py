@@ -206,4 +206,3 @@ def downgrade() -> None:
     # Drop new tables
     op.drop_table("wikibase_url_observation")
     op.drop_table("wikibase_external_identifier_observation")
-

@@ -24,4 +24,3 @@ class WikibaseExternalIdentifierObservationModel(ModelBase, WikibaseObservationM
         "total_external_identifier_statements", Integer, nullable=True
     )
     """Total Statements using External Identifier Properties"""
-

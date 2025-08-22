@@ -37,7 +37,4 @@ async def test_aggregate_urls_query():
     assert_layered_property_value(
         result.data, ["aggregateUrls", "totalUrlStatements"], 128
     )
-    assert_layered_property_value(
-        result.data, ["aggregateUrls", "wikibaseCount"], 1
-    )
-
+    assert_layered_property_value(result.data, ["aggregateUrls", "wikibaseCount"], 1)

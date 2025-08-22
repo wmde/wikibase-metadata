@@ -191,7 +191,12 @@ async def compile_quantity_observation(
             extra={"wikibase": wikibase.id},
         )
         # Route attribute to the appropriate observation type
-        if attribute_name in {"total_items", "total_lexemes", "total_properties", "total_triples"}:
+        if attribute_name in {
+            "total_items",
+            "total_lexemes",
+            "total_properties",
+            "total_triples",
+        }:
             setattr(quantity_observation, attribute_name, count_value)
             quantity_observation.returned_data = True
         elif attribute_name in {
