@@ -20,7 +20,8 @@ async def get_sparql_results(
     query_name: str,
     query_timeout: int = 0,
     max_retries: int = 5,
-    backup_time_init: int = 8,
+    backup_time_init: float = 8,
+    backup_time_multiplier: float = 2,
 ) -> dict:
     """Get SPARQL Data from a Wikibase async"""
     backup_time = backup_time_init
@@ -51,7 +52,7 @@ async def get_sparql_results(
                 f"received 429, sleeping for {backup_time} seconds"
             )
             time.sleep(backup_time)
-            backup_time = backup_time * 2
+            backup_time = backup_time * backup_time_multiplier
             retires += 1
 
 
