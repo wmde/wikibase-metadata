@@ -58,7 +58,7 @@ async def test_sparql_fail(mocker):
 
     try:
         await get_sparql_results(
-            "https://example.com/query/rdf", "SELECT {?c}", "SELECT QUERY", timeout=20
+            "https://example.com/query/rdf", "SELECT {?c}", "SELECT QUERY"
         )
         assert False
     except JSONDecodeError:
