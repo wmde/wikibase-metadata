@@ -16,6 +16,14 @@ from model.strawberry.output.observation.quantity import (
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
 )
+from model.strawberry.output.observation.external_identifier import (
+    WikibaseExternalIdentifierAggregateStrawberryModel,
+    WikibaseExternalIdentifierObservationStrawberryModel,
+)
+from model.strawberry.output.observation.url import (
+    WikibaseURLAggregateStrawberryModel,
+    WikibaseURLObservationStrawberryModel,
+)
 from model.strawberry.output.observation.recent_changes import (
     WikibaseRecentChangesAggregateStrawberryModel,
     WikibaseRecentChangesObservationStrawberryModel,

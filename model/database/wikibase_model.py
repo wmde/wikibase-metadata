@@ -9,9 +9,11 @@ from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
+    WikibaseExternalIdentifierObservationModel,
     WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseURLObservationModel,
     WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
@@ -265,6 +267,20 @@ class WikibaseModel(ModelBase):
         )
     )
     """Quantity Observations"""
+
+    external_identifier_observations: Mapped[
+        list[WikibaseExternalIdentifierObservationModel]
+    ] = relationship(
+        "WikibaseExternalIdentifierObservationModel",
+        back_populates="wikibase",
+        lazy="select",
+    )
+    """External Identifier Observations"""
+
+    url_observations: Mapped[list[WikibaseURLObservationModel]] = relationship(
+        "WikibaseURLObservationModel", back_populates="wikibase", lazy="select"
+    )
+    """URL Observations"""
 
     software_version_observations: Mapped[
         list[WikibaseSoftwareVersionObservationModel]

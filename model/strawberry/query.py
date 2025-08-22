@@ -11,8 +11,10 @@ from model.strawberry.output import (
     PageNumberType,
     PageSizeType,
     WikibaseLanguageAggregateStrawberryModel,
+    WikibaseExternalIdentifierAggregateStrawberryModel,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
+    WikibaseURLAggregateStrawberryModel,
     WikibaseRecentChangesAggregateStrawberryModel,
     WikibaseSoftwareVersionDoubleAggregateStrawberryModel,
     WikibaseSoftwareStrawberryModel,
@@ -24,8 +26,10 @@ from model.strawberry.output import (
 from resolvers import (
     authenticate,
     get_aggregate_created,
+    get_aggregate_external_identifiers,
     get_aggregate_property_popularity,
     get_aggregate_quantity,
+    get_aggregate_urls,
     get_aggregate_recent_changes,
     get_aggregate_statistics,
     get_aggregate_users,
@@ -163,6 +167,24 @@ class Query:
 
         authenticate(info)
         return await get_aggregate_quantity(wikibase_filter)
+
+    @strawberry.field(description="Aggregated External Identifiers")
+    async def aggregate_external_identifiers(
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
+    ) -> WikibaseExternalIdentifierAggregateStrawberryModel:
+        """Aggregated External Identifiers"""
+
+        authenticate(info)
+        return await get_aggregate_external_identifiers(wikibase_filter)
+
+    @strawberry.field(description="Aggregated URL Properties")
+    async def aggregate_urls(
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
+    ) -> WikibaseURLAggregateStrawberryModel:
+        """Aggregated URL Properties"""
+
+        authenticate(info)
+        return await get_aggregate_urls(wikibase_filter)
 
     @strawberry.field(description="Aggregated Recent Changes")
     async def aggregate_recent_changes(

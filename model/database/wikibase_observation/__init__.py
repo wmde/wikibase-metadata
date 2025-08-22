@@ -17,6 +17,12 @@ from model.database.wikibase_observation.property import (
 from model.database.wikibase_observation.quantity import (
     WikibaseQuantityObservationModel,
 )
+from model.database.wikibase_observation.external_identifier import (
+    WikibaseExternalIdentifierObservationModel,
+)
+from model.database.wikibase_observation.url import (
+    WikibaseURLObservationModel,
+)
 from model.database.wikibase_observation.recent_changes import (
     WikibaseRecentChangesObservationModel,
 )

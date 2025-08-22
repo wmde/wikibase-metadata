@@ -14,6 +14,8 @@ from model.strawberry.output.observation import (
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
+    WikibaseExternalIdentifierObservationStrawberryModel,
+    WikibaseURLObservationStrawberryModel,
     WikibaseRecentChangesObservationStrawberryModel,
     WikibaseSoftwareVersionObservationStrawberryModel,
     WikibaseStatisticsObservationStrawberryModel,
@@ -149,6 +151,62 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseQuantityObservationStrawberryModel.marshal(o)
                     for o in model.quantity_observations
+                ]
+            )
+
+    @strawberry.field(description="External Identifier Data")
+    async def external_identifier_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseExternalIdentifierObservationStrawberryModel
+    ]:
+        """Summon External Identifier Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(
+                            joinedload(WikibaseModel.external_identifier_observations)
+                        )
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseExternalIdentifierObservationStrawberryModel.marshal(o)
+                    for o in model.external_identifier_observations
+                ]
+            )
+
+    @strawberry.field(description="URL Data")
+    async def url_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseURLObservationStrawberryModel
+    ]:
+        """Summon URL Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(joinedload(WikibaseModel.url_observations))
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseURLObservationStrawberryModel.marshal(o)
+                    for o in model.url_observations
                 ]
             )
 

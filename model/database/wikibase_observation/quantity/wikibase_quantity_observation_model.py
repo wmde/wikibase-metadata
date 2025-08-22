@@ -35,22 +35,4 @@ class WikibaseQuantityObservationModel(ModelBase, WikibaseObservationModel):
     )
     """Total Triples"""
 
-    total_external_identifier_properties: Mapped[Optional[int]] = mapped_column(
-        "total_external_identifier_properties", Integer, nullable=True
-    )
-    """Total External Identifier Properties"""
-
-    total_external_identifier_statements: Mapped[Optional[int]] = mapped_column(
-        "total_external_identifier_statements", Integer, nullable=True
-    )
-    """Total Statements using External Identifier Properties"""
-
-    total_url_properties: Mapped[Optional[int]] = mapped_column(
-        "total_url_properties", Integer, nullable=True
-    )
-    """Total Url Properties"""
-
-    total_url_statements: Mapped[Optional[int]] = mapped_column(
-        "total_url_statements", Integer, nullable=True
-    )
-    """Total Statements using Url Properties"""
+    # External identifier and URL related counts moved to dedicated observations

@@ -4,8 +4,10 @@ from resolvers.add import add_wikibase
 from resolvers.authentication import authenticate
 from resolvers.get_aggregate import (
     get_aggregate_created,
+    get_aggregate_external_identifiers,
     get_aggregate_property_popularity,
     get_aggregate_quantity,
+    get_aggregate_urls,
     get_aggregate_recent_changes,
     get_aggregate_statistics,
     get_aggregate_users,

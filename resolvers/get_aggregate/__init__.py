@@ -9,6 +9,10 @@ from resolvers.get_aggregate.get_aggregate_quantity import get_aggregate_quantit
 from resolvers.get_aggregate.get_aggregate_recent_changes import (
     get_aggregate_recent_changes,
 )
-from resolvers.get_aggregate.get_aggregate_software_version import get_aggregate_version
 from resolvers.get_aggregate.get_aggregate_statistics import get_aggregate_statistics
 from resolvers.get_aggregate.get_aggregate_users import get_aggregate_users
+from resolvers.get_aggregate.get_aggregate_software_version import get_aggregate_version
+from resolvers.get_aggregate.get_aggregate_external_identifiers import (
+    get_aggregate_external_identifiers,
+)
+from resolvers.get_aggregate.get_aggregate_urls import get_aggregate_urls

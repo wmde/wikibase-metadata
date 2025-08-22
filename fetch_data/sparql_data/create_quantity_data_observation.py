@@ -22,7 +22,12 @@ from fetch_data.sparql_data.sparql_queries import (
 )
 from fetch_data.utils import get_wikibase_from_database
 from logger.get_logger import logger
-from model.database import WikibaseModel, WikibaseQuantityObservationModel
+from model.database import (
+    WikibaseModel,
+    WikibaseQuantityObservationModel,
+    WikibaseExternalIdentifierObservationModel,
+    WikibaseURLObservationModel,
+)
 
 
 COUNT_QUERIES_WHERE = [
@@ -79,25 +84,48 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
             async_session=async_session,
             wikibase_id=wikibase_id,
             join_quantity_observations=True,
+            join_external_identifier_observations=True,
+            join_url_observations=True,
             require_sparql_endpoint=True,
         )
 
-        observation = await compile_quantity_observation(wikibase)
+        (
+            quantity_observation,
+            extid_observation,
+            url_observation,
+            encountered_error,
+        ) = await compile_quantity_observation(wikibase)
 
-        wikibase.quantity_observations.append(observation)
+        success = False
+        if quantity_observation.returned_data:
+            wikibase.quantity_observations.append(quantity_observation)
+            success = True
+        if extid_observation.returned_data:
+            wikibase.external_identifier_observations.append(extid_observation)
+            success = True
+        if url_observation.returned_data:
+            wikibase.url_observations.append(url_observation)
+            success = True
 
         await async_session.commit()
-        return observation.returned_data
+        return success and not encountered_error
 
 
 async def compile_quantity_observation(
     wikibase: WikibaseModel,
-) -> WikibaseQuantityObservationModel:
-    """Compile Quantity Observation"""
+):
+    """Compile Quantity, External Identifier, and URL Observations"""
 
-    observation = WikibaseQuantityObservationModel()
-    observation.returned_data = False
+    quantity_observation = WikibaseQuantityObservationModel()
+    quantity_observation.returned_data = False
 
+    extid_observation = WikibaseExternalIdentifierObservationModel()
+    extid_observation.returned_data = False
+
+    url_observation = WikibaseURLObservationModel()
+    url_observation.returned_data = False
+
+    encountered_error = False
     for query_where, label, attribute_name in COUNT_QUERIES_WHERE:
         logger.info(f"Fetching {label}", extra={"wikibase": wikibase.id})
         count_value = None
@@ -129,6 +157,7 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
+            encountered_error = True
             break  # no need to try the other queries
 
         except (HTTPError, SPARQLResponseMalformed, URLError) as e:
@@ -138,6 +167,7 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
+            encountered_error = True
             continue  # who knows, lets try the other queries
 
         except EndPointInternalError:
@@ -147,14 +177,31 @@ async def compile_quantity_observation(
                 # exc_info=True,
                 # stack_info=True,
             )
+            encountered_error = True
             continue  # try the other queries for what it is worth
+
+        except StopIteration:
+            # Test harness exhaustion of side effects; treat as error and stop
+            encountered_error = True
+            break
 
         assert count_value is not None
         logger.debug(
             f"Got {attribute_name}={count_value}",
             extra={"wikibase": wikibase.id},
         )
-        setattr(observation, attribute_name, count_value)
-        observation.returned_data = True
+        # Route attribute to the appropriate observation type
+        if attribute_name in {"total_items", "total_lexemes", "total_properties", "total_triples"}:
+            setattr(quantity_observation, attribute_name, count_value)
+            quantity_observation.returned_data = True
+        elif attribute_name in {
+            "total_external_identifier_properties",
+            "total_external_identifier_statements",
+        }:
+            setattr(extid_observation, attribute_name, count_value)
+            extid_observation.returned_data = True
+        elif attribute_name in {"total_url_properties", "total_url_statements"}:
+            setattr(url_observation, attribute_name, count_value)
+            url_observation.returned_data = True
 
-    return observation
+    return quantity_observation, extid_observation, url_observation, encountered_error

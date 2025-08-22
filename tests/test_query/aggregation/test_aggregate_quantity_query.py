@@ -12,10 +12,6 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
     totalLexemes
     totalProperties
     totalTriples
-    totalExternalIdentifierProperties
-    totalExternalIdentifierStatements
-    totalUrlProperties
-    totalUrlStatements
     wikibaseCount
   }
 }
@@ -43,18 +39,6 @@ async def test_aggregate_quantity_query():
         result.data, ["aggregateQuantity", "totalProperties"], 1
     )
     assert_layered_property_value(result.data, ["aggregateQuantity", "totalTriples"], 8)
-    assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalExternalIdentifierProperties"], 16
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalExternalIdentifierStatements"], 32
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalUrlProperties"], 64
-    )
-    assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalUrlStatements"], 128
-    )
     assert_layered_property_value(
         result.data, ["aggregateQuantity", "wikibaseCount"], 1
     )
