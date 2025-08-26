@@ -1,9 +1,15 @@
 """Test Recent Changes Observation Query"""
 
+from datetime import datetime
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, get_mock_context
-from tests.utils.assert_property_value import assert_layered_property_count
+from tests.utils import (
+    assert_layered_property_count,
+    assert_layered_property_value,
+    assert_property_value,
+    get_mock_context,
+)
+from tests.utils.datetime_format import DATETIME_FORMAT
 
 
 WIKIBASE_QUERY = """
@@ -59,39 +65,44 @@ async def test_wikibase_query_ttfv_success():
     assert_layered_property_value(
         result.data,
         ["wikibase", "timeToFirstValueObservations", "mostRecent", "initiationDate"],
-        "2022-09-09T23:25:00",
+        "2012-10-26T20:05:09",
     )
     assert_layered_property_count(
         result.data,
         ["wikibase", "timeToFirstValueObservations", "mostRecent", "itemDates"],
+        3,
+    )
+    assert_item_date(
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][0],
         1,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibase",
-            "timeToFirstValueObservations",
-            "mostRecent",
-            "itemDates",
-            0,
-            "id",
-        ],
-        "1",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibase", "timeToFirstValueObservations", "mostRecent", "itemDates", 0, "q"],
         1,
+        datetime(2012, 10, 29, 18, 18, 48),
     )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibase",
-            "timeToFirstValueObservations",
-            "mostRecent",
-            "itemDates",
-            0,
-            "creationDate",
-        ],
-        "2020-05-02T19:11:00",
+    assert_item_date(
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][1],
+        2,
+        15,
+        datetime(2012, 10, 29, 17, 3, 21),
     )
+    assert_item_date(
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][2],
+        3,
+        100,
+        datetime(2012, 10, 29, 21, 48, 13),
+    )
+
+
+def assert_item_date(
+    data: dict, expected_id: int, expected_item_number: int, expected_date: datetime
+):
+    """Assert values of ItemDate"""
+
+    assert_property_value(data, "id", str(expected_id))
+    assert_property_value(data, "q", expected_item_number)
+    assert_property_value(data, "creationDate", expected_date.strftime(DATETIME_FORMAT))

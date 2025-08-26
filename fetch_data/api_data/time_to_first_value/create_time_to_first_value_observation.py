@@ -84,7 +84,7 @@ async def get_item_range_creation_date(
 ) -> Optional[WikibaseItemDateModel]:
     """Get Item Creation Date -- Close to Baseline #"""
 
-    for nudge in range(0, 5):
+    for nudge in range(0, 8):
         i = baseline_item_number + nudge
         item_creation_date = await get_item_creation_date(wikibase, i)
         if item_creation_date is not None:
@@ -103,17 +103,18 @@ async def get_item_creation_date(
         rev_log_result = await fetch_api_data(
             wikibase.action_api_url()
             + get_revision_param_string(
-                title=f"Q{item_number}", limit=1, prop="timestamp"
+                title=f"Q{item_number}", limit=1, prop=["timestamp"]
             )
         )
-        rev_page_id = rev_log_result["query"]["pages"].keys()[0]
+        rev_page_id = [*rev_log_result["query"]["pages"].keys()][0]
+        assert rev_page_id != "-1"
         item_creation_date = datetime.strptime(
             rev_log_result["query"]["pages"][rev_page_id]["revisions"][0]["timestamp"],
             "%Y-%m-%dT%H:%M:%SZ",
         )
         return item_creation_date
 
-    except requests.HTTPError:
+    except (HTTPError, AssertionError):
         return None
 
 

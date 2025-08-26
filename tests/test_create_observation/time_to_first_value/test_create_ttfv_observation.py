@@ -1,5 +1,6 @@
 """Test create_software_version_observation"""
 
+import re
 import time
 import pytest
 from tests.test_schema import test_schema
@@ -30,42 +31,30 @@ async def test_create_ttfv_observation_success(mocker):
     def mockery(*args, **kwargs):
         assert kwargs.get("timeout") == 10
         query = args[0]
-        match query:
-
-            case "https://example.com/w/index.php?title=Main_Page&action=history&dir=prev":
-                with open(f"{DATA_DIRECTORY}/Main_Page.html", mode="rb") as data:
+        if (
+            query
+            == "https://example.com/w/api.php?action=query&format=json&list=logevents&formatversion=2&ledir=newer&lelimit=1&leprop=timestamp"
+        ):
+            with open(f"{DATA_DIRECTORY}/creation.json", mode="rb") as data:
+                return MockResponse(query, 200, data.read())
+        if (
+            query_match := re.match(
+                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
+                query,
+            )
+        ) is not None:
+            try:
+                with open(
+                    f"{DATA_DIRECTORY}/{query_match.group(1)}.json", mode="rb"
+                ) as data:
                     return MockResponse(query, 200, data.read())
-            case (
-                "https://example.com/w/index.php?title=Item:Q1&action=history&dir=prev"
-            ):
-                with open(f"{DATA_DIRECTORY}/Q1.html", mode="rb") as data:
-                    return MockResponse(query, 200, data.read())
-            case (
-                "https://example.com/w/index.php?title=Item:Q10&action=history&dir=prev"
-            ):
-                return MockResponse(query, 404)
-            case (
-                "https://example.com/w/index.php?title=Item:Q11&action=history&dir=prev"
-            ):
-                return MockResponse(query, 404)
-            case (
-                "https://example.com/w/index.php?title=Item:Q12&action=history&dir=prev"
-            ):
-                return MockResponse(query, 404)
-            case (
-                "https://example.com/w/index.php?title=Item:Q13&action=history&dir=prev"
-            ):
-                return MockResponse(query, 404)
-            case (
-                "https://example.com/w/index.php?title=Item:Q14&action=history&dir=prev"
-            ):
+            except:
                 return MockResponse(query, 404)
 
         raise NotImplementedError(query)
 
     mocker.patch(
-        "fetch_data.soup_data.software.get_update_software_data.requests.get",
-        side_effect=mockery,
+        "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
 
     result = await test_schema.execute(

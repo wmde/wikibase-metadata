@@ -16,8 +16,7 @@ async def test_update_out_of_date_time_to_first_value_observations_fail(mocker):
     """Test Error Returned Scenario"""
 
     mocker.patch(
-        # pylint: disable-next=line-too-long
-        "fetch_data.soup_data.time_to_first_value.create_time_to_first_value_observation.requests.get",
+        "fetch_data.utils.fetch_data_from_api.requests.get",
         side_effect=[MockResponse("", 404)],
     )
     assert await update_out_of_date_time_to_first_value_observations() == 1
