@@ -3,6 +3,7 @@
 from fetch_data.api_data import (
     create_log_observation,
     create_recent_changes_observation,
+    create_time_to_first_value_observation,
     create_user_observation,
 )
 from fetch_data.cloud_api_data import fetch_cloud_instances, update_cloud_instances
@@ -36,7 +37,6 @@ from fetch_data.sparql_data import (
 from fetch_data.soup_data import (
     create_software_version_observation,
     create_special_statistics_observation,
-    create_time_to_first_value_observation,
     get_update_extension_query,
     update_software_data,
 )
