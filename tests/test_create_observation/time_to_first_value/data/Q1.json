@@ -1,1 +1,13 @@
-{"continue":{"rvcontinue":"20121029215153|503","continue":"||"},"query":{"pages":{"129":{"pageid":129,"ns":0,"title":"Q1","revisions":[{"timestamp":"2012-10-29T18:18:48Z"}]}}}}
+{
+	"continue": { "rvcontinue": "20121029215153|503", "continue": "||" },
+	"query": {
+		"pages": {
+			"129": {
+				"pageid": 129,
+				"ns": 0,
+				"title": "Q1",
+				"revisions": [{ "timestamp": "2012-10-29T18:18:48Z" }]
+			}
+		}
+	}
+}

@@ -1,1 +1,13 @@
-{"continue":{"rvcontinue":"20121029214824|488","continue":"||"},"query":{"pages":{"231":{"pageid":231,"ns":0,"title":"Q100","revisions":[{"timestamp":"2012-10-29T21:48:13Z"}]}}}}
+{
+	"continue": { "rvcontinue": "20121029214824|488", "continue": "||" },
+	"query": {
+		"pages": {
+			"231": {
+				"pageid": 231,
+				"ns": 0,
+				"title": "Q100",
+				"revisions": [{ "timestamp": "2012-10-29T21:48:13Z" }]
+			}
+		}
+	}
+}
