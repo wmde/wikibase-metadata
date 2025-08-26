@@ -41,7 +41,7 @@ async def test_create_ttfv_observation_success(mocker):
         if (
             query_match := re.match(
                 # pylint: disable-next=line-too-long
-                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
+                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)\|Item:Q\d+&rvdir=newer&rvlimit=1&rvprop=timestamp",
                 query,
             )
         ) is not None:

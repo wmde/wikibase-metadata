@@ -27,10 +27,12 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             require_script_path=True,
         )
 
+        logger.info("Creating TtFV Observation", extra={"wikibase": wikibase.id})
+
         observation = WikibaseTimeToFirstValueObservationModel(wikibase_id=wikibase.id)
 
         try:
-            logger.info("Fetching Creation Date", extra={"wikibase": wikibase.id})
+            logger.debug("Fetching Creation Date", extra={"wikibase": wikibase.id})
             oldest_log = await fetch_api_data(
                 wikibase.action_api_url()
                 + get_log_param_string(limit=1, oldest=True, prop=["timestamp"])
@@ -41,7 +43,11 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
             returned = True
             for exponent in range(0, 7):
-                if returned:
+                if returned or exponent < 4:
+                    logger.debug(
+                        f"Fetching Q{pow(10, exponent)} Date",
+                        extra={"wikibase": wikibase.id},
+                    )
                     returned_item_model = await get_item_range_creation_date(
                         wikibase, pow(10, exponent)
                     )
@@ -83,7 +89,7 @@ async def get_item_range_creation_date(
 ) -> Optional[WikibaseItemDateModel]:
     """Get Item Creation Date -- Close to Baseline #"""
 
-    for nudge in range(0, 8):
+    for nudge in range(0, 9):
         i = baseline_item_number + nudge
         item_creation_date = await get_item_creation_date(wikibase, i)
         if item_creation_date is not None:
@@ -102,13 +108,17 @@ async def get_item_creation_date(
         rev_log_result = await fetch_api_data(
             wikibase.action_api_url()
             + get_revision_param_string(
-                title=f"Q{item_number}", limit=1, prop=["timestamp"]
+                titles=[f"Q{item_number}", f"Item:Q{item_number}"],
+                limit=1,
+                prop=["timestamp"],
             )
         )
-        rev_page_id = [*rev_log_result["query"]["pages"].keys()][0]
-        assert rev_page_id != "-1"
+        rev_page_id_set = {*rev_log_result["query"]["pages"].keys()} - {"-1"}
+        assert len(rev_page_id_set) > 0
         item_creation_date = datetime.strptime(
-            rev_log_result["query"]["pages"][rev_page_id]["revisions"][0]["timestamp"],
+            rev_log_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
+                "timestamp"
+            ],
             "%Y-%m-%dT%H:%M:%SZ",
         )
         return item_creation_date
@@ -118,7 +128,7 @@ async def get_item_creation_date(
 
 
 def get_revision_param_string(
-    title: str,
+    titles: list[str],
     limit: Optional[int] = None,
     oldest: bool = True,
     prop: Optional[list[str]] = None,
@@ -129,7 +139,7 @@ def get_revision_param_string(
         "action": "query",
         "format": "json",
         "prop": "revisions",
-        "titles": title,
+        "titles": "|".join(titles),
         "rvdir": "newer" if oldest else "older",
         # "formatversion": 2,
         "rvlimit": limit,
