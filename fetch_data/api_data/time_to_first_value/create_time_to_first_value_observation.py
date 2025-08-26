@@ -2,7 +2,6 @@
 
 from datetime import datetime
 from typing import Optional
-import requests
 from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 

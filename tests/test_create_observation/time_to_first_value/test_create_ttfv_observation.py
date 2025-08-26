@@ -33,12 +33,14 @@ async def test_create_ttfv_observation_success(mocker):
         query = args[0]
         if (
             query
+            # pylint: disable-next=line-too-long
             == "https://example.com/w/api.php?action=query&format=json&list=logevents&formatversion=2&ledir=newer&lelimit=1&leprop=timestamp"
         ):
             with open(f"{DATA_DIRECTORY}/creation.json", mode="rb") as data:
                 return MockResponse(query, 200, data.read())
         if (
             query_match := re.match(
+                # pylint: disable-next=line-too-long
                 r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
                 query,
             )
@@ -48,6 +50,7 @@ async def test_create_ttfv_observation_success(mocker):
                     f"{DATA_DIRECTORY}/{query_match.group(1)}.json", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
+            # pylint: disable-next=bare-except
             except:
                 return MockResponse(query, 404)
 
