@@ -97,7 +97,7 @@ async def get_item_range_creation_date(
 ) -> Optional[WikibaseItemDateModel]:
     """Get Item Creation Date -- Close to Baseline #"""
 
-    for nudge in range(0, 9):
+    for nudge in range(0, 4):
         i = baseline_item_number + nudge
         item_creation_date = min_not_none(
             [
