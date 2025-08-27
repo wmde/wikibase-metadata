@@ -7,13 +7,44 @@ import requests
 from logger import logger
 
 
-async def fetch_api_data(url: str) -> dict:
-    """Fetch API Data"""
+async def fetch_api_data(
+    url: str, initial_wait: float = 8.0, max_retries: int = 5, multiplier: float = 2.0
+) -> dict:
+    """Fetch API Data with retry logic on request failures.
 
-    logger.debug(f"Querying {url}")
-    result = await asyncio.to_thread(requests.get, url, timeout=10)
-    result.raise_for_status()
-    query_data = json.loads(result.content)
-    if "error" in query_data:
-        raise ValueError(f"API Returned Error: {query_data['error']}")
-    return query_data
+    Args:
+        url: The API endpoint URL to query.
+        initial_wait: Initial wait time (in seconds) before first retry.
+        max_retries: Maximum number of retry attempts.
+        multiplier: Multiplier applied to wait time for each subsequent retry.
+
+    Returns:
+        The JSON response data from the API.
+
+    Raises:
+        ValueError: If the API returns an error in the response.
+        Exception: If all retry attempts fail.
+    """
+
+    wait_time = initial_wait
+
+    for attempt in range(max_retries + 1):
+        try:
+            logger.debug(f"Querying {url}")
+            result = await asyncio.to_thread(requests.get, url, timeout=10)
+            result.raise_for_status()
+            query_data = json.loads(result.content)
+            if "error" in query_data:
+                raise ValueError(f"API Returned Error: {query_data['error']}")
+            return query_data
+
+        except Exception as e:
+            if attempt < max_retries:
+                logger.warning(
+                    f"Request failed (attempt {attempt + 1}/{max_retries + 1}): {e}. Retrying in {wait_time:.2f}s..."
+                )
+                await asyncio.sleep(wait_time)
+                wait_time *= multiplier
+            else:
+                logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
+                raise e
