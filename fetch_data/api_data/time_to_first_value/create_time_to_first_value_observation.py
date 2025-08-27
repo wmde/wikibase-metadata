@@ -95,6 +95,8 @@ async def get_item_range_creation_date(
             [
                 await get_q_creation_date(wikibase, i),
                 await get_item_q_creation_date(wikibase, i),
+                await get_deleted_q_creation_date(wikibase, i),
+                await get_deleted_item_q_creation_date(wikibase, i),
             ]
         )
         if item_creation_date is not None:
@@ -110,11 +112,11 @@ async def get_q_creation_date(
     """Get Q# Creation Date"""
 
     try:
-        rev_log_result = await fetch_api_data(
+        rev_result = await fetch_api_data(
             wikibase.action_api_url()
             + get_revision_param_string(titles=[f"Q{item_number}"], prop=["timestamp"])
         )
-        return parse_revision_timestamp(rev_log_result)
+        return parse_revision_timestamp(rev_result)
     except HTTPError:
         return None
 
@@ -125,13 +127,13 @@ async def get_item_q_creation_date(
     """Get Item:Q# Creation Date"""
 
     try:
-        rev_log_result = await fetch_api_data(
+        rev_result = await fetch_api_data(
             wikibase.action_api_url()
             + get_revision_param_string(
                 titles=[f"Item:Q{item_number}"], prop=["timestamp"]
             )
         )
-        return parse_revision_timestamp(rev_log_result)
+        return parse_revision_timestamp(rev_result)
     except HTTPError:
         return None
 
@@ -142,7 +144,7 @@ def get_revision_param_string(
     oldest: bool = True,
     prop: Optional[list[str]] = None,
 ) -> str:
-    """Log Page URL Parameters"""
+    """Revision URL Parameters"""
 
     parameters: dict = {
         "action": "query",
@@ -177,6 +179,82 @@ def parse_revision_timestamp(revision_result: dict) -> Optional[datetime]:
         return None
     except KeyError as exc:
         logger.debug(revision_result)
+        raise exc
+
+
+async def get_deleted_q_creation_date(
+    wikibase: WikibaseModel, item_number: int
+) -> Optional[datetime]:
+    """Get Deleted Q# Creation Date"""
+
+    try:
+        del_rev_result = await fetch_api_data(
+            wikibase.action_api_url()
+            + get_del_rev_param_string(titles=[f"Q{item_number}"], prop=["timestamp"])
+        )
+        return parse_del_rev_timestamp(del_rev_result)
+    except HTTPError:
+        return None
+
+
+async def get_deleted_item_q_creation_date(
+    wikibase: WikibaseModel, item_number: int
+) -> Optional[datetime]:
+    """Get Deleted Item:Q# Creation Date"""
+
+    try:
+        del_rev_result = await fetch_api_data(
+            wikibase.action_api_url()
+            + get_del_rev_param_string(
+                titles=[f"Item:Q{item_number}"], prop=["timestamp"]
+            )
+        )
+        return parse_del_rev_timestamp(del_rev_result)
+    except HTTPError:
+        return None
+
+
+def get_del_rev_param_string(
+    titles: list[str],
+    limit: int = 1,
+    oldest: bool = True,
+    prop: Optional[list[str]] = None,
+) -> str:
+    """Deleted Revision URL Parameters"""
+
+    parameters: dict = {
+        "action": "query",
+        "format": "json",
+        "prop": "deletedrevisions",
+        "titles": "|".join(titles),
+        "drvdir": "newer" if oldest else "older",
+        # "formatversion": 2,
+        "drvlimit": limit,
+    }
+    if prop is not None:
+        parameters["drvprop"] = "|".join(prop)
+    return dict_to_url(parameters)
+
+
+def parse_del_rev_timestamp(del_rev_result: dict) -> Optional[datetime]:
+    """Parse Timestamp from Deleted Revision"""
+
+    try:
+        rev_page_id_set: set[str] = {
+            k for k in del_rev_result["query"]["pages"].keys() if int(k) < 0
+        }
+        assert len(rev_page_id_set) > 0
+        item_creation_date = datetime.strptime(
+            del_rev_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
+                "timestamp"
+            ],
+            "%Y-%m-%dT%H:%M:%SZ",
+        )
+        return item_creation_date
+    except AssertionError:
+        return None
+    except KeyError as exc:
+        logger.debug(del_rev_result)
         raise exc
 
 
