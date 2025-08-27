@@ -49,6 +49,9 @@ def get_revision_param_string(
 ) -> str:
     """Revision URL Parameters"""
 
+    if len(titles) == 0:
+        raise ValueError("Must Supply a Title")
+
     parameters: dict = {
         "action": "query",
         "format": "json",
