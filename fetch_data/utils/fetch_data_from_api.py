@@ -28,7 +28,9 @@ async def fetch_api_data(
 
     wait_time = initial_wait
 
-    for attempt in range(max_retries + 1):
+    for attempt in range(
+        max_retries + 1
+    ):  # pragma: no branch # we never run the full number of iterations
         try:
             logger.debug(f"Querying {url}")
             result = await asyncio.to_thread(requests.get, url, timeout=10)
