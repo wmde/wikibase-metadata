@@ -1,3 +1,7 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+
 import asyncio
 import json
 from typing import List
@@ -56,7 +60,7 @@ async def test_fetch_api_data_retries_then_succeeds(monkeypatch):
         FakeResponse({"ok": True}),
     ]
 
-    def fake_get(url, timeout):
+    def fake_get(url, timeout):  # pylint: disable=unused-argument
         calls.append(url)
         effect = side_effects.pop(0)
         if isinstance(effect, Exception):
@@ -116,7 +120,7 @@ async def test_fetch_api_data_api_error_json_retries_then_raises(monkeypatch):
     async def fake_sleep(delay):
         sleep_calls.append(delay)
 
-    def fake_get(url, timeout):
+    def fake_get(url, timeout):  # pylint: disable=unused-argument
         return FakeResponse({"error": {"code": 123, "info": "bad"}})
 
     monkeypatch.setattr(requests, "get", fake_get)

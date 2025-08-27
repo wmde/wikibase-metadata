@@ -40,10 +40,11 @@ async def fetch_api_data(
                 raise ValueError(f"API Returned Error: {query_data['error']}")
             return query_data
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             if attempt < max_retries:
                 logger.warning(
-                    f"Request failed (attempt {attempt + 1}/{max_retries + 1}): {e}. Retrying in {wait_time:.2f}s..."
+                    f"Request failed (attempt {attempt + 1}/{max_retries + 1}): "
+                    "{e}. Retrying in {wait_time:.2f}s..."
                 )
                 await asyncio.sleep(wait_time)
                 wait_time *= multiplier
