@@ -91,7 +91,12 @@ async def get_item_range_creation_date(
 
     for nudge in range(0, 9):
         i = baseline_item_number + nudge
-        item_creation_date = await get_item_creation_date(wikibase, i)
+        item_creation_date = min_not_none(
+            [
+                await get_q_creation_date(wikibase, i),
+                await get_item_q_creation_date(wikibase, i),
+            ]
+        )
         if item_creation_date is not None:
             return WikibaseItemDateModel(
                 item_number=i, creation_date=item_creation_date
@@ -99,39 +104,41 @@ async def get_item_range_creation_date(
     return None
 
 
-async def get_item_creation_date(
+async def get_q_creation_date(
     wikibase: WikibaseModel, item_number: int
 ) -> Optional[datetime]:
-    """Get Item Creation Date"""
+    """Get Q# Creation Date"""
+
+    try:
+        rev_log_result = await fetch_api_data(
+            wikibase.action_api_url()
+            + get_revision_param_string(titles=[f"Q{item_number}"], prop=["timestamp"])
+        )
+        return parse_revision_timestamp(rev_log_result)
+    except HTTPError:
+        return None
+
+
+async def get_item_q_creation_date(
+    wikibase: WikibaseModel, item_number: int
+) -> Optional[datetime]:
+    """Get Item:Q# Creation Date"""
 
     try:
         rev_log_result = await fetch_api_data(
             wikibase.action_api_url()
             + get_revision_param_string(
-                titles=[f"Q{item_number}", f"Item:Q{item_number}"],
-                limit=1,
-                prop=["timestamp"],
+                titles=[f"Item:Q{item_number}"], prop=["timestamp"]
             )
         )
-        rev_page_id_set: set[str] = {
-            k for k in rev_log_result["query"]["pages"].keys() if int(k) > 0
-        }
-        assert len(rev_page_id_set) > 0
-        item_creation_date = datetime.strptime(
-            rev_log_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
-                "timestamp"
-            ],
-            "%Y-%m-%dT%H:%M:%SZ",
-        )
-        return item_creation_date
-
-    except (HTTPError, AssertionError):
+        return parse_revision_timestamp(rev_log_result)
+    except HTTPError:
         return None
 
 
 def get_revision_param_string(
     titles: list[str],
-    limit: Optional[int] = None,
+    limit: int = 1,
     oldest: bool = True,
     prop: Optional[list[str]] = None,
 ) -> str:
@@ -149,3 +156,33 @@ def get_revision_param_string(
     if prop is not None:
         parameters["rvprop"] = "|".join(prop)
     return dict_to_url(parameters)
+
+
+def parse_revision_timestamp(revision_result: dict) -> Optional[datetime]:
+    """Parse Timestamp from Revision"""
+
+    try:
+        rev_page_id_set: set[str] = {
+            k for k in revision_result["query"]["pages"].keys() if int(k) > 0
+        }
+        assert len(rev_page_id_set) > 0
+        item_creation_date = datetime.strptime(
+            revision_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
+                "timestamp"
+            ],
+            "%Y-%m-%dT%H:%M:%SZ",
+        )
+        return item_creation_date
+    except AssertionError:
+        return None
+    except KeyError as exc:
+        logger.debug(revision_result)
+        raise exc
+
+
+def min_not_none(input_list: list[Optional[datetime]]) -> Optional[datetime]:
+    """Minimum Value that Is Not None"""
+
+    if len(filtered_list := [i for i in input_list if i is not None]) == 0:
+        return None
+    return min(filtered_list)
