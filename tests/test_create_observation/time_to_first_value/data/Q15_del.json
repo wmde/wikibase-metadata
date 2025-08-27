@@ -1,1 +1,13 @@
-{"continue":{"drvcontinue":"120|Q15|20130817094622|279","continue":"||"},"query":{"pages":{"-1":{"ns":120,"title":"Item:Q15","missing":"","deletedrevisions":[{"timestamp":"2013-08-11T04:55:58Z"}]}}}}
+{
+	"continue": { "drvcontinue": "120|Q15|20130817094622|279", "continue": "||" },
+	"query": {
+		"pages": {
+			"-1": {
+				"ns": 120,
+				"title": "Item:Q15",
+				"missing": "",
+				"deletedrevisions": [{ "timestamp": "2013-08-11T04:55:58Z" }]
+			}
+		}
+	}
+}
