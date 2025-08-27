@@ -113,7 +113,9 @@ async def get_item_creation_date(
                 prop=["timestamp"],
             )
         )
-        rev_page_id_set = {*rev_log_result["query"]["pages"].keys()} - {"-1"}
+        rev_page_id_set: set[str] = {
+            k for k in rev_log_result["query"]["pages"].keys() if int(k) > 0
+        }
         assert len(rev_page_id_set) > 0
         item_creation_date = datetime.strptime(
             rev_log_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
