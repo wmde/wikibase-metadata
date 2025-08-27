@@ -1,4 +1,4 @@
-"""Create Quantity Data Observation"""
+"""Create URL Data Observation"""
 
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib.error import HTTPError, URLError
@@ -11,83 +11,68 @@ from fetch_data.sparql_data.pull_wikidata import (
     get_sparql_results,
 )
 from fetch_data.sparql_data.sparql_queries import (
-    COUNT_ITEMS_QUERY_WHERE,
-    COUNT_LEXEMES_QUERY_WHERE,
-    COUNT_PROPERTIES_QUERY_WHERE,
-    COUNT_TRIPLES_QUERY_WHERE,
+    COUNT_URL_PROPERTIES_QUERY_WHERE,
+    COUNT_URL_STATEMENTS_QUERY_WHERE,
 )
 from fetch_data.utils import get_wikibase_from_database
 from logger.get_logger import logger
 from model.database import (
     WikibaseModel,
-    WikibaseQuantityObservationModel,
+    WikibaseURLObservationModel,
 )
 
 
 COUNT_QUERIES_WHERE = [
     (
-        COUNT_PROPERTIES_QUERY_WHERE,
-        "Property Count",
-        "total_properties",
+        COUNT_URL_PROPERTIES_QUERY_WHERE,
+        "URL Properties Count",
+        "total_url_properties",
     ),
     (
-        COUNT_ITEMS_QUERY_WHERE,
-        "Item Count",
-        "total_items",
-    ),
-    (
-        COUNT_LEXEMES_QUERY_WHERE,
-        "Lexeme Count",
-        "total_lexemes",
-    ),
-    (
-        COUNT_TRIPLES_QUERY_WHERE,
-        "Triple Count",
-        "total_triples",
+        COUNT_URL_STATEMENTS_QUERY_WHERE,
+        "URL Statements Count",
+        "total_url_statements",
     ),
 ]
 
 
-async def create_quantity_observation(wikibase_id: int) -> bool:
-    """Create Quantity Data Observation"""
+async def create_url_observation(wikibase_id: int) -> bool:
+    """Create URL Data Observation"""
 
-    logger.debug("Quantity: Attempting Observation", extra={"wikibase": wikibase_id})
+    logger.debug("URL: Attempting Observation", extra={"wikibase": wikibase_id})
 
     async with get_async_session() as async_session:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            join_quantity_observations=True,
+            join_url_observations=True,
             require_sparql_endpoint=True,
         )
 
-        quantity_observation, encountered_error = await compile_quantity_observation(
-            wikibase
-        )
+        url_observation, encountered_error = await compile_url_observation(wikibase)
 
         success = False
-        if quantity_observation.returned_data:
-            wikibase.quantity_observations.append(quantity_observation)
+        if url_observation.returned_data:
+            wikibase.url_observations.append(url_observation)
             success = True
 
         await async_session.commit()
         return success and not encountered_error
 
 
-async def compile_quantity_observation(
+async def compile_url_observation(
     wikibase: WikibaseModel,
 ):
-    """Compile Quantity Observation"""
+    """Compile URL Observation"""
 
-    quantity_observation = WikibaseQuantityObservationModel()
-    quantity_observation.returned_data = False
+    url_observation = WikibaseURLObservationModel()
+    url_observation.returned_data = False
 
     encountered_error = False
     for query_where, label, attribute_name in COUNT_QUERIES_WHERE:
         logger.info(f"Fetching {label}", extra={"wikibase": wikibase.id})
         count_value = None
 
-        # straight query, just as it is, counting the number of rows
         try:
             query = "SELECT (COUNT(*) AS ?count) WHERE {"
             query += query_where
@@ -111,34 +96,27 @@ async def compile_quantity_observation(
             logger.error(
                 f"SuspectWikibaseOfflineError: {e}",
                 extra={"wikibase": wikibase.id},
-                # exc_info=True,
-                # stack_info=True,
             )
             encountered_error = True
-            break  # no need to try the other queries
+            break
 
         except (HTTPError, SPARQLResponseMalformed, URLError) as e:
             logger.warning(
-                f"QuantityDataError: {e}",
+                f"URLDataError: {e}",
                 extra={"wikibase": wikibase.id},
-                # exc_info=True,
-                # stack_info=True,
             )
             encountered_error = True
-            continue  # who knows, lets try the other queries
+            continue
 
         except EndPointInternalError:
             logger.warning(
                 f"Failed to get count via sparql with simple query: {query}",
                 extra={"wikibase": wikibase.id},
-                # exc_info=True,
-                # stack_info=True,
             )
             encountered_error = True
-            continue  # try the other queries for what it is worth
+            continue
 
         except StopIteration:
-            # Test harness exhaustion of side effects; treat as error and stop
             encountered_error = True
             break
 
@@ -147,8 +125,8 @@ async def compile_quantity_observation(
             f"Got {attribute_name}={count_value}",
             extra={"wikibase": wikibase.id},
         )
-        # Set attribute on quantity observation
-        setattr(quantity_observation, attribute_name, count_value)
-        quantity_observation.returned_data = True
+        setattr(url_observation, attribute_name, count_value)
+        url_observation.returned_data = True
 
-    return quantity_observation, encountered_error
+    return url_observation, encountered_error
+

@@ -10,6 +10,8 @@ from fetch_data import (
     update_out_of_date_log_last_observations,
     update_out_of_date_property_observations,
     update_out_of_date_quantity_observations,
+    update_out_of_date_external_identifier_observations,
+    update_out_of_date_url_observations,
     update_out_of_date_recent_changes_observations,
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
@@ -62,6 +64,14 @@ scheduler.add_job(
 scheduler.add_job(
     update_out_of_date_quantity_observations,
     CronTrigger(day_of_week=0, hour=4),
+)
+scheduler.add_job(
+    update_out_of_date_external_identifier_observations,
+    CronTrigger(day_of_week=0, hour=4, minute=20),
+)
+scheduler.add_job(
+    update_out_of_date_url_observations,
+    CronTrigger(day_of_week=0, hour=4, minute=40),
 )
 scheduler.add_job(
     update_out_of_date_software_observations,

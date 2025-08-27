@@ -9,6 +9,8 @@ from fetch_data import (
     create_log_observation,
     create_property_popularity_observation,
     create_quantity_observation,
+    create_external_identifier_observation,
+    create_url_observation,
     create_recent_changes_observation,
     create_software_version_observation,
     create_special_statistics_observation,
@@ -81,6 +83,26 @@ class Mutation:
 
         authenticate(info)
         return await create_quantity_observation(wikibase_id)
+
+    @strawberry.mutation(
+        description="Fetch External Identifier Data from Specified Wikibase Instance"
+    )
+    async def fetch_external_identifier_data(
+        self, info: Info, wikibase_id: int
+    ) -> bool:
+        """Fetch External Identifier Data from Specified Wikibase Instance"""
+
+        authenticate(info)
+        return await create_external_identifier_observation(wikibase_id)
+
+    @strawberry.mutation(
+        description="Fetch URL Data from Specified Wikibase Instance"
+    )
+    async def fetch_url_data(self, info: Info, wikibase_id: int) -> bool:
+        """Fetch URL Data from Specified Wikibase Instance"""
+
+        authenticate(info)
+        return await create_url_observation(wikibase_id)
 
     @strawberry.mutation(
         description="Fetch Recent Changes Data from Specified Wikibase Instance"

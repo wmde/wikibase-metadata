@@ -9,3 +9,9 @@ from fetch_data.sparql_data.create_property_popularity_data_observation import (
 from fetch_data.sparql_data.create_quantity_data_observation import (
     create_quantity_observation,
 )
+from fetch_data.sparql_data.create_external_identifier_data_observation import (
+    create_external_identifier_observation,
+)
+from fetch_data.sparql_data.create_url_data_observation import (
+    create_url_observation,
+)

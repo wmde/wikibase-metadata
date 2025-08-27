@@ -12,6 +12,8 @@ from fetch_data.out_of_date import (
     get_wikibase_list_with_out_of_date_log_last_observations,
     get_wikibase_list_with_out_of_date_property_popularity_observations,
     get_wikibase_list_with_out_of_date_quantity_observations,
+    get_wikibase_list_with_out_of_date_external_identifier_observations,
+    get_wikibase_list_with_out_of_date_url_observations,
     get_wikibase_list_with_out_of_date_recent_changes_observations,
     get_wikibase_list_with_out_of_date_software_observations,
     get_wikibase_list_with_out_of_date_stats_observations,
@@ -21,6 +23,8 @@ from fetch_data.out_of_date import (
     update_out_of_date_log_last_observations,
     update_out_of_date_property_observations,
     update_out_of_date_quantity_observations,
+    update_out_of_date_external_identifier_observations,
+    update_out_of_date_url_observations,
     update_out_of_date_recent_changes_observations,
     update_out_of_date_software_observations,
     update_out_of_date_stats_observations,
@@ -31,6 +35,8 @@ from fetch_data.sparql_data import (
     create_connectivity_observation,
     create_property_popularity_observation,
     create_quantity_observation,
+    create_external_identifier_observation,
+    create_url_observation,
 )
 from fetch_data.soup_data import (
     create_software_version_observation,

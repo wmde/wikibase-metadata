@@ -11,6 +11,8 @@ from fetch_data.out_of_date.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_log_last_observations,
     get_wikibase_list_with_out_of_date_property_popularity_observations,
     get_wikibase_list_with_out_of_date_quantity_observations,
+    get_wikibase_list_with_out_of_date_external_identifier_observations,
+    get_wikibase_list_with_out_of_date_url_observations,
     get_wikibase_list_with_out_of_date_recent_changes_observations,
     get_wikibase_list_with_out_of_date_software_observations,
     get_wikibase_list_with_out_of_date_stats_observations,
@@ -24,6 +26,8 @@ from fetch_data.sparql_data import (
     create_connectivity_observation,
     create_property_popularity_observation,
     create_quantity_observation,
+    create_external_identifier_observation,
+    create_url_observation,
 )
 from fetch_data.cloud_api_data import (
     update_cloud_instances,
@@ -117,6 +121,44 @@ async def update_out_of_date_quantity_observations():
         except:
             logger.error(
                 "QuantityDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
+            )
+
+
+async def update_out_of_date_external_identifier_observations():
+    """Update Out of Date External Identifier Observations"""
+
+    ood_extid_obs = (
+        await get_wikibase_list_with_out_of_date_external_identifier_observations()
+    )
+    logger.info(f"External Identifier: {len(ood_extid_obs)} Wikibases to Update")
+    for wikibase in ood_extid_obs:
+        try:
+            await create_external_identifier_observation(wikibase.id)
+        # pylint: disable-next=bare-except
+        except:
+            logger.error(
+                "ExternalIdentifierDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
+            )
+
+
+async def update_out_of_date_url_observations():
+    """Update Out of Date URL Observations"""
+
+    ood_url_obs = await get_wikibase_list_with_out_of_date_url_observations()
+    logger.info(f"URL: {len(ood_url_obs)} Wikibases to Update")
+    for wikibase in ood_url_obs:
+        try:
+            await create_url_observation(wikibase.id)
+        # pylint: disable-next=bare-except
+        except:
+            logger.error(
+                "URLDataError",
                 exc_info=True,
                 stack_info=True,
                 extra={"wikibase": wikibase.id},

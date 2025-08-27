@@ -6,10 +6,12 @@ from sqlalchemy import Select, and_, not_, or_, select
 from data.database_connection import get_async_session
 from model.database import (
     WikibaseConnectivityObservationModel,
+    WikibaseExternalIdentifierObservationModel,
     WikibaseLogMonthObservationModel,
     WikibaseModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
+    WikibaseURLObservationModel,
     WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
@@ -280,6 +282,100 @@ async def get_wikibase_list_with_out_of_date_quantity_observations() -> (
     """Get List of Wikibases with Out of Date Quantity Observations"""
 
     return await get_wikibase_list(get_wikibase_with_out_of_date_quantity_obs_query())
+
+
+def get_wikibase_with_out_of_date_external_identifier_obs_query() -> (
+    Select[tuple[WikibaseModel]]
+):
+    """Query Wikibases with Out of Date External Identifier Observations"""
+
+    query = select(WikibaseModel).where(
+        and_(
+            WikibaseModel.checked,
+            or_(
+                # pylint: disable-next=singleton-comparison
+                WikibaseModel.wikibase_type == None,
+                WikibaseModel.wikibase_type != WikibaseType.TEST,
+            ),
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+            not_(
+                WikibaseModel.external_identifier_observations.any(
+                    or_(
+                        WikibaseExternalIdentifierObservationModel.observation_date
+                        > (
+                            datetime.now(tz=timezone.utc)
+                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
+                        ),
+                        and_(
+                            WikibaseExternalIdentifierObservationModel.returned_data,
+                            WikibaseExternalIdentifierObservationModel.observation_date
+                            > (
+                                datetime.now(tz=timezone.utc)
+                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                            ),
+                        ),
+                    )
+                )
+            ),
+        )
+    )
+
+    return query
+
+
+async def get_wikibase_list_with_out_of_date_external_identifier_observations() -> (
+    list[WikibaseModel]
+):
+    """List of Wikibases with Out of Date External Identifier Observations"""
+
+    return await get_wikibase_list(
+        get_wikibase_with_out_of_date_external_identifier_obs_query()
+    )
+
+
+def get_wikibase_with_out_of_date_url_obs_query() -> Select[tuple[WikibaseModel]]:
+    """Query Wikibases with Out of Date URL Observations"""
+
+    query = select(WikibaseModel).where(
+        and_(
+            WikibaseModel.checked,
+            or_(
+                # pylint: disable-next=singleton-comparison
+                WikibaseModel.wikibase_type == None,
+                WikibaseModel.wikibase_type != WikibaseType.TEST,
+            ),
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+            not_(
+                WikibaseModel.url_observations.any(
+                    or_(
+                        WikibaseURLObservationModel.observation_date
+                        > (
+                            datetime.now(tz=timezone.utc)
+                            - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
+                        ),
+                        and_(
+                            WikibaseURLObservationModel.returned_data,
+                            WikibaseURLObservationModel.observation_date
+                            > (
+                                datetime.now(tz=timezone.utc)
+                                - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                            ),
+                        ),
+                    )
+                )
+            ),
+        )
+    )
+
+    return query
+
+
+async def get_wikibase_list_with_out_of_date_url_observations() -> (
+    list[WikibaseModel]
+):
+    """List of Wikibases with Out of Date URL Observations"""
+
+    return await get_wikibase_list(get_wikibase_with_out_of_date_url_obs_query())
 
 
 def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
