@@ -35,7 +35,7 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
     oldest_mock_log = mock_logs[0]
 
     def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 10
+        assert kwargs.get("timeout") == 300
 
         query = ParsedUrl(args[0])
 
@@ -99,7 +99,7 @@ async def test_update_out_of_date_log_last_observations_success(mocker):
     ]
 
     def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 10
+        assert kwargs.get("timeout") == 300
 
         query = ParsedUrl(args[0])
 
