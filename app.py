@@ -1,8 +1,12 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+import os
+import uuid
+from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+import pandas
 from strawberry.fastapi import GraphQLRouter
 
 from model.strawberry import schema
@@ -41,3 +45,26 @@ def read_root():
 
 
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
+
+CHUNK_SIZE = 1024 * 1024
+
+
+@app.get("/csv/quantity")
+def quantity_csv(background_tasks: BackgroundTasks):
+    """Quantity CSV"""
+
+    df = pandas.DataFrame([{"row": i, "v": "test"} for i in range(2000000)])
+    filename = f"{uuid.uuid4()}.csv"
+    df.to_csv(filename)
+    del df
+
+    def iterfile():
+        with open(filename, "rb") as f:
+            while chunk := f.read(CHUNK_SIZE):
+                yield chunk
+
+    background_tasks.add_task(os.remove, filename)
+
+    headers = {"Content-Disposition": 'attachment; filename="quantity_data.csv"'}
+    return StreamingResponse(iterfile(), headers=headers, media_type="text/csv")
+    # return FileResponse(filename, filename='quantity_data.csv', media_type='text/csv')
