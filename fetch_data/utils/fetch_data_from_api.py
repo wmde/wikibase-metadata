@@ -15,5 +15,5 @@ async def fetch_api_data(url: str) -> dict:
     result.raise_for_status()
     query_data = json.loads(result.content)
     if "error" in query_data:
-        raise ValueError(f"API Returned Error: {query_data['error']}")
+        raise requests.HTTPError(f"API Returned Error: {query_data['error']}")
     return query_data
