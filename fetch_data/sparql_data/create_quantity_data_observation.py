@@ -74,6 +74,7 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         return success and not encountered_error
 
 
+# TODO: DRY
 async def compile_quantity_observation(
     wikibase: WikibaseModel,
 ):
@@ -127,9 +128,9 @@ async def compile_quantity_observation(
             encountered_error = True
             continue  # who knows, lets try the other queries
 
-        except EndPointInternalError:
+        except EndPointInternalError as e:
             logger.warning(
-                f"Failed to get count via sparql with simple query: {query}",
+                f"Failed to get count via sparql with simple query: {query}, {e}",
                 extra={"wikibase": wikibase.id},
                 # exc_info=True,
                 # stack_info=True,

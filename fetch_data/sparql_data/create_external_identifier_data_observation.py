@@ -62,6 +62,7 @@ async def create_external_identifier_observation(wikibase_id: int) -> bool:
         return success and not encountered_error
 
 
+# TODO: DRY
 async def compile_external_identifier_observation(
     wikibase: WikibaseModel,
 ):
@@ -110,13 +111,15 @@ async def compile_external_identifier_observation(
             encountered_error = True
             continue
 
-        except EndPointInternalError:
+        except EndPointInternalError as e:
             logger.warning(
-                f"Failed to get count via sparql with simple query: {query}",
+                f"Failed to get count via sparql with simple query: {query}, {e}",
                 extra={"wikibase": wikibase.id},
+                # exc_info=True,
+                # stack_info=True,
             )
             encountered_error = True
-            continue
+            continue  # try the other queries for what it is worth
 
         except StopIteration:
             encountered_error = True
