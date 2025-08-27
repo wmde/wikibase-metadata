@@ -70,7 +70,7 @@ async def test_wikibase_query_ttfv_success():
     assert_layered_property_count(
         result.data,
         ["wikibase", "timeToFirstValueObservations", "mostRecent", "itemDates"],
-        3,
+        4,
     )
     assert_item_date(
         result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
@@ -95,6 +95,14 @@ async def test_wikibase_query_ttfv_success():
         3,
         100,
         datetime(2012, 10, 29, 21, 48, 13),
+    )
+    assert_item_date(
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][3],
+        4,
+        1001,
+        datetime(2013, 8, 11, 4, 55, 58),
     )
 
 

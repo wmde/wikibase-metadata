@@ -41,13 +41,38 @@ async def test_create_ttfv_observation_success(mocker):
         if (
             query_match := re.match(
                 # pylint: disable-next=line-too-long
-                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)\|Item:Q\d+&rvdir=newer&rvlimit=1&rvprop=timestamp",
+                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
+                query,
+            )
+            or re.match(
+                # pylint: disable-next=line-too-long
+                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=Item:(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
                 query,
             )
         ) is not None:
             try:
                 with open(
                     f"{DATA_DIRECTORY}/{query_match.group(1)}.json", mode="rb"
+                ) as data:
+                    return MockResponse(query, 200, data.read())
+            # pylint: disable-next=bare-except
+            except:
+                return MockResponse(query, 404)
+        if (
+            query_match := re.match(
+                # pylint: disable-next=line-too-long
+                r"https://example\.com/w/api\.php\?action=query&format=json&prop=deletedrevisions&titles=(Q\d+)&drvdir=newer&drvlimit=1&drvprop=timestamp",
+                query,
+            )
+            or re.match(
+                # pylint: disable-next=line-too-long
+                r"https://example\.com/w/api\.php\?action=query&format=json&prop=deletedrevisions&titles=Item:(Q\d+)&drvdir=newer&drvlimit=1&drvprop=timestamp",
+                query,
+            )
+        ) is not None:
+            try:
+                with open(
+                    f"{DATA_DIRECTORY}/{query_match.group(1)}_del.json", mode="rb"
                 ) as data:
                     return MockResponse(query, 200, data.read())
             # pylint: disable-next=bare-except
