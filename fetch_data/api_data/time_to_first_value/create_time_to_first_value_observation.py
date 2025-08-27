@@ -1,7 +1,7 @@
 """Create Time to First Value Observation"""
 
 from datetime import datetime
-from typing import Optional
+from typing import Iterable, Optional
 from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
@@ -164,22 +164,21 @@ def parse_revision_timestamp(revision_result: dict) -> Optional[datetime]:
     """Parse Timestamp from Revision"""
 
     try:
-        rev_page_id_set: set[str] = {
-            k for k in revision_result["query"]["pages"].keys() if int(k) > 0
-        }
-        assert len(rev_page_id_set) > 0
-        item_creation_date = datetime.strptime(
-            revision_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
-                "timestamp"
-            ],
-            "%Y-%m-%dT%H:%M:%SZ",
-        )
-        return item_creation_date
-    except AssertionError:
-        return None
+        rev_page_id_list: Iterable[str] = revision_result["query"]["pages"].keys()
+        assert len(rev_page_id_list) > 0
+        for id in rev_page_id_list:
+            if "revisions" in revision_result["query"]["pages"][id]:
+                item_creation_date = datetime.strptime(
+                    revision_result["query"]["pages"][id]["revisions"][0][
+                        "timestamp"
+                    ],
+                    "%Y-%m-%dT%H:%M:%SZ",
+                )
+                return item_creation_date
     except KeyError as exc:
         logger.debug(revision_result)
         raise exc
+    return None
 
 
 async def get_deleted_q_creation_date(
@@ -240,22 +239,21 @@ def parse_del_rev_timestamp(del_rev_result: dict) -> Optional[datetime]:
     """Parse Timestamp from Deleted Revision"""
 
     try:
-        rev_page_id_set: set[str] = {
-            k for k in del_rev_result["query"]["pages"].keys() if int(k) < 0
-        }
-        assert len(rev_page_id_set) > 0
-        item_creation_date = datetime.strptime(
-            del_rev_result["query"]["pages"][rev_page_id_set.pop()]["revisions"][0][
-                "timestamp"
-            ],
-            "%Y-%m-%dT%H:%M:%SZ",
-        )
-        return item_creation_date
-    except AssertionError:
-        return None
+        del_rev_page_id_list: Iterable[str] = del_rev_result["query"]["pages"].keys()
+        assert len(del_rev_page_id_list) > 0
+        for id in del_rev_page_id_list:
+            if "deletedrevisions" in del_rev_result["query"]["pages"][id]:
+                item_creation_date = datetime.strptime(
+                    del_rev_result["query"]["pages"][id]["deletedrevisions"][0][
+                        "timestamp"
+                    ],
+                    "%Y-%m-%dT%H:%M:%SZ",
+                )
+                return item_creation_date
     except KeyError as exc:
         logger.debug(del_rev_result)
         raise exc
+    return None
 
 
 def min_not_none(input_list: list[Optional[datetime]]) -> Optional[datetime]:
