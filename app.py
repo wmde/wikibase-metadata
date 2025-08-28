@@ -1,15 +1,15 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
-import os
-import uuid
 from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-import pandas
+from starlette.requests import Request
 from strawberry.fastapi import GraphQLRouter
 
+from export_csv import export_quantity_csv
 from model.strawberry import schema
+from resolvers.authentication import authenticate_request
 from schedule import scheduler
 
 
@@ -49,22 +49,10 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 CHUNK_SIZE = 1024 * 1024
 
 
-@app.get("/csv/quantity")
-def quantity_csv(background_tasks: BackgroundTasks):
+@app.get("/csv/quantity", response_class=StreamingResponse)
+async def quantity_csv(request: Request, background_tasks: BackgroundTasks):
     """Quantity CSV"""
 
-    df = pandas.DataFrame([{"row": i, "v": "test"} for i in range(2000000)])
-    filename = f"{uuid.uuid4()}.csv"
-    df.to_csv(filename)
-    del df
+    # authenticate_request(request)
 
-    def iterfile():
-        with open(filename, "rb") as f:
-            while chunk := f.read(CHUNK_SIZE):
-                yield chunk
-
-    background_tasks.add_task(os.remove, filename)
-
-    headers = {"Content-Disposition": 'attachment; filename="quantity_data.csv"'}
-    return StreamingResponse(iterfile(), headers=headers, media_type="text/csv")
-    # return FileResponse(filename, filename='quantity_data.csv', media_type='text/csv')
+    return await export_quantity_csv(background_tasks)
