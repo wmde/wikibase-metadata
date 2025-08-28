@@ -50,7 +50,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             )
 
             returned = True
-            for exponent in range(0, 7):
+            for exponent in range(0, 10):
                 if returned or exponent < 4:
                     logger.debug(
                         f"Fetching Q{pow(10, exponent)} Date",
