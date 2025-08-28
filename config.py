@@ -14,6 +14,8 @@ database_connection_string = os.path.expandvars(
     config.get("database", "database_connection_string")
 )
 
+deactivate_scheduler = config.getboolean("scheduler", "deactivate", fallback=False)
+
 log_directory = os.path.expandvars(
     config.get("logging", "log_directory", fallback="logs")
 )
