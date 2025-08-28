@@ -18,7 +18,7 @@ FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 def sparql_result_count(c):
-  return {"results": {"bindings": [{"count": {"value": c}}]}}
+    return {"results": {"bindings": [{"count": {"value": c}}]}}
 
 
 @pytest.mark.asyncio
