@@ -11,6 +11,8 @@ def _read_sql_query(con: Connection, stmt: Select):
 
 
 async def read_sql_query(stmt: Select) -> pandas.DataFrame:
+    """Read SQL to DataFrame"""
+
     async with async_engine.begin() as conn:
         df = await conn.run_sync(_read_sql_query, stmt)
         return df
