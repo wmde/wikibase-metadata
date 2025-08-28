@@ -20,12 +20,15 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
     filtered_subquery = (
         select(WikibaseModel)
         .where(
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+            and_(
+                WikibaseModel.checked,
+                or_(
+                    # pylint: disable-next=singleton-comparison
+                    WikibaseModel.wikibase_type == None,
+                    and_(
+                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        WikibaseModel.wikibase_type != WikibaseType.TEST,
+                    ),
                 ),
             )
         )
