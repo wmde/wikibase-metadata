@@ -7,7 +7,10 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 
 
 def get_log_param_string(
-    limit: Optional[int] = None, oldest: bool = False, offset: Optional[str] = None
+    limit: Optional[int] = None,
+    oldest: bool = False,
+    offset: Optional[str] = None,
+    prop: Optional[list[str]] = None,
 ) -> str:
     """Log Page URL Parameters"""
 
@@ -21,6 +24,8 @@ def get_log_param_string(
     }
     if offset is not None:
         parameters["lecontinue"] = offset
+    if prop is not None:
+        parameters["leprop"] = "|".join(prop)
     return dict_to_url(parameters)
 
 
