@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Iterable, Optional
 from requests.exceptions import HTTPError
 
-from fetch_data.utils import dict_to_url, fetch_api_data
+from fetch_data.utils import APIError, dict_to_url, fetch_api_data
 from logger import logger
 from model.database import WikibaseModel
 
@@ -20,7 +20,7 @@ async def get_deleted_q_creation_date(
             + get_del_rev_param_string(titles=[f"Q{item_number}"], prop=["timestamp"])
         )
         return parse_del_rev_timestamp(del_rev_result)
-    except HTTPError:
+    except (APIError, HTTPError):
         return None
 
 
@@ -37,7 +37,7 @@ async def get_deleted_item_q_creation_date(
             )
         )
         return parse_del_rev_timestamp(del_rev_result)
-    except HTTPError:
+    except (APIError, HTTPError):
         return None
 
 
