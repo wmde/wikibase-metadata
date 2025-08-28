@@ -1,3 +1,5 @@
+# pylint: disable=missing-function-docstring
+
 """Test create_quantity_observation"""
 
 import pytest
