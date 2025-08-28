@@ -77,9 +77,9 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
         ):
             logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
             observation.returned_data = False
-        except (AssertionError, HTTPError):
+        except (AssertionError, HTTPError) as e:
             logger.warning(
-                "TimeToFirstValueDataError",
+                f"TimeToFirstValueDataError: {e}",
                 # exc_info=True,
                 # stack_info=True,
                 extra={"wikibase": wikibase.id},
