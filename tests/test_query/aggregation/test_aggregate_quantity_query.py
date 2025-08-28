@@ -24,7 +24,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["quantity-success"], scope="session")
+@pytest.mark.dependency(depends=["quantity-partial-failure"], scope="session")
 @pytest.mark.quantity
 @pytest.mark.query
 async def test_aggregate_quantity_query():
@@ -47,10 +47,14 @@ async def test_aggregate_quantity_query():
         result.data, ["aggregateQuantity", "totalExternalIdentifierProperties"], 16
     )
     assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalExternalIdentifierStatements"], 32
+        result.data,
+        ["aggregateQuantity", "totalExternalIdentifierStatements"],
+        0,  # the latest observation encountered an error while getting this value
     )
     assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalUrlProperties"], 64
+        result.data,
+        ["aggregateQuantity", "totalUrlProperties"],
+        0,  # the latest observation encountered an error while getting this value
     )
     assert_layered_property_value(
         result.data, ["aggregateQuantity", "totalUrlStatements"], 128

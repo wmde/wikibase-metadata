@@ -1,9 +1,12 @@
 """Create Quantity Data Observation"""
 
-from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
-from urllib.error import HTTPError, URLError
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
-from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
+import urllib  # urllib2
+
+from SPARQLWrapper.SPARQLExceptions import (
+    EndPointInternalError,
+    QueryBadFormed,
+    SPARQLWrapperException,
+)
 
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import (
@@ -100,9 +103,7 @@ async def compile_quantity_observation(
 
     for query_where, label, attribute_name in COUNT_QUERIES_WHERE:
         logger.info(f"Fetching {label}", extra={"wikibase": wikibase.id})
-        count_value = None
 
-        # straight query, just as it is, counting the number of rows
         try:
             query = "SELECT (COUNT(*) AS ?count) WHERE {"
             query += query_where
@@ -111,50 +112,42 @@ async def compile_quantity_observation(
                 wikibase.sparql_endpoint_url.url, query, label
             )
             count_value = int(results["results"]["bindings"][0]["count"]["value"])
+            logger.debug(
+                f"Got {attribute_name}={count_value}",
+                extra={"wikibase": wikibase.id},
+            )
+            setattr(observation, attribute_name, count_value)
+            observation.returned_data = True
 
-        except (
-            ConnectTimeoutError,
-            ConnectionError,
-            EndPointNotFound,
-            MaxRetryError,
-            NameResolutionError,
-            ReadTimeout,
-            SSLError,
-            TimeoutError,
-            TooManyRedirects,
-        ) as e:
+        # Query probably ran too long, keep trying the other queries
+        except EndPointInternalError as e:
+            logger.warning(
+                f"Failed to get {attribute_name} count via: {query}, "
+                f"query probably timed out (HTTP 500): {e}",
+                extra={"wikibase": wikibase.id},
+                # exc_info=True,
+                # stack_info=True,
+            )
+            continue
+
+        # Something about this query might have been malformed, try the other queries
+        except (SPARQLResponseMalformed, QueryBadFormed) as e:
+            logger.warning(
+                f"Failed to read response for {attribute_name} count: {e}",
+                extra={"wikibase": wikibase.id},
+                # exc_info=True,
+                # stack_info=True,
+            )
+            continue
+
+        # Something about the endpoint seems broken, stop hitting this endpoint
+        except (SPARQLWrapperException, urllib.error.HTTPError) as e:
             logger.error(
                 f"SuspectWikibaseOfflineError: {e}",
                 extra={"wikibase": wikibase.id},
                 # exc_info=True,
                 # stack_info=True,
             )
-            break  # no need to try the other queries
-
-        except (HTTPError, SPARQLResponseMalformed, URLError) as e:
-            logger.warning(
-                f"QuantityDataError: {e}",
-                extra={"wikibase": wikibase.id},
-                # exc_info=True,
-                # stack_info=True,
-            )
-            continue  # who knows, lets try the other queries
-
-        except EndPointInternalError:
-            logger.warning(
-                f"Failed to get count via sparql with simple query: {query}",
-                extra={"wikibase": wikibase.id},
-                # exc_info=True,
-                # stack_info=True,
-            )
-            continue  # try the other queries for what it is worth
-
-        assert count_value is not None
-        logger.debug(
-            f"Got {attribute_name}={count_value}",
-            extra={"wikibase": wikibase.id},
-        )
-        setattr(observation, attribute_name, count_value)
-        observation.returned_data = True
+            break
 
     return observation

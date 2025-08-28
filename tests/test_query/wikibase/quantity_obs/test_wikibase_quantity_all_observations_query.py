@@ -29,7 +29,7 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    depends=["quantity-success", "quantity-failure"], scope="session"
+    depends=["quantity-success", "quantity-partial-failure"], scope="session"
 )
 @pytest.mark.query
 @pytest.mark.quantity
@@ -56,7 +56,7 @@ async def test_wikibase_quantity_all_observations_query():
                 "allObservations"
             ]
         )
-        == 2
+        == 3
     )
 
     for index, (
@@ -73,7 +73,8 @@ async def test_wikibase_quantity_all_observations_query():
     ) in enumerate(
         [
             ("1", True, 2, 4, 1, 8, 16, 32, 64, 128),
-            ("2", False, 2, None, 1, None, None, None, None, None),
+            ("2", False, None, None, None, None, None, None, None, None),
+            ("3", True, 2, 4, 1, 8, 16, None, None, 128),
         ]
     ):
         print(

@@ -1,8 +1,13 @@
 """Test create_quantity_observation"""
 
-import time
-from urllib.error import HTTPError
 import pytest
+
+import time
+
+import urllib
+from SPARQLWrapper.SPARQLExceptions import EndPointInternalError
+from fetch_data.sparql_data.pull_wikidata import SPARQLResponseMalformed
+
 from fetch_data import create_quantity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
@@ -10,6 +15,9 @@ from tests.utils import get_mock_context
 FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchQuantityData(wikibaseId: $wikibaseId)
 }"""
+
+
+sparql_result_count = lambda c: {"results": {"bindings": [{"count": {"value": c}}]}}
 
 
 @pytest.mark.asyncio
@@ -25,18 +33,14 @@ async def test_create_quantity_observation_success(mocker):
     mocker.patch(
         "fetch_data.sparql_data.create_quantity_data_observation.get_sparql_results",
         side_effect=[
-            {"results": {"bindings": [{"count": {"value": 1}}]}},  # Properties
-            {"results": {"bindings": [{"count": {"value": 2}}]}},  # Items
-            {"results": {"bindings": [{"count": {"value": 4}}]}},  # Lexemes
-            {"results": {"bindings": [{"count": {"value": 8}}]}},  # Triples
-            {
-                "results": {"bindings": [{"count": {"value": 16}}]}
-            },  # External Identifier Properties
-            {
-                "results": {"bindings": [{"count": {"value": 32}}]}
-            },  # External Identifier Statements
-            {"results": {"bindings": [{"count": {"value": 64}}]}},  # URL Properties
-            {"results": {"bindings": [{"count": {"value": 128}}]}},  # URL Statements
+            sparql_result_count(1),  # Properties
+            sparql_result_count(2),  # Items
+            sparql_result_count(4),  # Lexemes
+            sparql_result_count(8),  # Triples
+            sparql_result_count(16),  # External Identifier Properties
+            sparql_result_count(32),  # External Identifier Statements
+            sparql_result_count(64),  # URL Properties
+            sparql_result_count(128),  # URL Statements
         ],
     )
 
@@ -53,11 +57,13 @@ async def test_create_quantity_observation_success(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="quantity-failure", depends=["quantity-success"], scope="session"
+    name="quantity-total-failure",
+    depends=["quantity-success", "quantity-success-ood"],
+    scope="session",
 )
 @pytest.mark.quantity
 @pytest.mark.sparql
-async def test_create_quantity_observation_failure(mocker):
+async def test_create_quantity_observation_total_failure(mocker):
     """Test"""
 
     time.sleep(1)
@@ -65,16 +71,46 @@ async def test_create_quantity_observation_failure(mocker):
     mocker.patch(
         "fetch_data.sparql_data.create_quantity_data_observation.get_sparql_results",
         side_effect=[
-            {"results": {"bindings": [{"count": {"value": 1}}]}},  # Properties
-            {"results": {"bindings": [{"count": {"value": 2}}]}},  # Items
-            HTTPError(
+            urllib.error.HTTPError(
                 url="https://query.example.com/sparql",
-                code=500,
+                code=404,
                 msg="Error",
                 hdrs="",
                 fp=None,
-            ),
+            ),  # fatal: endpoint not found
         ],
     )
     success = await create_quantity_observation(1)
     assert success is False
+
+
+@pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="quantity-partial-failure",
+    depends=["quantity-success", "quantity-total-failure", "quantity-success-ood"],
+    scope="session",
+)
+@pytest.mark.quantity
+@pytest.mark.sparql
+async def test_create_quantity_observation_partial_failure(mocker):
+    """Test"""
+
+    time.sleep(1)
+
+    mocker.patch(
+        "fetch_data.sparql_data.create_quantity_data_observation.get_sparql_results",
+        side_effect=[
+            sparql_result_count(1),  # Properties
+            sparql_result_count(2),  # Items
+            sparql_result_count(4),  # Lexemes
+            sparql_result_count(8),  # Triples
+            sparql_result_count(16),  # External Identifier Properties
+            EndPointInternalError(
+                response="Query timed out",
+            ),  # External Identifier Statements - non fatal error
+            SPARQLResponseMalformed(),  # URL Properties - non fatal error
+            sparql_result_count(128),  # URL Property Statements
+        ],
+    )
+    success = await create_quantity_observation(1)
+    assert success is True  # partially obtained observations return True too

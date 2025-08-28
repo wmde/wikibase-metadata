@@ -1,6 +1,6 @@
 """Count External Identifier Properties"""
 
+# get property entities that are external ids
 COUNT_EXTERNAL_IDENTIFIER_PROPERTIES_QUERY_WHERE = str(
-    # get property entities that are external ids
-    "?externalIdProperty wikibase:propertyType wikibase:ExternalId ."
+    "?externalIdProperty wikibase:propertyType wikibase:ExternalId .",
 )
