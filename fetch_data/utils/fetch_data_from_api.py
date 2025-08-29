@@ -14,21 +14,7 @@ class APIError(Exception):
 async def fetch_api_data(
     url: str, initial_wait: float = 8, max_retries: int = 5, multiplier: float = 2.0
 ) -> dict:
-    """Fetch API Data with retry logic on request failures.
-
-    Args:
-        url: The API endpoint URL to query.
-        initial_wait: Initial wait time (in seconds) before first retry.
-        max_retries: Maximum number of retry attempts.
-        multiplier: Multiplier applied to wait time for each subsequent retry.
-
-    Returns:
-        The JSON response data from the API.
-
-    Raises:
-        ValueError: If the API returns an error in the response.
-        Exception: If all retry attempts fail.
-    """
+    """Fetch API Data with retry logic on request failures."""
 
     wait_time = initial_wait
 
