@@ -86,7 +86,6 @@ async def test_get_recent_changes_list_multiple_pulls(mocker):
     assert oldest_change.timestamp == datetime(2024, 1, 31, tzinfo=UTC)
 
 
-@freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 async def test_get_recent_changes_list_empty_response(mocker):
     """Test handling of empty API response (no recent changes)."""
