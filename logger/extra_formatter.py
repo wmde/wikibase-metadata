@@ -39,13 +39,23 @@ class OptionalExtraFormatter(logging.Formatter):
 
         fmt = "%(asctime)s | "
 
-        if "wikibase" in record.__dict__.keys():
-            fmt += "wikibase:%(wikibase)d | "
+        if record.levelno == logging.ERROR:
+            fmt += "ERR  | "
+        elif record.levelno == logging.WARNING:
+            fmt += "WARN | "
+        elif record.levelno == logging.INFO:
+            fmt += "INFO | "
+        elif record.levelno == logging.DEBUG:
+            fmt += "DBG  | "
+        elif record.levelno == logging.CRITICAL:
+            fmt += "CRIT | "
 
         if "taskName" in record.__dict__.keys():
             fmt += "%(taskName)s | "
 
-        fmt += "%(levelname)s | "
+        if "wikibase" in record.__dict__.keys():
+            fmt += "wikibase:%(wikibase)d | "
+
         fmt += "%(message)s"
 
         for k in record.__dict__.keys():

@@ -54,7 +54,6 @@ async def compile_property_popularity_observation(
             wikibase.sparql_endpoint_url.url,
             PROPERTY_POPULARITY_QUERY,
             "PROPERTY_POPULARITY_QUERY",
-            timeout=10,
         )
 
         observation.returned_data = True
