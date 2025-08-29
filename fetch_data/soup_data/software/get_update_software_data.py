@@ -50,7 +50,7 @@ async def compile_data_from_url(
     """Compile Software Data from URL"""
 
     with await asyncio.to_thread(
-        requests.get, override_url or ext.url, timeout=10, allow_redirects=True
+        requests.get, override_url or ext.url, timeout=300, allow_redirects=True
     ) as response:
 
         ext.data_fetched = datetime.now(timezone.utc)
