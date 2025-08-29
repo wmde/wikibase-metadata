@@ -12,7 +12,7 @@ class APIError(Exception):
 
 
 async def fetch_api_data(
-    url: str, initial_wait: float = 8.0, max_retries: int = 5, multiplier: float = 2.0
+    url: str, initial_wait: float = 8, max_retries: int = 5, multiplier: float = 2.0
 ) -> dict:
     """Fetch API Data with retry logic on request failures.
 
@@ -48,16 +48,28 @@ async def fetch_api_data(
             query_data = json.loads(result.content)
             if "error" in query_data:
                 raise APIError(f"API Returned Error: {query_data['error']}")
+            max_retries = 0
             return query_data
 
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 404:
+                logger.error(f"404 Not Found for {url}, giving up immediately")
+                max_retries = 0
+                raise APIError(f"Endpoint not found: {url}") from e
+            if attempt >= max_retries:
+                logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
+                raise APIError(f"Endpoint: {url}") from e
+
         except Exception as e:  # pylint: disable=broad-exception-caught
+            if attempt >= max_retries:
+                logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
+                raise e
+
+        finally:
             if attempt < max_retries:
                 logger.warning(
-                    f"Request failed (attempt {attempt + 1}/{max_retries + 1}): "
-                    "{e}. Retrying in {wait_time:.2f}s..."
+                    f"Attempt {attempt + 1}/{max_retries + 1} failed: "
+                    f"Retrying in {wait_time:.2f}s..."
                 )
                 await asyncio.sleep(wait_time)
                 wait_time *= multiplier
-            else:
-                logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
-                raise e
