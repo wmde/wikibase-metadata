@@ -1,3 +1,3 @@
 """Export CSVs"""
 
-from export_csv.quantity import export_quantity_csv
+from export_csv.metric import export_metric_csv

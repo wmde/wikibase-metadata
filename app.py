@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 from starlette.requests import Request
 from strawberry.fastapi import GraphQLRouter
 
-from export_csv import export_quantity_csv
+from export_csv import export_metric_csv
 from model.strawberry import schema
 from resolvers.authentication import authenticate_request
 from schedule import scheduler
@@ -49,10 +49,10 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 CHUNK_SIZE = 1024 * 1024
 
 
-@app.get("/csv/quantity", response_class=StreamingResponse)
-async def quantity_csv(request: Request, background_tasks: BackgroundTasks):
+@app.get("/csv/metrics", response_class=StreamingResponse)
+async def metric_csv(request: Request, background_tasks: BackgroundTasks):
     """Quantity CSV"""
 
     # authenticate_request(request)
 
-    return await export_quantity_csv(background_tasks)
+    return await export_metric_csv(background_tasks)

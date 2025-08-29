@@ -21,10 +21,36 @@ from model.enum import WikibaseType
 CHUNK_SIZE = 1024 * 1024
 
 
-async def export_quantity_csv(background_tasks: BackgroundTasks):
-    """Quantity CSV"""
+async def export_metric_csv(background_tasks: BackgroundTasks):
+    """CSV with Requested Metrics"""
 
-    filtered_subquery = (
+    query = get_metrics_query()
+
+    df = await read_sql_query(query, index_col="wikibase_id")
+
+    filename = f"{uuid.uuid4()}.csv"
+    df.to_csv(filename)
+    del df
+
+    def iterfile():
+        with open(filename, "rb") as f:
+            while chunk := f.read(CHUNK_SIZE):
+                yield chunk
+
+    background_tasks.add_task(os.remove, filename)
+
+    headers = {"Content-Disposition": 'attachment; filename="metrics.csv"'}
+    return StreamingResponse(iterfile(), headers=headers, media_type="text/csv")
+
+
+def get_metrics_query():
+    """
+    Filter Out Offline and Test Wikis
+
+    Pull Quantity, Recent Changes, and Software Version Metrics
+    """
+
+    filtered_wikibase_subquery = (
         select(WikibaseModel)
         .where(
             and_(
@@ -132,9 +158,8 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
 
     query = (
         select(
-            filtered_subquery.c.id.label("wikibase_id"),
-            filtered_subquery.c.wb_type.label("wikibase_type"),
-
+            filtered_wikibase_subquery.c.id.label("wikibase_id"),
+            filtered_wikibase_subquery.c.wb_type.label("wikibase_type"),
             most_recent_successful_quantity_obs.c.date.label(
                 "quantity_observation_date"
             ),
@@ -150,15 +175,15 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
             ),
             most_recent_successful_quantity_obs.c.total_url_properties,
             most_recent_successful_quantity_obs.c.total_url_statements,
-
-            most_recent_successful_rc_obs.c.date.label('recent_changes_observation_date'),
+            most_recent_successful_rc_obs.c.date.label(
+                "recent_changes_observation_date"
+            ),
             most_recent_successful_rc_obs.c.first_change_date,
             most_recent_successful_rc_obs.c.last_change_date,
             most_recent_successful_rc_obs.c.human_change_count,
             most_recent_successful_rc_obs.c.human_change_user_count,
             most_recent_successful_rc_obs.c.bot_change_count,
             most_recent_successful_rc_obs.c.bot_change_user_count,
-
             most_recent_successful_sv_obs.c.observation_date.label(
                 "software_version_observation_date"
             ),
@@ -167,36 +192,22 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
         )
         .join(
             most_recent_successful_quantity_obs,
-            onclause=filtered_subquery.c.id
+            onclause=filtered_wikibase_subquery.c.id
             == most_recent_successful_quantity_obs.c.wikibase_id,
             isouter=True,
         )
         .join(
             most_recent_successful_rc_obs,
-            onclause=filtered_subquery.c.id
+            onclause=filtered_wikibase_subquery.c.id
             == most_recent_successful_rc_obs.c.wikibase_id,
             isouter=True,
         )
         .join(
             most_recent_successful_sv_obs,
-            onclause=filtered_subquery.c.id
+            onclause=filtered_wikibase_subquery.c.id
             == most_recent_successful_sv_obs.c.wikibase_id,
             isouter=True,
         )
     )
 
-    df = await read_sql_query(query, index_col="wikibase_id")
-
-    filename = f"{uuid.uuid4()}.csv"
-    df.to_csv(filename)
-    del df
-
-    def iterfile():
-        with open(filename, "rb") as f:
-            while chunk := f.read(CHUNK_SIZE):
-                yield chunk
-
-    background_tasks.add_task(os.remove, filename)
-
-    headers = {"Content-Disposition": 'attachment; filename="quantity_data.csv"'}
-    return StreamingResponse(iterfile(), headers=headers, media_type="text/csv")
+    return query
