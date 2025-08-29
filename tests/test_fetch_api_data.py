@@ -1,6 +1,7 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
+# pylint: disable=unused-argument
 
 import asyncio
 from typing import List
@@ -47,7 +48,7 @@ async def test_fetch_api_data_retries_then_succeeds(monkeypatch):
         MockResponse("https://example.com", 200, '{"ok": true, "value": 42}'),
     ]
 
-    def fake_get(url, timeout, headers):  # pylint: disable=unused-argument
+    def fake_get(url, timeout, headers):
         calls.append(url)
         effect = side_effects.pop(0)
         if isinstance(effect, Exception):
@@ -117,7 +118,7 @@ async def test_fetch_api_data_instant_fail_on_404(monkeypatch):
         await fetch_api_data("http://example.com/api")
 
     # did not sleep at all
-    assert sleep_calls == []
+    assert not sleep_calls
 
 
 @pytest.mark.asyncio
@@ -129,7 +130,7 @@ async def test_fetch_api_data_api_error_json_retries_then_raises(monkeypatch):
     async def fake_sleep(delay):
         sleep_calls.append(delay)
 
-    def fake_get(url, timeout, headers):  # pylint: disable=unused-argument
+    def fake_get(url, timeout, headers):
         return MockResponse(url, 500)
 
     monkeypatch.setattr(requests, "get", fake_get)
