@@ -10,7 +10,6 @@ from SPARQLWrapper.SPARQLExceptions import SPARQLWrapperException
 
 from logger.get_logger import logger
 
-import time
 from urllib.error import HTTPError
 
 
@@ -51,7 +50,7 @@ async def get_sparql_results(
                 f"SparQL Query '{query_name}' on '{endpoint_url}' "
                 f"received 429, sleeping for {backup_time} seconds"
             )
-            time.sleep(backup_time)
+            await asyncio.sleep(backup_time)
             backup_time = backup_time * backup_time_multiplier
             retires += 1
 
