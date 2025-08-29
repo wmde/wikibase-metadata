@@ -34,7 +34,7 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
                 requests.get,
                 wikibase.special_statistics_url(),
                 headers={"Cookie": "mediawikilanguage=en"},
-                timeout=10,
+                timeout=300,
                 allow_redirects=True,
             )
             result.raise_for_status()

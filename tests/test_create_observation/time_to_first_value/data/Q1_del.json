@@ -1,0 +1,7 @@
+{
+	"error": {
+		"code": "drvpermissiondenied",
+		"info": "You don't have permission to view deleted revision information",
+		"*": "See https://base.transformap.co/api.php for API usage"
+	}
+}
