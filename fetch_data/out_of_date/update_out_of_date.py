@@ -3,6 +3,7 @@
 from fetch_data.api_data import (
     create_log_observation,
     create_recent_changes_observation,
+    create_time_to_first_value_observation,
     create_user_observation,
 )
 from fetch_data.out_of_date.get_out_of_date_wikibases import (
@@ -14,6 +15,7 @@ from fetch_data.out_of_date.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_recent_changes_observations,
     get_wikibase_list_with_out_of_date_software_observations,
     get_wikibase_list_with_out_of_date_stats_observations,
+    get_wikibase_list_with_out_of_date_time_to_first_value_observations,
     get_wikibase_list_with_out_of_date_user_observations,
 )
 from fetch_data.soup_data import (
@@ -25,9 +27,7 @@ from fetch_data.sparql_data import (
     create_property_popularity_observation,
     create_quantity_observation,
 )
-from fetch_data.cloud_api_data import (
-    update_cloud_instances,
-)
+from fetch_data.cloud_api_data import update_cloud_instances
 from logger import logger
 
 
@@ -47,6 +47,7 @@ async def update_out_of_date_connectivity_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_con_obs)
 
 
 async def update_out_of_date_log_first_observations():
@@ -65,6 +66,7 @@ async def update_out_of_date_log_first_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_log_obs)
 
 
 async def update_out_of_date_log_last_observations():
@@ -83,6 +85,7 @@ async def update_out_of_date_log_last_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_log_obs)
 
 
 async def update_out_of_date_property_observations():
@@ -103,6 +106,7 @@ async def update_out_of_date_property_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_prop_obs)
 
 
 async def update_out_of_date_quantity_observations():
@@ -121,6 +125,7 @@ async def update_out_of_date_quantity_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_quant_obs)
 
 
 async def update_out_of_date_recent_changes_observations():
@@ -139,6 +144,7 @@ async def update_out_of_date_recent_changes_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_rc_obs)
 
 
 async def update_out_of_date_software_observations():
@@ -157,6 +163,7 @@ async def update_out_of_date_software_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_soft_obs)
 
 
 async def update_out_of_date_stats_observations():
@@ -175,6 +182,28 @@ async def update_out_of_date_stats_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_stats_obs)
+
+
+async def update_out_of_date_time_to_first_value_observations():
+    """Update Out of Date Time to First Value Observations"""
+
+    ood_ttfv_obs = (
+        await get_wikibase_list_with_out_of_date_time_to_first_value_observations()
+    )
+    logger.info(f"Time to First Value: {len(ood_ttfv_obs)} Wikibases to Update")
+    for wikibase in ood_ttfv_obs:
+        try:
+            await create_time_to_first_value_observation(wikibase.id)
+        # pylint: disable-next=bare-except
+        except:
+            logger.error(
+                "TimeToFirstValueDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase.id},
+            )
+    return len(ood_ttfv_obs)
 
 
 async def update_out_of_date_user_observations():
@@ -193,6 +222,7 @@ async def update_out_of_date_user_observations():
                 stack_info=True,
                 extra={"wikibase": wikibase.id},
             )
+    return len(ood_user_obs)
 
 
 async def update_out_of_date_cloud_instances():
