@@ -15,7 +15,7 @@ from fetch_data.api_data.time_to_first_value.get_revisions_data import (
     get_item_q_creation_date,
     get_q_creation_date,
 )
-from fetch_data.utils import fetch_api_data, get_wikibase_from_database
+from fetch_data.utils import fetch_api_data, get_wikibase_from_database, APIError
 from logger import logger
 from model.database import (
     WikibaseModel,
@@ -74,6 +74,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             ReadTimeout,
             SSLError,
             TooManyRedirects,
+            APIError,
         ):
             logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
             observation.returned_data = False
