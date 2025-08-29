@@ -109,9 +109,7 @@ async def test_fetch_api_data_instant_fail_on_404(monkeypatch):
         sleep_calls.append(delay)
 
     def fake_get(url, timeout, headers):
-        response = requests.Response()
-        response.status_code = 404
-        raise requests.HTTPError(response=response)
+        return MockResponse(url, 404)
 
     monkeypatch.setattr(requests, "get", fake_get)
     monkeypatch.setattr(asyncio, "sleep", fake_sleep)
