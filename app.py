@@ -50,7 +50,9 @@ CHUNK_SIZE = 1024 * 1024
 
 
 @app.get("/csv/metrics", response_class=StreamingResponse)
-async def metric_csv(request: Request, background_tasks: BackgroundTasks):
+async def metric_csv(
+    request: Request, background_tasks: BackgroundTasks
+) -> StreamingResponse:
     """Quantity CSV"""
 
     # authenticate_request(request)
