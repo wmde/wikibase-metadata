@@ -10,6 +10,7 @@ from export_csv.util import read_sql_query
 from model.database import (
     WikibaseModel,
     WikibaseQuantityObservationModel,
+    WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseSoftwareModel,
@@ -68,6 +69,32 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
         .cte(name="filtered_quantity_observations")
     )
 
+    rc_rank_subquery = (
+        select(
+            WikibaseRecentChangesObservationModel.id,
+            # pylint: disable-next=not-callable
+            func.rank()
+            .over(
+                partition_by=WikibaseRecentChangesObservationModel.wikibase_id,
+                order_by=WikibaseRecentChangesObservationModel.observation_date.desc(),
+            )
+            .label("rank"),
+        )
+        .where((WikibaseRecentChangesObservationModel.returned_data))
+        .subquery()
+    )
+    most_recent_successful_rc_obs = (
+        select(WikibaseRecentChangesObservationModel)
+        .join(
+            rc_rank_subquery,
+            onclause=and_(
+                WikibaseRecentChangesObservationModel.id == rc_rank_subquery.c.id,
+                rc_rank_subquery.c.rank == 1,
+            ),
+        )
+        .cte(name="filtered_recent_changes_observations")
+    )
+
     sv_rank_subquery = (
         select(
             WikibaseSoftwareVersionObservationModel.id,
@@ -107,6 +134,7 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
         select(
             filtered_subquery.c.id.label("wikibase_id"),
             filtered_subquery.c.wb_type.label("wikibase_type"),
+
             most_recent_successful_quantity_obs.c.date.label(
                 "quantity_observation_date"
             ),
@@ -122,6 +150,15 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
             ),
             most_recent_successful_quantity_obs.c.total_url_properties,
             most_recent_successful_quantity_obs.c.total_url_statements,
+
+            most_recent_successful_rc_obs.c.date.label('recent_changes_observation_date'),
+            most_recent_successful_rc_obs.c.first_change_date,
+            most_recent_successful_rc_obs.c.last_change_date,
+            most_recent_successful_rc_obs.c.human_change_count,
+            most_recent_successful_rc_obs.c.human_change_user_count,
+            most_recent_successful_rc_obs.c.bot_change_count,
+            most_recent_successful_rc_obs.c.bot_change_user_count,
+
             most_recent_successful_sv_obs.c.observation_date.label(
                 "software_version_observation_date"
             ),
@@ -132,6 +169,12 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
             most_recent_successful_quantity_obs,
             onclause=filtered_subquery.c.id
             == most_recent_successful_quantity_obs.c.wikibase_id,
+            isouter=True,
+        )
+        .join(
+            most_recent_successful_rc_obs,
+            onclause=filtered_subquery.c.id
+            == most_recent_successful_rc_obs.c.wikibase_id,
             isouter=True,
         )
         .join(
