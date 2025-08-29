@@ -55,6 +55,10 @@ async def get_recent_changes_list(
         for record in query_data["query"]["recentchanges"]:
             data.append(WikibaseRecentChangeRecord(record))
 
+        # No changes this time
+        if len(data) == 0:
+            break
+
         # The API returns recent changes in descending order of time.
         # So the last one in the list is the oldest.
         oldest_record_in_batch_date = data[-1].timestamp
