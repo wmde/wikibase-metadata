@@ -95,9 +95,7 @@ async def test_get_recent_changes_list_empty_response(mocker):
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         return_value={
             "batchcomplete": "",
-            "query": {
-                "recentchanges": []
-            },
+            "query": {"recentchanges": []},
         },
     )
 

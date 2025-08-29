@@ -1,3 +1,6 @@
+# pylint: disable=missing-function-docstring
+
+
 """Tests for get_recent_changes_param_string"""
 
 from fetch_data.api_data.recent_changes_data.fetch_recent_changes_data import (
@@ -72,4 +75,3 @@ def test_param_string_all_params_bots_true():
         get_recent_changes_param_string(limit=50, continue_from=cont, bots=True)
         == expected
     )
-
