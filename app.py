@@ -55,6 +55,6 @@ async def metric_csv(
 ) -> StreamingResponse:
     """Quantity CSV"""
 
-    # authenticate_request(request)
+    authenticate_request(request)
 
     return await export_metric_csv(background_tasks)
