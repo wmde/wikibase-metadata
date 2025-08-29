@@ -26,15 +26,15 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
                     # pylint: disable-next=singleton-comparison
                     WikibaseModel.wikibase_type == None,
                     and_(
-                        WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                        # WikibaseModel.wikibase_type != WikibaseType.CLOUD,
                         WikibaseModel.wikibase_type != WikibaseType.TEST,
                     ),
                 ),
             )
         )
-        .subquery()
+        .cte(name="filtered_wikibases")
     )
-    rank_subquery = (
+    quantity_rank_subquery = (
         select(
             WikibaseQuantityObservationModel.id,
             # pylint: disable-next=not-callable
@@ -45,23 +45,40 @@ async def export_quantity_csv(background_tasks: BackgroundTasks):
             )
             .label("rank"),
         )
-        .join(
-            filtered_subquery,
-            onclause=WikibaseQuantityObservationModel.wikibase_id
-            == filtered_subquery.c.id,
-        )
-        .where((WikibaseQuantityObservationModel.returned_data))
-        .subquery()
+        .where((WikibaseQuantityObservationModel.returned_data)).subquery()
     )
-    query = select(WikibaseQuantityObservationModel).join(
-        rank_subquery,
-        onclause=and_(
-            WikibaseQuantityObservationModel.id == rank_subquery.c.id,
-            rank_subquery.c.rank == 1,
-        ),
+    most_recent_successful_quantity_obs = (
+        select(WikibaseQuantityObservationModel)
+        .join(
+            quantity_rank_subquery,
+            onclause=and_(
+                WikibaseQuantityObservationModel.id == quantity_rank_subquery.c.id,
+                quantity_rank_subquery.c.rank == 1,
+            ),
+        )
+        .cte(name='filtered_quantity_observations')
     )
 
-    df = await read_sql_query(query)
+    query = select(
+        filtered_subquery.c.id.label('wikibase_id'),
+        filtered_subquery.c.wb_type.label('wikibase_type'),
+        most_recent_successful_quantity_obs.c.date.label("quantity_observation_date"),
+        most_recent_successful_quantity_obs.c.total_items,
+        most_recent_successful_quantity_obs.c.total_lexemes,
+        most_recent_successful_quantity_obs.c.total_properties,
+        most_recent_successful_quantity_obs.c.total_triples,
+        most_recent_successful_quantity_obs.c.total_external_identifier_properties.label('total_ei_properties'),
+        most_recent_successful_quantity_obs.c.total_external_identifier_statements.label('total_ei_statements'),
+        most_recent_successful_quantity_obs.c.total_url_properties,
+        most_recent_successful_quantity_obs.c.total_url_statements,
+    ).join(
+        most_recent_successful_quantity_obs,
+        onclause=filtered_subquery.c.id
+        == most_recent_successful_quantity_obs.c.wikibase_id,
+        isouter=True,
+    )
+
+    df = await read_sql_query(query, index_col="wikibase_id")
 
     filename = f"{uuid.uuid4()}.csv"
     df.to_csv(filename)
