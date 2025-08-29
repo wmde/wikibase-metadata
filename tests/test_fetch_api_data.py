@@ -3,37 +3,25 @@
 # pylint: disable=missing-function-docstring
 
 import asyncio
-import json
 from typing import List
 
 import pytest
 import requests
+from tests.utils import MockResponse
 
-from fetch_data.utils.fetch_data_from_api import fetch_api_data
 
+from fetch_data.utils.fetch_data_from_api import fetch_api_data, APIError
 
-class FakeResponse:
-    def __init__(self, data, status_code: int = 200):
-        self._content = json.dumps(data).encode()
-        self.status_code = status_code
-
-    @property
-    def content(self):
-        return self._content
-
-    def raise_for_status(self):
-        if self.status_code >= 400:
-            raise requests.HTTPError(f"Status code {self.status_code}")
 
 
 @pytest.mark.asyncio
 async def test_fetch_api_data_success(monkeypatch):
     """Returns parsed JSON on first try."""
 
-    def fake_get(url, timeout):
+    def fake_get(url, timeout, headers):
         assert url == "http://example.com/api"
-        assert timeout == 10
-        return FakeResponse({"ok": True, "value": 42})
+        assert timeout == 300
+        return MockResponse(url, 200, '{"ok": true, "value": 42}')
 
     monkeypatch.setattr(requests, "get", fake_get)
 
@@ -57,10 +45,10 @@ async def test_fetch_api_data_retries_then_succeeds(monkeypatch):
     side_effects = [
         requests.Timeout("timeout"),
         requests.ConnectionError("conn error"),
-        FakeResponse({"ok": True}),
+        MockResponse("https://example.com", 200, '{"ok": true, "value": 42}'),
     ]
 
-    def fake_get(url, timeout):  # pylint: disable=unused-argument
+    def fake_get(url, timeout, headers):  # pylint: disable=unused-argument
         calls.append(url)
         effect = side_effects.pop(0)
         if isinstance(effect, Exception):
@@ -77,7 +65,7 @@ async def test_fetch_api_data_retries_then_succeeds(monkeypatch):
         multiplier=2.0,
     )
 
-    assert data == {"ok": True}
+    assert data == {"ok": True, "value": 42}
     # Two failures -> two sleeps, with exponential wait
     assert sleep_calls == [0.01, 0.02]
     # Three total calls made
@@ -93,7 +81,7 @@ async def test_fetch_api_data_all_retries_fail(monkeypatch):
     async def fake_sleep(delay):
         sleep_calls.append(delay)
 
-    def fake_get(url, timeout):
+    def fake_get(url, timeout, headers):
         raise requests.RequestException("boom")
 
     monkeypatch.setattr(requests, "get", fake_get)
@@ -112,6 +100,35 @@ async def test_fetch_api_data_all_retries_fail(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_fetch_api_data_instant_fail_on_404(monkeypatch):
+    """Tests that an API error 404 is handled as a failure without retries."""
+
+    sleep_calls: List[float] = []
+
+    async def fake_sleep(delay):
+        sleep_calls.append(delay)
+
+    def fake_get(url, timeout, headers):
+        response = requests.Response()
+        response.status_code = 404
+        raise requests.HTTPError(response=response)
+
+    monkeypatch.setattr(requests, "get", fake_get)
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+
+    with pytest.raises(APIError):
+        await fetch_api_data(
+            "http://example.com/api",
+            initial_wait=0.001,
+            max_retries=2,
+            multiplier=2.0,
+        )
+
+    # did not sleep at all
+    assert sleep_calls == []
+
+
+@pytest.mark.asyncio
 async def test_fetch_api_data_api_error_json_retries_then_raises(monkeypatch):
     """When API returns an error JSON, it retries and finally raises ValueError."""
 
@@ -120,19 +137,19 @@ async def test_fetch_api_data_api_error_json_retries_then_raises(monkeypatch):
     async def fake_sleep(delay):
         sleep_calls.append(delay)
 
-    def fake_get(url, timeout):  # pylint: disable=unused-argument
-        return FakeResponse({"error": {"code": 123, "info": "bad"}})
+    def fake_get(url, timeout, headers):  # pylint: disable=unused-argument
+        return MockResponse(url, 500)
 
     monkeypatch.setattr(requests, "get", fake_get)
     monkeypatch.setattr(asyncio, "sleep", fake_sleep)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(APIError):
         await fetch_api_data(
             "http://example.com/api",
-            initial_wait=0.001,
+            initial_wait=0.01,
             max_retries=3,
             multiplier=2.0,
         )
 
     # Should retry up to max_retries times -> 3 sleeps
-    assert sleep_calls == [0.001, 0.002, 0.004]
+    assert sleep_calls == [0.01, 0.02, 0.04]
