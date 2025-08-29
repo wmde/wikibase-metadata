@@ -16,7 +16,7 @@ class SPARQLResponseMalformed(SPARQLWrapperException):
 
 
 async def get_sparql_results(
-    endpoint_url: str, query: str, query_name: str, timeout: int = 60
+    endpoint_url: str, query: str, query_name: str, timeout: int = 300
 ) -> dict:
     """Get SPARQL Data from Wikidata ASYNC"""
     return await asyncio.to_thread(

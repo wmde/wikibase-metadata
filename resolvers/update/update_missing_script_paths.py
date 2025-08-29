@@ -73,7 +73,6 @@ async def fetch_wikibase_script_path(wikibase: WikibaseModel):
             requests.get,
             wikibase.special_version_url(),
             headers={"Cookie": "mediawikilanguage=en"},
-            timeout=10,
         )
         soup = BeautifulSoup(result.content, "html.parser")
 

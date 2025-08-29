@@ -53,7 +53,7 @@ async def create_software_version_observation(
                 requests.get,
                 wikibase.special_version_url(),
                 headers={"Cookie": "mediawikilanguage=en"},
-                timeout=10,
+                timeout=300,
             )
             result.raise_for_status()
             soup = BeautifulSoup(result.content, "html.parser")

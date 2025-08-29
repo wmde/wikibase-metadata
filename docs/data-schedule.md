@@ -13,6 +13,7 @@ A Wikibase's observation is considered stale under the following conditions:
 | Quantity            | >=4 weeks                   | >=1 week                      |
 | Software Version    | >=4 weeks                   | >=1 week                      |
 | Statistics          | >=4 weeks                   | >=1 week                      |
+| Time to First Value | >=52 weeks                  | >=40 weeks                    |
 | User Data           | >=4 weeks                   | >=1 week                      |
 
 That is, for Connectivity Observations, if a Wikibase's most recent observation was successful, it is considered stale if that observation is more than 4 weeks old. If the most recent observation was _unsuccessful_, it is considered stale if that observation is more than 1 week old.
