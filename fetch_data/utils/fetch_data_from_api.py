@@ -37,7 +37,7 @@ async def fetch_api_data(
             max_retries = 0
             return query_data
 
-        except requests.exceptions.HTTPError as e:
+        except requests.HTTPError as e:
             if e.response.status_code == 404:
                 logger.error(f"404 Not Found for {url}, giving up immediately")
                 max_retries = 0
@@ -46,7 +46,7 @@ async def fetch_api_data(
                 logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
                 raise APIError(f"Endpoint: {url}") from e
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except requests.RequestException as e:
             if attempt >= max_retries:
                 logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
                 raise e

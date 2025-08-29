@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from requests import HTTPError, Response
+import requests
 
 
 class MockResponse:
@@ -16,9 +16,9 @@ class MockResponse:
         """Raise Error if Status != 200"""
 
         if self.status_code is not None and self.status_code != 200:
-            response = Response()
+            response = requests.Response()
             response.status_code = self.status_code
-            raise HTTPError(response=response)
+            raise requests.HTTPError(response=response)
 
     def __enter__(self):
         return self
