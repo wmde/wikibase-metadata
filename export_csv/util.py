@@ -26,6 +26,7 @@ async def read_sql_query(
 
 
 CHUNK_SIZE = 1024 * 1024
+EXPORT_DIRECTORY = "export/data"
 
 
 async def export_csv(
@@ -38,7 +39,9 @@ async def export_csv(
 
     df = await read_sql_query(query, index_col=index_col)
 
-    filename = f"{uuid.uuid4()}.csv"
+    os.makedirs(EXPORT_DIRECTORY, exist_ok=True)
+
+    filename = f"{EXPORT_DIRECTORY}/{uuid.uuid4()}.csv"
     df.to_csv(filename)
     del df
 
