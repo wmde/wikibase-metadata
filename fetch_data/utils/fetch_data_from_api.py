@@ -41,7 +41,9 @@ async def fetch_api_data(
     ):  # pragma: no branch # we never run the full number of iterations
         try:
             logger.debug(f"Querying {url}")
-            result = await asyncio.to_thread(requests.get, url, headers=headers, timeout=300)
+            result = await asyncio.to_thread(
+                requests.get, url, headers=headers, timeout=300
+            )
             result.raise_for_status()
             query_data = json.loads(result.content)
             if "error" in query_data:
@@ -59,4 +61,3 @@ async def fetch_api_data(
             else:
                 logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
                 raise e
-
