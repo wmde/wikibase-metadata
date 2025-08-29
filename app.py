@@ -1,11 +1,15 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from starlette.requests import Request
 from strawberry.fastapi import GraphQLRouter
 
+from export_csv import export_metric_csv
 from model.strawberry import schema
+from resolvers.authentication import authenticate_request
 from schedule import scheduler
 
 
@@ -41,3 +45,16 @@ def read_root():
 
 
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
+
+CHUNK_SIZE = 1024 * 1024
+
+
+@app.get("/csv/metrics", response_class=StreamingResponse)
+async def metric_csv(
+    request: Request, background_tasks: BackgroundTasks
+) -> StreamingResponse:
+    """Quantity CSV"""
+
+    authenticate_request(request)
+
+    return await export_metric_csv(background_tasks)
