@@ -13,7 +13,6 @@ from tests.utils import MockResponse
 from fetch_data.utils.fetch_data_from_api import fetch_api_data, APIError
 
 
-
 @pytest.mark.asyncio
 async def test_fetch_api_data_success(monkeypatch):
     """Returns parsed JSON on first try."""
@@ -90,13 +89,13 @@ async def test_fetch_api_data_all_retries_fail(monkeypatch):
     with pytest.raises(requests.RequestException):
         await fetch_api_data(
             "http://example.com/api",
-            initial_wait=0.001,
+            initial_wait=0.01,
             max_retries=2,
             multiplier=2.0,
         )
 
     # Slept once per failed retry attempt (not after the final attempt)
-    assert sleep_calls == [0.001, 0.002]
+    assert sleep_calls == [0.01, 0.02]
 
 
 @pytest.mark.asyncio
@@ -115,12 +114,7 @@ async def test_fetch_api_data_instant_fail_on_404(monkeypatch):
     monkeypatch.setattr(asyncio, "sleep", fake_sleep)
 
     with pytest.raises(APIError):
-        await fetch_api_data(
-            "http://example.com/api",
-            initial_wait=0.001,
-            max_retries=2,
-            multiplier=2.0,
-        )
+        await fetch_api_data("http://example.com/api")
 
     # did not sleep at all
     assert sleep_calls == []
