@@ -14,8 +14,12 @@ class APIError(Exception):
 async def fetch_api_data(url: str) -> dict:
     """Fetch API Data"""
 
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    }
+
     logger.debug(f"Querying {url}")
-    result = await asyncio.to_thread(requests.get, url, timeout=300)
+    result = await asyncio.to_thread(requests.get, url, headers=headers, timeout=300)
     result.raise_for_status()
     query_data = json.loads(result.content)
     if "error" in query_data:
