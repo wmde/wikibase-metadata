@@ -15,6 +15,7 @@ from model.database.wikibase_observation import (
     WikibaseRecentChangesObservationModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
+    WikibaseTimeToFirstValueObservationModel,
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_url_model import WikibaseURLModel, join_url
@@ -234,15 +235,6 @@ class WikibaseModel(ModelBase):
     )
     """Connectivity Observations"""
 
-    recent_changes_observations: Mapped[list[WikibaseRecentChangesObservationModel]] = (
-        relationship(
-            "WikibaseRecentChangesObservationModel",
-            back_populates="wikibase",
-            lazy="select",
-        )
-    )
-    """Recent Changes Observations"""
-
     log_month_observations: Mapped[list[WikibaseLogMonthObservationModel]] = (
         relationship(
             "WikibaseLogMonthObservationModel", back_populates="wikibase", lazy="select"
@@ -266,6 +258,15 @@ class WikibaseModel(ModelBase):
     )
     """Quantity Observations"""
 
+    recent_changes_observations: Mapped[list[WikibaseRecentChangesObservationModel]] = (
+        relationship(
+            "WikibaseRecentChangesObservationModel",
+            back_populates="wikibase",
+            lazy="select",
+        )
+    )
+    """Recent Changes Observations"""
+
     software_version_observations: Mapped[
         list[WikibaseSoftwareVersionObservationModel]
     ] = relationship(
@@ -283,6 +284,15 @@ class WikibaseModel(ModelBase):
         )
     )
     """Statistics Observations"""
+
+    time_to_first_value_observations: Mapped[
+        list[WikibaseTimeToFirstValueObservationModel]
+    ] = relationship(
+        "WikibaseTimeToFirstValueObservationModel",
+        back_populates="wikibase",
+        lazy="select",
+    )
+    """Time to First Value Observations"""
 
     user_observations: Mapped[list[WikibaseUserObservationModel]] = relationship(
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="select"

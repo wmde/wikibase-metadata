@@ -63,7 +63,6 @@ async def compile_connectivity_observation(
             wikibase.sparql_endpoint_url.url,
             ITEM_LINKS_QUERY,
             "ITEM_LINKS_QUERY",
-            timeout=10,
         )
 
         clean_data = clean_item_link_data(item_link_results)

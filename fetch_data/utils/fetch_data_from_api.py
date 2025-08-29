@@ -7,6 +7,10 @@ import requests
 from logger import logger
 
 
+class APIError(Exception):
+    """API Returned Error"""
+
+
 async def fetch_api_data(
     url: str, initial_wait: float = 8.0, max_retries: int = 5, multiplier: float = 2.0
 ) -> dict:
@@ -28,16 +32,20 @@ async def fetch_api_data(
 
     wait_time = initial_wait
 
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    }
+
     for attempt in range(
         max_retries + 1
     ):  # pragma: no branch # we never run the full number of iterations
         try:
             logger.debug(f"Querying {url}")
-            result = await asyncio.to_thread(requests.get, url, timeout=10)
+            result = await asyncio.to_thread(requests.get, url, headers=headers, timeout=300)
             result.raise_for_status()
             query_data = json.loads(result.content)
             if "error" in query_data:
-                raise ValueError(f"API Returned Error: {query_data['error']}")
+                raise APIError(f"API Returned Error: {query_data['error']}")
             return query_data
 
         except Exception as e:  # pylint: disable=broad-exception-caught
@@ -51,3 +59,4 @@ async def fetch_api_data(
             else:
                 logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
                 raise e
+
