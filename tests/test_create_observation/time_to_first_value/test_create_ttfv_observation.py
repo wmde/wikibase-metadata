@@ -29,7 +29,7 @@ async def test_create_ttfv_observation_success(mocker):
 
     # pylint: disable-next=unused-argument,too-many-return-statements
     def mockery(*args, **kwargs):
-        assert kwargs.get("timeout") == 10
+        assert kwargs.get("timeout") == 300
         query = args[0]
         if (
             query
