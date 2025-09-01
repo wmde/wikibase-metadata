@@ -4,7 +4,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
-from config import deactivate_scheduler
+from config import enable_scheduler
 from fetch_data import (
     update_out_of_date_connectivity_observations,
     update_out_of_date_log_first_observations,
@@ -26,7 +26,7 @@ from resolvers.update import update_missing_script_paths, update_missing_sparql_
 # Set up the scheduler
 scheduler = AsyncIOScheduler()
 
-if not deactivate_scheduler:
+if enable_scheduler:
     logger.info("Adding Jobs")
 
     # intervals
