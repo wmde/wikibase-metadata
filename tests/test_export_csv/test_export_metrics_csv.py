@@ -27,6 +27,7 @@ EXPECTED_HEADER_ROW = ",".join(
     [
         "wikibase_id",
         "wikibase_type",
+        "base_url",
         "quantity_observation_date",
         "total_items",
         "total_lexemes",
@@ -53,6 +54,7 @@ EXPECTED_PATTERN = re.compile(
         [
             r"\d+",
             r"(WikibaseType\.(CLOUD|OTHER|SUITE)|)",
+            r"https?://[a-z0-9\-_.\?=/]+",
             # Quantity
             r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
             r"(\d+\.0|)",
