@@ -12,8 +12,9 @@ from model.database import (
     WikibaseSoftwareVersionModel,
     WikibaseSoftwareVersionObservationModel,
     WikibaseSoftwareModel,
+    WikibaseURLModel,
 )
-from model.enum import WikibaseType
+from model.enum import WikibaseType, WikibaseURLType
 
 
 async def export_metric_csv(background_tasks: BackgroundTasks) -> StreamingResponse:
@@ -62,7 +63,10 @@ def get_metrics_query() -> Select:
             func.rank()
             .over(
                 partition_by=WikibaseQuantityObservationModel.wikibase_id,
-                order_by=WikibaseQuantityObservationModel.observation_date.desc(),
+                order_by=[
+                    WikibaseQuantityObservationModel.observation_date.desc(),
+                    WikibaseQuantityObservationModel.id,
+                ],
             )
             .label("rank"),
         )
@@ -88,7 +92,10 @@ def get_metrics_query() -> Select:
             func.rank()
             .over(
                 partition_by=WikibaseRecentChangesObservationModel.wikibase_id,
-                order_by=WikibaseRecentChangesObservationModel.observation_date.desc(),
+                order_by=[
+                    WikibaseRecentChangesObservationModel.observation_date.desc(),
+                    WikibaseRecentChangesObservationModel.id,
+                ],
             )
             .label("rank"),
         )
@@ -114,7 +121,10 @@ def get_metrics_query() -> Select:
             func.rank()
             .over(
                 partition_by=WikibaseSoftwareVersionObservationModel.wikibase_id,
-                order_by=WikibaseSoftwareVersionObservationModel.observation_date.desc(),
+                order_by=[
+                    WikibaseSoftwareVersionObservationModel.observation_date.desc(),
+                    WikibaseSoftwareVersionObservationModel.id,
+                ],
             )
             .label("rank"),
         )
@@ -146,6 +156,7 @@ def get_metrics_query() -> Select:
         select(
             filtered_wikibase_subquery.c.id.label("wikibase_id"),
             filtered_wikibase_subquery.c.wb_type.label("wikibase_type"),
+            WikibaseURLModel.url.label("base_url"),
             most_recent_successful_quantity_obs.c.date.label(
                 "quantity_observation_date"
             ),
@@ -175,6 +186,13 @@ def get_metrics_query() -> Select:
             ),
             most_recent_successful_sv_obs.c.software_name,
             most_recent_successful_sv_obs.c.version,
+        )
+        .join(
+            WikibaseURLModel,
+            onclause=and_(
+                filtered_wikibase_subquery.c.id == WikibaseURLModel.wikibase_id,
+                WikibaseURLModel.url_type == WikibaseURLType.BASE_URL,
+            ),
         )
         .join(
             most_recent_successful_quantity_obs,

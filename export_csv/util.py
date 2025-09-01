@@ -38,6 +38,8 @@ async def export_csv(
     """Export CSV"""
 
     df = await read_sql_query(query, index_col=index_col)
+    if index_col == "wikibase_id":
+        assert len(set(df.index)) == len(df), "Returned Multiple Rows per Wikibase"
 
     os.makedirs(EXPORT_DIRECTORY, exist_ok=True)
 
