@@ -46,8 +46,6 @@ def read_root():
 
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 
-CHUNK_SIZE = 1024 * 1024
-
 
 @app.get("/csv/metrics", response_class=StreamingResponse)
 async def metric_csv(
