@@ -54,7 +54,7 @@ const totals = computed(() => {
   return [
     { label: "Items", v: m?.totalItems },
     { label: "Properties", v: m?.totalProperties },
-    ...(m?.totalLexemes != null ? [{ label: "Lexemes", v: m.totalLexemes }] : []),
+    { label: "Lexemes", v: m?.totalLexemes },
     { label: "Triples", v: m?.totalTriples },
   ];
 });
