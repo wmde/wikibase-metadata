@@ -26,9 +26,10 @@ from fetch_data import (
     update_all_user_observations,
     update_cloud_instances,
 )
+from fetch_data.bulk.update_bulk import BulkTaskResult
 from model.enum import WikibaseType, WikibaseURLType
 from model.strawberry.input import WikibaseInput
-from model.strawberry.output import BulkTaskResult, WikibaseStrawberryModel
+from model.strawberry.output import WikibaseStrawberryModel
 from resolvers import (
     add_wikibase,
     add_wikibase_language,

@@ -1,6 +1,5 @@
 """Strawberry Models - Output"""
 
-from model.strawberry.output.bulk_task_result import BulkTaskResult
 from model.strawberry.output.observation import (
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,

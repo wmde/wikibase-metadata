@@ -12,6 +12,7 @@ from fetch_data.bulk.get_wikibase_query import (
     get_user_obs_wikibases_query,
 )
 from fetch_data.bulk.update_bulk import (
+    BulkTaskResult,
     update_bulk_connectivity_observations,
     update_bulk_log_observations,
     update_bulk_property_observations,
@@ -22,7 +23,6 @@ from fetch_data.bulk.update_bulk import (
     update_bulk_time_to_first_value_observations,
     update_bulk_user_observations,
 )
-from model.strawberry.output import BulkTaskResult
 
 
 async def update_all_connectivity_observations() -> BulkTaskResult:

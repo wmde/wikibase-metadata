@@ -13,6 +13,7 @@ from fetch_data.bulk.get_out_of_date_wikibase_query import (
     get_wikibase_with_out_of_date_user_obs_query,
 )
 from fetch_data.bulk.update_bulk import (
+    BulkTaskResult,
     update_bulk_connectivity_observations,
     update_bulk_log_observations,
     update_bulk_property_observations,
@@ -25,7 +26,6 @@ from fetch_data.bulk.update_bulk import (
 )
 from fetch_data.cloud_api_data import update_cloud_instances
 from logger import logger
-from model.strawberry.output import BulkTaskResult
 
 
 async def update_out_of_date_connectivity_observations() -> BulkTaskResult:
