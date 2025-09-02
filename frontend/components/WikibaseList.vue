@@ -1,21 +1,30 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { CdxButton, CdxCard } from "@wikimedia/codex";
+import { onMounted, ref, computed } from "vue";
+import { CdxButton, CdxCard, CdxToggleSwitch } from "@wikimedia/codex";
 
 type Wikibase = {
 	id: string | number;
 	urls: { baseUrl: string };
+	wikibaseType?: string;
 };
 
 const loading = ref(true);
 const error = ref<string | null>(null);
 const items = ref<Wikibase[]>([]);
+const includeCloud = ref(false);
+const displayedItems = computed(() =>
+	includeCloud.value
+		? items.value
+		: items.value.filter(
+				(w) => (w.wikibaseType || "").toUpperCase() !== "CLOUD",
+			),
+);
 
 const endpoint = import.meta.env.DEV
 	? "http://localhost:8000/graphql"
 	: "/graphql";
 
-const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n    }\n  }\n}`;
+const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      wikibaseType\n    }\n  }\n}`;
 
 async function load() {
 	loading.value = true;
@@ -48,38 +57,56 @@ async function load() {
 onMounted(load);
 
 function hostOf(url?: string) {
-  if (!url) return "";
-  try {
-    return new URL(url).host;
-  } catch {
-    return url;
-  }
+	if (!url) return "";
+	try {
+		return new URL(url).host;
+	} catch {
+		return url;
+	}
 }
 </script>
 
 <template>
 	<section>
-		<div class="mb-4 flex items-center justify-end gap-4">
-			<CdxButton action="progressive" weight="primary" @click="load()">
-				Click me!
-			</CdxButton>
+		<div
+			class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+		>
+			<div class="max-w-xl">
+				<CdxToggleSwitch v-model="includeCloud">
+					Include cloud instances
+					<template #description>
+						Turn on to include wikibaseType "CLOUD" (e.g., wikibase.cloud).
+					</template>
+				</CdxToggleSwitch>
+			</div>
+			<div class="flex items-center justify-end gap-2">
+				<CdxButton action="progressive" weight="primary" @click="load()">
+					Refresh
+				</CdxButton>
+			</div>
 		</div>
 
 		<div v-if="loading" class="text-gray-600 dark:text-gray-300">Loading…</div>
 		<div v-else-if="error" class="text-red-600">{{ error }}</div>
 		<div v-else>
 			<p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-				Found <span class="font-semibold">{{ items.length }}</span> wikibases
+				Found
+				<span class="font-semibold">{{ displayedItems.length }}</span> wikibases
 			</p>
 
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				<div v-for="w in items" :key="w.id" class="">
+				<div v-for="w in displayedItems" :key="w.id" class="">
 					<CdxCard>
 						<template #title>
-							{{ hostOf(w.urls?.baseUrl) || 'Unknown' }}
+							{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
 						</template>
 						<template #description>
-							ID: {{ w.id }}
+							ID: {{ w.id
+							}}<span
+								v-if="w.wikibaseType"
+								class="ml-2 rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium uppercase text-gray-700 dark:bg-neutral-800 dark:text-neutral-300"
+								>{{ w.wikibaseType }}</span
+							>
 						</template>
 						<template #supporting-text>
 							<a
