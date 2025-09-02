@@ -309,6 +309,7 @@ async def safe_update_user_obs(wikibase_id: int) -> bool:
     async with sem:
         try:
             return await create_user_observation(wikibase_id)
+        # pylint: disable-next=bare-except
         except:
             logger.error(
                 "UserDataError",

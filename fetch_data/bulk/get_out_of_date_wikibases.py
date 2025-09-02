@@ -1,9 +1,7 @@
 """Get Out of Date Wikibases"""
 
 from datetime import datetime, timedelta, timezone
-from random import shuffle
 from sqlalchemy import Select, and_, not_, or_, select
-from data.database_connection import get_async_session
 from model.database import (
     WikibaseConnectivityObservationModel,
     WikibaseLogMonthObservationModel,
@@ -21,15 +19,6 @@ from model.enum import WikibaseType
 
 
 SAFE_HOUR_MARGIN = -6
-
-
-async def get_wikibase_list(query: Select[tuple[WikibaseModel]]) -> list[WikibaseModel]:
-    """Get List of Wikibases from Query"""
-
-    async with get_async_session() as async_session:
-        wikibase_list = (await async_session.scalars(query)).unique().all()
-        shuffle(wikibase_list)
-        return wikibase_list
 
 
 def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
@@ -72,68 +61,6 @@ def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
     )
 
     return query
-
-
-async def get_wikibase_list_with_out_of_date_connectivity_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Connectivity Observations"""
-
-    return await get_wikibase_list(
-        get_wikibase_with_out_of_date_connectivity_obs_query()
-    )
-
-
-def get_wikibase_with_out_of_date_time_to_first_value_obs_query() -> (
-    Select[tuple[WikibaseModel]]
-):
-    """Query Wikibases with Out of Date Time to First Value Observations"""
-
-    query = select(WikibaseModel).where(
-        and_(
-            WikibaseModel.checked,
-            or_(
-                # pylint: disable-next=singleton-comparison
-                WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
-                ),
-            ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
-            not_(
-                WikibaseModel.time_to_first_value_observations.any(
-                    or_(
-                        WikibaseTimeToFirstValueObservationModel.observation_date
-                        > (
-                            datetime.now(tz=timezone.utc)
-                            - timedelta(weeks=40, hours=SAFE_HOUR_MARGIN)
-                        ),
-                        and_(
-                            WikibaseTimeToFirstValueObservationModel.returned_data,
-                            WikibaseTimeToFirstValueObservationModel.observation_date
-                            > (
-                                datetime.now(tz=timezone.utc)
-                                - timedelta(weeks=52, hours=SAFE_HOUR_MARGIN)
-                            ),
-                        ),
-                    )
-                )
-            ),
-        )
-    )
-
-    return query
-
-
-async def get_wikibase_list_with_out_of_date_time_to_first_value_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Time to First Value Observations"""
-
-    return await get_wikibase_list(
-        get_wikibase_with_out_of_date_time_to_first_value_obs_query()
-    )
 
 
 def get_wikibase_with_out_of_date_log_first_obs_query() -> Select[tuple[WikibaseModel]]:
@@ -179,14 +106,6 @@ def get_wikibase_with_out_of_date_log_first_obs_query() -> Select[tuple[Wikibase
     return query
 
 
-async def get_wikibase_list_with_out_of_date_log_first_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Log (First Month) Observations"""
-
-    return await get_wikibase_list(get_wikibase_with_out_of_date_log_first_obs_query())
-
-
 def get_wikibase_with_out_of_date_log_last_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Log (Last Month) Observations"""
 
@@ -228,14 +147,6 @@ def get_wikibase_with_out_of_date_log_last_obs_query() -> Select[tuple[WikibaseM
     )
 
     return query
-
-
-async def get_wikibase_list_with_out_of_date_log_last_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Log (Last Month) Observations"""
-
-    return await get_wikibase_list(get_wikibase_with_out_of_date_log_last_obs_query())
 
 
 def get_wikibase_with_out_of_date_property_popularity_obs_query() -> (
@@ -280,16 +191,6 @@ def get_wikibase_with_out_of_date_property_popularity_obs_query() -> (
     return query
 
 
-async def get_wikibase_list_with_out_of_date_property_popularity_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Property Popularity Observations"""
-
-    return await get_wikibase_list(
-        get_wikibase_with_out_of_date_property_popularity_obs_query()
-    )
-
-
 def get_wikibase_with_out_of_date_quantity_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Quantity Observations"""
 
@@ -325,14 +226,6 @@ def get_wikibase_with_out_of_date_quantity_obs_query() -> Select[tuple[WikibaseM
     )
 
     return query
-
-
-async def get_wikibase_list_with_out_of_date_quantity_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Quantity Observations"""
-
-    return await get_wikibase_list(get_wikibase_with_out_of_date_quantity_obs_query())
 
 
 def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
@@ -377,16 +270,6 @@ def get_wikibase_with_out_of_date_recent_changes_obs_query() -> (
     return query
 
 
-async def get_wikibase_list_with_out_of_date_recent_changes_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Recent Changes Observations"""
-
-    return await get_wikibase_list(
-        get_wikibase_with_out_of_date_recent_changes_obs_query()
-    )
-
-
 def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases with Out of Date Software Version Observations"""
 
@@ -425,14 +308,6 @@ def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseM
     )
 
     return query
-
-
-async def get_wikibase_list_with_out_of_date_software_observations() -> (
-    list[WikibaseModel]
-):
-    """Get List of Wikibases with Out of Date Software Version Observations"""
-
-    return await get_wikibase_list(get_wikibase_with_out_of_date_software_obs_query())
 
 
 def get_wikibase_with_out_of_date_stats_obs_query() -> Select[tuple[WikibaseModel]]:
@@ -475,12 +350,46 @@ def get_wikibase_with_out_of_date_stats_obs_query() -> Select[tuple[WikibaseMode
     return query
 
 
-async def get_wikibase_list_with_out_of_date_stats_observations() -> (
-    list[WikibaseModel]
+def get_wikibase_with_out_of_date_time_to_first_value_obs_query() -> (
+    Select[tuple[WikibaseModel]]
 ):
-    """Get List of Wikibases with Out of Date Special:Statistics Observations"""
+    """Query Wikibases with Out of Date Time to First Value Observations"""
 
-    return await get_wikibase_list(get_wikibase_with_out_of_date_stats_obs_query())
+    query = select(WikibaseModel).where(
+        and_(
+            WikibaseModel.checked,
+            or_(
+                # pylint: disable-next=singleton-comparison
+                WikibaseModel.wikibase_type == None,
+                and_(
+                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    WikibaseModel.wikibase_type != WikibaseType.TEST,
+                ),
+            ),
+            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            not_(
+                WikibaseModel.time_to_first_value_observations.any(
+                    or_(
+                        WikibaseTimeToFirstValueObservationModel.observation_date
+                        > (
+                            datetime.now(tz=timezone.utc)
+                            - timedelta(weeks=40, hours=SAFE_HOUR_MARGIN)
+                        ),
+                        and_(
+                            WikibaseTimeToFirstValueObservationModel.returned_data,
+                            WikibaseTimeToFirstValueObservationModel.observation_date
+                            > (
+                                datetime.now(tz=timezone.utc)
+                                - timedelta(weeks=52, hours=SAFE_HOUR_MARGIN)
+                            ),
+                        ),
+                    )
+                )
+            ),
+        )
+    )
+
+    return query
 
 
 def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel]]:
@@ -521,9 +430,3 @@ def get_wikibase_with_out_of_date_user_obs_query() -> Select[tuple[WikibaseModel
     )
 
     return query
-
-
-async def get_wikibase_list_with_out_of_date_user_observations() -> list[WikibaseModel]:
-    """Get List of Wikibases with Out of Date User Observations"""
-
-    return await get_wikibase_list(get_wikibase_with_out_of_date_user_obs_query())

@@ -1,228 +1,102 @@
 """Update Out of Date Observations"""
 
-from fetch_data.api_data import (
-    create_log_observation,
-    create_recent_changes_observation,
-    create_time_to_first_value_observation,
-    create_user_observation,
-)
 from fetch_data.bulk.get_out_of_date_wikibases import (
-    get_wikibase_list_with_out_of_date_connectivity_observations,
-    get_wikibase_list_with_out_of_date_log_first_observations,
-    get_wikibase_list_with_out_of_date_log_last_observations,
-    get_wikibase_list_with_out_of_date_property_popularity_observations,
-    get_wikibase_list_with_out_of_date_quantity_observations,
-    get_wikibase_list_with_out_of_date_recent_changes_observations,
-    get_wikibase_list_with_out_of_date_software_observations,
-    get_wikibase_list_with_out_of_date_stats_observations,
-    get_wikibase_list_with_out_of_date_time_to_first_value_observations,
-    get_wikibase_list_with_out_of_date_user_observations,
+    get_wikibase_with_out_of_date_connectivity_obs_query,
+    get_wikibase_with_out_of_date_log_first_obs_query,
+    get_wikibase_with_out_of_date_log_last_obs_query,
+    get_wikibase_with_out_of_date_property_popularity_obs_query,
+    get_wikibase_with_out_of_date_quantity_obs_query,
+    get_wikibase_with_out_of_date_recent_changes_obs_query,
+    get_wikibase_with_out_of_date_software_obs_query,
+    get_wikibase_with_out_of_date_stats_obs_query,
+    get_wikibase_with_out_of_date_time_to_first_value_obs_query,
+    get_wikibase_with_out_of_date_user_obs_query,
 )
-from fetch_data.soup_data import (
-    create_software_version_observation,
-    create_special_statistics_observation,
-)
-from fetch_data.sparql_data import (
-    create_connectivity_observation,
-    create_property_popularity_observation,
-    create_quantity_observation,
+from fetch_data.bulk.update_bulk import (
+    update_bulk_connectivity_observations,
+    update_bulk_log_first_observations,
+    update_bulk_log_last_observations,
+    update_bulk_property_observations,
+    update_bulk_quantity_observations,
+    update_bulk_recent_changes_observations,
+    update_bulk_software_observations,
+    update_bulk_stats_observations,
+    update_bulk_time_to_first_value_observations,
+    update_bulk_user_observations,
 )
 from fetch_data.cloud_api_data import update_cloud_instances
 from logger import logger
+from model.strawberry.output import BulkTaskResult
 
 
-async def update_out_of_date_connectivity_observations():
+async def update_out_of_date_connectivity_observations() -> BulkTaskResult:
     """Update Out of Date Connectivity Observations"""
 
-    ood_con_obs = await get_wikibase_list_with_out_of_date_connectivity_observations()
-    logger.info(f"Connectivity: {len(ood_con_obs)} Wikibases to Update")
-    for wikibase in ood_con_obs:
-        try:
-            await create_connectivity_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "ConnectivityDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_con_obs)
+    query = get_wikibase_with_out_of_date_connectivity_obs_query()
+    return await update_bulk_connectivity_observations(query)
 
 
-async def update_out_of_date_log_first_observations():
+async def update_out_of_date_log_first_observations() -> BulkTaskResult:
     """Update Out of Date Log (First Month) Observations"""
 
-    ood_log_obs = await get_wikibase_list_with_out_of_date_log_first_observations()
-    logger.info(f"Log (First Month): {len(ood_log_obs)} Wikibases to Update")
-    for wikibase in ood_log_obs:
-        try:
-            await create_log_observation(wikibase.id, first_month=True)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "LogDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_log_obs)
+    query = get_wikibase_with_out_of_date_log_first_obs_query()
+    return await update_bulk_log_first_observations(query)
 
 
-async def update_out_of_date_log_last_observations():
+async def update_out_of_date_log_last_observations() -> BulkTaskResult:
     """Update Out of Date Log (Last Month) Observations"""
 
-    ood_log_obs = await get_wikibase_list_with_out_of_date_log_last_observations()
-    logger.info(f"Log (Last Month): {len(ood_log_obs)} Wikibases to Update")
-    for wikibase in ood_log_obs:
-        try:
-            await create_log_observation(wikibase.id, first_month=False)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "LogDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_log_obs)
+    query = get_wikibase_with_out_of_date_log_last_obs_query()
+    return await update_bulk_log_last_observations(query)
 
 
-async def update_out_of_date_property_observations():
+async def update_out_of_date_property_observations() -> BulkTaskResult:
     """Update Out of Date Property Popularity Observations"""
 
-    ood_prop_obs = (
-        await get_wikibase_list_with_out_of_date_property_popularity_observations()
-    )
-    logger.info(f"Property Popularity: {len(ood_prop_obs)} Wikibases to Update")
-    for wikibase in ood_prop_obs:
-        try:
-            await create_property_popularity_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "PropertyPopularityDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_prop_obs)
+    query = get_wikibase_with_out_of_date_property_popularity_obs_query()
+    return await update_bulk_property_observations(query)
 
 
-async def update_out_of_date_quantity_observations():
+async def update_out_of_date_quantity_observations() -> BulkTaskResult:
     """Update Out of Date Quantity Observations"""
 
-    ood_quant_obs = await get_wikibase_list_with_out_of_date_quantity_observations()
-    logger.info(f"Quantity: {len(ood_quant_obs)} Wikibases to Update")
-    for wikibase in ood_quant_obs:
-        try:
-            await create_quantity_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "QuantityDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_quant_obs)
+    query = get_wikibase_with_out_of_date_quantity_obs_query()
+    return await update_bulk_quantity_observations(query)
 
 
-async def update_out_of_date_recent_changes_observations():
+async def update_out_of_date_recent_changes_observations() -> BulkTaskResult:
     """Update Out of Date Recent Changes Observations"""
 
-    ood_rc_obs = await get_wikibase_list_with_out_of_date_recent_changes_observations()
-    logger.info(f"Recent Changes: {len(ood_rc_obs)} Wikibases to Update")
-    for wikibase in ood_rc_obs:
-        try:
-            await create_recent_changes_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "RecentChangesDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_rc_obs)
+    query = get_wikibase_with_out_of_date_recent_changes_obs_query()
+    return await update_bulk_recent_changes_observations(query)
 
 
-async def update_out_of_date_software_observations():
+async def update_out_of_date_software_observations() -> BulkTaskResult:
     """Update Out of Date Software Version Observations"""
 
-    ood_soft_obs = await get_wikibase_list_with_out_of_date_software_observations()
-    logger.info(f"Software Version: {len(ood_soft_obs)} Wikibases to Update")
-    for wikibase in ood_soft_obs:
-        try:
-            await create_software_version_observation(wikibase.id, None)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "SoftwareVersionDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_soft_obs)
+    query = get_wikibase_with_out_of_date_software_obs_query()
+    return await update_bulk_software_observations(query)
 
 
-async def update_out_of_date_stats_observations():
+async def update_out_of_date_stats_observations() -> BulkTaskResult:
     """Update Out of Date Special:Statistics Observations"""
 
-    ood_stats_obs = await get_wikibase_list_with_out_of_date_stats_observations()
-    logger.info(f"Statistics: {len(ood_stats_obs)} Wikibases to Update")
-    for wikibase in ood_stats_obs:
-        try:
-            await create_special_statistics_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "StatisticsDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_stats_obs)
+    query = get_wikibase_with_out_of_date_stats_obs_query()
+    return await update_bulk_stats_observations(query)
 
 
-async def update_out_of_date_time_to_first_value_observations():
+async def update_out_of_date_time_to_first_value_observations() -> BulkTaskResult:
     """Update Out of Date Time to First Value Observations"""
 
-    ood_ttfv_obs = (
-        await get_wikibase_list_with_out_of_date_time_to_first_value_observations()
-    )
-    logger.info(f"Time to First Value: {len(ood_ttfv_obs)} Wikibases to Update")
-    for wikibase in ood_ttfv_obs:
-        try:
-            await create_time_to_first_value_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "TimeToFirstValueDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_ttfv_obs)
+    query = get_wikibase_with_out_of_date_time_to_first_value_obs_query()
+    return await update_bulk_time_to_first_value_observations(query)
 
 
-async def update_out_of_date_user_observations():
+async def update_out_of_date_user_observations() -> BulkTaskResult:
     """Update Out of Date User Observations"""
 
-    ood_user_obs = await get_wikibase_list_with_out_of_date_user_observations()
-    logger.info(f"User: {len(ood_user_obs)} Wikibases to Update")
-    for wikibase in ood_user_obs:
-        try:
-            await create_user_observation(wikibase.id)
-        # pylint: disable-next=bare-except
-        except:
-            logger.error(
-                "UserDataError",
-                exc_info=True,
-                stack_info=True,
-                extra={"wikibase": wikibase.id},
-            )
-    return len(ood_user_obs)
+    query = get_wikibase_with_out_of_date_user_obs_query()
+    return await update_bulk_user_observations(query)
 
 
 async def update_out_of_date_cloud_instances():
