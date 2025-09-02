@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { CdxButton, CdxCard } from "@wikimedia/codex";
 
 type Wikibase = {
 	id: string | number;
@@ -45,18 +46,23 @@ async function load() {
 }
 
 onMounted(load);
+
+function hostOf(url?: string) {
+  if (!url) return "";
+  try {
+    return new URL(url).host;
+  } catch {
+    return url;
+  }
+}
 </script>
 
 <template>
 	<section>
 		<div class="mb-4 flex items-center justify-end gap-4">
-			<button
-				type="button"
-				class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow hover:bg-indigo-500"
-				@click="load()"
-			>
-				Refresh
-			</button>
+			<CdxButton action="progressive" weight="primary" @click="load()">
+				Click me!
+			</CdxButton>
 		</div>
 
 		<div v-if="loading" class="text-gray-600 dark:text-gray-300">Loading…</div>
@@ -66,50 +72,27 @@ onMounted(load);
 				Found <span class="font-semibold">{{ items.length }}</span> wikibases
 			</p>
 
-			<div
-				class="overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-700"
-			>
-				<table
-					class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700"
-				>
-					<thead class="bg-gray-50 dark:bg-neutral-800">
-						<tr>
-							<th
-								class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-neutral-300"
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<div v-for="w in items" :key="w.id" class="">
+					<CdxCard>
+						<template #title>
+							{{ hostOf(w.urls?.baseUrl) || 'Unknown' }}
+						</template>
+						<template #description>
+							ID: {{ w.id }}
+						</template>
+						<template #supporting-text>
+							<a
+								:href="w.urls?.baseUrl"
+								target="_blank"
+								rel="noreferrer noopener"
+								class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
 							>
-								ID
-							</th>
-							<th
-								class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-neutral-300"
-							>
-								Base URL
-							</th>
-						</tr>
-					</thead>
-					<tbody
-						class="divide-y divide-gray-100 bg-white dark:divide-neutral-800 dark:bg-neutral-900"
-					>
-						<tr
-							v-for="w in items"
-							:key="w.id"
-							class="hover:bg-gray-50 dark:hover:bg-neutral-800"
-						>
-							<td class="px-4 py-2 text-sm text-gray-900 dark:text-neutral-100">
-								{{ w.id }}
-							</td>
-							<td class="px-4 py-2 text-sm">
-								<a
-									:href="w.urls?.baseUrl"
-									target="_blank"
-									rel="noreferrer noopener"
-									class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-								>
-									{{ w.urls?.baseUrl }}
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+								{{ w.urls?.baseUrl }}
+							</a>
+						</template>
+					</CdxCard>
+				</div>
 			</div>
 		</div>
 	</section>
