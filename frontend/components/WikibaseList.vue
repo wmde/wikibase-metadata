@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref } from "vue";
 import {
 	CdxButton,
 	CdxCard,
-	CdxToggleSwitch,
 	CdxInfoChip,
 	CdxProgressBar,
 } from "@wikimedia/codex";
@@ -26,20 +25,12 @@ type Wikibase = {
 const loading = ref(true);
 const error = ref<string | null>(null);
 const items = ref<Wikibase[]>([]);
-const includeCloud = ref(false);
-const displayedItems = computed(() =>
-	includeCloud.value
-		? items.value
-		: items.value.filter(
-				(w) => (w.wikibaseType || "").toUpperCase() !== "CLOUD",
-			),
-);
 
 const endpoint = import.meta.env.DEV
 	? "http://localhost:8000/graphql"
 	: "/graphql";
 
-const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n    }\n  }\n}`;
+const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n    }\n  }\n}`;
 
 async function load() {
 	loading.value = true;
@@ -93,33 +84,25 @@ function fmt(n?: number | null) {
 
 <template>
 	<section>
-		<div
-			class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
-		>
-			<div class="max-w-xl">
-				<CdxToggleSwitch v-model="includeCloud">
-					Include cloud instances
-					<template #description>
-						Turn on to include wikibaseType "CLOUD" (e.g., wikibase.cloud).
-					</template>
-				</CdxToggleSwitch>
-			</div>
-		</div>
+    
 
-		<div v-if="loading" class="py-6">
-			<CdxProgressBar aria-label="ProgressBar example" />
-		</div>
+    <div v-if="loading" class="py-6">
+        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+            Loading known Wikibase instances — this can take a while.
+        </p>
+        <CdxProgressBar aria-label="Loading known Wikibase instances" />
+    </div>
 		<div v-else-if="error" class="text-red-600">{{ error }}</div>
 		<div v-else>
 			<p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
 				Found
-				<span class="font-semibold">{{ displayedItems.length }}</span> wikibases
-			</p>
+					<span class="font-semibold">{{ items.length }}</span> wikibases
+				</p>
 
 			<div
 				class="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3"
 			>
-				<div v-for="w in displayedItems" :key="w.id" class="h-full">
+					<div v-for="w in items" :key="w.id" class="h-full">
 					<CdxCard class="flex h-full flex-col">
 						<template #title>
 							{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
@@ -131,9 +114,9 @@ function fmt(n?: number | null) {
 								>{{ w.wikibaseType }}</span
 							>
 						</template>
-						<template #supporting-text>
-							<div class="mt-auto flex flex-col">
-								<div>
+                        <template #supporting-text>
+                            <div class="flex flex-col h-full">
+                                <div>
 									<a
 										:href="w.urls?.baseUrl"
 										target="_blank"
@@ -149,7 +132,7 @@ function fmt(n?: number | null) {
 										{{ w.description }}
 									</p>
 								</div>
-								<div class="mt-2 flex flex-wrap gap-2">
+                                <div class="mt-2 flex flex-wrap gap-2 mt-auto">
 									<CdxInfoChip
 										v-if="
 											w.quantityObservations?.mostRecent?.totalItems != null
