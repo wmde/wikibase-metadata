@@ -3,7 +3,7 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
+  <div class="flex items-center justify-center gap-4 py-6">
     <a href="https://vite.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
@@ -11,7 +11,9 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div class="mx-auto max-w-3xl p-6 text-center">
+    <HelloWorld msg="Vite + Vue + Tailwind" />
+  </div>
 </template>
 
 <style scoped>
