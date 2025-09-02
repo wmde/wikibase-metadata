@@ -31,7 +31,6 @@ from resolvers import authenticate
 class ObservationMutation:
     """Observation-Related Mutations"""
 
-    # Connectivity
     @strawberry.mutation(
         description="Fetch Connectivity Data from Specified Wikibase Instance"
     )
@@ -50,7 +49,6 @@ class ObservationMutation:
         authenticate(info)
         return await update_all_connectivity_observations()
 
-    # Logs
     @strawberry.mutation(description="Fetch Log Data from Specified Wikibase Instance")
     async def fetch_log_data(
         self, info: Info, wikibase_id: int, first_month: bool
@@ -69,7 +67,6 @@ class ObservationMutation:
         authenticate(info)
         return await update_all_log_observations(first_month)
 
-    # Property Popularity
     @strawberry.mutation(
         description="Fetch Property Popularity from Specified Wikibase Instance"
     )
