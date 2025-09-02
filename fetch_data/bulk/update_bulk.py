@@ -79,8 +79,8 @@ async def safe_update_log_obs(wikibase_id: int, first_month: bool) -> bool:
         return False
 
 
-async def update_bulk_log_first_observations(
-    query: Select[tuple[WikibaseModel]],
+async def update_bulk_log_observations(
+    query: Select[tuple[WikibaseModel]], first_month: bool
 ) -> BulkTaskResult:
     """Update Log (First Month) Observations"""
 
@@ -88,24 +88,7 @@ async def update_bulk_log_first_observations(
     logger.info(f"Log (First Month): {len(wikibases)} Wikibases to Update")
 
     tasks = [
-        asyncio.ensure_future(safe_update_log_obs(wiki.id, first_month=True))
-        for wiki in wikibases
-    ]
-    await asyncio.gather(*tasks)
-
-    return BulkTaskResult(tasks)
-
-
-async def update_bulk_log_last_observations(
-    query: Select[tuple[WikibaseModel]],
-) -> BulkTaskResult:
-    """Update Log (Last Month) Observations"""
-
-    wikibases = await get_wikibase_list(query)
-    logger.info(f"Log (Last Month): {len(wikibases)} Wikibases to Update")
-
-    tasks = [
-        asyncio.ensure_future(safe_update_log_obs(wiki.id, first_month=False))
+        asyncio.ensure_future(safe_update_log_obs(wiki.id, first_month=first_month))
         for wiki in wikibases
     ]
     await asyncio.gather(*tasks)

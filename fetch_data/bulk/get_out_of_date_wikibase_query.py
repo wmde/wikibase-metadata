@@ -1,7 +1,7 @@
 """Get Out of Date Wikibase Queries"""
 
 from datetime import datetime, timedelta, timezone
-from sqlalchemy import Select, and_, not_, or_, select
+from sqlalchemy import Select, and_, not_, or_
 from fetch_data.bulk.get_wikibase_query import (
     get_connectivity_obs_wikibases_query,
     get_log_obs_wikibases_query,
@@ -23,10 +23,8 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
     WikibaseStatisticsObservationModel,
     WikibaseTimeToFirstValueObservationModel,
-    WikibaseURLModel,
     WikibaseUserObservationModel,
 )
-from model.enum import WikibaseType
 
 
 SAFE_HOUR_MARGIN = -6

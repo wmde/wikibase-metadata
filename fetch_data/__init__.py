@@ -7,6 +7,15 @@ from fetch_data.api_data import (
     create_user_observation,
 )
 from fetch_data.bulk import (
+    update_all_connectivity_observations,
+    update_all_log_observations,
+    update_all_property_observations,
+    update_all_quantity_observations,
+    update_all_recent_changes_observations,
+    update_all_software_observations,
+    update_all_stats_observations,
+    update_all_time_to_first_value_observations,
+    update_all_user_observations,
     update_out_of_date_connectivity_observations,
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,

@@ -14,8 +14,7 @@ from fetch_data.bulk.get_out_of_date_wikibase_query import (
 )
 from fetch_data.bulk.update_bulk import (
     update_bulk_connectivity_observations,
-    update_bulk_log_first_observations,
-    update_bulk_log_last_observations,
+    update_bulk_log_observations,
     update_bulk_property_observations,
     update_bulk_quantity_observations,
     update_bulk_recent_changes_observations,
@@ -40,14 +39,14 @@ async def update_out_of_date_log_first_observations() -> BulkTaskResult:
     """Update Out of Date Log (First Month) Observations"""
 
     query = get_wikibase_with_out_of_date_log_first_obs_query()
-    return await update_bulk_log_first_observations(query)
+    return await update_bulk_log_observations(query, first_month=True)
 
 
 async def update_out_of_date_log_last_observations() -> BulkTaskResult:
     """Update Out of Date Log (Last Month) Observations"""
 
     query = get_wikibase_with_out_of_date_log_last_obs_query()
-    return await update_bulk_log_last_observations(query)
+    return await update_bulk_log_observations(query, first_month=False)
 
 
 async def update_out_of_date_property_observations() -> BulkTaskResult:
