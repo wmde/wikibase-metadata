@@ -6,8 +6,7 @@ from fetch_data.api_data import (
     create_time_to_first_value_observation,
     create_user_observation,
 )
-from fetch_data.cloud_api_data import fetch_cloud_instances, update_cloud_instances
-from fetch_data.out_of_date import (
+from fetch_data.bulk import (
     get_wikibase_list_with_out_of_date_connectivity_observations,
     get_wikibase_list_with_out_of_date_log_first_observations,
     get_wikibase_list_with_out_of_date_log_last_observations,
@@ -29,6 +28,7 @@ from fetch_data.out_of_date import (
     update_out_of_date_user_observations,
     update_out_of_date_cloud_instances,
 )
+from fetch_data.cloud_api_data import fetch_cloud_instances, update_cloud_instances
 from fetch_data.sparql_data import (
     create_connectivity_observation,
     create_property_popularity_observation,

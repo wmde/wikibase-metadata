@@ -6,7 +6,7 @@ from fetch_data.api_data import (
     create_time_to_first_value_observation,
     create_user_observation,
 )
-from fetch_data.out_of_date.get_out_of_date_wikibases import (
+from fetch_data.bulk.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_connectivity_observations,
     get_wikibase_list_with_out_of_date_log_first_observations,
     get_wikibase_list_with_out_of_date_log_last_observations,

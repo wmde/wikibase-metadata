@@ -1,6 +1,6 @@
-"""Out of Date"""
+"""Bulk Update Wikibases"""
 
-from fetch_data.out_of_date.get_out_of_date_wikibases import (
+from fetch_data.bulk.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_connectivity_observations,
     get_wikibase_list_with_out_of_date_log_first_observations,
     get_wikibase_list_with_out_of_date_log_last_observations,
@@ -11,7 +11,7 @@ from fetch_data.out_of_date.get_out_of_date_wikibases import (
     get_wikibase_list_with_out_of_date_stats_observations,
     get_wikibase_list_with_out_of_date_user_observations,
 )
-from fetch_data.out_of_date.update_out_of_date import (
+from fetch_data.bulk.update_out_of_date import (
     update_out_of_date_cloud_instances,
     update_out_of_date_connectivity_observations,
     update_out_of_date_log_first_observations,
