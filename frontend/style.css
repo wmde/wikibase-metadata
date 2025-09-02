@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional app-level tweaks to roughly match starter styles */
 @layer base {
   html, body, #app { height: 100%; }
-  body { @apply m-0 min-h-screen bg-white text-gray-900 antialiased dark:bg-neutral-900 dark:text-neutral-100; }
+  body { @apply m-0 min-h-screen bg-white text-black antialiased; }
   a { @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300; }
 }
 
