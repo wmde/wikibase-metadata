@@ -22,6 +22,20 @@ type Wikibase = {
 			totalTriples?: number;
 		};
 	};
+	recentChangesObservations?: {
+		mostRecent?: {
+			observationDate?: string;
+			humanChangeCount?: number;
+			humanChangeUserCount?: number;
+			botChangeCount?: number;
+			botChangeUserCount?: number;
+		};
+	};
+	timeToFirstValueObservations?: {
+		mostRecent?: {
+			initiationDate?: string;
+		};
+	};
 };
 
 const loading = ref(true);
@@ -32,7 +46,7 @@ const endpoint = import.meta.env.DEV
 	? "http://localhost:8000/graphql"
 	: "/graphql";
 
-const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          observationDate\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n    }\n  }\n}`;
+const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          observationDate\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n      recentChangesObservations {\n        mostRecent {\n          observationDate\n          humanChangeCount\n          humanChangeUserCount\n          botChangeCount\n          botChangeUserCount\n        }\n      }\n      timeToFirstValueObservations {\n        mostRecent {\n          initiationDate\n        }\n      }\n    }\n  }\n}`;
 
 async function load() {
 	loading.value = true;
@@ -83,6 +97,12 @@ function fmt(n?: number | null) {
 	}
 }
 
+function fmtDate(s?: string) {
+	if (!s) return "";
+	const d = new Date(s);
+	return Number.isNaN(d.getTime()) ? s : d.toLocaleDateString();
+}
+
 // Tooltip directive for Codex in <script setup>
 const vTooltip = CdxTooltip;
 
@@ -99,8 +119,44 @@ function tooltipText(w: Wikibase): string {
 	const d = w.quantityObservations?.mostRecent?.observationDate;
 	if (!d) return "";
 	const dt = new Date(d);
-	const when = Number.isNaN(dt.getTime()) ? d : dt.toLocaleDateString();
-	return `Measured more than 30 days ago`;
+	const t = dt.getTime();
+	const diffDays = Math.max(
+		0,
+		Math.floor((Date.now() - t) / (1000 * 60 * 60 * 24)),
+	);
+	if (isStale(w)) {
+		return `Fetched ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+	}
+	if (diffDays === 0) return "Fetched today";
+	if (diffDays === 1) return "Fetched yesterday";
+
+	return `Fetched ${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+}
+
+function isStaleRC(w: Wikibase): boolean {
+	const d = w.recentChangesObservations?.mostRecent?.observationDate;
+	if (!d) return false;
+	const t = new Date(d).getTime();
+	if (Number.isNaN(t)) return false;
+	const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+	return Date.now() - t > THIRTY_DAYS;
+}
+
+function tooltipTextRC(w: Wikibase): string {
+	const d = w.recentChangesObservations?.mostRecent?.observationDate;
+	if (!d) return "";
+	const dt = new Date(d);
+	const t = dt.getTime();
+	const when = Number.isNaN(t) ? d : dt.toLocaleDateString();
+	if (!Number.isFinite(t)) return `Observed ${when}.`;
+	const diffDays = Math.max(
+		0,
+		Math.floor((Date.now() - t) / (1000 * 60 * 60 * 24)),
+	);
+	if (isStaleRC(w)) {
+		return `Recent changes may be outdated\n(observed ${when}, ${diffDays} day${diffDays === 1 ? "" : "s"} ago).`;
+	}
+	return `Observed ${when} (${diffDays} day${diffDays === 1 ? "" : "s"} ago).`;
 }
 </script>
 
@@ -123,7 +179,14 @@ function tooltipText(w: Wikibase): string {
 				<div v-for="w in items" :key="w.id">
 					<CdxCard class="flex flex-col h-full">
 						<template #title>
-							{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
+							<a
+								:href="w.urls?.baseUrl"
+								target="_blank"
+								rel="noreferrer noopener"
+								class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+							>
+								{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
+							</a>
 						</template>
 						<template #description> </template>
 						<template #supporting-text>
@@ -134,14 +197,20 @@ function tooltipText(w: Wikibase): string {
 									>{{ w.wikibaseType }}</span
 								>
 								<div>
-									<a
-										:href="w.urls?.baseUrl"
-										target="_blank"
-										rel="noreferrer noopener"
-										class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+									<p
+										v-if="
+											w.timeToFirstValueObservations?.mostRecent?.initiationDate
+										"
+										class="text-xs text-gray-500 dark:text-gray-400"
 									>
-										{{ w.urls?.baseUrl }}
-									</a>
+										Online since:
+										{{
+											fmtDate(
+												w.timeToFirstValueObservations?.mostRecent
+													?.initiationDate,
+											)
+										}}
+									</p>
 									<p
 										v-if="w.description"
 										class="mt-1 text-sm text-gray-600 dark:text-gray-300"
@@ -149,10 +218,10 @@ function tooltipText(w: Wikibase): string {
 										{{ w.description }}
 									</p>
 								</div>
-								<div class="flex flex-wrap gap-2">
+								<div class="flex flex-wrap gap-2 mt-2">
 									<CdxInfoChip
 										:status="isStale(w) ? 'warning' : 'success'"
-										v-tooltip="isStale(w) ? tooltipText(w) : null"
+										v-tooltip="tooltipText(w)"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalItems != null
 										"
@@ -162,7 +231,7 @@ function tooltipText(w: Wikibase): string {
 									</CdxInfoChip>
 									<CdxInfoChip
 										:status="isStale(w) ? 'warning' : 'success'"
-										v-tooltip="isStale(w) ? tooltipText(w) : null"
+										v-tooltip="tooltipText(w)"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalProperties !=
 											null
@@ -175,7 +244,7 @@ function tooltipText(w: Wikibase): string {
 									</CdxInfoChip>
 									<CdxInfoChip
 										:status="isStale(w) ? 'warning' : 'success'"
-										v-tooltip="isStale(w) ? tooltipText(w) : null"
+										v-tooltip="tooltipText(w)"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalLexemes != null
 										"
@@ -185,13 +254,78 @@ function tooltipText(w: Wikibase): string {
 									</CdxInfoChip>
 									<CdxInfoChip
 										:status="isStale(w) ? 'warning' : 'success'"
-										v-tooltip="isStale(w) ? tooltipText(w) : null"
+										v-tooltip="tooltipText(w)"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalTriples != null
 										"
 									>
 										Triples:
 										{{ fmt(w.quantityObservations?.mostRecent?.totalTriples) }}
+									</CdxInfoChip>
+								</div>
+								<div class="mt-2 flex flex-wrap gap-2">
+									<CdxInfoChip
+										:status="isStaleRC(w) ? 'warning' : 'success'"
+										v-tooltip="tooltipTextRC(w)"
+										v-if="
+											w.recentChangesObservations?.mostRecent
+												?.humanChangeCount != null
+										"
+									>
+										Human changes:
+										{{
+											fmt(
+												w.recentChangesObservations?.mostRecent
+													?.humanChangeCount,
+											)
+										}}
+									</CdxInfoChip>
+									<CdxInfoChip
+										:status="isStaleRC(w) ? 'warning' : 'success'"
+										v-tooltip="tooltipTextRC(w)"
+										v-if="
+											w.recentChangesObservations?.mostRecent
+												?.humanChangeUserCount != null
+										"
+									>
+										Human users:
+										{{
+											fmt(
+												w.recentChangesObservations?.mostRecent
+													?.humanChangeUserCount,
+											)
+										}}
+									</CdxInfoChip>
+									<CdxInfoChip
+										:status="isStaleRC(w) ? 'warning' : 'success'"
+										v-tooltip="tooltipTextRC(w)"
+										v-if="
+											w.recentChangesObservations?.mostRecent?.botChangeCount !=
+											null
+										"
+									>
+										Bot changes:
+										{{
+											fmt(
+												w.recentChangesObservations?.mostRecent?.botChangeCount,
+											)
+										}}
+									</CdxInfoChip>
+									<CdxInfoChip
+										:status="isStaleRC(w) ? 'warning' : 'success'"
+										v-tooltip="tooltipTextRC(w)"
+										v-if="
+											w.recentChangesObservations?.mostRecent
+												?.botChangeUserCount != null
+										"
+									>
+										Bot users:
+										{{
+											fmt(
+												w.recentChangesObservations?.mostRecent
+													?.botChangeUserCount,
+											)
+										}}
 									</CdxInfoChip>
 								</div>
 							</div>
@@ -203,5 +337,4 @@ function tooltipText(w: Wikibase): string {
 	</section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
