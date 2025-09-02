@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import WikibaseList from './components/WikibaseList.vue'
 </script>
 
 <template>
@@ -11,8 +11,8 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <div class="mx-auto max-w-3xl p-6 text-center">
-    <HelloWorld msg="Vite + Vue + Tailwind" />
+  <div class="mx-auto max-w-5xl p-6">
+    <WikibaseList />
   </div>
 </template>
 
