@@ -47,12 +47,12 @@ async def fetch_api_data(
                 max_retries = 0
                 raise APIError(f"Endpoint not found: {url}") from e
             elif attempt >= max_retries:
-                logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
+                logger.error(f"All {max_retries} retries failed for {url}")
                 raise APIError(f"Endpoint: {url}") from e
 
         except requests.RequestException as e:
             if attempt >= max_retries:
-                logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
+                logger.error(f"All {max_retries} retries failed for {url}")
                 raise e
 
         finally:
