@@ -1,15 +1,15 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
+from typing import Optional
 from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
-from starlette.requests import Request
+from fastapi.responses import PlainTextResponse, StreamingResponse
 from strawberry.fastapi import GraphQLRouter
 
 from export_csv import export_metric_csv
 from model.strawberry import schema
-from resolvers.authentication import authenticate_request
+from resolvers.authentication import authenticate_token
 from schedule import scheduler
 
 
@@ -49,10 +49,18 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 
 @app.get("/csv/metrics", response_class=StreamingResponse)
 async def metric_csv(
-    request: Request, background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks, authorization: Optional[str] = None
 ) -> StreamingResponse:
     """Quantity CSV"""
 
-    authenticate_request(request)
+    try:
+        assert authorization is not None
+    except AssertionError:
+        return PlainTextResponse("Authorization Missing", 403)
+
+    try:
+        authenticate_token(authorization)
+    except AssertionError:
+        return PlainTextResponse("Authorization Failed", 403)
 
     return await export_metric_csv(background_tasks)
