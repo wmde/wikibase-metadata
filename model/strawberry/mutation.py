@@ -84,7 +84,7 @@ class Mutation:
         return await create_log_observation(wikibase_id, first_month)
 
     @strawberry.mutation(description="Fetch Log Data from All Wikibase Instances")
-    async def update_all_log_data(self, info: Info, first_month: bool) -> bool:
+    async def update_all_log_data(self, info: Info, first_month: bool) -> BulkTaskResult:
         """Fetch Log Data from All Wikibase Instances"""
 
         authenticate(info)
