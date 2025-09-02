@@ -1,6 +1,6 @@
 """Update Out of Date Observations"""
 
-from fetch_data.bulk.get_out_of_date_wikibases import (
+from fetch_data.bulk.get_out_of_date_wikibase_query import (
     get_wikibase_with_out_of_date_connectivity_obs_query,
     get_wikibase_with_out_of_date_log_first_obs_query,
     get_wikibase_with_out_of_date_log_last_obs_query,
