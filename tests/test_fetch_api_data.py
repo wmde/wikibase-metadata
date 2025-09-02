@@ -1,7 +1,4 @@
-# pylint: disable=missing-module-docstring
-# pylint: disable=missing-class-docstring
-# pylint: disable=missing-function-docstring
-# pylint: disable=unused-argument
+# pylint: disable=missing-module-docstring, disable=missing-class-docstring, disable=missing-function-docstring, disable=unused-argument
 
 import asyncio
 from typing import List
