@@ -104,11 +104,6 @@ function fmt(n?: number | null) {
 					</template>
 				</CdxToggleSwitch>
 			</div>
-			<div class="flex items-center justify-end gap-2">
-				<CdxButton action="progressive" weight="primary" @click="load()">
-					Refresh
-				</CdxButton>
-			</div>
 		</div>
 
 		<div v-if="loading" class="py-6">
@@ -121,36 +116,39 @@ function fmt(n?: number | null) {
 				<span class="font-semibold">{{ displayedItems.length }}</span> wikibases
 			</p>
 
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				<div v-for="w in displayedItems" :key="w.id" class="">
-					<CdxCard>
+			<div
+				class="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3"
+			>
+				<div v-for="w in displayedItems" :key="w.id" class="h-full">
+					<CdxCard class="flex h-full flex-col">
 						<template #title>
 							{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
 						</template>
 						<template #description>
-							ID: {{ w.id
-							}}<span
+							<span
 								v-if="w.wikibaseType"
 								class="ml-2 rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium uppercase text-gray-700 dark:bg-neutral-800 dark:text-neutral-300"
 								>{{ w.wikibaseType }}</span
 							>
 						</template>
 						<template #supporting-text>
-							<div>
-								<a
-									:href="w.urls?.baseUrl"
-									target="_blank"
-									rel="noreferrer noopener"
-									class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-								>
-									{{ w.urls?.baseUrl }}
-								</a>
-								<p
-									v-if="w.description"
-									class="mt-1 text-sm text-gray-600 dark:text-gray-300"
-								>
-									{{ w.description }}
-								</p>
+							<div class="mt-auto flex flex-col">
+								<div>
+									<a
+										:href="w.urls?.baseUrl"
+										target="_blank"
+										rel="noreferrer noopener"
+										class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+									>
+										{{ w.urls?.baseUrl }}
+									</a>
+									<p
+										v-if="w.description"
+										class="mt-1 text-sm text-gray-600 dark:text-gray-300"
+									>
+										{{ w.description }}
+									</p>
+								</div>
 								<div class="mt-2 flex flex-wrap gap-2">
 									<CdxInfoChip
 										v-if="
@@ -197,4 +195,18 @@ function fmt(n?: number | null) {
 	</section>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* Ensure Codex card fills its grid cell and stacks content vertically */
+:deep(.cdx-card) {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Make the text area grow so supporting text can sit at the bottom */
+:deep(.cdx-card__text) {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+}
+</style>
