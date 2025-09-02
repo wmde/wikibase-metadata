@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, StreamingResponse
+from fastapi.responses import PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
 
 from export_csv import export_metric_csv
@@ -47,10 +47,10 @@ def read_root():
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 
 
-@app.get("/csv/metrics", response_class=StreamingResponse)
+@app.get("/csv/metrics")
 async def metric_csv(
     background_tasks: BackgroundTasks, authorization: Optional[str] = None
-) -> StreamingResponse:
+):
     """Quantity CSV"""
 
     try:
