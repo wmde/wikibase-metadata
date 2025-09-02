@@ -8,24 +8,53 @@ import sys
 from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
 from SPARQLWrapper.SPARQLExceptions import SPARQLWrapperException
 
-from logger import logger
+from logger.get_logger import logger
+
+from urllib.error import HTTPError
+
+
+async def get_sparql_results(
+    endpoint_url: str,
+    query: str,
+    query_name: str,
+    query_timeout: int = 0,
+    max_retries: int = 5,
+    backup_time_init: float = 8,
+    backup_time_multiplier: float = 2,
+) -> dict:
+    """Get SPARQL Data from a Wikibase async"""
+    backup_time = backup_time_init
+
+    for retries in range(max_retries + 1):
+        try:
+            logger.debug(f"SparQL Query '{query_name}' on '{endpoint_url}': '{query}'")
+            return await asyncio.to_thread(
+                _get_results,
+                endpoint_url=endpoint_url,
+                query=query,
+                query_name=query_name,
+                timeout=query_timeout,
+            )
+
+        except HTTPError as exc:
+            if exc.code != 429 or retries >= max_retries:
+                logger.warning(
+                    f"SPARQLError: {exc}",
+                    # exc_info=True,
+                    # stack_info=True,
+                )
+                raise exc
+
+            logger.warning(
+                f"SparQL Query '{query_name}' on '{endpoint_url}' "
+                f"received 429, sleeping for {backup_time} seconds"
+            )
+            await asyncio.sleep(backup_time)
+            backup_time = backup_time * backup_time_multiplier
 
 
 class SPARQLResponseMalformed(SPARQLWrapperException):
     """Response Unexpected Format"""
-
-
-async def get_sparql_results(
-    endpoint_url: str, query: str, query_name: str, timeout: int = 60
-) -> dict:
-    """Get SPARQL Data from Wikidata ASYNC"""
-    return await asyncio.to_thread(
-        _get_results,
-        endpoint_url=endpoint_url,
-        query=query,
-        query_name=query_name,
-        timeout=timeout,
-    )
 
 
 # retrieve results from a given endpoint given a distinct SPARQL query

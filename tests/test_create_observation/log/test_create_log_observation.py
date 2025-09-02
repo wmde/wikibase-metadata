@@ -47,7 +47,7 @@ async def test_create_log_observation_first_success(mocker):
     oldest_mock_log = min(mock_logs, key=lambda x: x.get("timestamp"))
 
     def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 10
+        assert kwargs.get("timeout") == 300
 
         query = ParsedUrl(args[0])
 
@@ -138,7 +138,7 @@ async def test_create_log_observation_last_success(mocker):
         )
 
     def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 10
+        assert kwargs.get("timeout") == 300
 
         query = ParsedUrl(args[0])
 
@@ -260,7 +260,7 @@ async def test_create_log_last_observation_no_last_month(mocker):
         )
 
     def mockery(*args, **kwargs):
-        assert kwargs.get("timeout") == 10
+        assert kwargs.get("timeout") == 300
 
         query = ParsedUrl(args[0])
 
