@@ -106,22 +106,5 @@ export class Wikibase {
       : this.recentChangesObservations?.mostRecent?.observationDate;
   }
 
-  private relativeDaysText(dateIso?: string): string {
-    if (!dateIso) return '';
-    const t = new Date(dateIso).getTime();
-    if (Number.isNaN(t)) return '';
-    const diffDays = Math.max(0, Math.floor((Date.now() - t) / (1000 * 60 * 60 * 24)));
-    if (diffDays === 0) return 'today';
-    if (diffDays === 1) return 'yesterday';
-    return `${diffDays} days ago`;
-  }
-
-  obsHeadlineSuffix(kind: ObsKind): string {
-    const d = this.getObservationDate(kind);
-    if (!d) return '';
-    const dateStr = this.fmtDate(d);
-    const rel = this.relativeDaysText(d);
-    return ` — fetched ${dateStr} (${rel})`;
-  }
+  // Intentionally no obsHeadlineSuffix here; UI concerns live in the card component.
 }
-
