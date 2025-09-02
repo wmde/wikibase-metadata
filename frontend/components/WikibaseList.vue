@@ -5,6 +5,7 @@ import {
 	CdxCard,
 	CdxInfoChip,
 	CdxProgressBar,
+	CdxTooltip,
 } from "@wikimedia/codex";
 
 type Wikibase = {
@@ -14,6 +15,7 @@ type Wikibase = {
 	description?: string;
 	quantityObservations?: {
 		mostRecent?: {
+			observationDate?: string;
 			totalItems?: number;
 			totalProperties?: number;
 			totalLexemes?: number;
@@ -30,7 +32,7 @@ const endpoint = import.meta.env.DEV
 	? "http://localhost:8000/graphql"
 	: "/graphql";
 
-const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n    }\n  }\n}`;
+const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          observationDate\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n    }\n  }\n}`;
 
 async function load() {
 	loading.value = true;
@@ -80,29 +82,47 @@ function fmt(n?: number | null) {
 		return String(n);
 	}
 }
+
+// Tooltip directive for Codex in <script setup>
+const vTooltip = CdxTooltip;
+
+function isStale(w: Wikibase): boolean {
+	const d = w.quantityObservations?.mostRecent?.observationDate;
+	if (!d) return false;
+	const t = new Date(d).getTime();
+	if (Number.isNaN(t)) return false;
+	const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+	return Date.now() - t > THIRTY_DAYS;
+}
+
+function tooltipText(w: Wikibase): string {
+	const d = w.quantityObservations?.mostRecent?.observationDate;
+	if (!d) return "";
+	const dt = new Date(d);
+	const when = Number.isNaN(dt.getTime()) ? d : dt.toLocaleDateString();
+	return `Measured more than 30 days ago`;
+}
 </script>
 
 <template>
 	<section>
-    
-
-    <div v-if="loading" class="py-6">
-        <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-            Loading known Wikibase instances — this can take a while.
-        </p>
-        <CdxProgressBar aria-label="Loading known Wikibase instances" />
-    </div>
+		<div v-if="loading" class="py-6">
+			<p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
+				Loading known Wikibase instances — this can take a while.
+			</p>
+			<CdxProgressBar aria-label="Loading known Wikibase instances" />
+		</div>
 		<div v-else-if="error" class="text-red-600">{{ error }}</div>
 		<div v-else>
 			<p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
 				Found
-					<span class="font-semibold">{{ items.length }}</span> wikibases
-				</p>
+				<span class="font-semibold">{{ items.length }}</span> wikibases
+			</p>
 
 			<div
 				class="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3"
 			>
-					<div v-for="w in items" :key="w.id" class="h-full">
+				<div v-for="w in items" :key="w.id" class="h-full">
 					<CdxCard class="flex h-full flex-col">
 						<template #title>
 							{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
@@ -114,9 +134,9 @@ function fmt(n?: number | null) {
 								>{{ w.wikibaseType }}</span
 							>
 						</template>
-                        <template #supporting-text>
-                            <div class="flex flex-col h-full">
-                                <div>
+						<template #supporting-text>
+							<div class="flex flex-col h-full">
+								<div>
 									<a
 										:href="w.urls?.baseUrl"
 										target="_blank"
@@ -132,8 +152,10 @@ function fmt(n?: number | null) {
 										{{ w.description }}
 									</p>
 								</div>
-                                <div class="mt-2 flex flex-wrap gap-2 mt-auto">
+								<div class="mt-2 flex flex-wrap gap-2 mt-auto">
 									<CdxInfoChip
+										:status="isStale(w) ? 'warning' : 'success'"
+										v-tooltip="isStale(w) ? tooltipText(w) : null"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalItems != null
 										"
@@ -142,6 +164,8 @@ function fmt(n?: number | null) {
 										{{ fmt(w.quantityObservations?.mostRecent?.totalItems) }}
 									</CdxInfoChip>
 									<CdxInfoChip
+										:status="isStale(w) ? 'warning' : 'success'"
+										v-tooltip="isStale(w) ? tooltipText(w) : null"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalProperties !=
 											null
@@ -153,6 +177,8 @@ function fmt(n?: number | null) {
 										}}
 									</CdxInfoChip>
 									<CdxInfoChip
+										:status="isStale(w) ? 'warning' : 'success'"
+										v-tooltip="isStale(w) ? tooltipText(w) : null"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalLexemes != null
 										"
@@ -161,6 +187,8 @@ function fmt(n?: number | null) {
 										{{ fmt(w.quantityObservations?.mostRecent?.totalLexemes) }}
 									</CdxInfoChip>
 									<CdxInfoChip
+										:status="isStale(w) ? 'warning' : 'success'"
+										v-tooltip="isStale(w) ? tooltipText(w) : null"
 										v-if="
 											w.quantityObservations?.mostRecent?.totalTriples != null
 										"
