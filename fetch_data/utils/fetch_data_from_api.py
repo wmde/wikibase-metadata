@@ -38,11 +38,15 @@ async def fetch_api_data(
             return query_data
 
         except requests.HTTPError as e:
-            if e.response.status_code == 404:
+            if e.response.status_code == 403:
+                logger.error(f"403 Forbidden for {url}, giving up immediately")
+                max_retries = 0
+                raise APIError(f"Endpoint forbidden: {url}") from e
+            elif e.response.status_code == 404:
                 logger.error(f"404 Not Found for {url}, giving up immediately")
                 max_retries = 0
                 raise APIError(f"Endpoint not found: {url}") from e
-            if attempt >= max_retries:
+            elif attempt >= max_retries:
                 logger.error(f"All {max_retries + 1} retry attempts failed for {url}")
                 raise APIError(f"Endpoint: {url}") from e
 
