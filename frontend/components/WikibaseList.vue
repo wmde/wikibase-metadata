@@ -119,23 +119,20 @@ function tooltipText(w: Wikibase): string {
 				<span class="font-semibold">{{ items.length }}</span> wikibases
 			</p>
 
-			<div
-				class="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3"
-			>
-				<div v-for="w in items" :key="w.id" class="h-full">
-					<CdxCard class="flex h-full flex-col">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				<div v-for="w in items" :key="w.id">
+					<CdxCard class="flex flex-col h-full">
 						<template #title>
 							{{ hostOf(w.urls?.baseUrl) || "Unknown" }}
 						</template>
-						<template #description>
-							<span
-								v-if="w.wikibaseType"
-								class="ml-2 rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium uppercase text-gray-700 dark:bg-neutral-800 dark:text-neutral-300"
-								>{{ w.wikibaseType }}</span
-							>
-						</template>
+						<template #description> </template>
 						<template #supporting-text>
 							<div class="flex flex-col h-full">
+								<span
+									v-if="w.wikibaseType"
+									class="ml-2 rounded bg-gray-100 px-2 py-0.5 text-[10px] font-medium uppercase text-gray-700 dark:bg-neutral-800 dark:text-neutral-300"
+									>{{ w.wikibaseType }}</span
+								>
 								<div>
 									<a
 										:href="w.urls?.baseUrl"
@@ -152,7 +149,7 @@ function tooltipText(w: Wikibase): string {
 										{{ w.description }}
 									</p>
 								</div>
-								<div class="mt-2 flex flex-wrap gap-2 mt-auto">
+								<div class="flex flex-wrap gap-2">
 									<CdxInfoChip
 										:status="isStale(w) ? 'warning' : 'success'"
 										v-tooltip="isStale(w) ? tooltipText(w) : null"
@@ -207,17 +204,4 @@ function tooltipText(w: Wikibase): string {
 </template>
 
 <style scoped>
-/* Ensure Codex card fills its grid cell and stacks content vertically */
-:deep(.cdx-card) {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-}
-
-/* Make the text area grow so supporting text can sit at the bottom */
-:deep(.cdx-card__text) {
-	display: flex;
-	flex-direction: column;
-	flex: 1 1 auto;
-}
 </style>
