@@ -25,8 +25,7 @@ async def get_sparql_results(
     """Get SPARQL Data from a Wikibase async"""
     backup_time = backup_time_init
 
-    retires = 0
-    while True:
+    for retries in range(max_retries + 1):
         try:
             logger.debug(f"SparQL Query '{query_name}' on '{endpoint_url}': '{query}'")
             return await asyncio.to_thread(
@@ -38,7 +37,7 @@ async def get_sparql_results(
             )
 
         except HTTPError as exc:
-            if exc.code != 429 or retires >= max_retries:
+            if exc.code != 429 or retries >= max_retries:
                 logger.warning(
                     f"SPARQLError: {exc}",
                     # exc_info=True,
@@ -52,7 +51,6 @@ async def get_sparql_results(
             )
             await asyncio.sleep(backup_time)
             backup_time = backup_time * backup_time_multiplier
-            retires += 1
 
 
 class SPARQLResponseMalformed(SPARQLWrapperException):
