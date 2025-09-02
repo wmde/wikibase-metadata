@@ -7,8 +7,8 @@ import WikibaseList from "./components/WikibaseList.vue";
 	<!--     <img src="/vite.svg" class="logo" alt="Vite logo" /> -->
 	<!--     <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" /> -->
 	<div class="p-8">
-		<h1 class="text-2xl font-bold">Wikibase Metadata</h1>
 		<div class="mx-auto max-w-5xl">
+      <h1 class="pb-4 text-2xl font-bold">Wikibase Metadata</h1>
 			<WikibaseList />
 		</div>
 	</div>
