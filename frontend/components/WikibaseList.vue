@@ -1,11 +1,26 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
-import { CdxButton, CdxCard, CdxToggleSwitch } from "@wikimedia/codex";
+import {
+	CdxButton,
+	CdxCard,
+	CdxToggleSwitch,
+	CdxInfoChip,
+	CdxProgressBar,
+} from "@wikimedia/codex";
 
 type Wikibase = {
 	id: string | number;
 	urls: { baseUrl: string };
 	wikibaseType?: string;
+	description?: string;
+	quantityObservations?: {
+		mostRecent?: {
+			totalItems?: number;
+			totalProperties?: number;
+			totalLexemes?: number;
+			totalTriples?: number;
+		};
+	};
 };
 
 const loading = ref(true);
@@ -24,7 +39,7 @@ const endpoint = import.meta.env.DEV
 	? "http://localhost:8000/graphql"
 	: "/graphql";
 
-const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      wikibaseType\n    }\n  }\n}`;
+const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n    }\n  }\n}`;
 
 async function load() {
 	loading.value = true;
@@ -64,6 +79,16 @@ function hostOf(url?: string) {
 		return url;
 	}
 }
+
+const nf = new Intl.NumberFormat(undefined);
+function fmt(n?: number | null) {
+	if (n == null) return "";
+	try {
+		return nf.format(n as number);
+	} catch {
+		return String(n);
+	}
+}
 </script>
 
 <template>
@@ -86,7 +111,9 @@ function hostOf(url?: string) {
 			</div>
 		</div>
 
-		<div v-if="loading" class="text-gray-600 dark:text-gray-300">Loading…</div>
+		<div v-if="loading" class="py-6">
+			<CdxProgressBar aria-label="ProgressBar example" />
+		</div>
 		<div v-else-if="error" class="text-red-600">{{ error }}</div>
 		<div v-else>
 			<p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
@@ -109,14 +136,59 @@ function hostOf(url?: string) {
 							>
 						</template>
 						<template #supporting-text>
-							<a
-								:href="w.urls?.baseUrl"
-								target="_blank"
-								rel="noreferrer noopener"
-								class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-							>
-								{{ w.urls?.baseUrl }}
-							</a>
+							<div>
+								<a
+									:href="w.urls?.baseUrl"
+									target="_blank"
+									rel="noreferrer noopener"
+									class="text-indigo-600 underline hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+								>
+									{{ w.urls?.baseUrl }}
+								</a>
+								<p
+									v-if="w.description"
+									class="mt-1 text-sm text-gray-600 dark:text-gray-300"
+								>
+									{{ w.description }}
+								</p>
+								<div class="mt-2 flex flex-wrap gap-2">
+									<CdxInfoChip
+										v-if="
+											w.quantityObservations?.mostRecent?.totalItems != null
+										"
+									>
+										Items:
+										{{ fmt(w.quantityObservations?.mostRecent?.totalItems) }}
+									</CdxInfoChip>
+									<CdxInfoChip
+										v-if="
+											w.quantityObservations?.mostRecent?.totalProperties !=
+											null
+										"
+									>
+										Properties:
+										{{
+											fmt(w.quantityObservations?.mostRecent?.totalProperties)
+										}}
+									</CdxInfoChip>
+									<CdxInfoChip
+										v-if="
+											w.quantityObservations?.mostRecent?.totalLexemes != null
+										"
+									>
+										Lexemes:
+										{{ fmt(w.quantityObservations?.mostRecent?.totalLexemes) }}
+									</CdxInfoChip>
+									<CdxInfoChip
+										v-if="
+											w.quantityObservations?.mostRecent?.totalTriples != null
+										"
+									>
+										Triples:
+										{{ fmt(w.quantityObservations?.mostRecent?.totalTriples) }}
+									</CdxInfoChip>
+								</div>
+							</div>
 						</template>
 					</CdxCard>
 				</div>
