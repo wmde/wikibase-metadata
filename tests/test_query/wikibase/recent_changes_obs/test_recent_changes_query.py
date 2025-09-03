@@ -18,8 +18,10 @@ query MyQuery($wikibaseId: Int!) {
         returnedData
         humanChangeCount
         humanChangeUserCount
+        humanChangeActiveUserCount
         botChangeCount
         botChangeUserCount
+        botChangeActiveUserCount
         firstChangeDate
         lastChangeDate
       }
@@ -49,66 +51,56 @@ async def test_wikibase_query_recent_changes_success():
 
     assert_layered_property_value(
         result.data,
-        [
-            "wikibase",
-            "recentChangesObservations",
-            "mostRecent",
-            "humanChangeCount",
-        ],
+        ["wikibase", "recentChangesObservations", "mostRecent", "humanChangeCount"],
         5,
     )
 
     assert_layered_property_value(
         result.data,
-        [
-            "wikibase",
-            "recentChangesObservations",
-            "mostRecent",
-            "botChangeCount",
-        ],
+        ["wikibase", "recentChangesObservations", "mostRecent", "botChangeCount"],
         1,
     )
 
     assert_layered_property_value(
         result.data,
-        [
-            "wikibase",
-            "recentChangesObservations",
-            "mostRecent",
-            "humanChangeUserCount",
-        ],
+        ["wikibase", "recentChangesObservations", "mostRecent", "humanChangeUserCount"],
         4,
     )
-
     assert_layered_property_value(
         result.data,
         [
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
-            "botChangeUserCount",
+            "humanChangeActiveUserCount",
         ],
-        1,
+        0,
     )
 
     assert_layered_property_value(
         result.data,
+        ["wikibase", "recentChangesObservations", "mostRecent", "botChangeUserCount"],
+        1,
+    )
+    assert_layered_property_value(
+        result.data,
         [
             "wikibase",
             "recentChangesObservations",
             "mostRecent",
-            "firstChangeDate",
+            "botChangeActiveUserCount",
         ],
+        0,
+    )
+
+    assert_layered_property_value(
+        result.data,
+        ["wikibase", "recentChangesObservations", "mostRecent", "firstChangeDate"],
         datetime(2024, 3, 1, 12, 0, 0).strftime(DATETIME_FORMAT),
     )
 
     assert_layered_property_value(
         result.data,
-        [
-            "wikibase",
-            "recentChangesObservations",
-            "mostRecent",
-            "lastChangeDate",
-        ],
+        ["wikibase", "recentChangesObservations", "mostRecent", "lastChangeDate"],
         datetime(2024, 3, 5, 12, 0, 0).strftime(DATETIME_FORMAT),
     )
