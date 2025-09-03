@@ -1,6 +1,7 @@
 """Wikibase Log Month User Observation Table"""
 
 from datetime import datetime
+from typing import Optional
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -51,6 +52,11 @@ class WikibaseLogMonthUserTypeObservationModel(ModelBase):
 
     user_count: Mapped[int] = mapped_column("user_count", Integer, nullable=False)
     """Number of Unique Users"""
+
+    active_user_count: Mapped[Optional[int]] = mapped_column(
+        "user_count_five_plus", Integer, nullable=True
+    )
+    """Number of Unique Users, 5+ Records"""
 
     def __str__(self) -> str:
         return (

@@ -1,8 +1,8 @@
 """active_users
 
-Revision ID: 8679f2ba90e0
+Revision ID: 9cbd76e2a3af
 Revises: 24affa01347e
-Create Date: 2025-09-03 17:44:09.034667
+Create Date: 2025-09-03 18:26:01.647408
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "8679f2ba90e0"
+revision: str = "9cbd76e2a3af"
 down_revision: Union[str, None] = "24affa01347e"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,6 +27,17 @@ def upgrade() -> None:
         )
         batch_op.add_column(
             sa.Column("user_count_no_bot_five_plus", sa.Integer(), nullable=True)
+        )
+    with op.batch_alter_table("wikibase_log_observation_month_type") as batch_op:
+        batch_op.add_column(
+            sa.Column("user_count_five_plus", sa.Integer(), nullable=True)
+        )
+        batch_op.add_column(
+            sa.Column("user_count_no_bot_five_plus", sa.Integer(), nullable=True)
+        )
+    with op.batch_alter_table("wikibase_log_observation_month_user") as batch_op:
+        batch_op.add_column(
+            sa.Column("user_count_five_plus", sa.Integer(), nullable=True)
         )
     with op.batch_alter_table("wikibase_recent_changes_observation") as batch_op:
         batch_op.add_column(
@@ -43,6 +54,11 @@ def downgrade() -> None:
     with op.batch_alter_table("wikibase_recent_changes_observation") as batch_op:
         batch_op.drop_column("bot_change_user_count_five_plus")
         batch_op.drop_column("human_change_user_count_five_plus")
+    with op.batch_alter_table("wikibase_log_observation_month_user") as batch_op:
+        batch_op.drop_column("user_count_five_plus")
+    with op.batch_alter_table("wikibase_log_observation_month_type") as batch_op:
+        batch_op.drop_column("user_count_no_bot_five_plus")
+        batch_op.drop_column("user_count_five_plus")
     with op.batch_alter_table("wikibase_log_observation_month") as batch_op:
         batch_op.drop_column("user_count_no_bot_five_plus")
         batch_op.drop_column("user_count_five_plus")
