@@ -130,7 +130,7 @@ async def create_log_month(
     )
 
     result.user_count = len(user_counts)
-    result.active_user_count = len(u for u, v in user_counts.items() if v >= 5)
+    result.active_user_count = len([u for u, v in user_counts.items() if v >= 5])
 
     user_type_dict: dict[str, WikibaseUserType] = {}
 
@@ -152,9 +152,11 @@ async def create_log_month(
         ]
     )
     result.active_human_user_count = len(
-        u
-        for u, v in user_counts.items()
-        if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
+        [
+            u
+            for u, v in user_counts.items()
+            if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
+        ]
     )
 
     for log_type in sorted({log.log_type for log in log_list}, key=lambda x: x.value):

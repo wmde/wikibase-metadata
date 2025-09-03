@@ -109,7 +109,7 @@ def create_recent_changes(
     )
     result.human_change_user_count = len(human_counts)
     result.human_change_active_user_count = len(
-        k for k, v in human_counts.items() if v >= 5
+        [k for k, v in human_counts.items() if v >= 5]
     )
 
     result.bot_change_count = len(recent_changes_list_bots)
@@ -118,7 +118,7 @@ def create_recent_changes(
     )
     result.bot_change_user_count = len(bot_counts)
     result.bot_change_active_user_count = len(
-        k for k, v in human_counts.items() if v >= 5
+        [k for k, v in human_counts.items() if v >= 5]
     )
 
     list_total = [*recent_changes_list_humans, *recent_changes_list_bots]
