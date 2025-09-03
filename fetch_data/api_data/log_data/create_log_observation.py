@@ -28,7 +28,7 @@ from fetch_data.api_data.user_data import (
     get_multiple_user_data,
     get_user_type_from_user_data,
 )
-from fetch_data.utils import get_wikibase_from_database
+from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
@@ -123,19 +123,20 @@ async def create_log_month(
         result.first_log_date = min(log.log_date for log in log_list)
         result.last_log_date = max(log.log_date for log in log_list)
 
-    result.user_count = len(
-        users := {
-            log.user
-            for log in log_list
-            if log.user is not None and "page does not exist" not in log.user
-        }
+    user_counts = counts(
+        log.user
+        for log in log_list
+        if log.user is not None and "page does not exist" not in log.user
     )
+
+    result.user_count = len(user_counts)
+    result.active_user_count = len(u for u, v in user_counts.items() if v >= 5)
 
     user_type_dict: dict[str, WikibaseUserType] = {}
 
-    if len(users) > 0:
+    if len(user_counts) > 0:
         logger.info("Fetching User Data", extra={"wikibase": wikibase.id})
-        user_data = await get_multiple_user_data(wikibase, users)
+        user_data = await get_multiple_user_data(wikibase, user_counts.keys())
         for u in user_data:
             user_type_dict[u["name"]] = get_user_type_from_user_data(u)
 
@@ -144,7 +145,16 @@ async def create_log_month(
         )
 
     result.human_user_count = len(
-        [u for u in users if user_type_dict.get(u) == WikibaseUserType.USER]
+        [
+            u
+            for u in user_counts.keys()
+            if user_type_dict.get(u) == WikibaseUserType.USER
+        ]
+    )
+    result.active_human_user_count = len(
+        u
+        for u, v in user_counts.items()
+        if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
     )
 
     for log_type in sorted({log.log_type for log in log_list}, key=lambda x: x.value):
