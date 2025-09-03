@@ -50,8 +50,18 @@ class WikibaseLogMonthObservationModel(ModelBase, WikibaseObservationModel):
     )
     """Number of Unique Users"""
 
+    active_user_count: Mapped[Optional[int]] = mapped_column(
+        "user_count_five_plus", Integer, nullable=True
+    )
+    """Number of Unique Users"""
+
     human_user_count: Mapped[Optional[int]] = mapped_column(
         "user_count_no_bot", Integer, nullable=True
+    )
+    """Number of Unique Users, Without Bots"""
+
+    active_human_user_count: Mapped[Optional[int]] = mapped_column(
+        "user_count_no_bot_five_plus", Integer, nullable=True
     )
     """Number of Unique Users, Without Bots"""
 
