@@ -5,6 +5,7 @@ from typing import Optional
 from tests.utils import assert_property_value, DATETIME_FORMAT
 
 
+# pylint: disable-next=too-many-arguments,too-many-positional-arguments
 def assert_month_type_record(
     returned_month_type_record: dict,
     expected_id: str,
