@@ -185,4 +185,4 @@ class ObservationMutation:
         """Scrape data from Special:Version page All Wikibase Instances"""
 
         authenticate(info)
-        return await update_all_software_observations(info)
+        return await update_all_software_observations()
