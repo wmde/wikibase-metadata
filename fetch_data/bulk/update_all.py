@@ -1,5 +1,6 @@
 """Update All Observations"""
 
+from fetch_data.bulk.bulk_task_result import BulkTaskResult
 from fetch_data.bulk.get_wikibase_query import (
     get_connectivity_obs_wikibases_query,
     get_log_obs_wikibases_query,
@@ -12,7 +13,6 @@ from fetch_data.bulk.get_wikibase_query import (
     get_user_obs_wikibases_query,
 )
 from fetch_data.bulk.update_bulk import (
-    BulkTaskResult,
     update_bulk_connectivity_observations,
     update_bulk_log_observations,
     update_bulk_property_observations,

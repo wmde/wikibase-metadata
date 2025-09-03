@@ -23,7 +23,7 @@ from fetch_data import (
     update_all_time_to_first_value_observations,
     update_all_user_observations,
 )
-from fetch_data.bulk.update_bulk import BulkTaskResult
+from fetch_data.bulk.bulk_task_result import BulkTaskResult
 from resolvers import authenticate
 
 

@@ -6,13 +6,13 @@ Allow up to 4 simultaneous tasks across all observation types
 
 import asyncio
 from sqlalchemy import Select
-import strawberry
 from fetch_data.api_data import (
     create_log_observation,
     create_recent_changes_observation,
     create_time_to_first_value_observation,
     create_user_observation,
 )
+from fetch_data.bulk.bulk_task_result import BulkTaskResult
 from fetch_data.bulk.get_wikibase_list import get_wikibase_list
 from fetch_data.soup_data import (
     create_software_version_observation,
@@ -25,20 +25,6 @@ from fetch_data.sparql_data import (
 )
 from logger import logger
 from model.database.wikibase_model import WikibaseModel
-
-
-@strawberry.type
-class BulkTaskResult:
-    """Result of Bulk Task Execution"""
-
-    success: int
-    failure: int
-    total: int
-
-    def __init__(self, tasks: list[asyncio.Task[bool]]):
-        self.success = len([t for t in tasks if t.result()])
-        self.failure = len([t for t in tasks if not t.result()])
-        self.total = len(tasks)
 
 
 sem = asyncio.Semaphore(4)
