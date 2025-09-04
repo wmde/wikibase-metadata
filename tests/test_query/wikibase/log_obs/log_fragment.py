@@ -7,7 +7,9 @@ fragment WikibaseLogMonthFragment on WikibaseLogMonth {
   returnedData
   logCount
   allUsers
+  activeUsers
   humanUsers
+  activeHumanUsers
   firstLog {
     date
   }
@@ -22,7 +24,9 @@ fragment WikibaseLogMonthFragment on WikibaseLogMonth {
     lastLogDate
     logCount
     allUsers
+    activeUsers
     humanUsers
+    activeHumanUsers
   }
   userTypeRecords {
     id
@@ -31,6 +35,7 @@ fragment WikibaseLogMonthFragment on WikibaseLogMonth {
     lastLogDate
     logCount
     allUsers
+    activeUsers
   }
 }
 """

@@ -71,6 +71,19 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
                 "userhidden": "",
             }
         ),
+        *[
+            WikibaseRecentChangeRecord(
+                {
+                    "type": "edit",
+                    "timestamp": datetime(2024, 3, 1, 13, 0, 0).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ"
+                    ),
+                    "userid": 5,
+                    "user": "UserBusy",
+                }
+            )
+            for _ in range(5)
+        ],
     ]
 
     mock_changes_bots = [
@@ -84,6 +97,19 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
                 "user": "BOT_USER_1",
             }
         ),
+        *[
+            WikibaseRecentChangeRecord(
+                {
+                    "type": "edit",
+                    "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ"
+                    ),
+                    "userid": 1005,
+                    "user": "BOT_USER_BUSY",
+                }
+            )
+            for _ in range(5)
+        ],
     ]
     mocker.patch(
         # pylint: disable-next=line-too-long
@@ -104,11 +130,13 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         )
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
-        assert observation.human_change_count == 5
+        assert observation.human_change_count == 10
         assert (
-            observation.human_change_user_count == 4
-        )  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3
-        assert observation.bot_change_count == 1
-        assert observation.bot_change_user_count == 1
+            observation.human_change_user_count == 5
+        )  # User:A, User:B, 127.0.0.1, __generated_user_string__user:3, UserBusy
+        assert observation.human_change_active_user_count == 1
+        assert observation.bot_change_count == 6
+        assert observation.bot_change_user_count == 2
+        assert observation.bot_change_active_user_count == 1
         assert observation.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
         assert observation.last_change_date == datetime(2024, 3, 5, 12, 0, 0)

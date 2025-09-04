@@ -80,7 +80,9 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
     assert_layered_property_value(most_recent, ["lastLog", "userType"], "USER")
     assert_property_value(most_recent, "logCount", 31)
     assert_property_value(most_recent, "allUsers", 3)
+    assert_property_value(most_recent, "activeUsers", 3)
     assert_property_value(most_recent, "humanUsers", 1)
+    assert_property_value(most_recent, "activeHumanUsers", 1)
 
     assert_layered_property_count(most_recent, ["logTypeRecords"], 1)
     assert_month_type_record(
@@ -91,7 +93,9 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
         expected_last_log_date=datetime(2023, 11, 23),
         expected_log_count=31,
         expected_user_count=3,
+        expected_active_user_count=3,
         expected_human_count=1,
+        expected_active_human_count=1,
     )
 
     assert_layered_property_count(most_recent, ["userTypeRecords"], 3)
@@ -102,11 +106,12 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
         expected_last_log_date,
         expected_log_count,
         expected_user_count,
+        expected_active_user_count,
     ) in enumerate(
         [
-            ("1", "BOT", datetime(2023, 10, 26), datetime(2023, 11, 21), 10, 1),
-            ("2", "MISSING", datetime(2023, 10, 25), datetime(2023, 11, 22), 10, 1),
-            ("3", "USER", datetime(2023, 10, 24), datetime(2023, 11, 23), 11, 1),
+            ("1", "BOT", datetime(2023, 10, 26), datetime(2023, 11, 21), 10, 1, 1),
+            ("2", "MISSING", datetime(2023, 10, 25), datetime(2023, 11, 22), 10, 1, 1),
+            ("3", "USER", datetime(2023, 10, 24), datetime(2023, 11, 23), 11, 1, 1),
         ]
     ):
         assert_month_type_record(
@@ -117,4 +122,5 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
             expected_last_log_date=expected_last_log_date,
             expected_log_count=expected_log_count,
             expected_user_count=expected_user_count,
+            expected_active_user_count=expected_active_user_count,
         )

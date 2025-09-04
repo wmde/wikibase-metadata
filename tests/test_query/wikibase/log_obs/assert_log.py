@@ -5,6 +5,7 @@ from typing import Optional
 from tests.utils import assert_property_value, DATETIME_FORMAT
 
 
+# pylint: disable-next=too-many-arguments,too-many-positional-arguments
 def assert_month_type_record(
     returned_month_type_record: dict,
     expected_id: str,
@@ -12,9 +13,11 @@ def assert_month_type_record(
     expected_last_log_date: datetime,
     expected_log_count: int,
     expected_user_count: int,
+    expected_active_user_count: int,
     expected_log_type: Optional[str] = None,
     expected_user_type: Optional[str] = None,
     expected_human_count: Optional[int] = None,
+    expected_active_human_count: Optional[str] = None,
 ):
     """Assert Month User/Log Type"""
 
@@ -42,7 +45,14 @@ def assert_month_type_record(
     )
     assert_property_value(returned_month_type_record, "logCount", expected_log_count)
     assert_property_value(returned_month_type_record, "allUsers", expected_user_count)
+    assert_property_value(
+        returned_month_type_record, "activeUsers", expected_active_user_count
+    )
     if expected_human_count is not None:
         assert_property_value(
             returned_month_type_record, "humanUsers", expected_human_count
+        )
+    if expected_active_human_count is not None:
+        assert_property_value(
+            returned_month_type_record, "activeHumanUsers", expected_active_human_count
         )

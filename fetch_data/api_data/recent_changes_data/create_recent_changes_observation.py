@@ -23,7 +23,7 @@ from fetch_data.api_data.recent_changes_data.fetch_recent_changes_data import (
 from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
     WikibaseRecentChangeRecord,
 )
-from fetch_data.utils import get_wikibase_from_database
+from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
 from model.database import (
     WikibaseModel,
@@ -103,19 +103,25 @@ def create_recent_changes(
 ) -> WikibaseRecentChangesObservationModel:
     """Create Recent Changes"""
 
-    list_humans = list(recent_changes_list_humans)
-    result.human_change_count = len(list_humans)
-    result.human_change_user_count = len(
-        {rc.user for rc in list_humans if rc.user is not None}
+    result.human_change_count = len(recent_changes_list_humans)
+    human_counts = counts(
+        rc.user for rc in recent_changes_list_humans if rc.user is not None
+    )
+    result.human_change_user_count = len(human_counts)
+    result.human_change_active_user_count = len(
+        [k for k, v in human_counts.items() if v >= 5]
     )
 
-    list_bots = list(recent_changes_list_bots)
-    result.bot_change_count = len(list_bots)
-    result.bot_change_user_count = len(
-        {rc.user for rc in list_bots if rc.user is not None}
+    result.bot_change_count = len(recent_changes_list_bots)
+    bot_counts = counts(
+        rc.user for rc in recent_changes_list_bots if rc.user is not None
+    )
+    result.bot_change_user_count = len(bot_counts)
+    result.bot_change_active_user_count = len(
+        [k for k, v in human_counts.items() if v >= 5]
     )
 
-    list_total = [*list_humans, *list_bots]
+    list_total = [*recent_changes_list_humans, *recent_changes_list_bots]
 
     if len(list_total) > 0:
         result.first_change_date = min(rc.timestamp for rc in list_total)

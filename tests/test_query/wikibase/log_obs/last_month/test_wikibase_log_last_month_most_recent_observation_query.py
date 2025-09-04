@@ -72,5 +72,7 @@ async def test_wikibase_log_last_month_most_recent_observation_query():
     assert_property_value(most_recent, "logCount", 0)
     assert_layered_property_count(most_recent, ["logTypeRecords"], 0)
     assert_property_value(most_recent, "allUsers", 0)
+    assert_property_value(most_recent, "activeUsers", 0)
     assert_property_value(most_recent, "humanUsers", 0)
+    assert_property_value(most_recent, "activeHumanUsers", 0)
     assert_layered_property_count(most_recent, ["userTypeRecords"], 0)

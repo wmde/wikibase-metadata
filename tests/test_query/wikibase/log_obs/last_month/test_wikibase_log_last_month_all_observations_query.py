@@ -108,10 +108,14 @@ async def test_wikibase_log_last_month_all_observations_query():
         expected_last_log_date=datetime(2024, 2, 1),
         expected_log_count=1,
         expected_user_count=0,
+        expected_active_user_count=0,
         expected_human_count=0,
+        expected_active_human_count=0,
     )
     assert_layered_property_value(log_observation_list, [0, "allUsers"], 0)
+    assert_layered_property_value(log_observation_list, [0, "activeUsers"], 0)
     assert_layered_property_value(log_observation_list, [0, "humanUsers"], 0)
+    assert_layered_property_value(log_observation_list, [0, "activeHumanUsers"], 0)
     assert_layered_property_count(log_observation_list, [0, "userTypeRecords"], 0)
 
     assert_layered_property_value(log_observation_list, [1, "id"], "5")
@@ -145,10 +149,14 @@ async def test_wikibase_log_last_month_all_observations_query():
         expected_last_log_date=datetime(2024, 3, 1),
         expected_log_count=31,
         expected_user_count=0,
+        expected_active_user_count=0,
         expected_human_count=0,
+        expected_active_human_count=0,
     )
     assert_layered_property_value(log_observation_list, [1, "allUsers"], 0)
+    assert_layered_property_value(log_observation_list, [1, "activeUsers"], 0)
     assert_layered_property_value(log_observation_list, [1, "humanUsers"], 0)
+    assert_layered_property_value(log_observation_list, [1, "activeHumanUsers"], 0)
     assert_layered_property_count(log_observation_list, [1, "userTypeRecords"], 0)
 
     assert_layered_property_value(log_observation_list, [2, "id"], "6")
@@ -172,5 +180,7 @@ async def test_wikibase_log_last_month_all_observations_query():
     assert_layered_property_value(log_observation_list, [3, "logCount"], 0)
     assert_layered_property_count(log_observation_list, [3, "logTypeRecords"], 0)
     assert_layered_property_value(log_observation_list, [3, "allUsers"], 0)
+    assert_layered_property_value(log_observation_list, [3, "activeUsers"], 0)
     assert_layered_property_value(log_observation_list, [3, "humanUsers"], 0)
+    assert_layered_property_value(log_observation_list, [3, "activeHumanUsers"], 0)
     assert_layered_property_count(log_observation_list, [3, "userTypeRecords"], 0)

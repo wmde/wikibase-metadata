@@ -25,11 +25,18 @@ class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
     all_users: Optional[int] = strawberry.field(
         description="Distinct User Count", graphql_type=Optional[BigInt]
     )
+    active_users: Optional[int] = strawberry.field(
+        description="Distinct User with 5+ Logs Count", graphql_type=Optional[BigInt]
+    )
     log_count: Optional[int] = strawberry.field(
         description="Log Count", graphql_type=Optional[BigInt]
     )
     human_users: Optional[int] = strawberry.field(
         description="Distinct (Probably) Human User Count",
+        graphql_type=Optional[BigInt],
+    )
+    active_human_users: Optional[int] = strawberry.field(
+        description="Distinct (Probably) Human User with 5+ Logs Count",
         graphql_type=Optional[BigInt],
     )
 
@@ -59,7 +66,9 @@ class WikibaseLogMonthStrawberryModel(WikibaseObservationStrawberryModel):
             returned_data=model.returned_data,
             log_count=model.log_count,
             all_users=model.user_count,
+            active_users=model.active_user_count,
             human_users=model.human_user_count,
+            active_human_users=model.active_human_user_count,
             first_log=(
                 WikibaseLogStrawberryModel(date=model.first_log_date)
                 if model.returned_data and model.first_log_date is not None

@@ -18,8 +18,11 @@ class WikibaseLogCollectionStrawberryModel:
 
     id: strawberry.ID
 
-    all_users: int = strawberry.field(
-        description="Distinct User Count", graphql_type=BigInt
+    all_users: Optional[int] = strawberry.field(
+        description="Distinct User Count", graphql_type=Optional[BigInt]
+    )
+    active_users: Optional[int] = strawberry.field(
+        description="Distinct User with 5+ Logs Count", graphql_type=Optional[BigInt]
     )
     log_count: Optional[int] = strawberry.field(
         description="Log Count", graphql_type=Optional[BigInt]
@@ -36,6 +39,10 @@ class WikibaseLogMonthLogTypeStrawberryModel(WikibaseLogCollectionStrawberryMode
     human_users: int = strawberry.field(
         description="Distinct (Probably) Human User Count", graphql_type=BigInt
     )
+    active_human_users: Optional[int] = strawberry.field(
+        description="Distinct (Probably) Human User with 5+ Logs Count",
+        graphql_type=Optional[BigInt],
+    )
 
     @classmethod
     def marshal(
@@ -48,7 +55,9 @@ class WikibaseLogMonthLogTypeStrawberryModel(WikibaseLogCollectionStrawberryMode
             log_type=model.log_type,
             log_count=model.log_count,
             all_users=model.user_count,
+            active_users=model.active_user_count,
             human_users=model.human_user_count,
+            active_human_users=model.active_human_user_count,
             first_log_date=model.first_log_date,
             last_log_date=model.last_log_date,
         )
@@ -71,6 +80,7 @@ class WikibaseLogMonthUserTypeStrawberryModel(WikibaseLogCollectionStrawberryMod
             user_type=model.user_type,
             log_count=model.log_count,
             all_users=model.user_count,
+            active_users=model.active_user_count,
             first_log_date=model.first_log_date,
             last_log_date=model.last_log_date,
         )

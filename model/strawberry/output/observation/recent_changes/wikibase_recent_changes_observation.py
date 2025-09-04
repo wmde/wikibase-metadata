@@ -32,6 +32,14 @@ class WikibaseRecentChangesObservationStrawberryModel(
         ),
         graphql_type=Optional[BigInt],
     )
+    human_change_active_user_count: Optional[int] = strawberry.field(
+        description=(
+            "Number of unique users with at least 5 records found in changes "
+            "requested with !bot flag, derived from all usernames, IP addresses "
+            "for anonymous edits as well as userid in the userhidden case."
+        ),
+        graphql_type=Optional[BigInt],
+    )
     bot_change_count: Optional[int] = strawberry.field(
         description=(
             "Number of changes made by bots as reported by the "
@@ -43,6 +51,13 @@ class WikibaseRecentChangesObservationStrawberryModel(
         description=(
             "Number of unique bots found in changes requested with "
             "bot flag, derived from all bot/usernames."
+        ),
+        graphql_type=Optional[BigInt],
+    )
+    bot_change_active_user_count: Optional[int] = strawberry.field(
+        description=(
+            "Number of unique bots with at least 5 records found in changes "
+            "requested with bot flag, derived from all bot/usernames."
         ),
         graphql_type=Optional[BigInt],
     )
@@ -65,8 +80,10 @@ class WikibaseRecentChangesObservationStrawberryModel(
             returned_data=model.returned_data,
             human_change_count=model.human_change_count,
             human_change_user_count=model.human_change_user_count,
+            human_change_active_user_count=model.human_change_active_user_count,
             bot_change_count=model.bot_change_count,
             bot_change_user_count=model.bot_change_user_count,
+            bot_change_active_user_count=model.bot_change_active_user_count,
             first_change_date=model.first_change_date,
             last_change_date=model.last_change_date,
         )
