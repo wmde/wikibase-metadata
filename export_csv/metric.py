@@ -1,6 +1,5 @@
 """Quantity CSV"""
 
-from fastapi import BackgroundTasks
 from fastapi.responses import StreamingResponse
 from sqlalchemy import Select, and_, func, or_, select
 
@@ -17,7 +16,7 @@ from model.database import (
 from model.enum import WikibaseType, WikibaseURLType
 
 
-async def export_metric_csv(background_tasks: BackgroundTasks) -> StreamingResponse:
+async def export_metric_csv() -> StreamingResponse:
     """CSV with Requested Metrics"""
 
     query = get_metrics_query()
@@ -26,7 +25,6 @@ async def export_metric_csv(background_tasks: BackgroundTasks) -> StreamingRespo
         query=query,
         export_filename="metrics",
         index_col="wikibase_id",
-        background_tasks=background_tasks,
     )
 
 

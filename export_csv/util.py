@@ -1,9 +1,6 @@
 """Utilities"""
 
-import os
 from typing import Optional
-import uuid
-from fastapi import BackgroundTasks
 from fastapi.responses import StreamingResponse
 import pandas
 from sqlalchemy import Connection, Select
@@ -25,14 +22,9 @@ async def read_sql_query(
         return df
 
 
-CHUNK_SIZE = 1024 * 1024
-EXPORT_DIRECTORY = "export/data"
-
-
 async def export_csv(
     query: Select,
     export_filename: str,
-    background_tasks: BackgroundTasks,
     index_col: Optional[str] = None,
 ):
     """Export CSV"""
@@ -41,18 +33,8 @@ async def export_csv(
     if index_col == "wikibase_id":
         assert len(set(df.index)) == len(df), "Returned Multiple Rows per Wikibase"
 
-    os.makedirs(EXPORT_DIRECTORY, exist_ok=True)
-
-    filename = f"{EXPORT_DIRECTORY}/{uuid.uuid4()}.csv"
-    df.to_csv(filename)
+    csv = df.to_csv()
     del df
 
-    def iterfile():
-        with open(filename, "rb") as f:
-            while chunk := f.read(CHUNK_SIZE):
-                yield chunk
-
-    background_tasks.add_task(os.remove, filename)
-
     headers = {"Content-Disposition": f'attachment; filename="{export_filename}.csv"'}
-    return StreamingResponse(iterfile(), headers=headers, media_type="text/csv")
+    return StreamingResponse(csv, headers=headers, media_type="text/csv")
