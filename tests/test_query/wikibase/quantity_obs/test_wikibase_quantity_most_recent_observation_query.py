@@ -28,7 +28,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["quantity-success"], scope="session")
+@pytest.mark.dependency(depends=["quantity-partial-failure"], scope="session")
 @pytest.mark.query
 @pytest.mark.quantity
 async def test_wikibase_quantity_most_recent_observation_query():
@@ -49,4 +49,4 @@ async def test_wikibase_quantity_most_recent_observation_query():
     assert "mostRecent" in result_wikibase["quantityObservations"]
     most_recent = result_wikibase["quantityObservations"]["mostRecent"]
 
-    assert_quantity(most_recent, "1", True, 2, 4, 1, 8, 16, 32, 64, 128)
+    assert_quantity(most_recent, "3", True, 2, 4, 1, 8, 16, None, None, 128)

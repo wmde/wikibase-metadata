@@ -23,6 +23,7 @@ async def get_sparql_results(
     backup_time_multiplier: float = 2,
 ) -> dict:
     """Get SPARQL Data from a Wikibase async"""
+
     backup_time = backup_time_init
 
     for retries in range(max_retries + 1):
@@ -47,7 +48,7 @@ async def get_sparql_results(
 
             logger.warning(
                 f"SparQL Query '{query_name}' on '{endpoint_url}' "
-                f"received 429, sleeping for {backup_time} seconds"
+                f"received 429, Retrying in {backup_time:.2f}s..."
             )
             await asyncio.sleep(backup_time)
             backup_time = backup_time * backup_time_multiplier
