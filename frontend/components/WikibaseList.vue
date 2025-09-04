@@ -28,7 +28,47 @@ const endpoint = import.meta.env.DEV
 	? "http://localhost:8000/graphql"
 	: "/graphql";
 
-const query = `query q {\n  wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {\n    data {\n      id\n      urls {\n        baseUrl\n      }\n      description\n      wikibaseType\n      quantityObservations {\n        mostRecent {\n          observationDate\n          totalItems\n          totalProperties\n          totalLexemes\n          totalTriples\n        }\n      }\n      recentChangesObservations {\n        mostRecent {\n          observationDate\n          humanChangeCount\n          humanChangeUserCount\n          botChangeCount\n          botChangeUserCount\n        }\n      }\n      timeToFirstValueObservations {\n        mostRecent {\n          initiationDate\n        }\n      }\n    }\n  }\n}`;
+const query = `
+  query q {
+    wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [TEST, CLOUD] } }) {
+      data {
+        id
+        urls {
+          baseUrl
+          sparqlEndpointUrl
+          sparqlFrontendUrl
+          scriptPath
+          articlePath
+        }
+        description
+        wikibaseType
+        quantityObservations {
+          mostRecent {
+            observationDate
+            totalItems
+            totalProperties
+            totalLexemes
+            totalTriples
+          }
+        }
+        recentChangesObservations {
+          mostRecent {
+            observationDate
+            humanChangeCount
+            humanChangeUserCount
+            botChangeCount
+            botChangeUserCount
+          }
+        }
+        timeToFirstValueObservations {
+          mostRecent {
+            initiationDate
+          }
+        }
+      }
+    }
+  }
+`;
 
 async function load() {
 	if (!token.value) return;

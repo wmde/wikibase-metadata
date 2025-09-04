@@ -1,6 +1,12 @@
 export type WikibaseJson = {
   id: string | number;
-  urls: { baseUrl: string };
+  urls: {
+    baseUrl: string;
+    sparqlEndpointUrl?: string;
+    sparqlFrontendUrl?: string;
+    scriptPath?: string;
+    articlePath?: string;
+  };
   wikibaseType?: string;
   description?: string;
   quantityObservations?: {
