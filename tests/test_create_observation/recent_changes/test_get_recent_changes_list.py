@@ -84,3 +84,20 @@ async def test_get_recent_changes_list_multiple_pulls(mocker):
     assert newest_change.timestamp == datetime(2024, 3, 1, tzinfo=UTC)
     oldest_change = min(results, key=lambda x: x.timestamp)
     assert oldest_change.timestamp == datetime(2024, 1, 31, tzinfo=UTC)
+
+
+@pytest.mark.asyncio
+async def test_get_recent_changes_list_empty_response(mocker):
+    """Test handling of empty API response (no recent changes)."""
+
+    mocker.patch(
+        "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
+        return_value={
+            "batchcomplete": "",
+            "query": {"recentchanges": []},
+        },
+    )
+
+    results = await get_recent_changes_list("example.com")
+    assert isinstance(results, list)
+    assert len(results) == 0

@@ -26,7 +26,7 @@ async def get_sparql_results(
 
     backup_time = backup_time_init
 
-    for attempt in range(max_retries + 1):
+    for retries in range(max_retries + 1):
         try:
             logger.debug(f"SparQL Query '{query_name}' on '{endpoint_url}': '{query}'")
             return await asyncio.to_thread(
@@ -38,8 +38,8 @@ async def get_sparql_results(
             )
 
         except HTTPError as exc:
-            if exc.code != 429 or attempt >= max_retries:
-                logger.error(
+            if exc.code != 429 or retries >= max_retries:
+                logger.warning(
                     f"SPARQLError: {exc}",
                     # exc_info=True,
                     # stack_info=True,
