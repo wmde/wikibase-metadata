@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
-import { CdxProgressBar, CdxField, CdxTextInput, CdxButton } from "@wikimedia/codex";
+import {
+	CdxProgressBar,
+	CdxField,
+	CdxTextInput,
+	CdxButton,
+} from "@wikimedia/codex";
 import WikibaseCard from "./WikibaseCard.vue";
 import { Wikibase } from "../types";
 
@@ -13,7 +18,9 @@ const token = ref<string | null>(null);
 const tokenInput = ref("");
 const tokenTouched = ref(false);
 const fieldStatus = computed(() =>
-    tokenTouched.value && tokenInput.value.trim().length === 0 ? "error" : "default"
+	tokenTouched.value && tokenInput.value.trim().length === 0
+		? "error"
+		: "default",
 );
 const messages = { error: "Token is required" } as const;
 
@@ -60,12 +67,12 @@ onMounted(() => {
 });
 
 function submitToken() {
-    tokenTouched.value = true;
-    const t = tokenInput.value.trim();
-    if (!t) return;
-    token.value = t;
-    localStorage.setItem("authToken", t);
-    load();
+	tokenTouched.value = true;
+	const t = tokenInput.value.trim();
+	if (!t) return;
+	token.value = t;
+	localStorage.setItem("authToken", t);
+	load();
 }
 
 // Card-specific helpers moved into WikibaseCard.vue
@@ -73,23 +80,27 @@ function submitToken() {
 
 <template>
 	<section>
-        <div v-if="!token" class="py-12 flex justify-center">
-            <form class="w-full max-w-md" @submit.prevent="submitToken">
-                <CdxField :status="fieldStatus" :messages="messages">
-                    <CdxTextInput
-                        v-model="tokenInput"
-                        type="password"
-                        placeholder="Enter bearer token"
-                        @keydown.enter.prevent="submitToken"
-                    />
-                    <template #label>Bearer token</template>
-                    <template #description>Stored locally and used for API requests.</template>
-                </CdxField>
-                <div class="mt-3 flex justify-center">
-                    <CdxButton action="progressive" weight="primary" @click="submitToken">Continue</CdxButton>
-                </div>
-            </form>
-        </div>
+		<div v-if="!token" class="py-12 flex justify-center">
+			<form class="w-full max-w-md" @submit.prevent="submitToken">
+				<CdxField :status="fieldStatus" :messages="messages">
+					<CdxTextInput
+						v-model="tokenInput"
+						type="password"
+						placeholder="Enter bearer token"
+						@keydown.enter.prevent="submitToken"
+					/>
+					<template #label>Bearer token</template>
+					<template #description
+						>Stored locally and used for API requests.</template
+					>
+				</CdxField>
+				<div class="mt-3 flex justify-center">
+					<CdxButton action="progressive" weight="primary" @click="submitToken"
+						>Continue</CdxButton
+					>
+				</div>
+			</form>
+		</div>
 		<div v-else-if="loading" class="py-6">
 			<p class="mb-3 text-sm text-black">
 				Loading known Wikibase instances — this can take a while.
@@ -102,12 +113,13 @@ function submitToken() {
 				Found
 				<span class="font-semibold">{{ items.length }}</span> wikibases
 			</p>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <WikibaseCard v-for="w in items" :key="w.id" :w="w" />
-            </div>
-        </div>
-    </section>
+			<div
+				class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+			>
+				<WikibaseCard v-for="w in items" :key="w.id" :w="w" />
+			</div>
+		</div>
+	</section>
 </template>
 
 <style scoped></style>
