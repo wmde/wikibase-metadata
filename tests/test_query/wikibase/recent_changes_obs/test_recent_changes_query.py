@@ -52,19 +52,19 @@ async def test_wikibase_query_recent_changes_success():
     assert_layered_property_value(
         result.data,
         ["wikibase", "recentChangesObservations", "mostRecent", "humanChangeCount"],
-        5,
+        10,
     )
 
     assert_layered_property_value(
         result.data,
         ["wikibase", "recentChangesObservations", "mostRecent", "botChangeCount"],
-        1,
+        6,
     )
 
     assert_layered_property_value(
         result.data,
         ["wikibase", "recentChangesObservations", "mostRecent", "humanChangeUserCount"],
-        4,
+        5,
     )
     assert_layered_property_value(
         result.data,
@@ -74,13 +74,13 @@ async def test_wikibase_query_recent_changes_success():
             "mostRecent",
             "humanChangeActiveUserCount",
         ],
-        0,
+        1,
     )
 
     assert_layered_property_value(
         result.data,
         ["wikibase", "recentChangesObservations", "mostRecent", "botChangeUserCount"],
-        1,
+        2,
     )
     assert_layered_property_value(
         result.data,
@@ -90,7 +90,7 @@ async def test_wikibase_query_recent_changes_success():
             "mostRecent",
             "botChangeActiveUserCount",
         ],
-        0,
+        1,
     )
 
     assert_layered_property_value(

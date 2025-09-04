@@ -34,16 +34,16 @@ async def test_aggregate_recent_changes_query():
     assert result.data is not None
 
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "humanChangeCount"], 5
+        result.data, ["aggregateRecentChanges", "humanChangeCount"], 10
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "humanChangeUserCount"], 4
+        result.data, ["aggregateRecentChanges", "humanChangeUserCount"], 5
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "botChangeCount"], 1
+        result.data, ["aggregateRecentChanges", "botChangeCount"], 6
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "botChangeUserCount"], 1
+        result.data, ["aggregateRecentChanges", "botChangeUserCount"], 2
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "wikibaseCount"], 1
