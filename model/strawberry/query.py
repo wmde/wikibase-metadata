@@ -33,7 +33,7 @@ from resolvers import (
     get_language_list,
     get_software_list,
     get_wikibase,
-    get_wikibase_list,
+    get_wikibase_page,
 )
 
 
@@ -59,7 +59,7 @@ class Query:
         """List of Wikibases"""
 
         authenticate(info)
-        return await get_wikibase_list(
+        return await get_wikibase_page(
             page_number=page_number,
             page_size=page_size,
             wikibase_filter=wikibase_filter,

@@ -18,4 +18,7 @@ async def test_update_out_of_date_user_observations_empty(mocker):
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=[{"query": {"allusers": []}}],
     )
-    assert await update_out_of_date_user_observations() == 1
+    result = await update_out_of_date_user_observations()
+    assert result.failure == 0
+    assert result.success == 1
+    assert result.total == 1

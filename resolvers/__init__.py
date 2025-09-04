@@ -14,7 +14,7 @@ from resolvers.get_aggregate import (
 )
 from resolvers.get_software_list import get_software_list
 from resolvers.get_wikibase import get_wikibase
-from resolvers.get_wikibase_list import get_wikibase_list
+from resolvers.get_wikibase_list import get_wikibase_page
 from resolvers.update import (
     add_wikibase_language,
     merge_software_by_id,
