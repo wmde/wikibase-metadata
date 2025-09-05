@@ -1,7 +1,7 @@
 """Utilities"""
 
 from typing import Optional
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response
 import pandas
 from sqlalchemy import Connection, Select
 
@@ -37,4 +37,4 @@ async def export_csv(
     del df
 
     headers = {"Content-Disposition": f'attachment; filename="{export_filename}.csv"'}
-    return StreamingResponse(csv, headers=headers, media_type="text/csv")
+    return Response(csv, headers=headers, media_type="text/csv")
