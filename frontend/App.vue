@@ -9,6 +9,9 @@ import WikibaseList from "./components/WikibaseList.vue";
 	<div class="p-8">
 		<div class="mx-auto max-w-screen-2xl">
       <h1 class="pb-4 text-2xl font-bold">Wikibase Metadata</h1>
+      <section>
+        This database is an initiaive run by Wikimedia Deutschland.
+      </section>
 			<WikibaseList />
 		</div>
 	</div>
