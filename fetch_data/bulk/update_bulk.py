@@ -27,7 +27,7 @@ from logger import logger
 from model.database.wikibase_model import WikibaseModel
 
 
-sem = asyncio.Semaphore(4)
+sem = asyncio.Semaphore(32)
 
 
 async def safe_update_connectivity_obs(wikibase_id: int) -> bool:
