@@ -37,6 +37,10 @@ def authenticate_request(request: Request):
     if len(auth_header_value_split) != 2:
         raise ValueError("Invalid authorization header, expected 'bearer <token>'")
 
-    auth_header_token = auth_header_value_split[1]
+    authenticate_token(auth_header_value_split[1])
 
-    assert auth_header_token == auth_token, "Authorization Failed"
+
+def authenticate_token(token: str):
+    """Authenticate Token"""
+
+    assert token == auth_token, "Authorization Failed"

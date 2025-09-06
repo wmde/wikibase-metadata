@@ -5,7 +5,7 @@ import re
 from model.enum import WikibaseURLType
 
 
-FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=]+", re.IGNORECASE)
+FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=/]+", re.IGNORECASE)
 
 
 def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
