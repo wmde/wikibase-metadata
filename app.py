@@ -2,7 +2,7 @@
 
 from contextlib import asynccontextmanager
 from typing import Optional
-from fastapi import BackgroundTasks, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
@@ -48,9 +48,7 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 
 
 @app.get("/csv/metrics")
-async def metric_csv(
-    background_tasks: BackgroundTasks, authorization: Optional[str] = None
-):
+async def metric_csv(authorization: Optional[str] = None):
     """Quantity CSV"""
 
     try:
@@ -63,4 +61,4 @@ async def metric_csv(
     except AssertionError:
         return PlainTextResponse("Authorization Failed", 403)
 
-    return await export_metric_csv(background_tasks)
+    return await export_metric_csv()

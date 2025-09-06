@@ -1,26 +1,9 @@
 """Test Export Metrics CSV"""
 
-import os
 import re
-from typing import Callable
 import pytest
-from export_csv.metric import export_metric_csv
-
-
-class MockBackgroundTasks:
-    """Mock BackgroundTasks"""
-
-    task_list = []
-
-    # pylint: disable-next=unused-argument
-    def add_task(self, func: Callable, *args):
-        """
-        Add Task
-
-        really add filename to list
-        """
-
-        self.task_list.append(args[0])
+from fastapi.testclient import TestClient
+from app import app
 
 
 EXPECTED_HEADER_ROW = ",".join(
@@ -46,7 +29,7 @@ EXPECTED_HEADER_ROW = ",".join(
         "bot_change_user_count",
         "software_version_observation_date",
         "software_name",
-        "version\n",
+        "version",
     ]
 )
 EXPECTED_PATTERN = re.compile(
@@ -76,7 +59,7 @@ EXPECTED_PATTERN = re.compile(
             # # Software
             r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
             r"(MediaWiki|)",
-            r"(\d+\.\d+\.\d+|)\n",
+            r"(\d+\.\d+\.\d+|)",
         ]
     )
 )
@@ -94,19 +77,14 @@ EXPECTED_PATTERN = re.compile(
 async def test_export_metric_csv():
     """Test Export Metric CSV"""
 
-    mock_background_tasks = MockBackgroundTasks()
-
-    result = await export_metric_csv(mock_background_tasks)
-    assert len(mock_background_tasks.task_list) == 1
+    client = TestClient(app)
+    result = client.get("/csv/metrics?authorization=test-auth-token")
     assert result.status_code == 200
-    assert result.media_type == "text/csv"
-    # CANNOT FIGURE OUT HOW TO CHECK CONTENT OF RESPONSE
+    content = result.content.decode("utf-8")
 
-    with open(mock_background_tasks.task_list[0], mode="r", encoding="utf-8") as file:
-        returned_lines = file.readlines()
-        assert returned_lines[0] == EXPECTED_HEADER_ROW
-        for returned_line in returned_lines[1:]:
-            assert EXPECTED_PATTERN.match(returned_line)
+    lines = content.splitlines()
+    assert len(lines) >= 2
+    assert lines[0] == EXPECTED_HEADER_ROW
 
-    for file in mock_background_tasks.task_list:
-        os.remove(file)
+    for line in lines[1:]:
+        assert EXPECTED_PATTERN.match(line)
