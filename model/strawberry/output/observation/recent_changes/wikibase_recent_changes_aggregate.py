@@ -18,7 +18,9 @@ class WikibaseRecentChangesAggregateStrawberryModel:
         graphql_type=BigInt,
     )
     human_change_active_user_count: int = strawberry.field(
-        description="Total Human Editors with 5+ edits in the last 30 days across Wikibase instances",
+        description=(
+            "Total Human Editors with 5+ edits in the last 30 days across Wikibase instances"
+        ),
         graphql_type=BigInt,
     )
     bot_change_count: int = strawberry.field(
