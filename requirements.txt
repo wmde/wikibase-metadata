@@ -5,6 +5,7 @@ beautifulsoup4>=4.12.3
 fastapi[standard]>=0.115.7
 gunicorn>=23.0.0
 httpx>=0.28.1
+pandas<2.2
 numpy>=1.26.4,<2.0
 requests>=2.32.3
 SPARQLWrapper>=2.0.0
