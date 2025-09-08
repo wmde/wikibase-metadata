@@ -4,6 +4,8 @@ import { CdxCard, CdxIcon } from "@wikimedia/codex";
 import { cdxIconGlobe, cdxIconAlert } from "@wikimedia/codex-icons";
 import type { Wikibase, ObsKind } from "../types";
 import WikibaseDetailsDialog from "./WikibaseDetailsDialog.vue";
+import { isStaleFor, obsHeadline, relativeDaysText } from "../utils";
+import { fmtOrDash } from "../utils/format";
 
 const props = defineProps<{ w: Wikibase }>();
 
@@ -42,24 +44,7 @@ watch(
 );
 
 /* ---------- helpers ---------- */
-function daysSince(dateIso?: string): number | null {
-	if (!dateIso) return null;
-	const t = new Date(dateIso).getTime();
-	if (Number.isNaN(t)) return null;
-	return Math.max(0, Math.floor((Date.now() - t) / 86400000));
-}
-function relativeDaysText(dateIso?: string): string {
-	const d = daysSince(dateIso);
-	if (d == null) return "";
-	if (d === 0) return "today";
-	if (d === 1) return "yesterday";
-	return `${d} days ago`;
-}
-function isStale(kind: ObsKind): boolean {
-	const d = props.w.getObservationDate(kind);
-	const ds = daysSince(d);
-	return ds != null && ds > 30;
-}
+function isStale(kind: ObsKind): boolean { return isStaleFor(props.w, kind); }
 
 /* ---------- summary metrics (minimal card) ---------- */
 const triples = computed(
@@ -74,16 +59,9 @@ const rcTotal = computed(() => {
 	return total > 0 ? total : (m.humanChangeCount ?? m.botChangeCount);
 });
 
-function obsHeadline(kind: ObsKind): string {
-	const d = props.w.getObservationDate(kind);
-	const rel = relativeDaysText(d);
-	return rel ? `Fetched ${rel}` : "No fetch date";
-}
-function fmtOrDash(n?: number | null): string {
-	return n == null ? "—" : props.w.fmt(n);
-}
+function obsHeadlineLocal(kind: ObsKind): string { return obsHeadline(props.w, kind); }
+function fmtOrDashLocal(n?: number | null): string { return fmtOrDash(props.w, n); }
 
-// All detail fields are shown regardless of data availability.
 </script>
 
 <template>
@@ -140,12 +118,12 @@ function fmtOrDash(n?: number | null): string {
 								:icon="cdxIconAlert"
 								class="token-text-warning"
 								size="small"
-								:title="obsHeadline('rc')"
+								:title="obsHeadlineLocal('rc')"
 								aria-label="Recent changes data is stale"
 							/>
 						</dt>
 						<dd class="text-xl font-bold token-text-base">
-							{{ fmtOrDash(rcTotal) }}
+							{{ fmtOrDashLocal(rcTotal) }}
 						</dd>
 					</div>
 					<div class="token-rounded token-surface-2 p-3">
@@ -158,12 +136,12 @@ function fmtOrDash(n?: number | null): string {
 								:icon="cdxIconAlert"
 								class="token-text-warning"
 								size="small"
-								:title="obsHeadline('quantity')"
+								:title="obsHeadlineLocal('quantity')"
 								aria-label="Totals data is stale"
 							/>
 						</dt>
 						<dd class="text-xl font-bold token-text-base">
-							{{ fmtOrDash(triples) }}
+							{{ fmtOrDashLocal(triples) }}
 						</dd>
 					</div>
 				</dl>

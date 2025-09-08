@@ -72,6 +72,19 @@ export class Wikibase {
     }
   }
 
+  resolveUrl(s?: string | null): string | null {
+    if (!s) return null;
+    // Avoid linking templated article paths like "/wiki/$1"
+    if (typeof s === 'string' && s.includes('$1')) return null;
+    try {
+      const base = this.urls?.baseUrl;
+      const url = base ? new URL(s as string, base) : new URL(s as string);
+      return url.toString();
+    } catch {
+      return null;
+    }
+  }
+
   fmt(n?: number | null): string {
     if (n == null) return '';
     try {
