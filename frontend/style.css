@@ -26,12 +26,13 @@
   .token-border-b { border-bottom: var(--border-base); }
   .token-border-t { border-top: var(--border-base); }
   .token-text-base { color: var(--color-base); }
-  .token-text-progressive { color: var(--color-progressive); }
-  .token-text-subtle { color: var(--color-subtle); }
   .token-hover-surface-3:hover { background-color: var(--background-color-neutral); }
   .focus-outline-progressive:focus-visible { outline: 2px solid var(--color-progressive); outline-offset: 2px; }
-  .token-text-destructive { color: var(--color-destructive); }
-  .token-text-warning { color: var(--color-warning); }
+
+  .token-text-progressive { color: var(--color-progressive) !important; }
+  .token-text-subtle { color: var(--color-subtle) !important; }
+  .token-text-destructive { color: var(--color-destructive) !important; }
+  .token-text-warning { color: var(--color-warning) !important; }
 
   /* Link style using Codex tokens */
   .token-link { color: var(--color-progressive); text-decoration: underline; }
