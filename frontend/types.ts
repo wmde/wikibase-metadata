@@ -66,7 +66,7 @@ export class Wikibase {
     if (!url) return '';
     try {
       const u = new URL(url);
-      return u.host + u.pathname;
+      return u.host + (u.pathname == '/' ? '' : u.pathname);
     } catch {
       return url;
     }
