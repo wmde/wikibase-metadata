@@ -139,7 +139,7 @@ function resolveHref(s?: string | null): string | null {
 				<CdxIcon v-else :icon="cdxIconGlobe" size="medium" />
 				<span
 					:title="props.w.urls?.baseUrl || props.w.baseHost() || ''"
-					class="w-0 flex-1 truncate text-lg font-semibold text-black"
+					class="w-0 flex-1 truncate text-lg font-semibold token-text-base"
 				>
 					{{ props.w.baseHost() || "Unknown" }}
 				</span>
@@ -163,37 +163,39 @@ function resolveHref(s?: string | null): string | null {
 			<!-- Minimal summary: 30-day changes total + triples -->
 			<div class="mt-3">
 				<dl class="grid grid-cols-2 gap-3">
-					<div class="rounded-lg bg-gray-50 p-3">
+					<div class="token-rounded token-surface-2 p-3">
 						<dt
-							class="flex items-center gap-1 text-[11px] uppercase text-gray-700"
+							class="flex items-center gap-1 text-[11px] uppercase token-text-subtle"
 						>
 							Edits (30 days)
 							<CdxIcon
 								v-if="isStale('rc')"
 								:icon="cdxIconAlert"
+								class="token-text-warning"
 								size="small"
 								:title="obsHeadline('rc')"
 								aria-label="Recent changes data is stale"
 							/>
 						</dt>
-						<dd class="text-xl font-bold text-black">
+						<dd class="text-xl font-bold token-text-base">
 							{{ fmtOrDash(rcTotal) }}
 						</dd>
 					</div>
-					<div class="rounded-lg bg-gray-50 p-3">
+					<div class="token-rounded token-surface-2 p-3">
 						<dt
-							class="flex items-center gap-1 text-[11px] uppercase text-gray-700"
+							class="flex items-center gap-1 text-[11px] uppercase token-text-subtle"
 						>
 							Triples
 							<CdxIcon
 								v-if="isStale('quantity')"
 								:icon="cdxIconAlert"
+								class="token-text-warning"
 								size="small"
 								:title="obsHeadline('quantity')"
 								aria-label="Totals data is stale"
 							/>
 						</dt>
-						<dd class="text-xl font-bold text-black">
+						<dd class="text-xl font-bold token-text-base">
 							{{ fmtOrDash(triples) }}
 						</dd>
 					</div>
@@ -214,15 +216,17 @@ function resolveHref(s?: string | null): string | null {
 					</section>
 					<section>
 						<dl class="grid grid-cols-1 gap-2">
-							<div class="rounded-lg bg-gray-50 px-3">
-								<dt class="text-[11px] uppercase text-gray-700">Base URL</dt>
-								<dd class="text-sm text-black break-all">
+							<div class="token-rounded token-surface-2 px-3">
+								<dt class="text-[11px] uppercase token-text-subtle">
+									Base URL
+								</dt>
+								<dd class="text-sm token-text-base break-all">
 									<template v-if="resolveHref(props.w.urls?.baseUrl)">
 										<a
 											:href="resolveHref(props.w.urls?.baseUrl) as string"
 											target="_blank"
 											rel="noreferrer noopener"
-											class="text-indigo-600 underline hover:text-indigo-500"
+											class="token-link"
 										>
 											{{ props.w.urls?.baseUrl }}
 										</a>
@@ -232,15 +236,19 @@ function resolveHref(s?: string | null): string | null {
 									</template>
 								</dd>
 							</div>
-							<div class="rounded-lg bg-gray-50 p-3">
-								<dt class="text-[11px] uppercase text-gray-700">SPARQL Endpoint</dt>
-								<dd class="text-sm text-black break-all">
+							<div class="token-rounded token-surface-2 p-3">
+								<dt class="text-[11px] uppercase token-text-subtle">
+									SPARQL Endpoint
+								</dt>
+								<dd class="text-sm token-text-base break-all">
 									<template v-if="resolveHref(props.w.urls?.sparqlEndpointUrl)">
 										<a
-											:href="resolveHref(props.w.urls?.sparqlEndpointUrl) as string"
+											:href="
+												resolveHref(props.w.urls?.sparqlEndpointUrl) as string
+											"
 											target="_blank"
 											rel="noreferrer noopener"
-											class="text-indigo-600 underline hover:text-indigo-500"
+											class="token-link"
 										>
 											{{ props.w.urls?.sparqlEndpointUrl }}
 										</a>
@@ -250,15 +258,19 @@ function resolveHref(s?: string | null): string | null {
 									</template>
 								</dd>
 							</div>
-							<div class="rounded-lg bg-gray-50 p-3">
-								<dt class="text-[11px] uppercase text-gray-700">SPARQL Frontend</dt>
-								<dd class="text-sm text-black break-all">
+							<div class="token-rounded token-surface-2 p-3">
+								<dt class="text-[11px] uppercase token-text-subtle">
+									SPARQL Frontend
+								</dt>
+								<dd class="text-sm token-text-base break-all">
 									<template v-if="resolveHref(props.w.urls?.sparqlFrontendUrl)">
 										<a
-											:href="resolveHref(props.w.urls?.sparqlFrontendUrl) as string"
+											:href="
+												resolveHref(props.w.urls?.sparqlFrontendUrl) as string
+											"
 											target="_blank"
 											rel="noreferrer noopener"
-											class="text-indigo-600 underline hover:text-indigo-500"
+											class="token-link"
 										>
 											{{ props.w.urls?.sparqlFrontendUrl }}
 										</a>
@@ -268,31 +280,35 @@ function resolveHref(s?: string | null): string | null {
 									</template>
 								</dd>
 							</div>
-                            <!-- Script and Article paths side-by-side -->
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="rounded-lg bg-gray-50 p-3">
-                                    <dt class="text-[11px] uppercase text-gray-700">Script Path</dt>
-                                    <dd class="text-sm text-black break-all">
-                                        {{ textOrDash(props.w.urls?.scriptPath) }}
-                                    </dd>
-                                </div>
-                                <div class="rounded-lg bg-gray-50 p-3">
-                                    <dt class="text-[11px] uppercase text-gray-700">Article Path</dt>
-                                    <dd class="text-sm text-black break-all">
-                                        {{ textOrDash(props.w.urls?.articlePath) }}
-                                    </dd>
-                                </div>
-                            </div>
+							<!-- Script and Article paths side-by-side -->
+							<div class="grid grid-cols-2 gap-2">
+								<div class="token-rounded token-surface-2 p-3">
+									<dt class="text-[11px] uppercase token-text-subtle">
+										Script Path
+									</dt>
+									<dd class="text-sm token-text-base break-all">
+										{{ textOrDash(props.w.urls?.scriptPath) }}
+									</dd>
+								</div>
+								<div class="token-rounded token-surface-2 p-3">
+									<dt class="text-[11px] uppercase token-text-subtle">
+										Article Path
+									</dt>
+									<dd class="text-sm token-text-base break-all">
+										{{ textOrDash(props.w.urls?.articlePath) }}
+									</dd>
+								</div>
+							</div>
 						</dl>
 					</section>
 					<section>
 						<header class="mb-2">
 							<p
-								class="text-xs font-semibold uppercase tracking-wide text-black"
+								class="text-xs font-semibold uppercase tracking-wide token-text-base"
 							>
 								Totals
 							</p>
-							<p class="inline-flex items-center gap-1 text-xs text-black">
+							<p class="inline-flex items-center gap-1 text-xs token-text-base">
 								<CdxIcon
 									v-if="isStale('quantity')"
 									:icon="cdxIconAlert"
@@ -303,11 +319,11 @@ function resolveHref(s?: string | null): string | null {
 						</header>
 						<dl class="grid grid-cols-2 gap-3">
 							<template v-for="t in totals" :key="t.label">
-								<div class="rounded-lg bg-gray-50 p-3">
-									<dt class="text-[11px] uppercase text-gray-700">
+								<div class="token-rounded token-surface-2 p-3">
+									<dt class="text-[11px] uppercase token-text-subtle">
 										{{ t.label }}
 									</dt>
-									<dd class="text-xl font-bold text-black">
+									<dd class="text-xl font-bold token-text-base">
 										{{ fmtOrDash(t.v) }}
 									</dd>
 								</div>
@@ -318,11 +334,11 @@ function resolveHref(s?: string | null): string | null {
 					<section>
 						<header class="mb-2">
 							<p
-								class="text-xs font-semibold uppercase tracking-wide text-black"
+								class="text-xs font-semibold uppercase tracking-wide token-text-base"
 							>
 								Edits in the last 30 days
 							</p>
-							<p class="inline-flex items-center gap-1 text-xs text-black">
+							<p class="inline-flex items-center gap-1 text-xs token-text-base">
 								<CdxIcon
 									v-if="isStale('rc')"
 									:icon="cdxIconAlert"
@@ -333,11 +349,11 @@ function resolveHref(s?: string | null): string | null {
 						</header>
 						<dl class="grid grid-cols-2 gap-3">
 							<template v-for="t in rc" :key="t.label">
-								<div class="rounded-lg bg-gray-50 p-3">
-									<dt class="text-[11px] uppercase text-gray-700">
+								<div class="rounded-lg token-surface-2 p-3">
+									<dt class="text-[11px] uppercase token-text-subtle">
 										{{ t.label }}
 									</dt>
-									<dd class="text-xl font-bold text-black">
+									<dd class="text-xl font-bold token-text-base">
 										{{ fmtOrDash(t.v) }}
 									</dd>
 								</div>
@@ -346,13 +362,16 @@ function resolveHref(s?: string | null): string | null {
 					</section>
 
 					<section>
-						<p class="text-xs text-black">
+						<p class="text-xs token-text-base">
 							Online since
-							{{ textOrDash(
-								props.w.fmtDate(
-									props.w.timeToFirstValueObservations?.mostRecent?.initiationDate,
-								),
-							) }}
+							{{
+								textOrDash(
+									props.w.fmtDate(
+										props.w.timeToFirstValueObservations?.mostRecent
+											?.initiationDate,
+									),
+								)
+							}}
 						</p>
 					</section>
 				</div>
@@ -362,6 +381,7 @@ function resolveHref(s?: string | null): string | null {
 </template>
 
 <style scoped>
+@import "@wikimedia/codex-design-tokens/theme-wikimedia-ui.css";
 .desc-wrapper {
 	position: relative;
 	min-height: 2.6rem; /* ~2 lines of 1.3rem line-height */
@@ -382,10 +402,10 @@ function resolveHref(s?: string | null): string | null {
 	cursor: pointer;
 }
 .clickable-card:focus {
-	outline: 2px solid #4f46e5; /* indigo-600 */
+	outline: 2px solid var(--color-progressive);
 	outline-offset: 2px;
 }
 :deep(.cdx-card__text) {
-  width: 100%;
+	width: 100%;
 }
 </style>

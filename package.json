@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@wikimedia/codex": "^2.3.1",
+    "@wikimedia/codex-design-tokens": "^2.3.1",
     "vue": "^3.5.12"
   },
   "devDependencies": {

@@ -100,12 +100,12 @@ watch(
 <template>
 	<section>
 		<div v-if="loading" class="py-6">
-			<p class="mb-3 text-sm text-center text-black">
+			<p class="mb-3 text-sm text-center token-text-base">
 				Loading known Wikibase instances — this can take a while.
 			</p>
 			<CdxProgressBar aria-label="Loading known Wikibase instances" />
 		</div>
-		<div v-else-if="error" class="text-red-600">{{ error }}</div>
+		<div v-else-if="error" class="token-text-destructive">{{ error }}</div>
 		<div v-else>
 			<div
 				class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"

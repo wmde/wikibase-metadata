@@ -212,8 +212,8 @@ async function submit() {
 					<template #description> URL of the Query Service API</template>
 				</CdxField>
 
-				<p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-			</form>
+        <p v-if="error" class="text-sm token-text-destructive">{{ error }}</p>
+      </form>
 		</CdxDialog>
 	</div>
 </template>
