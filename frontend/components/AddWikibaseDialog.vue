@@ -141,6 +141,13 @@ async function submit() {
 			@default="open = false"
 			@primary="submit"
 		>
+			<div class="pb-4">
+				Publicly available data on the Wikibase will be analyzed periodically.
+				To remove your instance, contact
+				<a href="mailto:wikibase-suite-support@wikimedia.de"
+					>wikibase-suite-support@wikimedia.de</a
+				>.
+			</div>
 			<form class="space-y-4" @submit.prevent="submit">
 				<CdxField :status="nameStatus" :messages="messages">
 					<CdxTextInput
@@ -212,8 +219,8 @@ async function submit() {
 					<template #description> URL of the Query Service API</template>
 				</CdxField>
 
-        <p v-if="error" class="text-sm token-text-destructive">{{ error }}</p>
-      </form>
+				<p v-if="error" class="text-sm token-text-destructive">{{ error }}</p>
+			</form>
 		</CdxDialog>
 	</div>
 </template>
