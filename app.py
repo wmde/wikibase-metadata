@@ -51,9 +51,7 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 async def metric_csv(authorization: Optional[str] = None):
     """Quantity CSV"""
 
-    try:
-        assert authorization is not None
-    except AssertionError:
+    if authorization is None:
         return PlainTextResponse("Authorization Missing", 403)
 
     try:
