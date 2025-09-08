@@ -1,33 +1,142 @@
 <script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import { CdxField, CdxTextInput, CdxButton } from "@wikimedia/codex";
 import WikibaseList from "./components/WikibaseList.vue";
+import AddWikibaseDialog from "./components/AddWikibaseDialog.vue";
+
+// Token handling in App
+const token = ref<string | null>(null);
+const tokenInput = ref("");
+const tokenTouched = ref(false);
+const fieldStatus = computed(() =>
+	tokenTouched.value && tokenInput.value.trim().length === 0
+		? "error"
+		: "default",
+);
+const messages = { error: "Token is required" } as const;
+
+onMounted(() => {
+	const saved = localStorage.getItem("authToken");
+	if (saved) token.value = saved;
+});
+
+function submitToken() {
+	tokenTouched.value = true;
+	const t = tokenInput.value.trim();
+	if (!t) return;
+	token.value = t;
+	localStorage.setItem("authToken", t);
+}
+
+// GraphQL endpoint used by dialog
+const endpoint = import.meta.env.DEV
+	? "http://localhost:8000/graphql"
+	: "/graphql";
+
+// Trigger list refresh after adding
+const refreshKey = ref(0);
+function handleAdded() {
+	refreshKey.value++;
+}
 </script>
 
 <template>
-	<!-- keeping this as image examples -->
-	<!--     <img src="/vite.svg" class="logo" alt="Vite logo" /> -->
-	<!--     <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" /> -->
-	<div class="p-8">
-		<div class="mx-auto max-w-screen-2xl">
-      <h1 class="pb-4 text-2xl font-bold">Wikibase Metadata</h1>
-      <section>
-        This database is an initiaive run by Wikimedia Deutschland.
-      </section>
-			<WikibaseList />
+	<div class="min-h-screen flex flex-col">
+	<header class="border-b bg-neutral-50">
+		<div
+			class="mx-auto max-w-screen-2xl flex items-center justify-between gap-4 px-6 py-4"
+		>
+			<div class="flex items-center gap-3">
+				<img
+					src="/wikibase-black.svg"
+					class="h-16 w-auto"
+					alt="Wikibase logo"
+				/>
+				<div>
+					<h1 class="text-xl md:text-2xl font-semibold">Wikibase Metadata</h1>
+					<p class="text-sm text-neutral-600">
+						An initiative by Wikimedia Deutschland to map the Wikibase ecosystem
+					</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-4">
+				<div class="flex gap-2">
+					<a
+						href="https://github.com/wmde/wikibase-metadata"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="GitHub"
+						title="Source code on Github"
+						class="text-neutral-700 hover:text-neutral-900 p-2 rounded-full hover:bg-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+					>
+						<img src="/github.svg" class="h-6 w-auto" alt="Github logo" />
+					</a>
+					<a
+						href="/graphql"
+						target="_blank"
+						rel=""
+						aria-label="GraphQL"
+						title="Query this dataset via a GraphQL API"
+						class="text-neutral-700 hover:text-neutral-900 p-2 rounded-full hover:bg-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+					>
+						<img src="/graphql.svg" class="h-6 w-auto" alt="GraphQL logo" />
+					</a>
+				</div>
+				<AddWikibaseDialog
+					:endpoint="endpoint"
+					:token="token"
+					@added="handleAdded"
+				/>
+			</div>
 		</div>
+	</header>
+	<main class="px-6 md:px-8 py-6 flex-1">
+		<div class="mx-auto max-w-screen-2xl">
+			<div v-if="!token" class="py-12 flex justify-center">
+				<form class="w-full max-w-md" @submit.prevent="submitToken">
+					<CdxField :status="fieldStatus" :messages="messages">
+						<CdxTextInput
+							v-model="tokenInput"
+							type="password"
+							placeholder="Enter bearer token"
+							@keydown.enter.prevent="submitToken"
+						/>
+						<template #label>Bearer token</template>
+						<template #description>
+							Stored locally and used for API requests.
+						</template>
+					</CdxField>
+					<div class="mt-3 flex justify-center">
+						<CdxButton
+							action="progressive"
+							weight="primary"
+							@click="submitToken"
+							>Continue</CdxButton
+						>
+					</div>
+				</form>
+			</div>
+			<div v-else>
+				<WikibaseList :key="refreshKey" :token="token" class="mt-2" />
+			</div>
+		</div>
+	</main>
+	<footer class="border-t bg-neutral-50">
+		<div
+			class="mx-auto max-w-screen-2xl px-6 py-6 flex items-center justify-center gap-3"
+		>
+			<a
+				href="https://www.wikimedia.de/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="flex flex-col items-center gap-3 text-neutral-700 hover:text-neutral-900"
+				title="Wikimedia Deutschland"
+			>
+				<img src="/wmde.svg" alt="Wikimedia Deutschland" class="h-24 w-auto" />
+			</a>
+		</div>
+	</footer>
 	</div>
 </template>
 
-<style scoped>
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
-}
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<style scoped></style>
