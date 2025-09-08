@@ -42,13 +42,11 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 # Serve the built frontend from the Vite `dist` directory.
 DIST_DIR = (Path(__file__).resolve().parent / "dist").resolve()
 
-# Serve root index.html
-@app.get("/", include_in_schema=False)
-async def serve_index():
-    index_file = DIST_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return PlainTextResponse("Frontend build not found", status_code=404)
+# Mount assets (e.g., /assets/*) referenced by the built app
+assets_dir = DIST_DIR / "assets"
+if assets_dir.exists():
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
 
 # Serve any top-level SVG from the built dist (e.g., /github.svg, /wmde.svg)
 @app.get("/{filename}.svg", include_in_schema=False)
@@ -58,9 +56,10 @@ async def serve_top_level_svg(filename: str):
         return FileResponse(svg_file)
     return PlainTextResponse("Not found", status_code=404)
 
-# SPA fallback: route any unmatched, non-API GET path to index.html
+
+# SPA handler: serve index.html for root and any unmatched, non-API GET path
 @app.get("/{full_path:path}", include_in_schema=False)
-async def spa_fallback(full_path: str, request: Request):
+async def spa_handler(full_path: str, request: Request):
     # Let API and docs paths 404 naturally; otherwise serve the SPA
     if full_path.startswith(("graphql", "docs", "redoc", "openapi.json")):
         return PlainTextResponse("Not found", status_code=404)
