@@ -42,7 +42,7 @@ async def test_aggregate_recent_changes_query():
         result.data, ["aggregateRecentChanges", "humanChangeUserCount"], 5
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "humanChangeActiveUserCount"], 5
+        result.data, ["aggregateRecentChanges", "humanChangeActiveUserCount"], 1
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "botChangeCount"], 6
@@ -51,7 +51,7 @@ async def test_aggregate_recent_changes_query():
         result.data, ["aggregateRecentChanges", "botChangeUserCount"], 2
     )
     assert_layered_property_value(
-        result.data, ["aggregateRecentChanges", "botChangeActiveUserCount"], 2
+        result.data, ["aggregateRecentChanges", "botChangeActiveUserCount"], 1
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "wikibaseCount"], 1
