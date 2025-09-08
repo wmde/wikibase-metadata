@@ -176,6 +176,7 @@ watch(includeCloud, () => {
 				<CdxToggleSwitch
 					v-model="includeCloud"
 					aria-label="Include Wikibase Cloud instances"
+					:disabled="loading"
 				>
 					wikibase.cloud
 				</CdxToggleSwitch>
@@ -187,6 +188,7 @@ watch(includeCloud, () => {
 						<CdxButton
 							weight="quiet"
 							type="button"
+							:disabled="loading"
 							:class="[
 								'token-rounded focus-outline-progressive',
 								sortKey === def.key ? 'token-surface-3 token-border-all' : '',
