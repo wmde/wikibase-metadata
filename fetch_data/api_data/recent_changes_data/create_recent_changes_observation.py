@@ -25,10 +25,7 @@ from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record impor
 )
 from fetch_data.utils import counts, get_wikibase_from_database
 from logger import logger
-from model.database import (
-    WikibaseModel,
-    WikibaseRecentChangesObservationModel,
-)
+from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 
 
 async def create_recent_changes_observation(wikibase_id: int) -> bool:
@@ -65,9 +62,7 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
             )
 
             observation = create_recent_changes(
-                recent_changes_list_humans,
-                recent_changes_list_bots,
-                observation,
+                recent_changes_list_humans, recent_changes_list_bots, observation
             )
             observation.returned_data = True
         except (

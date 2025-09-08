@@ -1,11 +1,15 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
+from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
 
+from export_csv import export_metric_csv
 from model.strawberry import schema
+from resolvers.authentication import authenticate_token
 from schedule import scheduler
 
 
@@ -41,3 +45,18 @@ def read_root():
 
 
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
+
+
+@app.get("/csv/metrics")
+async def metric_csv(authorization: Optional[str] = None):
+    """Quantity CSV"""
+
+    if authorization is None:
+        return PlainTextResponse("Authorization Missing", 403)
+
+    try:
+        authenticate_token(authorization)
+    except AssertionError:
+        return PlainTextResponse("Authorization Failed", 403)
+
+    return await export_metric_csv()
