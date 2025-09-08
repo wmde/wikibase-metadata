@@ -44,7 +44,7 @@ function handleAdded() {
 	<div class="min-h-screen flex flex-col">
 		<header class="token-border-b token-surface-2">
 			<div
-				class="mx-auto max-w-screen-2xl flex items-center justify-between gap-4 px-6 py-4"
+				class="mx-auto max-w-screen-2xl flex flex-wrap md:flex-nowrap items-center justify-center md:justify-between gap-4 px-6 py-4"
 			>
 				<div class="flex items-center gap-3">
 					<img
@@ -70,7 +70,7 @@ function handleAdded() {
 							title="find the project on github"
 							class="p-2 token-rounded-pill token-text-base token-hover-surface-3 focus-outline-progressive"
 						>
-							<img src="/github.svg" class="h-6 w-auto" alt="Github logo" />
+							<img src="/github.svg" class="min-w-6 w-6" alt="Github logo" />
 						</a>
 						<a
 							href="/graphql"
@@ -80,7 +80,7 @@ function handleAdded() {
 							title="query the database via graphql api"
 							class="p-2 token-rounded-pill token-text-base token-hover-surface-3 focus-outline-progressive"
 						>
-							<img src="/graphql.svg" class="h-6 w-auto" alt="GraphQL logo" />
+							<img src="/graphql.svg" class="min-w-6 w-6" alt="GraphQL logo" />
 						</a>
 					</div>
 					<AddWikibaseDialog
@@ -118,7 +118,12 @@ function handleAdded() {
 					</form>
 				</div>
 				<div v-else>
-					<WikibaseList :key="refreshKey" :token="token" :endpoint="endpoint" class="mt-2" />
+					<WikibaseList
+						:key="refreshKey"
+						:token="token"
+						:endpoint="endpoint"
+						class="mt-2"
+					/>
 				</div>
 			</div>
 		</main>
