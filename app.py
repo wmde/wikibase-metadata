@@ -42,11 +42,6 @@ app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 # Serve the built frontend from the Vite `dist` directory.
 DIST_DIR = (Path(__file__).resolve().parent / "dist").resolve()
 
-# Mount assets (e.g., /assets/*) and any other static files referenced by absolute paths
-assets_dir = DIST_DIR / "assets"
-if assets_dir.exists():
-    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
-
 # Serve root index.html
 @app.get("/", include_in_schema=False)
 async def serve_index():
@@ -55,10 +50,10 @@ async def serve_index():
         return FileResponse(index_file)
     return PlainTextResponse("Frontend build not found", status_code=404)
 
-# Serve additional top-level files like /vite.svg if present
-@app.get("/vite.svg", include_in_schema=False)
-async def serve_vite_svg():
-    svg_file = DIST_DIR / "vite.svg"
+# Serve any top-level SVG from the built dist (e.g., /github.svg, /wmde.svg)
+@app.get("/{filename}.svg", include_in_schema=False)
+async def serve_top_level_svg(filename: str):
+    svg_file = DIST_DIR / f"{filename}.svg"
     if svg_file.exists():
         return FileResponse(svg_file)
     return PlainTextResponse("Not found", status_code=404)
