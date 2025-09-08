@@ -10,8 +10,10 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
   aggregateRecentChanges(wikibaseFilter: $wikibaseFilter) {
     humanChangeCount
     humanChangeUserCount
+    humanChangeActiveUserCount
     botChangeCount
     botChangeUserCount
+    botChangeActiveUserCount
     wikibaseCount
   }
 }
@@ -40,10 +42,16 @@ async def test_aggregate_recent_changes_query():
         result.data, ["aggregateRecentChanges", "humanChangeUserCount"], 5
     )
     assert_layered_property_value(
+        result.data, ["aggregateRecentChanges", "humanChangeActiveUserCount"], 5
+    )
+    assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "botChangeCount"], 6
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "botChangeUserCount"], 2
+    )
+    assert_layered_property_value(
+        result.data, ["aggregateRecentChanges", "botChangeActiveUserCount"], 2
     )
     assert_layered_property_value(
         result.data, ["aggregateRecentChanges", "wikibaseCount"], 1
