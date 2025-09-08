@@ -118,7 +118,7 @@ function handleAdded() {
 					</form>
 				</div>
 				<div v-else>
-					<WikibaseList :key="refreshKey" :token="token" class="mt-2" />
+					<WikibaseList :key="refreshKey" :token="token" :endpoint="endpoint" class="mt-2" />
 				</div>
 			</div>
 		</main>

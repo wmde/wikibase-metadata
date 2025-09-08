@@ -4,16 +4,12 @@ import { CdxProgressBar } from "@wikimedia/codex";
 import WikibaseCard from "./WikibaseCard.vue";
 import { Wikibase } from "../types";
 
-// Receive token from App
-const props = defineProps<{ token: string | null }>();
+// Receive token and endpoint from App
+const props = defineProps<{ token: string | null; endpoint: string }>();
 
 const loading = ref(false);
 const error = ref<string | null>(null);
 const items = ref<Wikibase[]>([]);
-
-const endpoint = import.meta.env.DEV
-	? "http://localhost:8000/graphql"
-	: "/graphql";
 
 const query = `
   query q {
@@ -62,7 +58,7 @@ async function load() {
 	loading.value = true;
 	error.value = null;
 	try {
-		const res = await fetch(endpoint, {
+		const res = await fetch(props.endpoint, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
