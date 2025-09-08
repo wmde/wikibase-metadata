@@ -174,7 +174,7 @@ async function submit() {
 				</CdxField>
 
 				<CdxField>
-					<cdxTextArea v-model="description" />
+					<CdxTextArea v-model="description" />
 					<template #label>Description</template>
 					<template #description
 						>Shortly describe the dataset your Wikibase is hosting</template

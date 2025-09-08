@@ -38,7 +38,7 @@ export type ObsKind = 'quantity' | 'rc';
 
 export class Wikibase {
   id: string | number;
-  urls: { baseUrl: string };
+  urls: WikibaseJson['urls'];
   wikibaseType?: string;
   description?: string;
   quantityObservations?: WikibaseJson['quantityObservations'];

@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { CdxDialog, CdxIcon } from "@wikimedia/codex";
 import { cdxIconAlert } from "@wikimedia/codex-icons";
 import type { Wikibase, ObsKind } from "../types";
-import { isStaleFor, obsHeadline, relativeDaysText } from "../utils";
+import { isStaleFor, obsHeadline } from "../utils";
 import { fmtOrDash, textOrDash } from "../utils";
 
 const props = defineProps<{ w: Wikibase; open: boolean }>();

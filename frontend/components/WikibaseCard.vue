@@ -4,7 +4,7 @@ import { CdxCard, CdxIcon } from "@wikimedia/codex";
 import { cdxIconGlobe, cdxIconAlert } from "@wikimedia/codex-icons";
 import type { Wikibase, ObsKind } from "../types";
 import WikibaseDetailsDialog from "./WikibaseDetailsDialog.vue";
-import { isStaleFor, obsHeadline, relativeDaysText } from "../utils";
+import { isStaleFor, obsHeadline } from "../utils";
 import { fmtOrDash } from "../utils/format";
 
 const props = defineProps<{ w: Wikibase }>();
