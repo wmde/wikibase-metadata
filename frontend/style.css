@@ -25,6 +25,7 @@
   .token-border { border-color: var(--border-color-base); }
   .token-border-b { border-bottom: var(--border-base); }
   .token-border-t { border-top: var(--border-base); }
+  .token-border-all { border: var(--border-base); }
   .token-text-base { color: var(--color-base); }
   .token-hover-surface-3:hover { background-color: var(--background-color-neutral); }
   .focus-outline-progressive:focus-visible { outline: 2px solid var(--color-progressive); outline-offset: 2px; }
