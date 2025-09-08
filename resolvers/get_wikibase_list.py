@@ -15,12 +15,12 @@ from model.strawberry.output import (
 from resolvers.util import get_filtered_wikibase_query
 
 
-async def get_wikibase_list(
+async def get_wikibase_page(
     page_number: PageNumberType,
     page_size: PageSizeType,
     wikibase_filter: Optional[WikibaseFilterInput],
 ) -> Page[WikibaseStrawberryModel]:
-    """Get Wikibase List"""
+    """Get Wikibase Page"""
 
     query = get_filtered_wikibase_query(wikibase_filter)
 

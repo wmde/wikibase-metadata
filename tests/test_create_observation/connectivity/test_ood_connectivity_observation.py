@@ -19,4 +19,7 @@ async def test_update_out_of_date_connectivity_observations(mocker):
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": []}}],
     )
-    assert await update_out_of_date_connectivity_observations() == 1
+    result = await update_out_of_date_connectivity_observations()
+    assert result.failure == 0
+    assert result.success == 1
+    assert result.total == 1
