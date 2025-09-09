@@ -31,8 +31,12 @@ const rc = computed(() => {
 		{ label: "Bot users", v: m?.botChangeUserCount },
 	];
 });
-function obsHeadlineLocal(kind: ObsKind): string { return obsHeadline(props.w, kind); }
-function fmtOrDashLocal(n?: number | null): string { return fmtOrDash(props.w, n); }
+function obsHeadlineLocal(kind: ObsKind): string {
+	return obsHeadline(props.w, kind);
+}
+function fmtOrDashLocal(n?: number | null): string {
+	return fmtOrDash(props.w, n);
+}
 </script>
 
 <template>
@@ -52,16 +56,16 @@ function fmtOrDashLocal(n?: number | null): string { return fmtOrDash(props.w, n
 				<dl class="grid grid-cols-1 gap-2">
 					<div class="token-rounded token-surface-2 px-3">
 						<dt class="text-[11px] uppercase token-text-subtle">Base URL</dt>
-              <dd class="text-sm token-text-base break-all">
-                <template v-if="props.w.resolveUrl(props.w.urls?.baseUrl)">
-              <a
-                  :href="props.w.resolveUrl(props.w.urls?.baseUrl) as string"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  class="token-link"
-                >
-                  {{ props.w.urls?.baseUrl }}
-                </a>
+						<dd class="text-sm token-text-base break-all">
+							<template v-if="props.w.resolveUrl(props.w.urls?.baseUrl)">
+								<a
+									:href="props.w.resolveUrl(props.w.urls?.baseUrl) as string"
+									target="_blank"
+									rel="noreferrer noopener"
+									class="token-link"
+								>
+									{{ props.w.urls?.baseUrl }}
+								</a>
 							</template>
 							<template v-else>
 								{{ textOrDash(props.w.urls?.baseUrl) }}
@@ -72,16 +76,22 @@ function fmtOrDashLocal(n?: number | null): string { return fmtOrDash(props.w, n
 						<dt class="text-[11px] uppercase token-text-subtle">
 							SPARQL Endpoint
 						</dt>
-              <dd class="text-sm token-text-base break-all">
-                <template v-if="props.w.resolveUrl(props.w.urls?.sparqlEndpointUrl)">
-              <a
-                  :href="props.w.resolveUrl(props.w.urls?.sparqlEndpointUrl) as string"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  class="token-link"
-                >
-                  {{ props.w.urls?.sparqlEndpointUrl }}
-                </a>
+						<dd class="text-sm token-text-base break-all">
+							<template
+								v-if="props.w.resolveUrl(props.w.urls?.sparqlEndpointUrl)"
+							>
+								<a
+									:href="
+										props.w.resolveUrl(
+											props.w.urls?.sparqlEndpointUrl,
+										) as string
+									"
+									target="_blank"
+									rel="noreferrer noopener"
+									class="token-link"
+								>
+									{{ props.w.urls?.sparqlEndpointUrl }}
+								</a>
 							</template>
 							<template v-else>
 								{{ textOrDash(props.w.urls?.sparqlEndpointUrl) }}
@@ -92,16 +102,22 @@ function fmtOrDashLocal(n?: number | null): string { return fmtOrDash(props.w, n
 						<dt class="text-[11px] uppercase token-text-subtle">
 							SPARQL Frontend
 						</dt>
-              <dd class="text-sm token-text-base break-all">
-                <template v-if="props.w.resolveUrl(props.w.urls?.sparqlFrontendUrl)">
-              <a
-                  :href="props.w.resolveUrl(props.w.urls?.sparqlFrontendUrl) as string"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  class="token-link"
-                >
-                  {{ props.w.urls?.sparqlFrontendUrl }}
-                </a>
+						<dd class="text-sm token-text-base break-all">
+							<template
+								v-if="props.w.resolveUrl(props.w.urls?.sparqlFrontendUrl)"
+							>
+								<a
+									:href="
+										props.w.resolveUrl(
+											props.w.urls?.sparqlFrontendUrl,
+										) as string
+									"
+									target="_blank"
+									rel="noreferrer noopener"
+									class="token-link"
+								>
+									{{ props.w.urls?.sparqlFrontendUrl }}
+								</a>
 							</template>
 							<template v-else>
 								{{ textOrDash(props.w.urls?.sparqlFrontendUrl) }}

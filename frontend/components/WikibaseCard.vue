@@ -44,7 +44,9 @@ watch(
 );
 
 /* ---------- helpers ---------- */
-function isStale(kind: ObsKind): boolean { return isStaleFor(props.w, kind); }
+function isStale(kind: ObsKind): boolean {
+	return isStaleFor(props.w, kind);
+}
 
 /* ---------- summary metrics (minimal card) ---------- */
 const triples = computed(
@@ -59,9 +61,12 @@ const rcTotal = computed(() => {
 	return total > 0 ? total : (m.humanChangeCount ?? m.botChangeCount);
 });
 
-function obsHeadlineLocal(kind: ObsKind): string { return obsHeadline(props.w, kind); }
-function fmtOrDashLocal(n?: number | null): string { return fmtOrDash(props.w, n); }
-
+function obsHeadlineLocal(kind: ObsKind): string {
+	return obsHeadline(props.w, kind);
+}
+function fmtOrDashLocal(n?: number | null): string {
+	return fmtOrDash(props.w, n);
+}
 </script>
 
 <template>
