@@ -177,8 +177,14 @@ def get_metrics_query() -> Select:
             most_recent_successful_rc_obs.c.last_change_date,
             most_recent_successful_rc_obs.c.human_change_count,
             most_recent_successful_rc_obs.c.human_change_user_count,
+            most_recent_successful_rc_obs.c.human_change_user_count_five_plus.label(
+                "human_change_active_user_count"
+            ),
             most_recent_successful_rc_obs.c.bot_change_count,
             most_recent_successful_rc_obs.c.bot_change_user_count,
+            most_recent_successful_rc_obs.c.bot_change_user_count_five_plus.label(
+                "bot_change_active_user_count"
+            ),
             most_recent_successful_sv_obs.c.observation_date.label(
                 "software_version_observation_date"
             ),

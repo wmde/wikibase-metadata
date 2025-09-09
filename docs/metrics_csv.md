@@ -58,11 +58,17 @@ From latest successful Recent Changes observation:
 - `human_change_user_count`
   - number of distinct users with at least one record in recent changes list (limited as above), excluding bot contributions
   - pulled from action api
+- `human_change_active_user_count`
+  - number of distinct users with at least five records in recent changes list (limited as above), excluding bot contributions
+  - pulled from action api
 - `bot_change_count`
   - number of records in recent changes list (limited as above), limited to bot contributions
   - pulled from action api
 - `bot_change_user_count`
   - number of distinct users with at least one record in recent changes list (limited as above), limited to bot contributions
+  - pulled from action api
+- `bot_change_active_user_count`
+  - number of distinct users with at least five records in recent changes list (limited as above), limited to bot contributions
   - pulled from action api
 
 From latest successful Software Version observation:
