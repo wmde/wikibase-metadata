@@ -26,6 +26,11 @@ type SortKey = "edits" | "triples";
 const sortKey = ref<SortKey>("edits");
 const sortDir = ref<"asc" | "desc">("desc");
 
+// Paged loading state
+const totalPages = ref<number | null>(null);
+const loadedPages = ref<number>(0);
+const PAGE_SIZE = 25;
+
 const sortDefs: Array<{ key: SortKey; label: string; icon: any }> = [
 	{
 		key: "edits",
@@ -81,11 +86,12 @@ function onSortClick(k: SortKey) {
 	}
 }
 
-function buildQuery() {
+function buildQuery(pageNumber: number, pageSize: number) {
 	const exclude = includeCloud.value ? "TEST" : "TEST, CLOUD";
 	return `
     query q {
-      wikibaseList(pageNumber: 1, pageSize: 1000000, wikibaseFilter: { wikibaseType: { exclude: [${exclude}] } }) {
+      wikibaseList(pageNumber: ${pageNumber}, pageSize: ${pageSize}, wikibaseFilter: { wikibaseType: { exclude: [${exclude}] } }) {
+        meta { totalPages pageNumber pageSize }
         data {
           id
           urls {
@@ -130,23 +136,53 @@ async function load() {
 	if (!props.token) return;
 	loading.value = true;
 	error.value = null;
+	items.value = [];
+	totalPages.value = null;
+	loadedPages.value = 0;
+
 	try {
-		const res = await fetch(props.endpoint, {
+		// Initial request to discover total pages (and get first page)
+		const firstRes = await fetch(props.endpoint, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				authorization: `bearer ${props.token}`,
 			},
-			body: JSON.stringify({ query: buildQuery() }),
+			body: JSON.stringify({ query: buildQuery(1, PAGE_SIZE) }),
 			credentials: "omit",
 		});
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-		const json = await res.json();
-		if (json.errors) {
-			throw new Error(json.errors?.[0]?.message || "GraphQL error");
+		if (!firstRes.ok) throw new Error(`HTTP ${firstRes.status}`);
+		const firstJson = await firstRes.json();
+		if (firstJson.errors) {
+			throw new Error(firstJson.errors?.[0]?.message || "GraphQL error");
 		}
-		const data = (json?.data?.wikibaseList?.data ?? []) as any[];
-		items.value = data.map((d) => Wikibase.from(d));
+		const firstPage = firstJson?.data?.wikibaseList;
+		const total = Number(firstPage?.meta?.totalPages ?? 0) || 0;
+		totalPages.value = total;
+		const firstData = (firstPage?.data ?? []) as any[];
+		items.value = firstData.map((d: any) => Wikibase.from(d));
+		loadedPages.value = Math.min(1, total || 0);
+
+		// Fetch remaining pages sequentially
+		for (let page = 2; page <= total; page++) {
+			const res = await fetch(props.endpoint, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					authorization: `bearer ${props.token}`,
+				},
+				body: JSON.stringify({ query: buildQuery(page, PAGE_SIZE) }),
+				credentials: "omit",
+			});
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			const json = await res.json();
+			if (json.errors) {
+				throw new Error(json.errors?.[0]?.message || "GraphQL error");
+			}
+			const pageData = (json?.data?.wikibaseList?.data ?? []) as any[];
+			items.value.push(...pageData.map((d: any) => Wikibase.from(d)));
+			loadedPages.value = page; // update progress
+		}
 	} catch (e: any) {
 		error.value = e?.message || String(e);
 	} finally {
@@ -219,8 +255,14 @@ watch(includeCloud, () => {
 			</div>
 		</div>
 		<div v-if="loading" class="py-6">
-			<p class="mb-3 text-sm text-center token-text-base">
-				Loading known Wikibase instances — this can take a while.
+			<p class="mb-1 text-xs text-center token-text-subtle">
+				Loading known Wikibase instances — this can take a while...
+				<span
+					v-if="totalPages != null"
+					class="mb-3 text-xs text-center token-text-subtle"
+				>
+					{{ ((loadedPages / totalPages) * 100).toFixed(0) }}%
+				</span>
 			</p>
 			<CdxProgressBar aria-label="Loading known Wikibase instances" />
 		</div>
