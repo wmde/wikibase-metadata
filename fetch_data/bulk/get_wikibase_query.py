@@ -80,10 +80,7 @@ def get_quantity_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
             or_(
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
-                and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
-                    WikibaseModel.wikibase_type != WikibaseType.TEST,
-                ),
+                WikibaseModel.wikibase_type != WikibaseType.TEST,
             ),
             WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
         )

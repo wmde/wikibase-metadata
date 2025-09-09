@@ -1,6 +1,7 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
+from typing import Optional
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,9 @@ from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse, PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
 
+from export_csv import export_metric_csv
 from model.strawberry import schema
+from resolvers.authentication import authenticate_token
 from schedule import scheduler
 
 
@@ -37,6 +40,21 @@ app.add_middleware(
 )
 
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
+
+
+@app.get("/csv/metrics")
+async def metric_csv(authorization: Optional[str] = None):
+    """Quantity CSV"""
+
+    if authorization is None:
+        return PlainTextResponse("Authorization Missing", 403)
+
+    try:
+        authenticate_token(authorization)
+    except AssertionError:
+        return PlainTextResponse("Authorization Failed", 403)
+
+    return await export_metric_csv()
 
 
 # Serve the built frontend from the Vite `dist` directory.

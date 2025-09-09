@@ -23,16 +23,20 @@ async def get_aggregate_recent_changes(
         (
             human_change_count,
             human_change_user_count,
+            human_change_active_user_count,
             bot_change_count,
             bot_change_user_count,
+            bot_change_active_user_count,
             wikibase_count,
         ) = (await async_session.execute(query)).one()
 
         return WikibaseRecentChangesAggregateStrawberryModel(
             human_change_count=human_change_count or 0,
             human_change_user_count=human_change_user_count or 0,
+            human_change_active_user_count=human_change_active_user_count or 0,
             bot_change_count=bot_change_count or 0,
             bot_change_user_count=bot_change_user_count or 0,
+            bot_change_active_user_count=bot_change_active_user_count or 0,
             wikibase_count=wikibase_count,
         )
 
@@ -72,12 +76,18 @@ def get_total_recent_changes_query(
         func.sum(WikibaseRecentChangesObservationModel.human_change_user_count).label(
             "human_change_user_count"
         ),
+        func.sum(
+            WikibaseRecentChangesObservationModel.human_change_active_user_count
+        ).label("human_change_active_user_count"),
         func.sum(WikibaseRecentChangesObservationModel.bot_change_count).label(
             "bot_change_count"
         ),
         func.sum(WikibaseRecentChangesObservationModel.bot_change_user_count).label(
             "bot_change_user_count"
         ),
+        func.sum(
+            WikibaseRecentChangesObservationModel.bot_change_active_user_count
+        ).label("bot_change_active_user_count"),
         # pylint: disable-next=not-callable
         func.count().label("wikibase_count"),
     ).join(
