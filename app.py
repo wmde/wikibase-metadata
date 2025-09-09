@@ -66,18 +66,18 @@ if assets_dir.exists():
     app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
 
-# Serve any top-level SVG from the built dist (e.g., /github.svg, /wmde.svg)
 @app.get("/{filename}.svg", include_in_schema=False)
 async def serve_top_level_svg(filename: str):
+    """Serve any top-level SVG from the built dist (e.g., /github.svg, /wmde.svg)"""
     svg_file = DIST_DIR / f"{filename}.svg"
     if svg_file.exists():
         return FileResponse(svg_file)
     return PlainTextResponse("Not found", status_code=404)
 
 
-# SPA handler: serve index.html for root and any unmatched, non-API GET path
 @app.get("/{full_path:path}", include_in_schema=False)
-async def spa_handler(full_path: str, request: Request):
+async def spa_handler(full_path: str):
+    """SPA handler: serve index.html for root and any unmatched, non-API GET path"""
     # Let API and docs paths 404 naturally; otherwise serve the SPA
     if full_path.startswith(("graphql", "docs", "redoc", "openapi.json")):
         return PlainTextResponse("Not found", status_code=404)
