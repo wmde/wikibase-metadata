@@ -43,6 +43,10 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         wikibase.quantity_observations.append(observation)
 
         await async_session.commit()
+        logger.debug(
+            "Quantity: Observation returned data: " + observation.returned_data,
+            extra={"wikibase": wikibase_id},
+        )
         return observation.returned_data
 
 
