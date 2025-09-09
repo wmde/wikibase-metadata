@@ -182,7 +182,7 @@ watch(includeCloud, () => {
 				</CdxToggleSwitch>
 			</div>
 			<div class="flex items-center gap-2">
-				Sort by
+				<div class="hidden md:block">Sort by</div>
 				<div class="flex items-center">
 					<template v-for="def in sortDefs" :key="def.key">
 						<CdxButton
