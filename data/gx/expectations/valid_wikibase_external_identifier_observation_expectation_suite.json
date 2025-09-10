@@ -1,0 +1,70 @@
+{
+	"expectations": [
+		{
+			"id": "10a19d8e-1233-4986-847f-a6b25d7b1bfd",
+			"kwargs": { "column": "total_external_identifier_properties" },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "145a3203-e81f-4718-bbec-a2ad5344e8c6",
+			"kwargs": {
+				"column": "total_external_identifier_properties",
+				"min_value": 1.0
+			},
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "5b11a97b-424c-43fd-b62e-21d24fd69017",
+			"kwargs": { "column": "total_external_identifier_statements" },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "9f390798-671b-4abe-b95d-c8ad54485d20",
+			"kwargs": {
+				"column": "total_external_identifier_statements",
+				"min_value": 1.0
+			},
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "34c43445-6e86-4741-8272-51e541f64afa",
+			"kwargs": { "column": "total_url_properties" },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "4e381793-3fcf-42f4-a02d-e412f7b4f675",
+			"kwargs": { "column": "total_url_properties", "min_value": 1.0 },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_be_between"
+		},
+		{
+			"id": "82c22e81-0967-4b05-9027-0ab81d995356",
+			"kwargs": { "column": "total_url_statements" },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_not_be_null"
+		},
+		{
+			"id": "9966ed9b-9ee8-4cbf-b4a2-6fab7175e462",
+			"kwargs": { "column": "total_url_statements", "min_value": 1.0 },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_be_between"
+		}
+	],
+	"id": "cc58b42c-610b-4cef-a18f-15ad7dcd3174",
+	"meta": { "great_expectations_version": "1.5.11" },
+	"name": "valid_wikibase_external_identifier_observation_expectation_suite",
+	"notes": null
+}
