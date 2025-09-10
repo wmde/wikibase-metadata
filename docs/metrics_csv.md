@@ -28,6 +28,12 @@ From latest successful Quantity observation:
 - `total_triples`
   - SPARQL query
   - Number of triples in database
+
+From latest successful External Identifier observation:
+
+- `ei_observation_date`
+  - date of external identifier observation
+  - automatically set when Scraper attempts to fetch data
 - `total_ei_properties`
   - SPARQL query
   - Number of external identifier properties in database

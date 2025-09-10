@@ -16,6 +16,7 @@ EXPECTED_HEADER_ROW = ",".join(
         "total_lexemes",
         "total_properties",
         "total_triples",
+        "ei_observation_date",
         "total_ei_properties",
         "total_ei_statements",
         "total_url_properties",
@@ -46,6 +47,8 @@ EXPECTED_PATTERN = re.compile(
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
+            # External Identifier
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",

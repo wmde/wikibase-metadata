@@ -1,10 +1,11 @@
-"""Quantity CSV"""
+"""Metrics CSV"""
 
 from fastapi.responses import StreamingResponse
 from sqlalchemy import Select, and_, func, or_, select
 
 from export_csv.util import export_csv
 from model.database import (
+    WikibaseExternalIdentifierObservationModel,
     WikibaseModel,
     WikibaseQuantityObservationModel,
     WikibaseRecentChangesObservationModel,
@@ -32,7 +33,7 @@ def get_metrics_query() -> Select:
     """
     Filter Out Offline and Test Wikis
 
-    Pull Quantity, Recent Changes, and Software Version Metrics
+    Pull Quantity, External Identifier, Recent Changes, and Software Version Metrics
     """
 
     filtered_wikibase_subquery = (
@@ -52,6 +53,36 @@ def get_metrics_query() -> Select:
             )
         )
         .cte(name="filtered_wikibases")
+    )
+
+    external_identifier_rank_subquery = (
+        select(
+            WikibaseExternalIdentifierObservationModel.id,
+            # pylint: disable-next=not-callable
+            func.rank()
+            .over(
+                partition_by=WikibaseExternalIdentifierObservationModel.wikibase_id,
+                order_by=[
+                    WikibaseExternalIdentifierObservationModel.observation_date.desc(),
+                    WikibaseExternalIdentifierObservationModel.id,
+                ],
+            )
+            .label("rank"),
+        )
+        .where((WikibaseExternalIdentifierObservationModel.returned_data))
+        .subquery()
+    )
+    most_recent_successful_external_identifier_obs = (
+        select(WikibaseExternalIdentifierObservationModel)
+        .join(
+            external_identifier_rank_subquery,
+            onclause=and_(
+                WikibaseExternalIdentifierObservationModel.id
+                == external_identifier_rank_subquery.c.id,
+                external_identifier_rank_subquery.c.rank == 1,
+            ),
+        )
+        .cte(name="filtered_external_identifier_observations")
     )
 
     quantity_rank_subquery = (
@@ -162,14 +193,17 @@ def get_metrics_query() -> Select:
             most_recent_successful_quantity_obs.c.total_lexemes,
             most_recent_successful_quantity_obs.c.total_properties,
             most_recent_successful_quantity_obs.c.total_triples,
-            most_recent_successful_quantity_obs.c.total_external_identifier_properties.label(
+            most_recent_successful_external_identifier_obs.c.date.label(
+                "ei_observation_date"
+            ),
+            most_recent_successful_external_identifier_obs.c.total_external_identifier_properties.label(
                 "total_ei_properties"
             ),
-            most_recent_successful_quantity_obs.c.total_external_identifier_statements.label(
+            most_recent_successful_external_identifier_obs.c.total_external_identifier_statements.label(
                 "total_ei_statements"
             ),
-            most_recent_successful_quantity_obs.c.total_url_properties,
-            most_recent_successful_quantity_obs.c.total_url_statements,
+            most_recent_successful_external_identifier_obs.c.total_url_properties,
+            most_recent_successful_external_identifier_obs.c.total_url_statements,
             most_recent_successful_rc_obs.c.date.label(
                 "recent_changes_observation_date"
             ),
@@ -202,6 +236,12 @@ def get_metrics_query() -> Select:
             most_recent_successful_quantity_obs,
             onclause=filtered_wikibase_subquery.c.id
             == most_recent_successful_quantity_obs.c.wikibase_id,
+            isouter=True,
+        )
+        .join(
+            most_recent_successful_external_identifier_obs,
+            onclause=filtered_wikibase_subquery.c.id
+            == most_recent_successful_external_identifier_obs.c.wikibase_id,
             isouter=True,
         )
         .join(
