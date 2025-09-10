@@ -72,7 +72,7 @@ async def test_wikibase_external_identifier_all_observations_query():
     ) in enumerate(
         [
             ("1", True, 16, 32, 64, 128),
-            ("2", False, None, None, None, None),
+            ("2", False, 1, 2, None, None),
         ]
     ):
         assert_external_identifier(
