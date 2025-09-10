@@ -7,6 +7,7 @@ A Wikibase's observation is considered stale under the following conditions:
 | Observation Type    | Last Observation Successful | Last Observation Unsuccessful |
 | ------------------- | --------------------------- | ----------------------------- |
 | Connectivity        | >=4 weeks                   | >=1 week                      |
+| External Identifier | >=4 weeks                   | >=1 week                      |
 | First Month Log     | >=52 weeks                  | >=40 weeks                    |
 | Last Month Log      | >=4 weeks                   | >=1 week                      |
 | Property Popularity | >=4 weeks                   | >=1 week                      |

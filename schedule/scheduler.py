@@ -7,6 +7,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from config import enable_scheduler
 from fetch_data import (
     update_out_of_date_connectivity_observations,
+    update_out_of_date_external_identifier_observations,
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
     update_out_of_date_property_observations,
@@ -50,38 +51,42 @@ if enable_scheduler:
         CronTrigger(day_of_week=0, hour=0),
     )
     scheduler.add_job(
+        update_out_of_date_external_identifier_observations,
+        CronTrigger(day_of_week=0, hour=10),
+    )
+    scheduler.add_job(
         update_out_of_date_log_first_observations,
-        CronTrigger(day_of_week=0, hour=1, minute=0),
+        CronTrigger(day_of_week=0, hour=1),
     )
     scheduler.add_job(
         update_out_of_date_log_last_observations,
-        CronTrigger(day_of_week=0, hour=1, minute=40),
+        CronTrigger(day_of_week=0, hour=2),
     )
     scheduler.add_job(
         update_out_of_date_recent_changes_observations,
-        CronTrigger(day_of_week=0, hour=2, minute=20),
-    )
-    scheduler.add_job(
-        update_out_of_date_property_observations,
         CronTrigger(day_of_week=0, hour=3),
     )
     scheduler.add_job(
-        update_out_of_date_quantity_observations,
+        update_out_of_date_property_observations,
         CronTrigger(day_of_week=0, hour=4),
     )
     scheduler.add_job(
-        update_out_of_date_software_observations,
+        update_out_of_date_quantity_observations,
         CronTrigger(day_of_week=0, hour=5),
     )
     scheduler.add_job(
-        update_out_of_date_stats_observations,
+        update_out_of_date_software_observations,
         CronTrigger(day_of_week=0, hour=6),
     )
     scheduler.add_job(
-        update_out_of_date_time_to_first_value_observations,
+        update_out_of_date_stats_observations,
         CronTrigger(day_of_week=0, hour=7),
     )
     scheduler.add_job(
-        update_out_of_date_user_observations,
+        update_out_of_date_time_to_first_value_observations,
         CronTrigger(day_of_week=0, hour=8),
+    )
+    scheduler.add_job(
+        update_out_of_date_user_observations,
+        CronTrigger(day_of_week=0, hour=9),
     )
