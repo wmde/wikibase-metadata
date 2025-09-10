@@ -29,6 +29,24 @@ def get_connectivity_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
     return query
 
 
+def get_external_identifier_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
+    """Query Wikibases that Can Have External Identifier Observations"""
+
+    query = select(WikibaseModel).where(
+        and_(
+            WikibaseModel.checked,
+            or_(
+                # pylint: disable-next=singleton-comparison
+                WikibaseModel.wikibase_type == None,
+                WikibaseModel.wikibase_type != WikibaseType.TEST,
+            ),
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+        )
+    )
+
+    return query
+
+
 def get_log_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
     """Query Wikibases that Can Have Log Observations"""
 

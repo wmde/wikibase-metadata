@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy import Select, and_, not_, or_
 from fetch_data.bulk.get_wikibase_query import (
     get_connectivity_obs_wikibases_query,
+    get_external_identifier_obs_wikibases_query,
     get_log_obs_wikibases_query,
     get_property_popularity_obs_wikibases_query,
     get_quantity_obs_wikibases_query,
@@ -15,6 +16,7 @@ from fetch_data.bulk.get_wikibase_query import (
 )
 from model.database import (
     WikibaseConnectivityObservationModel,
+    WikibaseExternalIdentifierObservationModel,
     WikibaseLogMonthObservationModel,
     WikibaseModel,
     WikibasePropertyPopularityObservationModel,
@@ -48,6 +50,37 @@ def get_wikibase_with_out_of_date_connectivity_obs_query() -> (
                     and_(
                         WikibaseConnectivityObservationModel.returned_data,
                         WikibaseConnectivityObservationModel.observation_date
+                        > (
+                            datetime.now(tz=timezone.utc)
+                            - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)
+                        ),
+                    ),
+                )
+            )
+        )
+    )
+
+    return query
+
+
+def get_wikibase_with_out_of_date_external_identifier_obs_query() -> (
+    Select[tuple[WikibaseModel]]
+):
+    """Query Wikibases with Out of Date External Identifier Observations"""
+
+    base_query = get_external_identifier_obs_wikibases_query()
+    query = base_query.where(
+        not_(
+            WikibaseModel.external_identifier_observations.any(
+                or_(
+                    WikibaseExternalIdentifierObservationModel.observation_date
+                    > (
+                        datetime.now(tz=timezone.utc)
+                        - timedelta(weeks=1, hours=SAFE_HOUR_MARGIN)
+                    ),
+                    and_(
+                        WikibaseExternalIdentifierObservationModel.returned_data,
+                        WikibaseExternalIdentifierObservationModel.observation_date
                         > (
                             datetime.now(tz=timezone.utc)
                             - timedelta(weeks=4, hours=SAFE_HOUR_MARGIN)

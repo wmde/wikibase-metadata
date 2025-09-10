@@ -33,7 +33,7 @@ async def create_external_identifier_observation(wikibase_id: int) -> bool:
         wikibase: WikibaseModel = await get_wikibase_from_database(
             async_session=async_session,
             wikibase_id=wikibase_id,
-            join_quantity_observations=True,
+            join_external_identifier_observations=True,
             require_sparql_endpoint=True,
         )
 
