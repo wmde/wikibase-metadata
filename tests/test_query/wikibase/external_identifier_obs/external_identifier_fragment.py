@@ -5,10 +5,6 @@ fragment WikibaseExternalIdentifierObservationFragment on WikibaseExternalIdenti
   id
   observationDate
   returnedData
-  totalItems
-  totalLexemes
-  totalProperties
-  totalTriples
   totalExternalIdentifierProperties
   totalExternalIdentifierStatements
   totalUrlProperties
