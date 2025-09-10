@@ -1,17 +1,47 @@
-# Development container for local development of the app.
-# Accompanied by a docker compose file for conveniently mounting 
-# the project directory into the container and opening ports.
+# -------------------- Stage 1: build frontend --------------------
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app
 
-FROM python:3.12-slim
+# Install deps with cache-friendly layering
+COPY package*.json ./
+RUN npm ci --no-audit --no-fund
 
-RUN mkdir /workspace
-WORKDIR /workspace
+# Copy only files typically needed for a Vite/Tailwind build; fall back to copying the rest
+COPY tsconfig*.json vite.config.* postcss.config.* tailwind.config.* ./
+COPY public ./public
+COPY frontend ./frontend
+COPY index.html ./index.html
 
-COPY ./requirements*.txt /workspace
+RUN npm run build
 
-RUN pip install -r requirements.txt -r requirements-dev.txt
+# -------------------- Stage 2: Python runtime --------------------
+FROM python:3.12-slim AS runtime
 
-ENV PYTHONPATH="/workspace"
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-ENTRYPOINT ["fastapi"]
-CMD ["dev", "app.py", "--host", "0.0.0.0"]
+WORKDIR /app
+
+# Install Python deps first for caching
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy backend + app code (use .dockerignore to keep this lean)
+COPY . .
+
+# Bring in the built static assets to /app/dist
+COPY --from=frontend-builder /app/dist ./dist
+
+# Create a directory for logs TODO: do not write to container file system
+RUN mkdir /app/logs
+
+# Security: run as non-root
+RUN useradd -u 10001 -m appuser
+RUN chown 10001 /app/logs
+USER appuser
+
+# Expose the backend port
+EXPOSE 8080
+
+# Run the backend
+CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","-b","0.0.0.0:8080"]
