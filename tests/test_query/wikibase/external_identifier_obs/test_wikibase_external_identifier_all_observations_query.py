@@ -75,9 +75,6 @@ async def test_wikibase_external_identifier_all_observations_query():
             ("2", False, None, None, None, None),
         ]
     ):
-        print(
-            external_identifier_observation_list[index],
-        )
         assert_external_identifier(
             external_identifier_observation_list[index],
             expected_id,

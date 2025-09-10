@@ -72,9 +72,6 @@ async def test_wikibase_quantity_all_observations_query():
             ("2", False, 2, None, 1, None),
         ]
     ):
-        print(
-            quantity_observation_list[index],
-        )
         assert_quantity(
             quantity_observation_list[index],
             expected_id,
