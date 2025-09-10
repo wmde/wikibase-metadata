@@ -1,4 +1,4 @@
-"""Test Aggregate Quantity Query"""
+"""Test Aggregate External Identifier Query"""
 
 import pytest
 from tests.test_schema import test_schema
@@ -7,11 +7,11 @@ from tests.utils import assert_layered_property_value, get_mock_context
 
 AGGREGATED_QUANTITY_QUERY = """
 query MyQuery($wikibaseFilter: WikibaseFilterInput) {
-  aggregateQuantity(wikibaseFilter: $wikibaseFilter) {
-    totalItems
-    totalLexemes
-    totalProperties
-    totalTriples
+  aggregateExternalIdentifier(wikibaseFilter: $wikibaseFilter) {
+    totalExternalIdentifierProperties
+    totalExternalIdentifierStatements
+    totalUrlProperties
+    totalUrlStatements
     wikibaseCount
   }
 }
@@ -20,11 +20,11 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["quantity-success"], scope="session")
-@pytest.mark.quantity
+@pytest.mark.dependency(depends=["external-identifier-success"], scope="session")
+@pytest.mark.ei
 @pytest.mark.query
-async def test_aggregate_quantity_query():
-    """Test Aggregate Quantity Query"""
+async def test_aggregate_external_identifier_query():
+    """Test Aggregate ExternalIdentifier Query"""
 
     result = await test_schema.execute(
         AGGREGATED_QUANTITY_QUERY, context_value=get_mock_context("test-auth-token")
@@ -33,14 +33,24 @@ async def test_aggregate_quantity_query():
     assert result.errors is None
     assert result.data is not None
 
-    assert_layered_property_value(result.data, ["aggregateQuantity", "totalItems"], 2)
-    assert_layered_property_value(result.data, ["aggregateQuantity", "totalLexemes"], 4)
     assert_layered_property_value(
-        result.data, ["aggregateQuantity", "totalProperties"], 1
+        result.data,
+        ["aggregateExternalIdentifier", "totalExternalIdentifierProperties"],
+        16,
     )
-    assert_layered_property_value(result.data, ["aggregateQuantity", "totalTriples"], 8)
     assert_layered_property_value(
-        result.data, ["aggregateQuantity", "wikibaseCount"], 1
+        result.data,
+        ["aggregateExternalIdentifier", "totalExternalIdentifierStatements"],
+        32,
+    )
+    assert_layered_property_value(
+        result.data, ["aggregateExternalIdentifier", "totalUrlProperties"], 64
+    )
+    assert_layered_property_value(
+        result.data, ["aggregateExternalIdentifier", "totalUrlStatements"], 128
+    )
+    assert_layered_property_value(
+        result.data, ["aggregateExternalIdentifier", "wikibaseCount"], 1
     )
 
 
@@ -65,8 +75,10 @@ async def test_aggregate_quantity_query():
     ],
 )
 @pytest.mark.user
-async def test_aggregate_quantity_query_filtered(exclude: list, expected_count: int):
-    """Test Aggregate Quantity Query"""
+async def test_aggregate_external_identifier_query_filtered(
+    exclude: list, expected_count: int
+):
+    """Test Aggregate ExternalIdentifier Query"""
 
     result = await test_schema.execute(
         AGGREGATED_QUANTITY_QUERY,
@@ -78,5 +90,5 @@ async def test_aggregate_quantity_query_filtered(exclude: list, expected_count: 
     assert result.data is not None
 
     assert_layered_property_value(
-        result.data, ["aggregateQuantity", "wikibaseCount"], expected_count
+        result.data, ["aggregateExternalIdentifier", "wikibaseCount"], expected_count
     )
