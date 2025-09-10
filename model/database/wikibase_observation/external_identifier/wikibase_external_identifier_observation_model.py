@@ -1,4 +1,4 @@
-"""Wikibase Quantity Observation Table"""
+"""Wikibase External Identifier Observation Table"""
 
 from typing import Optional
 from sqlalchemy import Integer

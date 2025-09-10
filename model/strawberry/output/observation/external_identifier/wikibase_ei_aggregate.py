@@ -1,4 +1,4 @@
-"""Aggregate Quantity Strawberry Model"""
+"""Aggregate External Identifier Strawberry Model"""
 
 import strawberry
 
