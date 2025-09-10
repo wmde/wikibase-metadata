@@ -3,6 +3,9 @@
 from model.strawberry.output.observation.connectivity import (
     WikibaseConnectivityObservationStrawberryModel,
 )
+from model.strawberry.output.observation.external_identifier import (
+    WikibaseExternalIdentifierAggregateStrawberryModel,
+)
 from model.strawberry.output.observation.log import (
     WikibaseLogObservationStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,

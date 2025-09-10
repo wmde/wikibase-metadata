@@ -5,6 +5,7 @@ from strawberry import Info
 
 from fetch_data import (
     create_connectivity_observation,
+    create_external_identifier_observation,
     create_log_observation,
     create_property_popularity_observation,
     create_quantity_observation,
@@ -14,6 +15,7 @@ from fetch_data import (
     create_time_to_first_value_observation,
     create_user_observation,
     update_all_connectivity_observations,
+    update_all_external_identifier_observations,
     update_all_log_observations,
     update_all_property_observations,
     update_all_quantity_observations,
@@ -48,6 +50,26 @@ class ObservationMutation:
 
         authenticate(info)
         return await update_all_connectivity_observations()
+
+    @strawberry.mutation(
+        description="Fetch External Identifier Data from Specified Wikibase Instance"
+    )
+    async def fetch_external_identifier_data(
+        self, info: Info, wikibase_id: int
+    ) -> bool:
+        """Fetch External Identifier Data from Specified Wikibase Instance"""
+
+        authenticate(info)
+        return await create_external_identifier_observation(wikibase_id)
+
+    @strawberry.mutation(
+        description="Fetch External Identifier Data from All Wikibase Instances"
+    )
+    async def update_all_external_identifier_data(self, info: Info) -> BulkTaskResult:
+        """Fetch External Identifier Data from All Wikibase Instances"""
+
+        authenticate(info)
+        return await update_all_external_identifier_observations()
 
     @strawberry.mutation(description="Fetch Log Data from Specified Wikibase Instance")
     async def fetch_log_data(

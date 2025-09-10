@@ -5,6 +5,9 @@ from model.database.wikibase_observation.connectivity import (
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseConnectivityObservationModel,
 )
+from model.database.wikibase_observation.external_identifier import (
+    WikibaseExternalIdentifierObservationModel,
+)
 from model.database.wikibase_observation.log import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
