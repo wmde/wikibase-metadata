@@ -447,7 +447,7 @@ fluent_datasources:
           FULL_TABLE:
             id: 799e0fd3-53a0-439d-b99b-4c1aa5cc72e4
             partitioner:
-        query: SELECT * FROM wikibase_external_identifier_observation WHERE 
+        query: SELECT * FROM wikibase_external_identifier_observation WHERE
           anything
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
