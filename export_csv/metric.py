@@ -72,7 +72,7 @@ def get_metrics_query() -> Select:
         .where((WikibaseExternalIdentifierObservationModel.returned_data))
         .subquery()
     )
-    most_recent_successful_external_identifier_obs = (
+    most_recent_successful_ei_obs = (
         select(WikibaseExternalIdentifierObservationModel)
         .join(
             external_identifier_rank_subquery,
@@ -193,17 +193,15 @@ def get_metrics_query() -> Select:
             most_recent_successful_quantity_obs.c.total_lexemes,
             most_recent_successful_quantity_obs.c.total_properties,
             most_recent_successful_quantity_obs.c.total_triples,
-            most_recent_successful_external_identifier_obs.c.date.label(
-                "ei_observation_date"
-            ),
-            most_recent_successful_external_identifier_obs.c.total_external_identifier_properties.label(
+            most_recent_successful_ei_obs.c.date.label("ei_observation_date"),
+            most_recent_successful_ei_obs.c.total_external_identifier_properties.label(
                 "total_ei_properties"
             ),
-            most_recent_successful_external_identifier_obs.c.total_external_identifier_statements.label(
+            most_recent_successful_ei_obs.c.total_external_identifier_statements.label(
                 "total_ei_statements"
             ),
-            most_recent_successful_external_identifier_obs.c.total_url_properties,
-            most_recent_successful_external_identifier_obs.c.total_url_statements,
+            most_recent_successful_ei_obs.c.total_url_properties,
+            most_recent_successful_ei_obs.c.total_url_statements,
             most_recent_successful_rc_obs.c.date.label(
                 "recent_changes_observation_date"
             ),
@@ -239,9 +237,9 @@ def get_metrics_query() -> Select:
             isouter=True,
         )
         .join(
-            most_recent_successful_external_identifier_obs,
+            most_recent_successful_ei_obs,
             onclause=filtered_wikibase_subquery.c.id
-            == most_recent_successful_external_identifier_obs.c.wikibase_id,
+            == most_recent_successful_ei_obs.c.wikibase_id,
             isouter=True,
         )
         .join(

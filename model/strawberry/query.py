@@ -1,10 +1,6 @@
 """Query"""
 
 from typing import Optional
-from model.strawberry.output.observation.external_identifier.wikibase_ei_aggregate import (
-    WikibaseExternalIdentifierAggregateStrawberryModel,
-)
-from resolvers.get_aggregate import get_aggregate_external_identifier
 import strawberry
 from strawberry import Info
 
@@ -14,6 +10,7 @@ from model.strawberry.output import (
     Page,
     PageNumberType,
     PageSizeType,
+    WikibaseExternalIdentifierAggregateStrawberryModel,
     WikibaseLanguageAggregateStrawberryModel,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,

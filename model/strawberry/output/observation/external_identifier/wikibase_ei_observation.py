@@ -44,7 +44,8 @@ class WikibaseExternalIdentifierObservationStrawberryModel(
             or model.total_url_statements is None
         ):
             raise ValueError(
-                f"External Identifier Observation {model.id}: Expected totals when observation returned data"
+                f"External Identifier Observation {model.id}: "
+                + "Expected totals when observation returned data"
             )
         return cls(
             id=strawberry.ID(model.id),

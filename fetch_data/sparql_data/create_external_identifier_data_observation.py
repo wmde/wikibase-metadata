@@ -2,9 +2,6 @@
 
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib.error import HTTPError, URLError
-from model.database.wikibase_observation.external_identifier.wikibase_external_identifier_observation_model import (
-    WikibaseExternalIdentifierObservationModel,
-)
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 
@@ -21,7 +18,7 @@ from fetch_data.sparql_data.sparql_queries import (
 )
 from fetch_data.utils import get_wikibase_from_database
 from logger import logger
-from model.database import WikibaseModel
+from model.database import WikibaseModel, WikibaseExternalIdentifierObservationModel
 
 
 async def create_external_identifier_observation(wikibase_id: int) -> bool:
