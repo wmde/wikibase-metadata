@@ -1,4 +1,4 @@
-"""Assert Quantity Observation"""
+"""Assert Statistics Observation"""
 
 from typing import Optional
 from tests.utils import assert_layered_property_value, assert_property_value

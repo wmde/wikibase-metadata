@@ -20,6 +20,7 @@ from fetch_data.soup_data import (
 )
 from fetch_data.sparql_data import (
     create_connectivity_observation,
+    create_external_identifier_observation,
     create_property_popularity_observation,
     create_quantity_observation,
 )
@@ -56,6 +57,39 @@ async def update_bulk_connectivity_observations(
 
     tasks = [
         asyncio.ensure_future(safe_update_connectivity_obs(wiki.id))
+        for wiki in wikibases
+    ]
+    await asyncio.gather(*tasks)
+
+    return BulkTaskResult(tasks)
+
+
+async def safe_update_external_identifier_obs(wikibase_id: int) -> bool:
+    """Waits for available worker, returns success/failure boolean"""
+    async with sem:
+        try:
+            return await create_external_identifier_observation(wikibase_id)
+        # pylint: disable-next=bare-except
+        except:
+            logger.error(
+                "ExternalIdentifierDataError",
+                exc_info=True,
+                stack_info=True,
+                extra={"wikibase": wikibase_id},
+            )
+        return False
+
+
+async def update_bulk_external_identifier_observations(
+    query: Select[tuple[WikibaseModel]],
+) -> BulkTaskResult:
+    """Update External Identifier Observations"""
+
+    wikibases = await get_wikibase_list(query)
+    logger.info(f"EI: {len(wikibases)} Wikibases to Update")
+
+    tasks = [
+        asyncio.ensure_future(safe_update_external_identifier_obs(wiki.id))
         for wiki in wikibases
     ]
     await asyncio.gather(*tasks)

@@ -26,20 +26,6 @@ class WikibaseQuantityObservationStrawberryModel(WikibaseObservationStrawberryMo
     total_triples: Optional[int] = strawberry.field(
         description="Total Triples", graphql_type=Optional[BigInt]
     )
-    total_external_identifier_properties: Optional[int] = strawberry.field(
-        description="Total External Identifier Properties",
-        graphql_type=Optional[BigInt],
-    )
-    total_external_identifier_statements: Optional[int] = strawberry.field(
-        description="Total External Identifier Statements",
-        graphql_type=Optional[BigInt],
-    )
-    total_url_properties: Optional[int] = strawberry.field(
-        description="Total URL Properties", graphql_type=Optional[BigInt]
-    )
-    total_url_statements: Optional[int] = strawberry.field(
-        description="Total URL Statements", graphql_type=Optional[BigInt]
-    )
 
     @classmethod
     def marshal(
@@ -63,8 +49,4 @@ class WikibaseQuantityObservationStrawberryModel(WikibaseObservationStrawberryMo
             total_lexemes=model.total_lexemes,
             total_properties=model.total_properties,
             total_triples=model.total_triples,
-            total_external_identifier_properties=model.total_external_identifier_properties,
-            total_external_identifier_statements=model.total_external_identifier_statements,
-            total_url_properties=model.total_url_properties,
-            total_url_statements=model.total_url_statements,
         )

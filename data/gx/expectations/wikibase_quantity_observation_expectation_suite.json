@@ -31,38 +31,6 @@
 			},
 			"meta": {},
 			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "6f19141b-9fc4-4981-86f0-a7fdc4c1971a",
-			"kwargs": {
-				"column": "total_external_identifier_properties"
-			},
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "c3eac164-13a1-4bb2-a49b-43175030b0a6",
-			"kwargs": {
-				"column": "total_external_identifier_statements"
-			},
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "d2a76e95-ebec-4417-ba21-ac6d3b01153c",
-			"kwargs": {
-				"column": "total_url_properties"
-			},
-			"meta": {},
-			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "00a7a757-b549-4cbb-b2af-5036634210cf",
-			"kwargs": {
-				"column": "total_url_statements"
-			},
-			"meta": {},
-			"type": "expect_column_to_exist"
 		}
 	],
 	"id": "5a75aff7-053b-4351-9952-04466e0fbdad",

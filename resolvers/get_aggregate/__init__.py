@@ -1,6 +1,9 @@
 """Get Aggregate Data from Suite Scraper"""
 
 from resolvers.get_aggregate.get_aggregate_created import get_aggregate_created
+from resolvers.get_aggregate.get_aggregate_external_identifier import (
+    get_aggregate_external_identifier,
+)
 from resolvers.get_aggregate.get_aggregate_languages import get_language_list
 from resolvers.get_aggregate.get_aggregate_property_popularity import (
     get_aggregate_property_popularity,

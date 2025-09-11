@@ -1,6 +1,7 @@
 """Strawberry Models - Output"""
 
 from model.strawberry.output.observation import (
+    WikibaseExternalIdentifierAggregateStrawberryModel,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseSoftwareVersionAggregateStrawberryModel,

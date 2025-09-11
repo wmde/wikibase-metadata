@@ -9,6 +9,7 @@ from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation import (
     WikibaseConnectivityObservationModel,
+    WikibaseExternalIdentifierObservationModel,
     WikibaseLogMonthObservationModel,
     WikibasePropertyPopularityObservationModel,
     WikibaseQuantityObservationModel,
@@ -234,6 +235,15 @@ class WikibaseModel(ModelBase):
         )
     )
     """Connectivity Observations"""
+
+    external_identifier_observations: Mapped[
+        list[WikibaseExternalIdentifierObservationModel]
+    ] = relationship(
+        "WikibaseExternalIdentifierObservationModel",
+        back_populates="wikibase",
+        lazy="select",
+    )
+    """External Identifier Observations"""
 
     log_month_observations: Mapped[list[WikibaseLogMonthObservationModel]] = (
         relationship(
