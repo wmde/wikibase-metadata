@@ -29,7 +29,7 @@ const sortDir = ref<"asc" | "desc">("desc");
 // Paged loading state
 const totalPages = ref<number | null>(null);
 const loadedPages = ref<number>(0);
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 250;
 
 const sortDefs: Array<{ key: SortKey; label: string; icon: any }> = [
 	{
