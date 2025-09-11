@@ -43,5 +43,5 @@ USER appuser
 # Expose the backend port
 EXPOSE 8080
 
-# Run the backend
-CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","-b","0.0.0.0:8080"]
+# Run the backend, 4 cores * 2 + 1
+CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","--workers","9","-b","0.0.0.0:8080"]
