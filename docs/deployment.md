@@ -115,3 +115,10 @@ $ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/w
 ```bash
 $ sudo docker stop wikibase-metadata
 ```
+
+### Migrate database in a running container
+
+```bash
+$ sudo docker exec -it wikibase-metadata alembic -x db_path=sqlite:///data/wikibase-data.db upgrade head
+```
+
