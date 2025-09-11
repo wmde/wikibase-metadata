@@ -12,6 +12,7 @@ async def get_wikibase_from_database(
     async_session: AsyncSession,
     wikibase_id: int,
     join_connectivity_observations: bool = False,
+    join_external_identifier_observations: bool = False,
     join_log_observations: bool = False,
     join_property_popularity_observations: bool = False,
     join_quantity_observations: bool = False,
@@ -31,6 +32,10 @@ async def get_wikibase_from_database(
     query = select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
     if join_connectivity_observations:
         query = query.options(joinedload(WikibaseModel.connectivity_observations))
+    if join_external_identifier_observations:
+        query = query.options(
+            joinedload(WikibaseModel.external_identifier_observations)
+        )
     if join_log_observations:
         query = query.options(joinedload(WikibaseModel.log_month_observations))
     if join_property_popularity_observations:

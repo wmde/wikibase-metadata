@@ -3,6 +3,7 @@
 from fetch_data.bulk.bulk_task_result import BulkTaskResult
 from fetch_data.bulk.get_out_of_date_wikibase_query import (
     get_wikibase_with_out_of_date_connectivity_obs_query,
+    get_wikibase_with_out_of_date_external_identifier_obs_query,
     get_wikibase_with_out_of_date_log_first_obs_query,
     get_wikibase_with_out_of_date_log_last_obs_query,
     get_wikibase_with_out_of_date_property_popularity_obs_query,
@@ -15,6 +16,7 @@ from fetch_data.bulk.get_out_of_date_wikibase_query import (
 )
 from fetch_data.bulk.update_bulk import (
     update_bulk_connectivity_observations,
+    update_bulk_external_identifier_observations,
     update_bulk_log_observations,
     update_bulk_property_observations,
     update_bulk_quantity_observations,
@@ -33,6 +35,13 @@ async def update_out_of_date_connectivity_observations() -> BulkTaskResult:
 
     query = get_wikibase_with_out_of_date_connectivity_obs_query()
     return await update_bulk_connectivity_observations(query)
+
+
+async def update_out_of_date_external_identifier_observations() -> BulkTaskResult:
+    """Update Out of Date External Identifier Observations"""
+
+    query = get_wikibase_with_out_of_date_external_identifier_obs_query()
+    return await update_bulk_external_identifier_observations(query)
 
 
 async def update_out_of_date_log_first_observations() -> BulkTaskResult:

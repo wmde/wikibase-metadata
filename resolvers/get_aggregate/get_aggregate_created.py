@@ -15,10 +15,10 @@ async def get_aggregate_created(
 ) -> list[WikibaseYearCreatedAggregateStrawberryModel]:
     """Get Aggregate Year Created"""
 
-    total_quantity_query = get_created_query(wikibase_filter)
+    total_created_query = get_created_query(wikibase_filter)
 
     async with get_async_session() as async_session:
-        results = (await async_session.execute(total_quantity_query)).all()
+        results = (await async_session.execute(total_created_query)).all()
         return [
             WikibaseYearCreatedAggregateStrawberryModel(
                 year=year, wikibase_count=wikibase_count

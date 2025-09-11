@@ -54,8 +54,7 @@
 		{
 			"id": "78391df0-b4f6-4c10-80bf-5c42db266b23",
 			"kwargs": {
-				"column": "total_triples",
-				"mostly": 0.4
+				"column": "total_triples"
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
@@ -65,42 +64,6 @@
 			"kwargs": {
 				"column": "total_triples",
 				"min_value": 1.0
-			},
-			"meta": {},
-			"type": "expect_column_values_to_be_between"
-		},
-		{
-			"id": "5df58eae-1f39-42c1-bb21-a6bcd54d0f85",
-			"kwargs": {
-				"column": "total_external_identifier_properties",
-				"min_value": 0.0
-			},
-			"meta": {},
-			"type": "expect_column_values_to_be_between"
-		},
-		{
-			"id": "f2e34344-5092-4f36-9462-30be0d3ff732",
-			"kwargs": {
-				"column": "total_external_identifier_statements",
-				"min_value": 0.0
-			},
-			"meta": {},
-			"type": "expect_column_values_to_be_between"
-		},
-		{
-			"id": "98f027e4-045b-4cd9-8dc2-b22f9ddf2e50",
-			"kwargs": {
-				"column": "total_url_properties",
-				"min_value": 0.0
-			},
-			"meta": {},
-			"type": "expect_column_values_to_be_between"
-		},
-		{
-			"id": "4623f88d-884c-43ff-8000-47126beb9ace",
-			"kwargs": {
-				"column": "total_url_statements",
-				"min_value": 0.0
 			},
 			"meta": {},
 			"type": "expect_column_values_to_be_between"

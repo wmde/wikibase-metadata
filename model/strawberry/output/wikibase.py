@@ -10,6 +10,7 @@ from model.database import WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType
 from model.strawberry.output.observation import (
     WikibaseConnectivityObservationStrawberryModel,
+    WikibaseExternalIdentifierObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,
     WikibaseObservationSetStrawberryModel,
     WikibasePropertyPopularityObservationStrawberryModel,
@@ -76,6 +77,35 @@ class WikibaseStrawberryModel:
                 [
                     WikibaseConnectivityObservationStrawberryModel.marshal(o)
                     for o in model.connectivity_observations
+                ]
+            )
+
+    @strawberry.field(description="External Identifier Data")
+    async def external_identifier_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseExternalIdentifierObservationStrawberryModel
+    ]:
+        """Summon External Identifier Data on Specific Request"""
+
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(
+                            joinedload(WikibaseModel.external_identifier_observations)
+                        )
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseExternalIdentifierObservationStrawberryModel.marshal(o)
+                    for o in model.external_identifier_observations
                 ]
             )
 

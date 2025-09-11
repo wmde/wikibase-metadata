@@ -1,4 +1,4 @@
-"""Test Wikibase All Quantity Observations"""
+"""Test Wikibase All Statistics Observations"""
 
 import pytest
 from tests.test_query.wikibase.statistics_obs.assert_statistics import assert_statistics

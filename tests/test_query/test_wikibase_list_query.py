@@ -48,6 +48,11 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
           id
         }
       }
+      externalIdentifierObservations {
+        mostRecent {
+          id
+        }
+      }
       logObservations {
         firstMonth {
           mostRecent {
@@ -157,6 +162,7 @@ async def test_wikibase_list_query():
 
     for obs in [
         "connectivityObservations",
+        "externalIdentifierObservations",
         "logObservations",
         "propertyPopularityObservations",
         "quantityObservations",
@@ -223,6 +229,7 @@ async def test_wikibase_list_query_page_two():
 
     for obs in [
         "connectivityObservations",
+        "externalIdentifierObservations",
         "logObservations",
         "propertyPopularityObservations",
         "quantityObservations",

@@ -429,5 +429,25 @@ fluent_datasources:
             id: 4b17b2bc-4aad-43bb-9dc7-9293a6ffa4e1
             partitioner:
         query: SELECT * FROM wikibase_recent_changes_observation WHERE anything
+      wikibase_external_identifier_observation_table:
+        type: table
+        id: eab11d9c-604e-438b-be4e-fc179bc2462c
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: b405d32b-c814-4c90-beb4-49cda0998675
+            partitioner:
+        table_name: wikibase_external_identifier_observation
+        schema_name:
+      valid_wikibase_external_identifier_observation:
+        type: query
+        id: e8cfc10d-6e74-41ab-823c-2f2489d3df18
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 799e0fd3-53a0-439d-b99b-4c1aa5cc72e4
+            partitioner:
+        query: SELECT * FROM wikibase_external_identifier_observation WHERE
+          anything
     connection_string: sqlite:///data/wikibase-data.db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

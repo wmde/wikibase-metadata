@@ -10,6 +10,7 @@ from model.strawberry.output import (
     Page,
     PageNumberType,
     PageSizeType,
+    WikibaseExternalIdentifierAggregateStrawberryModel,
     WikibaseLanguageAggregateStrawberryModel,
     WikibasePropertyPopularityAggregateCountStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
@@ -24,6 +25,7 @@ from model.strawberry.output import (
 from resolvers import (
     authenticate,
     get_aggregate_created,
+    get_aggregate_external_identifier,
     get_aggregate_property_popularity,
     get_aggregate_quantity,
     get_aggregate_recent_changes,
@@ -102,6 +104,15 @@ class Query:
             page_size=page_size,
             wikibase_filter=wikibase_filter,
         )
+
+    @strawberry.field(description="Aggregated External Identifier")
+    async def aggregate_external_identifier(
+        self, info: Info, wikibase_filter: Optional[WikibaseFilterInput] = None
+    ) -> WikibaseExternalIdentifierAggregateStrawberryModel:
+        """Aggregated External Identifier"""
+
+        authenticate(info)
+        return await get_aggregate_external_identifier(wikibase_filter)
 
     @strawberry.field(description="Aggregated Language Popularity")
     async def aggregate_language_popularity(
