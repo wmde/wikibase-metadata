@@ -1,0 +1,33 @@
+# Node
+node_modules
+dist
+.npm
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.venv
+venv
+
+# Tests & reports
+cov_html
+tests
+.pytest_cache
+
+# Local data / dumps / logs / dbs
+dump
+export
+logs
+*.db
+
+# VCS & env
+.git
+.gitignore
+.env
+.env.*
+
