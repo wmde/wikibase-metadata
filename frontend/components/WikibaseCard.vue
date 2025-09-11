@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { CdxCard, CdxIcon } from "@wikimedia/codex";
 import { cdxIconGlobe, cdxIconAlert } from "@wikimedia/codex-icons";
 import type { Wikibase, ObsKind } from "../types";
@@ -13,6 +13,10 @@ const props = defineProps<{ w: Wikibase }>();
 const open = ref(false);
 
 /* ---------- favicon ---------- */
+// Load the favicon only when the card becomes visible
+const cardContainerEl = ref<HTMLElement | null>(null);
+let io: IntersectionObserver | null = null;
+const shouldLoadFavicon = ref(false);
 const faviconError = ref(false);
 const faviconReady = ref(false);
 const faviconUrl = computed(() => {
@@ -25,23 +29,49 @@ const faviconUrl = computed(() => {
 	}
 });
 watch(
-	faviconUrl,
-	(url) => {
-		faviconReady.value = false;
-		faviconError.value = false;
-		if (!url) return;
-		const img = new Image();
-		img.onload = () => {
-			faviconReady.value = true;
-		};
-		img.onerror = () => {
-			faviconError.value = true;
-			faviconReady.value = false;
-		};
-		img.src = url;
-	},
-	{ immediate: true },
+    [faviconUrl, shouldLoadFavicon],
+    ([url, should]) => {
+        faviconReady.value = false;
+        faviconError.value = false;
+        if (!url || !should) return;
+        const img = new Image();
+        img.onload = () => {
+            faviconReady.value = true;
+        };
+        img.onerror = () => {
+            faviconError.value = true;
+            faviconReady.value = false;
+        };
+        img.src = url;
+    },
+    { immediate: false },
 );
+
+onMounted(() => {
+    // If IntersectionObserver is not supported, load immediately
+    if (typeof window === "undefined" || typeof IntersectionObserver === "undefined") {
+        shouldLoadFavicon.value = true;
+        return;
+    }
+    if (!cardContainerEl.value) return;
+    io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+            if (e.isIntersecting) {
+                shouldLoadFavicon.value = true;
+                if (cardContainerEl.value && io) io.unobserve(cardContainerEl.value);
+                io?.disconnect();
+                io = null;
+                break;
+            }
+        }
+    }, { root: null, rootMargin: "0px", threshold: 0 });
+    io.observe(cardContainerEl.value);
+});
+
+onBeforeUnmount(() => {
+    io?.disconnect();
+    io = null;
+});
 
 /* ---------- helpers ---------- */
 function isStale(kind: ObsKind): boolean {
@@ -70,7 +100,8 @@ function fmtOrDashLocal(n?: number | null): string {
 </script>
 
 <template>
-	<CdxCard
+    <div ref="cardContainerEl">
+    <CdxCard
 		class="flex h-full flex-col clickable-card"
 		@click="open = true"
 		@keydown.enter.prevent="open = true"
@@ -155,6 +186,7 @@ function fmtOrDashLocal(n?: number | null): string {
 			<WikibaseDetailsDialog v-model:open="open" :w="props.w" />
 		</template>
 	</CdxCard>
+    </div>
 </template>
 
 <style scoped>
