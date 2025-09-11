@@ -60,3 +60,58 @@ To access the active container, run:
 ```bash
 $ webservice shell
 ```
+
+### Using wmcloud
+
+- Will be available on https://wikibase-metadata.wmcloud.org/
+- Admin interface for the instance is on https://horizon.wikimedia.org/project/instances/
+- Proxy is configured on https://horizon.wikimedia.org/project/proxy/
+
+### Login
+
+```bash
+$ ssh -J shell-user@bastion.wmcloud.org shell-user@wikibase-metadata.wikidata-dev.eqiad1.wikimedia.cloud
+```
+
+### Changing files
+
+Be sure to set an umask of 002 so the group can write to the files.
+
+```bash
+$ umask 002
+```
+
+### Move to the code directory
+
+```bash
+$ cd /var/local/wikidev/wikibase-metadata/
+```
+
+### Updating the code
+
+```bash
+$ git remote update
+$ git checkout your-branch
+$ git pull
+```
+
+### Build docker image
+
+```bash
+# we need to use sudo because users don't have docker privileges
+$ sudo docker build . -t wikibase-metadata
+```
+
+### Run the docker image
+
+```bash
+# we need to use sudo because users don't have docker privileges
+$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/wikibase-data-prod.db:/app/data/wikibase-data.db -p 8080:8080 wikibase-metadata
+```
+
+### Stop the docker image
+
+
+```bash
+$ sudo docker stop wikibase-metadata
+```
