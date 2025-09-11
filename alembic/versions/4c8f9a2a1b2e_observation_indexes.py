@@ -55,4 +55,3 @@ def downgrade() -> None:
 
     for t in tables:
         op.drop_index(f"ix_{t}_wikibase_id_date", table_name=t)
-
