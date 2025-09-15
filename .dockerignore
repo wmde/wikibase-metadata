@@ -24,6 +24,7 @@ dump
 export
 logs
 *.db
+data/*.db
 
 # VCS & env
 .git
