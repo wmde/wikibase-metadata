@@ -180,7 +180,7 @@ def get_time_to_first_value_obs_wikibases_query() -> Select[tuple[WikibaseModel]
                 # pylint: disable-next=singleton-comparison
                 WikibaseModel.wikibase_type == None,
                 and_(
-                    WikibaseModel.wikibase_type != WikibaseType.CLOUD,
+                    # WikibaseModel.wikibase_type != WikibaseType.CLOUD,
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
