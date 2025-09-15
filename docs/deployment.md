@@ -122,3 +122,9 @@ $ sudo docker stop wikibase-metadata
 $ sudo docker exec -it wikibase-metadata alembic -x db_path=sqlite:///data/wikibase-data.db upgrade head
 ```
 
+### Migrate database from toolforge to wmcloud
+
+```bash
+$ scp shell-user@login.toolforge.org:/data/project/wikibase-metadata/wikibase-data.db ~/tmp/wikibase-data.db
+$ scp -o ProxyJump=roti@bastion.wmcloud.org -o ForwardAgent=yes ~/tmp/wikibase-data.db shell-user@wikibase-metadata.wikidata-dev.eqiad1.wikimedia.cloud:/var/local/wikidev/new.db
+```
