@@ -106,7 +106,7 @@ $ sudo docker build . -t wikibase-metadata
 
 ```bash
 # we need to use sudo because users don't have docker privileges
-$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/wikibase-data-prod.db:/app/data/wikibase-data.db -p 8080:8080 wikibase-metadata
+$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ -p 8080:8080 wikibase-metadata
 ```
 
 ### Stop the docker image
