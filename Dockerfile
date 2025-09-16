@@ -1,7 +1,20 @@
+# -------------------- Stage 1: build frontend --------------------
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app
 
+# Install deps with cache-friendly layering
+COPY package*.json ./
+RUN npm ci --no-audit --no-fund
 
+# Copy only files typically needed for a Vite/Tailwind build; fall back to copying the rest
+COPY tsconfig*.json vite.config.* postcss.config.* tailwind.config.* ./
+COPY public ./public
+COPY frontend ./frontend
+COPY index.html ./index.html
 
+RUN npm run build
 
+# -------------------- Stage 2: Python runtime --------------------
 FROM python:3.12-slim AS runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

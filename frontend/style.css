@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html,
+	body,
+	#app {
+		height: 100%;
+	}
+	body {
+		@apply m-0 min-h-screen antialiased;
+		background-color: var(--background-color-base);
+		color: var(--color-base);
+	}
+	a {
+		font-weight: 500;
+		color: var(--color-progressive);
+		text-decoration: none;
+	}
+	a:hover {
+		color: var(--color-progressive--hover);
+	}
+}
+
+@layer components {
+	/* Codex token utility helpers */
+	.token-surface-1 {
+		background-color: var(--background-color-base);
+	}
+	.token-surface-2 {
+		background-color: var(--background-color-neutral-subtle);
+	}
+	.token-surface-3 {
+		background-color: var(--background-color-neutral);
+	}
+	.token-border {
+		border-color: var(--border-color-base);
+	}
+	.token-border-b {
+		border-bottom: var(--border-base);
+	}
+	.token-border-t {
+		border-top: var(--border-base);
+	}
+	.token-border-all {
+		border: var(--border-base);
+	}
+	.token-text-base {
+		color: var(--color-base);
+	}
+	.token-hover-surface-3:hover {
+		background-color: var(--background-color-neutral);
+	}
+	.focus-outline-progressive:focus-visible {
+		outline: 2px solid var(--color-progressive);
+		outline-offset: 2px;
+	}
+
+	.token-text-progressive {
+		color: var(--color-progressive) !important;
+	}
+	.token-text-subtle {
+		color: var(--color-subtle) !important;
+	}
+	.token-text-destructive {
+		color: var(--color-destructive) !important;
+	}
+	.token-text-warning {
+		color: var(--color-warning) !important;
+	}
+
+	/* Link style using Codex tokens */
+	.token-link {
+		color: var(--color-progressive);
+		text-decoration: underline;
+	}
+	.token-link:hover {
+		color: var(--color-progressive--hover);
+	}
+
+	/* Radius helpers */
+	.token-rounded {
+		border-radius: var(--border-radius-base);
+	}
+	.token-rounded-pill {
+		border-radius: var(--border-radius-pill);
+	}
+}
