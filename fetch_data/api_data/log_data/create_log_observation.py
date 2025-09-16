@@ -90,6 +90,11 @@ async def create_log_observation(wikibase_id: int, first_month: bool) -> bool:
         wikibase.log_month_observations.append(observation)
 
         await async_session.commit()
+
+        logger.debug(
+            "Log: Observation returned data: " + str(observation.returned_data),
+            extra={"wikibase": wikibase_id},
+        )
         return observation.returned_data
 
 

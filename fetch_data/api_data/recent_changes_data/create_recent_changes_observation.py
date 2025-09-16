@@ -88,6 +88,12 @@ async def create_recent_changes_observation(wikibase_id: int) -> bool:
         wikibase.recent_changes_observations.append(observation)
 
         await async_session.commit()
+
+        logger.debug(
+            "RecentChanges: Observation returned data: "
+            + str(observation.returned_data),
+            extra={"wikibase": wikibase_id},
+        )
         return observation.returned_data
 
 
