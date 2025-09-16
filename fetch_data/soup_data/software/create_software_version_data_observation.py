@@ -100,7 +100,8 @@ async def create_software_version_observation(
         await async_session.commit()
 
         logger.debug(
-            "SoftwareVersions: Observation returned data: " + str(observation.returned_data),
+            "SoftwareVersions: Observation returned data: "
+            + str(observation.returned_data),
             extra={"wikibase": wikibase_id},
         )
         return observation.returned_data

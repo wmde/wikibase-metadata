@@ -92,7 +92,8 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
         await async_session.commit()
 
         logger.debug(
-            "TimeToFirstValue: Observation returned data: " + str(observation.returned_data),
+            "TimeToFirstValue: Observation returned data: "
+            + str(observation.returned_data),
             extra={"wikibase": wikibase_id},
         )
         return observation.returned_data

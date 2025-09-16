@@ -50,7 +50,8 @@ async def create_connectivity_observation(wikibase_id: int) -> bool:
         await async_session.commit()
 
         logger.debug(
-            "Connectivity: Observation returned data: " + str(observation.returned_data),
+            "Connectivity: Observation returned data: "
+            + str(observation.returned_data),
             extra={"wikibase": wikibase_id},
         )
         return observation.returned_data

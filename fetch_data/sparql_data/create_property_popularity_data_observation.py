@@ -40,7 +40,8 @@ async def create_property_popularity_observation(wikibase_id: int) -> bool:
         await async_session.commit()
 
         logger.debug(
-            "PropertyPopularity: Observation returned data: " + str(observation.returned_data),
+            "PropertyPopularity: Observation returned data: "
+            + str(observation.returned_data),
             extra={"wikibase": wikibase_id},
         )
         return observation.returned_data
