@@ -62,8 +62,8 @@ from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
                 "type": "edit",
                 "timestamp": "2024-01-01T00:00:00Z",
             },
-            None,
-            True,
+            "__unknown_user__",
+            False,
         ),
     ],
 )
