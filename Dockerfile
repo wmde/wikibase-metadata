@@ -1,7 +1,3 @@
-
-
-
-
 FROM python:3.12-slim AS runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -15,9 +11,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
-
-# Bring in the built static assets to /app/dist
-COPY --from=frontend-builder /app/dist ./dist
 
 # Create a directory for logs TODO: do not write to container file system
 RUN mkdir /app/logs
