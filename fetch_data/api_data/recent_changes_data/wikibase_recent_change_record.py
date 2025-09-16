@@ -24,7 +24,9 @@ class WikibaseRecentChangeRecord:
         elif "userid" in record:
             self.user = f"__generated_user_string__user:{record['userid']}"
         else:
-            logger.warning(f"No user or userid found in record: {record}, setting to __unknown_user__")
+            logger.warning(
+                f"No user or userid found in record: {record}, setting to __unknown_user__"
+            )
             self.user = "__unknown_user__"
 
     def __str__(self) -> str:
