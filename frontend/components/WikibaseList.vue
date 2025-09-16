@@ -87,8 +87,8 @@ function onSortClick(k: SortKey) {
 }
 
 function buildQuery(pageNumber: number, pageSize: number) {
-    const exclude = includeCloud.value ? "TEST" : "TEST, CLOUD";
-    return `
+	const exclude = includeCloud.value ? "TEST" : "TEST, CLOUD";
+	return `
     query q {
       wikibaseList(pageNumber: ${pageNumber}, pageSize: ${pageSize}, wikibaseFilter: { wikibaseType: { exclude: [${exclude}] } }) {
         meta { totalPages pageNumber pageSize }
@@ -133,8 +133,8 @@ function buildQuery(pageNumber: number, pageSize: number) {
 }
 
 function buildMetaQuery(pageSize: number) {
-    const exclude = includeCloud.value ? "TEST" : "TEST, CLOUD";
-    return `
+	const exclude = includeCloud.value ? "TEST" : "TEST, CLOUD";
+	return `
     query qMeta {
       wikibaseList(pageNumber: 1, pageSize: ${pageSize}, wikibaseFilter: { wikibaseType: { exclude: [${exclude}] } }) {
         meta { totalPages pageNumber pageSize }
@@ -144,67 +144,67 @@ function buildMetaQuery(pageSize: number) {
 }
 
 async function load() {
-    if (!props.token) return;
-    loading.value = true;
-    error.value = null;
-    items.value = [];
-    totalPages.value = null;
-    loadedPages.value = 0;
+	if (!props.token) return;
+	loading.value = true;
+	error.value = null;
+	items.value = [];
+	totalPages.value = null;
+	loadedPages.value = 0;
 
-    try {
-        // Cheap initial request to discover total pages only
-        const firstRes = await fetch(props.endpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: `bearer ${props.token}`,
-            },
-            body: JSON.stringify({ query: buildMetaQuery(PAGE_SIZE) }),
-            credentials: "omit",
-        });
-        if (!firstRes.ok) throw new Error(`HTTP ${firstRes.status}`);
-        const firstJson = await firstRes.json();
-        if (firstJson.errors) {
-            throw new Error(firstJson.errors?.[0]?.message || "GraphQL error");
-        }
-        const firstPageMeta = firstJson?.data?.wikibaseList;
-        const total = Number(firstPageMeta?.meta?.totalPages ?? 0) || 0;
-        totalPages.value = total;
-        // No data fetched yet; start progress at 0
-        items.value = [];
-        loadedPages.value = 0;
+	try {
+		// Cheap initial request to discover total pages only
+		const firstRes = await fetch(props.endpoint, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: `bearer ${props.token}`,
+			},
+			body: JSON.stringify({ query: buildMetaQuery(PAGE_SIZE) }),
+			credentials: "omit",
+		});
+		if (!firstRes.ok) throw new Error(`HTTP ${firstRes.status}`);
+		const firstJson = await firstRes.json();
+		if (firstJson.errors) {
+			throw new Error(firstJson.errors?.[0]?.message || "GraphQL error");
+		}
+		const firstPageMeta = firstJson?.data?.wikibaseList;
+		const total = Number(firstPageMeta?.meta?.totalPages ?? 0) || 0;
+		totalPages.value = total;
+		// No data fetched yet; start progress at 0
+		items.value = [];
+		loadedPages.value = 0;
 
-        // Fetch all pages in parallel while updating progress
-        if (total > 0) {
-            const pageNumbers = Array.from({ length: total }, (_, i) => i + 1);
-            const promises = pageNumbers.map(async (page) => {
-                const res = await fetch(props.endpoint, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        authorization: `bearer ${props.token}`,
-                    },
-                    body: JSON.stringify({ query: buildQuery(page, PAGE_SIZE) }),
-                    credentials: "omit",
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const json = await res.json();
-                if (json.errors) {
-                    throw new Error(json.errors?.[0]?.message || "GraphQL error");
-                }
-                const pageData = (json?.data?.wikibaseList?.data ?? []) as any[];
-                // Append items for this page
-                items.value.push(...pageData.map((d: any) => Wikibase.from(d)));
-                // Increment loaded pages count
-                loadedPages.value += 1;
-            });
-            await Promise.all(promises);
-        }
-    } catch (e: any) {
-        error.value = e?.message || String(e);
-    } finally {
-        loading.value = false;
-    }
+		// Fetch all pages in parallel while updating progress
+		if (total > 0) {
+			const pageNumbers = Array.from({ length: total }, (_, i) => i + 1);
+			const promises = pageNumbers.map(async (page) => {
+				const res = await fetch(props.endpoint, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						authorization: `bearer ${props.token}`,
+					},
+					body: JSON.stringify({ query: buildQuery(page, PAGE_SIZE) }),
+					credentials: "omit",
+				});
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				const json = await res.json();
+				if (json.errors) {
+					throw new Error(json.errors?.[0]?.message || "GraphQL error");
+				}
+				const pageData = (json?.data?.wikibaseList?.data ?? []) as any[];
+				// Append items for this page
+				items.value.push(...pageData.map((d: any) => Wikibase.from(d)));
+				// Increment loaded pages count
+				loadedPages.value += 1;
+			});
+			await Promise.all(promises);
+		}
+	} catch (e: any) {
+		error.value = e?.message || String(e);
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(() => {
