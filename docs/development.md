@@ -13,18 +13,6 @@ $ pip install -r requirements.txt
 $ PYTHONPATH=. fastapi dev app.py
 ```
 
-### Using docker
-
-Install `docker` and `docker-compose-v2`.
-
-```bash
-docker compose up --build
-```
-
-The immediate output should include a reference to `http://127.0.0.1:8000`, which is localhost, port 8000. Navigating there in a browser should result in the simple JSON `{Hello: "World"}`.
-
-Navigate to `http://127.0.0.1:8000/graphql`. This should include a simple interactive GraphiQL UI for querying and mutating data.
-
 ## Testing Locally:
 
 ### Non-Data Tests
