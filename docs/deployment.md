@@ -69,13 +69,15 @@ $ scp -o ProxyJump=roti@bastion.wmcloud.org -o ForwardAgent=yes ~/tmp/wikibase-d
 ```
 
 Move new db into place. **TAKE CARE TO BACKUP THE OLD DB!**
+
 ```bash
 $ mv new.db db/wikibase-data.db
 ```
 
 Ensure permissions are correct.
+
 ```bash
-$ sudo chown -R 10001 db 
+$ sudo chown -R 10001 db
 $ sudo chmod -R g+w db
 ```
 
@@ -129,7 +131,6 @@ $ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/s
 
 ### Stop the docker image
 
-
 ```bash
 $ sudo docker stop wikibase-metadata
 ```
@@ -139,4 +140,3 @@ $ sudo docker stop wikibase-metadata
 ```bash
 $ sudo docker exec -it wikibase-metadata alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head
 ```
-
