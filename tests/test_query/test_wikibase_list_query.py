@@ -280,7 +280,6 @@ async def test_wikibase_list_query_filtered(exclude, expected_total):
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
         },
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
