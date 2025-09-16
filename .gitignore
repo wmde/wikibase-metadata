@@ -19,6 +19,7 @@ node_modules
 # Frontend
 dist
 dist-ssr
+.vite
 
 # Logs
 logs
@@ -31,6 +32,7 @@ lerna-debug.log*
 
 # Editor directories and files
 .vscode/*
+.vscode
 !.vscode/extensions.json
 .idea
 .DS_Store
