@@ -75,8 +75,8 @@ async def serve_top_level_svg(filename: str):
     return PlainTextResponse("Not found", status_code=404)
 
 
-@app.get("/{full_path:path}", include_in_schema=False)
-async def spa_handler(full_path: str):
+@app.get("/{_full_path:path}", include_in_schema=False)
+async def spa_handler(_full_path: str):
     """SPA handler: serve index.html for root and any unmatched, non-API GET path"""
     index_file = DIST_DIR / "index.html"
     if index_file.exists():
