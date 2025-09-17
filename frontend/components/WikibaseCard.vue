@@ -2,10 +2,9 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { CdxCard, CdxIcon } from "@wikimedia/codex";
 import { cdxIconGlobe, cdxIconAlert } from "@wikimedia/codex-icons";
-import type { Wikibase, ObsKind } from "../types";
 import WikibaseDetailsDialog from "./WikibaseDetailsDialog.vue";
-import { isStaleFor, obsHeadline } from "../utils";
-import { fmtOrDash } from "../utils/format";
+import type { Wikibase, ObsKind } from "../types";
+import { isStaleFor, obsHeadline, fmtOrDash } from "../utils";
 
 const props = defineProps<{ w: Wikibase }>();
 
