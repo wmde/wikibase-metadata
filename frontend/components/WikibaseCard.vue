@@ -48,12 +48,12 @@ watch(
 );
 
 onMounted(() => {
-	// If IntersectionObserver is not supported, load immediately
+	// If IntersectionObserver is not supported, do not load favicon
 	if (
 		typeof window === "undefined" ||
 		typeof IntersectionObserver === "undefined"
 	) {
-		shouldLoadFavicon.value = true;
+		shouldLoadFavicon.value = false;
 		return;
 	}
 	if (!cardContainerEl.value) return;
