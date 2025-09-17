@@ -211,58 +211,10 @@ onMounted(() => {
 watch(includeCloud, () => {
 	load();
 });
-
 </script>
 
 <template>
 	<section>
-		<div class="mb-3 flex items-center justify-end gap-8">
-			<div class="flex items-center gap-2 ml-4">
-				<CdxToggleSwitch
-					v-model="includeCloud"
-					aria-label="Include Wikibase Cloud instances"
-					:disabled="loading"
-				>
-					wikibase.cloud
-				</CdxToggleSwitch>
-			</div>
-			<div class="flex items-center gap-2">
-				<div class="hidden md:block">Sort by</div>
-				<div class="flex items-center">
-					<template v-for="def in sortDefs" :key="def.key">
-						<CdxButton
-							weight="quiet"
-							type="button"
-							:disabled="loading"
-							:class="[
-								'token-rounded focus-outline-progressive',
-								sortKey === def.key ? 'token-surface-3 token-border-all' : '',
-							]"
-							:aria-pressed="sortKey === def.key"
-							:title="
-								def.label +
-								(sortKey === def.key
-									? sortDir === 'asc'
-										? ' (ascending)'
-										: ' (descending)'
-									: '')
-							"
-							@click="onSortClick(def.key as SortKey)"
-						>
-							<span class="inline-flex items-center">
-								<CdxIcon :icon="def.icon" />
-								<CdxIcon
-									v-if="sortKey === def.key"
-									:icon="sortDir === 'asc' ? cdxIconArrowUp : cdxIconArrowDown"
-									size="small"
-									style="margin-left: var(--spacing-25)"
-								/>
-							</span>
-						</CdxButton>
-					</template>
-				</div>
-			</div>
-		</div>
 		<div v-if="loading" class="py-6">
 			<p class="mb-1 text-xs text-center token-text-subtle">
 				Loading known Wikibase instances — this can take a while...
@@ -277,6 +229,55 @@ watch(includeCloud, () => {
 		</div>
 		<div v-else-if="error" class="token-text-destructive">{{ error }}</div>
 		<div v-else>
+			<div class="mb-3 flex items-center justify-end gap-8">
+				<div class="flex items-center gap-2 ml-4">
+					<CdxToggleSwitch
+						v-model="includeCloud"
+						aria-label="Include Wikibase Cloud instances"
+						:disabled="loading"
+					>
+						wikibase.cloud
+					</CdxToggleSwitch>
+				</div>
+				<div class="flex items-center gap-2">
+					<div class="hidden md:block">Sort by</div>
+					<div class="flex items-center">
+						<template v-for="def in sortDefs" :key="def.key">
+							<CdxButton
+								weight="quiet"
+								type="button"
+								:disabled="loading"
+								:class="[
+									'token-rounded focus-outline-progressive',
+									sortKey === def.key ? 'token-surface-3 token-border-all' : '',
+								]"
+								:aria-pressed="sortKey === def.key"
+								:title="
+									def.label +
+									(sortKey === def.key
+										? sortDir === 'asc'
+											? ' (ascending)'
+											: ' (descending)'
+										: '')
+								"
+								@click="onSortClick(def.key as SortKey)"
+							>
+								<span class="inline-flex items-center">
+									<CdxIcon :icon="def.icon" />
+									<CdxIcon
+										v-if="sortKey === def.key"
+										:icon="
+											sortDir === 'asc' ? cdxIconArrowUp : cdxIconArrowDown
+										"
+										size="small"
+										style="margin-left: var(--spacing-25)"
+									/>
+								</span>
+							</CdxButton>
+						</template>
+					</div>
+				</div>
+			</div>
 			<div
 				class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 			>
