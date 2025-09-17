@@ -33,16 +33,6 @@ function handleAdded() {
 							An initiative by Wikimedia Deutschland to map the self-hosted
 							Wikibase ecosystem.
 						</p>
-						<p class="text-sm token-text-subtle">
-							Find even more Wikibase instances on
-							<a
-								href="https://www.wikibase.cloud/discovery"
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label="Wikibase Cloud"
-								>Wikibase Cloud</a
-							>.
-						</p>
 					</div>
 				</div>
 				<div class="flex items-center gap-4">
