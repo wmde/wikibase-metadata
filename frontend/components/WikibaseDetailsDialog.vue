@@ -215,7 +215,7 @@ function fmtOrDashLocal(n?: number | null): string {
 					"
 					class="text-xs token-text-base"
 				>
-					Online since
+					Installation date:
 					{{
 						props.w.fmtDate(
 							props.w.timeToFirstValueObservations?.mostRecent?.initiationDate,
