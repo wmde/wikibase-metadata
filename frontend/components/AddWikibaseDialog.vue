@@ -10,7 +10,6 @@ import {
 
 const props = defineProps<{
 	endpoint: string;
-	token: string | null;
 }>();
 
 const emit = defineEmits<{ (e: "added", id: string): void }>();
@@ -38,11 +37,7 @@ const baseUrlStatus = computed(() =>
 );
 const messages = { error: "This field is required" } as const;
 const canSubmit = computed(
-	() =>
-		!!name.value.trim() &&
-		!!baseUrl.value.trim() &&
-		!loading.value &&
-		!!props.token,
+	() => !!name.value.trim() && !!baseUrl.value.trim() && !loading.value,
 );
 
 function reset() {
@@ -96,7 +91,6 @@ async function submit() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				...(props.token ? { authorization: `bearer ${props.token}` } : {}),
 			},
 			body: JSON.stringify({ query: mutation, variables }),
 			credentials: "omit",
@@ -119,12 +113,7 @@ async function submit() {
 
 <template>
 	<div class="inline-flex">
-		<CdxButton
-			action="progressive"
-			weight="primary"
-			@click="open = true"
-			:disabled="!token"
-		>
+		<CdxButton action="progressive" weight="primary" @click="open = true">
 			Add my Wikibase
 		</CdxButton>
 

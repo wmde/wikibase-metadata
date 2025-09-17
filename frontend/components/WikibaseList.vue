@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { CdxProgressBar, CdxButton, CdxIcon } from "@wikimedia/codex";
 import {
 	cdxIconRecentChanges,
@@ -10,8 +10,8 @@ import {
 import WikibaseCard from "./WikibaseCard.vue";
 import { Wikibase } from "../types";
 
-// Receive token and endpoint from App
-const props = defineProps<{ token: string | null; endpoint: string }>();
+// Receive endpoint from App
+const props = defineProps<{ endpoint: string }>();
 
 const loading = ref(false);
 const error = ref<string | null>(null);
@@ -124,7 +124,6 @@ function buildSingleQuery(pageSize: number) {
 }
 
 async function load() {
-	if (!props.token) return;
 	loading.value = true;
 	error.value = null;
 	items.value = [];
@@ -134,7 +133,6 @@ async function load() {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				authorization: `bearer ${props.token}`,
 			},
 			body: JSON.stringify({ query: buildSingleQuery(PAGE_SIZE) }),
 			credentials: "omit",
@@ -154,14 +152,8 @@ async function load() {
 }
 
 onMounted(() => {
-	if (props.token) load();
+	load();
 });
-watch(
-	() => props.token,
-	(t) => {
-		if (t) load();
-	},
-);
 </script>
 
 <template>
