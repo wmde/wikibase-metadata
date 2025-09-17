@@ -60,3 +60,83 @@ To access the active container, run:
 ```bash
 $ webservice shell
 ```
+
+## Migrate database from toolforge to wmcloud
+
+```bash
+$ scp shell-user@login.toolforge.org:/data/project/wikibase-metadata/wikibase-data.db ~/tmp/wikibase-data.db
+$ scp -o ProxyJump=roti@bastion.wmcloud.org -o ForwardAgent=yes ~/tmp/wikibase-data.db shell-user@wikibase-metadata.wikidata-dev.eqiad1.wikimedia.cloud:/var/local/wikidev/new.db
+```
+
+Move new db into place. **TAKE CARE TO BACKUP THE OLD DB!**
+
+```bash
+$ mv new.db db/wikibase-data.db
+```
+
+Ensure permissions are correct.
+
+```bash
+$ sudo chown -R 10001 db
+$ sudo chmod -R g+w db
+```
+
+## Deploy using wmcloud
+
+- Will be available on https://wikibase-metadata.wmcloud.org/
+- Admin interface for the instance is on https://horizon.wikimedia.org/project/instances/
+- Proxy is configured on https://horizon.wikimedia.org/project/proxy/
+
+### Login
+
+```bash
+$ ssh -J shell-user@bastion.wmcloud.org shell-user@wikibase-metadata.wikidata-dev.eqiad1.wikimedia.cloud
+```
+
+### Changing files
+
+Be sure to set an umask of 002 so the group can write to the files.
+
+```bash
+$ umask 002
+```
+
+### Move to the code directory
+
+```bash
+$ cd /var/local/wikidev/wikibase-metadata/
+```
+
+### Updating the code
+
+```bash
+$ git remote update
+$ git checkout your-branch
+$ git pull
+```
+
+### Build docker image
+
+```bash
+# we need to use sudo because users don't have docker privileges
+$ sudo docker build . -t wikibase-metadata
+```
+
+### Run the docker image
+
+```bash
+# we need to use sudo because users don't have docker privileges
+$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ -p 8080:8080 wikibase-metadata
+```
+
+### Stop the docker image
+
+```bash
+$ sudo docker stop wikibase-metadata
+```
+
+### Migrate database in a running container
+
+```bash
+$ sudo docker exec -it wikibase-metadata alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head
+```
