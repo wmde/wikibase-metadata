@@ -55,8 +55,18 @@ function handleAdded() {
 					<div>
 						<h1 class="text-xl md:text-2xl font-semibold">Wikibase Metadata</h1>
 						<p class="text-sm token-text-subtle">
-							An initiative by Wikimedia Deutschland to map the Wikibase
-							ecosystem
+							An initiative by Wikimedia Deutschland to map the self-hosted
+							Wikibase ecosystem.
+						</p>
+						<p class="text-sm token-text-subtle">
+							Find even more Wikibase instances on
+							<a
+								href="https://wikibase.cloud/"
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label="Wikibase Cloud"
+								>Wikibase Cloud</a
+							>.
 						</p>
 					</div>
 				</div>
