@@ -34,7 +34,7 @@ const PAGE_SIZE = 100;
 const sortDefs: Array<{ key: SortKey; label: string; icon: any }> = [
 	{
 		key: "edits",
-		label: "Edits (last 30 days)",
+		label: "Edits last 30 days",
 		icon: cdxIconRecentChanges,
 	},
 	{
