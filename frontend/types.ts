@@ -36,7 +36,7 @@ export type WikibaseJson = {
 
 export type ObsKind = "quantity" | "rc";
 
-export class Wikibase {
+	export class Wikibase {
 	id: string | number;
 	urls: WikibaseJson["urls"];
 	wikibaseType?: string;
@@ -98,30 +98,6 @@ export class Wikibase {
 		if (!s) return "";
 		const d = new Date(s);
 		return Number.isNaN(d.getTime()) ? s : d.toLocaleDateString();
-	}
-
-	hasQuantity(): boolean {
-		const m = this.quantityObservations?.mostRecent;
-		if (!m) return false;
-		const vals = [
-			m.totalItems,
-			m.totalProperties,
-			m.totalLexemes,
-			m.totalTriples,
-		];
-		return vals.some((v) => typeof v === "number" && v > 0);
-	}
-
-	hasRecentChanges(): boolean {
-		const m = this.recentChangesObservations?.mostRecent;
-		if (!m) return false;
-		const vals = [
-			m.humanChangeCount,
-			m.humanChangeUserCount,
-			m.botChangeCount,
-			m.botChangeUserCount,
-		];
-		return vals.some((v) => typeof v === "number" && v > 0);
 	}
 
 	getObservationDate(kind: ObsKind): string | undefined {
