@@ -13,17 +13,40 @@ $ pip install -r requirements.txt
 $ PYTHONPATH=. fastapi dev app.py
 ```
 
-### Using docker
+### Docker
 
-Install `docker` and `docker-compose-v2`.
+#### Backend dev server
+
+This re-uses the production image for the dev server.
 
 ```bash
-docker compose up --build
+docker build -t wikibase-metadata .
+docker run \
+    --rm -it \
+    --name wikibase-metadata \
+    --volume "$(pwd):/app" \
+    -p 8000:8000 \
+    --user $(id -u) \
+    --entrypoint bash \
+    wikibase-metadata \
+    -c "PYTHONPATH=. fastapi dev --host 0.0.0.0 --port 8000"
 ```
 
-The immediate output should include a reference to `http://127.0.0.1:8000`, which is localhost, port 8000. Navigating there in a browser should result in the simple JSON `{Hello: "World"}`.
+#### Frontend dev server
 
-Navigate to `http://127.0.0.1:8000/graphql`. This should include a simple interactive GraphiQL UI for querying and mutating data.
+This takes a plain node image.
+
+```bash
+docker run \
+    --rm -it \
+    --name wikibase-metadata-frontend \
+    --volume "$(pwd):/app" \
+    -p 5173:5173 \
+    --user $(id -u) \
+    --entrypoint bash \
+    node:20 \
+    -c "cd /app; npm install; npx vite --host"
+```
 
 ## Testing Locally:
 
