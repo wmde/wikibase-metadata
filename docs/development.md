@@ -17,7 +17,10 @@ $ PYTHONPATH=. fastapi dev app.py
 
 #### Backend dev server
 
+This re-uses the production image for the dev server.
+
 ```bash
+docker build -t wikibase-metadata .
 docker run \
     --rm -it \
     --name wikibase-metadata \
@@ -30,6 +33,8 @@ docker run \
 ```
 
 #### Frontend dev server
+
+This takes a plain node image.
 
 ```bash
 docker run \
