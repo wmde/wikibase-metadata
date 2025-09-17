@@ -73,7 +73,7 @@ function handleAdded() {
 							<img src="/github.svg" class="min-w-6 w-6" alt="Github logo" />
 						</a>
 						<a
-							href="/graphql"
+							:href="endpoint"
 							target="_blank"
 							rel=""
 							aria-label="GraphQL"
