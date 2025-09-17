@@ -13,6 +13,41 @@ $ pip install -r requirements.txt
 $ PYTHONPATH=. fastapi dev app.py
 ```
 
+### Docker
+
+#### Backend dev server
+
+This re-uses the production image for the dev server.
+
+```bash
+docker build -t wikibase-metadata .
+docker run \
+    --rm -it \
+    --name wikibase-metadata \
+    --volume "$(pwd):/app" \
+    -p 8000:8000 \
+    --user $(id -u) \
+    --entrypoint bash \
+    wikibase-metadata \
+    -c "PYTHONPATH=. fastapi dev --host 0.0.0.0 --port 8000"
+```
+
+#### Frontend dev server
+
+This takes a plain node image.
+
+```bash
+docker run \
+    --rm -it \
+    --name wikibase-metadata-frontend \
+    --volume "$(pwd):/app" \
+    -p 5173:5173 \
+    --user $(id -u) \
+    --entrypoint bash \
+    node:20 \
+    -c "cd /app; npm install; npx vite --host"
+```
+
 ## Testing Locally:
 
 ### Non-Data Tests
