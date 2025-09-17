@@ -61,7 +61,7 @@ function handleAdded() {
 						<p class="text-sm token-text-subtle">
 							Find even more Wikibase instances on
 							<a
-								href="https://wikibase.cloud/"
+								href="https://www.wikibase.cloud/discovery"
 								target="_blank"
 								rel="noopener noreferrer"
 								aria-label="Wikibase Cloud"
