@@ -61,7 +61,7 @@ function handleAdded() {
 						<p class="text-sm token-text-subtle">
 							Find even more Wikibase instances on
 							<a
-								href="https://wikibase.cloud/"
+								href="https://www.wikibase.cloud/discovery"
 								target="_blank"
 								rel="noopener noreferrer"
 								aria-label="Wikibase Cloud"
@@ -77,7 +77,7 @@ function handleAdded() {
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="GitHub"
-							title="find the project on github"
+							title="Source code on GitHub"
 							class="p-2 token-rounded-pill token-text-base token-hover-surface-3 focus-outline-progressive"
 						>
 							<img src="/github.svg" class="min-w-6 w-6" alt="Github logo" />
@@ -87,7 +87,7 @@ function handleAdded() {
 							target="_blank"
 							rel=""
 							aria-label="GraphQL"
-							title="query the database via graphql api"
+							title="GraphQL API access"
 							class="p-2 token-rounded-pill token-text-base token-hover-surface-3 focus-outline-progressive"
 						>
 							<img src="/graphql.svg" class="min-w-6 w-6" alt="GraphQL logo" />
