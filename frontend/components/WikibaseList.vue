@@ -34,12 +34,12 @@ const PAGE_SIZE = 100;
 const sortDefs: Array<{ key: SortKey; label: string; icon: any }> = [
 	{
 		key: "edits",
-		label: "Sort by edits in the last 30 days",
+		label: "Edits (last 30 days)",
 		icon: cdxIconRecentChanges,
 	},
 	{
 		key: "triples",
-		label: "Sort by total number of graph triples",
+		label: "Graph triples",
 		icon: cdxIconDatabase,
 	},
 ];
