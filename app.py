@@ -78,9 +78,6 @@ async def serve_top_level_svg(filename: str):
 @app.get("/{full_path:path}", include_in_schema=False)
 async def spa_handler(full_path: str):
     """SPA handler: serve index.html for root and any unmatched, non-API GET path"""
-    # Let API and docs paths 404 naturally; otherwise serve the SPA
-    if full_path.startswith(("graphql", "docs", "redoc", "openapi.json")):
-        return PlainTextResponse("Not found", status_code=404)
     index_file = DIST_DIR / "index.html"
     if index_file.exists():
         return FileResponse(index_file)
