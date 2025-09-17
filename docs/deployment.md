@@ -124,9 +124,13 @@ $ sudo docker build . -t wikibase-metadata
 
 ### Run the docker image
 
+Run the docker image, mount the `settings.ini` file and the db directory. Open port 80 to the outside world, as configured in the [horizon proxy](https://horizon.wikimedia.org/project/proxy/).
+
+> [!IMPORTANT] The docker image user 10001 needs to have read access to the `settings.ini` file and **write access** to the **db directory**.
+
 ```bash
 # we need to use sudo because users don't have docker privileges
-$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ -p 8000:8000 wikibase-metadata
+$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ -p 80:8000 wikibase-metadata
 ```
 
 ### Stop the docker image
