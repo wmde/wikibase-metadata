@@ -1,32 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { CdxField, CdxTextInput, CdxButton } from "@wikimedia/codex";
+import { ref } from "vue";
 import WikibaseList from "./components/WikibaseList.vue";
 import AddWikibaseDialog from "./components/AddWikibaseDialog.vue";
-
-// Token handling in App
-const token = ref<string | null>(null);
-const tokenInput = ref("");
-const tokenTouched = ref(false);
-const fieldStatus = computed(() =>
-	tokenTouched.value && tokenInput.value.trim().length === 0
-		? "error"
-		: "default",
-);
-const messages = { error: "Token is required" } as const;
-
-onMounted(() => {
-	const saved = localStorage.getItem("authToken");
-	if (saved) token.value = saved;
-});
-
-function submitToken() {
-	tokenTouched.value = true;
-	const t = tokenInput.value.trim();
-	if (!t) return;
-	token.value = t;
-	localStorage.setItem("authToken", t);
-}
 
 // GraphQL endpoint used by dialog
 const endpoint = import.meta.env.DEV
@@ -55,8 +30,8 @@ function handleAdded() {
 					<div>
 						<h1 class="text-xl md:text-2xl font-semibold">Wikibase Metadata</h1>
 						<p class="text-sm token-text-subtle">
-							An initiative by Wikimedia Deutschland to map the Wikibase
-							ecosystem
+							An initiative by Wikimedia Deutschland to map the self-hosted
+							Wikibase ecosystem.
 						</p>
 					</div>
 				</div>
@@ -67,7 +42,7 @@ function handleAdded() {
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="GitHub"
-							title="find the project on github"
+							title="Source code on GitHub"
 							class="p-2 token-rounded-pill token-text-base token-hover-surface-3 focus-outline-progressive"
 						>
 							<img src="/github.svg" class="min-w-6 w-6" alt="Github logo" />
@@ -77,54 +52,19 @@ function handleAdded() {
 							target="_blank"
 							rel=""
 							aria-label="GraphQL"
-							title="query the database via graphql api"
+							title="GraphQL API access"
 							class="p-2 token-rounded-pill token-text-base token-hover-surface-3 focus-outline-progressive"
 						>
 							<img src="/graphql.svg" class="min-w-6 w-6" alt="GraphQL logo" />
 						</a>
 					</div>
-					<AddWikibaseDialog
-						:endpoint="endpoint"
-						:token="token"
-						@added="handleAdded"
-					/>
+					<AddWikibaseDialog :endpoint="endpoint" @added="handleAdded" />
 				</div>
 			</div>
 		</header>
 		<main class="px-6 md:px-8 py-6 flex-1">
 			<div class="mx-auto max-w-screen-2xl">
-				<div v-if="!token" class="py-12 flex justify-center">
-					<form class="w-full max-w-md" @submit.prevent="submitToken">
-						<CdxField :status="fieldStatus" :messages="messages">
-							<CdxTextInput
-								v-model="tokenInput"
-								type="password"
-								placeholder="Enter bearer token"
-								@keydown.enter.prevent="submitToken"
-							/>
-							<template #label>Bearer token</template>
-							<template #description>
-								Stored locally and used for API requests.
-							</template>
-						</CdxField>
-						<div class="mt-3 flex justify-center">
-							<CdxButton
-								action="progressive"
-								weight="primary"
-								@click="submitToken"
-								>Continue</CdxButton
-							>
-						</div>
-					</form>
-				</div>
-				<div v-else>
-					<WikibaseList
-						:key="refreshKey"
-						:token="token"
-						:endpoint="endpoint"
-						class="mt-2"
-					/>
-				</div>
+				<WikibaseList :key="refreshKey" :endpoint="endpoint" class="mt-2" />
 			</div>
 		</main>
 		<footer class="token-border-t token-surface-2">
