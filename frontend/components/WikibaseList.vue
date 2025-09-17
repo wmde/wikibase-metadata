@@ -180,7 +180,6 @@ async function load() {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						authorization: `bearer ${props.token}`,
 					},
 					body: JSON.stringify({ query: buildQuery(page, PAGE_SIZE) }),
 					credentials: "omit",
