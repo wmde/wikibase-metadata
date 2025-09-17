@@ -3,7 +3,13 @@ import { computed } from "vue";
 import { CdxDialog, CdxIcon } from "@wikimedia/codex";
 import { cdxIconAlert } from "@wikimedia/codex-icons";
 import type { Wikibase, ObsKind } from "../types";
-import {  isStaleFor, obsHeadline ,fmtOrDash, textOrDash } from "../utils";
+import {
+	isStaleFor,
+	obsHeadline,
+	fmtOrDash,
+	textOrDash,
+	formatDate,
+} from "../utils";
 
 const props = defineProps<{ w: Wikibase; open: boolean }>();
 const emit = defineEmits<{ (e: "update:open", v: boolean): void }>();
@@ -216,7 +222,7 @@ function fmtOrDashLocal(n?: number | null): string {
 				>
 					Installation date:
 					{{
-						props.w.fmtDate(
+						formatDate(
 							props.w.timeToFirstValueObservations?.mostRecent?.initiationDate,
 						)
 					}}

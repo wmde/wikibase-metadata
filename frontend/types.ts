@@ -36,7 +36,7 @@ export type WikibaseJson = {
 
 export type ObsKind = "quantity" | "rc";
 
-	export class Wikibase {
+export class Wikibase {
 	id: string | number;
 	urls: WikibaseJson["urls"];
 	wikibaseType?: string;
@@ -44,8 +44,6 @@ export type ObsKind = "quantity" | "rc";
 	quantityObservations?: WikibaseJson["quantityObservations"];
 	recentChangesObservations?: WikibaseJson["recentChangesObservations"];
 	timeToFirstValueObservations?: WikibaseJson["timeToFirstValueObservations"];
-
-	private static nf = new Intl.NumberFormat(undefined);
 
 	constructor(data: WikibaseJson) {
 		this.id = data.id;
@@ -85,26 +83,9 @@ export type ObsKind = "quantity" | "rc";
 		}
 	}
 
-	fmt(n?: number | null): string {
-		if (n == null) return "";
-		try {
-			return Wikibase.nf.format(n as number);
-		} catch {
-			return String(n);
-		}
-	}
-
-	fmtDate(s?: string): string {
-		if (!s) return "";
-		const d = new Date(s);
-		return Number.isNaN(d.getTime()) ? s : d.toLocaleDateString();
-	}
-
 	getObservationDate(kind: ObsKind): string | undefined {
 		return kind === "quantity"
 			? this.quantityObservations?.mostRecent?.observationDate
 			: this.recentChangesObservations?.mostRecent?.observationDate;
 	}
-
-	// Intentionally no obsHeadlineSuffix here; UI concerns live in the card component.
 }
