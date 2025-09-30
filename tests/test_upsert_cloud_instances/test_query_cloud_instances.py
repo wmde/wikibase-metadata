@@ -4,7 +4,6 @@ import pytest
 
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
-from tests.utils import get_mock_context
 
 
 @pytest.mark.dependency(

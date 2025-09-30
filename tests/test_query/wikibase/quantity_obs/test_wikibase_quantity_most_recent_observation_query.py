@@ -6,7 +6,7 @@ from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
     WIKIBASE_QUANTITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value, get_mock_context
+from tests.utils import assert_property_value
 
 
 WIKIBASE_QUANTITY_MOST_RECENT_OBSERVATION_QUERY = (

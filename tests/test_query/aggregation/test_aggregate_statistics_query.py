@@ -8,7 +8,7 @@ from tests.test_query.wikibase.statistics_obs.assert_statistics import (
     assert_users,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, get_mock_context
+from tests.utils import assert_layered_property_value
 
 
 AGGREGATED_STATISTICS_QUERY = """

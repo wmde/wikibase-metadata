@@ -4,12 +4,7 @@ from datetime import datetime
 from typing import Optional
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import (
-    assert_layered_property_value,
-    assert_page_meta,
-    DATETIME_FORMAT,
-    get_mock_context,
-)
+from tests.utils import assert_layered_property_value, assert_page_meta, DATETIME_FORMAT
 
 
 EXTENSION_LIST_QUERY = """

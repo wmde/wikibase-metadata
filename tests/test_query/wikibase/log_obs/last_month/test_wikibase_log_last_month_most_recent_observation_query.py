@@ -11,7 +11,6 @@ from tests.utils import (
     assert_layered_property_count,
     assert_property_value,
     DATETIME_FORMAT,
-    get_mock_context,
 )
 
 

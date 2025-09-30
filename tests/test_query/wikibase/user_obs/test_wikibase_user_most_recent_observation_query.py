@@ -6,11 +6,7 @@ from tests.test_query.wikibase.user_obs.user_fragment import (
     WIKIBASE_USER_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import (
-    assert_layered_property_count,
-    assert_property_value,
-    get_mock_context,
-)
+from tests.utils import assert_layered_property_count, assert_property_value
 
 
 WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY = (

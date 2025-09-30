@@ -5,7 +5,7 @@ import pytest
 from resolvers.update import update_missing_script_paths
 from tests.test_schema import test_schema
 from tests.test_update_missing_urls.constant import DATA_DIRECTORY, WIKIBASE_URLS_QUERY
-from tests.utils import MockResponse, get_mock_context
+from tests.utils import MockResponse
 from tests.utils.assert_property_value import assert_layered_property_value
 
 

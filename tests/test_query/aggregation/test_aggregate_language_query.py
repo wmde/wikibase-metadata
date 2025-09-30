@@ -2,11 +2,7 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import (
-    assert_layered_property_value,
-    assert_page_meta,
-    get_mock_context,
-)
+from tests.utils import assert_layered_property_value, assert_page_meta
 
 
 AGGREGATED_LANGUAGES_QUERY = """

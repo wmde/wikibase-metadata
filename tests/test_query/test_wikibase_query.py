@@ -3,7 +3,6 @@
 import pytest
 
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context
 
 
 WIKIBASE_QUERY = """
