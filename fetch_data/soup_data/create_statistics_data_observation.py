@@ -98,6 +98,12 @@ async def create_special_statistics_observation(wikibase_id: int) -> bool:
         wikibase.statistics_observations.append(observation)
 
         await async_session.commit()
+
+        logger.debug(
+            "SpecialStatistics: Observation returned data: "
+            + str(observation.returned_data),
+            extra={"wikibase": wikibase_id},
+        )
         return observation.returned_data
 
 

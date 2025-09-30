@@ -107,5 +107,9 @@ async def create_user_observation(wikibase_id: int) -> bool:
         wikibase.user_observations.append(observation)
 
         await async_session.commit()
-        logger.debug("User: SQL Committed", extra={"wikibase": wikibase_id})
+
+        logger.debug(
+            "User: Observation returned data: " + str(observation.returned_data),
+            extra={"wikibase": wikibase_id},
+        )
         return observation.returned_data
