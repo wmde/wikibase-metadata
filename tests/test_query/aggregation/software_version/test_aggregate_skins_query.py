@@ -13,7 +13,6 @@ from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
     assert_page_meta,
-    get_mock_context,
 )
 
 
@@ -43,9 +42,7 @@ async def test_aggregate_skins_query_page_one():
     """Test Aggregated Skins Query"""
 
     result = await test_schema.execute(
-        AGGREGATE_SKINS_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 5},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_SKINS_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
     )
 
     assert result.errors is None
@@ -107,7 +104,6 @@ async def test_aggregate_users_query_filtered(exclude: list, expected_count: int
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
         },
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

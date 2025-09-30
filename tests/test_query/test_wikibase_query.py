@@ -3,7 +3,6 @@
 import pytest
 
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context
 
 
 WIKIBASE_QUERY = """
@@ -22,9 +21,7 @@ async def test_wikibase_query_authorized():
     """Test Query Wikibase Authorized"""
 
     result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None

@@ -2,7 +2,7 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, get_mock_context
+from tests.utils import assert_layered_property_value
 
 
 AGGREGATED_USERS_QUERY = """
@@ -24,9 +24,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 async def test_aggregate_users_query():
     """Test Aggregate Users Query"""
 
-    result = await test_schema.execute(
-        AGGREGATED_USERS_QUERY, context_value=get_mock_context("test-auth-token")
-    )
+    result = await test_schema.execute(AGGREGATED_USERS_QUERY)
 
     assert result.errors is None
     assert result.data is not None
@@ -63,7 +61,6 @@ async def test_aggregate_users_query_filtered(exclude: list, expected_count: int
     result = await test_schema.execute(
         AGGREGATED_USERS_QUERY,
         variable_values={"wikibaseFilter": {"wikibaseType": {"exclude": exclude}}},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

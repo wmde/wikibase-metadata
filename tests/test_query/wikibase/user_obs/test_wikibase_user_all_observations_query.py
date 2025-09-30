@@ -10,7 +10,6 @@ from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
     assert_property_value,
-    get_mock_context,
 )
 
 
@@ -42,9 +41,7 @@ async def test_wikibase_user_all_observations_query():
     """Test Wikibase All User Observations"""
 
     result = await test_schema.execute(
-        WIKIBASE_USER_ALL_OBSERVATIONS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_USER_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None

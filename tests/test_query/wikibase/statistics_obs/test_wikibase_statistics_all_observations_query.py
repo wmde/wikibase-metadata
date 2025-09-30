@@ -6,7 +6,7 @@ from tests.test_query.wikibase.statistics_obs.statistics_fragment import (
     WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value, get_mock_context
+from tests.utils import assert_property_value
 
 
 WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY = (
@@ -37,9 +37,7 @@ async def test_wikibase_statistics_all_observations_query():
     """Test Wikibase All Statistics Observations"""
 
     result = await test_schema.execute(
-        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None

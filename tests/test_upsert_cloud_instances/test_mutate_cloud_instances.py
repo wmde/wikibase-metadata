@@ -34,13 +34,10 @@ async def test_query_cloud_instance(mocker):
     ) as instances_json:
 
         mocker.patch(
-            "requests.get",
-            side_effect=[MockResponse("", 200, instances_json.read())],
+            "requests.get", side_effect=[MockResponse("", 200, instances_json.read())]
         )
 
-    before_update_result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY, context_value=get_mock_context("test-auth-token")
-    )
+    before_update_result = await test_schema.execute(WIKIBASE_LIST_QUERY)
     assert before_update_result.errors is None
     assert before_update_result.data is not None
     assert_layered_property_count(
@@ -65,9 +62,7 @@ async def test_query_cloud_instance(mocker):
     assert update_result.data is not None
     assert update_result.data["updateCloudInstances"]
 
-    after_update_result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY, context_value=get_mock_context("test-auth-token")
-    )
+    after_update_result = await test_schema.execute(WIKIBASE_LIST_QUERY)
     assert after_update_result.errors is None
     assert after_update_result.data is not None
     assert_layered_property_count(

@@ -8,7 +8,7 @@ from tests.test_schema import test_schema
 from tests.utils import MockRequest
 
 
-ADD_WIKIBASE_LANGUAGE_QUERY = """
+ADD_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($wikibaseId: Int!) {
   addWikibaseLanguage(language: "French", wikibaseId: $wikibaseId)
 }"""
@@ -21,7 +21,7 @@ async def test_wikibase_mutation_unauthorized():
     """Test Query Wikibase Unauthorized"""
 
     result = await test_schema.execute(
-        ADD_WIKIBASE_LANGUAGE_QUERY,
+        ADD_WIKIBASE_LANGUAGE_MUTATION,
         variable_values={"wikibaseId": 1},
         context_value={"request": MockRequest(headers={})},
     )
@@ -30,7 +30,7 @@ async def test_wikibase_mutation_unauthorized():
     assert result.errors[0].message == "Authorization header missing"
 
     result = await test_schema.execute(
-        ADD_WIKIBASE_LANGUAGE_QUERY,
+        ADD_WIKIBASE_LANGUAGE_MUTATION,
         variable_values={"wikibaseId": 1},
         context_value={
             "request": MockRequest(headers={"authorization": "wrong-header-value"})
@@ -41,7 +41,7 @@ async def test_wikibase_mutation_unauthorized():
     assert result.errors[0].message == "Invalid authorization header, expected 'bearer'"
 
     result = await test_schema.execute(
-        ADD_WIKIBASE_LANGUAGE_QUERY,
+        ADD_WIKIBASE_LANGUAGE_MUTATION,
         variable_values={"wikibaseId": 1},
         context_value={
             "request": MockRequest(
@@ -57,7 +57,7 @@ async def test_wikibase_mutation_unauthorized():
     )
 
     result = await test_schema.execute(
-        ADD_WIKIBASE_LANGUAGE_QUERY,
+        ADD_WIKIBASE_LANGUAGE_MUTATION,
         variable_values={"wikibaseId": 1},
         context_value={
             "request": MockRequest(headers={"authorization": "bearer: wrong-token"})

@@ -4,7 +4,6 @@ import pytest
 
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
-from tests.utils import get_mock_context
 
 
 @pytest.mark.dependency(
@@ -15,9 +14,7 @@ async def test_query_cloud_instance():
     """
     test whether querying the wikibase list via graphql returns a cloud instance
     """
-    result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY, context_value=get_mock_context("test-auth-token")
-    )
+    result = await test_schema.execute(WIKIBASE_LIST_QUERY)
     assert result.errors is None
     assert result.data is not None
     data = result.data
