@@ -1,17 +1,27 @@
-# Development container for local development of the app.
-# Accompanied by a docker compose file for conveniently mounting 
-# the project directory into the container and opening ports.
+FROM python:3.12-slim AS runtime
 
-FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-RUN mkdir /workspace
-WORKDIR /workspace
+WORKDIR /app
 
-COPY ./requirements*.txt /workspace
+# Install Python deps first for caching
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -r requirements.txt -r requirements-dev.txt
+# Copy backend + app code (use .dockerignore to keep this lean)
+COPY . .
 
-ENV PYTHONPATH="/workspace"
+# Create a directory for logs TODO: do not write to container file system
+RUN mkdir /app/logs
 
-ENTRYPOINT ["fastapi"]
-CMD ["dev", "app.py", "--host", "0.0.0.0"]
+# Security: run as non-root
+RUN useradd -u 10001 -m appuser
+RUN chown 10001 /app/logs
+USER appuser
+
+# Expose the backend port
+EXPOSE 8000
+
+# Run the backend, 4 cores * 2 + 1
+CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","--workers","9","-b","0.0.0.0:8000"]
