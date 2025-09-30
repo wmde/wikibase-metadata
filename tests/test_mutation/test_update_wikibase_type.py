@@ -15,7 +15,7 @@ query MyQuery($wikibaseId: Int!) {
 }"""
 
 
-UPDATE_WIKIBASE_TYPE_QUERY = """
+UPDATE_WIKIBASE_TYPE_MUTATION = """
 mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
   updateWikibaseType(wikibaseId: $wikibaseId, wikibaseType: $wikibaseType)
 }"""
@@ -32,9 +32,7 @@ async def test_update_wikibase_type_to_other():
     """Test Update to Other"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 5},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 5}
     )
 
     assert before_updating_result.errors is None
@@ -44,7 +42,7 @@ async def test_update_wikibase_type_to_other():
     )
 
     update_result = await test_schema.execute(
-        UPDATE_WIKIBASE_TYPE_QUERY,
+        UPDATE_WIKIBASE_TYPE_MUTATION,
         variable_values={"wikibaseId": 5, "wikibaseType": "OTHER"},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -53,9 +51,7 @@ async def test_update_wikibase_type_to_other():
     assert update_result.data["updateWikibaseType"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 5},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 5}
     )
 
     assert after_updating_result.errors is None
@@ -76,9 +72,7 @@ async def test_update_wikibase_type_to_suite():
     """Test Update to Suite"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert before_updating_result.errors is None
@@ -88,7 +82,7 @@ async def test_update_wikibase_type_to_suite():
     )
 
     update_result = await test_schema.execute(
-        UPDATE_WIKIBASE_TYPE_QUERY,
+        UPDATE_WIKIBASE_TYPE_MUTATION,
         variable_values={"wikibaseId": 1, "wikibaseType": "SUITE"},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -97,9 +91,7 @@ async def test_update_wikibase_type_to_suite():
     assert update_result.data["updateWikibaseType"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert after_updating_result.errors is None
@@ -120,9 +112,7 @@ async def test_update_wikibase_type_to_test():
     """Test Update to Suite"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 4},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 4}
     )
 
     assert before_updating_result.errors is None
@@ -132,7 +122,7 @@ async def test_update_wikibase_type_to_test():
     )
 
     update_result = await test_schema.execute(
-        UPDATE_WIKIBASE_TYPE_QUERY,
+        UPDATE_WIKIBASE_TYPE_MUTATION,
         variable_values={"wikibaseId": 4, "wikibaseType": "TEST"},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -141,9 +131,7 @@ async def test_update_wikibase_type_to_test():
     assert update_result.data["updateWikibaseType"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 4},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 4}
     )
 
     assert after_updating_result.errors is None
@@ -160,9 +148,7 @@ async def test_update_wikibase_type_to_same():
     """Test Update to Current Value"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 6},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 6}
     )
 
     assert before_updating_result.errors is None
@@ -172,7 +158,7 @@ async def test_update_wikibase_type_to_same():
     )
 
     update_result = await test_schema.execute(
-        UPDATE_WIKIBASE_TYPE_QUERY,
+        UPDATE_WIKIBASE_TYPE_MUTATION,
         variable_values={"wikibaseId": 6, "wikibaseType": "CLOUD"},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -181,9 +167,7 @@ async def test_update_wikibase_type_to_same():
     assert update_result.data["updateWikibaseType"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 6},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 6}
     )
 
     assert after_updating_result.errors is None

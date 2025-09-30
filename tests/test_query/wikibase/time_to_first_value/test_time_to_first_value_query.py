@@ -7,7 +7,6 @@ from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
     assert_property_value,
-    get_mock_context,
 )
 from tests.utils.datetime_format import DATETIME_FORMAT
 
@@ -36,17 +35,13 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="ttfv-query-success",
-    depends=["ttfv-success"],
-    scope="session",
+    name="ttfv-query-success", depends=["ttfv-success"], scope="session"
 )
 @pytest.mark.query
 async def test_wikibase_query_ttfv_success():
     """Test success scenario"""
     result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None

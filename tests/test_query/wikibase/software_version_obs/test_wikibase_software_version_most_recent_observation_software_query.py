@@ -9,11 +9,7 @@ from tests.test_query.wikibase.software_version_obs.software_version_fragment im
     WIKIBASE_SOFTWARE_VERSION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import (
-    assert_layered_property_count,
-    assert_property_value,
-    get_mock_context,
-)
+from tests.utils import assert_layered_property_count, assert_property_value
 
 
 WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SOFTWARE_QUERY = (
@@ -49,7 +45,6 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SOFTWARE_QUERY,
         variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

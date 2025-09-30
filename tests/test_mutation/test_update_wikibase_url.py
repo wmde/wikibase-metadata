@@ -40,9 +40,7 @@ async def test_add_wikibase_script_path():
     """Add Wikibase URL"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -74,9 +72,7 @@ async def test_add_wikibase_script_path():
     assert add_result.data["upsertWikibaseUrl"] is True
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
@@ -106,9 +102,7 @@ async def test_remove_wikibase_sparql_frontend_url():
     """Remove Wikibase URL"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -139,9 +133,7 @@ async def test_remove_wikibase_sparql_frontend_url():
     assert remove_result.data["removeWikibaseUrl"] is True
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
@@ -171,9 +163,7 @@ async def test_remove_wikibase_article_path():
     """Remove Wikibase article path"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 6},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 6}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -209,9 +199,7 @@ async def test_remove_wikibase_article_path():
     assert remove_result.data["removeWikibaseUrl"] is True
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 6},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 6}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
@@ -244,9 +232,7 @@ async def test_update_wikibase_url():
     """Update Wikibase URL"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
@@ -278,9 +264,7 @@ async def test_update_wikibase_url():
     assert update_result.data["upsertWikibaseUrl"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None

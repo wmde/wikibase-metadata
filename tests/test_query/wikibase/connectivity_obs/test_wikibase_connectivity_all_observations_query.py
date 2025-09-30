@@ -10,7 +10,7 @@ from tests.test_query.wikibase.connectivity_obs.connectivity_fragment import (
     WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value, get_mock_context
+from tests.utils import assert_property_value
 
 
 WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY = (
@@ -52,9 +52,7 @@ async def test_wikibase_connectivity_all_observations_query():
     """Test Wikibase All Connectivity Observations Query"""
 
     result = await test_schema.execute(
-        WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None

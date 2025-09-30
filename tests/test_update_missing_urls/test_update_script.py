@@ -5,7 +5,7 @@ import pytest
 from resolvers.update import update_missing_script_paths
 from tests.test_schema import test_schema
 from tests.test_update_missing_urls.constant import DATA_DIRECTORY, WIKIBASE_URLS_QUERY
-from tests.utils import MockResponse, get_mock_context
+from tests.utils import MockResponse
 from tests.utils.assert_property_value import assert_layered_property_value
 
 
@@ -22,9 +22,7 @@ async def test_update_missing_script_paths(mocker):
         mocker.patch("requests.get", side_effect=[MockResponse("", 200, data.read())])
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 2},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 2}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -41,9 +39,7 @@ async def test_update_missing_script_paths(mocker):
     assert result == 1
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 2},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 2}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None

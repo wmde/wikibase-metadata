@@ -8,7 +8,7 @@ from tests.test_query.wikibase.external_identifier_obs.external_identifier_fragm
     WIKIBASE_EXTERNAL_IDENTIFIER_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value, get_mock_context
+from tests.utils import assert_property_value
 
 
 WIKIBASE_EXTERNAL_IDENTIFIER_MOST_RECENT_OBSERVATION_QUERY = (
@@ -39,7 +39,6 @@ async def test_wikibase_external_identifier_most_recent_observation_query():
     result = await test_schema.execute(
         WIKIBASE_EXTERNAL_IDENTIFIER_MOST_RECENT_OBSERVATION_QUERY,
         variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
