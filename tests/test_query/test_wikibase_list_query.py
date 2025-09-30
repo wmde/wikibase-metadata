@@ -113,9 +113,7 @@ async def test_wikibase_list_query():
     """Test Wikibase List"""
 
     result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 1}
     )
 
     assert result.errors is None
@@ -187,9 +185,7 @@ async def test_wikibase_list_query_page_two():
     """Test Wikibase List"""
 
     result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY,
-        variable_values={"pageNumber": 2, "pageSize": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LIST_QUERY, variable_values={"pageNumber": 2, "pageSize": 1}
     )
 
     assert result.errors is None

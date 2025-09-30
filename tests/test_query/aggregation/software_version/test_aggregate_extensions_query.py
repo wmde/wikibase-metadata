@@ -43,9 +43,7 @@ async def test_aggregate_extensions_query_page_one():
     """Test Aggregated Extensions Query - 1-5"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 5},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
     )
 
     assert result.errors is None
@@ -115,9 +113,7 @@ async def test_aggregate_extensions_query_page_two():
     """Test Aggregated Extensions Query - 6-10"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY,
-        variable_values={"pageNumber": 2, "pageSize": 5},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 2, "pageSize": 5}
     )
 
     assert result.errors is None
@@ -181,9 +177,7 @@ async def test_aggregate_extensions_query_page_three():
     """Test Aggregated Extensions Query - 11-12"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY,
-        variable_values={"pageNumber": 3, "pageSize": 5},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 3, "pageSize": 5}
     )
 
     assert result.errors is None
@@ -260,7 +254,6 @@ async def test_aggregate_extensions_query_filtered(exclude: list, expected_count
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
         },
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

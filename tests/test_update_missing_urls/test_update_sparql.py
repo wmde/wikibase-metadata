@@ -25,9 +25,7 @@ async def test_update_missing_sparql_urls(mocker):
         mocker.patch("requests.get", side_effect=[MockResponse("", 200, data.read())])
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 2},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 2}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -54,9 +52,7 @@ async def test_update_missing_sparql_urls(mocker):
     assert result == 1
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY,
-        variable_values={"wikibaseId": 2},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 2}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None

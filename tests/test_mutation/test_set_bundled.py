@@ -6,7 +6,7 @@ from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
 
-BUNDLE_SOFTWARE_QUERY = """
+BUNDLE_SOFTWARE_MUTATION = """
 mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
   setExtensionWbsBundled(extensionId: $extensionId, bundled: $bundled)
 }"""
@@ -19,7 +19,7 @@ async def test_set_bundled():
     """Test Set Extension Bundled"""
 
     result = await test_schema.execute(
-        BUNDLE_SOFTWARE_QUERY,
+        BUNDLE_SOFTWARE_MUTATION,
         variable_values={"extensionId": 2},
         context_value=get_mock_context("test-auth-token"),
     )

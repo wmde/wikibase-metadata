@@ -48,9 +48,7 @@ async def test_extension_list_query():
     """Test Extension List"""
 
     result = await test_schema.execute(
-        EXTENSION_LIST_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 10},
-        context_value=get_mock_context("test-auth-token"),
+        EXTENSION_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 10}
     )
 
     assert result.errors is None
@@ -288,9 +286,7 @@ async def test_extension_list_query_parameterized(
     """Test Extension List"""
 
     result = await test_schema.execute(
-        EXTENSION_LIST_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 100},
-        context_value=get_mock_context("test-auth-token"),
+        EXTENSION_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 100}
     )
 
     assert result.errors is None

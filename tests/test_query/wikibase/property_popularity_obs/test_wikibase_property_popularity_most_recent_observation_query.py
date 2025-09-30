@@ -43,7 +43,6 @@ async def test_wikibase_property_popularity_most_recent_observation_query():
     result = await test_schema.execute(
         WIKIBASE_PROPERTY_POPULARITY_MOST_RECENT_OBSERVATION_QUERY,
         variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

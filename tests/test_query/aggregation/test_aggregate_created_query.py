@@ -27,9 +27,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 async def test_aggregate_created_query():
     """Test Aggregate Created Query"""
 
-    result = await test_schema.execute(
-        AGGREGATED_CREATED_QUERY, context_value=get_mock_context("test-auth-token")
-    )
+    result = await test_schema.execute(AGGREGATED_CREATED_QUERY)
 
     assert result.errors is None
     assert result.data is not None
@@ -69,7 +67,6 @@ async def test_aggregate_created_query_filtered(
     result = await test_schema.execute(
         AGGREGATED_CREATED_QUERY,
         variable_values={"wikibaseFilter": {"wikibaseType": {"exclude": exclude}}},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

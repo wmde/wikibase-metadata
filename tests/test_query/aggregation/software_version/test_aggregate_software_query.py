@@ -43,9 +43,7 @@ async def test_aggregate_software_query():
     """Test Aggregated Software Query"""
 
     result = await test_schema.execute(
-        AGGREGATE_SOFTWARE_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 5},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_SOFTWARE_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
     )
 
     assert result.errors is None
@@ -121,7 +119,6 @@ async def test_aggregate_software_query_filtered(exclude: list, expected_count: 
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
         },
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

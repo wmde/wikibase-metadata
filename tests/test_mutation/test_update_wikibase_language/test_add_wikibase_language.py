@@ -10,7 +10,7 @@ from tests.utils import assert_layered_property_value, get_mock_context
 from resolvers import add_wikibase_language
 
 
-ADD_WIKIBASE_LANGUAGE_QUERY = """
+ADD_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {
   addWikibaseLanguage(language: $language, wikibaseId: $wikibaseId)
 }"""
@@ -25,9 +25,7 @@ async def test_add_wikibase_language_one():
     """Add Wikibase Language"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -46,7 +44,7 @@ async def test_add_wikibase_language_one():
     )
 
     add_result = await test_schema.execute(
-        ADD_WIKIBASE_LANGUAGE_QUERY,
+        ADD_WIKIBASE_LANGUAGE_MUTATION,
         variable_values={"wikibaseId": 1, "language": "French"},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -55,9 +53,7 @@ async def test_add_wikibase_language_one():
     assert add_result.data["addWikibaseLanguage"] is True
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
@@ -85,9 +81,7 @@ async def test_add_wikibase_language_two():
     """Add Wikibase Language"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
@@ -110,9 +104,7 @@ async def test_add_wikibase_language_two():
         assert add_result
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None

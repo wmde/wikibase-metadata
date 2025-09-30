@@ -42,9 +42,7 @@ async def test_aggregate_libraries_query_page_one():
     """Test Aggregated Libraries Query - 1-30"""
 
     result = await test_schema.execute(
-        AGGREGATE_LIBRARIES_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 30},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_LIBRARIES_QUERY, variable_values={"pageNumber": 1, "pageSize": 30}
     )
 
     assert result.errors is None
@@ -113,9 +111,7 @@ async def test_aggregate_libraries_query_page_two():
     """Test Aggregated libraries Query - 31-59"""
 
     result = await test_schema.execute(
-        AGGREGATE_LIBRARIES_QUERY,
-        variable_values={"pageNumber": 2, "pageSize": 30},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATE_LIBRARIES_QUERY, variable_values={"pageNumber": 2, "pageSize": 30}
     )
 
     assert result.errors is None
@@ -205,7 +201,6 @@ async def test_aggregate_libraries_query_filtered(exclude: list, expected_count:
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
         },
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

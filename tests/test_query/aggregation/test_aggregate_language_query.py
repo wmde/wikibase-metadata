@@ -41,9 +41,7 @@ async def test_aggregate_languages_query():
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(
-        AGGREGATED_LANGUAGES_QUERY,
-        variable_values={"pageNumber": 1, "pageSize": 10},
-        context_value=get_mock_context("test-auth-token"),
+        AGGREGATED_LANGUAGES_QUERY, variable_values={"pageNumber": 1, "pageSize": 10}
     )
 
     assert result.errors is None
@@ -125,7 +123,6 @@ async def test_aggregate_languages_query_filtered(exclude: list, expected_count:
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
         },
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

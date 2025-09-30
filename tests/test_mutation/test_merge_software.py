@@ -6,7 +6,7 @@ from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
 
-MERGE_SOFTWARE_QUERY = """
+MERGE_SOFTWARE_MUTATION = """
 mutation MyMutation($baseId: Int!, $additionalId: Int!) {
   mergeSoftwareById(baseId: $baseId, additionalId: $additionalId)
 }"""
@@ -19,7 +19,7 @@ async def test_merge_software_by_id_mutation():
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
-        MERGE_SOFTWARE_QUERY,
+        MERGE_SOFTWARE_MUTATION,
         variable_values={"baseId": 1, "additionalId": 3},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -35,7 +35,7 @@ async def test_merge_software_by_id_mutation_fail_same_id():
     """Test Merge Software by ID - Same IDs"""
 
     result = await test_schema.execute(
-        MERGE_SOFTWARE_QUERY,
+        MERGE_SOFTWARE_MUTATION,
         variable_values={"baseId": 1, "additionalId": 1},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -50,7 +50,7 @@ async def test_merge_software_by_id_mutation_fail_not_found():
     """Test Merge Software by ID - Not Found"""
 
     result = await test_schema.execute(
-        MERGE_SOFTWARE_QUERY,
+        MERGE_SOFTWARE_MUTATION,
         variable_values={"baseId": 1, "additionalId": 1000000},
         context_value=get_mock_context("test-auth-token"),
     )
@@ -69,7 +69,7 @@ async def test_merge_software_by_id_mutation_fail_different_types():
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
-        MERGE_SOFTWARE_QUERY,
+        MERGE_SOFTWARE_MUTATION,
         variable_values={"baseId": 1, "additionalId": 4},
         context_value=get_mock_context("test-auth-token"),
     )

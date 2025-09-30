@@ -49,9 +49,7 @@ async def test_wikibase_log_first_month_all_observations_query():
     """Test Wikibase All Log Observations Query"""
 
     result = await test_schema.execute(
-        WIKIBASE_LOG_ALL_OBSERVATIONS_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_LOG_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None

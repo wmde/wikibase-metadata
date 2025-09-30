@@ -51,7 +51,6 @@ async def test_wikibase_property_popularity_all_observations_query():
     result = await test_schema.execute(
         WIKIBASE_PROPERTY_POPULARITY_ALL_OBSERVATIONS_QUERY,
         variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

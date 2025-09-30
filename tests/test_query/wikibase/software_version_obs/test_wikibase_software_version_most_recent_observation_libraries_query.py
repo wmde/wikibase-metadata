@@ -48,7 +48,6 @@ async def test_wikibase_software_version_most_recent_observation_libraries_query
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_LIBRARIES_QUERY,
         variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None

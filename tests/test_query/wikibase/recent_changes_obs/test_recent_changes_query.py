@@ -41,9 +41,7 @@ query MyQuery($wikibaseId: Int!) {
 async def test_wikibase_query_recent_changes_success():
     """Test success scenario"""
     result = await test_schema.execute(
-        WIKIBASE_QUERY,
-        variable_values={"wikibaseId": 1},
-        context_value=get_mock_context("test-auth-token"),
+        WIKIBASE_QUERY, variable_values={"wikibaseId": 1}
     )
 
     assert result.errors is None
