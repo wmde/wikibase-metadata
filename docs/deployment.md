@@ -65,7 +65,7 @@ $ webservice shell
 
 ```bash
 $ scp shell-user@login.toolforge.org:/data/project/wikibase-metadata/wikibase-data.db ~/tmp/wikibase-data.db
-$ scp -o ProxyJump=roti@bastion.wmcloud.org -o ForwardAgent=yes ~/tmp/wikibase-data.db shell-user@wikibase-metadata.wikidata-dev.eqiad1.wikimedia.cloud:/var/local/wikidev/new.db
+$ scp -o ProxyJump=shell-user@bastion.wmcloud.org -o ForwardAgent=yes ~/tmp/wikibase-data.db shell-user@wikibase-metadata.wikidata-dev.eqiad1.wikimedia.cloud:/var/local/wikidev/new.db
 ```
 
 Move new db into place. **TAKE CARE TO BACKUP THE OLD DB!**
