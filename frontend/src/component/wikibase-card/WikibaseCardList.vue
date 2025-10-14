@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import WikibaseCard from '@/component/WikibaseCard.vue'
+import WikibaseCard from '@/component/wikibase-card/WikibaseCard.vue'
 import { useWikiStore } from '@/stores/wikibase-page'
 import { computed } from 'vue'
 
@@ -26,5 +26,6 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
   flex-flow: row wrap;
   gap: 6px;
   justify-content: space-evenly;
+align-items: stretch;
 }
 </style>
