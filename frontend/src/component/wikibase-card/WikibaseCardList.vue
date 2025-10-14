@@ -13,19 +13,19 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
 </script>
 
 <template>
-  <p v-if="error">Error</p>
-  <p v-if="loading">Loading</p>
-  <p>Count: <LocaleNumber :stat="count" /></p>
-  <div v-if="wikibases" class="wikibase-card-container">
-    <WikibaseCard v-for="(wikibase, index) in wikibases" :key="index" :wikibase="wikibase" />
-  </div>
+	<p v-if="error">Error</p>
+	<p v-if="loading">Loading</p>
+	<p>Count: <LocaleNumber :stat="count" /></p>
+	<div v-if="wikibases" class="wikibase-card-container">
+		<WikibaseCard v-for="(wikibase, index) in wikibases" :key="index" :wikibase="wikibase" />
+	</div>
 </template>
 
 <style lang="css">
 .wikibase-card-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  align-items: stretch;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-evenly;
+	align-items: stretch;
 }
 </style>

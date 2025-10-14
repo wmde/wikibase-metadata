@@ -9,8 +9,8 @@ const loaded = ref(false)
 const error = ref(false)
 
 image.onload = () => {
-  loaded.value = true
-  error.value = false
+	loaded.value = true
+	error.value = false
 }
 image.onerror = () => (error.value = true)
 
@@ -18,12 +18,12 @@ onBeforeMount(() => (image.src = faviconUrl.value))
 </script>
 
 <template>
-  <v-img v-if="loaded && !error" class="wikibase-icon" :src="image.src" />
+	<v-img v-if="loaded && !error" class="wikibase-icon" :src="image.src" />
 </template>
 
 <style lang="css">
 .wikibase-icon {
-  max-width: 20px;
-  max-height: 20px;
+	max-width: 20px;
+	max-height: 20px;
 }
 </style>

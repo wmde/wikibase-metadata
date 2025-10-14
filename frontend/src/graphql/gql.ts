@@ -14,11 +14,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  '\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    title\n    description\n    urls {\n      baseUrl\n    }\n    wikibaseType\n    quantityObservations {\n      mostRecent {\n        totalTriples\n      }\n    }\n    recentChangesObservations {\n      mostRecent {\n        botChangeCount\n        humanChangeCount\n      }\n    }\n  }\n': typeof types.PageWikibasesDocument
+	'\n\tquery PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n\t\twikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n\t\t\tmeta {\n\t\t\t\ttotalCount\n\t\t\t}\n\t\t\tdata {\n\t\t\t\t...WB\n\t\t\t}\n\t\t}\n\t}\n\n\tfragment WB on Wikibase {\n\t\tid\n\t\ttitle\n\t\tdescription\n\t\turls {\n\t\t\tbaseUrl\n\t\t}\n\t\twikibaseType\n\t\tquantityObservations {\n\t\t\tmostRecent {\n\t\t\t\ttotalTriples\n\t\t\t}\n\t\t}\n\t\trecentChangesObservations {\n\t\t\tmostRecent {\n\t\t\t\tbotChangeCount\n\t\t\t\thumanChangeCount\n\t\t\t}\n\t\t}\n\t}\n': typeof types.PageWikibasesDocument
 }
 const documents: Documents = {
-  '\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    title\n    description\n    urls {\n      baseUrl\n    }\n    wikibaseType\n    quantityObservations {\n      mostRecent {\n        totalTriples\n      }\n    }\n    recentChangesObservations {\n      mostRecent {\n        botChangeCount\n        humanChangeCount\n      }\n    }\n  }\n':
-    types.PageWikibasesDocument
+	'\n\tquery PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n\t\twikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n\t\t\tmeta {\n\t\t\t\ttotalCount\n\t\t\t}\n\t\t\tdata {\n\t\t\t\t...WB\n\t\t\t}\n\t\t}\n\t}\n\n\tfragment WB on Wikibase {\n\t\tid\n\t\ttitle\n\t\tdescription\n\t\turls {\n\t\t\tbaseUrl\n\t\t}\n\t\twikibaseType\n\t\tquantityObservations {\n\t\t\tmostRecent {\n\t\t\t\ttotalTriples\n\t\t\t}\n\t\t}\n\t\trecentChangesObservations {\n\t\t\tmostRecent {\n\t\t\t\tbotChangeCount\n\t\t\t\thumanChangeCount\n\t\t\t}\n\t\t}\n\t}\n':
+		types.PageWikibasesDocument
 }
 
 /**
@@ -39,12 +39,12 @@ export function gql(source: string): unknown
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    title\n    description\n    urls {\n      baseUrl\n    }\n    wikibaseType\n    quantityObservations {\n      mostRecent {\n        totalTriples\n      }\n    }\n    recentChangesObservations {\n      mostRecent {\n        botChangeCount\n        humanChangeCount\n      }\n    }\n  }\n'
-): (typeof documents)['\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    title\n    description\n    urls {\n      baseUrl\n    }\n    wikibaseType\n    quantityObservations {\n      mostRecent {\n        totalTriples\n      }\n    }\n    recentChangesObservations {\n      mostRecent {\n        botChangeCount\n        humanChangeCount\n      }\n    }\n  }\n']
+	source: '\n\tquery PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n\t\twikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n\t\t\tmeta {\n\t\t\t\ttotalCount\n\t\t\t}\n\t\t\tdata {\n\t\t\t\t...WB\n\t\t\t}\n\t\t}\n\t}\n\n\tfragment WB on Wikibase {\n\t\tid\n\t\ttitle\n\t\tdescription\n\t\turls {\n\t\t\tbaseUrl\n\t\t}\n\t\twikibaseType\n\t\tquantityObservations {\n\t\t\tmostRecent {\n\t\t\t\ttotalTriples\n\t\t\t}\n\t\t}\n\t\trecentChangesObservations {\n\t\t\tmostRecent {\n\t\t\t\tbotChangeCount\n\t\t\t\thumanChangeCount\n\t\t\t}\n\t\t}\n\t}\n'
+): (typeof documents)['\n\tquery PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n\t\twikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n\t\t\tmeta {\n\t\t\t\ttotalCount\n\t\t\t}\n\t\t\tdata {\n\t\t\t\t...WB\n\t\t\t}\n\t\t}\n\t}\n\n\tfragment WB on Wikibase {\n\t\tid\n\t\ttitle\n\t\tdescription\n\t\turls {\n\t\t\tbaseUrl\n\t\t}\n\t\twikibaseType\n\t\tquantityObservations {\n\t\t\tmostRecent {\n\t\t\t\ttotalTriples\n\t\t\t}\n\t\t}\n\t\trecentChangesObservations {\n\t\t\tmostRecent {\n\t\t\t\tbotChangeCount\n\t\t\t\thumanChangeCount\n\t\t\t}\n\t\t}\n\t}\n']
 
 export function gql(source: string) {
-  return (documents as any)[source] ?? {}
+	return (documents as any)[source] ?? {}
 }
 
 export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
-  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never
+	TDocumentNode extends DocumentNode<infer TType, any> ? TType : never

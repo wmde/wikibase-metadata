@@ -6,10 +6,7 @@ import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import App from './App.vue'
 
-const vuetify = createVuetify({
-  components,
-  directives
-})
+const vuetify = createVuetify({ components, directives })
 
 const app = createApp(App)
 
