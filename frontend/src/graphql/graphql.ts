@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = T | null | undefined
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -1201,3 +1202,115 @@ export type WikibaseYearCreatedAggregate = {
   /** Year of First Log */
   year: Scalars['Union']['output']
 }
+
+export type PageWikibasesQueryVariables = Exact<{
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}>
+
+export type PageWikibasesQuery = {
+  __typename?: 'Query'
+  wikibaseList: {
+    __typename?: 'WikibasePage'
+    meta: { __typename?: 'PageMetadata'; totalCount: any }
+    data: Array<{
+      __typename?: 'Wikibase'
+      id: string
+      wikibaseType?: WikibaseType | null
+      urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+    }>
+  }
+}
+
+export const PageWikibasesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'pageWikibases' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+          }
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseFilterInput' } }
+        }
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'wikibaseList' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'wikibaseFilter' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pageNumber' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pageSize' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } }
+              }
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'meta' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalCount' } }]
+                  }
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'data' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'urls' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+                        }
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<PageWikibasesQuery, PageWikibasesQueryVariables>

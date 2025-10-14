@@ -1198,3 +1198,23 @@ export type WikibaseYearCreatedAggregate = {
   /** Year of First Log */
   year: Scalars['Union']['output']
 }
+
+export type PageWikibasesQueryVariables = Exact<{
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}>
+
+export type PageWikibasesQuery = {
+  __typename?: 'Query'
+  wikibaseList: {
+    __typename?: 'WikibasePage'
+    meta: { __typename?: 'PageMetadata'; totalCount: any }
+    data: Array<{
+      __typename?: 'Wikibase'
+      id: string
+      wikibaseType?: WikibaseType | null
+      urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+    }>
+  }
+}
