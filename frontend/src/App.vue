@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppHeader from '@/component/AppHeader.vue';
-import WikibaseListTabs from '@/component/WikibaseListTabs.vue';
+import AppHeader from '@/component/AppHeader.vue'
+import WikibaseListTabs from '@/component/WikibaseListTabs.vue'
 </script>
 
 <template>

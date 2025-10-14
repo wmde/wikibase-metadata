@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import img from '@/media/icon/wikibase_symbol_RGB.png';
+import img from '@/media/icon/wikibase_symbol_RGB.png'
 </script>
 
 <template>
   <v-container class="pa-1 header">
-    <v-container class="ma-0 pa-0 icon"><v-img :src="img" eager  /></v-container>
+    <v-container class="ma-0 pa-0 icon"><v-img :src="img" eager /></v-container>
     <v-container class="ma-0 pa-0 title">Suite Scraper</v-container>
   </v-container>
 </template>

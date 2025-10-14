@@ -45,6 +45,7 @@ const editCount = computed(() =>
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+  max-width: 500px;
 }
 .card-header {
   display: flex;
