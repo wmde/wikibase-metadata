@@ -1221,8 +1221,22 @@ export type PageWikibasesQuery = {
 export type WbFragment = {
   __typename?: 'Wikibase'
   id: string
+  title: string
+  description?: string | null
   wikibaseType?: WikibaseType | null
   urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+  quantityObservations: {
+    __typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+    mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+  }
+  recentChangesObservations: {
+    __typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
+    mostRecent?: {
+      __typename?: 'WikibaseRecentChangesObservation'
+      botChangeCount?: any | null
+      humanChangeCount?: any | null
+    } | null
+  }
 } & { ' $fragmentName'?: 'WbFragment' }
 
 export const WbFragmentDoc = {
@@ -1236,6 +1250,8 @@ export const WbFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'urls' },
@@ -1244,7 +1260,44 @@ export const WbFragmentDoc = {
               selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
             }
           },
-          { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } }
+          { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'quantityObservations' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'mostRecent' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'recentChangesObservations' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'mostRecent' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         ]
       }
     }
@@ -1336,6 +1389,8 @@ export const PageWikibasesDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'description' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'urls' },
@@ -1344,7 +1399,44 @@ export const PageWikibasesDocument = {
               selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
             }
           },
-          { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } }
+          { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'quantityObservations' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'mostRecent' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'recentChangesObservations' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'mostRecent' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         ]
       }
     }

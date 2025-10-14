@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import WikibaseCardList from '@/component/WikibaseCardList.vue'
 import WikibaseTable from '@/component/WikibaseTable.vue'
-import { ref } from 'vue'
+import { useWikiStore } from '@/stores/wikibase-page'
+import { onBeforeMount, ref } from 'vue'
 
-const tab = ref()
+const store = useWikiStore()
+onBeforeMount(() => store.fetchWikibasePage())
+
+const tab = ref('table')
 </script>
 
 <template>

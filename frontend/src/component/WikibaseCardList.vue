@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import WikibaseCard from '@/component/WikibaseCard.vue'
 import { useWikiStore } from '@/stores/wikibase-page'
-import { computed, onBeforeMount } from 'vue'
+import { computed } from 'vue'
 
 const store = useWikiStore()
-onBeforeMount(() => store.fetchWikibasePage())
 
 const error = computed(() => store.wikibasePage.errorState)
 const loading = computed(() => store.wikibasePage.loading)

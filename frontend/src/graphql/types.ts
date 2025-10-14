@@ -1213,8 +1213,25 @@ export type PageWikibasesQuery = {
     data: Array<{
       __typename?: 'Wikibase'
       id: string
+      title: string
+      description?: string | null
       wikibaseType?: WikibaseType | null
       urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+      quantityObservations: {
+        __typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+        mostRecent?: {
+          __typename?: 'WikibaseQuantityObservation'
+          totalTriples?: any | null
+        } | null
+      }
+      recentChangesObservations: {
+        __typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
+        mostRecent?: {
+          __typename?: 'WikibaseRecentChangesObservation'
+          botChangeCount?: any | null
+          humanChangeCount?: any | null
+        } | null
+      }
     }>
   }
 }
@@ -1222,6 +1239,20 @@ export type PageWikibasesQuery = {
 export type WbFragment = {
   __typename?: 'Wikibase'
   id: string
+  title: string
+  description?: string | null
   wikibaseType?: WikibaseType | null
   urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+  quantityObservations: {
+    __typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+    mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+  }
+  recentChangesObservations: {
+    __typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
+    mostRecent?: {
+      __typename?: 'WikibaseRecentChangesObservation'
+      botChangeCount?: any | null
+      humanChangeCount?: any | null
+    } | null
+  }
 }

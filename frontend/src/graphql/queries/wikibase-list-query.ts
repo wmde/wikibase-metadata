@@ -14,9 +14,22 @@ export const pageWikibasesQuery = gql`
 
   fragment WB on Wikibase {
     id
+    title
+    description
     urls {
       baseUrl
     }
     wikibaseType
+    quantityObservations {
+      mostRecent {
+        totalTriples
+      }
+    }
+    recentChangesObservations {
+      mostRecent {
+        botChangeCount
+        humanChangeCount
+      }
+    }
   }
 `
