@@ -30,10 +30,10 @@ COPY requirements-dev.txt ./requirements-dev.txt
 RUN pip install --no-cache-dir -r requirements-dev.txt
 
 # Run Database Update
-RUN alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head
+RUN alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head >> logs/startup/alembic.log
 
 # Check Database (Great) Expectations
-RUN pytest -m data
+RUN pytest -m data >> logs/startup/db-test.log
 
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
@@ -42,11 +42,11 @@ COPY . .
 COPY --from=frontend-builder /app/dist ./dist
 
 # Create a directory for logs TODO: do not write to container file system
-RUN mkdir /app/logs
+# RUN mkdir /app/logs
 
 # Security: run as non-root
 RUN useradd -u 10001 -m appuser
-RUN chown 10001 /app/logs
+# RUN chown 10001 /app/logs
 USER appuser
 
 # Expose the backend port
