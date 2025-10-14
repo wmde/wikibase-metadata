@@ -5,11 +5,11 @@ defineProps<{ wikibase: WbFragment }>()
 </script>
 
 <template>
-  <div class="wikibase-card">
+  <v-card variant="outlined" class="wikibase-card">
     <p>Id: {{ wikibase.id }}</p>
     <p>Type: {{ wikibase.wikibaseType }}</p>
     <p>URL: {{ wikibase.urls.baseUrl }}</p>
-  </div>
+  </v-card>
 </template>
 
 <style lang="css" scoped></style>

@@ -22,7 +22,8 @@
     "@vue/apollo-composable": "^4.2.2",
     "graphql": "^16.11.0",
     "pinia": "^3.0.3",
-    "vue": "^3.5.22"
+    "vue": "^3.5.22",
+    "vuetify": "^3.10.5"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^6.0.0",

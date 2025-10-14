@@ -21,4 +21,11 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
   </div>
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css">
+.wikibase-card-container {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 6px;
+  justify-content: space-evenly;
+}
+</style>

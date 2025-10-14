@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import WikibaseCardList from './component/WikibaseCardList.vue'
+import WikibaseListTabs from '@/component/WikibaseListTabs.vue'
 </script>
 
 <template>
-  <WikibaseCardList />
+  <WikibaseListTabs />
 </template>
 
 <style scoped></style>
