@@ -25,7 +25,6 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
 .wikibase-card-container {
   display: flex;
   flex-flow: row wrap;
-  gap: 6px;
   justify-content: space-evenly;
   align-items: stretch;
 }
