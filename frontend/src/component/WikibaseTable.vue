@@ -19,18 +19,16 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
       <tr>
         <th>Type</th>
         <th>Title</th>
-        <th>Description</th>
-        <th>URL</th>
         <th>Triples</th>
         <th>Edits</th>
+        <th>URL</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(wikibase, index) in wikibases" :key="index">
         <td>{{ wikibase.wikibaseType }}</td>
         <td>{{ wikibase.title }}</td>
-        <td>{{ wikibase.description }}</td>
-        <td>{{ wikibase.urls.baseUrl }}</td>
         <td>{{ wikibase.quantityObservations.mostRecent?.totalTriples }}</td>
         <td>
           <template
@@ -45,6 +43,8 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
             }}
           </template>
         </td>
+        <td>{{ wikibase.urls.baseUrl }}</td>
+        <td>{{ wikibase.description }}</td>
       </tr>
     </tbody>
   </v-table>
