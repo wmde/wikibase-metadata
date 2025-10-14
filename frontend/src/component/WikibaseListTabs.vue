@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WikibaseCardList from '@/component/wikibase-card/WikibaseCardList.vue'
 import WikibaseTable from '@/component/WikibaseTable.vue'
-import { useWikiStore } from '@/stores/wikibase-page'
+import { useWikiStore } from '@/stores/wikibase-page-store'
 import { onBeforeMount, ref } from 'vue'
 
 const store = useWikiStore()

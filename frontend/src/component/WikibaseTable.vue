@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useWikiStore } from '@/stores/wikibase-page'
+import { useWikiStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 import LocaleNumber from './LocaleNumber.vue'
 

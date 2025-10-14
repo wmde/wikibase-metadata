@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LocaleNumber from '@/component/LocaleNumber.vue'
 import WikibaseCard from '@/component/wikibase-card/WikibaseCard.vue'
-import { useWikiStore } from '@/stores/wikibase-page'
+import { useWikiStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
 const store = useWikiStore()
