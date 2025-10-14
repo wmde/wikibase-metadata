@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useWikiStore } from '@/stores/wikibase-page'
 import { computed } from 'vue'
+import LocaleNumber from './LocaleNumber.vue'
 
 const store = useWikiStore()
 
@@ -13,7 +14,7 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
 <template>
   <p v-if="error">Error</p>
   <p v-if="loading">Loading</p>
-  <p>Count: {{ count }}</p>
+  <p>Count: <LocaleNumber :stat="count" /></p>
   <v-table v-if="wikibases" striped="even" :height="800" fixed-header fixed-footer>
     <thead>
       <tr>
@@ -29,19 +30,17 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
       <tr v-for="(wikibase, index) in wikibases" :key="index">
         <td>{{ wikibase.wikibaseType }}</td>
         <td>{{ wikibase.title }}</td>
-        <td>{{ wikibase.quantityObservations.mostRecent?.totalTriples }}</td>
+        <td><LocaleNumber :stat="wikibase.quantityObservations.mostRecent?.totalTriples" /></td>
         <td>
-          <template
-            v-if="
+          <LocaleNumber
+            :stat="
               wikibase.recentChangesObservations.mostRecent?.botChangeCount != undefined ||
               wikibase.recentChangesObservations.mostRecent?.humanChangeCount != undefined
+                ? (wikibase.recentChangesObservations.mostRecent?.botChangeCount ?? 0) +
+                  (wikibase.recentChangesObservations.mostRecent?.humanChangeCount ?? 0)
+                : undefined
             "
-          >
-            {{
-              (wikibase.recentChangesObservations.mostRecent?.botChangeCount ?? 0) +
-              (wikibase.recentChangesObservations.mostRecent?.humanChangeCount ?? 0)
-            }}
-          </template>
+          />
         </td>
         <td>{{ wikibase.urls.baseUrl }}</td>
         <td>{{ wikibase.description }}</td>
