@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import WikibaseListTabs from '@/component/WikibaseListTabs.vue'
+import Header from '@/component/Header.vue';
+import WikibaseListTabs from '@/component/WikibaseListTabs.vue';
 </script>
 
 <template>
-  <WikibaseListTabs />
+  <v-container class="pa-0">
+    <Header />
+    <WikibaseListTabs />
+  </v-container>
 </template>
 
 <style scoped></style>
