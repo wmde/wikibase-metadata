@@ -14,10 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  '\n  query pageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        id\n        urls {\n          baseUrl\n        }\n        wikibaseType\n      }\n    }\n  }\n': typeof types.PageWikibasesDocument
+  '\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    urls {\n      baseUrl\n    }\n    wikibaseType\n  }\n': typeof types.PageWikibasesDocument
 }
 const documents: Documents = {
-  '\n  query pageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        id\n        urls {\n          baseUrl\n        }\n        wikibaseType\n      }\n    }\n  }\n':
+  '\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    urls {\n      baseUrl\n    }\n    wikibaseType\n  }\n':
     types.PageWikibasesDocument
 }
 
@@ -39,8 +39,8 @@ export function gql(source: string): unknown
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  query pageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        id\n        urls {\n          baseUrl\n        }\n        wikibaseType\n      }\n    }\n  }\n'
-): (typeof documents)['\n  query pageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        id\n        urls {\n          baseUrl\n        }\n        wikibaseType\n      }\n    }\n  }\n']
+  source: '\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    urls {\n      baseUrl\n    }\n    wikibaseType\n  }\n'
+): (typeof documents)['\n  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {\n    wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {\n      meta {\n        totalCount\n      }\n      data {\n        ...WB\n      }\n    }\n  }\n\n  fragment WB on Wikibase {\n    id\n    urls {\n      baseUrl\n    }\n    wikibaseType\n  }\n']
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {}

@@ -1214,22 +1214,49 @@ export type PageWikibasesQuery = {
   wikibaseList: {
     __typename?: 'WikibasePage'
     meta: { __typename?: 'PageMetadata'; totalCount: any }
-    data: Array<{
-      __typename?: 'Wikibase'
-      id: string
-      wikibaseType?: WikibaseType | null
-      urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
-    }>
+    data: Array<{ __typename?: 'Wikibase' } & { ' $fragmentRefs'?: { WbFragment: WbFragment } }>
   }
 }
 
+export type WbFragment = {
+  __typename?: 'Wikibase'
+  id: string
+  wikibaseType?: WikibaseType | null
+  urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+} & { ' $fragmentName'?: 'WbFragment' }
+
+export const WbFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'WB' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'urls' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+            }
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } }
+        ]
+      }
+    }
+  ]
+} as unknown as DocumentNode<WbFragment, unknown>
 export const PageWikibasesDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'pageWikibases' },
+      name: { kind: 'Name', value: 'PageWikibases' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -1292,23 +1319,32 @@ export const PageWikibasesDocument = {
                   name: { kind: 'Name', value: 'data' },
                   selectionSet: {
                     kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'urls' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
-                        }
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } }
-                    ]
+                    selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'WB' } }]
                   }
                 }
               ]
             }
           }
+        ]
+      }
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'WB' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'urls' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+            }
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } }
         ]
       }
     }

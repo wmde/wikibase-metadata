@@ -1,18 +1,22 @@
 import gql from 'graphql-tag'
 
 export const pageWikibasesQuery = gql`
-  query pageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+  query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
     wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {
       meta {
         totalCount
       }
       data {
-        id
-        urls {
-          baseUrl
-        }
-        wikibaseType
+        ...WB
       }
     }
+  }
+
+  fragment WB on Wikibase {
+    id
+    urls {
+      baseUrl
+    }
+    wikibaseType
   }
 `

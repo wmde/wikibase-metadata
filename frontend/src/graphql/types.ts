@@ -1218,3 +1218,10 @@ export type PageWikibasesQuery = {
     }>
   }
 }
+
+export type WbFragment = {
+  __typename?: 'Wikibase'
+  id: string
+  wikibaseType?: WikibaseType | null
+  urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+}
