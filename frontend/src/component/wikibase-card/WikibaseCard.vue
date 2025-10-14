@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { WbFragment } from '@/graphql/types';
-import { computed } from 'vue';
-import WikibaseCardStatBlock from './WikibaseCardStatBlock.vue';
+import type { WbFragment } from '@/graphql/types'
+import { computed } from 'vue'
+import WikibaseCardStatBlock from './WikibaseCardStatBlock.vue'
 
 const props = defineProps<{ wikibase: WbFragment }>()
 const editCount = computed(() =>
@@ -36,12 +36,12 @@ const editCount = computed(() =>
 .wikibase-card {
   display: flex;
   flex-flow: column nowrap;
-justify-content: space-between;
+  justify-content: space-between;
 }
 .card-header {
   display: flex;
   flex-flow: row nowrap;
-  gap: 12px
+  gap: 12px;
 }
 .wikibase-type {
   width: auto;
