@@ -9,9 +9,11 @@ import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 provideApolloClient(apolloClient)
+
+type PageSizeValues = 10 | 25 | 50 | 100 | 250 | 500 | 1000
 
 const { load, onResult, loading, error } = useLazyQuery<
   PageWikibasesQuery,
@@ -28,17 +30,36 @@ export const useWikiStore = defineStore('wiki-list', () => {
     errorState: error.value ? true : false
   }))
 
-  const pageSize = 100
   const pageNumber = ref(1)
+  const setPageNumber = (i: number) => (pageNumber.value = i)
+
+  const pageSize = ref<PageSizeValues>(100)
+  const setPageSize = (i: PageSizeValues) => (pageSize.value = i)
+
   const wikibaseFilter = ref<WikibaseFilterInput>({
     wikibaseType: { exclude: [WikibaseType.Test] }
   })
+  const excludeWikibaseTypes = (t: WikibaseType[]) =>
+    (wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { exclude: t } })
+
   const fetchWikibasePage = () =>
     load(pageWikibasesQuery, {
       pageNumber: pageNumber.value,
-      pageSize,
+      pageSize: pageSize.value,
       wikibaseFilter: wikibaseFilter.value
     })
+  watch(pageNumber, () => fetchWikibasePage())
+  watch(pageSize, () => fetchWikibasePage())
+  watch(wikibaseFilter, () => fetchWikibasePage())
 
-  return { fetchWikibasePage, wikibasePage }
+  return {
+    fetchWikibasePage,
+    wikibasePage,
+    pageNumber: pageNumber.value,
+    setPageNumber,
+    pageSize: pageSize.value,
+    setPageSize,
+    wikibaseFilter: wikibaseFilter.value,
+    excludeWikibaseTypes
+  }
 })
