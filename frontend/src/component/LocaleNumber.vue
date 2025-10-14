@@ -4,6 +4,7 @@ defineProps<{ stat: number | undefined }>()
 
 <template>
   <template v-if="stat != undefined">{{ stat.toLocaleString() }}</template>
+  <template v-else>&#151;</template>
 </template>
 
 <style lang="css"></style>

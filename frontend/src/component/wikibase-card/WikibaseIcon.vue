@@ -14,9 +14,7 @@ image.onload = () => {
 }
 image.onerror = () => (error.value = true)
 
-onBeforeMount(() => {
-  image.src = faviconUrl.value
-})
+onBeforeMount(() => (image.src = faviconUrl.value))
 </script>
 
 <template>
