@@ -13,11 +13,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Create a directory for logs TODO: do not write to container file system
-RUN mkdir /app/logs
+# RUN mkdir /app/logs
 
 # Security: run as non-root
 RUN useradd -u 10001 -m appuser
-RUN chown 10001 /app/logs
+# RUN chown 10001 /app/logs
 USER appuser
 
 # Expose the backend port
