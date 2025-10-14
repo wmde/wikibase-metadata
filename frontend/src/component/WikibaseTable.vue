@@ -14,10 +14,9 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
 			<tr>
 				<th>Type</th>
 				<th>Title</th>
+				<th>URL</th>
 				<th>Triples</th>
 				<th>Edits</th>
-				<th>URL</th>
-				<th>Description</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,6 +25,7 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
 					{{ wikibase.wikibaseType }}
 				</td>
 				<td>{{ wikibase.title }}</td>
+				<td>{{ wikibase.urls.baseUrl }}</td>
 				<td><LocaleNumber :stat="wikibase.quantityObservations.mostRecent?.totalTriples" /></td>
 				<td>
 					<LocaleNumber
@@ -38,8 +38,6 @@ const wikibases = computed(() => store.wikibasePage.data?.wikibaseList.data)
 						"
 					/>
 				</td>
-				<td>{{ wikibase.urls.baseUrl }}</td>
-				<td>{{ wikibase.description }}</td>
 			</tr>
 		</tbody>
 	</v-table>
