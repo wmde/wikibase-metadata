@@ -1,381 +1,350 @@
 /* eslint-disable */
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = T | null | undefined;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Maybe<T> = T | null
+export type InputMaybe<T> = T | null | undefined
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never
+}
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+  ID: { input: string; output: string }
+  String: { input: string; output: string }
+  Boolean: { input: boolean; output: boolean }
+  Int: { input: number; output: number }
+  Float: { input: number; output: number }
   /** Date with time (isoformat) */
-  DateTime: { input: any; output: any; }
+  DateTime: { input: any; output: any }
   /** BigInt field */
-  Union: { input: any; output: any; }
-};
+  Union: { input: any; output: any }
+}
 
 export type BulkTaskResult = {
-  __typename?: 'BulkTaskResult';
-  failure: Scalars['Int']['output'];
-  success: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
+  __typename?: 'BulkTaskResult'
+  failure: Scalars['Int']['output']
+  success: Scalars['Int']['output']
+  total: Scalars['Int']['output']
+}
 
 export type Mutation = {
-  __typename?: 'Mutation';
+  __typename?: 'Mutation'
   /** Add Wikibase */
-  addWikibase: Wikibase;
+  addWikibase: Wikibase
   /** Add Language to Wikibase */
-  addWikibaseLanguage: Scalars['Boolean']['output'];
+  addWikibaseLanguage: Scalars['Boolean']['output']
   /** Fetch Connectivity Data from Specified Wikibase Instance */
-  fetchConnectivityData: Scalars['Boolean']['output'];
+  fetchConnectivityData: Scalars['Boolean']['output']
   /** Fetch External Identifier Data from Specified Wikibase Instance */
-  fetchExternalIdentifierData: Scalars['Boolean']['output'];
+  fetchExternalIdentifierData: Scalars['Boolean']['output']
   /** Fetch Log Data from Specified Wikibase Instance */
-  fetchLogData: Scalars['Boolean']['output'];
+  fetchLogData: Scalars['Boolean']['output']
   /** Fetch Property Popularity from Specified Wikibase Instance */
-  fetchPropertyPopularityData: Scalars['Boolean']['output'];
+  fetchPropertyPopularityData: Scalars['Boolean']['output']
   /** Fetch Quantity Data from Specified Wikibase Instance */
-  fetchQuantityData: Scalars['Boolean']['output'];
+  fetchQuantityData: Scalars['Boolean']['output']
   /** Fetch Recent Changes Data from Specified Wikibase Instance */
-  fetchRecentChangesData: Scalars['Boolean']['output'];
+  fetchRecentChangesData: Scalars['Boolean']['output']
   /** Fetch Special:Statistics Data */
-  fetchStatisticsData: Scalars['Boolean']['output'];
+  fetchStatisticsData: Scalars['Boolean']['output']
   /** Fetch Time to First Value Data from Specified Wikibase Instance */
-  fetchTimeToFirstValueData: Scalars['Boolean']['output'];
+  fetchTimeToFirstValueData: Scalars['Boolean']['output']
   /** Fetch User Data from Specified Wikibase Instance */
-  fetchUserData: Scalars['Boolean']['output'];
+  fetchUserData: Scalars['Boolean']['output']
   /** Scrape data from Special:Version page */
-  fetchVersionData: Scalars['Boolean']['output'];
+  fetchVersionData: Scalars['Boolean']['output']
   /** Merge Software */
-  mergeSoftwareById: Scalars['Boolean']['output'];
+  mergeSoftwareById: Scalars['Boolean']['output']
   /** Remove Language from Wikibase */
-  removeWikibaseLanguage: Scalars['Boolean']['output'];
+  removeWikibaseLanguage: Scalars['Boolean']['output']
   /** Remove URL from Wikibase */
-  removeWikibaseUrl: Scalars['Boolean']['output'];
+  removeWikibaseUrl: Scalars['Boolean']['output']
   /** Set Extension Bundled with WBS */
-  setExtensionWbsBundled: Scalars['Boolean']['output'];
+  setExtensionWbsBundled: Scalars['Boolean']['output']
   /** Fetch Connectivity Data from All Wikibase Instances */
-  updateAllConnectivityData: BulkTaskResult;
+  updateAllConnectivityData: BulkTaskResult
   /** Fetch External Identifier Data from All Wikibase Instances */
-  updateAllExternalIdentifierData: BulkTaskResult;
+  updateAllExternalIdentifierData: BulkTaskResult
   /** Fetch Log Data from All Wikibase Instances */
-  updateAllLogData: BulkTaskResult;
+  updateAllLogData: BulkTaskResult
   /** Fetch Property Popularity from All Wikibase Instances */
-  updateAllPropertyPopularityData: BulkTaskResult;
+  updateAllPropertyPopularityData: BulkTaskResult
   /** Fetch Quantity Data from All Wikibase Instances */
-  updateAllQuantityData: BulkTaskResult;
+  updateAllQuantityData: BulkTaskResult
   /** Fetch Recent Changes Data from All Wikibase Instances */
-  updateAllRecentChangesData: BulkTaskResult;
+  updateAllRecentChangesData: BulkTaskResult
   /** Fetch Special:Statistics Data for All Wikibase Instances */
-  updateAllStatisticsData: BulkTaskResult;
+  updateAllStatisticsData: BulkTaskResult
   /** Fetch Time to First Value Data from All Wikibase Instances */
-  updateAllTimeToFirstValueData: BulkTaskResult;
+  updateAllTimeToFirstValueData: BulkTaskResult
   /** Fetch User Data from All Wikibase Instances */
-  updateAllUserData: BulkTaskResult;
+  updateAllUserData: BulkTaskResult
   /** Scrape data from Special:Version page for All Wikibase Instances */
-  updateAllVersionData: BulkTaskResult;
+  updateAllVersionData: BulkTaskResult
   /** Update the list of known Wikibase Cloud instances from API */
-  updateCloudInstances: Scalars['Boolean']['output'];
+  updateCloudInstances: Scalars['Boolean']['output']
   /** Update Wikibase Primary Language */
-  updateWikibasePrimaryLanguage: Scalars['Boolean']['output'];
+  updateWikibasePrimaryLanguage: Scalars['Boolean']['output']
   /** Update Wikibase Type */
-  updateWikibaseType: Scalars['Boolean']['output'];
+  updateWikibaseType: Scalars['Boolean']['output']
   /** Add / Update Wikibase URL */
-  upsertWikibaseUrl: Scalars['Boolean']['output'];
-};
-
+  upsertWikibaseUrl: Scalars['Boolean']['output']
+}
 
 export type MutationAddWikibaseArgs = {
-  wikibaseInput: WikibaseInput;
-};
-
+  wikibaseInput: WikibaseInput
+}
 
 export type MutationAddWikibaseLanguageArgs = {
-  language: Scalars['String']['input'];
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  language: Scalars['String']['input']
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchConnectivityDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchExternalIdentifierDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchLogDataArgs = {
-  firstMonth: Scalars['Boolean']['input'];
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  firstMonth: Scalars['Boolean']['input']
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchPropertyPopularityDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchQuantityDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchRecentChangesDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchStatisticsDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchTimeToFirstValueDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchUserDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationFetchVersionDataArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationMergeSoftwareByIdArgs = {
-  additionalId: Scalars['Int']['input'];
-  baseId: Scalars['Int']['input'];
-};
-
+  additionalId: Scalars['Int']['input']
+  baseId: Scalars['Int']['input']
+}
 
 export type MutationRemoveWikibaseLanguageArgs = {
-  language: Scalars['String']['input'];
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  language: Scalars['String']['input']
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationRemoveWikibaseUrlArgs = {
-  urlType: WikibaseUrlType;
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  urlType: WikibaseUrlType
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationSetExtensionWbsBundledArgs = {
-  bundled?: Scalars['Boolean']['input'];
-  extensionId: Scalars['Int']['input'];
-};
-
+  bundled?: Scalars['Boolean']['input']
+  extensionId: Scalars['Int']['input']
+}
 
 export type MutationUpdateAllLogDataArgs = {
-  firstMonth: Scalars['Boolean']['input'];
-};
-
+  firstMonth: Scalars['Boolean']['input']
+}
 
 export type MutationUpdateWikibasePrimaryLanguageArgs = {
-  language: Scalars['String']['input'];
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  language: Scalars['String']['input']
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type MutationUpdateWikibaseTypeArgs = {
-  wikibaseId: Scalars['Int']['input'];
-  wikibaseType?: InputMaybe<WikibaseType>;
-};
-
+  wikibaseId: Scalars['Int']['input']
+  wikibaseType?: InputMaybe<WikibaseType>
+}
 
 export type MutationUpsertWikibaseUrlArgs = {
-  url: Scalars['String']['input'];
-  urlType: WikibaseUrlType;
-  wikibaseId: Scalars['Int']['input'];
-};
+  url: Scalars['String']['input']
+  urlType: WikibaseUrlType
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type PageMetadata = {
-  __typename?: 'PageMetadata';
+  __typename?: 'PageMetadata'
   /** Page Number - 1-indexed - input */
-  pageNumber: Scalars['Union']['output'];
+  pageNumber: Scalars['Union']['output']
   /** Page Size - input */
-  pageSize: Scalars['Union']['output'];
+  pageSize: Scalars['Union']['output']
   /** Total Number of Records */
-  totalCount: Scalars['Union']['output'];
+  totalCount: Scalars['Union']['output']
   /** Total Number of Pages */
-  totalPages: Scalars['Union']['output'];
-};
+  totalPages: Scalars['Union']['output']
+}
 
 export type Query = {
-  __typename?: 'Query';
+  __typename?: 'Query'
   /** Aggregated Year of First Log Date */
-  aggregateCreated: Array<WikibaseYearCreatedAggregate>;
+  aggregateCreated: Array<WikibaseYearCreatedAggregate>
   /** Aggregated Extension Popularity */
-  aggregateExtensionPopularity: WikibaseSoftwareVersionDoubleAggregatePage;
+  aggregateExtensionPopularity: WikibaseSoftwareVersionDoubleAggregatePage
   /** Aggregated External Identifier */
-  aggregateExternalIdentifier: WikibaseExternalIdentifierAggregate;
+  aggregateExternalIdentifier: WikibaseExternalIdentifierAggregate
   /** Aggregated Language Popularity */
-  aggregateLanguagePopularity: WikibaseLanguageAggregatePage;
+  aggregateLanguagePopularity: WikibaseLanguageAggregatePage
   /** Aggregated Library Popularity */
-  aggregateLibraryPopularity: WikibaseSoftwareVersionDoubleAggregatePage;
+  aggregateLibraryPopularity: WikibaseSoftwareVersionDoubleAggregatePage
   /** Aggregated Property Popularity */
-  aggregatePropertyPopularity: WikibasePropertyPopularityAggregateCountPage;
+  aggregatePropertyPopularity: WikibasePropertyPopularityAggregateCountPage
   /** Aggregated Quantity */
-  aggregateQuantity: WikibaseQuantityAggregate;
+  aggregateQuantity: WikibaseQuantityAggregate
   /** Aggregated Recent Changes */
-  aggregateRecentChanges: WikibaseRecentChangesAggregate;
+  aggregateRecentChanges: WikibaseRecentChangesAggregate
   /** Aggregated Skin Popularity */
-  aggregateSkinPopularity: WikibaseSoftwareVersionDoubleAggregatePage;
+  aggregateSkinPopularity: WikibaseSoftwareVersionDoubleAggregatePage
   /** Aggregated Software Popularity */
-  aggregateSoftwarePopularity: WikibaseSoftwareVersionDoubleAggregatePage;
+  aggregateSoftwarePopularity: WikibaseSoftwareVersionDoubleAggregatePage
   /** Aggregated Statistics */
-  aggregateStatistics: WikibaseStatisticsAggregate;
+  aggregateStatistics: WikibaseStatisticsAggregate
   /** Aggregated Users */
-  aggregateUsers: WikibaseUserAggregate;
+  aggregateUsers: WikibaseUserAggregate
   /** List of Extensions */
-  extensionList: WikibaseSoftwarePage;
+  extensionList: WikibaseSoftwarePage
   /** Wikibase Instance */
-  wikibase: Wikibase;
+  wikibase: Wikibase
   /** List of Wikibases */
-  wikibaseList: WikibasePage;
-};
-
+  wikibaseList: WikibasePage
+}
 
 export type QueryAggregateCreatedArgs = {
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateExtensionPopularityArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateExternalIdentifierArgs = {
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateLanguagePopularityArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateLibraryPopularityArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregatePropertyPopularityArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateQuantityArgs = {
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateRecentChangesArgs = {
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateSkinPopularityArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateSoftwarePopularityArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateStatisticsArgs = {
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryAggregateUsersArgs = {
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
-
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type QueryExtensionListArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-};
-
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+}
 
 export type QueryWikibaseArgs = {
-  wikibaseId: Scalars['Int']['input'];
-};
-
+  wikibaseId: Scalars['Int']['input']
+}
 
 export type QueryWikibaseListArgs = {
-  pageNumber: Scalars['Int']['input'];
-  pageSize: Scalars['Int']['input'];
-  wikibaseFilter?: InputMaybe<WikibaseFilterInput>;
-};
+  pageNumber: Scalars['Int']['input']
+  pageSize: Scalars['Int']['input']
+  wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
 
 export type Wikibase = {
-  __typename?: 'Wikibase';
+  __typename?: 'Wikibase'
   /** Wikibase Category */
-  category?: Maybe<WikibaseCategory>;
+  category?: Maybe<WikibaseCategory>
   /** Connectivity Data */
-  connectivityObservations: WikibaseConnectivityObservationWikibaseObservationSet;
+  connectivityObservations: WikibaseConnectivityObservationWikibaseObservationSet
   /** Description */
-  description?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>
   /** External Identifier Data */
-  externalIdentifierObservations: WikibaseExternalIdentifierObservationWikibaseObservationSet;
-  id: Scalars['ID']['output'];
+  externalIdentifierObservations: WikibaseExternalIdentifierObservationWikibaseObservationSet
+  id: Scalars['ID']['output']
   /** Languages */
-  languages: WikibaseLanguageSet;
+  languages: WikibaseLanguageSet
   /** Wikibase Location */
-  location: WikibaseLocation;
+  location: WikibaseLocation
   /** Log Data */
-  logObservations: WikibaseLogObservation;
+  logObservations: WikibaseLogObservation
   /** Organization */
-  organization?: Maybe<Scalars['String']['output']>;
+  organization?: Maybe<Scalars['String']['output']>
   /** Property Popularity Data */
-  propertyPopularityObservations: WikibasePropertyPopularityObservationWikibaseObservationSet;
+  propertyPopularityObservations: WikibasePropertyPopularityObservationWikibaseObservationSet
   /** Quantity Data */
-  quantityObservations: WikibaseQuantityObservationWikibaseObservationSet;
+  quantityObservations: WikibaseQuantityObservationWikibaseObservationSet
   /** Recent Changes Data */
-  recentChangesObservations: WikibaseRecentChangesObservationWikibaseObservationSet;
+  recentChangesObservations: WikibaseRecentChangesObservationWikibaseObservationSet
   /** Software Version Data */
-  softwareVersionObservations: WikibaseSoftwareVersionObservationWikibaseObservationSet;
+  softwareVersionObservations: WikibaseSoftwareVersionObservationWikibaseObservationSet
   /** Statistics Data */
-  statisticsObservations: WikibaseStatisticsObservationWikibaseObservationSet;
+  statisticsObservations: WikibaseStatisticsObservationWikibaseObservationSet
   /** Time to First Value Data */
-  timeToFirstValueObservations: WikibaseTimeToFirstValueObservationWikibaseObservationSet;
+  timeToFirstValueObservations: WikibaseTimeToFirstValueObservationWikibaseObservationSet
   /** Wikibase Name */
-  title: Scalars['String']['output'];
+  title: Scalars['String']['output']
   /** URLs */
-  urls: WikibaseUrlSet;
+  urls: WikibaseUrlSet
   /** User Data */
-  userObservations: WikibaseUserObservationWikibaseObservationSet;
+  userObservations: WikibaseUserObservationWikibaseObservationSet
   /** Cloud, Suite, Other */
-  wikibaseType?: Maybe<WikibaseType>;
-};
+  wikibaseType?: Maybe<WikibaseType>
+}
 
 export enum WikibaseCategory {
   CulturalAndHistorical = 'CULTURAL_AND_HISTORICAL',
@@ -392,240 +361,240 @@ export enum WikibaseCategory {
 }
 
 export type WikibaseConnectivityObservation = {
-  __typename?: 'WikibaseConnectivityObservation';
+  __typename?: 'WikibaseConnectivityObservation'
   /** Average Distance of Connected Items */
-  averageConnectedDistance?: Maybe<Scalars['Float']['output']>;
+  averageConnectedDistance?: Maybe<Scalars['Float']['output']>
   /**
    * Number of Unique Item -> Item Connections (regardless of steps) /
    *         Number of Items Squared
    */
-  connectivity?: Maybe<Scalars['Float']['output']>;
-  id: Scalars['ID']['output'];
+  connectivity?: Maybe<Scalars['Float']['output']>
+  id: Scalars['ID']['output']
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Number of Items with Number of Relationships */
-  relationshipItemCounts: Array<WikibaseConnectivityObservationItemRelationshipCount>;
+  relationshipItemCounts: Array<WikibaseConnectivityObservationItemRelationshipCount>
   /** Number of Items with Number of Relationships */
-  relationshipObjectCounts: Array<WikibaseConnectivityObservationObjectRelationshipCount>;
+  relationshipObjectCounts: Array<WikibaseConnectivityObservationObjectRelationshipCount>
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
+  returnedData: Scalars['Boolean']['output']
   /** Number of Non-Unique Item -> Item Links Returned */
-  returnedLinks?: Maybe<Scalars['Union']['output']>;
+  returnedLinks?: Maybe<Scalars['Union']['output']>
   /** Number of Unique Item -> Item Connections (direct or indirect) */
-  totalConnections?: Maybe<Scalars['Union']['output']>;
-};
+  totalConnections?: Maybe<Scalars['Union']['output']>
+}
 
 export type WikibaseConnectivityObservationItemRelationshipCount = {
-  __typename?: 'WikibaseConnectivityObservationItemRelationshipCount';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseConnectivityObservationItemRelationshipCount'
+  id: Scalars['ID']['output']
   /** Number of Items with This Relationship Count */
-  itemCount: Scalars['Union']['output'];
+  itemCount: Scalars['Union']['output']
   /** Number of Relationships Defined for Item */
-  relationshipCount: Scalars['Union']['output'];
-};
+  relationshipCount: Scalars['Union']['output']
+}
 
 export type WikibaseConnectivityObservationObjectRelationshipCount = {
-  __typename?: 'WikibaseConnectivityObservationObjectRelationshipCount';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseConnectivityObservationObjectRelationshipCount'
+  id: Scalars['ID']['output']
   /** Number of Object with This Relationship Count */
-  objectCount: Scalars['Union']['output'];
+  objectCount: Scalars['Union']['output']
   /** Number of Relationships Defined for Item */
-  relationshipCount: Scalars['Union']['output'];
-};
+  relationshipCount: Scalars['Union']['output']
+}
 
 export type WikibaseConnectivityObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseConnectivityObservationWikibaseObservationSet';
+  __typename?: 'WikibaseConnectivityObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseConnectivityObservation>;
+  allObservations: Array<WikibaseConnectivityObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseConnectivityObservation>;
-};
+  mostRecent?: Maybe<WikibaseConnectivityObservation>
+}
 
 export type WikibaseExternalIdentifierAggregate = {
-  __typename?: 'WikibaseExternalIdentifierAggregate';
+  __typename?: 'WikibaseExternalIdentifierAggregate'
   /** Total External Identifier Properties */
-  totalExternalIdentifierProperties: Scalars['Union']['output'];
+  totalExternalIdentifierProperties: Scalars['Union']['output']
   /** Total External Identifier Statements */
-  totalExternalIdentifierStatements: Scalars['Union']['output'];
+  totalExternalIdentifierStatements: Scalars['Union']['output']
   /** Total URL Properties */
-  totalUrlProperties: Scalars['Union']['output'];
+  totalUrlProperties: Scalars['Union']['output']
   /** Total URL Statements */
-  totalUrlStatements: Scalars['Union']['output'];
+  totalUrlStatements: Scalars['Union']['output']
   /** Wikibases with External Identifier Data */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseExternalIdentifierObservation = {
-  __typename?: 'WikibaseExternalIdentifierObservation';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseExternalIdentifierObservation'
+  id: Scalars['ID']['output']
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
+  returnedData: Scalars['Boolean']['output']
   /** Total External Identifier Properties */
-  totalExternalIdentifierProperties?: Maybe<Scalars['Union']['output']>;
+  totalExternalIdentifierProperties?: Maybe<Scalars['Union']['output']>
   /** Total External Identifier Statements */
-  totalExternalIdentifierStatements?: Maybe<Scalars['Union']['output']>;
+  totalExternalIdentifierStatements?: Maybe<Scalars['Union']['output']>
   /** Total URL Properties */
-  totalUrlProperties?: Maybe<Scalars['Union']['output']>;
+  totalUrlProperties?: Maybe<Scalars['Union']['output']>
   /** Total URL Statements */
-  totalUrlStatements?: Maybe<Scalars['Union']['output']>;
-};
+  totalUrlStatements?: Maybe<Scalars['Union']['output']>
+}
 
 export type WikibaseExternalIdentifierObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet';
+  __typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseExternalIdentifierObservation>;
+  allObservations: Array<WikibaseExternalIdentifierObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseExternalIdentifierObservation>;
-};
+  mostRecent?: Maybe<WikibaseExternalIdentifierObservation>
+}
 
 export type WikibaseFilterInput = {
-  wikibaseType?: InputMaybe<WikibaseTypeInput>;
-};
+  wikibaseType?: InputMaybe<WikibaseTypeInput>
+}
 
 export type WikibaseInput = {
-  category?: InputMaybe<WikibaseCategory>;
-  country?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  organization?: InputMaybe<Scalars['String']['input']>;
-  region?: InputMaybe<Scalars['String']['input']>;
-  test?: InputMaybe<Scalars['Boolean']['input']>;
-  urls: WikibaseUrlSetInput;
-  wikibaseName: Scalars['String']['input'];
-};
+  category?: InputMaybe<WikibaseCategory>
+  country?: InputMaybe<Scalars['String']['input']>
+  description?: InputMaybe<Scalars['String']['input']>
+  organization?: InputMaybe<Scalars['String']['input']>
+  region?: InputMaybe<Scalars['String']['input']>
+  test?: InputMaybe<Scalars['Boolean']['input']>
+  urls: WikibaseUrlSetInput
+  wikibaseName: Scalars['String']['input']
+}
 
 export type WikibaseItemDate = {
-  __typename?: 'WikibaseItemDate';
+  __typename?: 'WikibaseItemDate'
   /** Item Creation Date */
-  creationDate: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
+  creationDate: Scalars['DateTime']['output']
+  id: Scalars['ID']['output']
   /** Q# for Item */
-  q: Scalars['Union']['output'];
-};
+  q: Scalars['Union']['output']
+}
 
 export type WikibaseLanguageAggregate = {
-  __typename?: 'WikibaseLanguageAggregate';
+  __typename?: 'WikibaseLanguageAggregate'
   /** Wikibases with this as an additional language */
-  additionalWikibases: Scalars['Int']['output'];
+  additionalWikibases: Scalars['Int']['output']
   /** Language */
-  language: Scalars['String']['output'];
+  language: Scalars['String']['output']
   /** Wikibases with this as their primary languages */
-  primaryWikibases: Scalars['Int']['output'];
+  primaryWikibases: Scalars['Int']['output']
   /** Wikibases that include this language */
-  totalWikibases: Scalars['Int']['output'];
-};
+  totalWikibases: Scalars['Int']['output']
+}
 
 export type WikibaseLanguageAggregatePage = {
-  __typename?: 'WikibaseLanguageAggregatePage';
+  __typename?: 'WikibaseLanguageAggregatePage'
   /** Data */
-  data: Array<WikibaseLanguageAggregate>;
+  data: Array<WikibaseLanguageAggregate>
   /** Metadata */
-  meta: PageMetadata;
-};
+  meta: PageMetadata
+}
 
 export type WikibaseLanguageSet = {
-  __typename?: 'WikibaseLanguageSet';
+  __typename?: 'WikibaseLanguageSet'
   /** Additional Languages */
-  additional: Array<Scalars['String']['output']>;
+  additional: Array<Scalars['String']['output']>
   /** Primary Language */
-  primary?: Maybe<Scalars['String']['output']>;
-};
+  primary?: Maybe<Scalars['String']['output']>
+}
 
 export type WikibaseLocation = {
-  __typename?: 'WikibaseLocation';
+  __typename?: 'WikibaseLocation'
   /** Country */
-  country?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>
   /** Region */
-  region?: Maybe<Scalars['String']['output']>;
-};
+  region?: Maybe<Scalars['String']['output']>
+}
 
 export type WikibaseLog = {
-  __typename?: 'WikibaseLog';
+  __typename?: 'WikibaseLog'
   /** Log Date */
-  date: Scalars['DateTime']['output'];
-};
+  date: Scalars['DateTime']['output']
+}
 
 export type WikibaseLogMonth = {
-  __typename?: 'WikibaseLogMonth';
+  __typename?: 'WikibaseLogMonth'
   /** Distinct (Probably) Human User with 5+ Logs Count */
-  activeHumanUsers?: Maybe<Scalars['Union']['output']>;
+  activeHumanUsers?: Maybe<Scalars['Union']['output']>
   /** Distinct User with 5+ Logs Count */
-  activeUsers?: Maybe<Scalars['Union']['output']>;
+  activeUsers?: Maybe<Scalars['Union']['output']>
   /** Distinct User Count */
-  allUsers?: Maybe<Scalars['Union']['output']>;
+  allUsers?: Maybe<Scalars['Union']['output']>
   /** First Log */
-  firstLog?: Maybe<WikibaseLog>;
+  firstLog?: Maybe<WikibaseLog>
   /** Distinct (Probably) Human User Count */
-  humanUsers?: Maybe<Scalars['Union']['output']>;
-  id: Scalars['ID']['output'];
+  humanUsers?: Maybe<Scalars['Union']['output']>
+  id: Scalars['ID']['output']
   /** Last Log */
-  lastLog?: Maybe<WikibaseLogUser>;
+  lastLog?: Maybe<WikibaseLogUser>
   /** Log Count */
-  logCount?: Maybe<Scalars['Union']['output']>;
+  logCount?: Maybe<Scalars['Union']['output']>
   /** Records of Each Type */
-  logTypeRecords: Array<WikibaseLogMonthLogType>;
+  logTypeRecords: Array<WikibaseLogMonthLogType>
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
+  returnedData: Scalars['Boolean']['output']
   /** Records of Each Type */
-  userTypeRecords: Array<WikibaseLogMonthUserType>;
-};
+  userTypeRecords: Array<WikibaseLogMonthUserType>
+}
 
 export type WikibaseLogMonthLogType = {
-  __typename?: 'WikibaseLogMonthLogType';
+  __typename?: 'WikibaseLogMonthLogType'
   /** Distinct (Probably) Human User with 5+ Logs Count */
-  activeHumanUsers?: Maybe<Scalars['Union']['output']>;
+  activeHumanUsers?: Maybe<Scalars['Union']['output']>
   /** Distinct User with 5+ Logs Count */
-  activeUsers?: Maybe<Scalars['Union']['output']>;
+  activeUsers?: Maybe<Scalars['Union']['output']>
   /** Distinct User Count */
-  allUsers?: Maybe<Scalars['Union']['output']>;
+  allUsers?: Maybe<Scalars['Union']['output']>
   /** First Log Date */
-  firstLogDate: Scalars['DateTime']['output'];
+  firstLogDate: Scalars['DateTime']['output']
   /** Distinct (Probably) Human User Count */
-  humanUsers: Scalars['Union']['output'];
-  id: Scalars['ID']['output'];
+  humanUsers: Scalars['Union']['output']
+  id: Scalars['ID']['output']
   /** Last Log Date */
-  lastLogDate: Scalars['DateTime']['output'];
+  lastLogDate: Scalars['DateTime']['output']
   /** Log Count */
-  logCount?: Maybe<Scalars['Union']['output']>;
+  logCount?: Maybe<Scalars['Union']['output']>
   /** Log Type */
-  logType: WikibaseLogType;
-};
+  logType: WikibaseLogType
+}
 
 export type WikibaseLogMonthUserType = {
-  __typename?: 'WikibaseLogMonthUserType';
+  __typename?: 'WikibaseLogMonthUserType'
   /** Distinct User with 5+ Logs Count */
-  activeUsers?: Maybe<Scalars['Union']['output']>;
+  activeUsers?: Maybe<Scalars['Union']['output']>
   /** Distinct User Count */
-  allUsers?: Maybe<Scalars['Union']['output']>;
+  allUsers?: Maybe<Scalars['Union']['output']>
   /** First Log Date */
-  firstLogDate: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
+  firstLogDate: Scalars['DateTime']['output']
+  id: Scalars['ID']['output']
   /** Last Log Date */
-  lastLogDate: Scalars['DateTime']['output'];
+  lastLogDate: Scalars['DateTime']['output']
   /** Log Count */
-  logCount?: Maybe<Scalars['Union']['output']>;
+  logCount?: Maybe<Scalars['Union']['output']>
   /** User Type */
-  userType: WikibaseUserType;
-};
+  userType: WikibaseUserType
+}
 
 export type WikibaseLogMonthWikibaseObservationSet = {
-  __typename?: 'WikibaseLogMonthWikibaseObservationSet';
+  __typename?: 'WikibaseLogMonthWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseLogMonth>;
+  allObservations: Array<WikibaseLogMonth>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseLogMonth>;
-};
+  mostRecent?: Maybe<WikibaseLogMonth>
+}
 
 export type WikibaseLogObservation = {
-  __typename?: 'WikibaseLogObservation';
+  __typename?: 'WikibaseLogObservation'
   /** First Month's Logs */
-  firstMonth: WikibaseLogMonthWikibaseObservationSet;
+  firstMonth: WikibaseLogMonthWikibaseObservationSet
   /** Last Month's Logs */
-  lastMonth: WikibaseLogMonthWikibaseObservationSet;
-};
+  lastMonth: WikibaseLogMonthWikibaseObservationSet
+}
 
 export enum WikibaseLogType {
   AbuseFilterCreate = 'ABUSE_FILTER_CREATE',
@@ -708,224 +677,224 @@ export enum WikibaseLogType {
 }
 
 export type WikibaseLogUser = {
-  __typename?: 'WikibaseLogUser';
+  __typename?: 'WikibaseLogUser'
   /** Log Date */
-  date: Scalars['DateTime']['output'];
+  date: Scalars['DateTime']['output']
   /** User Type - Bot, User, or Missing? */
-  userType?: Maybe<Scalars['String']['output']>;
-};
+  userType?: Maybe<Scalars['String']['output']>
+}
 
 export type WikibasePage = {
-  __typename?: 'WikibasePage';
+  __typename?: 'WikibasePage'
   /** Data */
-  data: Array<Wikibase>;
+  data: Array<Wikibase>
   /** Metadata */
-  meta: PageMetadata;
-};
+  meta: PageMetadata
+}
 
 export type WikibasePropertyPopularityAggregateCount = {
-  __typename?: 'WikibasePropertyPopularityAggregateCount';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibasePropertyPopularityAggregateCount'
+  id: Scalars['ID']['output']
   /** Property URL */
-  propertyUrl: Scalars['String']['output'];
+  propertyUrl: Scalars['String']['output']
   /** Number of Triples with this Property */
-  usageCount: Scalars['Union']['output'];
+  usageCount: Scalars['Union']['output']
   /** Number of Wikibases Used */
-  wikibaseCount: Scalars['Union']['output'];
-};
+  wikibaseCount: Scalars['Union']['output']
+}
 
 export type WikibasePropertyPopularityAggregateCountPage = {
-  __typename?: 'WikibasePropertyPopularityAggregateCountPage';
+  __typename?: 'WikibasePropertyPopularityAggregateCountPage'
   /** Data */
-  data: Array<WikibasePropertyPopularityAggregateCount>;
+  data: Array<WikibasePropertyPopularityAggregateCount>
   /** Metadata */
-  meta: PageMetadata;
-};
+  meta: PageMetadata
+}
 
 export type WikibasePropertyPopularityCount = {
-  __typename?: 'WikibasePropertyPopularityCount';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibasePropertyPopularityCount'
+  id: Scalars['ID']['output']
   /** Property URL */
-  propertyUrl: Scalars['String']['output'];
+  propertyUrl: Scalars['String']['output']
   /** Number of Triples with this Property */
-  usageCount: Scalars['Union']['output'];
-};
+  usageCount: Scalars['Union']['output']
+}
 
 export type WikibasePropertyPopularityObservation = {
-  __typename?: 'WikibasePropertyPopularityObservation';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibasePropertyPopularityObservation'
+  id: Scalars['ID']['output']
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Number of Items with Number of Relationships */
-  propertyPopularityCounts: Array<WikibasePropertyPopularityCount>;
+  propertyPopularityCounts: Array<WikibasePropertyPopularityCount>
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
-};
+  returnedData: Scalars['Boolean']['output']
+}
 
 export type WikibasePropertyPopularityObservationWikibaseObservationSet = {
-  __typename?: 'WikibasePropertyPopularityObservationWikibaseObservationSet';
+  __typename?: 'WikibasePropertyPopularityObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibasePropertyPopularityObservation>;
+  allObservations: Array<WikibasePropertyPopularityObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibasePropertyPopularityObservation>;
-};
+  mostRecent?: Maybe<WikibasePropertyPopularityObservation>
+}
 
 export type WikibaseQuantityAggregate = {
-  __typename?: 'WikibaseQuantityAggregate';
+  __typename?: 'WikibaseQuantityAggregate'
   /** Total Items */
-  totalItems: Scalars['Union']['output'];
+  totalItems: Scalars['Union']['output']
   /** Total Lexemes */
-  totalLexemes: Scalars['Union']['output'];
+  totalLexemes: Scalars['Union']['output']
   /** Total Properties */
-  totalProperties: Scalars['Union']['output'];
+  totalProperties: Scalars['Union']['output']
   /** Total Triples */
-  totalTriples: Scalars['Union']['output'];
+  totalTriples: Scalars['Union']['output']
   /** Wikibases with Quantity Data */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseQuantityObservation = {
-  __typename?: 'WikibaseQuantityObservation';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseQuantityObservation'
+  id: Scalars['ID']['output']
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
+  returnedData: Scalars['Boolean']['output']
   /** Total Items */
-  totalItems?: Maybe<Scalars['Union']['output']>;
+  totalItems?: Maybe<Scalars['Union']['output']>
   /** Total Lexemes */
-  totalLexemes?: Maybe<Scalars['Union']['output']>;
+  totalLexemes?: Maybe<Scalars['Union']['output']>
   /** Total Properties */
-  totalProperties?: Maybe<Scalars['Union']['output']>;
+  totalProperties?: Maybe<Scalars['Union']['output']>
   /** Total Triples */
-  totalTriples?: Maybe<Scalars['Union']['output']>;
-};
+  totalTriples?: Maybe<Scalars['Union']['output']>
+}
 
 export type WikibaseQuantityObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseQuantityObservationWikibaseObservationSet';
+  __typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseQuantityObservation>;
+  allObservations: Array<WikibaseQuantityObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseQuantityObservation>;
-};
+  mostRecent?: Maybe<WikibaseQuantityObservation>
+}
 
 export type WikibaseRecentChangesAggregate = {
-  __typename?: 'WikibaseRecentChangesAggregate';
+  __typename?: 'WikibaseRecentChangesAggregate'
   /** Total Bot Editors with 5+ edits in the last 30 days across Wikibase instances */
-  botChangeActiveUserCount: Scalars['Union']['output'];
+  botChangeActiveUserCount: Scalars['Union']['output']
   /** Total Bot Changes in the last 30 days across Wikibase instances */
-  botChangeCount: Scalars['Union']['output'];
+  botChangeCount: Scalars['Union']['output']
   /** Total Bot Editors in the last 30 days across Wikibase instances */
-  botChangeUserCount: Scalars['Union']['output'];
+  botChangeUserCount: Scalars['Union']['output']
   /** Total Human Editors with 5+ edits in the last 30 days across Wikibase instances */
-  humanChangeActiveUserCount: Scalars['Union']['output'];
+  humanChangeActiveUserCount: Scalars['Union']['output']
   /** Total Human Changes in the last 30 days across Wikibase instances */
-  humanChangeCount: Scalars['Union']['output'];
+  humanChangeCount: Scalars['Union']['output']
   /** Total Human Editors in the last 30 days across Wikibase instances */
-  humanChangeUserCount: Scalars['Union']['output'];
+  humanChangeUserCount: Scalars['Union']['output']
   /** Wikibases with Recent Changes Data */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseRecentChangesObservation = {
-  __typename?: 'WikibaseRecentChangesObservation';
+  __typename?: 'WikibaseRecentChangesObservation'
   /** Number of unique bots with at least 5 records found in changes requested with bot flag, derived from all bot/usernames. */
-  botChangeActiveUserCount?: Maybe<Scalars['Union']['output']>;
+  botChangeActiveUserCount?: Maybe<Scalars['Union']['output']>
   /** Number of changes made by bots as reported by the MediaWiki Recent Changes API when called with the bot flag. */
-  botChangeCount?: Maybe<Scalars['Union']['output']>;
+  botChangeCount?: Maybe<Scalars['Union']['output']>
   /** Number of unique bots found in changes requested with bot flag, derived from all bot/usernames. */
-  botChangeUserCount?: Maybe<Scalars['Union']['output']>;
+  botChangeUserCount?: Maybe<Scalars['Union']['output']>
   /** Date of first change, no matter if it was made by a human or bot. */
-  firstChangeDate?: Maybe<Scalars['DateTime']['output']>;
+  firstChangeDate?: Maybe<Scalars['DateTime']['output']>
   /** Number of unique users with at least 5 records found in changes requested with !bot flag, derived from all usernames, IP addresses for anonymous edits as well as userid in the userhidden case. */
-  humanChangeActiveUserCount?: Maybe<Scalars['Union']['output']>;
+  humanChangeActiveUserCount?: Maybe<Scalars['Union']['output']>
   /** Number of changes made by humans as reported by the MediaWiki Recent Changes API when called with the !bot flag. */
-  humanChangeCount?: Maybe<Scalars['Union']['output']>;
+  humanChangeCount?: Maybe<Scalars['Union']['output']>
   /** Number of unique users found in changes requested with !bot flag, derived from all usernames, IP addresses for anonymous edits as well as userid in the userhidden case. */
-  humanChangeUserCount?: Maybe<Scalars['Union']['output']>;
-  id: Scalars['ID']['output'];
+  humanChangeUserCount?: Maybe<Scalars['Union']['output']>
+  id: Scalars['ID']['output']
   /** Date of last change, no matter if it was made by a human or bot. */
-  lastChangeDate?: Maybe<Scalars['DateTime']['output']>;
+  lastChangeDate?: Maybe<Scalars['DateTime']['output']>
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
-};
+  returnedData: Scalars['Boolean']['output']
+}
 
 export type WikibaseRecentChangesObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet';
+  __typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseRecentChangesObservation>;
+  allObservations: Array<WikibaseRecentChangesObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseRecentChangesObservation>;
-};
+  mostRecent?: Maybe<WikibaseRecentChangesObservation>
+}
 
 export type WikibaseSoftware = {
-  __typename?: 'WikibaseSoftware';
+  __typename?: 'WikibaseSoftware'
   /** Archived Extension */
-  archived?: Maybe<Scalars['Boolean']['output']>;
+  archived?: Maybe<Scalars['Boolean']['output']>
   /** Description */
-  description?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>
   /** Date Fetched from MediaWiki */
-  fetched?: Maybe<Scalars['DateTime']['output']>;
-  id: Scalars['ID']['output'];
+  fetched?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['ID']['output']
   /** Latest Version */
-  latestVersion?: Maybe<Scalars['String']['output']>;
+  latestVersion?: Maybe<Scalars['String']['output']>
   /** Bundled with MediaWiki */
-  mediawikiBundled?: Maybe<Scalars['Boolean']['output']>;
+  mediawikiBundled?: Maybe<Scalars['Boolean']['output']>
   /** Public Wikis Using */
-  publicWikiCount?: Maybe<Scalars['Int']['output']>;
+  publicWikiCount?: Maybe<Scalars['Int']['output']>
   /** Quarterly Downloads */
-  quarterlyDownloadCount?: Maybe<Scalars['Int']['output']>;
+  quarterlyDownloadCount?: Maybe<Scalars['Int']['output']>
   /** Wikibase Software Name */
-  softwareName: Scalars['String']['output'];
+  softwareName: Scalars['String']['output']
   /** Wikibase Software Type */
-  softwareType: WikibaseSoftwareType;
+  softwareType: WikibaseSoftwareType
   /** Tag List */
-  tags: Array<Scalars['String']['output']>;
+  tags: Array<Scalars['String']['output']>
   /** Reference URL */
-  url?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>
   /** Bundled with Wikibase Suite */
-  wikibaseSuiteBundled?: Maybe<Scalars['Boolean']['output']>;
-};
+  wikibaseSuiteBundled?: Maybe<Scalars['Boolean']['output']>
+}
 
 export type WikibaseSoftwareMajorVersionAggregate = {
-  __typename?: 'WikibaseSoftwareMajorVersionAggregate';
+  __typename?: 'WikibaseSoftwareMajorVersionAggregate'
   /** Minor Versions */
-  minorVersions?: Maybe<Array<WikibaseSoftwareMinorVersionAggregate>>;
+  minorVersions?: Maybe<Array<WikibaseSoftwareMinorVersionAggregate>>
   /** Software Version */
-  version?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['String']['output']>
   /** Wikibase Count */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseSoftwareMinorVersionAggregate = {
-  __typename?: 'WikibaseSoftwareMinorVersionAggregate';
+  __typename?: 'WikibaseSoftwareMinorVersionAggregate'
   /** Patch Versions */
-  patchVersions?: Maybe<Array<WikibaseSoftwarePatchVersionAggregate>>;
+  patchVersions?: Maybe<Array<WikibaseSoftwarePatchVersionAggregate>>
   /** Software Version */
-  version?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['String']['output']>
   /** Wikibase Count */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseSoftwarePage = {
-  __typename?: 'WikibaseSoftwarePage';
+  __typename?: 'WikibaseSoftwarePage'
   /** Data */
-  data: Array<WikibaseSoftware>;
+  data: Array<WikibaseSoftware>
   /** Metadata */
-  meta: PageMetadata;
-};
+  meta: PageMetadata
+}
 
 export type WikibaseSoftwarePatchVersionAggregate = {
-  __typename?: 'WikibaseSoftwarePatchVersionAggregate';
+  __typename?: 'WikibaseSoftwarePatchVersionAggregate'
   /** Versions */
-  subVersions?: Maybe<Array<WikibaseSoftwareVersionAggregate>>;
+  subVersions?: Maybe<Array<WikibaseSoftwareVersionAggregate>>
   /** Software Version */
-  version?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['String']['output']>
   /** Wikibase Count */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export enum WikibaseSoftwareType {
   Extension = 'EXTENSION',
@@ -935,167 +904,167 @@ export enum WikibaseSoftwareType {
 }
 
 export type WikibaseSoftwareVersion = {
-  __typename?: 'WikibaseSoftwareVersion';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseSoftwareVersion'
+  id: Scalars['ID']['output']
   /** Software */
-  software: WikibaseSoftware;
+  software: WikibaseSoftware
   /**
    * Software Name
    * @deprecated Use software/softwareName
    */
-  softwareName: Scalars['String']['output'];
+  softwareName: Scalars['String']['output']
   /** Software Version */
-  version?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['String']['output']>
   /** Software Version Release Date */
-  versionDate?: Maybe<Scalars['DateTime']['output']>;
+  versionDate?: Maybe<Scalars['DateTime']['output']>
   /** Software Version Commit Hash */
-  versionHash?: Maybe<Scalars['String']['output']>;
-};
+  versionHash?: Maybe<Scalars['String']['output']>
+}
 
 export type WikibaseSoftwareVersionAggregate = {
-  __typename?: 'WikibaseSoftwareVersionAggregate';
+  __typename?: 'WikibaseSoftwareVersionAggregate'
   /** Software Version */
-  version?: Maybe<Scalars['String']['output']>;
+  version?: Maybe<Scalars['String']['output']>
   /** Software Version */
-  versionDate?: Maybe<Scalars['DateTime']['output']>;
+  versionDate?: Maybe<Scalars['DateTime']['output']>
   /** Software Version */
-  versionHash?: Maybe<Scalars['String']['output']>;
+  versionHash?: Maybe<Scalars['String']['output']>
   /** Number of Wikibases Used */
-  wikibaseCount: Scalars['Union']['output'];
-};
+  wikibaseCount: Scalars['Union']['output']
+}
 
 export type WikibaseSoftwareVersionDoubleAggregate = {
-  __typename?: 'WikibaseSoftwareVersionDoubleAggregate';
+  __typename?: 'WikibaseSoftwareVersionDoubleAggregate'
   /** Major Versions */
-  majorVersions: Array<WikibaseSoftwareMajorVersionAggregate>;
+  majorVersions: Array<WikibaseSoftwareMajorVersionAggregate>
   /** Software Name */
-  softwareName: Scalars['String']['output'];
+  softwareName: Scalars['String']['output']
   /** Version List */
-  versions: Array<WikibaseSoftwareVersionAggregate>;
+  versions: Array<WikibaseSoftwareVersionAggregate>
   /** Wikibase Count */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseSoftwareVersionDoubleAggregatePage = {
-  __typename?: 'WikibaseSoftwareVersionDoubleAggregatePage';
+  __typename?: 'WikibaseSoftwareVersionDoubleAggregatePage'
   /** Data */
-  data: Array<WikibaseSoftwareVersionDoubleAggregate>;
+  data: Array<WikibaseSoftwareVersionDoubleAggregate>
   /** Metadata */
-  meta: PageMetadata;
-};
+  meta: PageMetadata
+}
 
 export type WikibaseSoftwareVersionObservation = {
-  __typename?: 'WikibaseSoftwareVersionObservation';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseSoftwareVersionObservation'
+  id: Scalars['ID']['output']
   /** Installed Extensions w/ Versions */
-  installedExtensions: Array<WikibaseSoftwareVersion>;
+  installedExtensions: Array<WikibaseSoftwareVersion>
   /** Installed Libraries w/ Versions */
-  installedLibraries: Array<WikibaseSoftwareVersion>;
+  installedLibraries: Array<WikibaseSoftwareVersion>
   /** Installed Skins w/ Versions */
-  installedSkins: Array<WikibaseSoftwareVersion>;
+  installedSkins: Array<WikibaseSoftwareVersion>
   /** Installed Software Versions */
-  installedSoftware: Array<WikibaseSoftwareVersion>;
+  installedSoftware: Array<WikibaseSoftwareVersion>
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
-};
+  returnedData: Scalars['Boolean']['output']
+}
 
 export type WikibaseSoftwareVersionObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseSoftwareVersionObservationWikibaseObservationSet';
+  __typename?: 'WikibaseSoftwareVersionObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseSoftwareVersionObservation>;
+  allObservations: Array<WikibaseSoftwareVersionObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseSoftwareVersionObservation>;
-};
+  mostRecent?: Maybe<WikibaseSoftwareVersionObservation>
+}
 
 export type WikibaseStatisticsAggregate = {
-  __typename?: 'WikibaseStatisticsAggregate';
-  edits: WikibaseStatisticsEditsObservation;
-  files: WikibaseStatisticsFilesObservation;
-  pages: WikibaseStatisticsPagesObservation;
-  users: WikibaseStatisticsUsersObservation;
+  __typename?: 'WikibaseStatisticsAggregate'
+  edits: WikibaseStatisticsEditsObservation
+  files: WikibaseStatisticsFilesObservation
+  pages: WikibaseStatisticsPagesObservation
+  users: WikibaseStatisticsUsersObservation
   /** Wikibases with Statistics Data */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseStatisticsEditsObservation = {
-  __typename?: 'WikibaseStatisticsEditsObservation';
+  __typename?: 'WikibaseStatisticsEditsObservation'
   /** Average Edits per Page */
-  editsPerPageAvg?: Maybe<Scalars['Float']['output']>;
+  editsPerPageAvg?: Maybe<Scalars['Float']['output']>
   /** Total Edits */
-  totalEdits: Scalars['Union']['output'];
-};
+  totalEdits: Scalars['Union']['output']
+}
 
 export type WikibaseStatisticsFilesObservation = {
-  __typename?: 'WikibaseStatisticsFilesObservation';
+  __typename?: 'WikibaseStatisticsFilesObservation'
   /** Total Files */
-  totalFiles?: Maybe<Scalars['Union']['output']>;
-};
+  totalFiles?: Maybe<Scalars['Union']['output']>
+}
 
 export type WikibaseStatisticsObservation = {
-  __typename?: 'WikibaseStatisticsObservation';
-  edits?: Maybe<WikibaseStatisticsEditsObservation>;
-  files?: Maybe<WikibaseStatisticsFilesObservation>;
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseStatisticsObservation'
+  edits?: Maybe<WikibaseStatisticsEditsObservation>
+  files?: Maybe<WikibaseStatisticsFilesObservation>
+  id: Scalars['ID']['output']
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
-  pages?: Maybe<WikibaseStatisticsPagesObservation>;
+  observationDate: Scalars['DateTime']['output']
+  pages?: Maybe<WikibaseStatisticsPagesObservation>
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
-  users?: Maybe<WikibaseStatisticsUsersObservation>;
-};
+  returnedData: Scalars['Boolean']['output']
+  users?: Maybe<WikibaseStatisticsUsersObservation>
+}
 
 export type WikibaseStatisticsObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseStatisticsObservationWikibaseObservationSet';
+  __typename?: 'WikibaseStatisticsObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseStatisticsObservation>;
+  allObservations: Array<WikibaseStatisticsObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseStatisticsObservation>;
-};
+  mostRecent?: Maybe<WikibaseStatisticsObservation>
+}
 
 export type WikibaseStatisticsPagesObservation = {
-  __typename?: 'WikibaseStatisticsPagesObservation';
+  __typename?: 'WikibaseStatisticsPagesObservation'
   /** Content Page Word Count - Average */
-  contentPageWordCountAvg?: Maybe<Scalars['Float']['output']>;
+  contentPageWordCountAvg?: Maybe<Scalars['Float']['output']>
   /** Content Page Word Count - Total */
-  contentPageWordCountTotal?: Maybe<Scalars['Union']['output']>;
+  contentPageWordCountTotal?: Maybe<Scalars['Union']['output']>
   /** Content Pages */
-  contentPages: Scalars['Union']['output'];
+  contentPages: Scalars['Union']['output']
   /** Total Pages */
-  totalPages: Scalars['Union']['output'];
-};
+  totalPages: Scalars['Union']['output']
+}
 
 export type WikibaseStatisticsUsersObservation = {
-  __typename?: 'WikibaseStatisticsUsersObservation';
+  __typename?: 'WikibaseStatisticsUsersObservation'
   /** Active Users */
-  activeUsers: Scalars['Union']['output'];
+  activeUsers: Scalars['Union']['output']
   /** Total Admin */
-  totalAdmin: Scalars['Union']['output'];
+  totalAdmin: Scalars['Union']['output']
   /** Total Users */
-  totalUsers: Scalars['Union']['output'];
-};
+  totalUsers: Scalars['Union']['output']
+}
 
 export type WikibaseTimeToFirstValueObservation = {
-  __typename?: 'WikibaseTimeToFirstValueObservation';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseTimeToFirstValueObservation'
+  id: Scalars['ID']['output']
   /** Wikibase Initiation Date */
-  initiationDate?: Maybe<Scalars['DateTime']['output']>;
+  initiationDate?: Maybe<Scalars['DateTime']['output']>
   /** Item Creation Date */
-  itemDates: Array<WikibaseItemDate>;
+  itemDates: Array<WikibaseItemDate>
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
-};
+  returnedData: Scalars['Boolean']['output']
+}
 
 export type WikibaseTimeToFirstValueObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet';
+  __typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseTimeToFirstValueObservation>;
+  allObservations: Array<WikibaseTimeToFirstValueObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseTimeToFirstValueObservation>;
-};
+  mostRecent?: Maybe<WikibaseTimeToFirstValueObservation>
+}
 
 export enum WikibaseType {
   Cloud = 'CLOUD',
@@ -1105,55 +1074,55 @@ export enum WikibaseType {
 }
 
 export type WikibaseTypeInput = {
-  exclude?: InputMaybe<Array<WikibaseType>>;
-};
+  exclude?: InputMaybe<Array<WikibaseType>>
+}
 
 export type WikibaseUrlSet = {
-  __typename?: 'WikibaseURLSet';
+  __typename?: 'WikibaseURLSet'
   /**
    * Action API URL
    * @deprecated Use scriptPath
    */
-  actionApi?: Maybe<Scalars['String']['output']>;
+  actionApi?: Maybe<Scalars['String']['output']>
   /** Article Path `/wiki` */
-  articlePath?: Maybe<Scalars['String']['output']>;
+  articlePath?: Maybe<Scalars['String']['output']>
   /** Base URL */
-  baseUrl: Scalars['String']['output'];
+  baseUrl: Scalars['String']['output']
   /**
    * Index API URL
    * @deprecated Use scriptPath
    */
-  indexApi?: Maybe<Scalars['String']['output']>;
+  indexApi?: Maybe<Scalars['String']['output']>
   /** Script Path `/w` */
-  scriptPath?: Maybe<Scalars['String']['output']>;
+  scriptPath?: Maybe<Scalars['String']['output']>
   /** SPARQL Endpoint URL */
-  sparqlEndpointUrl?: Maybe<Scalars['String']['output']>;
+  sparqlEndpointUrl?: Maybe<Scalars['String']['output']>
   /** SPARQL Frontend URL */
-  sparqlFrontendUrl?: Maybe<Scalars['String']['output']>;
+  sparqlFrontendUrl?: Maybe<Scalars['String']['output']>
   /**
    * SPARQL URL
    * @deprecated Renamed to sparqlFrontendURL for clarity
    */
-  sparqlUrl?: Maybe<Scalars['String']['output']>;
+  sparqlUrl?: Maybe<Scalars['String']['output']>
   /**
    * Special:Statistics URL
    * @deprecated Use articlePath
    */
-  specialStatisticsUrl?: Maybe<Scalars['String']['output']>;
+  specialStatisticsUrl?: Maybe<Scalars['String']['output']>
   /**
    * Special:Version URL
    * @deprecated Use articlePath
    */
-  specialVersionUrl?: Maybe<Scalars['String']['output']>;
-};
+  specialVersionUrl?: Maybe<Scalars['String']['output']>
+}
 
 export type WikibaseUrlSetInput = {
-  articlePath?: InputMaybe<Scalars['String']['input']>;
-  baseUrl: Scalars['String']['input'];
-  scriptPath?: InputMaybe<Scalars['String']['input']>;
-  sparqlEndpointUrl?: InputMaybe<Scalars['String']['input']>;
-  sparqlFrontendUrl?: InputMaybe<Scalars['String']['input']>;
-};
+  articlePath?: InputMaybe<Scalars['String']['input']>
+  baseUrl: Scalars['String']['input']
+  scriptPath?: InputMaybe<Scalars['String']['input']>
+  sparqlEndpointUrl?: InputMaybe<Scalars['String']['input']>
+  sparqlFrontendUrl?: InputMaybe<Scalars['String']['input']>
+}
 
 export enum WikibaseUrlType {
   ActionQueryUrl = 'ACTION_QUERY_URL',
@@ -1169,54 +1138,54 @@ export enum WikibaseUrlType {
 }
 
 export type WikibaseUserAggregate = {
-  __typename?: 'WikibaseUserAggregate';
+  __typename?: 'WikibaseUserAggregate'
   /** Total Administrators (estimated from group names) */
-  totalAdmin: Scalars['Union']['output'];
+  totalAdmin: Scalars['Union']['output']
   /** Total Users in all Wikibases (DOES NOT ACCOUNT FOR OVERLAP) */
-  totalUsers: Scalars['Union']['output'];
+  totalUsers: Scalars['Union']['output']
   /** Wikibases with User Data */
-  wikibaseCount: Scalars['Int']['output'];
-};
+  wikibaseCount: Scalars['Int']['output']
+}
 
 export type WikibaseUserGroup = {
-  __typename?: 'WikibaseUserGroup';
+  __typename?: 'WikibaseUserGroup'
   /** Group Name */
-  groupName: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
+  groupName: Scalars['String']['output']
+  id: Scalars['ID']['output']
   /** Wikibase Default Group? */
-  wikibaseDefault: Scalars['Boolean']['output'];
-};
+  wikibaseDefault: Scalars['Boolean']['output']
+}
 
 export type WikibaseUserObservation = {
-  __typename?: 'WikibaseUserObservation';
-  id: Scalars['ID']['output'];
+  __typename?: 'WikibaseUserObservation'
+  id: Scalars['ID']['output']
   /** Observation Date */
-  observationDate: Scalars['DateTime']['output'];
+  observationDate: Scalars['DateTime']['output']
   /** Returned Data? */
-  returnedData: Scalars['Boolean']['output'];
+  returnedData: Scalars['Boolean']['output']
   /** Total Users */
-  totalUsers?: Maybe<Scalars['Union']['output']>;
+  totalUsers?: Maybe<Scalars['Union']['output']>
   /** User Groups and Counts */
-  userGroups: Array<WikibaseUserObservationGroup>;
-};
+  userGroups: Array<WikibaseUserObservationGroup>
+}
 
 export type WikibaseUserObservationGroup = {
-  __typename?: 'WikibaseUserObservationGroup';
-  group: WikibaseUserGroup;
+  __typename?: 'WikibaseUserObservationGroup'
+  group: WikibaseUserGroup
   /** Group Marked Implicit? */
-  groupImplicit: Scalars['Boolean']['output'];
-  id: Scalars['ID']['output'];
+  groupImplicit: Scalars['Boolean']['output']
+  id: Scalars['ID']['output']
   /** User Count */
-  userCount: Scalars['Union']['output'];
-};
+  userCount: Scalars['Union']['output']
+}
 
 export type WikibaseUserObservationWikibaseObservationSet = {
-  __typename?: 'WikibaseUserObservationWikibaseObservationSet';
+  __typename?: 'WikibaseUserObservationWikibaseObservationSet'
   /** All Observations */
-  allObservations: Array<WikibaseUserObservation>;
+  allObservations: Array<WikibaseUserObservation>
   /** Most Recent Observation that Returned Data */
-  mostRecent?: Maybe<WikibaseUserObservation>;
-};
+  mostRecent?: Maybe<WikibaseUserObservation>
+}
 
 export enum WikibaseUserType {
   Bot = 'BOT',
@@ -1226,9 +1195,9 @@ export enum WikibaseUserType {
 }
 
 export type WikibaseYearCreatedAggregate = {
-  __typename?: 'WikibaseYearCreatedAggregate';
+  __typename?: 'WikibaseYearCreatedAggregate'
   /** Wikibase Count Count */
-  wikibaseCount: Scalars['Union']['output'];
+  wikibaseCount: Scalars['Union']['output']
   /** Year of First Log */
-  year: Scalars['Union']['output'];
-};
+  year: Scalars['Union']['output']
+}
