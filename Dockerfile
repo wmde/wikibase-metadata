@@ -26,8 +26,14 @@ WORKDIR /app
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY requirements-dev.txt ./requirements-dev.txt
+RUN pip install --no-cache-dir -r requirements-dev.txt
+
 # Run Database Update
 RUN alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head
+
+# Check Database (Great) Expectations
+RUN pytest -m data
 
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
