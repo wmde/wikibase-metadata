@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WikibaseCardList from '@/component/WikibaseCardList.vue'
+import WikibaseTable from '@/component/WikibaseTable.vue'
 import { ref } from 'vue'
 
 const tab = ref()
@@ -14,7 +15,9 @@ const tab = ref()
     <v-tabs-window-item value="card">
       <WikibaseCardList />
     </v-tabs-window-item>
-    <v-tabs-window-item value="table">TABLE</v-tabs-window-item>
+    <v-tabs-window-item value="table">
+      <WikibaseTable />
+    </v-tabs-window-item>
   </v-tabs-window>
 </template>
 
