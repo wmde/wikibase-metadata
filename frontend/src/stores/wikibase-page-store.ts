@@ -13,8 +13,6 @@ import { computed, ref, watch } from 'vue'
 
 provideApolloClient(apolloClient)
 
-type PageSizeValues = 10 | 25 | 50 | 100 | 250 | 500 | 1000
-
 const { load, onResult, loading, error } = useLazyQuery<
 	PageWikibasesQuery,
 	PageWikibasesQueryVariables
@@ -33,8 +31,16 @@ export const useWikiStore = defineStore('wiki-list', () => {
 	const pageNumber = ref(1)
 	const setPageNumber = (i: number) => (pageNumber.value = i)
 
-	const pageSize = ref<PageSizeValues>(100)
-	const setPageSize = (i: PageSizeValues) => (pageSize.value = i)
+	const pageSize = ref(100)
+	const setPageSize = (i: number) => (pageSize.value = i)
+	watch(wikibasePageData, () => {
+		if (
+			wikibasePageData.value &&
+			wikibasePageData.value.wikibaseList.meta.totalCount > pageSize.value
+		) {
+			pageSize.value = wikibasePageData.value.wikibaseList.meta.totalCount
+		}
+	})
 
 	const wikibaseFilter = ref<WikibaseFilterInput>({
 		wikibaseType: { exclude: [WikibaseType.Test] }
