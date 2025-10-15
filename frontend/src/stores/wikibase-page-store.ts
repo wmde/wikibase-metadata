@@ -9,16 +9,29 @@ import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue'
 
 provideApolloClient(apolloClient)
+
+export type WikibasePageStoreType = {
+	fetchWikibasePage: () => void
+	wikibasePage:
+		| QueryResult<PageWikibasesQuery | undefined>
+		| Ref<QueryResult<PageWikibasesQuery | undefined>>
+	pageNumber: number
+	setPageNumber: (i: number) => void
+	pageSize: number
+	setPageSize: (i: number) => void
+	wikibaseFilter: WikibaseFilterInput
+	excludeWikibaseTypes: (t: WikibaseType[]) => void
+}
 
 const { load, result, loading, error } = useLazyQuery<
 	PageWikibasesQuery,
 	PageWikibasesQueryVariables
 >(pageWikibasesQuery)
 
-export const useWikiStore = defineStore('wiki-list', () => {
+export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType => {
 	const wikibasePage = computed<QueryResult<PageWikibasesQuery | undefined>>(() => ({
 		data: result.value,
 		loading: loading.value,

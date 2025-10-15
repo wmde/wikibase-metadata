@@ -6,11 +6,11 @@ import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import App from './App.vue'
 
-const vuetify = createVuetify({ components, directives })
-
 const app = createApp(App)
 
+export const vuetify = createVuetify({ components, directives })
 app.use(vuetify)
+
 app.use(createPinia())
 
 app.mount('#app')
