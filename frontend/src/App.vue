@@ -4,10 +4,10 @@ import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 </script>
 
 <template>
-	<v-container class="pa-0">
+	<v-app class="pa-0 suite-scraper-app">
 		<AppHeader />
 		<WikibaseTableContainer />
-	</v-container>
+	</v-app>
 </template>
 
-<style scoped></style>
+<style lang="css"></style>

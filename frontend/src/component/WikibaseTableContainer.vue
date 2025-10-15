@@ -9,8 +9,10 @@ onBeforeMount(() => store.fetchWikibasePage())
 </script>
 
 <template>
-	<WikibaseTypeFilter />
-	<WikibaseTable />
+	<v-container class="wikibase-table-container ma-0 pa-0">
+		<WikibaseTypeFilter />
+		<WikibaseTable />
+	</v-container>
 </template>
 
 <style scoped></style>
