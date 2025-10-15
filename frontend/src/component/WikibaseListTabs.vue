@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WikibaseCardList from '@/component/wikibase-card/WikibaseCardList.vue'
+import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import WikibaseListStatus from '@/component/WikibaseListStatus.vue'
-import WikibaseTable from '@/component/WikibaseTable.vue'
 import WikibaseTypeFilter from '@/component/WikibaseTypeFilter.vue'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { onBeforeMount, ref } from 'vue'

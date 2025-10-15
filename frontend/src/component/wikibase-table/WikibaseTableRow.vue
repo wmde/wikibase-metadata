@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import LocaleNumber from '@/component/LocaleNumber.vue';
-import type { WbFragment } from '@/graphql/types';
-import computeTotalEdits from '@/util/computeTotalEdits';
-import { ref } from 'vue';
+import LocaleNumber from '@/component/LocaleNumber.vue'
+import type { WbFragment } from '@/graphql/types'
+import computeTotalEdits from '@/util/computeTotalEdits'
+import { ref } from 'vue'
 
 defineProps<{ wikibase: WbFragment }>()
 
 const openDialog = ref(false)
-const toggleOpenDialog = () => openDialog.value = !openDialog.value
+const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 </script>
 
 <template>
