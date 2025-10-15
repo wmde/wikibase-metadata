@@ -13,6 +13,7 @@ import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sor
 
 const store = useWikiStore()
 
+const error = computed(() => store.wikibasePage.errorState)
 const loading = computed(() => store.wikibasePage.loading)
 const wikibases = computed<WbFragment[] | undefined>(
 	() => store.wikibasePage.data?.wikibaseList.data
@@ -42,6 +43,7 @@ const headers = [
 </script>
 
 <template>
+	<v-alert v-if="error" type="error" variant="tonal" title="Error"> Error fetching data </v-alert>
 	<v-data-table
 		:items="wikibases"
 		:headers="headers"
