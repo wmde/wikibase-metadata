@@ -4,16 +4,23 @@ import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue'
 
 provideApolloClient(apolloClient)
+
+export type WikibaseStoreType = {
+	fetchWikibase: () => void
+	wikibaseId: number | undefined
+	wikibase: QueryResult<SingleWikibaseQuery | null> | Ref<QueryResult<SingleWikibaseQuery | null>>
+	searchWikibase: (i: number) => void
+}
 
 const { load, result, loading, error } = useLazyQuery<
 	SingleWikibaseQuery,
 	SingleWikibaseQueryVariables
 >(singleWikibaseQuery)
 
-export const useSingleWikiStore = defineStore('single-wiki', () => {
+export const useSingleWikiStore = defineStore('single-wiki', (): WikibaseStoreType => {
 	const wikibase = computed<QueryResult<SingleWikibaseQuery | null>>(() => ({
 		data: result.value ?? null,
 		loading: loading.value,
@@ -28,5 +35,5 @@ export const useSingleWikiStore = defineStore('single-wiki', () => {
 		load(singleWikibaseQuery, { wikibaseId: wikibaseId.value }, { fetchPolicy: 'network-only' })
 	watch(wikibaseId, () => fetchWikibase())
 
-	return { fetchWikibase, wikibaseId, wikibase, searchWikibase }
+	return { fetchWikibase, wikibaseId: wikibaseId.value, wikibase, searchWikibase }
 })

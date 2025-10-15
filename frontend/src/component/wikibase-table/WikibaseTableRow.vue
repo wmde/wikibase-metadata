@@ -29,7 +29,7 @@ const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
 	</tr>
-	<v-dialog v-model="openDialog" width="auto">
+	<v-dialog class="wikibase-detail-dialog" v-model="openDialog" width="auto">
 		<WikibaseDetailCard :wikibase-id="Number.parseInt(wikibase.id)" />
 	</v-dialog>
 </template>
