@@ -101,7 +101,7 @@ onBeforeMount(() => store.searchWikibase(props.wikibaseId))
 	flex-flow: column nowrap;
 	justify-content: space-between;
 	max-width: 500px;
-	background-color: white;
+	background-color: white !important;
 }
 .card-header {
 	display: flex;
