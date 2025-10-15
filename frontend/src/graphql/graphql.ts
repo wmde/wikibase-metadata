@@ -1220,17 +1220,33 @@ export type SingleWikibaseFragment = {
 	title: string
 	description?: string | null
 	wikibaseType?: WikibaseType | null
-	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
-		mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+		mostRecent?: {
+			__typename?: 'WikibaseQuantityObservation'
+			observationDate: any
+			totalItems?: any | null
+			totalLexemes?: any | null
+			totalProperties?: any | null
+			totalTriples?: any | null
+		} | null
 	}
 	recentChangesObservations: {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
+			observationDate: any
 			botChangeCount?: any | null
 			humanChangeCount?: any | null
+		} | null
+	}
+	timeToFirstValueObservations: {
+		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseTimeToFirstValueObservation'
+			observationDate: any
+			initiationDate?: any | null
 		} | null
 	}
 } & { ' $fragmentName'?: 'SingleWikibaseFragment' }
@@ -1289,7 +1305,10 @@ export const SingleWikibaseFragmentDoc = {
 						name: { kind: 'Name', value: 'urls' },
 						selectionSet: {
 							kind: 'SelectionSet',
-							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'sparqlFrontendUrl' } }
+							]
 						}
 					},
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
@@ -1304,7 +1323,13 @@ export const SingleWikibaseFragmentDoc = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalProperties' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }
+										]
 									}
 								}
 							]
@@ -1322,8 +1347,29 @@ export const SingleWikibaseFragmentDoc = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'timeToFirstValueObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }
 										]
 									}
 								}
@@ -1454,7 +1500,10 @@ export const SingleWikibaseDocument = {
 						name: { kind: 'Name', value: 'urls' },
 						selectionSet: {
 							kind: 'SelectionSet',
-							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'sparqlFrontendUrl' } }
+							]
 						}
 					},
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
@@ -1469,7 +1518,13 @@ export const SingleWikibaseDocument = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalProperties' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }
+										]
 									}
 								}
 							]
@@ -1487,8 +1542,29 @@ export const SingleWikibaseDocument = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'timeToFirstValueObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }
 										]
 									}
 								}

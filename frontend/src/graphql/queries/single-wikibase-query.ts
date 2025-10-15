@@ -13,17 +13,29 @@ export const singleWikibaseQuery = gql`
 		description
 		urls {
 			baseUrl
+			sparqlFrontendUrl
 		}
 		wikibaseType
 		quantityObservations {
 			mostRecent {
+				observationDate
+				totalItems
+				totalLexemes
+				totalProperties
 				totalTriples
 			}
 		}
 		recentChangesObservations {
 			mostRecent {
+				observationDate
 				botChangeCount
 				humanChangeCount
+			}
+		}
+		timeToFirstValueObservations {
+			mostRecent {
+				observationDate
+				initiationDate
 			}
 		}
 	}

@@ -1211,17 +1211,33 @@ export type SingleWikibaseQuery = {
 		title: string
 		description?: string | null
 		wikibaseType?: WikibaseType | null
-		urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+		urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 		quantityObservations: {
 			__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
-			mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+			mostRecent?: {
+				__typename?: 'WikibaseQuantityObservation'
+				observationDate: any
+				totalItems?: any | null
+				totalLexemes?: any | null
+				totalProperties?: any | null
+				totalTriples?: any | null
+			} | null
 		}
 		recentChangesObservations: {
 			__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseRecentChangesObservation'
+				observationDate: any
 				botChangeCount?: any | null
 				humanChangeCount?: any | null
+			} | null
+		}
+		timeToFirstValueObservations: {
+			__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
+			mostRecent?: {
+				__typename?: 'WikibaseTimeToFirstValueObservation'
+				observationDate: any
+				initiationDate?: any | null
 			} | null
 		}
 	}
@@ -1233,17 +1249,33 @@ export type SingleWikibaseFragment = {
 	title: string
 	description?: string | null
 	wikibaseType?: WikibaseType | null
-	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
-		mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+		mostRecent?: {
+			__typename?: 'WikibaseQuantityObservation'
+			observationDate: any
+			totalItems?: any | null
+			totalLexemes?: any | null
+			totalProperties?: any | null
+			totalTriples?: any | null
+		} | null
 	}
 	recentChangesObservations: {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
+			observationDate: any
 			botChangeCount?: any | null
 			humanChangeCount?: any | null
+		} | null
+	}
+	timeToFirstValueObservations: {
+		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseTimeToFirstValueObservation'
+			observationDate: any
+			initiationDate?: any | null
 		} | null
 	}
 }
