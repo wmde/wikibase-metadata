@@ -2,7 +2,6 @@ import LocaleDate from '@/component/LocaleDate.vue'
 import { vuetify } from '@/main'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import 'vuetify/styles'
 
 describe('LocaleDate', async () => {
 	it('renders null properly', async () => {

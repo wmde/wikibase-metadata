@@ -2,7 +2,6 @@ import LocaleNumber from '@/component/LocaleNumber.vue'
 import { vuetify } from '@/main'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import 'vuetify/styles'
 
 describe('LocaleNumber', async () => {
 	it('renders null properly', async () => {

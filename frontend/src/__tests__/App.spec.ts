@@ -4,7 +4,6 @@ import { vuetify } from '@/main'
 import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import 'vuetify/styles'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
