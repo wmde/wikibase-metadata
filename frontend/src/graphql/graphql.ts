@@ -1269,7 +1269,6 @@ export type WbFragment = {
 	__typename?: 'Wikibase'
 	id: string
 	title: string
-	description?: string | null
 	wikibaseType?: WikibaseType | null
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
 	quantityObservations: {
@@ -1392,7 +1391,6 @@ export const WbFragmentDoc = {
 				selections: [
 					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
-					{ kind: 'Field', name: { kind: 'Name', value: 'description' } },
 					{
 						kind: 'Field',
 						name: { kind: 'Name', value: 'urls' },
@@ -1662,7 +1660,6 @@ export const PageWikibasesDocument = {
 				selections: [
 					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
-					{ kind: 'Field', name: { kind: 'Name', value: 'description' } },
 					{
 						kind: 'Field',
 						name: { kind: 'Name', value: 'urls' },

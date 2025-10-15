@@ -1295,7 +1295,6 @@ export type PageWikibasesQuery = {
 			__typename?: 'Wikibase'
 			id: string
 			title: string
-			description?: string | null
 			wikibaseType?: WikibaseType | null
 			urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
 			quantityObservations: {
@@ -1321,7 +1320,6 @@ export type WbFragment = {
 	__typename?: 'Wikibase'
 	id: string
 	title: string
-	description?: string | null
 	wikibaseType?: WikibaseType | null
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
 	quantityObservations: {

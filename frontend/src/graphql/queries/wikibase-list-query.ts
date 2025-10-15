@@ -15,7 +15,6 @@ export const pageWikibasesQuery = gql`
 	fragment WB on Wikibase {
 		id
 		title
-		description
 		urls {
 			baseUrl
 		}
