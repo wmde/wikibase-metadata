@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LocaleNumber from '@/component/LocaleNumber.vue'
 
-defineProps<{ label: string; stat: number | undefined }>()
+defineProps<{ label: string; stat: number | null | undefined }>()
 </script>
 
 <template>

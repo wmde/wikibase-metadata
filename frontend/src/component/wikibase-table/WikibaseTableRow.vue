@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import LocaleNumber from '@/component/LocaleNumber.vue'
+import WikibaseDetailCard from '@/component/wikibase-table/WikibaseDetailCard.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
 import { ref } from 'vue'
-import WikibaseDetailCard from './WikibaseDetailCard.vue'
 
 defineProps<{ wikibase: WbFragment }>()
 

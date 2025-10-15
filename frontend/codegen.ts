@@ -4,8 +4,21 @@ const config: CodegenConfig = {
 	schema: 'https://wikibase-metadata.wmcloud.org/graphql',
 	documents: ['../**/queries/*.ts'],
 	generates: {
-		'./src/graphql/': { preset: 'client', presetConfig: { gqlTagName: 'gql' } },
-		'./src/graphql/types.ts': { plugins: ['typescript', 'typescript-operations'] }
+		'./src/graphql/': {
+			preset: 'client',
+			config: {
+				useTypeImports: true,
+				scalars: { Union: 'number', DateTime: 'Date' }
+			},
+			presetConfig: { gqlTagName: 'gql' }
+		},
+		'./src/graphql/types.ts': {
+			config: {
+				useTypeImports: true,
+				scalars: { Union: 'number', DateTime: 'Date' }
+			},
+			plugins: ['typescript', 'typescript-operations']
+		}
 	}
 }
 export default config

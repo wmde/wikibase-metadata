@@ -1,10 +1,10 @@
 <script setup lang="ts">
-defineProps<{ stat: number | undefined }>()
+defineProps<{ stat: number | null | undefined }>()
 </script>
 
 <template>
-	<template v-if="stat != undefined">{{ stat.toLocaleString() }}</template>
-	<template v-else>&#151;</template>
+	<template v-if="stat != null && stat != undefined">{{ stat.toLocaleString() }}</template>
+	<template v-else>–</template>
 </template>
 
 <style lang="css"></style>

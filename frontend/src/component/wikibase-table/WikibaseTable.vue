@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import type {
 	WbFragment,
 	WikibaseQuantityObservationWikibaseObservationSet as WikibaseQuantityObservationSet,
@@ -9,7 +10,6 @@ import computeTotalEdits from '@/util/computeTotalEdits'
 import { compareByValue } from '@/util/sortByValue'
 import { computed, ref } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
-import WikibaseTableRow from './WikibaseTableRow.vue'
 
 const store = useWikiStore()
 

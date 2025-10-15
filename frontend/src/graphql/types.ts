@@ -16,8 +16,8 @@ export type Scalars = {
 	Boolean: { input: boolean; output: boolean }
 	Int: { input: number; output: number }
 	Float: { input: number; output: number }
-	DateTime: { input: any; output: any }
-	Union: { input: any; output: any }
+	DateTime: { input: Date; output: Date }
+	Union: { input: number; output: number }
 }
 
 export type BulkTaskResult = {
@@ -1216,28 +1216,28 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseQuantityObservation'
-				observationDate: any
-				totalItems?: any | null
-				totalLexemes?: any | null
-				totalProperties?: any | null
-				totalTriples?: any | null
+				observationDate: Date
+				totalItems?: number | null
+				totalLexemes?: number | null
+				totalProperties?: number | null
+				totalTriples?: number | null
 			} | null
 		}
 		recentChangesObservations: {
 			__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseRecentChangesObservation'
-				observationDate: any
-				botChangeCount?: any | null
-				humanChangeCount?: any | null
+				observationDate: Date
+				botChangeCount?: number | null
+				humanChangeCount?: number | null
 			} | null
 		}
 		timeToFirstValueObservations: {
 			__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseTimeToFirstValueObservation'
-				observationDate: any
-				initiationDate?: any | null
+				observationDate: Date
+				initiationDate?: Date | null
 			} | null
 		}
 	}
@@ -1254,28 +1254,28 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
-			observationDate: any
-			totalItems?: any | null
-			totalLexemes?: any | null
-			totalProperties?: any | null
-			totalTriples?: any | null
+			observationDate: Date
+			totalItems?: number | null
+			totalLexemes?: number | null
+			totalProperties?: number | null
+			totalTriples?: number | null
 		} | null
 	}
 	recentChangesObservations: {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
-			observationDate: any
-			botChangeCount?: any | null
-			humanChangeCount?: any | null
+			observationDate: Date
+			botChangeCount?: number | null
+			humanChangeCount?: number | null
 		} | null
 	}
 	timeToFirstValueObservations: {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseTimeToFirstValueObservation'
-			observationDate: any
-			initiationDate?: any | null
+			observationDate: Date
+			initiationDate?: Date | null
 		} | null
 	}
 }
@@ -1290,7 +1290,7 @@ export type PageWikibasesQuery = {
 	__typename?: 'Query'
 	wikibaseList: {
 		__typename?: 'WikibasePage'
-		meta: { __typename?: 'PageMetadata'; totalCount: any }
+		meta: { __typename?: 'PageMetadata'; totalCount: number }
 		data: Array<{
 			__typename?: 'Wikibase'
 			id: string
@@ -1302,15 +1302,15 @@ export type PageWikibasesQuery = {
 				__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 				mostRecent?: {
 					__typename?: 'WikibaseQuantityObservation'
-					totalTriples?: any | null
+					totalTriples?: number | null
 				} | null
 			}
 			recentChangesObservations: {
 				__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 				mostRecent?: {
 					__typename?: 'WikibaseRecentChangesObservation'
-					botChangeCount?: any | null
-					humanChangeCount?: any | null
+					botChangeCount?: number | null
+					humanChangeCount?: number | null
 				} | null
 			}
 		}>
@@ -1326,14 +1326,14 @@ export type WbFragment = {
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
-		mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+		mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: number | null } | null
 	}
 	recentChangesObservations: {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
-			botChangeCount?: any | null
-			humanChangeCount?: any | null
+			botChangeCount?: number | null
+			humanChangeCount?: number | null
 		} | null
 	}
 }

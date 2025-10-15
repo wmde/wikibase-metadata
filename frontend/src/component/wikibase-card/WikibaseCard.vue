@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import WikibaseCardStatBlock from '@/component/wikibase-card/WikibaseCardStatBlock.vue'
+import WikibaseIcon from '@/component/wikibase-card/WikibaseIcon.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
-import WikibaseCardStatBlock from './WikibaseCardStatBlock.vue'
-import WikibaseIcon from './WikibaseIcon.vue'
 
 defineProps<{ wikibase: WbFragment }>()
 </script>

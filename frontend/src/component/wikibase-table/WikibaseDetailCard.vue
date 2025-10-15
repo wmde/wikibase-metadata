@@ -43,7 +43,7 @@ onBeforeMount(() => store.searchWikibase(props.wikibaseId))
 			<v-container class="wikibase-type ma-0 pa-0">{{ wikibase.wikibaseType }}</v-container>
 		</v-container>
 		<v-container
-			v-if="wikibase.timeToFirstValueObservations.mostRecent"
+			v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
 			class="stat-block-container ma-0 pa-0"
 		>
 			<v-label>
