@@ -9,7 +9,7 @@ export function compareByValue<T>(
 		return valB == null || valB == undefined ? 0 : -1
 	}
 	if (valB == null || valB == undefined) {
-		return valA == null || valA == undefined ? 0 : 1
+		return 1
 	}
 	return valA > valB ? 1 : valA < valB ? -1 : 0
 }
