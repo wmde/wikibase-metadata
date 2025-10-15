@@ -1,17 +1,10 @@
 <script setup lang="ts">
 import type { WbFragment } from '@/graphql/types'
-import { computed } from 'vue'
+import computeTotalEdits from '@/util/computeTotalEdits'
 import WikibaseCardStatBlock from './WikibaseCardStatBlock.vue'
 import WikibaseIcon from './WikibaseIcon.vue'
 
-const props = defineProps<{ wikibase: WbFragment }>()
-const editCount = computed(() =>
-	props.wikibase.recentChangesObservations.mostRecent?.botChangeCount != undefined ||
-	props.wikibase.recentChangesObservations.mostRecent?.humanChangeCount != undefined
-		? (props.wikibase.recentChangesObservations.mostRecent.botChangeCount ?? 0) +
-			(props.wikibase.recentChangesObservations.mostRecent.humanChangeCount ?? 0)
-		: undefined
-)
+defineProps<{ wikibase: WbFragment }>()
 </script>
 
 <template>
@@ -31,7 +24,10 @@ const editCount = computed(() =>
 			<v-container class="wikibase-type ma-0 pa-0">{{ wikibase.wikibaseType }}</v-container>
 		</v-container>
 		<v-container class="stat-block-container ma-0 pa-0">
-			<WikibaseCardStatBlock label="EDITS (30 DAYS)" :stat="editCount" />
+			<WikibaseCardStatBlock
+				label="EDITS (30 DAYS)"
+				:stat="computeTotalEdits(wikibase.recentChangesObservations)"
+			/>
 			<WikibaseCardStatBlock
 				label="TRIPLES"
 				:stat="wikibase.quantityObservations.mostRecent?.totalTriples"

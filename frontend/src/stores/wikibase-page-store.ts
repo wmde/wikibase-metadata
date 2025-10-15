@@ -13,17 +13,14 @@ import { computed, ref, watch } from 'vue'
 
 provideApolloClient(apolloClient)
 
-const { load, onResult, loading, error } = useLazyQuery<
+const { load, result, loading, error } = useLazyQuery<
 	PageWikibasesQuery,
 	PageWikibasesQueryVariables
 >(pageWikibasesQuery)
 
 export const useWikiStore = defineStore('wiki-list', () => {
-	const wikibasePageData = ref<PageWikibasesQuery>()
-	onResult(({ data }) => (wikibasePageData.value = data))
-
 	const wikibasePage = computed<QueryResult<PageWikibasesQuery | undefined>>(() => ({
-		data: wikibasePageData.value,
+		data: result.value,
 		loading: loading.value,
 		errorState: error.value ? true : false
 	}))
@@ -31,14 +28,14 @@ export const useWikiStore = defineStore('wiki-list', () => {
 	const pageNumber = ref(1)
 	const setPageNumber = (i: number) => (pageNumber.value = i)
 
-	const pageSize = ref(100)
+	const pageSize = ref(10000)
 	const setPageSize = (i: number) => (pageSize.value = i)
-	watch(wikibasePageData, () => {
+	watch(wikibasePage, () => {
 		if (
-			wikibasePageData.value &&
-			wikibasePageData.value.wikibaseList.meta.totalCount > pageSize.value
+			wikibasePage.value.data &&
+			wikibasePage.value.data.wikibaseList.meta.totalCount > pageSize.value
 		) {
-			pageSize.value = wikibasePageData.value.wikibaseList.meta.totalCount
+			pageSize.value = wikibasePage.value.data.wikibaseList.meta.totalCount
 		}
 	})
 
