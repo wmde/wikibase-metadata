@@ -1,5 +1,5 @@
+import computeTotalEdits from '@/util/computeTotalEdits'
 import { describe, expect, it } from 'vitest'
-import computeTotalEdits from '../computeTotalEdits'
 
 describe('computeTotalEdits', () => {
 	it('computes null observation to undefined', () => {

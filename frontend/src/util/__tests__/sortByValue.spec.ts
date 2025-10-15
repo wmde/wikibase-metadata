@@ -1,5 +1,5 @@
+import sortByValue, { compareByValue } from '@/util/sortByValue'
 import { describe, expect, it } from 'vitest'
-import sortByValue, { compareByValue } from '../sortByValue'
 
 describe('sortByValue', () => {
 	it('sorts an empty list', () => {
