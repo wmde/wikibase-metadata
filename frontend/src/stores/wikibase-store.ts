@@ -24,7 +24,8 @@ export const useSingleWikiStore = defineStore('single-wiki', () => {
 	const searchWikibase = (i: number) => (wikibaseId.value = i)
 
 	const fetchWikibase = () =>
-		wikibaseId.value && load(singleWikibaseQuery, { wikibaseId: wikibaseId.value })
+		wikibaseId.value &&
+		load(singleWikibaseQuery, { wikibaseId: wikibaseId.value }, { fetchPolicy: 'network-only' })
 	watch(wikibaseId, () => fetchWikibase())
 
 	return { fetchWikibase, wikibaseId, wikibase, searchWikibase }

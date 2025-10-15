@@ -15,7 +15,6 @@ const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 	<tr v-on:click="toggleOpenDialog">
 		<td>
 			{{ wikibase.wikibaseType }}
-			{{ openDialog }}
 		</td>
 		<td>
 			{{ wikibase.title }}
