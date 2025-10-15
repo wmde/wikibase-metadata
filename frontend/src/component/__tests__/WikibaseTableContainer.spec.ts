@@ -8,8 +8,8 @@ import 'vuetify/styles'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
-describe('WikibaseTableContainer', () => {
-	it('mounts renders properly', () => {
+describe('WikibaseTableContainer', async () => {
+	it('mounts renders properly', async () => {
 		const wrapper = mount(WikibaseTableContainer, {
 			global: { mocks: { useWikiStore: () => mockWikiStore }, plugins: [vuetify] }
 		})

@@ -6,13 +6,10 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import 'vuetify/styles'
 
-// vi.mock('@/stores/wikibase-page-store', () => ({
-// 	useWikiStore: (): WikibasePageStoreType => mockWikiStore
-// }))
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
-describe('App', () => {
-	it('mounts renders properly', () => {
+describe('App', async () => {
+	it('mounts renders properly', async () => {
 		const wrapper = mount(App, {
 			global: { mocks: { useWikiStore: () => mockWikiStore }, plugins: [vuetify] }
 		})

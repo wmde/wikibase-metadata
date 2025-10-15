@@ -4,8 +4,8 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import 'vuetify/styles'
 
-describe('LocaleNumber', () => {
-	it('renders null properly', () => {
+describe('LocaleNumber', async () => {
+	it('renders null properly', async () => {
 		const wrapper = mount(LocaleNumber, {
 			global: { plugins: [vuetify] },
 			props: { stat: null }
@@ -14,7 +14,7 @@ describe('LocaleNumber', () => {
 		expect(wrapper.html()).toEqual('–')
 	})
 
-	it('renders undefined properly', () => {
+	it('renders undefined properly', async () => {
 		const wrapper = mount(LocaleNumber, {
 			global: { plugins: [vuetify] },
 			props: { stat: undefined }
@@ -23,7 +23,7 @@ describe('LocaleNumber', () => {
 		expect(wrapper.html()).toEqual('–')
 	})
 
-	it('renders number properly', () => {
+	it('renders number properly', async () => {
 		const wrapper = mount(LocaleNumber, {
 			global: { plugins: [vuetify] },
 			props: { stat: 14 }
@@ -32,7 +32,7 @@ describe('LocaleNumber', () => {
 		expect(wrapper.html()).toEqual('14')
 	})
 
-	it('renders large number properly', () => {
+	it('renders large number properly', async () => {
 		const wrapper = mount(LocaleNumber, {
 			global: { plugins: [vuetify] },
 			props: { stat: 10000000 }
@@ -41,7 +41,7 @@ describe('LocaleNumber', () => {
 		expect(wrapper.html()).toEqual('10.000.000')
 	})
 
-	it('renders small number properly', () => {
+	it('renders small number properly', async () => {
 		const wrapper = mount(LocaleNumber, {
 			global: { plugins: [vuetify] },
 			props: { stat: 0.03 }

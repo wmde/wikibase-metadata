@@ -3,8 +3,8 @@ import { vuetify } from '@/main'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-describe('AppHeader', () => {
-	it('renders properly', () => {
+describe('AppHeader', async () => {
+	it('renders properly', async () => {
 		const wrapper = mount(AppHeader, { global: { plugins: [vuetify] } })
 
 		const headerContainer = wrapper.find('div.header')
