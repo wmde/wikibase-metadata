@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import img from '@/media/icon/wikibase_symbol_RGB.png'
+import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
 </script>
 
 <template>
