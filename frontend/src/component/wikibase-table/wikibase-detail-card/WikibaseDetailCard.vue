@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import WikibaseCardStatBlock from '@/component/wikibase-card/WikibaseCardStatBlock.vue'
-import WikibaseIcon from '@/component/wikibase-card/WikibaseIcon.vue'
+import WikibaseCardStatBlock from '@/component/wikibase-table/wikibase-detail-card/WikibaseCardStatBlock.vue'
+import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
 import { useSingleWikiStore } from '@/stores/wikibase-store'
 import computeTotalEdits from '@/util/computeTotalEdits'
 import stringDate from '@/util/stringDate'
