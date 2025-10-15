@@ -50,6 +50,7 @@ const headers = [
 		striped="even"
 		:loading="loading"
 		v-model:sort-by="sortBy"
+		class="wikibase-table"
 	>
 		<template v-slot:item="{ item }">
 			<WikibaseTableRow :wikibase="item" />
