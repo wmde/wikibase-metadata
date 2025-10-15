@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import AppHeader from '@/component/AppHeader.vue'
-import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
+import AppHeader from '@/component/AppHeader.vue';
+import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue';
 </script>
 
 <template>
-	<v-app class="pa-0 suite-scraper-app">
+	<v-container class="pa-0 suite-scraper-app">
 		<AppHeader />
 		<WikibaseTableContainer />
-	</v-app>
+	</v-container>
 </template>
 
 <style lang="css"></style>
