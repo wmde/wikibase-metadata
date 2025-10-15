@@ -3,6 +3,7 @@ import LocaleNumber from '@/component/LocaleNumber.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
 import { ref } from 'vue'
+import WikibaseDetailCard from './WikibaseDetailCard.vue'
 
 defineProps<{ wikibase: WbFragment }>()
 
@@ -30,9 +31,7 @@ const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 		</td>
 	</tr>
 	<v-dialog v-model="openDialog" width="auto">
-		<v-card :max-width="500">
-			{{ wikibase }}
-		</v-card>
+		<WikibaseDetailCard :wikibase-id="Number.parseInt(wikibase.id)" />
 	</v-dialog>
 </template>
 

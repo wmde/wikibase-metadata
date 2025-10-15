@@ -1203,6 +1203,38 @@ export type WikibaseYearCreatedAggregate = {
 	year: Scalars['Union']['output']
 }
 
+export type SingleWikibaseQueryVariables = Exact<{
+	wikibaseId: Scalars['Int']['input']
+}>
+
+export type SingleWikibaseQuery = {
+	__typename?: 'Query'
+	wikibase: { __typename?: 'Wikibase' } & {
+		' $fragmentRefs'?: { SingleWikibaseFragment: SingleWikibaseFragment }
+	}
+}
+
+export type SingleWikibaseFragment = {
+	__typename?: 'Wikibase'
+	id: string
+	title: string
+	description?: string | null
+	wikibaseType?: WikibaseType | null
+	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+	quantityObservations: {
+		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+		mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+	}
+	recentChangesObservations: {
+		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseRecentChangesObservation'
+			botChangeCount?: any | null
+			humanChangeCount?: any | null
+		} | null
+	}
+} & { ' $fragmentName'?: 'SingleWikibaseFragment' }
+
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
@@ -1239,6 +1271,70 @@ export type WbFragment = {
 	}
 } & { ' $fragmentName'?: 'WbFragment' }
 
+export const SingleWikibaseFragmentDoc = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'SingleWikibase' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'description' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'urls' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+						}
+					},
+					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'quantityObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'recentChangesObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<SingleWikibaseFragment, unknown>
 export const WbFragmentDoc = {
 	kind: 'Document',
 	definitions: [
@@ -1303,6 +1399,107 @@ export const WbFragmentDoc = {
 		}
 	]
 } as unknown as DocumentNode<WbFragment, unknown>
+export const SingleWikibaseDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'SingleWikibase' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseId' } },
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+					}
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'wikibase' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseId' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseId' } }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SingleWikibase' } }
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'SingleWikibase' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'description' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'urls' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } }]
+						}
+					},
+					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'quantityObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'recentChangesObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<SingleWikibaseQuery, SingleWikibaseQueryVariables>
 export const PageWikibasesDocument = {
 	kind: 'Document',
 	definitions: [

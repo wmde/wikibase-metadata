@@ -1199,6 +1199,55 @@ export type WikibaseYearCreatedAggregate = {
 	year: Scalars['Union']['output']
 }
 
+export type SingleWikibaseQueryVariables = Exact<{
+	wikibaseId: Scalars['Int']['input']
+}>
+
+export type SingleWikibaseQuery = {
+	__typename?: 'Query'
+	wikibase: {
+		__typename?: 'Wikibase'
+		id: string
+		title: string
+		description?: string | null
+		wikibaseType?: WikibaseType | null
+		urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+		quantityObservations: {
+			__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+			mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+		}
+		recentChangesObservations: {
+			__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
+			mostRecent?: {
+				__typename?: 'WikibaseRecentChangesObservation'
+				botChangeCount?: any | null
+				humanChangeCount?: any | null
+			} | null
+		}
+	}
+}
+
+export type SingleWikibaseFragment = {
+	__typename?: 'Wikibase'
+	id: string
+	title: string
+	description?: string | null
+	wikibaseType?: WikibaseType | null
+	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
+	quantityObservations: {
+		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+		mostRecent?: { __typename?: 'WikibaseQuantityObservation'; totalTriples?: any | null } | null
+	}
+	recentChangesObservations: {
+		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseRecentChangesObservation'
+			botChangeCount?: any | null
+			humanChangeCount?: any | null
+		} | null
+	}
+}
+
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
