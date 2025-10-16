@@ -9,7 +9,6 @@ import { computed, ref, watch, type Ref } from 'vue'
 provideApolloClient(apolloClient)
 
 export type WikibaseStoreType = {
-	fetchWikibase: () => void
 	wikibaseId: number | undefined
 	wikibase: QueryResult<SingleWikibaseQuery | null> | Ref<QueryResult<SingleWikibaseQuery | null>>
 	searchWikibase: (i: number) => void
@@ -35,5 +34,5 @@ export const useSingleWikiStore = defineStore('single-wiki', (): WikibaseStoreTy
 		load(singleWikibaseQuery, { wikibaseId: wikibaseId.value }, { fetchPolicy: 'network-only' })
 	watch(wikibaseId, () => fetchWikibase())
 
-	return { fetchWikibase, wikibaseId: wikibaseId.value, wikibase, searchWikibase }
+	return { wikibaseId: wikibaseId.value, wikibase, searchWikibase }
 })
