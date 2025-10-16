@@ -3,7 +3,8 @@ import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import { WikibaseType, type WbFragment } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
@@ -51,6 +52,8 @@ const testWikibasesAlt: WbFragment[] = [
 ]
 
 describe('WikibaseTable', async () => {
+	beforeEach(() => setActivePinia(createPinia()))
+
 	it('renders data properly', async () => {
 		const wrapper = mount(WikibaseTable, {
 			global: { plugins: [vuetify] },
