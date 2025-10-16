@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import LocaleNumber from '@/component/LocaleNumber.vue'
-import WikibaseDetailCard from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCard.vue'
+import WikibaseDetailCardContainer from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCardContainer.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
-import { ref } from 'vue'
 
 defineProps<{ wikibase: WbFragment }>()
-
-const openDialog = ref(false)
-const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 </script>
 
 <template>
@@ -29,12 +25,9 @@ const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
 		<td>
-			<v-btn v-on:click="toggleOpenDialog">VIEW</v-btn>
+			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
 		</td>
 	</tr>
-	<v-dialog class="wikibase-detail-dialog" v-model="openDialog" width="auto">
-		<WikibaseDetailCard :wikibase-id="Number.parseInt(wikibase.id)" />
-	</v-dialog>
 </template>
 
 <style lang="css">

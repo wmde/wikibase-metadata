@@ -2,18 +2,10 @@
 import DateStatBlock from '@/component/wikibase-table/wikibase-detail-card/DateStatBlock.vue'
 import NumStatBlock from '@/component/wikibase-table/wikibase-detail-card/NumStatBlock.vue'
 import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
-import { WikibaseType } from '@/graphql/types'
-import { useSingleWikiStore } from '@/stores/wikibase-store'
+import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
-import { computed, onBeforeMount } from 'vue'
 
-const props = defineProps<{ wikibaseId: number }>()
-
-const store = useSingleWikiStore()
-const wikibase = computed(() => store.wikibase.data?.wikibase)
-const loading = computed(() => store.wikibase.loading)
-
-onBeforeMount(() => store.searchWikibase(props.wikibaseId))
+defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
 </script>
 
 <template>
