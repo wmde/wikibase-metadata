@@ -1,5 +1,5 @@
 import { singleWikibaseQuery } from '@/graphql/queries/single-wikibase-query'
-import { type SingleWikibaseQuery, type SingleWikibaseQueryVariables } from '@/graphql/types'
+import type { SingleWikibaseQuery, SingleWikibaseQueryVariables } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
