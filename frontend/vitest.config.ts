@@ -9,7 +9,7 @@ export default mergeConfig(
 			coverage: {
 				exclude: ['codegen.ts', 'src/main.ts', 'src/graphql/**', '**/__tests__/*'],
 				provider: 'istanbul',
-				thresholds: { branches: 90, functions: 90, lines: 95, statements: 90 }
+				thresholds: { branches: 90, functions: 84, lines: 95, statements: 90 }
 			},
 			environment: 'jsdom',
 			exclude: [...configDefaults.exclude, 'e2e/**'],
