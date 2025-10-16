@@ -80,19 +80,12 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 				</v-container>
 			</v-container>
 			<v-tooltip
+				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
 				class="ttfv-tooltip"
-				:text="
-					wikibase.timeToFirstValueObservations.mostRecent?.initiationDate == undefined
-						? `Data Unavailable`
-						: `Pulled from Action API`
-				"
+				text="Pulled from Action API"
 			>
 				<template v-slot:activator="{ props }">
-					<v-container
-						v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
-						v-bind="props"
-						class="stat-block-container pa-0"
-					>
+					<v-container v-bind="props" class="stat-block-container pa-0">
 						<DateStatBlock
 							label="First Record"
 							:stat="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
