@@ -130,7 +130,7 @@ Run the docker image, mount the `settings.ini` file and the db directory. Open p
 
 ```bash
 # we need to use sudo because users don't have docker privileges
-$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ -p 80:8000 wikibase-metadata
+$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ --volume /var/local/wikidev/logs/:/app/logs/ -p 80:8000 wikibase-metadata
 ```
 
 ### Stop the docker image

@@ -12,16 +12,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
 
-# Create a directory for logs TODO: do not write to container file system
-RUN mkdir /app/logs
-
 # Security: run as non-root
 RUN useradd -u 10001 -m appuser
-RUN chown 10001 /app/logs
 USER appuser
 
 # Expose the backend port
 EXPOSE 8000
 
 # Run the backend, 4 cores * 2 + 1
-CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","--workers","9","-b","0.0.0.0:8000"]
+CMD ["gunicorn","app:app","-k","uvicorn.workers.UvicornWorker","--workers","9","-b","0.0.0.0:8000","--preload"]
