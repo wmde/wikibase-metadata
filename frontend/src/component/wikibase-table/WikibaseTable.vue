@@ -5,21 +5,12 @@ import type {
 	WikibaseQuantityObservationWikibaseObservationSet as WikibaseQuantityObservationSet,
 	WikibaseRecentChangesObservationWikibaseObservationSet as WikibaseRecentChangesObservationSet
 } from '@/graphql/types'
-import { useWikiStore } from '@/stores/wikibase-page-store'
 import computeTotalEdits from '@/util/computeTotalEdits'
 import { compareByValue } from '@/util/sortByValue'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
-const store = useWikiStore()
-
-const error = computed(() => store.wikibasePage.errorState)
-const loading = computed(() => store.wikibasePage.loading)
-const wikibases = computed<WbFragment[] | undefined>(
-	() => store.wikibasePage.data?.wikibaseList.data
-)
-
-const sortBy = ref<SortItem[]>([{ key: 'quantityObservations', order: 'asc' }])
+const sortBy = ref<SortItem[]>([{ key: 'quantityObservations', order: 'desc' }])
 
 const headers = [
 	{ title: 'Type', value: 'wikibaseType', sortable: true },
@@ -30,20 +21,22 @@ const headers = [
 		value: 'quantityObservations',
 		sortable: true,
 		sort: (a: WikibaseQuantityObservationSet, b: WikibaseQuantityObservationSet) =>
-			compareByValue(a, b, (v) => v.mostRecent?.totalTriples) * -1
+			compareByValue(a, b, (v) => v.mostRecent?.totalTriples)
 	},
 	{
 		title: 'Edits',
 		value: 'recentChangesObservations',
 		sortable: true,
 		sort: (a: WikibaseRecentChangesObservationSet, b: WikibaseRecentChangesObservationSet) =>
-			compareByValue(a, b, computeTotalEdits) * -1
+			compareByValue(a, b, computeTotalEdits)
 	}
 ]
+
+defineProps<{ error: boolean; loading: boolean; wikibases: WbFragment[] | undefined }>()
 </script>
 
 <template>
-	<v-alert v-if="error" type="error" variant="tonal" title="Error"> Error fetching data </v-alert>
+	<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 	<v-data-table
 		:items="wikibases"
 		:headers="headers"

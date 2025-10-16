@@ -1,12 +1,15 @@
 import WikibaseTypeFilter from '@/component/wikibase-table/WikibaseTypeFilter.vue'
-import { vuetify } from '@/main'
+import vuetify from '@/plugin/vuetify'
 import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.stubGlobal('visualViewport', new EventTarget())
 
 describe('WikibaseTypeFilter', async () => {
+	beforeEach(() => setActivePinia(createPinia()))
+
 	it('renders properly', async () => {
 		const wrapper = mount(WikibaseTypeFilter, {
 			global: { mocks: { useWikiStore: () => mockWikiStore }, plugins: [vuetify] }

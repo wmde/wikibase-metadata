@@ -1,10 +1,13 @@
 import WikibaseDetailCard from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCard.vue'
-import { vuetify } from '@/main'
+import vuetify from '@/plugin/vuetify'
 import mockSingleWikiStore from '@/stores/__tests__/mock-wikibase-store'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 describe('WikibaseDetailCard', async () => {
+	beforeEach(() => setActivePinia(createPinia()))
+
 	it('renders no info properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
 			global: { mocks: { useSingleWikiStore: () => mockSingleWikiStore }, plugins: [vuetify] },

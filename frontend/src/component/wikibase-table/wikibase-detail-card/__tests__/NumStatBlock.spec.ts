@@ -1,5 +1,5 @@
 import NumStatBlock from '@/component/wikibase-table/wikibase-detail-card/NumStatBlock.vue'
-import { vuetify } from '@/main'
+import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 

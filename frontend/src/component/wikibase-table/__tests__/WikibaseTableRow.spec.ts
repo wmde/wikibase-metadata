@@ -1,13 +1,16 @@
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { WikibaseType } from '@/graphql/types'
-import { vuetify } from '@/main'
+import vuetify from '@/plugin/vuetify'
 import mockSingleWikiStore from '@/stores/__tests__/mock-wikibase-store'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.stubGlobal('visualViewport', new EventTarget())
 
 describe('WikibaseTableRow', async () => {
+	beforeEach(() => setActivePinia(createPinia()))
+
 	it('renders properly with minimal info', async () => {
 		const wrapper = mount(WikibaseTableRow, {
 			global: { plugins: [vuetify] },

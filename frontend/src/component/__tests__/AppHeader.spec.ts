@@ -1,5 +1,5 @@
 import AppHeader from '@/component/AppHeader.vue'
-import { vuetify } from '@/main'
+import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
