@@ -36,7 +36,7 @@ onBeforeMount(() => store.searchWikibase(props.wikibaseId))
 							</a>
 						</v-container>
 						<v-container v-if="wikibase.urls.sparqlFrontendUrl" class="wikibase-url ma-0 pa-0">
-							<a :href="wikibase.urls.sparqlFrontendUrl"> SPARQL </a>
+							<a :href="wikibase.urls.sparqlFrontendUrl">SPARQL</a>
 						</v-container>
 					</v-container>
 					<div v-if="wikibase.description" class="description">{{ wikibase.description }}</div>
