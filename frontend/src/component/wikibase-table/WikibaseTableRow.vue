@@ -12,9 +12,9 @@ const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 </script>
 
 <template>
-	<tr v-on:click="toggleOpenDialog">
+	<tr>
 		<td>
-			{{ wikibase.wikibaseType }}
+			<v-chip class="wikibase-type-chip">{{ wikibase.wikibaseType }}</v-chip>
 		</td>
 		<td>
 			{{ wikibase.title }}
@@ -28,10 +28,17 @@ const toggleOpenDialog = () => (openDialog.value = !openDialog.value)
 		<td>
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
+		<td>
+			<v-btn v-on:click="toggleOpenDialog">VIEW</v-btn>
+		</td>
 	</tr>
 	<v-dialog class="wikibase-detail-dialog" v-model="openDialog" width="auto">
 		<WikibaseDetailCard :wikibase-id="Number.parseInt(wikibase.id)" />
 	</v-dialog>
 </template>
 
-<style lang="css"></style>
+<style lang="css">
+.wikibase-type-chip {
+	min-width: 40px;
+}
+</style>

@@ -69,18 +69,31 @@ describe('WikibaseTable', async () => {
 		const tableHead = table.find('thead')
 		expect(tableHead.exists()).toEqual(true)
 
-		expect(tableHead.findAll('th').length).toEqual(5)
-		tableHead.findAll('th').forEach((th) => {
-			expect(th.classes()).toContain('v-data-table__th--sortable')
-			expect(th.find('i.v-icon').exists()).toEqual(true)
-		})
-		expect(tableHead.findAll('th').map((th) => th.text())).toEqual([
-			'Type',
-			'Title',
-			'URL',
-			'Triples',
-			'Edits'
-		])
+		expect(tableHead.findAll('th').length).toEqual(6)
+
+		expect(tableHead.findAll('th')[0]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[0]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[0]?.text()).toEqual('Type')
+
+		expect(tableHead.findAll('th')[1]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[1]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[1]?.text()).toEqual('Title')
+
+		expect(tableHead.findAll('th')[2]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[2]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[2]?.text()).toEqual('URL')
+
+		expect(tableHead.findAll('th')[3]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[3]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[3]?.text()).toEqual('Triples')
+
+		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
+
+		expect(tableHead.findAll('th')[5]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[5]?.find('i.v-icon').exists()).toEqual(false)
+		expect(tableHead.findAll('th')[5]?.text()).toEqual('Details')
 
 		expect(table.find('tbody').findAll('tr').length).toEqual(5)
 
@@ -153,18 +166,31 @@ describe('WikibaseTable', async () => {
 		const tableHead = table.find('thead')
 		expect(tableHead.exists()).toEqual(true)
 
-		expect(tableHead.findAll('th').length).toEqual(5)
-		tableHead.findAll('th').forEach((th) => {
-			expect(th.classes()).toContain('v-data-table__th--sortable')
-			expect(th.find('i.v-icon').exists()).toEqual(true)
-		})
-		expect(tableHead.findAll('th').map((th) => th.text())).toEqual([
-			'Type',
-			'Title',
-			'URL',
-			'Triples',
-			'Edits'
-		])
+		expect(tableHead.findAll('th').length).toEqual(6)
+
+		expect(tableHead.findAll('th')[0]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[0]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[0]?.text()).toEqual('Type')
+
+		expect(tableHead.findAll('th')[1]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[1]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[1]?.text()).toEqual('Title')
+
+		expect(tableHead.findAll('th')[2]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[2]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[2]?.text()).toEqual('URL')
+
+		expect(tableHead.findAll('th')[3]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[3]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[3]?.text()).toEqual('Triples')
+
+		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
+
+		expect(tableHead.findAll('th')[5]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[5]?.find('i.v-icon').exists()).toEqual(false)
+		expect(tableHead.findAll('th')[5]?.text()).toEqual('Details')
 
 		await tableHead.findAll('th')[4]?.trigger('click')
 		await nextTick()
@@ -233,18 +259,31 @@ describe('WikibaseTable', async () => {
 		const tableHead = table.find('thead')
 		expect(tableHead.exists()).toEqual(true)
 
-		expect(tableHead.findAll('th').length).toEqual(5)
-		tableHead.findAll('th').forEach((th) => {
-			expect(th.classes()).toContain('v-data-table__th--sortable')
-			expect(th.find('i.v-icon').exists()).toEqual(true)
-		})
-		expect(tableHead.findAll('th').map((th) => th.text())).toEqual([
-			'Type',
-			'Title',
-			'URL',
-			'Triples',
-			'Edits'
-		])
+		expect(tableHead.findAll('th').length).toEqual(6)
+
+		expect(tableHead.findAll('th')[0]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[0]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[0]?.text()).toEqual('Type')
+
+		expect(tableHead.findAll('th')[1]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[1]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[1]?.text()).toEqual('Title')
+
+		expect(tableHead.findAll('th')[2]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[2]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[2]?.text()).toEqual('URL')
+
+		expect(tableHead.findAll('th')[3]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[3]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[3]?.text()).toEqual('Triples')
+
+		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
+
+		expect(tableHead.findAll('th')[5]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[5]?.find('i.v-icon').exists()).toEqual(false)
+		expect(tableHead.findAll('th')[5]?.text()).toEqual('Details')
 
 		expect(table.find('tbody').findAll('tr').length).toEqual(1)
 

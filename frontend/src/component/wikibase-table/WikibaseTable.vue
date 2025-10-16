@@ -29,7 +29,8 @@ const headers = [
 		sortable: true,
 		sort: (a: WikibaseRecentChangesObservationSet, b: WikibaseRecentChangesObservationSet) =>
 			compareByValue(a, b, computeTotalEdits)
-	}
+	},
+	{ title: 'Details', value: 'id', sortable: false }
 ]
 
 defineProps<{ error: boolean; loading: boolean; wikibases: WbFragment[] | undefined }>()

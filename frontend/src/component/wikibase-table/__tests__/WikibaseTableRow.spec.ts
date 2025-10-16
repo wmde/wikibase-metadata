@@ -28,13 +28,14 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(5)
+		expect(row.findAll('td').length).toEqual(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'',
 			'Test Wikibase',
 			'wikibase.test',
 			'–',
-			'–'
+			'–',
+			'VIEW'
 		])
 	})
 
@@ -56,13 +57,14 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(5)
+		expect(row.findAll('td').length).toEqual(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'CLOUD',
 			'Test Cloud Wikibase',
 			'wikibase.test',
 			'1',
-			'5'
+			'5',
+			'VIEW'
 		])
 	})
 
@@ -84,11 +86,14 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
+		const button = row.find('button.v-btn')
+		expect(button.exists()).toEqual(true)
+
 		expect(wrapper.html()).not.toContain('<!--teleport start-->')
 		expect(wrapper.html()).not.toContain('<!--teleport end-->')
 		expect(document.querySelector('.wikibase-detail-dialog')).toBeNull()
 
-		await row.trigger('click')
+		await button.trigger('click')
 
 		expect(wrapper.html()).toContain('<!--teleport start-->')
 		expect(wrapper.html()).toContain('<!--teleport end-->')
