@@ -30,7 +30,9 @@ describe('useWikiStore', async () => {
 
 		expect(store.pageNumber).toEqual(1)
 		expect(store.pageSize).toEqual(10000)
-		expect(store.wikibaseFilter).toEqual({ wikibaseType: { exclude: [WikibaseType.Test] } })
+		expect(store.wikibaseFilter).toEqual({
+			wikibaseType: { exclude: [WikibaseType.Test, WikibaseType.Cloud] }
+		})
 		expect(store.wikibasePage).toEqual({
 			data: { wikibaseList: { data: [], meta: { totalCount: 0 } } },
 			errorState: false,
