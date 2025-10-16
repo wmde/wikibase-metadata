@@ -2,6 +2,7 @@
 import DateStatBlock from '@/component/wikibase-table/wikibase-detail-card/DateStatBlock.vue'
 import NumStatBlock from '@/component/wikibase-table/wikibase-detail-card/NumStatBlock.vue'
 import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
+import { WikibaseType } from '@/graphql/types'
 import { useSingleWikiStore } from '@/stores/wikibase-store'
 import computeTotalEdits from '@/util/computeTotalEdits'
 import { computed, onBeforeMount } from 'vue'
@@ -31,66 +32,146 @@ onBeforeMount(() => store.searchWikibase(props.wikibaseId))
 					<v-container class="url-container ma-0 pa-0">
 						<WikibaseIcon :base-url="wikibase.urls.baseUrl" />
 						<v-container class="wikibase-url ma-0 pa-0">
-							<a :href="wikibase.urls.baseUrl">
-								{{ wikibase.title }}
-							</a>
+							<v-tooltip
+								class="base-url-tooltip"
+								:text="
+									wikibase.wikibaseType == WikibaseType.Cloud
+										? `Automatically pulled from Cloud API`
+										: `Manually set`
+								"
+							>
+								<template v-slot:activator="{ props }">
+									<a v-bind="props" :href="wikibase.urls.baseUrl">
+										{{ wikibase.title }}
+									</a>
+								</template>
+							</v-tooltip>
 						</v-container>
 						<v-container v-if="wikibase.urls.sparqlFrontendUrl" class="wikibase-url ma-0 pa-0">
-							<a :href="wikibase.urls.sparqlFrontendUrl">SPARQL</a>
+							<v-tooltip
+								class="sparql-url-tooltip"
+								:text="
+									wikibase.wikibaseType == WikibaseType.Cloud
+										? `Automatically pulled from Cloud API`
+										: `Manually set`
+								"
+							>
+								<template v-slot:activator="{ props }">
+									<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl">SPARQL</a>
+								</template>
+							</v-tooltip>
 						</v-container>
 					</v-container>
-					<div v-if="wikibase.description" class="description">{{ wikibase.description }}</div>
+					<v-tooltip v-if="wikibase.description" class="desc-tooltip" text="Manually written">
+						<template v-slot:activator="{ props }">
+							<v-container v-bind="props" class="description ma-0 pa-0">
+								{{ wikibase.description }}
+							</v-container>
+						</template>
+					</v-tooltip>
 				</v-container>
-				<v-container class="wikibase-type ma-0 pa-0">{{ wikibase.wikibaseType }}</v-container>
+				<v-container class="wikibase-type ma-0 pa-0">
+					<v-tooltip
+						class="type-tooltip"
+						:text="
+							wikibase.wikibaseType == WikibaseType.Cloud
+								? `Automatically pulled from Cloud API`
+								: wikibase.wikibaseType == undefined
+									? `Not set`
+									: `Manually set`
+						"
+					>
+						<template v-slot:activator="{ props }">
+							<v-chip class="wikibase-type-chip" v-bind="props">{{ wikibase.wikibaseType }}</v-chip>
+						</template>
+					</v-tooltip>
+				</v-container>
 			</v-container>
-			<v-container
-				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
-				class="stat-block-container pa-0"
+			<v-tooltip
+				class="ttfv-tooltip"
+				:text="
+					wikibase.timeToFirstValueObservations.mostRecent?.initiationDate == undefined
+						? `Data Unavailable`
+						: `Pulled from Action API`
+				"
 			>
-				<DateStatBlock
-					label="First Record"
-					:stat="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
-				/>
-				<DateStatBlock
-					label="AS OF"
-					:stat="wikibase.timeToFirstValueObservations.mostRecent?.observationDate"
-				/>
-			</v-container>
-			<v-container
+				<template v-slot:activator="{ props }">
+					<v-container
+						v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
+						v-bind="props"
+						class="stat-block-container pa-0"
+					>
+						<DateStatBlock
+							label="First Record"
+							:stat="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
+						/>
+						<DateStatBlock
+							label="AS OF"
+							:stat="wikibase.timeToFirstValueObservations.mostRecent?.observationDate"
+						/>
+					</v-container>
+				</template>
+			</v-tooltip>
+			<v-tooltip
 				v-if="wikibase.quantityObservations.mostRecent"
-				class="stat-block-container pa-0"
+				class="quantity-tooltip"
+				:text="
+					wikibase.quantityObservations.mostRecent.totalItems == undefined &&
+					wikibase.quantityObservations.mostRecent.totalLexemes == undefined &&
+					wikibase.quantityObservations.mostRecent.totalProperties == undefined &&
+					wikibase.quantityObservations.mostRecent.totalTriples == undefined
+						? `SPARQL Unavailable`
+						: `Pulled from SPARQL`
+				"
 			>
-				<NumStatBlock label="ITEMS" :stat="wikibase.quantityObservations.mostRecent?.totalItems" />
-				<NumStatBlock
-					label="PROPERTIES"
-					:stat="wikibase.quantityObservations.mostRecent?.totalProperties"
-				/>
-				<NumStatBlock
-					label="LEXEMES"
-					:stat="wikibase.quantityObservations.mostRecent?.totalLexemes"
-				/>
-				<NumStatBlock
-					label="TRIPLES"
-					:stat="wikibase.quantityObservations.mostRecent?.totalTriples"
-				/>
-				<DateStatBlock
-					label="AS OF"
-					:stat="wikibase.quantityObservations.mostRecent?.observationDate"
-				/>
-			</v-container>
-			<v-container
+				<template v-slot:activator="{ props }">
+					<v-container v-bind="props" class="stat-block-container pa-0">
+						<NumStatBlock
+							label="ITEMS"
+							:stat="wikibase.quantityObservations.mostRecent.totalItems"
+						/>
+						<NumStatBlock
+							label="PROPERTIES"
+							:stat="wikibase.quantityObservations.mostRecent.totalProperties"
+						/>
+						<NumStatBlock
+							label="LEXEMES"
+							:stat="wikibase.quantityObservations.mostRecent?.totalLexemes"
+						/>
+						<NumStatBlock
+							label="TRIPLES"
+							:stat="wikibase.quantityObservations.mostRecent?.totalTriples"
+						/>
+						<DateStatBlock
+							label="AS OF"
+							:stat="wikibase.quantityObservations.mostRecent?.observationDate"
+						/>
+					</v-container>
+				</template>
+			</v-tooltip>
+			<v-tooltip
 				v-if="wikibase.recentChangesObservations.mostRecent"
-				class="stat-block-container pa-0"
+				class="recent-changes-tooltip"
+				:text="
+					wikibase.recentChangesObservations.mostRecent.botChangeCount == undefined &&
+					wikibase.recentChangesObservations.mostRecent.humanChangeCount == undefined
+						? `Data Unavailable`
+						: `Pulled from Action API`
+				"
 			>
-				<NumStatBlock
-					label="EDITS (30 DAYS)"
-					:stat="computeTotalEdits(wikibase.recentChangesObservations)"
-				/>
-				<DateStatBlock
-					label="AS OF"
-					:stat="wikibase.recentChangesObservations.mostRecent?.observationDate"
-				/>
-			</v-container>
+				<template v-slot:activator="{ props }">
+					<v-container v-bind="props" class="stat-block-container pa-0">
+						<NumStatBlock
+							label="EDITS (30 DAYS)"
+							:stat="computeTotalEdits(wikibase.recentChangesObservations)"
+						/>
+						<DateStatBlock
+							label="AS OF"
+							:stat="wikibase.recentChangesObservations.mostRecent.observationDate"
+						/>
+					</v-container>
+				</template>
+			</v-tooltip>
 		</template>
 	</v-card>
 </template>
@@ -122,6 +203,9 @@ onBeforeMount(() => store.searchWikibase(props.wikibaseId))
 	width: auto;
 	align-self: stretch;
 	align-content: center;
+}
+.wikibase-type-chip {
+	min-width: 40px;
 	font-weight: 500;
 }
 .stat-block-container {
