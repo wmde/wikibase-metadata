@@ -1,8 +1,5 @@
 type PartialWikibaseRecentChangesObservationSet = {
-	mostRecent?: {
-		botChangeCount?: number | null
-		humanChangeCount?: number | null
-	} | null
+	mostRecent?: { botChangeCount?: number | null; humanChangeCount?: number | null } | null
 }
 
 const computeTotalEdits = (v: PartialWikibaseRecentChangesObservationSet): number | undefined =>

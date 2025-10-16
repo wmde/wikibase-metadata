@@ -68,23 +68,13 @@ describe('useSingleWikiStore', async () => {
 						}
 					},
 					recentChangesObservations: {
-						mostRecent: {
-							botChangeCount: 8,
-							humanChangeCount: 13,
-							observationDate: new Date(0)
-						}
+						mostRecent: { botChangeCount: 8, humanChangeCount: 13, observationDate: new Date(0) }
 					},
 					timeToFirstValueObservations: {
-						mostRecent: {
-							initiationDate: new Date(0),
-							observationDate: new Date(0)
-						}
+						mostRecent: { initiationDate: new Date(0), observationDate: new Date(0) }
 					},
 					title: 'Test Wikibase',
-					urls: {
-						baseUrl: 'wikibase.test',
-						sparqlFrontendUrl: 'query.wikibase.test/frontend'
-					},
+					urls: { baseUrl: 'wikibase.test', sparqlFrontendUrl: 'query.wikibase.test/frontend' },
 					wikibaseType: 'TEST'
 				}
 			},

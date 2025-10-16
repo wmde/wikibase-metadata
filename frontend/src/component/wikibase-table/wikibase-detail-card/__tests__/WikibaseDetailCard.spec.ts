@@ -26,10 +26,7 @@ describe('WikibaseDetailCard', async () => {
 
 	it('renders cloud wiki properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
-			global: {
-				mocks: { Image: vi.mockObject(Image) },
-				plugins: [vuetify]
-			},
+			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
 			props: {
 				wikibase: {
 					id: '1',
@@ -258,10 +255,7 @@ describe('WikibaseDetailCard', async () => {
 
 	it('renders suite wiki properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
-			global: {
-				mocks: { Image: vi.mockObject(Image) },
-				plugins: [vuetify]
-			},
+			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
 			props: {
 				wikibase: {
 					id: '1',
@@ -490,10 +484,7 @@ describe('WikibaseDetailCard', async () => {
 
 	it('renders undefined wiki properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
-			global: {
-				mocks: { Image: vi.mockObject(Image) },
-				plugins: [vuetify]
-			},
+			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
 			props: {
 				wikibase: {
 					id: '1',
@@ -503,14 +494,8 @@ describe('WikibaseDetailCard', async () => {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
-					quantityObservations: {
-						mostRecent: {
-							observationDate: new Date(0)
-						}
-					},
-					recentChangesObservations: {
-						mostRecent: { observationDate: new Date(0) }
-					},
+					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
+					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
 					timeToFirstValueObservations: {
 						mostRecent: { observationDate: new Date(0), initiationDate: new Date(0) }
 					},
@@ -718,9 +703,7 @@ describe('WikibaseDetailCard', async () => {
 
 	it('renders loading properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
-			global: {
-				plugins: [vuetify]
-			},
+			global: { plugins: [vuetify] },
 			props: { wikibase: undefined, loading: true }
 		})
 

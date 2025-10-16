@@ -5,10 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 describe('LocaleNumber', async () => {
 	it('renders null properly', async () => {
-		const wrapper = mount(LocaleNumber, {
-			global: { plugins: [vuetify] },
-			props: { stat: null }
-		})
+		const wrapper = mount(LocaleNumber, { global: { plugins: [vuetify] }, props: { stat: null } })
 
 		expect(wrapper.html()).toEqual('–')
 	})
@@ -23,10 +20,7 @@ describe('LocaleNumber', async () => {
 	})
 
 	it('renders number properly', async () => {
-		const wrapper = mount(LocaleNumber, {
-			global: { plugins: [vuetify] },
-			props: { stat: 14 }
-		})
+		const wrapper = mount(LocaleNumber, { global: { plugins: [vuetify] }, props: { stat: 14 } })
 
 		expect(wrapper.html()).toEqual('14')
 	})
@@ -41,10 +35,7 @@ describe('LocaleNumber', async () => {
 	})
 
 	it('renders small number properly', async () => {
-		const wrapper = mount(LocaleNumber, {
-			global: { plugins: [vuetify] },
-			props: { stat: 0.03 }
-		})
+		const wrapper = mount(LocaleNumber, { global: { plugins: [vuetify] }, props: { stat: 0.03 } })
 
 		expect(wrapper.html()).toEqual('0,03')
 	})

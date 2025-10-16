@@ -6,17 +6,11 @@ const config: CodegenConfig = {
 	generates: {
 		'./src/graphql/': {
 			preset: 'client',
-			config: {
-				useTypeImports: true,
-				scalars: { Union: 'number', DateTime: 'Date' }
-			},
+			config: { useTypeImports: true, scalars: { Union: 'number', DateTime: 'Date' } },
 			presetConfig: { gqlTagName: 'gql' }
 		},
 		'./src/graphql/types.ts': {
-			config: {
-				useTypeImports: true,
-				scalars: { Union: 'number', DateTime: 'Date' }
-			},
+			config: { useTypeImports: true, scalars: { Union: 'number', DateTime: 'Date' } },
 			plugins: ['typescript', 'typescript-operations']
 		}
 	}

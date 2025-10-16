@@ -10,19 +10,10 @@ import { globalIgnores } from 'eslint/config'
 // More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
 
 export default defineConfigWithVueTs(
-	{
-		name: 'app/files-to-lint',
-		files: ['**/*.{ts,mts,tsx,vue}']
-	},
-
+	{ name: 'app/files-to-lint', files: ['**/*.{ts,mts,tsx,vue}'] },
 	globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
-
 	pluginVue.configs['flat/essential'],
 	vueTsConfigs.recommended,
-
-	{
-		...pluginVitest.configs.recommended,
-		files: ['src/**/__tests__/*']
-	},
+	{ ...pluginVitest.configs.recommended, files: ['src/**/__tests__/*'] },
 	skipFormatting
 )

@@ -5,10 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 describe('LocaleDate', async () => {
 	it('renders null properly', async () => {
-		const wrapper = mount(LocaleDate, {
-			global: { plugins: [vuetify] },
-			props: { stat: null }
-		})
+		const wrapper = mount(LocaleDate, { global: { plugins: [vuetify] }, props: { stat: null } })
 
 		expect(wrapper.html()).toEqual('–')
 	})

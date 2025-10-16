@@ -341,9 +341,7 @@ describe('WikibaseTable', async () => {
 
 	it('renders loading properly', async () => {
 		const wrapper = mount(WikibaseTable, {
-			global: {
-				plugins: [vuetify]
-			},
+			global: { plugins: [vuetify] },
 			props: { error: false, loading: true, wikibases: undefined }
 		})
 
