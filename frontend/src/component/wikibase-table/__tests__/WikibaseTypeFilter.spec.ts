@@ -1,8 +1,8 @@
+import WikibaseTypeFilter from '@/component/wikibase-table/WikibaseTypeFilter.vue'
 import { vuetify } from '@/main'
 import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import WikibaseTypeFilter from '../WikibaseTypeFilter.vue'
 
 vi.stubGlobal('visualViewport', new EventTarget())
 

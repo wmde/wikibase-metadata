@@ -1,8 +1,8 @@
 import { WikibaseType } from '@/graphql/types'
+import { useSingleWikiStore } from '@/stores/wikibase-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { useSingleWikiStore } from '../wikibase-store'
 
 const { mockLoad, mockUseLazyQuery } = vi.hoisted(() => ({
 	mockLoad: vi.fn().mockName('load'),
