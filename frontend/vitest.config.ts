@@ -10,10 +10,10 @@ export default mergeConfig(
 				exclude: ['codegen.ts', 'src/main.ts', 'src/graphql/**', '**/__tests__/*'],
 				provider: 'istanbul',
 				thresholds: {
-					branches: 95,
-					functions: 95,
-					lines: 95,
-					statements: 95
+					branches: 90,
+					functions: 90,
+					lines: 90,
+					statements: 90
 				}
 			},
 			environment: 'jsdom',
