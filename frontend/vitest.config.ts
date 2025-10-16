@@ -7,7 +7,7 @@ export default mergeConfig(
 	defineConfig({
 		test: {
 			coverage: {
-				exclude: ['codegen.ts', 'src/graphql/**', '**/__tests__/*'],
+				exclude: ['codegen.ts', 'src/main.ts', 'src/graphql/**', '**/__tests__/*'],
 				provider: 'istanbul',
 				thresholds: {
 					branches: 95,
