@@ -1,0 +1,71 @@
+name: Frontend Lint & Test
+
+on:
+  pull_request:
+
+jobs:
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: npm install
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: npm check lint
+        working-directory: ./frontend
+        run: |
+          npm run lint-check
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: npm install
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: npm check format
+        working-directory: ./frontend
+        run: |
+          npm run format-check
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: npm install
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: npm check type
+        working-directory: ./frontend
+        run: |
+          npm run type-check
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: npm install
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: npm test
+        working-directory: ./frontend
+        run: |
+          npm run test:coverage
