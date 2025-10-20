@@ -23,7 +23,7 @@ from tests.utils import MockResponse
 async def test_update_software_data(mocker):
     """Test Update Software Data"""
 
-    # pylint: disable-next=unused-argument,too-many-return-statements
+    # pylint: disable-next=unused-argument,too-many-return-statements,too-many-branches
     def mockery(*args, **kwargs):
         assert kwargs.get("timeout") == 300
         query = args[0]
