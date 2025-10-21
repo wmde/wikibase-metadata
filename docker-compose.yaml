@@ -1,7 +1,6 @@
 name: wikibase-metadata
 
 services:
-
   backend:
     image: wikibase-metadata
     build:
