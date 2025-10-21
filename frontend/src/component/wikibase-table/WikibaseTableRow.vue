@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import LocaleNumber from '@/component/LocaleNumber.vue'
 import WikibaseDetailCardContainer from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCardContainer.vue'
+import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
 
@@ -10,7 +11,7 @@ defineProps<{ wikibase: WbFragment }>()
 <template>
 	<tr>
 		<td>
-			<v-chip class="wikibase-type-chip">{{ wikibase.wikibaseType }}</v-chip>
+			<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 		</td>
 		<td>
 			{{ wikibase.title }}
