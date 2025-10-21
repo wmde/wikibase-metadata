@@ -9,7 +9,6 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./settings.ini:/app/settings.ini:z
       - ./data/:/app/data/:z
       - ./prod-logs/:/app/logs/:z
 
