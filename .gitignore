@@ -3,6 +3,8 @@ fetch_data/sparql_data/sparql_queries/failed_queries/
 *.local
 
 .env
+db
+data
 
 # Python
 __pycache__
