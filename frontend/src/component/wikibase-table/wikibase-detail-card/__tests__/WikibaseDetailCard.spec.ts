@@ -126,7 +126,7 @@ describe('WikibaseDetailCard', async () => {
 		).toEqual(true)
 		expect(
 			creationContainer?.findAll('div.stat-container')[0]?.find('label.stat-label').text()
-		).toEqual('First Record')
+		).toEqual('FIRST RECORD')
 		expect(creationContainer?.findAll('div.stat-container')[0]?.find('div.stat').exists()).toEqual(
 			true
 		)
@@ -355,7 +355,7 @@ describe('WikibaseDetailCard', async () => {
 		).toEqual(true)
 		expect(
 			creationContainer?.findAll('div.stat-container')[0]?.find('label.stat-label').text()
-		).toEqual('First Record')
+		).toEqual('FIRST RECORD')
 		expect(creationContainer?.findAll('div.stat-container')[0]?.find('div.stat').exists()).toEqual(
 			true
 		)
@@ -574,7 +574,7 @@ describe('WikibaseDetailCard', async () => {
 		).toEqual(true)
 		expect(
 			creationContainer?.findAll('div.stat-container')[0]?.find('label.stat-label').text()
-		).toEqual('First Record')
+		).toEqual('FIRST RECORD')
 		expect(creationContainer?.findAll('div.stat-container')[0]?.find('div.stat').exists()).toEqual(
 			true
 		)

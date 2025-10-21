@@ -30,7 +30,7 @@ describe('WikibaseTableRow', async () => {
 
 		expect(row.findAll('td').length).toEqual(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
-			'',
+			'UNKNOWN',
 			'Test Wikibase',
 			'wikibase.test',
 			'–',

@@ -105,7 +105,7 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[0]?.text())
-		).toEqual(['', 'SUITE', 'OTHER', 'CLOUD', 'SUITE'])
+		).toEqual(['UNKNOWN', 'SUITE', 'OTHER', 'CLOUD', 'SUITE'])
 		expect(
 			table
 				.find('tbody')
@@ -205,7 +205,7 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[0]?.text())
-		).toEqual(['CLOUD', 'SUITE', 'SUITE', 'OTHER', ''])
+		).toEqual(['CLOUD', 'SUITE', 'SUITE', 'OTHER', 'UNKNOWN'])
 		expect(
 			table
 				.find('tbody')
