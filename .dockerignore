@@ -27,7 +27,4 @@ data/*.db
 .env.*
 
 # Frontend
-frontend/**/__tests__
-frontend/coverage
-frontend/dist
-frontend/node_modules
+frontend/
