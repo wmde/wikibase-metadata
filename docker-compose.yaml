@@ -10,7 +10,7 @@ services:
       - 8000:8000
     volumes:
       - ./db/:/app/data/:z
-      - ./prod-logs/:/app/logs/:z
+      - ./logs/:/app/logs/:z
 
   frontend:
     image: wikibase-metadata-frontend
