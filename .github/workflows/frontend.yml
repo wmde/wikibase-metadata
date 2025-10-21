@@ -69,3 +69,5 @@ jobs:
         working-directory: ./frontend
         run: |
           npm run test:coverage
+        env:
+          VITE_BACKEND_URL: frontend.test/graphql
