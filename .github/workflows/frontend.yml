@@ -70,4 +70,4 @@ jobs:
         run: |
           npm run test:coverage
         env:
-          VITE_BACKEND_URL: frontend.test/graphql
+          VITE_BACKEND_URL: https://frontend.test/graphql
