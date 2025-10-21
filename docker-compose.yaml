@@ -9,7 +9,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./db/:/app/data/:z
+      - ./data/:/app/data/:z
       - ./logs/:/app/logs/:z
 
   frontend:
