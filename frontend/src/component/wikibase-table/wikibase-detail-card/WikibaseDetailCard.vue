@@ -87,7 +87,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 				<template v-slot:activator="{ props }">
 					<v-container v-bind="props" class="stat-block-container pa-0">
 						<DateStatBlock
-							label="First Record"
+							label="FIRST RECORD"
 							:stat="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
 						/>
 						<DateStatBlock
