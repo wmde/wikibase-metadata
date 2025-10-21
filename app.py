@@ -1,12 +1,10 @@
 """Main Application"""
 
 from contextlib import asynccontextmanager
-from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, PlainTextResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
 
 from export_csv import export_metric_csv
@@ -40,6 +38,12 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+def read_root():
+    """Root"""
+    return {"Hello": "World"}
+
+
 app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 
 
@@ -56,21 +60,3 @@ async def metric_csv(authorization: Optional[str] = None):
         return PlainTextResponse("Authorization Failed", 403)
 
     return await export_metric_csv()
-
-
-# Serve the built frontend from the Vite `dist` directory.
-DIST_DIR = (Path(__file__).resolve().parent / "dist").resolve()
-
-# Mount assets (e.g., /assets/*) referenced by the built app
-assets_dir = DIST_DIR / "assets"
-if assets_dir.exists():
-    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
-
-
-@app.get("/{_full_path:path}", include_in_schema=False)
-async def spa_handler(_full_path: str):
-    """SPA handler: serve index.html for root and any unmatched, non-API GET path"""
-    index_file = DIST_DIR / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return PlainTextResponse("Frontend build not found", status_code=404)
