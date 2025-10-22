@@ -12,6 +12,11 @@ services:
     volumes:
       - ${DATA_DIR:-./data/}:/app/data/:z
       - ./logs/:/app/logs/:z
+    environment:
+      DATA_DIR: ${DATA_DIR}
+      AUTH_TOKEN: ${AUTH_TOKEN}
+      SETTINGS_FILE: ${SETTINGS_FILE}
+      BACKEND_LOG_LEVEL: ${BACKEND_LOG_LEVEL}
     restart: unless-stopped
 
   frontend:
@@ -19,6 +24,8 @@ services:
     build: ./frontend
     expose:
       - 3000
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
     restart: unless-stopped
 
   nginx:
