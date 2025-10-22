@@ -21,7 +21,10 @@ services:
 
   frontend:
     image: wikibase-metadata-frontend
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
     expose:
       - 3000
     environment:
