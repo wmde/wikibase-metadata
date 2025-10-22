@@ -3,6 +3,7 @@ import os
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
+from sqlalchemy.engine import make_url
 
 from alembic import context
 
@@ -13,18 +14,45 @@ from model.database import *
 # access to the values within the .ini file in use.
 config = context.config
 
-if (
-    override_db_path := context.get_x_argument(as_dictionary=True).get("db_path")
-) is not None:
-    config.set_section_option(
-        section=config.config_ini_section,
-        name="sqlalchemy.url",
-        value=os.path.expandvars(override_db_path),
-    )
+# --- Helper: map async URLs to sync URLs ---
+def _coerce_to_sync_url(url_str: str) -> str:
+    """
+    Convert common async driver URLs to their sync equivalents so
+    Alembic can run with a normal (blocking) SQLAlchemy engine.
+    """
+    if not url_str:
+        return url_str
+    u = make_url(url_str)
+    mapping = {
+        "sqlite+aiosqlite": "sqlite",
+        "postgresql+asyncpg": "postgresql+psycopg",  # or just "postgresql"
+        "mysql+aiomysql": "mysql+pymysql",
+    }
+    new_driver = mapping.get(u.drivername, u.drivername)
+    return str(u.set(drivername=new_driver))
 
+# --- URL resolution precedence ---
+# 1) alembic -x db_path=...           (explicit CLI override; no env expansion)
+# 2) sqlalchemy.url from alembic.ini  (with $VAR expanded)
+x_args = context.get_x_argument(as_dictionary=True)
+override_db_path = x_args.get("db_path")
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
+if override_db_path:
+    url = override_db_path
+else:
+    ini_url = config.get_main_option("sqlalchemy.url")
+    if not ini_url:
+        raise RuntimeError(
+            "No database URL found. Provide -x db_path=... or set sqlalchemy.url in alembic.ini."
+        )
+    url = os.path.expandvars(ini_url)
+
+# --- Apply coercion to ensure sync driver for Alembic ---
+url = _coerce_to_sync_url(url)
+
+config.set_section_option(config.config_ini_section, "sqlalchemy.url", url)
+
+# Logging config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 

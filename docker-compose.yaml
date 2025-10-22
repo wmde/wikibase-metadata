@@ -10,11 +10,12 @@ services:
     expose:
       - 8000
     volumes:
-      - ${DATA_DIR:-./data/}:/app/data/:z
+      - ./data/:/app/data/:z
       - ./logs/:/app/logs/:z
     environment:
-      DATA_DIR: ${DATA_DIR}
       AUTH_TOKEN: ${AUTH_TOKEN}
+      DATABASE_URL: ${DATABASE_URL}
+      LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     restart: unless-stopped
 
