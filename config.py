@@ -19,4 +19,7 @@ enable_scheduler = config.getboolean("scheduler", "enable", fallback=True)
 log_directory = os.path.expandvars(
     config.get("logging", "log_directory", fallback="logs")
 )
-log_level = config.get("logging", "log_level", fallback="INFO")
+
+log_level = os.path.expandvars(
+    config.get("logging", "log_level", fallback="INFO")
+)
