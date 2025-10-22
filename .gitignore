@@ -3,8 +3,7 @@ fetch_data/sparql_data/sparql_queries/failed_queries/
 *.local
 
 .env
-db
-data
+data/wikibase-data.db
 
 # Python
 __pycache__
