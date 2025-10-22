@@ -5,6 +5,8 @@ services:
   backend:
     image: wikibase-metadata
     build: .
+    group_add:
+      - ${TEAM_GID}
     expose:
       - 8000
     volumes:
