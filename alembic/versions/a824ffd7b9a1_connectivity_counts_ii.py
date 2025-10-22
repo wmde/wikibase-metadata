@@ -36,7 +36,7 @@ def upgrade() -> None:
         sa.UniqueConstraint(
             "wikibase_connectivity_observation_id",
             "relationship_count",
-            name="unique_observation_relationship_count",
+            name="unique_observation_relationship_count2",
         ),
     )
     # ### end Alembic commands ###

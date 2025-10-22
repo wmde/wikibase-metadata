@@ -36,7 +36,7 @@ def upgrade() -> None:
         sa.UniqueConstraint(
             "wikibase_connectivity_observation_id",
             "relationship_count",
-            name="unique_observation_relationship_count",
+            name="unique_observation_relationship_count3",
         ),
     )
     op.drop_table("wikibase_quantity_observation_item_relationship_count")
@@ -60,7 +60,7 @@ def downgrade() -> None:
         sa.UniqueConstraint(
             "wikibase_quantity_observation_id",
             "relationship_count",
-            name="unique_observation_relationship_count",
+            name="unique_observation_relationship_count4",
         ),
     )
     op.drop_table("wikibase_connectivity_observation_item_relationship_count")
