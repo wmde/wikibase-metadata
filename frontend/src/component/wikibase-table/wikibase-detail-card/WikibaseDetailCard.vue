@@ -79,84 +79,63 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 					</v-tooltip>
 				</v-container>
 			</v-container>
-			<v-tooltip
+			<v-container
 				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
-				class="ttfv-tooltip"
-				text="Pulled from Action API"
+				class="stat-block-container pa-0"
 			>
-				<template v-slot:activator="{ props }">
-					<v-container v-bind="props" class="stat-block-container pa-0">
-						<DateStatBlock
-							label="FIRST RECORD"
-							:stat="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
-						/>
-						<DateStatBlock
-							label="AS OF"
-							:stat="wikibase.timeToFirstValueObservations.mostRecent?.observationDate"
-						/>
-					</v-container>
-				</template>
-			</v-tooltip>
-			<v-tooltip
+				<v-container class="ma-0 pa-0 stats-container">
+					<DateStatBlock
+						label="FIRST RECORD"
+						:stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate"
+					/>
+					<DateStatBlock
+						label="AS OF"
+						:stat="wikibase.timeToFirstValueObservations.mostRecent.observationDate"
+					/>
+				</v-container>
+				<v-label class="stat-source-container">Pulled from Action API</v-label>
+			</v-container>
+			<v-container
 				v-if="wikibase.quantityObservations.mostRecent"
-				class="quantity-tooltip"
-				:text="
-					wikibase.quantityObservations.mostRecent.totalItems == undefined &&
-					wikibase.quantityObservations.mostRecent.totalLexemes == undefined &&
-					wikibase.quantityObservations.mostRecent.totalProperties == undefined &&
-					wikibase.quantityObservations.mostRecent.totalTriples == undefined
-						? `SPARQL Unavailable`
-						: `Pulled from SPARQL`
-				"
+				class="stat-block-container pa-0"
 			>
-				<template v-slot:activator="{ props }">
-					<v-container v-bind="props" class="stat-block-container pa-0">
-						<NumStatBlock
-							label="ITEMS"
-							:stat="wikibase.quantityObservations.mostRecent.totalItems"
-						/>
-						<NumStatBlock
-							label="PROPERTIES"
-							:stat="wikibase.quantityObservations.mostRecent.totalProperties"
-						/>
-						<NumStatBlock
-							label="LEXEMES"
-							:stat="wikibase.quantityObservations.mostRecent?.totalLexemes"
-						/>
-						<NumStatBlock
-							label="TRIPLES"
-							:stat="wikibase.quantityObservations.mostRecent?.totalTriples"
-						/>
-						<DateStatBlock
-							label="AS OF"
-							:stat="wikibase.quantityObservations.mostRecent?.observationDate"
-						/>
-					</v-container>
-				</template>
-			</v-tooltip>
-			<v-tooltip
+				<v-container class="ma-0 pa-0 stats-container">
+					<NumStatBlock label="ITEMS" :stat="wikibase.quantityObservations.mostRecent.totalItems" />
+					<NumStatBlock
+						label="PROPERTIES"
+						:stat="wikibase.quantityObservations.mostRecent.totalProperties"
+					/>
+					<NumStatBlock
+						label="LEXEMES"
+						:stat="wikibase.quantityObservations.mostRecent?.totalLexemes"
+					/>
+					<NumStatBlock
+						label="TRIPLES"
+						:stat="wikibase.quantityObservations.mostRecent?.totalTriples"
+					/>
+					<DateStatBlock
+						label="AS OF"
+						:stat="wikibase.quantityObservations.mostRecent.observationDate"
+					/>
+				</v-container>
+				<v-label class="stat-source-container">Pulled from SPARQL</v-label>
+			</v-container>
+			<v-container
 				v-if="wikibase.recentChangesObservations.mostRecent"
-				class="recent-changes-tooltip"
-				:text="
-					wikibase.recentChangesObservations.mostRecent.botChangeCount == undefined &&
-					wikibase.recentChangesObservations.mostRecent.humanChangeCount == undefined
-						? `Data Unavailable`
-						: `Pulled from Action API`
-				"
+				class="stat-block-container pa-0"
 			>
-				<template v-slot:activator="{ props }">
-					<v-container v-bind="props" class="stat-block-container pa-0">
-						<NumStatBlock
-							label="EDITS (30 DAYS)"
-							:stat="computeTotalEdits(wikibase.recentChangesObservations)"
-						/>
-						<DateStatBlock
-							label="AS OF"
-							:stat="wikibase.recentChangesObservations.mostRecent.observationDate"
-						/>
-					</v-container>
-				</template>
-			</v-tooltip>
+				<v-container class="stats-container">
+					<NumStatBlock
+						label="EDITS (30 DAYS)"
+						:stat="computeTotalEdits(wikibase.recentChangesObservations)"
+					/>
+					<DateStatBlock
+						label="AS OF"
+						:stat="wikibase.recentChangesObservations.mostRecent?.observationDate"
+					/>
+				</v-container>
+				<v-label class="stat-source-container">Pulled from Action API</v-label>
+			</v-container>
 		</template>
 	</v-card>
 </template>
@@ -194,10 +173,19 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 	font-weight: 500;
 }
 .stat-block-container {
-	display: flex;
-	flex-flow: row wrap;
 	border: 2px solid grey;
 	margin: 6px 0;
+}
+.stats-container {
+	display: flex;
+	flex-flow: row wrap;
+	margin: 0;
+	padding: 0;
+}
+.stat-source-container {
+	color: grey;
+	/* margin: 0; */
+	/* padding: 4px; */
 }
 .stat-block-container .stat-container,
 .stat-block-container .v-label {
