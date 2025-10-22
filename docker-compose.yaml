@@ -16,7 +16,6 @@ services:
       DATA_DIR: ${DATA_DIR}
       AUTH_TOKEN: ${AUTH_TOKEN}
       SETTINGS_FILE: ${SETTINGS_FILE}
-      BACKEND_LOG_LEVEL: ${BACKEND_LOG_LEVEL}
     restart: unless-stopped
 
   frontend:
