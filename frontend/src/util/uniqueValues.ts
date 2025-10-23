@@ -1,4 +1,4 @@
-function uniqueValues<T>(values: T[], uniqueId: (v: T) => string): T[] {
+function uniqueValues<T>(values: T[], uniqueId: (v: T) => string | number): T[] {
 	return values.filter(
 		(value, i, array) =>
 			!array

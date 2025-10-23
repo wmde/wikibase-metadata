@@ -11,11 +11,11 @@ describe('uniqueValues', () => {
 	})
 
 	it('uniques a number list', () => {
-		expect(uniqueValues([1, 1, 2, 3], (i) => i.toLocaleString())).toEqual([1, 2, 3])
+		expect(uniqueValues([1, 1, 2, 3], (i) => i)).toEqual([1, 2, 3])
 	})
 
 	it('uniques a string list', () => {
-		expect(uniqueValues(['a', 'a', 'b', 'a'], (i) => i.toLocaleString())).toEqual(['b', 'a'])
+		expect(uniqueValues(['a', 'a', 'b', 'a'], (i) => i)).toEqual(['b', 'a'])
 	})
 
 	it('uniques an object list by key', () => {
@@ -27,7 +27,7 @@ describe('uniqueValues', () => {
 					{ a: 1, b: 5 },
 					{ a: 3, b: 4 }
 				],
-				(i) => i.a.toLocaleString()
+				(i) => i.a
 			)
 		).toEqual([
 			{ a: 2, b: 4 },
@@ -42,7 +42,7 @@ describe('uniqueValues', () => {
 					{ a: 1, b: 5 },
 					{ a: 3, b: 4 }
 				],
-				(i) => i.b.toLocaleString()
+				(i) => i.b
 			)
 		).toEqual([
 			{ a: 1, b: 5 },
