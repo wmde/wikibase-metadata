@@ -21,7 +21,7 @@ watch(excludedTypes, () => store.excludeWikibaseTypes(excludedTypes.value))
 </script>
 
 <template>
-	<v-container v-if="showingTypes.length > 0">
+	<v-container class="wikibase-type-showing-list" v-if="showingTypes.length > 0">
 		<v-label>Showing Wikibase Types:</v-label>
 		<v-container class="pa-0 ma-0">
 			<WikibaseTypeChip v-for="(t, index) in showingTypes" :key="index" :wikibase-type="t" />
