@@ -74,6 +74,11 @@ jobs:
 
       - name: Analysing the database with great expectations
         run: pytest -m data
+        env:
+          PYTHONPATH: .
+          SETTINGS_FILE: test-settings.ini
+          DATABASE_URL: sqlite+aiosqlite:///data/wikibase-data.db
+          LOG_LEVEL: INFO
 
   test-backend:
     runs-on: ubuntu-latest
@@ -95,3 +100,5 @@ jobs:
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
+          DATABASE_URL: sqlite+aiosqlite:///data/wikibase-test-data.db
+          LOG_LEVEL: DEBUG
