@@ -15,7 +15,6 @@ const sortBy = ref<SortItem[]>([{ key: 'quantityObservations', order: 'desc' }])
 const headers = [
 	{ title: 'Type', value: 'wikibaseType', sortable: true },
 	{ title: 'Title', value: 'title', sortable: true },
-	{ title: 'URL', value: 'urls.baseUrl', sortable: true },
 	{
 		title: 'Triples',
 		value: 'quantityObservations',

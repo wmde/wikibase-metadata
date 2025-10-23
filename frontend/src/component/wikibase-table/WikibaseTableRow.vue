@@ -14,10 +14,7 @@ defineProps<{ wikibase: WbFragment }>()
 			<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 		</td>
 		<td>
-			{{ wikibase.title }}
-		</td>
-		<td>
-			{{ wikibase.urls.baseUrl }}
+			<a :href="wikibase.urls.baseUrl">{{ wikibase.title }}</a>
 		</td>
 		<td>
 			<LocaleNumber :stat="wikibase.quantityObservations.mostRecent?.totalTriples" />

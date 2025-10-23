@@ -28,15 +28,16 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(6)
+		expect(row.findAll('td').length).toEqual(5)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'UNKNOWN',
 			'Test Wikibase',
-			'wikibase.test',
 			'–',
 			'–',
 			'VIEW'
 		])
+		expect(row.findAll('td')[1]?.find('a').exists()).toEqual(true)
+		expect(row.findAll('td')[1]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
 	})
 
 	it('renders properly with more info', async () => {
@@ -57,15 +58,16 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(6)
+		expect(row.findAll('td').length).toEqual(5)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'CLOUD',
 			'Test Cloud Wikibase',
-			'wikibase.test',
 			'1',
 			'5',
 			'VIEW'
 		])
+		expect(row.findAll('td')[1]?.find('a').exists()).toEqual(true)
+		expect(row.findAll('td')[1]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
 	})
 
 	it('triggers dialog on click', async () => {
