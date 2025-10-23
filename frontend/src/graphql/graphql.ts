@@ -1244,7 +1244,6 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseTimeToFirstValueObservation'
-			observationDate: Date
 			initiationDate?: Date | null
 		} | null
 	}
@@ -1365,10 +1364,7 @@ export const SingleWikibaseFragmentDoc = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [
-											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
-											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }
-										]
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }]
 									}
 								}
 							]
@@ -1559,10 +1555,7 @@ export const SingleWikibaseDocument = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [
-											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
-											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }
-										]
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }]
 									}
 								}
 							]

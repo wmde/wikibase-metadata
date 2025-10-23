@@ -48,9 +48,7 @@ describe('WikibaseDetailCard', async () => {
 					recentChangesObservations: {
 						mostRecent: { observationDate: new Date(0), botChangeCount: 8, humanChangeCount: 13 }
 					},
-					timeToFirstValueObservations: {
-						mostRecent: { observationDate: new Date(0), initiationDate: new Date(0) }
-					},
+					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
 					wikibaseType: WikibaseType.Cloud
 				},
 				loading: false
@@ -277,9 +275,7 @@ describe('WikibaseDetailCard', async () => {
 					recentChangesObservations: {
 						mostRecent: { observationDate: new Date(0), botChangeCount: 8, humanChangeCount: 13 }
 					},
-					timeToFirstValueObservations: {
-						mostRecent: { observationDate: new Date(0), initiationDate: new Date(0) }
-					},
+					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
 					wikibaseType: WikibaseType.Suite
 				},
 				loading: false
@@ -496,9 +492,7 @@ describe('WikibaseDetailCard', async () => {
 					},
 					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
 					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
-					timeToFirstValueObservations: {
-						mostRecent: { observationDate: new Date(0), initiationDate: new Date(0) }
-					},
+					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
 					wikibaseType: undefined
 				},
 				loading: false
@@ -566,7 +560,7 @@ describe('WikibaseDetailCard', async () => {
 
 		const creationContainer = container.findAll('div.stat-block-container')[0]
 		expect(creationContainer?.exists()).toEqual(true)
-		expect(creationContainer?.findAll('div.stat-container').length).toEqual(2)
+		expect(creationContainer?.findAll('div.stat-container').length).toEqual(1)
 
 		expect(creationContainer?.findAll('div.stat-container')[0]?.exists()).toEqual(true)
 		expect(
@@ -579,20 +573,6 @@ describe('WikibaseDetailCard', async () => {
 			true
 		)
 		expect(creationContainer?.findAll('div.stat-container')[0]?.find('div.stat').text()).toEqual(
-			'1.1.1970'
-		)
-
-		expect(creationContainer?.findAll('div.stat-container')[1]?.exists()).toEqual(true)
-		expect(
-			creationContainer?.findAll('div.stat-container')[1]?.find('label.stat-label').exists()
-		).toEqual(true)
-		expect(
-			creationContainer?.findAll('div.stat-container')[1]?.find('label.stat-label').text()
-		).toEqual('AS OF')
-		expect(creationContainer?.findAll('div.stat-container')[1]?.find('div.stat').exists()).toEqual(
-			true
-		)
-		expect(creationContainer?.findAll('div.stat-container')[1]?.find('div.stat').text()).toEqual(
 			'1.1.1970'
 		)
 

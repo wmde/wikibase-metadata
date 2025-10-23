@@ -34,7 +34,6 @@ export const singleWikibaseQuery = gql`
 		}
 		timeToFirstValueObservations {
 			mostRecent {
-				observationDate
 				initiationDate
 			}
 		}

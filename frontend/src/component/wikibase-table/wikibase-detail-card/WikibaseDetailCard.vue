@@ -88,10 +88,6 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 						label="FIRST RECORD"
 						:stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate"
 					/>
-					<DateStatBlock
-						label="AS OF"
-						:stat="wikibase.timeToFirstValueObservations.mostRecent.observationDate"
-					/>
 				</v-container>
 				<v-label class="stat-source-container">Pulled from Action API</v-label>
 			</v-container>

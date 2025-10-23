@@ -1236,7 +1236,6 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseTimeToFirstValueObservation'
-				observationDate: Date
 				initiationDate?: Date | null
 			} | null
 		}
@@ -1274,7 +1273,6 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseTimeToFirstValueObservation'
-			observationDate: Date
 			initiationDate?: Date | null
 		} | null
 	}
