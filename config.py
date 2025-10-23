@@ -20,6 +20,4 @@ log_directory = os.path.expandvars(
     config.get("logging", "log_directory", fallback="logs")
 )
 
-log_level = os.path.expandvars(
-    config.get("logging", "log_level", fallback="INFO")
-)
+log_level = os.path.expandvars(config.get("logging", "log_level", fallback="INFO"))

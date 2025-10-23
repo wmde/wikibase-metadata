@@ -14,6 +14,7 @@ from model.database import *
 # access to the values within the .ini file in use.
 config = context.config
 
+
 # --- Helper: map async URLs to sync URLs ---
 def _coerce_to_sync_url(url_str: str) -> str:
     """
@@ -30,6 +31,7 @@ def _coerce_to_sync_url(url_str: str) -> str:
     }
     new_driver = mapping.get(u.drivername, u.drivername)
     return str(u.set(drivername=new_driver))
+
 
 # --- URL resolution precedence ---
 # 1) alembic -x db_path=...           (explicit CLI override; no env expansion)
