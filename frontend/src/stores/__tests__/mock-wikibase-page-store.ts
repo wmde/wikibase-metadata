@@ -5,9 +5,9 @@ const mockWikiStore: WikibasePageStoreType = {
 	fetchWikibasePage: vi.fn().mockName('fetchWikibasePage'),
 	wikibasePage: { data: undefined, errorState: false, loading: false },
 	pageNumber: 1,
-	setPageNumber: vi.fn().mockName('setPageNumber'),
+	// setPageNumber: vi.fn().mockName('setPageNumber'),
 	pageSize: 1,
-	setPageSize: vi.fn().mockName('setPageSize'),
+	// setPageSize: vi.fn().mockName('setPageSize'),
 	wikibaseFilter: {},
 	excludeWikibaseTypes: vi.fn().mockName('excludeWikibaseTypes')
 }
