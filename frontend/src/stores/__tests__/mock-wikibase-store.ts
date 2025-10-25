@@ -1,5 +1,5 @@
+import type { WikibaseStoreType } from '@/stores/wikibase-store'
 import { vi } from 'vitest'
-import type { WikibaseStoreType } from '../wikibase-store'
 
 const mockSingleWikiStore: WikibaseStoreType = {
 	wikibaseId: undefined,

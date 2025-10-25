@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import DateStatBlock from '@/component/wikibase-table/wikibase-detail-card/DateStatBlock.vue'
-import NumStatBlock from '@/component/wikibase-table/wikibase-detail-card/NumStatBlock.vue'
+import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
 import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
 import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
-import computeTotalEdits from '@/util/computeTotalEdits'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
 </script>
@@ -54,6 +52,13 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 							</v-tooltip>
 						</v-container>
 					</v-container>
+					<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
+						<template v-slot:activator="{ props }">
+							<v-container v-bind="props" class="category ma-0 pa-0">
+								{{ wikibase.category }}
+							</v-container>
+						</template>
+					</v-tooltip>
 					<v-tooltip v-if="wikibase.description" class="desc-tooltip" text="Manually written">
 						<template v-slot:activator="{ props }">
 							<v-container v-bind="props" class="description ma-0 pa-0">
@@ -79,59 +84,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 					</v-tooltip>
 				</v-container>
 			</v-container>
-			<v-container
-				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate"
-				class="stat-block-container pa-0"
-			>
-				<v-container class="ma-0 pa-0 stats-container">
-					<DateStatBlock
-						label="FIRST RECORD"
-						:stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate"
-					/>
-				</v-container>
-				<v-label class="stat-source-container">Pulled from Action API</v-label>
-			</v-container>
-			<v-container
-				v-if="wikibase.quantityObservations.mostRecent"
-				class="stat-block-container pa-0"
-			>
-				<v-container class="ma-0 pa-0 stats-container">
-					<NumStatBlock label="ITEMS" :stat="wikibase.quantityObservations.mostRecent.totalItems" />
-					<NumStatBlock
-						label="PROPERTIES"
-						:stat="wikibase.quantityObservations.mostRecent.totalProperties"
-					/>
-					<NumStatBlock
-						label="LEXEMES"
-						:stat="wikibase.quantityObservations.mostRecent?.totalLexemes"
-					/>
-					<NumStatBlock
-						label="TRIPLES"
-						:stat="wikibase.quantityObservations.mostRecent?.totalTriples"
-					/>
-					<DateStatBlock
-						label="AS OF"
-						:stat="wikibase.quantityObservations.mostRecent.observationDate"
-					/>
-				</v-container>
-				<v-label class="stat-source-container">Pulled from SPARQL</v-label>
-			</v-container>
-			<v-container
-				v-if="wikibase.recentChangesObservations.mostRecent"
-				class="stat-block-container pa-0"
-			>
-				<v-container class="stats-container">
-					<NumStatBlock
-						label="EDITS (30 DAYS)"
-						:stat="computeTotalEdits(wikibase.recentChangesObservations)"
-					/>
-					<DateStatBlock
-						label="AS OF"
-						:stat="wikibase.recentChangesObservations.mostRecent?.observationDate"
-					/>
-				</v-container>
-				<v-label class="stat-source-container">Pulled from Action API</v-label>
-			</v-container>
+			<WikibaseDetailStats :wikibase="wikibase" />
 		</template>
 	</v-card>
 </template>
@@ -174,7 +127,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 }
 .stats-container {
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: column nowrap;
 	margin: 0;
 	padding: 0;
 }

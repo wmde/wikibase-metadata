@@ -1,5 +1,5 @@
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
-import { WikibaseType } from '@/graphql/types'
+import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import mockSingleWikiStore from '@/stores/__tests__/mock-wikibase-store'
 import { mount } from '@vue/test-utils'
@@ -21,23 +21,27 @@ describe('WikibaseTableRow', async () => {
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: {},
 					recentChangesObservations: {}
-				}
+				},
+				index: 2
 			}
 		})
 
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(5)
+		expect(row.findAll('td').length).toEqual(8)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
+			'3',
 			'UNKNOWN',
 			'Test Wikibase',
 			'–',
 			'–',
+			'',
+			'',
 			'VIEW'
 		])
-		expect(row.findAll('td')[1]?.find('a').exists()).toEqual(true)
-		expect(row.findAll('td')[1]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
+		expect(row.findAll('td')[2]?.find('a').exists()).toEqual(true)
+		expect(row.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
 	})
 
 	it('renders properly with more info', async () => {
@@ -48,26 +52,32 @@ describe('WikibaseTableRow', async () => {
 					id: '82',
 					wikibaseType: WikibaseType.Cloud,
 					title: 'Test Cloud Wikibase',
+					description: 'BEHOLD! A test Wikibase!',
+					category: WikibaseCategory.ExperimentalAndPrototypeProjects,
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: { mostRecent: { totalTriples: 1 } },
 					recentChangesObservations: { mostRecent: { botChangeCount: 2, humanChangeCount: 3 } }
-				}
+				},
+				index: 3
 			}
 		})
 
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(5)
+		expect(row.findAll('td').length).toEqual(8)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
+			'4',
 			'CLOUD',
 			'Test Cloud Wikibase',
 			'1',
 			'5',
+			'EXPERIMENTAL_AND_PROTOTYPE_PROJECTS',
+			'BEHOLD! A test Wikibase!',
 			'VIEW'
 		])
-		expect(row.findAll('td')[1]?.find('a').exists()).toEqual(true)
-		expect(row.findAll('td')[1]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
+		expect(row.findAll('td')[2]?.find('a').exists()).toEqual(true)
+		expect(row.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
 	})
 
 	it('triggers dialog on click', async () => {
@@ -81,7 +91,8 @@ describe('WikibaseTableRow', async () => {
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: { mostRecent: { totalTriples: 1 } },
 					recentChangesObservations: { mostRecent: { botChangeCount: 2, humanChangeCount: 3 } }
-				}
+				},
+				index: 4
 			}
 		})
 
