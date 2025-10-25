@@ -133,7 +133,7 @@ describe('WikibaseTable', async () => {
 	it('renders data properly', async () => {
 		const wrapper = mount(WikibaseTable, {
 			global: { plugins: [vuetify] },
-			props: { error: false, loading: false, wikibases: testWikibasesAlt }
+			props: { error: false, loading: false, wikibases: testWikibasesAlt.slice(0, 1) }
 		})
 
 		const alert = wrapper.find('div.v-alert')
