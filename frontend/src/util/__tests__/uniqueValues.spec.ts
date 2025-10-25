@@ -1,5 +1,5 @@
+import uniqueValues from '@/util/uniqueValues'
 import { describe, expect, it } from 'vitest'
-import uniqueValues from '../uniqueValues'
 
 describe('uniqueValues', () => {
 	it('uniques an empty list', () => {

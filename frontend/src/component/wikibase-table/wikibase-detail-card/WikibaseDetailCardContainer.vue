@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import WikibaseDetailCard from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCard.vue'
 import { useSingleWikiStore } from '@/stores/wikibase-store'
 import { computed, ref, watch } from 'vue'
-import WikibaseDetailCard from './WikibaseDetailCard.vue'
 
 const props = defineProps<{ wikibaseId: number }>()
 
