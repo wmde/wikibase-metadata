@@ -49,7 +49,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 								"
 							>
 								<template v-slot:activator="{ props }">
-									<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl">SPARQL</a>
+									<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl">Query Service</a>
 								</template>
 							</v-tooltip>
 						</v-container>
@@ -114,7 +114,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 						:stat="wikibase.quantityObservations.mostRecent.observationDate"
 					/>
 				</v-container>
-				<v-label class="stat-source-container">Pulled from SPARQL</v-label>
+				<v-label class="stat-source-container">Pulled from Query Service</v-label>
 			</v-container>
 			<v-container
 				v-if="wikibase.recentChangesObservations.mostRecent"
