@@ -124,7 +124,6 @@ $ git pull
 ### Build docker images
 
 ```bash
-# we need to use sudo because users don't have docker privileges
 $ docker compose build
 ```
 
@@ -135,7 +134,6 @@ Run the docker images. Open port 80 to the outside world, as configured in the [
 > [!IMPORTANT] The docker image user 10001 needs to have read access to the `settings.ini` file and **write access** to the **db directory**.
 
 ```bash
-# we need to use sudo because users don't have docker privileges
 $ docker compose up -d
 ```
 
