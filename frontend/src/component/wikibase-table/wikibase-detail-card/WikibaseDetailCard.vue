@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
-import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
-import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
+import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue';
+import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue';
+import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types';
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
 </script>
@@ -47,7 +47,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 								"
 							>
 								<template v-slot:activator="{ props }">
-									<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl">SPARQL</a>
+									<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl">Query Service</a>
 								</template>
 							</v-tooltip>
 						</v-container>

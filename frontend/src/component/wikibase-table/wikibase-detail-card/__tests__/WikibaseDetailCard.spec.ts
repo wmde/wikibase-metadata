@@ -97,7 +97,7 @@ describe('WikibaseDetailCard', async () => {
 		const sparqlLink = sparqlUrlContainer?.find('a')
 		expect(sparqlLink?.exists()).toEqual(true)
 		expect(sparqlLink?.attributes()).toHaveProperty('href', 'https://test-wikibase-001.test/query')
-		expect(sparqlLink?.text()).toEqual('SPARQL')
+		expect(sparqlLink?.text()).toEqual('Query Service')
 
 		const descriptionContainer = header.find('div.description')
 		expect(descriptionContainer.exists()).toEqual(true)
@@ -189,7 +189,7 @@ describe('WikibaseDetailCard', async () => {
 		const sparqlLink = sparqlUrlContainer?.find('a')
 		expect(sparqlLink?.exists()).toEqual(true)
 		expect(sparqlLink?.attributes()).toHaveProperty('href', 'https://test-wikibase-001.test/query')
-		expect(sparqlLink?.text()).toEqual('SPARQL')
+		expect(sparqlLink?.text()).toEqual('Query Service')
 
 		const descriptionContainer = header.find('div.description')
 		expect(descriptionContainer.exists()).toEqual(true)
@@ -271,7 +271,7 @@ describe('WikibaseDetailCard', async () => {
 		const sparqlLink = sparqlUrlContainer?.find('a')
 		expect(sparqlLink?.exists()).toEqual(true)
 		expect(sparqlLink?.attributes()).toHaveProperty('href', 'https://test-wikibase-001.test/query')
-		expect(sparqlLink?.text()).toEqual('SPARQL')
+		expect(sparqlLink?.text()).toEqual('Query Service')
 
 		const descriptionContainer = header.find('div.description')
 		expect(descriptionContainer.exists()).toEqual(true)
