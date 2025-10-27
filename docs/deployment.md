@@ -107,6 +107,12 @@ $ umask 002
 $ cd /var/local/wikidev/wikibase-metadata/
 ```
 
+### Set permission to access docker
+
+```bash
+$ sudo usermod -aG docker $USER
+```
+
 ### Updating the code
 
 ```bash
@@ -119,7 +125,7 @@ $ git pull
 
 ```bash
 # we need to use sudo because users don't have docker privileges
-$ sudo docker compose build
+$ docker compose build
 ```
 
 ### Run the docker images
@@ -130,17 +136,19 @@ Run the docker images. Open port 80 to the outside world, as configured in the [
 
 ```bash
 # we need to use sudo because users don't have docker privileges
-$ sudo docker compose up -d
+$ docker compose up -d
 ```
 
 ### Stop the docker image
 
 ```bash
-$ sudo docker compose down
+$ docker compose down
 ```
 
 ### Migrate database in a running container
 
+Double-check the container name using `docker ps` - it may be wikibase-metadat-backend-1
+
 ```bash
-$ sudo docker exec -it wikibase-metadata alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head
+$ docker exec -it wikibase-metadata-backend alembic upgrade head
 ```
