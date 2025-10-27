@@ -2,8 +2,9 @@ name: wikibase-metadata
 
 services:
   backend:
-    image: wikibase-metadata
-    build: .
+    image: wikibase-metadata-backend
+    build: 
+      context: ./backend
     group_add:
       - ${TEAM_GID}
     expose:
