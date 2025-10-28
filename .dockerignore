@@ -6,7 +6,7 @@ __pycache__/
 *.egg-info/
 .eggs/
 .venv
-venv
+venv*
 
 # Tests & reports
 cov_html
@@ -26,3 +26,5 @@ data/*.db
 .env
 .env.*
 
+# Frontend
+frontend/

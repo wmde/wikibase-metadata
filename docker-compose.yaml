@@ -1,0 +1,40 @@
+name: wikibase-metadata
+
+services:
+  backend:
+    image: wikibase-metadata
+    build: .
+    group_add:
+      - ${TEAM_GID}
+    expose:
+      - 8000
+    volumes:
+      - ./data/:/app/data/:z
+      - ./logs/:/app/logs/:z
+    environment:
+      AUTH_TOKEN: ${AUTH_TOKEN}
+      DATABASE_URL: ${DATABASE_URL}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SETTINGS_FILE: ${SETTINGS_FILE}
+    restart: unless-stopped
+
+  frontend:
+    image: wikibase-metadata-frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    expose:
+      - 3000
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on: [backend, frontend]
+    restart: unless-stopped

@@ -2,6 +2,8 @@ name: Backend Lint & Test
 
 on:
   pull_request:
+    paths-ignore:
+      - "frontend/**"
 
 jobs:
   lint-check:
@@ -72,6 +74,10 @@ jobs:
 
       - name: Analysing the database with great expectations
         run: pytest -m data
+        env:
+          PYTHONPATH: .
+          SETTINGS_FILE: test-settings.ini
+          DATABASE_URL: sqlite+aiosqlite:///data/wikibase-data.db
 
   test-backend:
     runs-on: ubuntu-latest
@@ -93,3 +99,4 @@ jobs:
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
+          DATABASE_URL: sqlite+aiosqlite:///data/wikibase-test-data.db

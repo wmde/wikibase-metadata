@@ -107,6 +107,12 @@ $ umask 002
 $ cd /var/local/wikidev/wikibase-metadata/
 ```
 
+### Set permission to access docker
+
+```bash
+$ sudo usermod -aG docker $USER
+```
+
 ### Updating the code
 
 ```bash
@@ -115,32 +121,32 @@ $ git checkout your-branch
 $ git pull
 ```
 
-### Build docker image
+### Build docker images
 
 ```bash
-# we need to use sudo because users don't have docker privileges
-$ sudo docker build . -t wikibase-metadata
+$ docker compose build
 ```
 
-### Run the docker image
+### Run the docker images
 
-Run the docker image, mount the `settings.ini` file and the db directory. Open port 80 to the outside world, as configured in the [horizon proxy](https://horizon.wikimedia.org/project/proxy/).
+Run the docker images. Open port 80 to the outside world, as configured in the [horizon proxy](https://horizon.wikimedia.org/project/proxy/).
 
 > [!IMPORTANT] The docker image user 10001 needs to have read access to the `settings.ini` file and **write access** to the **db directory**.
 
 ```bash
-# we need to use sudo because users don't have docker privileges
-$ sudo docker run -d --rm --name wikibase-metadata --volume /var/local/wikidev/settings.ini:/app/settings.ini --volume /var/local/wikidev/db/:/app/db/ --volume /var/local/wikidev/logs/:/app/logs/ -p 80:8000 wikibase-metadata
+$ docker compose up -d
 ```
 
 ### Stop the docker image
 
 ```bash
-$ sudo docker stop wikibase-metadata
+$ docker compose down
 ```
 
 ### Migrate database in a running container
 
+Double-check the container name using `docker ps` - it may be wikibase-metadat-backend-1
+
 ```bash
-$ sudo docker exec -it wikibase-metadata alembic -x db_path=sqlite:///db/wikibase-data.db upgrade head
+$ docker exec -it wikibase-metadata-backend alembic upgrade head
 ```
