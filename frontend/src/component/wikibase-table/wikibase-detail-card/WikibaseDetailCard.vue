@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue';
-import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue';
-import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types';
+import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
+import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
+import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
 </script>
