@@ -19,9 +19,9 @@ export type WikibasePageStoreType = {
 		| QueryResult<PageWikibasesQuery | undefined>
 		| Ref<QueryResult<PageWikibasesQuery | undefined>>
 	pageNumber: number
-	// setPageNumber: (i: number) => void
+	setPageNumber: (i: number) => void
 	pageSize: number
-	// setPageSize: (i: number) => void
+	setPageSize: (i: number) => void
 	wikibaseFilter: WikibaseFilterInput
 	includeWikibaseTypes: (t: WikibaseType[]) => void
 }
@@ -39,18 +39,11 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	}))
 
 	const pageNumber = ref(1)
-	// const setPageNumber = (i: number) => (pageNumber.value = i)
+	const setPageNumber = (i: number) => (pageNumber.value = i)
 
-	const pageSize = ref(10000)
-	// const setPageSize = (i: number) => (pageSize.value = i)
-	watch(wikibasePage, () => {
-		if (
-			wikibasePage.value.data &&
-			wikibasePage.value.data.wikibaseList.meta.totalCount > pageSize.value
-		) {
-			pageSize.value = wikibasePage.value.data.wikibaseList.meta.totalCount
-		}
-	})
+	const pageSize = ref(10)
+	const setPageSize = (i: number) => (pageSize.value = i)
+
 
 	const wikibaseFilter = ref<WikibaseFilterInput>({
 		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
@@ -72,9 +65,9 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 		fetchWikibasePage,
 		wikibasePage,
 		pageNumber: pageNumber.value,
-		// setPageNumber,
+		setPageNumber,
 		pageSize: pageSize.value,
-		// setPageSize,
+		setPageSize,
 		wikibaseFilter: wikibaseFilter.value,
 		includeWikibaseTypes
 	}

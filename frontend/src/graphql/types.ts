@@ -299,7 +299,21 @@ export type QueryWikibaseArgs = {
 export type QueryWikibaseListArgs = {
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
+	sortBy?: InputMaybe<WikibaseSortInput>
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
+
+export enum SortColumnEnum {
+	Category = 'CATEGORY',
+	Edits = 'EDITS',
+	Title = 'TITLE',
+	Triples = 'TRIPLES',
+	Type = 'TYPE'
+}
+
+export enum SortDirEnum {
+	Asc = 'ASC',
+	Desc = 'DESC'
 }
 
 export type Wikibase = {
@@ -975,6 +989,11 @@ export type WikibaseSoftwareVersionObservationWikibaseObservationSet = {
 	mostRecent?: Maybe<WikibaseSoftwareVersionObservation>
 }
 
+export type WikibaseSortInput = {
+	column: SortColumnEnum
+	dir: SortDirEnum
+}
+
 export type WikibaseStatisticsAggregate = {
 	__typename?: 'WikibaseStatisticsAggregate'
 	edits: WikibaseStatisticsEditsObservation
@@ -1286,6 +1305,7 @@ export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+	sortBy?: InputMaybe<WikibaseSortInput>
 }>
 
 export type PageWikibasesQuery = {
