@@ -1,3 +1,5 @@
+"""Sort Wikibase List"""
+
 import enum
 import strawberry
 
