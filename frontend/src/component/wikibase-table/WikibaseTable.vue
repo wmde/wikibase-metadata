@@ -11,8 +11,11 @@ import { ref } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
 const sortBy = ref<SortItem[]>([{ key: 'quantityObservations', order: 'desc' }])
+const page = ref(1)
+const itemsPerPage = ref(10)
 
 const headers = [
+	{ title: '', sortable: false },
 	{ title: 'Type', value: 'wikibaseType', sortable: true },
 	{ title: 'Title', value: 'title', sortable: true },
 	{
@@ -29,6 +32,8 @@ const headers = [
 		sort: (a: WikibaseRecentChangesObservationSet, b: WikibaseRecentChangesObservationSet) =>
 			compareByValue(a, b, computeTotalEdits)
 	},
+	{ title: 'Category', value: 'category', sortable: true },
+	{ title: 'Description', sortable: false },
 	{ title: 'Details', value: 'id', sortable: false }
 ]
 
@@ -43,10 +48,12 @@ defineProps<{ error: boolean; loading: boolean; wikibases: WbFragment[] | undefi
 		striped="even"
 		:loading="loading"
 		v-model:sort-by="sortBy"
+		v-model:page="page"
+		v-model:items-per-page="itemsPerPage"
 		class="wikibase-table"
 	>
-		<template v-slot:item="{ item }">
-			<WikibaseTableRow :wikibase="item" />
+		<template v-slot:item="{ item, index }">
+			<WikibaseTableRow :wikibase="item" :index="(page - 1) * itemsPerPage + index" />
 		</template>
 	</v-data-table>
 </template>

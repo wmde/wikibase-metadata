@@ -5,11 +5,12 @@ import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/computeTotalEdits'
 
-defineProps<{ wikibase: WbFragment }>()
+defineProps<{ wikibase: WbFragment; index: number }>()
 </script>
 
 <template>
 	<tr>
+		<td>{{ index + 1 }}</td>
 		<td>
 			<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 		</td>
@@ -22,6 +23,10 @@ defineProps<{ wikibase: WbFragment }>()
 		<td>
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
+		<td>{{ wikibase.category }}</td>
+		<td>
+			<div class="overflow">{{ wikibase.description }}</div>
+		</td>
 		<td>
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
 		</td>
@@ -31,5 +36,9 @@ defineProps<{ wikibase: WbFragment }>()
 <style lang="css">
 .wikibase-type-chip {
 	min-width: 40px;
+}
+.overflow {
+	max-height: 4em;
+	overflow-y: scroll;
 }
 </style>
