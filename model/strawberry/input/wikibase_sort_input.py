@@ -5,7 +5,7 @@ import strawberry
 
 
 @strawberry.enum
-class SortDirEnum(enum.Enum):
+class SortDirection(enum.Enum):
     """Sort Direction"""
 
     ASC = 0
@@ -13,7 +13,7 @@ class SortDirEnum(enum.Enum):
 
 
 @strawberry.enum
-class SortColumnEnum(enum.Enum):
+class SortColumn(enum.Enum):
     """Sort Column"""
 
     TYPE = 0
@@ -27,5 +27,5 @@ class SortColumnEnum(enum.Enum):
 class WikibaseSortInput:
     """Sort Wikibase List"""
 
-    column: SortColumnEnum
-    dir: SortDirEnum
+    column: SortColumn
+    dir: SortDirection

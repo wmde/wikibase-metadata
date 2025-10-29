@@ -303,7 +303,7 @@ export type QueryWikibaseListArgs = {
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 }
 
-export enum SortColumnEnum {
+export enum SortColumn {
 	Category = 'CATEGORY',
 	Edits = 'EDITS',
 	Title = 'TITLE',
@@ -311,7 +311,7 @@ export enum SortColumnEnum {
 	Type = 'TYPE'
 }
 
-export enum SortDirEnum {
+export enum SortDirection {
 	Asc = 'ASC',
 	Desc = 'DESC'
 }
@@ -990,8 +990,8 @@ export type WikibaseSoftwareVersionObservationWikibaseObservationSet = {
 }
 
 export type WikibaseSortInput = {
-	column: SortColumnEnum
-	dir: SortDirEnum
+	column: SortColumn
+	dir: SortDirection
 }
 
 export type WikibaseStatisticsAggregate = {

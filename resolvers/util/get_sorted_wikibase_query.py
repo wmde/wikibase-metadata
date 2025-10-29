@@ -9,7 +9,7 @@ from model.database import (
     WikibaseQuantityObservationModel,
     WikibaseRecentChangesObservationModel,
 )
-from model.strawberry.input import SortColumnEnum, SortDirEnum, WikibaseSortInput
+from model.strawberry.input import SortColumn, SortDirection, WikibaseSortInput
 
 Q_RANK = (
     select(
@@ -58,14 +58,14 @@ def get_sorted_wikibase_query(
         return query
 
     match sort_by.column:
-        case SortColumnEnum.CATEGORY:
+        case SortColumn.CATEGORY:
             query = query.order_by(
                 WikibaseModel.category_id.asc()
-                if sort_by.dir == SortDirEnum.ASC
+                if sort_by.dir == SortDirection.ASC
                 else WikibaseModel.category_id.desc()
             )
 
-        case SortColumnEnum.EDITS:
+        case SortColumn.EDITS:
             query = (
                 query.join(
                     RC_RANK,
@@ -85,7 +85,7 @@ def get_sorted_wikibase_query(
                         WikibaseRecentChangesObservationModel.bot_change_count
                         + WikibaseRecentChangesObservationModel.human_change_count
                     ).asc()
-                    if sort_by.dir == SortDirEnum.ASC
+                    if sort_by.dir == SortDirection.ASC
                     else (
                         WikibaseRecentChangesObservationModel.bot_change_count
                         + WikibaseRecentChangesObservationModel.human_change_count
@@ -93,14 +93,14 @@ def get_sorted_wikibase_query(
                 )
             )
 
-        case SortColumnEnum.TITLE:
+        case SortColumn.TITLE:
             query = query.order_by(
                 WikibaseModel.wikibase_name.asc()
-                if sort_by.dir == SortDirEnum.ASC
+                if sort_by.dir == SortDirection.ASC
                 else WikibaseModel.wikibase_name.desc()
             )
 
-        case SortColumnEnum.TRIPLES:
+        case SortColumn.TRIPLES:
             query = (
                 query.join(
                     Q_RANK,
@@ -116,15 +116,15 @@ def get_sorted_wikibase_query(
                 )
                 .order_by(
                     WikibaseQuantityObservationModel.total_triples.asc()
-                    if sort_by.dir == SortDirEnum.ASC
+                    if sort_by.dir == SortDirection.ASC
                     else WikibaseQuantityObservationModel.total_triples.desc()
                 )
             )
 
-        case SortColumnEnum.TYPE:
+        case SortColumn.TYPE:
             query = query.order_by(
                 WikibaseModel.wikibase_type.asc()
-                if sort_by.dir == SortDirEnum.ASC
+                if sort_by.dir == SortDirection.ASC
                 else WikibaseModel.wikibase_type.desc()
             )
 
