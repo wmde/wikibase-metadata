@@ -1,6 +1,6 @@
 import { ResizeObserverMock } from '@/__tests__/global-mocks'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
-import { WikibaseType, type WbFragment } from '@/graphql/types'
+import { WikibaseCategory, WikibaseType, type WbFragment } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -13,6 +13,7 @@ const testWikibasesAlt: WbFragment[] = [
 	{
 		id: '1',
 		title: 'Test Wikibase',
+		description: 'An Example for the Purposes of Testing',
 		urls: { baseUrl: 'test-wikibase-001.test' },
 		quantityObservations: {},
 		recentChangesObservations: {},
@@ -21,6 +22,7 @@ const testWikibasesAlt: WbFragment[] = [
 	{
 		id: '2',
 		title: 'Test Wikibase #2',
+		category: WikibaseCategory.FictionalAndCreativeWorks,
 		urls: { baseUrl: 'test-wikibase-002.test' },
 		quantityObservations: { mostRecent: { totalTriples: 14 } },
 		recentChangesObservations: {},
@@ -37,6 +39,7 @@ const testWikibasesAlt: WbFragment[] = [
 	{
 		id: '4',
 		title: 'Test Wikibase #4',
+		category: WikibaseCategory.TechnologyAndOpenSource,
 		urls: { baseUrl: 'test-wikibase-004.test' },
 		quantityObservations: { mostRecent: {} },
 		recentChangesObservations: { mostRecent: { humanChangeCount: 31 } },
@@ -92,27 +95,39 @@ describe('WikibaseTable', async () => {
 		const tableHead = table.find('thead')
 		expect(tableHead.exists()).toEqual(true)
 
-		expect(tableHead.findAll('th').length).toEqual(5)
+		expect(tableHead.findAll('th').length).toEqual(8)
 
-		expect(tableHead.findAll('th')[0]?.classes()).toContain('v-data-table__th--sortable')
-		expect(tableHead.findAll('th')[0]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[0]?.text()).toEqual('Type')
+		expect(tableHead.findAll('th')[0]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[0]?.find('i.v-icon').exists()).toEqual(false)
+		expect(tableHead.findAll('th')[0]?.text()).toEqual('')
 
 		expect(tableHead.findAll('th')[1]?.classes()).toContain('v-data-table__th--sortable')
 		expect(tableHead.findAll('th')[1]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[1]?.text()).toEqual('Title')
+		expect(tableHead.findAll('th')[1]?.text()).toEqual('Type')
 
 		expect(tableHead.findAll('th')[2]?.classes()).toContain('v-data-table__th--sortable')
 		expect(tableHead.findAll('th')[2]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[2]?.text()).toEqual('Triples')
+		expect(tableHead.findAll('th')[2]?.text()).toEqual('Title')
 
 		expect(tableHead.findAll('th')[3]?.classes()).toContain('v-data-table__th--sortable')
 		expect(tableHead.findAll('th')[3]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[3]?.text()).toEqual('Edits')
+		expect(tableHead.findAll('th')[3]?.text()).toEqual('Triples')
 
-		expect(tableHead.findAll('th')[4]?.classes()).not.toContain('v-data-table__th--sortable')
-		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(false)
-		expect(tableHead.findAll('th')[4]?.text()).toEqual('Details')
+		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
+
+		expect(tableHead.findAll('th')[5]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[5]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[5]?.text()).toEqual('Category')
+
+		expect(tableHead.findAll('th')[6]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[6]?.find('i.v-icon').exists()).toEqual(false)
+		expect(tableHead.findAll('th')[6]?.text()).toEqual('Description')
+
+		expect(tableHead.findAll('th')[7]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[7]?.find('i.v-icon').exists()).toEqual(false)
+		expect(tableHead.findAll('th')[7]?.text()).toEqual('Details')
 	})
 
 	it('renders data properly', async () => {
@@ -137,12 +152,18 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[0]?.text())
-		).toEqual(['UNKNOWN', 'SUITE', 'OTHER', 'CLOUD', 'SUITE'])
+		).toEqual(['1', '2', '3', '4', '5'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[1]?.text())
+		).toEqual(['UNKNOWN', 'SUITE', 'OTHER', 'CLOUD', 'SUITE'])
+		expect(
+			table
+				.find('tbody')
+				.findAll('tr')
+				.map((tr) => tr.findAll('td')[2]?.text())
 		).toEqual([
 			'Test Wikibase #5',
 			'Test Wikibase #2',
@@ -153,16 +174,16 @@ describe('WikibaseTable', async () => {
 		table
 			.find('tbody')
 			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[1]?.find('a').exists()).toEqual(true))
+			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').exists()).toEqual(true))
 		table
 			.find('tbody')
 			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[1]?.find('a').attributes()).toHaveProperty('href'))
+			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href'))
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[1]?.find('a').attributes()['href'])
+				.map((tr) => tr.findAll('td')[2]?.find('a').attributes()['href'])
 		).toEqual([
 			'test-wikibase-005.test',
 			'test-wikibase-002.test',
@@ -174,14 +195,26 @@ describe('WikibaseTable', async () => {
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[2]?.text())
+				.map((tr) => tr.findAll('td')[3]?.text())
 		).toEqual(['300', '14', '1', '–', '–'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[3]?.text())
+				.map((tr) => tr.findAll('td')[4]?.text())
 		).toEqual(['100', '–', '100', '–', '31'])
+		expect(
+			table
+				.find('tbody')
+				.findAll('tr')
+				.map((tr) => tr.findAll('td')[5]?.text())
+		).toEqual(['', 'FICTIONAL_AND_CREATIVE_WORKS', '', '', 'TECHNOLOGY_AND_OPEN_SOURCE'])
+		expect(
+			table
+				.find('tbody')
+				.findAll('tr')
+				.map((tr) => tr.findAll('td')[6]?.text())
+		).toEqual(['', '', '', 'An Example for the Purposes of Testing', ''])
 
 		const footerContainer = tableContainer.find('div.v-data-table-footer')
 		expect(footerContainer.exists()).toEqual(true)
@@ -268,13 +301,13 @@ describe('WikibaseTable', async () => {
 		const tableHead = table.find('thead')
 		expect(tableHead.exists()).toEqual(true)
 
-		expect(tableHead.findAll('th').length).toEqual(5)
+		expect(tableHead.findAll('th').length).toEqual(8)
 
-		expect(tableHead.findAll('th')[3]?.classes()).toContain('v-data-table__th--sortable')
-		expect(tableHead.findAll('th')[3]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[3]?.text()).toEqual('Edits')
+		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
+		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
 
-		await tableHead.findAll('th')[3]?.trigger('click')
+		await tableHead.findAll('th')[4]?.trigger('click')
 		await nextTick()
 
 		expect(table.find('tbody').findAll('tr').length).toEqual(5)
@@ -283,13 +316,13 @@ describe('WikibaseTable', async () => {
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[0]?.text())
+				.map((tr) => tr.findAll('td')[1]?.text())
 		).toEqual(['CLOUD', 'SUITE', 'SUITE', 'OTHER', 'UNKNOWN'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[1]?.text())
+				.map((tr) => tr.findAll('td')[2]?.text())
 		).toEqual([
 			'Test Wikibase',
 			'Test Wikibase #2',
@@ -300,16 +333,16 @@ describe('WikibaseTable', async () => {
 		table
 			.find('tbody')
 			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[1]?.find('a').exists()).toEqual(true))
+			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').exists()).toEqual(true))
 		table
 			.find('tbody')
 			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[1]?.find('a').attributes()).toHaveProperty('href'))
+			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href'))
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[1]?.find('a').attributes()['href'])
+				.map((tr) => tr.findAll('td')[2]?.find('a').attributes()['href'])
 		).toEqual([
 			'test-wikibase-001.test',
 			'test-wikibase-002.test',
@@ -321,14 +354,26 @@ describe('WikibaseTable', async () => {
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[2]?.text())
+				.map((tr) => tr.findAll('td')[3]?.text())
 		).toEqual(['–', '14', '–', '1', '300'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[3]?.text())
+				.map((tr) => tr.findAll('td')[4]?.text())
 		).toEqual(['–', '–', '31', '100', '100'])
+		expect(
+			table
+				.find('tbody')
+				.findAll('tr')
+				.map((tr) => tr.findAll('td')[5]?.text())
+		).toEqual(['', 'FICTIONAL_AND_CREATIVE_WORKS', 'TECHNOLOGY_AND_OPEN_SOURCE', '', ''])
+		expect(
+			table
+				.find('tbody')
+				.findAll('tr')
+				.map((tr) => tr.findAll('td')[6]?.text())
+		).toEqual(['An Example for the Purposes of Testing', '', '', '', ''])
 	})
 
 	it('renders empty properly', async () => {
