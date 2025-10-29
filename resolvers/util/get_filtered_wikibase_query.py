@@ -65,11 +65,22 @@ def get_filtered_wikibase_query(
                 wikibase_filter.wikibase_type.include is not None
                 and len(wikibase_filter.wikibase_type.include) > 0
             ):
-                query = query.where(
-                    WikibaseModel.wikibase_type.in_(
-                        wikibase_filter.wikibase_type.include
+                if None in wikibase_filter.wikibase_type.include:
+                    query = query.where(
+                        or_(
+                            # pylint: disable-next=singleton-comparison
+                            WikibaseModel.wikibase_type == None,
+                            WikibaseModel.wikibase_type.in_(
+                                wikibase_filter.wikibase_type.include
+                            ),
+                        )
                     )
-                )
+                else:
+                    query = query.where(
+                        WikibaseModel.wikibase_type.in_(
+                            wikibase_filter.wikibase_type.include
+                        )
+                    )
 
     if sort_by is not None:
         match sort_by.column:
