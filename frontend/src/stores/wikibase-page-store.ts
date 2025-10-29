@@ -23,7 +23,7 @@ export type WikibasePageStoreType = {
 	pageSize: number
 	// setPageSize: (i: number) => void
 	wikibaseFilter: WikibaseFilterInput
-	excludeWikibaseTypes: (t: WikibaseType[]) => void
+	includeWikibaseTypes: (t: WikibaseType[]) => void
 }
 
 const { load, result, loading, error } = useLazyQuery<
@@ -53,10 +53,10 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	})
 
 	const wikibaseFilter = ref<WikibaseFilterInput>({
-		wikibaseType: { exclude: [WikibaseType.Test, WikibaseType.Cloud] }
+		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 	})
-	const excludeWikibaseTypes = (t: WikibaseType[]) =>
-		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { exclude: t } })
+	const includeWikibaseTypes = (t: WikibaseType[]) =>
+		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
 
 	const fetchWikibasePage = () =>
 		load(pageWikibasesQuery, {
@@ -76,6 +76,6 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 		pageSize: pageSize.value,
 		// setPageSize,
 		wikibaseFilter: wikibaseFilter.value,
-		excludeWikibaseTypes
+		includeWikibaseTypes
 	}
 })

@@ -47,7 +47,8 @@ const testWikibasesAlt: WbFragment[] = [
 		title: 'Test Wikibase #5',
 		urls: { baseUrl: 'test-wikibase-005.test' },
 		quantityObservations: { mostRecent: { totalTriples: 300 } },
-		recentChangesObservations: { mostRecent: { humanChangeCount: 31, botChangeCount: 69 } }
+		recentChangesObservations: { mostRecent: { humanChangeCount: 31, botChangeCount: 69 } },
+		wikibaseType: WikibaseType.Unknown
 	}
 ]
 
@@ -70,15 +71,6 @@ describe('WikibaseTypeFilter', async () => {
 			global: { plugins: [vuetify] }
 		})
 
-		const showingContainer = wrapper.find('div.wikibase-type-showing-list')
-		expect(showingContainer.exists()).toEqual(true)
-		const showingLabel = showingContainer.find('label.v-label')
-		expect(showingLabel.exists()).toEqual(true)
-		expect(showingLabel.text()).toEqual('Showing Wikibase Types:')
-		const showingChips = showingContainer.findAll('span.wikibase-type-chip')
-		expect(showingChips.length).toEqual(3)
-		expect(showingChips.map((chip) => chip.text())).toEqual(['OTHER', 'SUITE', 'UNKNOWN'])
-
 		const selectContainer = wrapper.find('div.wikibase-type-filter')
 		expect(selectContainer.exists()).toEqual(true)
 		expect(selectContainer.classes()).toContain('v-select')
@@ -87,7 +79,7 @@ describe('WikibaseTypeFilter', async () => {
 
 		const label = selectContainer.find('label.v-label')
 		expect(label.exists()).toEqual(true)
-		expect(label.text()).toEqual('Exclude Wikibase Types')
+		expect(label.text()).toEqual('Include Wikibase Types')
 
 		const selections = selectContainer.findAll('div.v-select__selection')
 		expect(selections.length).toEqual(2)

@@ -31,7 +31,7 @@ describe('useWikiStore', async () => {
 		expect(store.pageNumber).toEqual(1)
 		expect(store.pageSize).toEqual(10000)
 		expect(store.wikibaseFilter).toEqual({
-			wikibaseType: { exclude: [WikibaseType.Test, WikibaseType.Cloud] }
+			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 		})
 		expect(store.wikibasePage).toEqual({
 			data: { wikibaseList: { data: [], meta: { totalCount: 0 } } },
@@ -48,12 +48,12 @@ describe('useWikiStore', async () => {
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
 
-	it('calls load on excludeWikibaseTypes', async () => {
+	it('calls load on includeWikibaseTypes', async () => {
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
-		store.excludeWikibaseTypes([WikibaseType.Cloud])
+		store.includeWikibaseTypes([WikibaseType.Cloud])
 		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
