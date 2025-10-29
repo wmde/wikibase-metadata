@@ -12,7 +12,7 @@ from model.strawberry.output import (
     PageSizeType,
     WikibaseStrawberryModel,
 )
-from resolvers.util import get_filtered_wikibase_query
+from resolvers.util import get_filtered_wikibase_query, get_sorted_wikibase_query
 
 
 async def get_wikibase_page(
@@ -23,7 +23,8 @@ async def get_wikibase_page(
 ) -> Page[WikibaseStrawberryModel]:
     """Get Wikibase Page"""
 
-    query = get_filtered_wikibase_query(wikibase_filter, sort_by)
+    query = get_filtered_wikibase_query(wikibase_filter)
+    query = get_sorted_wikibase_query(query, sort_by)
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
