@@ -5,7 +5,7 @@ from sqlalchemy import func, select
 
 from data import get_async_session
 from model.database import WikibaseModel
-from model.strawberry.input import WikibaseFilterInput
+from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -19,10 +19,11 @@ async def get_wikibase_page(
     page_number: PageNumberType,
     page_size: PageSizeType,
     wikibase_filter: Optional[WikibaseFilterInput],
+    sort_by: Optional[WikibaseSortInput],
 ) -> Page[WikibaseStrawberryModel]:
     """Get Wikibase Page"""
 
-    query = get_filtered_wikibase_query(wikibase_filter)
+    query = get_filtered_wikibase_query(wikibase_filter, sort_by)
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
