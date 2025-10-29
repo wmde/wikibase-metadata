@@ -209,7 +209,7 @@ describe('WikibaseDetailCard', async () => {
 		expect(table.exists()).toEqual(true)
 	})
 
-	it('renders undefined wiki properly', async () => {
+	it('renders unknown wiki properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
 			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
 			props: {
@@ -224,7 +224,7 @@ describe('WikibaseDetailCard', async () => {
 					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
 					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
 					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
-					wikibaseType: undefined
+					wikibaseType: WikibaseType.Unknown
 				},
 				loading: false
 			}
@@ -285,7 +285,7 @@ describe('WikibaseDetailCard', async () => {
 		const wikibaseTypeChip = wikibaseTypeContainer.find('span.wikibase-type-chip')
 		expect(wikibaseTypeChip.exists()).toEqual(true)
 		expect(wikibaseTypeChip.classes()).toContain('v-chip')
-		expect(wikibaseTypeChip.text()).toEqual('')
+		expect(wikibaseTypeChip.text()).toEqual('UNKNOWN')
 
 		const table = container.find('div.wikibase-detail-stats')
 		expect(table.exists()).toEqual(true)

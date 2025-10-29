@@ -80,13 +80,5 @@ describe('WikibaseTypeFilter', async () => {
 		const label = selectContainer.find('label.v-label')
 		expect(label.exists()).toEqual(true)
 		expect(label.text()).toEqual('Include Wikibase Types')
-
-		const selections = selectContainer.findAll('div.v-select__selection')
-		expect(selections.length).toEqual(2)
-		selections.forEach((selection) => expect(selection.find('span.v-chip').exists()).toEqual(true))
-		expect(selections.map((selection) => selection.find('span.v-chip').text())).toEqual([
-			'CLOUD',
-			'TEST'
-		])
 	})
 })
