@@ -201,7 +201,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[7]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
 	})
 
-	it('renders undefined wiki properly', async () => {
+	it('renders unknown wiki properly', async () => {
 		const wrapper = mount(WikibaseDetailStats, {
 			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
 			props: {
@@ -216,7 +216,7 @@ describe('WikibaseDetailStats', async () => {
 					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
 					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
 					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
-					wikibaseType: undefined
+					wikibaseType: WikibaseType.Unknown
 				},
 				loading: false
 			}

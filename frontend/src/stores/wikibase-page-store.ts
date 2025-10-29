@@ -1,9 +1,12 @@
 import { pageWikibasesQuery } from '@/graphql/queries/wikibase-list-query'
 import {
+	SortColumn,
+	SortDirection,
 	WikibaseType,
 	type PageWikibasesQuery,
 	type PageWikibasesQueryVariables,
-	type WikibaseFilterInput
+	type WikibaseFilterInput,
+	type WikibaseSortInput
 } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
@@ -18,12 +21,14 @@ export type WikibasePageStoreType = {
 	wikibasePage:
 		| QueryResult<PageWikibasesQuery | undefined>
 		| Ref<QueryResult<PageWikibasesQuery | undefined>>
-	pageNumber: number
-	// setPageNumber: (i: number) => void
-	pageSize: number
-	// setPageSize: (i: number) => void
-	wikibaseFilter: WikibaseFilterInput
-	excludeWikibaseTypes: (t: WikibaseType[]) => void
+	pageNumber: number | Ref<number>
+	setPageNumber: (i: number) => void
+	pageSize: number | Ref<number>
+	setPageSize: (i: number) => void
+	sortBy: WikibaseSortInput | undefined | Ref<WikibaseSortInput | undefined>
+	setSort: (sortBy: WikibaseSortInput | undefined) => void
+	wikibaseFilter: WikibaseFilterInput | Ref<WikibaseFilterInput>
+	includeWikibaseTypes: (t: WikibaseType[]) => void
 }
 
 const { load, result, loading, error } = useLazyQuery<
@@ -39,43 +44,45 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	}))
 
 	const pageNumber = ref(1)
-	// const setPageNumber = (i: number) => (pageNumber.value = i)
+	const setPageNumber = (i: number) => (pageNumber.value = i)
 
-	const pageSize = ref(10000)
-	// const setPageSize = (i: number) => (pageSize.value = i)
-	watch(wikibasePage, () => {
-		if (
-			wikibasePage.value.data &&
-			wikibasePage.value.data.wikibaseList.meta.totalCount > pageSize.value
-		) {
-			pageSize.value = wikibasePage.value.data.wikibaseList.meta.totalCount
-		}
+	const pageSize = ref(10)
+	const setPageSize = (i: number) => (pageSize.value = i)
+
+	const sortBy = ref<WikibaseSortInput | undefined>({
+		column: SortColumn.Triples,
+		dir: SortDirection.Desc
 	})
+	const setSort = (val: WikibaseSortInput | undefined) => (sortBy.value = val)
 
 	const wikibaseFilter = ref<WikibaseFilterInput>({
-		wikibaseType: { exclude: [WikibaseType.Test, WikibaseType.Cloud] }
+		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 	})
-	const excludeWikibaseTypes = (t: WikibaseType[]) =>
-		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { exclude: t } })
+	const includeWikibaseTypes = (t: WikibaseType[]) =>
+		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
 
 	const fetchWikibasePage = () =>
 		load(pageWikibasesQuery, {
 			pageNumber: pageNumber.value,
 			pageSize: pageSize.value,
+			sortBy: sortBy.value,
 			wikibaseFilter: wikibaseFilter.value
 		})
 	watch(pageNumber, () => fetchWikibasePage())
 	watch(pageSize, () => fetchWikibasePage())
+	watch(sortBy, () => fetchWikibasePage())
 	watch(wikibaseFilter, () => fetchWikibasePage())
 
 	return {
 		fetchWikibasePage,
 		wikibasePage,
-		pageNumber: pageNumber.value,
-		// setPageNumber,
-		pageSize: pageSize.value,
-		// setPageSize,
-		wikibaseFilter: wikibaseFilter.value,
-		excludeWikibaseTypes
+		pageNumber,
+		setPageNumber,
+		pageSize,
+		setPageSize,
+		sortBy,
+		setSort,
+		wikibaseFilter,
+		includeWikibaseTypes
 	}
 })

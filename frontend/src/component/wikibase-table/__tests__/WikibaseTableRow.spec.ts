@@ -20,7 +20,8 @@ describe('WikibaseTableRow', async () => {
 					title: 'Test Wikibase',
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: {},
-					recentChangesObservations: {}
+					recentChangesObservations: {},
+					wikibaseType: WikibaseType.Unknown
 				},
 				index: 2
 			}

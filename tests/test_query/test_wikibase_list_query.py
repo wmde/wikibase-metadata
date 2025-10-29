@@ -265,7 +265,7 @@ async def test_wikibase_list_query_page_two():
         (["CLOUD", "OTHER", "SUITE", "TEST"], 1),
     ],
 )
-async def test_wikibase_list_query_filtered(exclude, expected_total):
+async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
     """Test Null Scenario"""
 
     result = await test_schema.execute(
@@ -274,6 +274,55 @@ async def test_wikibase_list_query_filtered(exclude, expected_total):
             "pageNumber": 1,
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibaseList" in result.data
+    assert_page_meta(result.data["wikibaseList"], 1, 1, expected_total, expected_total)
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=[
+        "update-wikibase-type-other",
+        "update-wikibase-type-suite",
+        "update-wikibase-type-test",
+    ],
+    scope="session",
+)
+@pytest.mark.parametrize(
+    ["include", "expected_total"],
+    [
+        ([], 11),
+        (["CLOUD"], 7),
+        (["OTHER"], 1),
+        (["SUITE"], 1),
+        (["TEST"], 1),
+        (["CLOUD", "OTHER"], 8),
+        (["CLOUD", "SUITE"], 8),
+        (["CLOUD", "TEST"], 8),
+        (["OTHER", "SUITE"], 2),
+        (["OTHER", "TEST"], 2),
+        (["SUITE", "TEST"], 2),
+        (["CLOUD", "OTHER", "SUITE"], 9),
+        (["CLOUD", "OTHER", "TEST"], 9),
+        (["CLOUD", "SUITE", "TEST"], 9),
+        (["OTHER", "SUITE", "TEST"], 3),
+        (["CLOUD", "OTHER", "SUITE", "TEST"], 10),
+    ],
+)
+async def test_wikibase_list_query_filtered_include(include, expected_total):
+    """Test Null Scenario"""
+
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"include": include}},
         },
     )
 

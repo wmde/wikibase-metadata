@@ -39,9 +39,7 @@ class WikibaseStrawberryModel:
     category: Optional[WikibaseCategory] = strawberry.field(
         description="Wikibase Category"
     )
-    wikibase_type: Optional[WikibaseType] = strawberry.field(
-        description="Cloud, Suite, Other"
-    )
+    wikibase_type: WikibaseType = strawberry.field(description="Cloud, Suite, Other")
 
     location: WikibaseLocationStrawberryModel = strawberry.field(
         description="Wikibase Location"
@@ -333,5 +331,5 @@ class WikibaseStrawberryModel:
             location=WikibaseLocationStrawberryModel.marshal(model),
             languages=WikibaseLanguageSetStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
-            wikibase_type=model.wikibase_type,
+            wikibase_type=model.wikibase_type or WikibaseType.UNKNOWN,
         )

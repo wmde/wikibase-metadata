@@ -13,3 +13,4 @@ class WikibaseType(enum.Enum):
     CLOUD = 1
     OTHER = 2
     TEST = 3
+    UNKNOWN = 4
