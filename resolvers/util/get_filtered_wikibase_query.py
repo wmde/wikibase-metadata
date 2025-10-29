@@ -8,6 +8,7 @@ from model.database import (
     WikibaseModel,
 )
 from model.database import WikibaseQuantityObservationModel
+from model.enum import WikibaseType
 from model.strawberry.input import (
     SortColumnEnum,
     SortDirEnum,
@@ -51,21 +52,28 @@ def get_filtered_wikibase_query(
                 wikibase_filter.wikibase_type.exclude is not None
                 and len(wikibase_filter.wikibase_type.exclude) > 0
             ):
-                query = query.where(
-                    or_(
-                        # pylint: disable-next=singleton-comparison
-                        WikibaseModel.wikibase_type == None,
+                if WikibaseType.UNKNOWN in wikibase_filter.wikibase_type.exclude:
+                    query = query.where(
                         WikibaseModel.wikibase_type.notin_(
                             wikibase_filter.wikibase_type.exclude
-                        ),
+                        )
                     )
-                )
+                else:
+                    query = query.where(
+                        or_(
+                            # pylint: disable-next=singleton-comparison
+                            WikibaseModel.wikibase_type == None,
+                            WikibaseModel.wikibase_type.notin_(
+                                wikibase_filter.wikibase_type.exclude
+                            ),
+                        )
+                    )
 
             if (
                 wikibase_filter.wikibase_type.include is not None
                 and len(wikibase_filter.wikibase_type.include) > 0
             ):
-                if None in wikibase_filter.wikibase_type.include:
+                if WikibaseType.UNKNOWN in wikibase_filter.wikibase_type.include:
                     query = query.where(
                         or_(
                             # pylint: disable-next=singleton-comparison
