@@ -1304,8 +1304,8 @@ export type SingleWikibaseFragment = {
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
-	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 	sortBy?: InputMaybe<WikibaseSortInput>
+	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 }>
 
 export type PageWikibasesQuery = {

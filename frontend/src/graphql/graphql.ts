@@ -1274,8 +1274,8 @@ export type SingleWikibaseFragment = {
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
-	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 	sortBy?: InputMaybe<WikibaseSortInput>
+	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 }>
 
 export type PageWikibasesQuery = {
@@ -1621,13 +1621,13 @@ export const PageWikibasesDocument = {
 				},
 				{
 					kind: 'VariableDefinition',
-					variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseFilterInput' } }
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseSortInput' } }
 				},
 				{
 					kind: 'VariableDefinition',
-					variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseSortInput' } }
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseFilterInput' } }
 				}
 			],
 			selectionSet: {
@@ -1637,11 +1637,6 @@ export const PageWikibasesDocument = {
 						kind: 'Field',
 						name: { kind: 'Name', value: 'wikibaseList' },
 						arguments: [
-							{
-								kind: 'Argument',
-								name: { kind: 'Name', value: 'wikibaseFilter' },
-								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
-							},
 							{
 								kind: 'Argument',
 								name: { kind: 'Name', value: 'pageNumber' },
@@ -1656,6 +1651,11 @@ export const PageWikibasesDocument = {
 								kind: 'Argument',
 								name: { kind: 'Name', value: 'sortBy' },
 								value: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
 							}
 						],
 						selectionSet: {

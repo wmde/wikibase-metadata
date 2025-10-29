@@ -4,14 +4,14 @@ export const pageWikibasesQuery = gql`
 	query PageWikibases(
 		$pageNumber: Int!
 		$pageSize: Int!
-		$wikibaseFilter: WikibaseFilterInput
 		$sortBy: WikibaseSortInput
+		$wikibaseFilter: WikibaseFilterInput
 	) {
 		wikibaseList(
-			wikibaseFilter: $wikibaseFilter
 			pageNumber: $pageNumber
 			pageSize: $pageSize
 			sortBy: $sortBy
+			wikibaseFilter: $wikibaseFilter
 		) {
 			meta {
 				totalCount
