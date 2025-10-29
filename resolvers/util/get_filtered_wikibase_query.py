@@ -33,4 +33,13 @@ def get_filtered_wikibase_query(
                     ),
                 )
             )
+
+        if (
+            wikibase_filter.wikibase_type.include is not None
+            and len(wikibase_filter.wikibase_type.include) > 0
+        ):
+            query = query.where(
+                WikibaseModel.wikibase_type.in_(wikibase_filter.wikibase_type.include)
+            )
+
     return query

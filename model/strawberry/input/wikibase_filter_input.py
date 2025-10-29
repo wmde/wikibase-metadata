@@ -9,7 +9,8 @@ import strawberry
 class WikibaseTypeInput:
     """Include or Exclude Wikibase Types"""
 
-    exclude: Optional[list[WikibaseType]]
+    exclude: Optional[list[WikibaseType]] = None
+    include: Optional[list[WikibaseType]] = None
 
 
 @strawberry.input
