@@ -16,7 +16,11 @@ class SortDirEnum(enum.Enum):
 class SortColumnEnum(enum.Enum):
     """Sort Column"""
 
-    TRIPLES = 0
+    TYPE = 0
+    TITLE = 1
+    TRIPLES = 2
+    EDITS = 3
+    CATEGORY = 4
 
 
 @strawberry.input
