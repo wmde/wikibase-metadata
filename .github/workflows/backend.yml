@@ -15,11 +15,12 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: npm install
+        working-directory: ./backend
         run: npm install prettier prettier-plugin-ini
 
       - name: npm check
-        run: |
-          npx prettier --check .
+        working-directory: ./backend
+        run: npx prettier --check .
 
   format-check-backend:
     runs-on: ubuntu-latest
@@ -32,11 +33,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
+        working-directory: ./backend
         run: |
           python -m pip install --upgrade pip
           pip install black
 
       - name: Analysing the code with Black
+        working-directory: ./backend
         run: black ./ --check --diff
 
   lint-check-backend:
@@ -50,11 +53,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
+        working-directory: ./backend
         run: |
           python -m pip install --upgrade pip
           pip install pylint
 
       - name: Analysing the code with pylint
+        working-directory: ./backend
         run: pylint ./
 
   data-check-backend:
@@ -68,11 +73,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
+        working-directory: ./backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Analysing the database with great expectations
+        working-directory: ./backend
         run: pytest -m data
         env:
           PYTHONPATH: .
@@ -90,11 +97,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
+        working-directory: ./backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Run tests (except data)
+        working-directory: ./backend
         run: pytest -m "not data" --cov=. --order-dependencies
         env:
           PYTHONPATH: .
