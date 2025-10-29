@@ -20,7 +20,10 @@ def get_filtered_wikibase_query(
         return query
 
     if wikibase_filter.wikibase_type is not None:
-        if wikibase_filter.wikibase_type.exclude is not None:
+        if (
+            wikibase_filter.wikibase_type.exclude is not None
+            and len(wikibase_filter.wikibase_type.exclude) > 0
+        ):
             query = query.where(
                 or_(
                     # pylint: disable-next=singleton-comparison
