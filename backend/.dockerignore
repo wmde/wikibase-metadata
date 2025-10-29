@@ -25,6 +25,4 @@ data/*.db
 .gitignore
 .env
 .env.*
-
-# Frontend
-frontend/
+zzs
