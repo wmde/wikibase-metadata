@@ -5,8 +5,8 @@ import type {
 	WikibaseQuantityObservationWikibaseObservationSet as WikibaseQuantityObservationSet,
 	WikibaseRecentChangesObservationWikibaseObservationSet as WikibaseRecentChangesObservationSet
 } from '@/graphql/types'
-import computeTotalEdits from '@/util/computeTotalEdits'
-import { compareByValue } from '@/util/sortByValue'
+import computeTotalEdits from '@/util/compute-total-edits'
+import { compareByValue } from '@/util/sort-by-value'
 import { ref } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 

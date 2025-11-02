@@ -1,4 +1,4 @@
-import computeTotalEdits from '@/util/computeTotalEdits'
+import computeTotalEdits from '@/util/compute-total-edits'
 import { describe, expect, it } from 'vitest'
 
 describe('computeTotalEdits', () => {

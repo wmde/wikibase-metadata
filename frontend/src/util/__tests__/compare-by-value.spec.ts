@@ -1,49 +1,5 @@
-import sortByValue, { compareByValue } from '@/util/sortByValue'
+import compareByValue from '@/util/compare-by-value'
 import { describe, expect, it } from 'vitest'
-
-describe('sortByValue', () => {
-	it('sorts an empty list', () => {
-		expect(sortByValue([], (i) => i)).toEqual([])
-	})
-
-	it('sorts a single-value list', () => {
-		expect(sortByValue([1], (i) => i)).toEqual([1])
-	})
-
-	it('sorts a sorted list', () => {
-		expect(
-			sortByValue(
-				[
-					{ a: 1, b: 2 },
-					{ a: 2, b: -2 },
-					{ a: 4, b: 0 }
-				],
-				(i) => i.a
-			)
-		).toEqual([
-			{ a: 1, b: 2 },
-			{ a: 2, b: -2 },
-			{ a: 4, b: 0 }
-		])
-	})
-
-	it('sorts an unsorted list', () => {
-		expect(
-			sortByValue(
-				[
-					{ a: 1, b: 2 },
-					{ a: 2, b: -2 },
-					{ a: 4, b: 0 }
-				],
-				(i) => i.b
-			)
-		).toEqual([
-			{ a: 2, b: -2 },
-			{ a: 4, b: 0 },
-			{ a: 1, b: 2 }
-		])
-	})
-})
 
 describe('compareByValue', () => {
 	it('compares nullish-nullish values equal', () => {
