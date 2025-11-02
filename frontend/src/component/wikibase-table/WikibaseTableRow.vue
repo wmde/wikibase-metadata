@@ -23,9 +23,9 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 		<td>
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
-		<td>{{ wikibase.category }}</td>
+		<td>{{ wikibase.category ?? '–' }}</td>
 		<td>
-			<div class="overflow">{{ wikibase.description }}</div>
+			<div class="overflow">{{ wikibase.description ?? '–' }}</div>
 		</td>
 		<td>
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
