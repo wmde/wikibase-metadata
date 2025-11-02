@@ -2,7 +2,7 @@
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
 type TableHeaderValue = 'wikibaseType' | 'title' | 'triples' | 'edits' | 'category'
@@ -38,29 +38,37 @@ const headerValueToColumn = (val: TableHeaderValue): SortColumn => {
 	}
 }
 
+const columnToHeaderValue = (val: SortColumn): TableHeaderValue => {
+	switch (val) {
+		case SortColumn.Category:
+			return 'category'
+		case SortColumn.Edits:
+			return 'edits'
+		case SortColumn.Title:
+			return 'title'
+		case SortColumn.Triples:
+			return 'triples'
+		case SortColumn.Type:
+			return 'wikibaseType'
+	}
+}
+
 const store = useWikiStore()
-
-const pageNumber = ref(store.pageNumber)
-watch(pageNumber, store.setPageNumber)
-
-const pageSize = ref(store.pageSize)
-watch(pageSize, store.setPageSize)
-
-const sortBy = ref<SortItem[]>([{ key: 'triples', order: 'desc' }])
-watch(sortBy, () =>
-	store.setSort(
-		sortBy.value[0]
-			? {
-					column: headerValueToColumn(sortBy.value[0].key as TableHeaderValue),
-					dir: sortBy.value[0].order == 'asc' ? SortDirection.Asc : SortDirection.Desc
-				}
-			: undefined
-	)
-)
 
 const error = computed(() => store.wikibasePage.errorState)
 const loading = computed(() => store.wikibasePage.loading)
-
+const pageNumber = computed(() => store.pageNumber)
+const pageSize = computed(() => store.pageSize)
+const sortBy = computed<SortItem[]>((): SortItem[] =>
+	store.sortBy
+		? [
+				{
+					key: columnToHeaderValue(store.sortBy.column),
+					order: store.sortBy.dir == SortDirection.Asc ? 'asc' : 'desc'
+				}
+			]
+		: []
+)
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.data?.data)
 </script>
@@ -71,9 +79,22 @@ const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.da
 	<p>Page Size: {{ pageSize }}, {{ store.pageSize }}</p>
 	<p>Sort: {{ sortBy }}, {{ store.sortBy }}</p>
 	<v-data-table-server
-		v-model:items-per-page="pageSize"
-		v-model:page="pageNumber"
-		v-model:sort-by="sortBy"
+		:items-per-page="pageSize"
+		@update:items-per-page="store.setPageSize"
+		:page="pageNumber"
+		@update:page="store.setPageNumber"
+		:sort-by="sortBy"
+		@update:sort-by="
+			(sortBy: SortItem[]) =>
+				store.setSort(
+					sortBy[0]
+						? {
+								column: headerValueToColumn(sortBy[0].key as TableHeaderValue),
+								dir: sortBy[0].order == 'asc' ? SortDirection.Asc : SortDirection.Desc
+							}
+						: undefined
+				)
+		"
 		:headers="headers"
 		:items="wikibases"
 		:items-length="totalCount ?? 0"
