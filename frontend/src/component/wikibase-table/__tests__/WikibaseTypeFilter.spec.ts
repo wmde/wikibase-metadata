@@ -58,7 +58,7 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 		wikibaseFilter: { wikibaseType: { exclude: [WikibaseType.Cloud, WikibaseType.Test] } },
 		wikibasePage: {
 			...mockWikiStore.wikibasePage,
-			data: { wikibaseList: { meta: { totalCount: 5 }, data: testWikibasesAlt } }
+			data: { meta: { totalCount: 5 }, data: testWikibasesAlt }
 		}
 	})
 }))

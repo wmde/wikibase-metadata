@@ -5,6 +5,7 @@ import {
 	WikibaseType,
 	type PageWikibasesQuery,
 	type PageWikibasesQueryVariables,
+	type WbFragment,
 	type WikibaseFilterInput,
 	type WikibaseSortInput
 } from '@/graphql/types'
@@ -16,11 +17,13 @@ import { computed, ref, watch, type Ref } from 'vue'
 
 provideApolloClient(apolloClient)
 
+type WikibasePageData = { meta: { totalCount: number }; data: WbFragment[] }
+
 export type WikibasePageStoreType = {
 	fetchWikibasePage: () => void
 	wikibasePage:
-		| QueryResult<PageWikibasesQuery | undefined>
-		| Ref<QueryResult<PageWikibasesQuery | undefined>>
+		| QueryResult<WikibasePageData | undefined>
+		| Ref<QueryResult<WikibasePageData | undefined>>
 	pageNumber: number | Ref<number>
 	setPageNumber: (i: number) => void
 	pageSize: number | Ref<number>
@@ -37,8 +40,8 @@ const { load, result, loading, error } = useLazyQuery<
 >(pageWikibasesQuery)
 
 export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType => {
-	const wikibasePage = computed<QueryResult<PageWikibasesQuery | undefined>>(() => ({
-		data: result.value,
+	const wikibasePage = computed<QueryResult<WikibasePageData | undefined>>(() => ({
+		data: result.value?.wikibaseList,
 		loading: loading.value,
 		errorState: error.value ? true : false
 	}))

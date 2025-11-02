@@ -61,10 +61,8 @@ watch(sortBy, () =>
 const error = computed(() => store.wikibasePage.errorState)
 const loading = computed(() => store.wikibasePage.loading)
 
-const totalCount = computed(() => store.wikibasePage.data?.wikibaseList.meta.totalCount)
-const wikibases = computed<WbFragment[] | undefined>(
-	() => store.wikibasePage.data?.wikibaseList.data
-)
+const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
+const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.data?.data)
 </script>
 
 <template>
