@@ -7,6 +7,7 @@ import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
@@ -56,9 +57,12 @@ const testWikibasesAlt: WbFragment[] = [
 	}
 ]
 
+const mockSetSort = vi.fn().mockName('sortByColumn')
+
 vi.mock('@/stores/wikibase-page-store', () => ({
 	useWikiStore: (): WikibasePageStoreType => ({
 		...mockWikiStore,
+		setSort: mockSetSort,
 		wikibasePage: {
 			...mockWikiStore.wikibasePage,
 			data: {
@@ -77,10 +81,7 @@ describe('WikibaseTable', async () => {
 	beforeEach(() => setActivePinia(createPinia()))
 
 	it('renders data properly', async () => {
-		const wrapper = mount(WikibaseTable, {
-			global: { plugins: [vuetify] },
-			props: { error: false, loading: false, wikibases: testWikibasesAlt }
-		})
+		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
 
 		const alert = wrapper.find('div.v-alert')
 		expect(alert.exists()).toEqual(false)
@@ -171,7 +172,30 @@ describe('WikibaseTable', async () => {
 		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 
-	it.todo('triggers sort', async () => {
-		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
+	it('triggers sort', async () => {
+		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
+
+		const alert = wrapper.find('div.v-alert')
+		expect(alert.exists()).toEqual(false)
+
+		const tableContainer = wrapper.find('div.wikibase-table')
+		expect(tableContainer.exists()).toEqual(true)
+
+		const table = tableContainer.find('table')
+		expect(table.exists()).toEqual(true)
+
+		const tableHead = table.find('thead')
+		expect(tableHead.exists()).toEqual(true)
+		expect(tableHead.findAll('tr').length).toEqual(1)
+		expect(tableHead.find('tr').findAll('th').length).toEqual(8)
+		expect(tableHead.find('tr').findAll('th')[4]?.text()).toEqual('Edits')
+
+		expect(mockSetSort).toHaveBeenCalledTimes(0)
+
+		await tableHead.find('tr').findAll('th')[4]?.trigger('click')
+		await nextTick()
+
+		expect(mockSetSort).toHaveBeenCalledTimes(1)
+		expect(mockSetSort).toHaveBeenCalledWith({ column: 'EDITS', dir: 'ASC' })
 	})
 })
