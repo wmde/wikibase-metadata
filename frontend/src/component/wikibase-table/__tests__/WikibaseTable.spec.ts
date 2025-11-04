@@ -163,15 +163,15 @@ describe('WikibaseTable', async () => {
 		).toEqual(['–', '–', '–', 'An Example for the Purposes of Testing', '–'])
 	})
 
-	it.skip('triggers change page', async () => {
+	it.todo('triggers change page', async () => {
 		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 
-	it.skip('triggers change page size', async () => {
+	it.todo('triggers change page size', async () => {
 		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 
-	it.skip('triggers sort', async () => {
+	it.todo('triggers sort', async () => {
 		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 })
