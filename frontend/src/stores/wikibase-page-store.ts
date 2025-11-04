@@ -50,26 +50,17 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	}))
 
 	const pageNumber = ref(1)
-	const setPageNumber = (i: number) => {
-		console.log('Set Page: %d', i)
-		pageNumber.value = i
-	}
+	const setPageNumber = (i: number) => (pageNumber.value = i)
 
 	const pageSize = ref(10)
-	const setPageSize = (i: number) => {
-		console.log('Set Page Size: %d', i)
-		pageSize.value = i
-	}
+	const setPageSize = (i: number) => (pageSize.value = i)
 	watch(pageSize, () => setPageNumber(1))
 
 	const sortBy = ref<WikibaseSortInput | undefined>({
 		column: SortColumn.Triples,
 		dir: SortDirection.Desc
 	})
-	const setSort = (val: WikibaseSortInput | undefined) => {
-		console.log('Set Sort:', val)
-		sortBy.value = val
-	}
+	const setSort = (val: WikibaseSortInput | undefined) => (sortBy.value = val)
 	watch(sortBy, () => setPageNumber(1))
 
 	const wikibaseFilter = ref<WikibaseFilterInput>({
@@ -86,7 +77,6 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 			sortBy: sortBy.value,
 			wikibaseFilter: wikibaseFilter.value
 		})
-
 	watch(pageNumber, fetchWikibasePage)
 	watch(pageSize, fetchWikibasePage)
 	watch(sortBy, fetchWikibasePage)
