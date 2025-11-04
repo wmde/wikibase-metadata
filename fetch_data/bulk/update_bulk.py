@@ -1,7 +1,7 @@
 """
 Update Observations in Bulk
 
-Allow up to 4 simultaneous tasks across all observation types
+Allow up to 64 simultaneous tasks across all observation types
 """
 
 import asyncio
