@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const pageWikibasesQuery = gql`
+const pageWikibasesQuery = gql`
 	query PageWikibases(
 		$pageNumber: Int!
 		$pageSize: Int!
@@ -44,3 +44,5 @@ export const pageWikibasesQuery = gql`
 		}
 	}
 `
+
+export default pageWikibasesQuery

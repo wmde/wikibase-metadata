@@ -1,4 +1,4 @@
-import { pageWikibasesQuery } from '@/graphql/queries/wikibase-list-query'
+import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
 import {
 	SortColumn,
 	SortDirection,
