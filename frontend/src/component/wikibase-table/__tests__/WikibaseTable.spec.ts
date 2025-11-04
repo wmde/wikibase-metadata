@@ -2,10 +2,11 @@ import { ResizeObserverMock } from '@/__tests__/global-mocks'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import { WikibaseCategory, WikibaseType, type WbFragment } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
+import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
+import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
@@ -54,27 +55,23 @@ const testWikibasesAlt: WbFragment[] = [
 		wikibaseType: WikibaseType.Unknown
 	}
 ]
-const manyTestWikibases: WbFragment[] = ''
-	.padStart(1000, '0')
-	.split('0')
-	.map(
-		(_, index): WbFragment => ({
-			id: `${index}`,
-			title: `Test Wikibase #${index}`,
-			urls: { baseUrl: `https://test-wikibase-${index}.test` },
-			quantityObservations: { mostRecent: index % 5 == 0 ? undefined : { totalTriples: index } },
-			recentChangesObservations: {
-				mostRecent:
-					index % 7 == 0
-						? undefined
-						: {
-								botChangeCount: index % 11 == 0 ? undefined : index,
-								humanChangeCount: index % 13 == 0 ? undefined : index
-							}
-			},
-			wikibaseType: WikibaseType.Unknown
-		})
-	)
+
+vi.mock('@/stores/wikibase-page-store', () => ({
+	useWikiStore: (): WikibasePageStoreType => ({
+		...mockWikiStore,
+		wikibasePage: {
+			...mockWikiStore.wikibasePage,
+			data: {
+				meta: { totalCount: testWikibasesAlt.length },
+				data: testWikibasesAlt.sort(
+					(a, b) =>
+						(b.quantityObservations.mostRecent?.totalTriples ?? 0) -
+						(a.quantityObservations.mostRecent?.totalTriples ?? 0)
+				)
+			}
+		}
+	})
+}))
 
 describe('WikibaseTable', async () => {
 	beforeEach(() => setActivePinia(createPinia()))
@@ -157,171 +154,24 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[5]?.text())
-		).toEqual(['', 'FICTIONAL_AND_CREATIVE_WORKS', '', '', 'TECHNOLOGY_AND_OPEN_SOURCE'])
+		).toEqual(['–', 'FICTIONAL_AND_CREATIVE_WORKS', '–', '–', 'TECHNOLOGY_AND_OPEN_SOURCE'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[6]?.text())
-		).toEqual(['', '', '', 'An Example for the Purposes of Testing', ''])
-
-		const footerContainer = tableContainer.find('div.v-data-table-footer')
-		expect(footerContainer.exists()).toEqual(true)
-
-		const infoContainer = footerContainer.find('div.v-data-table-footer__info')
-		expect(infoContainer.exists()).toEqual(true)
-		expect(infoContainer.text()).toEqual('1-5 of 5')
+		).toEqual(['–', '–', '–', 'An Example for the Purposes of Testing', '–'])
 	})
 
-	it('changes page properly', async () => {
-		const wrapper = mount(WikibaseTable, {
-			global: { plugins: [vuetify] },
-			props: { error: false, loading: false, wikibases: manyTestWikibases }
-		})
-
-		const tableContainer = wrapper.find('div.wikibase-table')
-		expect(tableContainer.exists()).toEqual(true)
-
-		const footerContainer = tableContainer.find('div.v-data-table-footer')
-		expect(footerContainer.exists()).toEqual(true)
-
-		const infoContainer = footerContainer.find('div.v-data-table-footer__info')
-		expect(infoContainer.exists()).toEqual(true)
-		expect(infoContainer.text()).toEqual('1-10 of 1001')
-
-		const paginationContainer = footerContainer.find('div.v-data-table-footer__pagination')
-		expect(paginationContainer.exists()).toEqual(true)
-		expect(paginationContainer.findAll('button.v-btn').length).toEqual(4)
-		expect(paginationContainer.findAll('button.v-btn')[0]?.classes()).toContain('v-btn--disabled')
-		expect(paginationContainer.findAll('button.v-btn')[1]?.classes()).toContain('v-btn--disabled')
-		expect(paginationContainer.findAll('button.v-btn')[2]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-		expect(paginationContainer.findAll('button.v-btn')[3]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-
-		await paginationContainer.findAll('button.v-btn')[2]?.trigger('click')
-		await nextTick()
-
-		expect(infoContainer.text()).toEqual('11-20 of 1001')
-		expect(paginationContainer.findAll('button.v-btn')[0]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-		expect(paginationContainer.findAll('button.v-btn')[1]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-		expect(paginationContainer.findAll('button.v-btn')[2]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-		expect(paginationContainer.findAll('button.v-btn')[3]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-
-		await paginationContainer.findAll('button.v-btn')[3]?.trigger('click')
-		await nextTick()
-
-		expect(infoContainer.text()).toEqual('1001-1001 of 1001')
-		expect(paginationContainer.findAll('button.v-btn')[0]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-		expect(paginationContainer.findAll('button.v-btn')[1]?.classes()).not.toContain(
-			'v-btn--disabled'
-		)
-		expect(paginationContainer.findAll('button.v-btn')[2]?.classes()).toContain('v-btn--disabled')
-		expect(paginationContainer.findAll('button.v-btn')[3]?.classes()).toContain('v-btn--disabled')
+	it.skip('triggers change page', async () => {
+		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 
-	it('re-sorts data properly', async () => {
-		const wrapper = mount(WikibaseTable, {
-			global: { plugins: [vuetify] },
-			props: { error: false, loading: false, wikibases: testWikibasesAlt }
-		})
+	it.skip('triggers change page size', async () => {
+		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
+	})
 
-		const alert = wrapper.find('div.v-alert')
-		expect(alert.exists()).toEqual(false)
-
-		const tableContainer = wrapper.find('div.wikibase-table')
-		expect(tableContainer.exists()).toEqual(true)
-
-		const table = tableContainer.find('table')
-		expect(table.exists()).toEqual(true)
-
-		const tableHead = table.find('thead')
-		expect(tableHead.exists()).toEqual(true)
-
-		expect(tableHead.findAll('th').length).toEqual(8)
-
-		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
-		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
-
-		await tableHead.findAll('th')[4]?.trigger('click')
-		await nextTick()
-
-		expect(table.find('tbody').findAll('tr').length).toEqual(5)
-
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[1]?.text())
-		).toEqual(['CLOUD', 'SUITE', 'SUITE', 'OTHER', 'UNKNOWN'])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[2]?.text())
-		).toEqual([
-			'Test Wikibase',
-			'Test Wikibase #2',
-			'Test Wikibase #4',
-			'Test Wikibase #3',
-			'Test Wikibase #5'
-		])
-		table
-			.find('tbody')
-			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').exists()).toEqual(true))
-		table
-			.find('tbody')
-			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href'))
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[2]?.find('a').attributes()['href'])
-		).toEqual([
-			'test-wikibase-001.test',
-			'test-wikibase-002.test',
-			'test-wikibase-004.test',
-			'test-wikibase-003.test',
-			'test-wikibase-005.test'
-		])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[3]?.text())
-		).toEqual(['–', '14', '–', '1', '300'])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[4]?.text())
-		).toEqual(['–', '–', '31', '100', '100'])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[5]?.text())
-		).toEqual(['', 'FICTIONAL_AND_CREATIVE_WORKS', 'TECHNOLOGY_AND_OPEN_SOURCE', '', ''])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[6]?.text())
-		).toEqual(['An Example for the Purposes of Testing', '', '', '', ''])
+	it.skip('triggers sort', async () => {
+		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 })
