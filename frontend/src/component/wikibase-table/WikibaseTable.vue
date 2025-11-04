@@ -1,61 +1,108 @@
 <script setup lang="ts">
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
-import type {
-	WbFragment,
-	WikibaseQuantityObservationWikibaseObservationSet as WikibaseQuantityObservationSet,
-	WikibaseRecentChangesObservationWikibaseObservationSet as WikibaseRecentChangesObservationSet
-} from '@/graphql/types'
-import compareByValue from '@/util/compare-by-value'
-import computeTotalEdits from '@/util/compute-total-edits'
-import { ref } from 'vue'
+import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
+import { useWikiStore } from '@/stores/wikibase-page-store'
+import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
-const sortBy = ref<SortItem[]>([{ key: 'quantityObservations', order: 'desc' }])
-const page = ref(1)
-const itemsPerPage = ref(10)
+type TableHeaderValue = 'wikibaseType' | 'title' | 'triples' | 'edits' | 'category'
+type TableHeader = {
+	title: string
+	value?: TableHeaderValue
+	sortable: boolean
+}
 
-const headers = [
+const headers: TableHeader[] = [
 	{ title: '', sortable: false },
 	{ title: 'Type', value: 'wikibaseType', sortable: true },
 	{ title: 'Title', value: 'title', sortable: true },
-	{
-		title: 'Triples',
-		value: 'quantityObservations',
-		sortable: true,
-		sort: (a: WikibaseQuantityObservationSet, b: WikibaseQuantityObservationSet) =>
-			compareByValue(a, b, (v) => v.mostRecent?.totalTriples)
-	},
-	{
-		title: 'Edits',
-		value: 'recentChangesObservations',
-		sortable: true,
-		sort: (a: WikibaseRecentChangesObservationSet, b: WikibaseRecentChangesObservationSet) =>
-			compareByValue(a, b, computeTotalEdits)
-	},
+	{ title: 'Triples', value: 'triples', sortable: true },
+	{ title: 'Edits', value: 'edits', sortable: true },
 	{ title: 'Category', value: 'category', sortable: true },
 	{ title: 'Description', sortable: false },
-	{ title: 'Details', value: 'id', sortable: false }
+	{ title: 'Details', sortable: false }
 ]
 
-defineProps<{ error: boolean; loading: boolean; wikibases: WbFragment[] | undefined }>()
+const headerValueToColumn = (val: TableHeaderValue): SortColumn => {
+	switch (val) {
+		case 'category':
+			return SortColumn.Category
+		case 'edits':
+			return SortColumn.Edits
+		case 'title':
+			return SortColumn.Title
+		case 'triples':
+			return SortColumn.Triples
+		case 'wikibaseType':
+			return SortColumn.Type
+	}
+}
+
+const columnToHeaderValue = (val: SortColumn): TableHeaderValue => {
+	switch (val) {
+		case SortColumn.Category:
+			return 'category'
+		case SortColumn.Edits:
+			return 'edits'
+		case SortColumn.Title:
+			return 'title'
+		case SortColumn.Triples:
+			return 'triples'
+		case SortColumn.Type:
+			return 'wikibaseType'
+	}
+}
+
+const store = useWikiStore()
+
+const error = computed(() => store.wikibasePage.errorState)
+const loading = computed(() => store.wikibasePage.loading)
+const pageNumber = computed(() => store.pageNumber)
+const pageSize = computed(() => store.pageSize)
+const sortBy = computed<SortItem[]>((): SortItem[] =>
+	store.sortBy
+		? [
+				{
+					key: columnToHeaderValue(store.sortBy.column),
+					order: store.sortBy.dir == SortDirection.Asc ? 'asc' : 'desc'
+				}
+			]
+		: []
+)
+const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
+const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.data?.data)
 </script>
 
 <template>
 	<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
-	<v-data-table
-		:items="wikibases"
+	<v-data-table-server
+		:page="pageNumber"
+		@update:page="store.setPageNumber"
+		:items-per-page="pageSize"
+		@update:items-per-page="store.setPageSize"
+		:sort-by="sortBy"
+		@update:sort-by="
+			(sortBy: SortItem[]) =>
+				store.setSort(
+					sortBy[0]
+						? {
+								column: headerValueToColumn(sortBy[0].key as TableHeaderValue),
+								dir: sortBy[0].order == 'asc' ? SortDirection.Asc : SortDirection.Desc
+							}
+						: undefined
+				)
+		"
 		:headers="headers"
-		striped="even"
+		:items="wikibases"
+		:items-length="totalCount ?? 0"
 		:loading="loading"
-		v-model:sort-by="sortBy"
-		v-model:page="page"
-		v-model:items-per-page="itemsPerPage"
+		striped="even"
 		class="wikibase-table"
 	>
 		<template v-slot:item="{ item, index }">
-			<WikibaseTableRow :wikibase="item" :index="(page - 1) * itemsPerPage + index" />
+			<WikibaseTableRow :wikibase="item" :index="(pageNumber - 1) * pageSize + index" />
 		</template>
-	</v-data-table>
+	</v-data-table-server>
 </template>
 
 <style lang="css"></style>
