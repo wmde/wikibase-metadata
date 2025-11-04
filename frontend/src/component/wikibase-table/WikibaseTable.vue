@@ -5,53 +5,22 @@ import { useWikiStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
-type TableHeaderValue = 'wikibaseType' | 'title' | 'triples' | 'edits' | 'category'
 type TableHeader = {
 	title: string
-	value?: TableHeaderValue
+	value?: SortColumn
 	sortable: boolean
 }
 
 const headers: TableHeader[] = [
 	{ title: '', sortable: false },
-	{ title: 'Type', value: 'wikibaseType', sortable: true },
-	{ title: 'Title', value: 'title', sortable: true },
-	{ title: 'Triples', value: 'triples', sortable: true },
-	{ title: 'Edits', value: 'edits', sortable: true },
-	{ title: 'Category', value: 'category', sortable: true },
+	{ title: 'Type', value: SortColumn.Type, sortable: true },
+	{ title: 'Title', value: SortColumn.Title, sortable: true },
+	{ title: 'Triples', value: SortColumn.Triples, sortable: true },
+	{ title: 'Edits', value: SortColumn.Edits, sortable: true },
+	{ title: 'Category', value: SortColumn.Category, sortable: true },
 	{ title: 'Description', sortable: false },
 	{ title: 'Details', sortable: false }
 ]
-
-const headerValueToColumn = (val: TableHeaderValue): SortColumn => {
-	switch (val) {
-		case 'category':
-			return SortColumn.Category
-		case 'edits':
-			return SortColumn.Edits
-		case 'title':
-			return SortColumn.Title
-		case 'triples':
-			return SortColumn.Triples
-		case 'wikibaseType':
-			return SortColumn.Type
-	}
-}
-
-const columnToHeaderValue = (val: SortColumn): TableHeaderValue => {
-	switch (val) {
-		case SortColumn.Category:
-			return 'category'
-		case SortColumn.Edits:
-			return 'edits'
-		case SortColumn.Title:
-			return 'title'
-		case SortColumn.Triples:
-			return 'triples'
-		case SortColumn.Type:
-			return 'wikibaseType'
-	}
-}
 
 const store = useWikiStore()
 
@@ -63,7 +32,7 @@ const sortBy = computed<SortItem[]>((): SortItem[] =>
 	store.sortBy
 		? [
 				{
-					key: columnToHeaderValue(store.sortBy.column),
+					key: store.sortBy.column,
 					order: store.sortBy.dir == SortDirection.Asc ? 'asc' : 'desc'
 				}
 			]
@@ -86,7 +55,7 @@ const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.da
 				store.setSort(
 					sortBy[0]
 						? {
-								column: headerValueToColumn(sortBy[0].key as TableHeaderValue),
+								column: sortBy[0].key as SortColumn,
 								dir: sortBy[0].order == 'asc' ? SortDirection.Asc : SortDirection.Desc
 							}
 						: undefined
