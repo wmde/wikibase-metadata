@@ -3,8 +3,9 @@ import { useWikiStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { mockLoad, mockUseLazyQuery } = vi.hoisted(() => ({
+const { mockLoad, mockOnResult, mockUseLazyQuery } = vi.hoisted(() => ({
 	mockLoad: vi.fn().mockName('load'),
+	mockOnResult: vi.fn().mockName('onResult'),
 	mockUseLazyQuery: vi.fn().mockName('useLazyQuery')
 }))
 
@@ -12,7 +13,7 @@ vi.mock('@vue/apollo-composable', () => ({
 	provideApolloClient: vi.fn().mockName('provideApolloClient'),
 	useLazyQuery: mockUseLazyQuery.mockReturnValueOnce({
 		load: mockLoad,
-		result: { value: undefined },
+		onResult: mockOnResult,
 		loading: { value: false },
 		error: { value: true }
 	})

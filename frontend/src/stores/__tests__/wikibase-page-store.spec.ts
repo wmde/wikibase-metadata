@@ -4,8 +4,9 @@ import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
-const { mockLoad, mockUseLazyQuery } = vi.hoisted(() => ({
+const { mockLoad, mockOnResult, mockUseLazyQuery } = vi.hoisted(() => ({
 	mockLoad: vi.fn().mockName('load'),
+	mockOnResult: vi.fn().mockName('onResult'),
 	mockUseLazyQuery: vi.fn().mockName('useLazyQuery')
 }))
 
@@ -13,7 +14,7 @@ vi.mock('@vue/apollo-composable', () => ({
 	provideApolloClient: vi.fn().mockName('provideApolloClient'),
 	useLazyQuery: mockUseLazyQuery.mockReturnValueOnce({
 		load: mockLoad,
-		result: { value: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } },
+		onResult: mockOnResult,
 		loading: { value: false },
 		error: { value: false }
 	})
@@ -26,6 +27,9 @@ describe('useWikiStore', async () => {
 	})
 
 	it('reflects query results', async () => {
+		mockOnResult.mockImplementationOnce((fn) =>
+			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
+		)
 		const store = useWikiStore()
 
 		expect(store.pageNumber).toEqual(1)
@@ -34,13 +38,16 @@ describe('useWikiStore', async () => {
 			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 		})
 		expect(store.wikibasePage).toEqual({
-			data: { wikibaseList: { data: [], meta: { totalCount: 0 } } },
+			data: { data: [], meta: { totalCount: 0 } },
 			errorState: false,
 			loading: false
 		})
 	})
 
 	it('calls load on fetchWikibasePage', async () => {
+		mockOnResult.mockImplementationOnce((fn) =>
+			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
+		)
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
@@ -49,11 +56,40 @@ describe('useWikiStore', async () => {
 	})
 
 	it('calls load on includeWikibaseTypes', async () => {
+		mockOnResult.mockImplementationOnce((fn) =>
+			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
+		)
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
 		store.includeWikibaseTypes([WikibaseType.Cloud])
+		await nextTick()
+		expect(mockLoad).toHaveBeenCalledTimes(1)
+	})
+
+	it('calls load on setPageNumber', async () => {
+		mockOnResult.mockImplementationOnce((fn) =>
+			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
+		)
+		const store = useWikiStore()
+
+		expect(mockLoad).toHaveBeenCalledTimes(0)
+
+		store.setPageNumber(2)
+		await nextTick()
+		expect(mockLoad).toHaveBeenCalledTimes(1)
+	})
+
+	it('calls load on setPageSize', async () => {
+		mockOnResult.mockImplementationOnce((fn) =>
+			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
+		)
+		const store = useWikiStore()
+
+		expect(mockLoad).toHaveBeenCalledTimes(0)
+
+		store.setPageSize(25)
 		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
