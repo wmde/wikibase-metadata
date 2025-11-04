@@ -350,6 +350,7 @@ async def test_wikibase_list_query_filtered_include(include, expected_total):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-cat-asc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
@@ -392,10 +393,12 @@ async def test_wikibase_list_query_sort_category_asc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-cat-desc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
+        "sort-cat-asc",
     ],
     scope="session",
 )
@@ -434,10 +437,13 @@ async def test_wikibase_list_query_sort_category_desc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-edit-asc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
+        "sort-cat-asc",
+        "sort-cat-desc",
     ],
     scope="session",
 )
@@ -478,10 +484,12 @@ async def test_wikibase_list_query_sort_edit_asc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-edit-desc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
+        "sort-edit-asc",
     ],
     scope="session",
 )
@@ -521,7 +529,11 @@ async def test_wikibase_list_query_sort_edit_desc():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(depends=["mutate-cloud-instances"], scope="session")
+@pytest.mark.dependency(
+    name="sort-title-asc",
+    depends=["mutate-cloud-instances", "sort-edit-asc", "sort-edit-desc"],
+    scope="session",
+)
 async def test_wikibase_list_query_sort_title_asc():
     """Test Sort Title Ascending"""
 
@@ -579,7 +591,11 @@ async def test_wikibase_list_query_sort_title_asc():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(depends=["mutate-cloud-instances"], scope="session")
+@pytest.mark.dependency(
+    name="sort-title-desc",
+    depends=["mutate-cloud-instances", "sort-title-asc"],
+    scope="session",
+)
 async def test_wikibase_list_query_sort_title_desc():
     """Test Sort Title Descending"""
 
@@ -638,10 +654,13 @@ async def test_wikibase_list_query_sort_title_desc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-triples-asc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
+        "sort-title-asc",
+        "sort-title-desc",
     ],
     scope="session",
 )
@@ -677,10 +696,12 @@ async def test_wikibase_list_query_sort_triples_asc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-triples-desc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
+        "sort-triples-asc",
     ],
     scope="session",
 )
@@ -716,10 +737,13 @@ async def test_wikibase_list_query_sort_triples_desc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
+    name="sort-type-asc",
     depends=[
         "update-wikibase-type-other",
         "update-wikibase-type-suite",
         "update-wikibase-type-test",
+        "sort-triples-asc",
+        "sort-triples-desc",
     ],
     scope="session",
 )
