@@ -95,9 +95,9 @@ def get_sorted_wikibase_query(
 
         case SortColumn.TITLE:
             query = query.order_by(
-                WikibaseModel.wikibase_name.asc()
+                func.lower(WikibaseModel.wikibase_name).asc()
                 if sort_by.dir == SortDirection.ASC
-                else WikibaseModel.wikibase_name.desc()
+                else func.lower(WikibaseModel.wikibase_name).desc()
             )
 
         case SortColumn.TRIPLES:
