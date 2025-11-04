@@ -10,89 +10,104 @@ from tests.utils import (
 
 
 WIKIBASE_LIST_QUERY = """
-query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
+query PageWikibases($pageNumber: Int!, $pageSize: Int!, $sortBy: WikibaseSortInput, $wikibaseFilter: WikibaseFilterInput) {
   wikibaseList(
     pageNumber: $pageNumber
     pageSize: $pageSize
+    sortBy: $sortBy
     wikibaseFilter: $wikibaseFilter
   ) {
-    data {
-      id
-      title
-      category
-      description
-      organization
-      location {
-        country
-        region
-      }
-      languages {
-        primary
-        additional
-      }
-      urls {
-        baseUrl
-        actionApi
-        articlePath
-        indexApi
-        scriptPath
-        sparqlEndpointUrl
-        sparqlFrontendUrl
-        sparqlUrl
-        specialStatisticsUrl
-        specialVersionUrl
-      }
-      connectivityObservations {
-        mostRecent {
-          id
-        }
-      }
-      externalIdentifierObservations {
-        mostRecent {
-          id
-        }
-      }
-      logObservations {
-        firstMonth {
-          mostRecent {
-            id
-          }
-        }
-        lastMonth {
-          mostRecent {
-            id
-          }
-        }
-      }
-      propertyPopularityObservations {
-        mostRecent {
-          id
-        }
-      }
-      quantityObservations {
-        mostRecent {
-          id
-        }
-      }
-      softwareVersionObservations {
-        mostRecent {
-          id
-        }
-      }
-      userObservations {
-        mostRecent {
-          id
-        }
-      }
-    }
     meta {
       pageNumber
       pageSize
       totalCount
       totalPages
     }
+    data {
+      ...WB
+    }
   }
-}"""
+}
+
+fragment WB on Wikibase {
+  id
+  title
+  category
+  description
+  organization
+  location {
+    country
+    region
+  }
+  languages {
+    primary
+    additional
+  }
+  urls {
+    baseUrl
+    actionApi
+    articlePath
+    indexApi
+    scriptPath
+    sparqlEndpointUrl
+    sparqlFrontendUrl
+    sparqlUrl
+    specialStatisticsUrl
+    specialVersionUrl
+  }
+  wikibaseType
+  connectivityObservations {
+    mostRecent {
+      id
+    }
+  }
+  externalIdentifierObservations {
+    mostRecent {
+      id
+    }
+  }
+  logObservations {
+    firstMonth {
+      mostRecent {
+        id
+      }
+    }
+    lastMonth {
+      mostRecent {
+        id
+      }
+    }
+  }
+  propertyPopularityObservations {
+    mostRecent {
+      id
+    }
+  }
+  quantityObservations {
+    mostRecent {
+      id
+      totalTriples
+    }
+  }
+  recentChangesObservations {
+    mostRecent {
+      id
+      botChangeCount
+      humanChangeCount
+    }
+  }
+  softwareVersionObservations {
+    mostRecent {
+      id
+    }
+  }
+  userObservations {
+    mostRecent {
+      id
+    }
+  }
+}
+"""
 
 
 @pytest.mark.asyncio
