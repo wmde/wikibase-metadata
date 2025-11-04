@@ -34,14 +34,17 @@ export type WikibasePageStoreType = {
 	includeWikibaseTypes: (t: WikibaseType[]) => void
 }
 
-const { load, result, loading, error } = useLazyQuery<
+const { load, onResult, loading, error } = useLazyQuery<
 	PageWikibasesQuery,
 	PageWikibasesQueryVariables
 >(pageWikibasesQuery)
 
 export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType => {
+	const data = ref<WikibasePageData | undefined>()
+	onResult((result) => (data.value = result.data.wikibaseList))
+
 	const wikibasePage = computed<QueryResult<WikibasePageData | undefined>>(() => ({
-		data: result.value?.wikibaseList,
+		data: data.value,
 		loading: loading.value,
 		errorState: error.value ? true : false
 	}))
@@ -83,6 +86,7 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 			sortBy: sortBy.value,
 			wikibaseFilter: wikibaseFilter.value
 		})
+
 	watch(pageNumber, fetchWikibasePage)
 	watch(pageSize, fetchWikibasePage)
 	watch(sortBy, fetchWikibasePage)

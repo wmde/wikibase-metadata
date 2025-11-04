@@ -2,7 +2,7 @@
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
 type TableHeaderValue = 'wikibaseType' | 'title' | 'triples' | 'edits' | 'category'
@@ -57,7 +57,10 @@ const store = useWikiStore()
 
 const error = computed(() => store.wikibasePage.errorState)
 const loading = computed(() => store.wikibasePage.loading)
-const pageNumber = computed(() => store.pageNumber)
+// const pageNumber = computed(() => store.pageNumber)
+const pageNumber = ref(1)
+watch(pageNumber, () => console.log('Page Number: %d', pageNumber.value))
+watch(pageNumber, store.setPageNumber)
 const pageSize = computed(() => store.pageSize)
 const sortBy = computed<SortItem[]>((): SortItem[] =>
 	store.sortBy
@@ -76,13 +79,10 @@ const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.da
 <template>
 	<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 	<p>Page: {{ pageNumber }}, {{ store.pageNumber }}</p>
-	<p>Page Size: {{ pageSize }}, {{ store.pageSize }}</p>
-	<p>Sort: {{ sortBy }}, {{ store.sortBy }}</p>
 	<v-data-table-server
 		:items-per-page="pageSize"
 		@update:items-per-page="store.setPageSize"
-		:page="pageNumber"
-		@update:page="store.setPageNumber"
+		v-model:page="pageNumber"
 		:sort-by="sortBy"
 		@update:sort-by="
 			(sortBy: SortItem[]) =>
