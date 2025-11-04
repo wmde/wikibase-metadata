@@ -37,8 +37,8 @@ describe('WikibaseTableRow', async () => {
 			'Test Wikibase',
 			'–',
 			'–',
-			'',
-			'',
+			'–',
+			'–',
 			'VIEW'
 		])
 		expect(row.findAll('td')[2]?.find('a').exists()).toEqual(true)
