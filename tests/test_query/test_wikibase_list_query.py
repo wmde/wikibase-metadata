@@ -345,3 +345,87 @@ async def test_wikibase_list_query_filtered_include(include, expected_total):
     assert result.data is not None
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 1, expected_total, expected_total)
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=[
+        "update-wikibase-type-other",
+        "update-wikibase-type-suite",
+        "update-wikibase-type-test",
+    ],
+    scope="session",
+)
+async def test_wikibase_list_query_sort_category_asc():
+    """Test Sort Category Ascending"""
+
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 11,
+            "sortBy": {"column": "CATEGORY", "dir": "ASC"},
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibaseList" in result.data
+    assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
+    for i in range(9):
+        assert_layered_property_value(
+            result.data, ["wikibaseList", "data", i, "category"], None
+        )
+    assert_layered_property_value(
+        result.data,
+        ["wikibaseList", "data", 9, "category"],
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+    )
+    assert_layered_property_value(
+        result.data,
+        ["wikibaseList", "data", 10, "category"],
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=[
+        "update-wikibase-type-other",
+        "update-wikibase-type-suite",
+        "update-wikibase-type-test",
+    ],
+    scope="session",
+)
+async def test_wikibase_list_query_sort_category_desc():
+    """Test Sort Category Descending"""
+
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 11,
+            "sortBy": {"column": "CATEGORY", "dir": "DESC"},
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibaseList" in result.data
+    assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
+    assert_layered_property_value(
+        result.data,
+        ["wikibaseList", "data", 0, "category"],
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+    )
+    assert_layered_property_value(
+        result.data,
+        ["wikibaseList", "data", 1, "category"],
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+    )
+    for i in range(2, 11):
+        assert_layered_property_value(
+            result.data, ["wikibaseList", "data", i, "category"], None
+        )
