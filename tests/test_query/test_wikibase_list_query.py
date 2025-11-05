@@ -184,7 +184,12 @@ async def test_wikibase_list_query_page_two():
     """Test Wikibase List"""
 
     result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY, variable_values={"pageNumber": 2, "pageSize": 1}
+        WIKIBASE_LIST_QUERY,
+        variable_values={
+            "pageNumber": 2,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": None},
+        },
     )
 
     assert result.errors is None
@@ -252,21 +257,37 @@ async def test_wikibase_list_query_page_two():
         (["OTHER"], 10),
         (["SUITE"], 10),
         (["TEST"], 10),
+        (["UNKNOWN"], 10),
         (["CLOUD", "OTHER"], 3),
         (["CLOUD", "SUITE"], 3),
         (["CLOUD", "TEST"], 3),
+        (["CLOUD", "UNKNOWN"], 3),
         (["OTHER", "SUITE"], 9),
         (["OTHER", "TEST"], 9),
+        (["OTHER", "UNKNOWN"], 9),
         (["SUITE", "TEST"], 9),
+        (["SUITE", "UNKNOWN"], 9),
+        (["TEST", "UNKNOWN"], 9),
         (["CLOUD", "OTHER", "SUITE"], 2),
         (["CLOUD", "OTHER", "TEST"], 2),
+        (["CLOUD", "OTHER", "UNKNOWN"], 2),
         (["CLOUD", "SUITE", "TEST"], 2),
+        (["CLOUD", "SUITE", "UNKNOWN"], 2),
+        (["CLOUD", "TEST", "UNKNOWN"], 2),
         (["OTHER", "SUITE", "TEST"], 8),
+        (["OTHER", "SUITE", "UNKNOWN"], 8),
+        (["OTHER", "TEST", "UNKNOWN"], 8),
+        (["SUITE", "TEST", "UNKNOWN"], 8),
         (["CLOUD", "OTHER", "SUITE", "TEST"], 1),
+        (["CLOUD", "OTHER", "SUITE", "UNKNOWN"], 1),
+        (["CLOUD", "OTHER", "TEST", "UNKNOWN"], 1),
+        (["CLOUD", "SUITE", "TEST", "UNKNOWN"], 1),
+        (["OTHER", "SUITE", "TEST", "UNKNOWN"], 7),
+        (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 0),
     ],
 )
-async def test_wikibase_list_query_filtered(exclude, expected_total):
-    """Test Null Scenario"""
+async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
+    """Test Filtering - Exclude Wikibase Types"""
 
     result = await test_schema.execute(
         WIKIBASE_LIST_QUERY,
@@ -274,6 +295,71 @@ async def test_wikibase_list_query_filtered(exclude, expected_total):
             "pageNumber": 1,
             "pageSize": 1,
             "wikibaseFilter": {"wikibaseType": {"exclude": exclude}},
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibaseList" in result.data
+    assert_page_meta(result.data["wikibaseList"], 1, 1, expected_total, expected_total)
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.dependency(
+    depends=[
+        "update-wikibase-type-other",
+        "update-wikibase-type-suite",
+        "update-wikibase-type-test",
+    ],
+    scope="session",
+)
+@pytest.mark.parametrize(
+    ["include", "expected_total"],
+    [
+        ([], 11),
+        (["CLOUD"], 7),
+        (["OTHER"], 1),
+        (["SUITE"], 1),
+        (["TEST"], 1),
+        (["UNKNOWN"], 1),
+        (["CLOUD", "OTHER"], 8),
+        (["CLOUD", "SUITE"], 8),
+        (["CLOUD", "TEST"], 8),
+        (["CLOUD", "UNKNOWN"], 8),
+        (["OTHER", "SUITE"], 2),
+        (["OTHER", "TEST"], 2),
+        (["OTHER", "UNKNOWN"], 2),
+        (["SUITE", "TEST"], 2),
+        (["SUITE", "UNKNOWN"], 2),
+        (["TEST", "UNKNOWN"], 2),
+        (["CLOUD", "OTHER", "SUITE"], 9),
+        (["CLOUD", "OTHER", "TEST"], 9),
+        (["CLOUD", "OTHER", "UNKNOWN"], 9),
+        (["CLOUD", "SUITE", "TEST"], 9),
+        (["CLOUD", "SUITE", "UNKNOWN"], 9),
+        (["CLOUD", "TEST", "UNKNOWN"], 9),
+        (["OTHER", "SUITE", "TEST"], 3),
+        (["OTHER", "SUITE", "UNKNOWN"], 3),
+        (["OTHER", "TEST", "UNKNOWN"], 3),
+        (["SUITE", "TEST", "UNKNOWN"], 3),
+        (["CLOUD", "OTHER", "SUITE", "TEST"], 10),
+        (["CLOUD", "OTHER", "SUITE", "UNKNOWN"], 10),
+        (["CLOUD", "OTHER", "TEST", "UNKNOWN"], 10),
+        (["CLOUD", "SUITE", "TEST", "UNKNOWN"], 10),
+        (["OTHER", "SUITE", "TEST", "UNKNOWN"], 4),
+        (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 11),
+    ],
+)
+async def test_wikibase_list_query_filtered_include(include, expected_total):
+    """Test Filtering - Include Wikibase Types"""
+
+    result = await test_schema.execute(
+        WIKIBASE_LIST_QUERY,
+        variable_values={
+            "pageNumber": 1,
+            "pageSize": 1,
+            "wikibaseFilter": {"wikibaseType": {"include": include}},
         },
     )
 
