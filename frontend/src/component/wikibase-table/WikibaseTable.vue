@@ -38,7 +38,9 @@ const sortBy = computed<SortItem[]>((): SortItem[] =>
 		: []
 )
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
-const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.data?.data)
+const wikibases = computed<WbFragment[] | undefined>(() =>
+	store.wikibasePage.loading ? undefined : store.wikibasePage.data?.data
+)
 </script>
 
 <template>
