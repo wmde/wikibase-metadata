@@ -50,7 +50,8 @@ const testWikibasesAlt: WbFragment[] = [
 		title: 'Test Wikibase #5',
 		urls: { baseUrl: 'test-wikibase-005.test' },
 		quantityObservations: { mostRecent: { totalTriples: 300 } },
-		recentChangesObservations: { mostRecent: { humanChangeCount: 31, botChangeCount: 69 } }
+		recentChangesObservations: { mostRecent: { humanChangeCount: 31, botChangeCount: 69 } },
+		wikibaseType: WikibaseType.Unknown
 	}
 ]
 const manyTestWikibases: WbFragment[] = ''
@@ -70,7 +71,8 @@ const manyTestWikibases: WbFragment[] = ''
 								botChangeCount: index % 11 == 0 ? undefined : index,
 								humanChangeCount: index % 13 == 0 ? undefined : index
 							}
-			}
+			},
+			wikibaseType: WikibaseType.Unknown
 		})
 	)
 

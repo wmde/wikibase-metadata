@@ -47,7 +47,8 @@ const testWikibasesAlt: WbFragment[] = [
 		title: 'Test Wikibase #5',
 		urls: { baseUrl: 'test-wikibase-005.test' },
 		quantityObservations: { mostRecent: { totalTriples: 300 } },
-		recentChangesObservations: { mostRecent: { humanChangeCount: 31, botChangeCount: 69 } }
+		recentChangesObservations: { mostRecent: { humanChangeCount: 31, botChangeCount: 69 } },
+		wikibaseType: WikibaseType.Unknown
 	}
 ]
 

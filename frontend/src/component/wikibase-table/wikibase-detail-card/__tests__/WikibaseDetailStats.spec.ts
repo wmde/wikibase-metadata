@@ -216,7 +216,7 @@ describe('WikibaseDetailStats', async () => {
 					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
 					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
 					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
-					wikibaseType: undefined
+					wikibaseType: WikibaseType.Unknown
 				},
 				loading: false
 			}

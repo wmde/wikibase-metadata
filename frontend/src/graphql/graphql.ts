@@ -343,7 +343,7 @@ export type Wikibase = {
 	/** User Data */
 	userObservations: WikibaseUserObservationWikibaseObservationSet
 	/** Cloud, Suite, Other */
-	wikibaseType?: Maybe<WikibaseType>
+	wikibaseType: WikibaseType
 }
 
 export enum WikibaseCategory {
@@ -1070,11 +1070,13 @@ export enum WikibaseType {
 	Cloud = 'CLOUD',
 	Other = 'OTHER',
 	Suite = 'SUITE',
-	Test = 'TEST'
+	Test = 'TEST',
+	Unknown = 'UNKNOWN'
 }
 
 export type WikibaseTypeInput = {
 	exclude?: InputMaybe<Array<WikibaseType>>
+	include?: InputMaybe<Array<WikibaseType>>
 }
 
 export type WikibaseUrlSet = {
@@ -1219,7 +1221,7 @@ export type SingleWikibaseFragment = {
 	title: string
 	category?: WikibaseCategory | null
 	description?: string | null
-	wikibaseType?: WikibaseType | null
+	wikibaseType: WikibaseType
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
@@ -1271,7 +1273,7 @@ export type WbFragment = {
 	title: string
 	category?: WikibaseCategory | null
 	description?: string | null
-	wikibaseType?: WikibaseType | null
+	wikibaseType: WikibaseType
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
