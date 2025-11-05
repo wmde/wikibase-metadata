@@ -3,14 +3,15 @@ name: wikibase-metadata
 services:
   backend:
     image: wikibase-metadata
-    build: .
+    build: 
+      context: ./backend
     group_add:
       - ${TEAM_GID}
     expose:
       - 8000
     volumes:
-      - ./data/:/app/data/:z
-      - ./logs/:/app/logs/:z
+      - ./backend/data/:/app/data/:z
+      - ./backend/logs/:/app/logs/:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
       DATABASE_URL: ${DATABASE_URL}
