@@ -53,7 +53,7 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	})
 
 	const wikibaseFilter = ref<WikibaseFilterInput>({
-		wikibaseType: { include: [ WikibaseType.Cloud, WikibaseType.Suite,WikibaseType.Unknown] }
+		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 	})
 	const includeWikibaseTypes = (t: WikibaseType[]) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
