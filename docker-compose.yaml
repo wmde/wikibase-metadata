@@ -2,7 +2,7 @@ name: wikibase-metadata
 
 services:
   backend:
-    image: wikibase-metadata
+    image: wikibase-metadata-backend
     build: 
       context: ./backend
     group_add:
