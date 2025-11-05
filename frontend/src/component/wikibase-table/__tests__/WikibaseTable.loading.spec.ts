@@ -19,9 +19,6 @@ describe('WikibaseTable', async () => {
 	it('renders loading properly', async () => {
 		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
 
-		const alert = wrapper.find('div.v-alert')
-		expect(alert.exists()).toEqual(false)
-
 		const tableContainer = wrapper.find('div.wikibase-table')
 		expect(tableContainer.exists()).toEqual(true)
 		expect(tableContainer.classes()).toContain('v-table')

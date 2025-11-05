@@ -83,9 +83,6 @@ describe('WikibaseTable', async () => {
 	it('renders data properly', async () => {
 		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
 
-		const alert = wrapper.find('div.v-alert')
-		expect(alert.exists()).toEqual(false)
-
 		const tableContainer = wrapper.find('div.wikibase-table')
 		expect(tableContainer.exists()).toEqual(true)
 
@@ -174,9 +171,6 @@ describe('WikibaseTable', async () => {
 
 	it('triggers sort', async () => {
 		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
-
-		const alert = wrapper.find('div.v-alert')
-		expect(alert.exists()).toEqual(false)
 
 		const tableContainer = wrapper.find('div.wikibase-table')
 		expect(tableContainer.exists()).toEqual(true)

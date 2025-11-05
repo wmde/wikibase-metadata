@@ -13,7 +13,7 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 }))
 
 describe('WikibaseTableContainer', async () => {
-	it('mounts renders properly', async () => {
+	it('renders properly', async () => {
 		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
 
 		const tableContainer = wrapper.find('div.wikibase-table-container')
@@ -21,6 +21,9 @@ describe('WikibaseTableContainer', async () => {
 
 		const typeFilter = tableContainer.find('div.wikibase-type-filter')
 		expect(typeFilter.exists()).toEqual(true)
+
+		const alert = wrapper.find('div.v-alert')
+		expect(alert.exists()).toEqual(false)
 
 		const table = tableContainer.find('div.wikibase-table')
 		expect(table.exists()).toEqual(true)

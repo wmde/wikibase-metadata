@@ -1,5 +1,5 @@
 import { ResizeObserverMock } from '@/__tests__/global-mocks'
-import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
+import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import vuetify from '@/plugin/vuetify'
 import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
@@ -15,9 +15,15 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 	})
 }))
 
-describe('WikibaseTable', async () => {
+describe('WikibaseTableContainer', async () => {
 	it('renders error properly', async () => {
-		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
+		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
+
+		const tableContainer = wrapper.find('div.wikibase-table-container')
+		expect(tableContainer.exists()).toEqual(true)
+
+		const typeFilter = tableContainer.find('div.wikibase-type-filter')
+		expect(typeFilter.exists()).toEqual(true)
 
 		const alert = wrapper.find('div.v-alert')
 		expect(alert.exists()).toEqual(true)
@@ -29,13 +35,7 @@ describe('WikibaseTable', async () => {
 
 		expect(alert.text()).toContain('Error fetching data')
 
-		const tableContainer = wrapper.find('div.wikibase-table')
-		expect(tableContainer.exists()).toEqual(true)
-
-		const table = tableContainer.find('table')
+		const table = tableContainer.find('div.wikibase-table')
 		expect(table.exists()).toEqual(true)
-
-		const loadingRow = table.find('tbody').find('tr.v-data-table-rows-loading')
-		expect(loadingRow.exists()).toEqual(false)
 	})
 })

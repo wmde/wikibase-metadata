@@ -24,7 +24,6 @@ const headers: TableHeader[] = [
 
 const store = useWikiStore()
 
-const error = computed(() => store.wikibasePage.errorState)
 const loading = computed(() => store.wikibasePage.loading)
 const pageNumber = computed(() => store.pageNumber)
 const pageSize = computed(() => store.pageSize)
@@ -43,7 +42,6 @@ const wikibases = computed<WbFragment[] | undefined>(() => store.wikibasePage.da
 </script>
 
 <template>
-	<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 	<v-data-table-server
 		:page="pageNumber"
 		@update:page="store.setPageNumber"
