@@ -9,7 +9,7 @@ const mockWikiStore: WikibasePageStoreType = {
 	pageSize: 1,
 	// setPageSize: vi.fn().mockName('setPageSize'),
 	wikibaseFilter: {},
-	excludeWikibaseTypes: vi.fn().mockName('excludeWikibaseTypes')
+	includeWikibaseTypes: vi.fn().mockName('includeWikibaseTypes')
 }
 
 export default mockWikiStore
