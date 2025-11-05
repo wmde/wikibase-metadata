@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import stringDate from '@/util/stringDate'
+import stringDate from '@/util/string-date'
 
 defineProps<{ stat: Date | string | null | undefined }>()
 </script>
@@ -10,5 +10,3 @@ defineProps<{ stat: Date | string | null | undefined }>()
 	</template>
 	<template v-else>–</template>
 </template>
-
-<style lang="css"></style>

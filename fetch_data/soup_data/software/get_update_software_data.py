@@ -2,7 +2,6 @@
 
 import asyncio
 from datetime import datetime, timedelta, timezone
-import os
 import re
 from typing import Iterable, List, Optional
 from bs4 import BeautifulSoup
@@ -23,8 +22,6 @@ async def update_software_data():
     while carry_on:
 
         async with get_async_session() as async_session:
-            os.makedirs("dump", exist_ok=True)
-
             unfound_extensions: Iterable[WikibaseSoftwareModel] = (
                 await async_session.scalars(get_update_extension_query())
             ).all()

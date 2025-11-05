@@ -20,7 +20,8 @@ describe('WikibaseTableRow', async () => {
 					title: 'Test Wikibase',
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: {},
-					recentChangesObservations: {}
+					recentChangesObservations: {},
+					wikibaseType: WikibaseType.Unknown
 				},
 				index: 2
 			}
@@ -36,8 +37,8 @@ describe('WikibaseTableRow', async () => {
 			'Test Wikibase',
 			'–',
 			'–',
-			'',
-			'',
+			'–',
+			'–',
 			'VIEW'
 		])
 		expect(row.findAll('td')[2]?.find('a').exists()).toEqual(true)

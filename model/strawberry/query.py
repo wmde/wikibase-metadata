@@ -4,7 +4,7 @@ from typing import Optional
 import strawberry
 
 from model.enum import WikibaseSoftwareType
-from model.strawberry.input import WikibaseFilterInput
+from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
 from model.strawberry.output import (
     Page,
     PageNumberType,
@@ -53,6 +53,7 @@ class Query:
         page_number: PageNumberType,
         page_size: PageSizeType,
         wikibase_filter: Optional[WikibaseFilterInput] = None,
+        sort_by: Optional[WikibaseSortInput] = None,
     ) -> Page[WikibaseStrawberryModel]:
         """List of Wikibases"""
 
@@ -60,6 +61,7 @@ class Query:
             page_number=page_number,
             page_size=page_size,
             wikibase_filter=wikibase_filter,
+            sort_by=sort_by,
         )
 
     @strawberry.field(description="List of Extensions")

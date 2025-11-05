@@ -9,11 +9,14 @@ import { describe, expect, it, vi } from 'vitest'
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
 vi.mock('@/stores/wikibase-page-store', () => ({
-	useWikiStore: (): WikibasePageStoreType => mockWikiStore
+	useWikiStore: (): WikibasePageStoreType => ({
+		...mockWikiStore,
+		wikibasePage: { ...mockWikiStore.wikibasePage, errorState: true }
+	})
 }))
 
 describe('WikibaseTableContainer', async () => {
-	it('renders properly', async () => {
+	it('renders error properly', async () => {
 		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
 
 		const tableContainer = wrapper.find('div.wikibase-table-container')
@@ -23,7 +26,14 @@ describe('WikibaseTableContainer', async () => {
 		expect(typeFilter.exists()).toEqual(true)
 
 		const alert = wrapper.find('div.v-alert')
-		expect(alert.exists()).toEqual(false)
+		expect(alert.exists()).toEqual(true)
+		expect(alert.classes()).toContain('text-error')
+
+		const alertTitle = alert.find('div.v-alert-title')
+		expect(alertTitle.exists()).toEqual(true)
+		expect(alertTitle.text()).toEqual('Error')
+
+		expect(alert.text()).toContain('Error fetching data')
 
 		const table = tableContainer.find('div.wikibase-table')
 		expect(table.exists()).toEqual(true)

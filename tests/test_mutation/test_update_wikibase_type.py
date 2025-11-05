@@ -78,7 +78,7 @@ async def test_update_wikibase_type_to_suite():
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
     assert_layered_property_value(
-        before_updating_result.data, ["wikibase", "wikibaseType"], None
+        before_updating_result.data, ["wikibase", "wikibaseType"], "UNKNOWN"
     )
 
     update_result = await test_schema.execute(

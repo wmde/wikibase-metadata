@@ -1,8 +1,18 @@
 import gql from 'graphql-tag'
 
-export const pageWikibasesQuery = gql`
-	query PageWikibases($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
-		wikibaseList(wikibaseFilter: $wikibaseFilter, pageNumber: $pageNumber, pageSize: $pageSize) {
+const pageWikibasesQuery = gql`
+	query PageWikibases(
+		$pageNumber: Int!
+		$pageSize: Int!
+		$sortBy: WikibaseSortInput
+		$wikibaseFilter: WikibaseFilterInput
+	) {
+		wikibaseList(
+			pageNumber: $pageNumber
+			pageSize: $pageSize
+			sortBy: $sortBy
+			wikibaseFilter: $wikibaseFilter
+		) {
 			meta {
 				totalCount
 			}
@@ -34,3 +44,5 @@ export const pageWikibasesQuery = gql`
 		}
 	}
 `
+
+export default pageWikibasesQuery

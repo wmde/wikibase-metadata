@@ -302,7 +302,21 @@ export type QueryWikibaseArgs = {
 export type QueryWikibaseListArgs = {
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
+	sortBy?: InputMaybe<WikibaseSortInput>
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}
+
+export enum SortColumn {
+	Category = 'CATEGORY',
+	Edits = 'EDITS',
+	Title = 'TITLE',
+	Triples = 'TRIPLES',
+	Type = 'TYPE'
+}
+
+export enum SortDirection {
+	Asc = 'ASC',
+	Desc = 'DESC'
 }
 
 export type Wikibase = {
@@ -343,7 +357,7 @@ export type Wikibase = {
 	/** User Data */
 	userObservations: WikibaseUserObservationWikibaseObservationSet
 	/** Cloud, Suite, Other */
-	wikibaseType?: Maybe<WikibaseType>
+	wikibaseType: WikibaseType
 }
 
 export enum WikibaseCategory {
@@ -978,6 +992,11 @@ export type WikibaseSoftwareVersionObservationWikibaseObservationSet = {
 	mostRecent?: Maybe<WikibaseSoftwareVersionObservation>
 }
 
+export type WikibaseSortInput = {
+	column: SortColumn
+	dir: SortDirection
+}
+
 export type WikibaseStatisticsAggregate = {
 	__typename?: 'WikibaseStatisticsAggregate'
 	edits: WikibaseStatisticsEditsObservation
@@ -1070,11 +1089,13 @@ export enum WikibaseType {
 	Cloud = 'CLOUD',
 	Other = 'OTHER',
 	Suite = 'SUITE',
-	Test = 'TEST'
+	Test = 'TEST',
+	Unknown = 'UNKNOWN'
 }
 
 export type WikibaseTypeInput = {
 	exclude?: InputMaybe<Array<WikibaseType>>
+	include?: InputMaybe<Array<WikibaseType>>
 }
 
 export type WikibaseUrlSet = {
@@ -1219,7 +1240,7 @@ export type SingleWikibaseFragment = {
 	title: string
 	category?: WikibaseCategory | null
 	description?: string | null
-	wikibaseType?: WikibaseType | null
+	wikibaseType: WikibaseType
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
@@ -1253,6 +1274,7 @@ export type SingleWikibaseFragment = {
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
+	sortBy?: InputMaybe<WikibaseSortInput>
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 }>
 
@@ -1271,7 +1293,7 @@ export type WbFragment = {
 	title: string
 	category?: WikibaseCategory | null
 	description?: string | null
-	wikibaseType?: WikibaseType | null
+	wikibaseType: WikibaseType
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
@@ -1599,6 +1621,11 @@ export const PageWikibasesDocument = {
 				},
 				{
 					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseSortInput' } }
+				},
+				{
+					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } },
 					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseFilterInput' } }
 				}
@@ -1612,11 +1639,6 @@ export const PageWikibasesDocument = {
 						arguments: [
 							{
 								kind: 'Argument',
-								name: { kind: 'Name', value: 'wikibaseFilter' },
-								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
-							},
-							{
-								kind: 'Argument',
 								name: { kind: 'Name', value: 'pageNumber' },
 								value: { kind: 'Variable', name: { kind: 'Name', value: 'pageNumber' } }
 							},
@@ -1624,6 +1646,16 @@ export const PageWikibasesDocument = {
 								kind: 'Argument',
 								name: { kind: 'Name', value: 'pageSize' },
 								value: { kind: 'Variable', name: { kind: 'Name', value: 'pageSize' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'sortBy' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'sortBy' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
 							}
 						],
 						selectionSet: {

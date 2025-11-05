@@ -1,4 +1,4 @@
-export function compareByValue<T>(
+function compareByValue<T>(
 	a: T,
 	b: T,
 	value: (v: T) => string | number | null | undefined
@@ -14,8 +14,4 @@ export function compareByValue<T>(
 	return valA > valB ? 1 : valA < valB ? -1 : 0
 }
 
-function sortByValue<T>(items: T[], value: (a: T) => string | number | undefined) {
-	return items.sort((a, b) => compareByValue(a, b, value))
-}
-
-export default sortByValue
+export default compareByValue

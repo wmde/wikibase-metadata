@@ -3,7 +3,7 @@ import LocaleNumber from '@/component/LocaleNumber.vue'
 import WikibaseDetailCardContainer from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCardContainer.vue'
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { WbFragment } from '@/graphql/types'
-import computeTotalEdits from '@/util/computeTotalEdits'
+import computeTotalEdits from '@/util/compute-total-edits'
 
 defineProps<{ wikibase: WbFragment; index: number }>()
 </script>
@@ -23,9 +23,9 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 		<td>
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
-		<td>{{ wikibase.category }}</td>
+		<td>{{ wikibase.category ?? '–' }}</td>
 		<td>
-			<div class="overflow">{{ wikibase.description }}</div>
+			<div class="overflow">{{ wikibase.description ?? '–' }}</div>
 		</td>
 		<td>
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
