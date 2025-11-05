@@ -8,5 +8,3 @@ defineProps<{ stat: number | null | undefined }>()
 	</template>
 	<template v-else>–</template>
 </template>
-
-<style lang="css"></style>

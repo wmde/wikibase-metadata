@@ -18,5 +18,3 @@ onBeforeMount(() => store.fetchWikibasePage())
 		<WikibaseTable />
 	</v-container>
 </template>
-
-<style scoped></style>

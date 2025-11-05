@@ -26,5 +26,3 @@ watch(includedTypes, () => store.includeWikibaseTypes(includedTypes.value))
 		chips
 	/>
 </template>
-
-<style lang="css"></style>

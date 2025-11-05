@@ -73,5 +73,3 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		</template>
 	</v-data-table-server>
 </template>
-
-<style lang="css"></style>

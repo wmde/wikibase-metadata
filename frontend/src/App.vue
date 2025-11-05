@@ -9,5 +9,3 @@ import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 		<WikibaseTableContainer />
 	</v-container>
 </template>
-
-<style lang="css"></style>

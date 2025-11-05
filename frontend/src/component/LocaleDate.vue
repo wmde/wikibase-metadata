@@ -10,5 +10,3 @@ defineProps<{ stat: Date | string | null | undefined }>()
 	</template>
 	<template v-else>–</template>
 </template>
-
-<style lang="css"></style>
