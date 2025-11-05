@@ -2,6 +2,8 @@ name: Frontend Lint & Test
 
 on:
   pull_request:
+    paths-ignore:
+      - "backend/**"
 
 jobs:
   lint-check:
