@@ -2,12 +2,19 @@
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
 import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
 import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
+import { useTheme } from 'vuetify'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
+
+const theme = useTheme()
 </script>
 
 <template>
-	<v-card variant="outlined" class="wikibase-detail-card ma-1 pa-1">
+	<v-card
+		variant="outlined"
+		class="wikibase-detail-card ma-1 pa-1"
+		:style="{ backgroundColor: theme.current.value.colors.background }"
+	>
 		<v-skeleton-loader
 			class="wikibase-detail-card-loader"
 			v-if="loading"
@@ -95,7 +102,7 @@ defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>(
 	flex-flow: column nowrap;
 	justify-content: space-between;
 	max-width: 500px;
-	background-color: white !important;
+	border-color: rgba(255, 255, 255, 0.12);
 }
 .card-header {
 	display: flex;
