@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
-import { mdiThemeLightDark } from '@mdi/js'
+import { mdiGithub, mdiThemeLightDark } from '@mdi/js'
 import { useTheme } from 'vuetify'
 
 const theme = useTheme()
@@ -13,6 +13,12 @@ const theme = useTheme()
 			<v-container class="ma-0 pa-0 title shrink">Wikibase Ecosystem</v-container>
 		</v-container>
 		<v-container class="ma-0 pa-0 right-header shrink">
+			<v-btn
+				class="github"
+				href="https://github.com/wmde/wikibase-metadata"
+				density="comfortable"
+				:icon="mdiGithub"
+			/>
 			<v-btn
 				class="theme-switch"
 				v-on:click="theme.toggle()"
@@ -31,6 +37,12 @@ const theme = useTheme()
 	justify-content: space-between;
 }
 .left-header {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 8px;
+	align-items: center;
+}
+.right-header {
 	display: flex;
 	flex-flow: row wrap;
 	gap: 8px;
