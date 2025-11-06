@@ -16,7 +16,7 @@ const headers: TableHeader[] = [
 	{ title: 'Type', value: SortColumn.Type, sortable: true },
 	{ title: 'Title', value: SortColumn.Title, sortable: true },
 	{ title: 'Triples', value: SortColumn.Triples, sortable: true },
-	{ title: 'Edits', value: SortColumn.Edits, sortable: true },
+	{ title: 'Edits (last 30 days)', value: SortColumn.Edits, sortable: true },
 	{ title: 'Category', value: SortColumn.Category, sortable: true },
 	{ title: 'Description', sortable: false },
 	{ title: 'Details', sortable: false }
