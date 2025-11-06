@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { WikibaseType } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
+import typeTitle from '@/util/type-title'
 import { ref, watch } from 'vue'
 
 const store = useWikiStore()
@@ -12,7 +13,7 @@ const typeOptions = [
 	WikibaseType.Other,
 	WikibaseType.Test,
 	WikibaseType.Unknown
-]
+].map((t) => ({ value: t, title: typeTitle(t) }))
 watch(includedTypes, () => store.includeWikibaseTypes(includedTypes.value))
 </script>
 
