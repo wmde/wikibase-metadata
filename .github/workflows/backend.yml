@@ -4,6 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - "frontend/**"
+      - ".github/workflows/frontend.yml"
 
 jobs:
   lint-check:
