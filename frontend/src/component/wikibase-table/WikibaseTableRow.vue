@@ -4,6 +4,7 @@ import WikibaseDetailCardContainer from '@/component/wikibase-table/wikibase-det
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/compute-total-edits'
+import WikibaseCategoryChip from './WikibaseCategoryChip.vue'
 
 defineProps<{ wikibase: WbFragment; index: number }>()
 </script>
@@ -23,7 +24,9 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 		<td>
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
-		<td>{{ wikibase.category ?? '–' }}</td>
+		<td>
+			<WikibaseCategoryChip :category="wikibase.category" />
+		</td>
 		<td>
 			<div class="overflow">{{ wikibase.description ?? '–' }}</div>
 		</td>
