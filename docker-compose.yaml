@@ -1,42 +1,42 @@
 name: wikibase-metadata
 
 services:
-  database:
-    image: postgres:16-alpine
-    volumes:
-     - ./postgres-database:/var/lib/postgresql/data:z
-    expose:
-      - 5432
-    environment:
-      POSTGRES_DB: db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pword
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d db"]
-      interval: 5s
-      timeout: 3s
-      retries: 12
+  # database:
+  #   image: postgres:16-alpine
+  #   volumes:
+  #    - ./postgres-database:/var/lib/postgresql/data:z
+  #   expose:
+  #     - 5432
+  #   environment:
+  #     POSTGRES_DB: db
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: pword
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U user -d db"]
+  #     interval: 5s
+  #     timeout: 3s
+  #     retries: 12
     
-  database-update:
-    image: wikibase-metadata-backend
-    build: 
-      context: ./backend
-      dockerfile: ./db.Dockerfile
-    group_add:
-      - ${TEAM_GID}
-    expose:
-      - 8000
-    volumes:
-      - ./backend/logs/:/app/logs/:z
-    environment:
-      AUTH_TOKEN: ${AUTH_TOKEN}
-      DATABASE_URL: postgresql+asyncpg://user:pword@database:5432/db
-      LOG_LEVEL: ${LOG_LEVEL}
-      SETTINGS_FILE: ${SETTINGS_FILE}
-    depends_on:
-      database:
-        condition: service_healthy
-    command: alembic upgrade head && pytest -m data
+  # database-update:
+  #   image: wikibase-metadata-backend
+  #   build: 
+  #     context: ./backend
+  #     dockerfile: ./db.Dockerfile
+  #   group_add:
+  #     - ${TEAM_GID}
+  #   expose:
+  #     - 8000
+  #   volumes:
+  #     - ./backend/logs/:/app/logs/:z
+  #   environment:
+  #     AUTH_TOKEN: ${AUTH_TOKEN}
+  #     DATABASE_URL: postgresql+asyncpg://user:pword@database:5432/db
+  #     LOG_LEVEL: ${LOG_LEVEL}
+  #     SETTINGS_FILE: ${SETTINGS_FILE}
+  #   depends_on:
+  #     database:
+  #       condition: service_healthy
+  #   command: alembic upgrade head && pytest -m data
 
   backend:
     image: wikibase-metadata-backend
@@ -48,17 +48,18 @@ services:
       - 8000
     volumes:
       - ./backend/logs/:/app/logs/:z
+      - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
-      DATABASE_URL: postgresql+asyncpg://app:app@database:5432/app
+      DATABASE_URL: ${DATABASE_URL}
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     restart: unless-stopped
-    depends_on:
-      database:
-        condition: service_healthy
-      database-update:
-        condition: service_completed_successfully
+    # depends_on:
+    #   database:
+    #     condition: service_healthy
+    #   database-update:
+    #     condition: service_completed_successfully
 
   frontend:
     image: wikibase-metadata-frontend
