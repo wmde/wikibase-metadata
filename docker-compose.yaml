@@ -10,7 +10,7 @@ services:
     expose:
       - 8000
     volumes:
-      - ./backend/data/:/app/data/:z
+      - ./data/:/app/db/:z
       - ./backend/logs/:/app/logs/:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
