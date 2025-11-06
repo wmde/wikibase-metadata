@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
 import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
+import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import { WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
 import { useTheme } from 'vuetify'
 
@@ -61,9 +62,7 @@ const theme = useTheme()
 					</v-container>
 					<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
 						<template v-slot:activator="{ props }">
-							<v-container v-bind="props" class="category ma-0 pa-0">
-								{{ wikibase.category }}
-							</v-container>
+							<WikibaseCategoryChip :category="wikibase.category" v-bind="props" class="category" />
 						</template>
 					</v-tooltip>
 					<v-tooltip v-if="wikibase.description" class="desc-tooltip" text="Manually written">
