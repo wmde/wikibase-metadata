@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import LocaleDate from '@/component/LocaleDate.vue';
-import LocaleNumber from '@/component/LocaleNumber.vue';
-import type { SingleWikibaseFragment } from '@/graphql/types';
-import computeTotalEdits from '@/util/compute-total-edits';
+import LocaleDate from '@/component/LocaleDate.vue'
+import LocaleNumber from '@/component/LocaleNumber.vue'
+import type { SingleWikibaseFragment } from '@/graphql/types'
+import computeTotalEdits from '@/util/compute-total-edits'
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
