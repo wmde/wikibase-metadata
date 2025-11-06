@@ -7,7 +7,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 <template>
 	<v-tooltip v-if="wikibase.description" class="desc-tooltip" text="Manually written">
 		<template v-slot:activator="{ props }">
-			<v-container v-bind="props" class="description ma-0 pa-0">
+			<v-container v-bind="props" class="description ma-0 pa-1">
 				{{ wikibase.description }}
 			</v-container>
 		</template>

@@ -25,10 +25,9 @@ const theme = useTheme()
 		<template v-else-if="wikibase">
 			<v-container class="card-header ma-0 pa-0">
 				<v-container class="ma-0 pa-0">
-					<v-container class="url-container ma-0 pa-0">
+					<v-container class="url-container ma-0 pa-1">
 						<WikibaseIcon :base-url="wikibase.urls.baseUrl" />
 						<WikibaseTitle :wikibase="wikibase" />
-						<WikibaseQueryServiceLink :wikibase="wikibase" />
 					</v-container>
 					<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
 						<template v-slot:activator="{ props }">
@@ -36,6 +35,7 @@ const theme = useTheme()
 						</template>
 					</v-tooltip>
 					<WikibaseDescription :wikibase="wikibase" />
+					<WikibaseQueryServiceLink :wikibase="wikibase" />
 				</v-container>
 				<v-container class="wikibase-type ma-0 pa-0">
 					<AccreditedTypeChip :wikibase="wikibase" />
@@ -65,6 +65,9 @@ const theme = useTheme()
 	justify-content: flex-start;
 	gap: 4px;
 	align-items: center;
+}
+.url-container a {
+	color: inherit;
 }
 .wikibase-url {
 	width: auto;

@@ -11,8 +11,8 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 	<v-table striped="odd" class="wikibase-detail-stats">
 		<thead>
 			<tr>
-				<th colspan="2">Statistic</th>
-				<th>Source</th>
+				<th colspan="2">STATISTIC</th>
+				<th>SOURCE</th>
 			</tr>
 		</thead>
 		<tbody>

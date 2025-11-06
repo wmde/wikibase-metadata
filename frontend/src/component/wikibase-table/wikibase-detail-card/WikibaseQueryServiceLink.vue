@@ -5,7 +5,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-container v-if="wikibase.urls.sparqlFrontendUrl" class="wikibase-url ma-0 pa-0">
+	<v-container v-if="wikibase.urls.sparqlFrontendUrl" class="wikibase-url ma-1 pa-0">
 		<v-tooltip
 			class="sparql-url-tooltip"
 			:text="
@@ -15,7 +15,9 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 			"
 		>
 			<template v-slot:activator="{ props }">
-				<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl">Query Service</a>
+				<a v-bind="props" :href="wikibase.urls.sparqlFrontendUrl" style="color: inherit">
+					Query Service
+				</a>
 			</template>
 		</v-tooltip>
 	</v-container>
