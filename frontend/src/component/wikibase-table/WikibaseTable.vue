@@ -5,11 +5,7 @@ import { useWikiStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
-type TableHeader = {
-	title: string
-	value?: SortColumn
-	sortable: boolean
-}
+type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
 const headers: TableHeader[] = [
 	{ title: '', sortable: false },
@@ -29,12 +25,7 @@ const pageNumber = computed(() => store.pageNumber)
 const pageSize = computed(() => store.pageSize)
 const sortBy = computed<SortItem[]>((): SortItem[] =>
 	store.sortBy
-		? [
-				{
-					key: store.sortBy.column,
-					order: store.sortBy.dir == SortDirection.Asc ? 'asc' : 'desc'
-				}
-			]
+		? [{ key: store.sortBy.column, order: store.sortBy.dir == SortDirection.Asc ? 'asc' : 'desc' }]
 		: []
 )
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
