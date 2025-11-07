@@ -136,7 +136,7 @@ describe('WikibaseTable', async () => {
 		expect(tableHead.exists()).toEqual(true)
 		expect(tableHead.findAll('tr').length).toEqual(1)
 		expect(tableHead.find('tr').findAll('th').length).toEqual(8)
-		expect(tableHead.find('tr').findAll('th')[4]?.text()).toEqual('Edits')
+		expect(tableHead.find('tr').findAll('th')[4]?.text()).toEqual('Edits (last 30 days)')
 
 		expect(mockSetSort).toHaveBeenCalledTimes(0)
 
