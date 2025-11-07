@@ -2,7 +2,7 @@ import { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
 	schema: 'https://wikibase-metadata.wmcloud.org/graphql',
-	documents: ['../**/queries/*.ts'],
+	documents: ['../frontend/src/graphql/queries/*.ts'],
 	generates: {
 		'./src/graphql/': {
 			preset: 'client',
