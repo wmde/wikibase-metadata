@@ -24,7 +24,7 @@ describe('AppHeader', async () => {
 		expect(titleContainer.classes()).toContain('pa-0')
 		expect(titleContainer.classes()).toContain('shrink')
 
-		expect(titleContainer.text()).toEqual('Suite Scraper')
+		expect(titleContainer.text()).toEqual('Wikibase Ecosystem')
 
 		const rightSection = headerContainer.find('div.right-header')
 		expect(rightSection.exists()).toEqual(true)
