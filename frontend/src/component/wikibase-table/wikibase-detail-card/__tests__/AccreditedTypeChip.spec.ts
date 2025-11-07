@@ -1,28 +1,28 @@
-import { WikibaseCategory, WikibaseType } from '@/graphql/types'
+import { WikibaseCategory, WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import AccreditedTypeChip from '../AccreditedTypeChip.vue'
 
+const testWiki: SingleWikibaseFragment = {
+	id: '1',
+	title: 'Test Wikibase',
+	category: WikibaseCategory.FictionalAndCreativeWorks,
+	description: 'A test description',
+	urls: {
+		baseUrl: 'https://test-wikibase-001.test'
+	},
+	quantityObservations: {},
+	recentChangesObservations: {},
+	timeToFirstValueObservations: {},
+	wikibaseType: WikibaseType.Cloud
+}
+
 describe('AccreditedTypeChip', async () => {
 	it('renders Cloud properly', async () => {
 		const wrapper = mount(AccreditedTypeChip, {
 			global: { plugins: [vuetify] },
-			props: {
-				wikibase: {
-					id: '1',
-					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
-					description: 'A test description',
-					urls: {
-						baseUrl: 'https://test-wikibase-001.test'
-					},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Cloud
-				}
-			}
+			props: { wikibase: { ...testWiki, wikibaseType: WikibaseType.Cloud } }
 		})
 
 		const tooltip = document.querySelector('.type-tooltip-cloud')
@@ -37,21 +37,7 @@ describe('AccreditedTypeChip', async () => {
 	it('renders Other properly', async () => {
 		const wrapper = mount(AccreditedTypeChip, {
 			global: { plugins: [vuetify] },
-			props: {
-				wikibase: {
-					id: '1',
-					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
-					description: 'A test description',
-					urls: {
-						baseUrl: 'https://test-wikibase-001.test'
-					},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Other
-				}
-			}
+			props: { wikibase: { ...testWiki, wikibaseType: WikibaseType.Other } }
 		})
 
 		const tooltip = document.querySelector('.type-tooltip-other')
@@ -66,21 +52,7 @@ describe('AccreditedTypeChip', async () => {
 	it('renders Suite properly', async () => {
 		const wrapper = mount(AccreditedTypeChip, {
 			global: { plugins: [vuetify] },
-			props: {
-				wikibase: {
-					id: '1',
-					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
-					description: 'A test description',
-					urls: {
-						baseUrl: 'https://test-wikibase-001.test'
-					},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Suite
-				}
-			}
+			props: { wikibase: { ...testWiki, wikibaseType: WikibaseType.Suite } }
 		})
 
 		const tooltip = document.querySelector('.type-tooltip-suite')
@@ -95,21 +67,7 @@ describe('AccreditedTypeChip', async () => {
 	it('renders Test properly', async () => {
 		const wrapper = mount(AccreditedTypeChip, {
 			global: { plugins: [vuetify] },
-			props: {
-				wikibase: {
-					id: '1',
-					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
-					description: 'A test description',
-					urls: {
-						baseUrl: 'https://test-wikibase-001.test'
-					},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Test
-				}
-			}
+			props: { wikibase: { ...testWiki, wikibaseType: WikibaseType.Test } }
 		})
 
 		const tooltip = document.querySelector('.type-tooltip-test')
@@ -124,21 +82,7 @@ describe('AccreditedTypeChip', async () => {
 	it('renders Unknown properly', async () => {
 		const wrapper = mount(AccreditedTypeChip, {
 			global: { plugins: [vuetify] },
-			props: {
-				wikibase: {
-					id: '1',
-					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
-					description: 'A test description',
-					urls: {
-						baseUrl: 'https://test-wikibase-001.test'
-					},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Unknown
-				}
-			}
+			props: { wikibase: { ...testWiki, wikibaseType: WikibaseType.Unknown } }
 		})
 
 		const tooltip = document.querySelector('.type-tooltip-unknown')
