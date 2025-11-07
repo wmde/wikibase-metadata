@@ -1,8 +1,8 @@
+import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
 import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import WikibaseDescription from '../WikibaseDescription.vue'
 
 describe('WikibaseDescription', async () => {
 	it('renders description properly', async () => {

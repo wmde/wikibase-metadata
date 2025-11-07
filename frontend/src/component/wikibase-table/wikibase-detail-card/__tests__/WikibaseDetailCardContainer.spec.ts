@@ -1,10 +1,10 @@
+import WikibaseDetailCardContainer from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCardContainer.vue'
 import vuetify from '@/plugin/vuetify'
 import mockSingleWikiStore from '@/stores/__tests__/mock-wikibase-store'
 import type { WikibaseStoreType } from '@/stores/wikibase-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import WikibaseDetailCardContainer from '../WikibaseDetailCardContainer.vue'
 
 vi.stubGlobal('visualViewport', new EventTarget())
 

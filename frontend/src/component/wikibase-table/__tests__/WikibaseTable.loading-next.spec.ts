@@ -1,11 +1,11 @@
 import { ResizeObserverMock } from '@/__tests__/global-mocks'
+import testWikibases from '@/component/wikibase-table/__tests__/test-wikibases'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import vuetify from '@/plugin/vuetify'
 import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import testWikibases from './test-wikibases'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 

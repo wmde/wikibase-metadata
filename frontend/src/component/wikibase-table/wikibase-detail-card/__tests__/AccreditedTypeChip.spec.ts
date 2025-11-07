@@ -1,8 +1,8 @@
+import AccreditedTypeChip from '@/component/wikibase-table/wikibase-detail-card/AccreditedTypeChip.vue'
 import { WikibaseCategory, WikibaseType, type SingleWikibaseFragment } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import AccreditedTypeChip from '../AccreditedTypeChip.vue'
 
 const testWiki: SingleWikibaseFragment = {
 	id: '1',

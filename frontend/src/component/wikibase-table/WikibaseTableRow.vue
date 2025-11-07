@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import LocaleNumber from '@/component/LocaleNumber.vue'
 import WikibaseDetailCardContainer from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCardContainer.vue'
+import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/compute-total-edits'
-import WikibaseCategoryChip from './WikibaseCategoryChip.vue'
 
 defineProps<{ wikibase: WbFragment; index: number }>()
 </script>
