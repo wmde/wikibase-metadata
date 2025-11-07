@@ -5,7 +5,10 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-container v-if="wikibase.urls.sparqlFrontendUrl" class="wikibase-url ma-1 pa-0">
+	<v-container
+		v-if="wikibase.urls.sparqlFrontendUrl"
+		class="wikibase-url wikibase-sparql-url ma-1 pa-0"
+	>
 		<v-tooltip
 			class="sparql-url-tooltip"
 			:text="

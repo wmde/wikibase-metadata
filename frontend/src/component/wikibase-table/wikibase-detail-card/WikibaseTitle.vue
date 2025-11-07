@@ -5,7 +5,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-container class="wikibase-url ma-0 pa-0">
+	<v-container class="wikibase-url wikibase-title ma-0 pa-0">
 		<v-tooltip
 			class="base-url-tooltip"
 			:text="
