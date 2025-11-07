@@ -1,4 +1,4 @@
-import { WikibaseType } from '@/graphql/types'
+import { SortColumn, SortDirection, WikibaseType } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -90,6 +90,19 @@ describe('useWikiStore', async () => {
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
 		store.setPageSize(25)
+		await nextTick()
+		expect(mockLoad).toHaveBeenCalledTimes(1)
+	})
+
+	it('calls load on setSort', async () => {
+		mockOnResult.mockImplementationOnce((fn) =>
+			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
+		)
+		const store = useWikiStore()
+
+		expect(mockLoad).toHaveBeenCalledTimes(0)
+
+		store.setSort({column: SortColumn.Category, dir: SortDirection.Asc})
 		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
