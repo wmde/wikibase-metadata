@@ -7,11 +7,11 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 
 <template>
 	<v-tooltip
-		class="type-tooltip"
+		:class="`type-tooltip-${wikibase.wikibaseType.toLowerCase()}`"
 		:text="
 			wikibase.wikibaseType == WikibaseType.Cloud
 				? `Automatically pulled from Cloud API`
-				: wikibase.wikibaseType == undefined
+				: wikibase.wikibaseType == WikibaseType.Unknown
 					? `Not set`
 					: `Manually set`
 		"
