@@ -102,7 +102,7 @@ describe('useWikiStore', async () => {
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
-		store.setSort({column: SortColumn.Category, dir: SortDirection.Asc})
+		store.setSort({ column: SortColumn.Category, dir: SortDirection.Asc })
 		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
