@@ -1,6 +1,24 @@
 name: wikibase-metadata
 
 services:
+  database-update:
+    image: wikibase-metadata-backend-dev
+    build: 
+      context: ./backend
+      dockerfile: ./db.Dockerfile
+    group_add:
+      - ${TEAM_GID}
+    expose:
+      - 8000
+    volumes:
+      - ./logs/:/app/logs/:z
+    environment:
+      AUTH_TOKEN: ${AUTH_TOKEN}
+      DATABASE_URL: ${DATABASE_URL}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SETTINGS_FILE: ${SETTINGS_FILE}
+    command: alembic upgrade head && pytest -m data
+
   backend:
     image: wikibase-metadata-backend
     build: 
@@ -18,6 +36,9 @@ services:
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     restart: unless-stopped
+    depends_on:
+      database-update:
+        condition: service_completed_successfully
 
   frontend:
     image: wikibase-metadata-frontend
