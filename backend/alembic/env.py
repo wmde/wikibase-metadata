@@ -52,6 +52,7 @@ else:
 
 # --- Apply coercion to ensure sync driver for Alembic ---
 url = _coerce_to_sync_url(url)
+raise ValueError(url)
 
 config.set_section_option(config.config_ini_section, "sqlalchemy.url", url)
 
