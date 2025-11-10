@@ -8,7 +8,7 @@ from sqlalchemy.engine import make_url
 from alembic import context
 
 from model.database import *
-
+from config import database_connection_string
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -42,12 +42,13 @@ override_db_path = x_args.get("db_path")
 if override_db_path:
     url = override_db_path
 else:
-    ini_url = config.get_main_option("sqlalchemy.url")
-    if not ini_url:
-        raise RuntimeError(
-            "No database URL found. Provide -x db_path=... or set sqlalchemy.url in alembic.ini."
-        )
-    url = os.path.expandvars(ini_url)
+    url = database_connection_string
+    # ini_url = config.get_main_option("sqlalchemy.url")
+    # if not ini_url:
+    #     raise RuntimeError(
+    #         "No database URL found. Provide -x db_path=... or set sqlalchemy.url in alembic.ini."
+    #     )
+    # url = os.path.expandvars(ini_url)
 
 # --- Apply coercion to ensure sync driver for Alembic ---
 url = _coerce_to_sync_url(url)
