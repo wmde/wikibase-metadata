@@ -17,7 +17,7 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
-    command: alembic -x db_path=$DATABASE_URL upgrade head && pytest -m data
+    command: alembic -x db_path=${DATABASE_URL} upgrade head && pytest -m data
 
   backend:
     image: wikibase-metadata-backend
