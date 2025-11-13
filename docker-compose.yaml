@@ -16,27 +16,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
-    
-  database-update:
-    image: wikibase-metadata-backend
-    build: 
-      context: ./backend
-      dockerfile: ./db.Dockerfile
-    group_add:
-      - ${TEAM_GID}
-    expose:
-      - 8000
-    volumes:
-      - ./logs/:/app/logs/:z
-    environment:
-      AUTH_TOKEN: ${AUTH_TOKEN}
-      DATABASE_URL: postgresql+asyncpg://user:pword@database:5432/db
-      LOG_LEVEL: ${LOG_LEVEL}
-      SETTINGS_FILE: ${SETTINGS_FILE}
-    depends_on:
-      database:
-        condition: service_healthy
-    command: alembic upgrade head && pytest -m data
 
   backend:
     image: wikibase-metadata-backend
@@ -58,8 +37,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      database-update:
-        condition: service_completed_successfully
+    entrypoint: "./entrypoint.sh"
 
   frontend:
     image: wikibase-metadata-frontend
