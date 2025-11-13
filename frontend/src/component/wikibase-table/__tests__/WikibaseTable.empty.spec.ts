@@ -45,7 +45,7 @@ describe('WikibaseTable', async () => {
 
 		expect(tableHead.findAll('th')[4]?.classes()).toContain('v-data-table__th--sortable')
 		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(true)
-		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits')
+		expect(tableHead.findAll('th')[4]?.text()).toEqual('Edits (last 30 days)')
 
 		expect(tableHead.findAll('th')[5]?.classes()).toContain('v-data-table__th--sortable')
 		expect(tableHead.findAll('th')[5]?.find('i.v-icon').exists()).toEqual(true)

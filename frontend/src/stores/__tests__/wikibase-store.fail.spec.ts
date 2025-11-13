@@ -11,9 +11,7 @@ vi.mock('@vue/apollo-composable', () => ({
 	provideApolloClient: vi.fn().mockName('provideApolloClient'),
 	useLazyQuery: mockUseLazyQuery.mockReturnValueOnce({
 		load: mockLoad,
-		result: {
-			value: undefined
-		},
+		result: { value: undefined },
 		loading: { value: false },
 		error: { value: true }
 	})
@@ -28,10 +26,6 @@ describe('useSingleWikiStore', async () => {
 	it('reflects query error', async () => {
 		const store = useSingleWikiStore()
 
-		expect(store.wikibase).toEqual({
-			data: null,
-			errorState: true,
-			loading: false
-		})
+		expect(store.wikibase).toEqual({ data: null, errorState: true, loading: false })
 	})
 })

@@ -56,7 +56,7 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[1]?.text())
-		).toEqual(['UNKNOWN', 'SUITE', 'OTHER', 'CLOUD', 'SUITE'])
+		).toEqual(['Unknown', 'Self-Hosted', 'Other', 'Wikibase Cloud', 'Self-Hosted'])
 		expect(
 			table
 				.find('tbody')
@@ -106,7 +106,7 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[5]?.text())
-		).toEqual(['–', 'FICTIONAL_AND_CREATIVE_WORKS', '–', '–', 'TECHNOLOGY_AND_OPEN_SOURCE'])
+		).toEqual(['–', 'Fictional & Creative Works', '–', '–', 'Technology & Open Source'])
 		expect(
 			table
 				.find('tbody')
@@ -136,7 +136,7 @@ describe('WikibaseTable', async () => {
 		expect(tableHead.exists()).toEqual(true)
 		expect(tableHead.findAll('tr').length).toEqual(1)
 		expect(tableHead.find('tr').findAll('th').length).toEqual(8)
-		expect(tableHead.find('tr').findAll('th')[4]?.text()).toEqual('Edits')
+		expect(tableHead.find('tr').findAll('th')[4]?.text()).toEqual('Edits (last 30 days)')
 
 		expect(mockSetSort).toHaveBeenCalledTimes(0)
 

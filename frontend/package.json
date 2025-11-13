@@ -1,5 +1,5 @@
 {
-	"name": "wm-frontend",
+	"name": "wikibase-ecosystem",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"@apollo/client": "^3.14.0",
+		"@mdi/js": "^7.4.47",
 		"@vue/apollo-composable": "^4.2.2",
 		"graphql": "^16.11.0",
 		"pinia": "^3.0.3",

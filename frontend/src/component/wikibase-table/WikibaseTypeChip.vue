@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import type { WikibaseType } from '@/graphql/types'
+import { WikibaseType } from '@/graphql/types'
+import typeTitle from '@/util/type-title'
 
 defineProps<{ wikibaseType: WikibaseType | null | undefined }>()
 </script>
 
 <template>
-	<v-chip class="wikibase-type-chip">{{ wikibaseType ?? 'UNKNOWN' }}</v-chip>
+	<v-chip class="wikibase-type-chip">{{ typeTitle(wikibaseType) }}</v-chip>
 </template>
-
-<style lang="css">
-.wikibase-type-chip {
-	min-width: 40px;
-}
-</style>
