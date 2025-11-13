@@ -2,15 +2,16 @@ name: wikibase-metadata
 
 services:
   backend:
-    image: wikibase-metadata
-    build: .
+    image: wikibase-metadata-backend
+    build: 
+      context: ./backend
     group_add:
       - ${TEAM_GID}
     expose:
       - 8000
     volumes:
-      - ./data/:/app/data/:z
       - ./logs/:/app/logs/:z
+      - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
       DATABASE_URL: ${DATABASE_URL}
@@ -23,11 +24,11 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        VITE_BACKEND_URL: http://localhost:8000/graphql
     expose:
       - 3000
     environment:
-      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+      VITE_BACKEND_URL: http://localhost:8000/graphql
     restart: unless-stopped
 
   nginx:
