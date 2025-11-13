@@ -50,17 +50,13 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
-		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Action API'
-		)
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
 
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').text()).toEqual('ITEMS')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[0]?.text()).toEqual('1')
-		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Query Service'
-		)
+		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual('Query Service')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'5'
@@ -90,9 +86,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[6]?.find('th').text()).toEqual('EDITS (LAST 30 DAYS)')
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[0]?.text()).toEqual('21')
-		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Action API'
-		)
+		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual('Action API')
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'2'
@@ -146,17 +140,13 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
-		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Action API'
-		)
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
 
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').text()).toEqual('ITEMS')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[0]?.text()).toEqual('1')
-		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Query Service'
-		)
+		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual('Query Service')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'5'
@@ -186,9 +176,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[6]?.find('th').text()).toEqual('EDITS (LAST 30 DAYS)')
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[0]?.text()).toEqual('21')
-		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Action API'
-		)
+		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual('Action API')
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'2'
@@ -226,6 +214,16 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.exists()).toEqual(true)
 		expect(table.classes()).toContain('v-table')
 
+		expect(table.find('thead').exists()).toEqual(true)
+		expect(table.find('thead').findAll('tr').length).toEqual(1)
+		expect(table.find('thead').findAll('tr')[0]?.findAll('th').length).toEqual(2)
+		expect(table.find('thead').findAll('tr')[0]?.findAll('th')[0]?.attributes()).toHaveProperty(
+			'colspan',
+			'2'
+		)
+		expect(table.find('thead').findAll('tr')[0]?.findAll('th')[0]?.text()).toEqual('STATISTIC')
+		expect(table.find('thead').findAll('tr')[0]?.findAll('th')[1]?.text()).toEqual('SOURCE')
+
 		expect(table.find('tbody').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr').length).toEqual(8)
 
@@ -233,17 +231,13 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
-		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Action API'
-		)
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
 
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').text()).toEqual('ITEMS')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[0]?.text()).toEqual('–')
-		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Query Service'
-		)
+		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual('Query Service')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'5'
@@ -273,9 +267,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[6]?.find('th').text()).toEqual('EDITS (LAST 30 DAYS)')
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[0]?.text()).toEqual('–')
-		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual(
-			'Pulled from Action API'
-		)
+		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual('Action API')
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'2'

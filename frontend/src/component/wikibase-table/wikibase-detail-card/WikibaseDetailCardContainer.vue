@@ -16,7 +16,7 @@ watch(dialog, () => dialog.value && store.searchWikibase(props.wikibaseId))
 <template>
 	<v-dialog class="wikibase-detail-dialog" width="auto" v-model="dialog">
 		<template v-slot:activator="{ props: activatorProps }">
-			<v-btn v-bind="activatorProps">VIEW</v-btn>
+			<v-btn v-bind="activatorProps" density="comfortable">VIEW</v-btn>
 		</template>
 		<WikibaseDetailCard :wikibase="wikibase" :loading="loading" />
 	</v-dialog>

@@ -67,9 +67,7 @@ describe('WikibaseTypeFilter', async () => {
 	beforeEach(() => setActivePinia(createPinia()))
 
 	it('renders properly', async () => {
-		const wrapper = mount(WikibaseTypeFilter, {
-			global: { plugins: [vuetify] }
-		})
+		const wrapper = mount(WikibaseTypeFilter, { global: { plugins: [vuetify] } })
 
 		const selectContainer = wrapper.find('div.wikibase-type-filter')
 		expect(selectContainer.exists()).toEqual(true)

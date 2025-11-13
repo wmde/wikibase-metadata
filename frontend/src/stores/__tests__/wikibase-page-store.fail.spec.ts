@@ -33,10 +33,6 @@ describe('useWikiStore', async () => {
 		expect(store.wikibaseFilter).toEqual({
 			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 		})
-		expect(store.wikibasePage).toEqual({
-			data: undefined,
-			errorState: true,
-			loading: false
-		})
+		expect(store.wikibasePage).toEqual({ data: undefined, errorState: true, loading: false })
 	})
 })

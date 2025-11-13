@@ -33,7 +33,7 @@ describe('WikibaseTableRow', async () => {
 		expect(row.findAll('td').length).toEqual(8)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'3',
-			'UNKNOWN',
+			'Unknown',
 			'Test Wikibase',
 			'–',
 			'–',
@@ -69,11 +69,11 @@ describe('WikibaseTableRow', async () => {
 		expect(row.findAll('td').length).toEqual(8)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'4',
-			'CLOUD',
+			'Wikibase Cloud',
 			'Test Cloud Wikibase',
 			'1',
 			'5',
-			'EXPERIMENTAL_AND_PROTOTYPE_PROJECTS',
+			'Experimental & Prototype Projects',
 			'BEHOLD! A test Wikibase!',
 			'VIEW'
 		])

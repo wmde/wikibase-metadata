@@ -9,6 +9,12 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 
 <template>
 	<v-table striped="odd" class="wikibase-detail-stats">
+		<thead>
+			<tr>
+				<th colspan="2">STATISTIC</th>
+				<th>SOURCE</th>
+			</tr>
+		</thead>
 		<tbody>
 			<template v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate">
 				<tr>
@@ -16,7 +22,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 					<td>
 						<LocaleDate :stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate" />
 					</td>
-					<td>Pulled from Action API</td>
+					<td>Action API</td>
 				</tr>
 			</template>
 			<template v-if="wikibase.quantityObservations.mostRecent">
@@ -25,7 +31,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 					<td>
 						<LocaleNumber :stat="wikibase.quantityObservations.mostRecent.totalItems" />
 					</td>
-					<td rowspan="5">Pulled from Query Service</td>
+					<td rowspan="5">Query Service</td>
 				</tr>
 				<tr>
 					<th>PROPERTIES</th>
@@ -58,7 +64,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 					<td>
 						<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 					</td>
-					<td rowspan="2">Pulled from Action API</td>
+					<td rowspan="2">Action API</td>
 				</tr>
 				<tr style="display: none">
 					<th>AS OF</th>

@@ -48,6 +48,7 @@ services:
       - 8000
     volumes:
       - ./logs/:/app/logs/:z
+      - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
       DATABASE_URL: ${DATABASE_URL}
