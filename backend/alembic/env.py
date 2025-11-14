@@ -14,7 +14,9 @@ from config import database_connection_string
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_section_option(config.config_ini_section, "sqlalchemy.url", database_connection_string)
+config.set_section_option(
+    config.config_ini_section, "sqlalchemy.url", database_connection_string
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
