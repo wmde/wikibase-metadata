@@ -28,6 +28,8 @@ services:
       - 8000
     volumes:
       - ./logs/:/app/logs/:z
+      - ./backend/data/gx/plugins/custom_data_docs:/app/data/gx/plugins/custom_data_docs:z
+      - data-check-results:/app/data/gx/uncommitted:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
       DATABASE_URL: postgresql+asyncpg://user:app@database:5432/db
@@ -59,3 +61,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on: [backend, frontend]
     restart: unless-stopped
+
+volumes: 
+  data-check-results:
