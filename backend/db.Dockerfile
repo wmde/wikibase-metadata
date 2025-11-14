@@ -12,12 +12,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Install Python deps first for caching
 COPY requirements-dev.txt ./requirements-dev.txt
 RUN pip install --no-cache-dir -r requirements-dev.txt
+
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
 
 # Security: run as non-root
 RUN useradd -u 10001 -m appuser
 USER appuser
-
-# Expose the backend port
-EXPOSE 8000

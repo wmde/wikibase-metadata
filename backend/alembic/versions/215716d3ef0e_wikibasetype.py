@@ -26,7 +26,7 @@ def upgrade() -> None:
             sa.Column(
                 "wb_type",
                 sa.Enum("SUITE", "CLOUD", "OTHER", name="wikibasetype").with_variant(
-                    sa.CHAR(5), "sqlite"
+                    sa.CHAR(5), "sqlite", "postgresql"
                 ),
                 nullable=True,
             )
