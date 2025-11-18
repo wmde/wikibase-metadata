@@ -33,6 +33,7 @@ def test_data_expectations(checkpoint_name: str):
     logger.debug(f"\n{checkpoint_name}")
     context = gx.get_context(project_root_dir=GREAT_EXPECTATIONS_PROJECT_ROOT)
     retrieved_checkpoint = context.checkpoints.get(checkpoint_name)
+    retrieved_checkpoint.actions = []
     result = retrieved_checkpoint.run()
 
     # debug output

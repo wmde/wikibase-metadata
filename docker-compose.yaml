@@ -28,7 +28,6 @@ services:
       - 8000
     volumes:
       - ./logs/:/app/logs/:z
-      - ./data-docs/:/app/data/gx/plugins
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
       DATABASE_URL: postgresql+asyncpg://user:app@database:5432/db
