@@ -83,7 +83,7 @@ data_docs_sites:
 analytics_enabled: true
 fluent_datasources:
   wikibase_datasource:
-    type: sqlite
+    type: postgres
     id: 4a58b404-1ee3-4e91-a373-78d1b365f987
     assets:
       alembic_version_table:
@@ -449,5 +449,5 @@ fluent_datasources:
             partitioner:
         query: SELECT * FROM wikibase_external_identifier_observation WHERE
           anything
-    connection_string: sqlite:///data/wikibase-data.db
+    connection_string: postgresql://user:app@database:5432/db
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
