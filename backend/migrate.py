@@ -1,9 +1,12 @@
+"""Migrate data from A to B"""
+
 import asyncio
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.orm import joinedload
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import joinedload, sessionmaker
 from tqdm import tqdm
 
 from config import old_database_connection_string
@@ -16,8 +19,6 @@ from model.database import (
     WikibaseURLModel,
     WikibaseUserGroupModel,
 )
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
 
 old_async_engine = create_async_engine(
     old_database_connection_string,
@@ -47,7 +48,10 @@ async def get_old_async_session() -> AsyncGenerator[AsyncSession, None]:
                 await session.close()
 
 
+# pylint: disable-next=too-many-locals
 async def main():
+    """Migrate"""
+
     async with get_old_async_session() as old_session:
         async with get_async_session() as session:
             category_data = (
