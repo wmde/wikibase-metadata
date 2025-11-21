@@ -111,4 +111,4 @@ jobs:
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
-          DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:${{ job.services.postgres.ports['5432'] }}/db_test
+          DATABASE_URL: postgresql+asyncpg://postgres:postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/db_test
