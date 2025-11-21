@@ -38,7 +38,7 @@ def upgrade() -> None:
                 "SEMANTIC_AND_PROSOPOGRAPHIC_DATA",
                 "SOCIAL_AND_ADVOCACY",
                 "TECHNOLOGY_AND_OPEN_SOURCE",
-                name="wikibasecategories",
+                name="wikibasecategory",
             ),
             nullable=False,
         ),
