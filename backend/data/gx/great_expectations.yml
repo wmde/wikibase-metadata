@@ -449,5 +449,5 @@ fluent_datasources:
             partitioner:
         query: SELECT * FROM wikibase_external_identifier_observation WHERE
           anything
-    connection_string: postgresql://user:app@database:5432/db
+    connection_string: ${SYNC_DATABASE_URL}
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

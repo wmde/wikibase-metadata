@@ -31,6 +31,7 @@ services:
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
       DATABASE_URL: postgresql+asyncpg://user:app@database:5432/db
+      SYNC_DATABASE_URL: postgresql://user:app@database:5432/db
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     restart: unless-stopped
