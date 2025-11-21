@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements-dev.txt
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
 
+# Need to be writable during database checks
 RUN chown 10001 -R ./data/gx/plugins
 RUN mkdir ./data/gx/uncommitted
 RUN chown 10001 -R ./data/gx/uncommitted
