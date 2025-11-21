@@ -15,6 +15,10 @@ RUN pip install --no-cache-dir -r requirements-dev.txt
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY . .
 
+RUN chown 10001 -R ./data/gx/plugins
+RUN mkdir ./data/gx/uncommitted
+RUN chown 10001 -R ./data/gx/uncommitted
+
 # Security: run as non-root
 RUN useradd -u 10001 -m appuser
 USER appuser
