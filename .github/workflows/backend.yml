@@ -65,6 +65,28 @@ jobs:
 
   test-backend:
     runs-on: ubuntu-latest
+
+   # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the credentials for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: db_test
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v4
 
@@ -85,4 +107,4 @@ jobs:
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
-          DATABASE_URL: sqlite+aiosqlite:///data/wikibase-test-data.db
+          DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/db_test
