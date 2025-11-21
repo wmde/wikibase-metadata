@@ -11,7 +11,7 @@ class WikibaseConnectivityObservationRelationshipCountModel:
         UniqueConstraint(
             "wikibase_connectivity_observation_id",
             "relationship_count",
-            name="unique_observation_relationship_count",
+            name="unique_connectivity_observation_item_relationship_count",
         ),
     )
 

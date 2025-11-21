@@ -1,6 +1,23 @@
 name: wikibase-metadata
 
 services:
+  database:
+    image: postgres:16-alpine
+    volumes:
+     - ./postgres-database:/var/lib/postgresql/data:z
+    expose:
+      - 5432
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: app
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=scram-sha-256
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
   backend:
     image: wikibase-metadata-backend
     build: 
@@ -14,21 +31,27 @@ services:
       - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql+asyncpg://user:app@database:5432/db
+      DATABASE_URL_OLD: ${DATABASE_URL}
+      DATABASE_URL_SYNC: postgresql://user:app@database:5432/db
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    entrypoint: "./entrypoint.sh"
 
   frontend:
     image: wikibase-metadata-frontend
     build:
       context: ./frontend
       args:
-        VITE_BACKEND_URL: http://localhost:8000/graphql
+        VITE_BACKEND_URL: http://backend:8000/graphql
     expose:
       - 3000
     environment:
-      VITE_BACKEND_URL: http://localhost:8000/graphql
+      VITE_BACKEND_URL: http://backend:8000/graphql
     restart: unless-stopped
 
   nginx:
