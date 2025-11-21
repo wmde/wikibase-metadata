@@ -101,10 +101,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt -r requirements-dev.txt
 
+      - name: Update Test DB
+        working-directory: ./backend
+        run: alembic upgrade head
+
       - name: Run tests (except data)
         working-directory: ./backend
         run: pytest -m "not data" --cov=. --order-dependencies
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
-          DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:${{ job.services.postgres.ports[5432] }}/db_test
+          DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:${{ job.services.postgres.ports['5432'] }}/db_test
