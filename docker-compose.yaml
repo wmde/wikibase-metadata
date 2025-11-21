@@ -45,11 +45,11 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_BACKEND_URL: http://localhost:8000/graphql
+        VITE_BACKEND_URL: http://backend:8000/graphql
     expose:
       - 3000
     environment:
-      VITE_BACKEND_URL: http://localhost:8000/graphql
+      VITE_BACKEND_URL: http://backend:8000/graphql
     restart: unless-stopped
 
   nginx:
