@@ -42,21 +42,21 @@ EXPECTED_PATTERN = re.compile(
             r"(WikibaseType\.(CLOUD|OTHER|SUITE)|)",
             r"https?://[a-z0-9\-_.\?=/]+",
             # Quantity
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             # External Identifier
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             # # Recent Changes
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             r"(\d+\.0|)",
@@ -64,7 +64,7 @@ EXPECTED_PATTERN = re.compile(
             r"(\d+\.0|)",
             r"(\d+\.0|)",
             # # Software
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d|)",
+            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
             r"(MediaWiki|)",
             r"(\d+\.\d+\.\d+|)",
         ]
