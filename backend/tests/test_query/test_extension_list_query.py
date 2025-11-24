@@ -243,7 +243,7 @@ async def test_extension_list_query():
             None,
             None,
             None,
-            ["ContentHandler", "API", "Ajax"],
+            ["Ajax", "API", "ContentHandler"],
         ),
         (
             11,
