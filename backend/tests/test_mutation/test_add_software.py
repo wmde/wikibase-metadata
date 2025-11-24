@@ -2,18 +2,13 @@
 
 import pytest
 
-from backend.data.database_connection import get_async_session
-from backend.fetch_data.soup_data.software.get_software_model import (
+from data import get_async_session
+from fetch_data.soup_data.software import (
     get_or_create_software_model,
-)
-from backend.fetch_data.soup_data.software.get_update_software_data import (
     fetch_or_create_tags,
 )
-from backend.model.enum.wikibase_software_type_enum import WikibaseSoftwareType
-from backend.tests.utils.assert_property_value import (
-    assert_layered_property_count,
-    assert_layered_property_value,
-)
+from model.enum import WikibaseSoftwareType
+from tests.utils import assert_layered_property_count, assert_layered_property_value
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
