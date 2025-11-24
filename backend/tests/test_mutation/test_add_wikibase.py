@@ -47,7 +47,7 @@ async def test_add_wikibase_mutation():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="add-wikibase-ii")
+@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
 async def test_add_wikibase_ii_mutation():
     """Test Add Another Wikibase"""
 
