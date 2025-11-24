@@ -7,6 +7,7 @@ from fetch_data.soup_data.software import (
     get_or_create_software_model,
     fetch_or_create_tags,
 )
+from model.database import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
 from tests.utils import assert_layered_property_count, assert_layered_property_value
 from tests.test_schema import test_schema
@@ -65,11 +66,12 @@ async def test_add_software():
         )
         await async_session.flush()
 
-        third = await get_or_create_software_model(
-            async_session,
+        third = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="⧼mirahezemagic-extensionname⧽",
         )
+        async_session.add(third)
+        await async_session.flush()
         third.tags = await fetch_or_create_tags(
             async_session, ["Magic", "extensionname"]
         )
@@ -84,7 +86,6 @@ async def test_add_software():
     )
     assert after_result.errors is None
     assert after_result.data is not None
-    assert after_result.data == {}
     assert_layered_property_value(
         after_result.data, ["extensionList", "meta", "totalCount"], 3
     )
