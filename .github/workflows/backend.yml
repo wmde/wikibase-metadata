@@ -105,6 +105,8 @@ jobs:
         working-directory: ./backend
         run: alembic upgrade head
         env:
+          PYTHONPATH: .
+          SETTINGS_FILE: test-settings.ini
           DATABASE_URL: postgresql+asyncpg://postgres:postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/db_test
 
       - name: Run tests (except data)
