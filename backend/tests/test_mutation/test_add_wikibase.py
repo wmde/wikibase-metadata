@@ -15,7 +15,9 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="add-wikibase")
+@pytest.mark.dependency(
+    name="add-wikibase", depends=["add-test-categories"], scope="session"
+)
 async def test_add_wikibase_mutation():
     """Test Add Wikibase"""
 
