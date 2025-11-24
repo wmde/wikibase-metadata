@@ -84,6 +84,7 @@ async def test_add_software():
     )
     assert after_result.errors is None
     assert after_result.data is not None
+    assert after_result.data == {}
     assert_layered_property_value(
         after_result.data, ["extensionList", "meta", "totalCount"], 3
     )
