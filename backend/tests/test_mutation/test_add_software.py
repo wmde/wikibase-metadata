@@ -70,11 +70,10 @@ async def test_add_software():
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="⧼mirahezemagic-extensionname⧽",
         )
-        async_session.add(third)
-        await async_session.flush()
         third.tags = await fetch_or_create_tags(
             async_session, ["Magic", "extensionname"]
         )
+        async_session.add(third)
         await async_session.flush()
 
         await async_session.commit()
