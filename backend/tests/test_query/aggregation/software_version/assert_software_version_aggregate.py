@@ -6,7 +6,7 @@ from tests.utils import (
     assert_layered_property_count,
     assert_layered_property_value,
     assert_property_value,
-    DATETIME_FORMAT,
+    SOFTWARE_VERSION_DATETIME_FORMAT,
 )
 
 
@@ -34,7 +34,7 @@ def assert_software_version_aggregate(
         returned,
         ["versions", 0, "versionDate"],
         (
-            expected_version_date.strftime(DATETIME_FORMAT)
+            expected_version_date.strftime(SOFTWARE_VERSION_DATETIME_FORMAT)
             if expected_version_date is not None
             else None
         ),
