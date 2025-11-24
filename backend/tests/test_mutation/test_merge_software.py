@@ -14,9 +14,7 @@ mutation MyMutation($baseId: Int!, $additionalId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id", depends=["add-test-software"], scope="session"
-)
+@pytest.mark.dependency(name="merge-software-by-id")
 async def test_merge_software_by_id_mutation():
     """Test Add Wikibase"""
 
@@ -32,11 +30,7 @@ async def test_merge_software_by_id_mutation():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id-fail-same-id",
-    depends=["add-test-software"],
-    scope="session",
-)
+@pytest.mark.dependency(name="merge-software-by-id-fail-same-id")
 async def test_merge_software_by_id_mutation_fail_same_id():
     """Test Merge Software by ID - Same IDs"""
 
@@ -51,11 +45,7 @@ async def test_merge_software_by_id_mutation_fail_same_id():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id-fail-not-found",
-    depends=["add-test-software"],
-    scope="session",
-)
+@pytest.mark.dependency(name="merge-software-by-id-fail-not-found")
 async def test_merge_software_by_id_mutation_fail_not_found():
     """Test Merge Software by ID - Not Found"""
 
