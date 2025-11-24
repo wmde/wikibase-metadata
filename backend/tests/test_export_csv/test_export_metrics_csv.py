@@ -35,41 +35,37 @@ EXPECTED_HEADER_ROW = ",".join(
         "version",
     ]
 )
-EXPECTED_PATTERN = re.compile(
-    ",".join(
-        [
-            r"\d+",
-            r"(WikibaseType\.(CLOUD|OTHER|SUITE)|)",
-            r"https?://[a-z0-9\-_.\?=/]+",
-            # Quantity
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            # External Identifier
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            # # Recent Changes
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            r"(\d+\.0|)",
-            # # Software
-            r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)",
-            r"(MediaWiki|)",
-            r"(\d+\.\d+\.\d+|)",
-        ]
-    )
-)
+EXPECTED_PATTERN_LIST = [
+    re.compile(r"\d+"),
+    re.compile(r"(WikibaseType\.(CLOUD|OTHER|SUITE)|)"),
+    re.compile(r"https?://[a-z0-9\-_.\?=/]+"),
+    # Quantity
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    # External Identifier
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    # # Recent Changes
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    re.compile(r"(\d+\.0|)"),
+    # # Software
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(MediaWiki|)"),
+    re.compile(r"(\d+\.\d+\.\d+|)"),
+]
 
 
 @pytest.mark.asyncio
@@ -94,4 +90,5 @@ async def test_export_metric_csv():
     assert lines[0] == EXPECTED_HEADER_ROW
 
     for line in lines[1:]:
-        assert EXPECTED_PATTERN.match(line)
+        for i, pattern in enumerate(EXPECTED_PATTERN_LIST):
+            assert pattern.match(line.split(",")[i])
