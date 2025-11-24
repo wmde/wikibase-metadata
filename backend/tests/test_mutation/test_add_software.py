@@ -91,39 +91,39 @@ async def test_add_software():
     assert_layered_property_count(after_result.data, ["extensionList", "data"], 3)
 
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 0, "id"], "1"
+        after_result.data, ["extensionList", "data", 0, "id"], "2"
     )
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 0, "softwareType"], "EXTENSION"
     )
     assert_layered_property_value(
-        after_result.data,
-        ["extensionList", "data", 0, "softwareName"],
-        "Miraheze Magic",
+        after_result.data, ["extensionList", "data", 0, "softwareName"], "Babel"
     )
     assert_layered_property_value(
-        after_result.data,
-        ["extensionList", "data", 0, "url"],
-        "https://www.mediawiki.org/wiki/Extension:MirahezeMagic",
+        after_result.data, ["extensionList", "data", 0, "url"], None
     )
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 0, "tags"], ["Magic"]
+        after_result.data, ["extensionList", "data", 0, "tags"], []
     )
 
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "id"], "2"
+        after_result.data, ["extensionList", "data", 1, "id"], "1"
     )
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 1, "softwareType"], "EXTENSION"
     )
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "softwareName"], "Babel"
+        after_result.data,
+        ["extensionList", "data", 1, "softwareName"],
+        "Miraheze Magic",
     )
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "url"], None
+        after_result.data,
+        ["extensionList", "data", 1, "url"],
+        "https://www.mediawiki.org/wiki/Extension:MirahezeMagic",
     )
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "tags"], []
+        after_result.data, ["extensionList", "data", 1, "tags"], ["Magic"]
     )
 
     assert_layered_property_value(
