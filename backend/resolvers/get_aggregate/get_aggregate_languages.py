@@ -1,7 +1,7 @@
 """List of Languages"""
 
 from typing import Optional
-from sqlalchemy import Select, func, not_, select
+from sqlalchemy import Select, desc, func, not_, select
 from data.database_connection import get_async_session
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.strawberry.input import WikibaseFilterInput
@@ -71,9 +71,12 @@ async def get_language_list(
             )
         )
         .order_by(
-            primary_query.c.primary_wikibases.desc(),
-            total_query.c.total_wikibases.desc(),
-            total_query.c.language,
+            desc("primary_wikibases"),
+            desc("total_wikibases"),
+            "language",
+            # primary_query.c.primary_wikibases.desc(),
+            # total_query.c.total_wikibases.desc(),
+            # total_query.c.language,
         )
         .offset((page_number - 1) * page_size)
         .limit(page_size)
