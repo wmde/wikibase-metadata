@@ -80,10 +80,10 @@ async def get_language_list(
             joined_query.c.additional_wikibases,
         )
         .order_by(
-            desc("primary_wikibases"),
+            # desc("primary_wikibases"),
             # desc("total_wikibases"),
             # "language",
-            # joined_query.c.primary_wikibases.desc(),
+            joined_query.c.primary_wikibases.desc(),
             # joined_query.c.total_wikibases.desc(),
             # joined_query.c.language,
         )
