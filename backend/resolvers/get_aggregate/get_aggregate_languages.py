@@ -1,7 +1,7 @@
 """List of Languages"""
 
 from typing import Optional
-from sqlalchemy import case, desc, func, select
+from sqlalchemy import Select, case, desc, func, select
 from data.database_connection import get_async_session
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.strawberry.input import WikibaseFilterInput
@@ -22,7 +22,7 @@ async def get_language_list(
     """List of Languages"""
 
     wikibase_subquery = get_filtered_wikibase_query(wikibase_filter).subquery()
-    query = (
+    query: Select[tuple[str, int, int, int]] = (
         select(
             WikibaseLanguageModel.language,
             func.count().label("total_wikibases"),
@@ -37,14 +37,7 @@ async def get_language_list(
         .group_by(WikibaseLanguageModel.language)
     )
     paginated_query = (
-        query.order_by(
-            desc("primary_wikibases"),
-            desc("total_wikibases"),
-            "language",
-            # query.c.primary_wikibases.desc(),
-            # query.c.total_wikibases.desc(),
-            # query.c.language,
-        )
+        query.order_by(desc("primary_wikibases"), desc("total_wikibases"), "language")
         .offset((page_number - 1) * page_size)
         .limit(page_size)
     )
