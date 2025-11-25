@@ -81,7 +81,7 @@ async def test_wikibase_list_query_sort_triples_desc():
         [
             "wikibaseList",
             "data",
-            11,
+            10,
             "quantityObservations",
             "mostRecent",
             "totalTriples",
