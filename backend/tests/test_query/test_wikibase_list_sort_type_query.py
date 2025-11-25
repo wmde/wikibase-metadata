@@ -31,6 +31,7 @@ async def test_wikibase_list_query_sort_type_asc():
     assert [
         result.data["wikibaseList"]["data"][i]["wikibaseType"] for i in range(11)
     ] == [
+        "SUITE",
         "CLOUD",
         "CLOUD",
         "CLOUD",
@@ -39,7 +40,6 @@ async def test_wikibase_list_query_sort_type_asc():
         "CLOUD",
         "CLOUD",
         "OTHER",
-        "SUITE",
         "TEST",
         "UNKNOWN",
     ]
@@ -88,7 +88,6 @@ async def test_wikibase_list_query_sort_type_desc():
         result.data["wikibaseList"]["data"][i]["wikibaseType"] for i in range(11)
     ] == [
         "UNKNOWN",
-        "SUITE",
         "TEST",
         "OTHER",
         "CLOUD",
@@ -98,6 +97,7 @@ async def test_wikibase_list_query_sort_type_desc():
         "CLOUD",
         "CLOUD",
         "CLOUD",
+        "SUITE",
     ]
 
     assert_layered_property_value(
