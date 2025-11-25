@@ -28,7 +28,19 @@ async def test_wikibase_list_query_sort_category_asc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
-    assert [result.data["wikibaseList"]["data"][i]["category"] for i in range(11)] == []
+    assert [result.data["wikibaseList"]["data"][i]["category"] for i in range(11)] == [
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+    ]
 
     for i in range(9):
         assert_layered_property_value(
@@ -68,7 +80,19 @@ async def test_wikibase_list_query_sort_category_desc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
-    assert [result.data["wikibaseList"]["data"][i]["category"] for i in range(11)] == []
+    assert [result.data["wikibaseList"]["data"][i]["category"] for i in range(11)] == [
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+        "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    ]
 
     assert_layered_property_value(
         result.data,

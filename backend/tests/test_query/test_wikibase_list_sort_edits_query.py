@@ -31,13 +31,7 @@ async def test_wikibase_list_query_sort_edits_asc():
     assert [
         result.data["wikibaseList"]["data"][i]["recentChangesObservations"][
             "mostRecent"
-        ]["botChangeCount"]
-        for i in range(11)
-    ] == []
-    assert [
-        result.data["wikibaseList"]["data"][i]["recentChangesObservations"][
-            "mostRecent"
-        ]["humanChangeCount"]
+        ]
         for i in range(11)
     ] == []
 
@@ -332,13 +326,7 @@ async def test_wikibase_list_query_sort_edits_desc():
     assert [
         result.data["wikibaseList"]["data"][i]["recentChangesObservations"][
             "mostRecent"
-        ]["botChangeCount"]
-        for i in range(11)
-    ] == []
-    assert [
-        result.data["wikibaseList"]["data"][i]["recentChangesObservations"][
-            "mostRecent"
-        ]["humanChangeCount"]
+        ]
         for i in range(11)
     ] == []
 

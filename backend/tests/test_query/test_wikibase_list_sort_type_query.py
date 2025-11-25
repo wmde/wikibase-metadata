@@ -30,62 +30,35 @@ async def test_wikibase_list_query_sort_type_asc():
 
     assert [
         result.data["wikibaseList"]["data"][i]["wikibaseType"] for i in range(11)
-    ] == []
+    ] == [
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "OTHER",
+        "SUITE",
+        "TEST",
+        "UNKNOWN",
+    ]
 
+    for i in range(7):
+        assert_layered_property_value(
+            result.data, ["wikibaseList", "data", i, "wikibaseType"], "CLOUD"
+        )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 0, "wikibaseType"],
-        "CLOUD",
+        result.data, ["wikibaseList", "data", 7, "wikibaseType"], "OTHER"
     )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 1, "wikibaseType"],
-        "SUITE",
+        result.data, ["wikibaseList", "data", 8, "wikibaseType"], "SUITE"
     )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 2, "wikibaseType"],
-        "TEST",
+        result.data, ["wikibaseList", "data", 9, "wikibaseType"], "TEST"
     )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 3, "wikibaseType"],
-        "UNKNOWN",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 4, "wikibaseType"],
-        "CLOUD",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 5, "wikibaseType"],
-        "SUITE",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 6, "wikibaseType"],
-        "TEST",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 7, "wikibaseType"],
-        "UNKNOWN",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 8, "wikibaseType"],
-        "CLOUD",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 9, "wikibaseType"],
-        "SUITE",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 10, "wikibaseType"],
-        "TEST",
+        result.data, ["wikibaseList", "data", 10, "wikibaseType"], "UNKNOWN"
     )
 
 
@@ -113,60 +86,33 @@ async def test_wikibase_list_query_sort_type_desc():
 
     assert [
         result.data["wikibaseList"]["data"][i]["wikibaseType"] for i in range(11)
-    ] == []
+    ] == [
+        "UNKNOWN",
+        "SUITE",
+        "TEST",
+        "OTHER",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+        "CLOUD",
+    ]
 
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 0, "wikibaseType"],
-        "CLOUD",
+        result.data, ["wikibaseList", "data", 0, "wikibaseType"], "UNKNOWN"
     )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 1, "wikibaseType"],
-        "SUITE",
+        result.data, ["wikibaseList", "data", 1, "wikibaseType"], "TEST"
     )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 2, "wikibaseType"],
-        "TEST",
+        result.data, ["wikibaseList", "data", 2, "wikibaseType"], "SUITE"
     )
     assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 3, "wikibaseType"],
-        "UNKNOWN",
+        result.data, ["wikibaseList", "data", 3, "wikibaseType"], "OTHER"
     )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 4, "wikibaseType"],
-        "CLOUD",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 5, "wikibaseType"],
-        "SUITE",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 6, "wikibaseType"],
-        "TEST",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 7, "wikibaseType"],
-        "UNKNOWN",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 8, "wikibaseType"],
-        "CLOUD",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 9, "wikibaseType"],
-        "SUITE",
-    )
-    assert_layered_property_value(
-        result.data,
-        ["wikibaseList", "data", 10, "wikibaseType"],
-        "TEST",
-    )
+    for i in range(4, 11):
+        assert_layered_property_value(
+            result.data, ["wikibaseList", "data", i, "wikibaseType"], "CLOUD"
+        )

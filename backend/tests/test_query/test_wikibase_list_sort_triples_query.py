@@ -29,9 +29,7 @@ async def test_wikibase_list_query_sort_triples_asc():
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
     assert [
-        result.data["wikibaseList"]["data"][i]["quantityObservations"]["mostRecent"][
-            "totalTriples"
-        ]
+        result.data["wikibaseList"]["data"][i]["quantityObservations"]["mostRecent"]
         for i in range(11)
     ] == []
 
@@ -192,9 +190,7 @@ async def test_wikibase_list_query_sort_triples_desc():
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
     assert [
-        result.data["wikibaseList"]["data"][i]["quantityObservations"]["mostRecent"][
-            "totalTriples"
-        ]
+        result.data["wikibaseList"]["data"][i]["quantityObservations"]["mostRecent"]
         for i in range(11)
     ] == []
 
