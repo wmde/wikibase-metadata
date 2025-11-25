@@ -52,7 +52,7 @@ async def get_language_list(
         .subquery()
     )
 
-    final_query: Select[tuple[str, int, int, int]] = (
+    joined_query = (
         select(
             total_query.c.language,
             total_query.c.total_wikibases,
@@ -70,14 +70,22 @@ async def get_language_list(
                 isouter=True,
             )
         )
+        .cte()
+    )
+    final_query: Select[tuple[str, int, int, int]] = (
+        select(
+            joined_query.c.language,
+            joined_query.c.total_wikibases,
+            joined_query.c.primary_wikibases,
+            joined_query.c.additional_wikibases,
+        )
         .order_by(
-            'additional_wikibases'
             # desc("primary_wikibases"),
             # desc("total_wikibases"),
             # "language",
-            # primary_query.c.primary_wikibases.desc(),
-            # total_query.c.total_wikibases.desc(),
-            # total_query.c.language,
+            joined_query.c.primary_wikibases.desc(),
+            joined_query.c.total_wikibases.desc(),
+            joined_query.c.language,
         )
         .offset((page_number - 1) * page_size)
         .limit(page_size)
