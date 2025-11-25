@@ -70,7 +70,7 @@ async def get_language_list(
                 isouter=True,
             )
         )
-        .cte()
+        .subquery()
     )
     final_query: Select[tuple[str, int, int, int]] = (
         select(
