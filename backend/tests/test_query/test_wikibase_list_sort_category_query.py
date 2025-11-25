@@ -27,6 +27,7 @@ async def test_wikibase_list_query_sort_category_asc():
     assert result.data is not None
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
+    assert result.data["wikibaseList"]["data"] == {}
     for i in range(9):
         assert_layered_property_value(
             result.data, ["wikibaseList", "data", i, "category"], None
