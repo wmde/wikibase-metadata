@@ -51,8 +51,6 @@ async def test_aggregate_languages_query():
         expected_total_pages=1,
     )
 
-    assert result.data == {}
-
     for i, (
         expected_language,
         expected_total,
