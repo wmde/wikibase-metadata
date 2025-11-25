@@ -25,6 +25,7 @@ async def get_language_list(
     query: Select[tuple[str, int, int, int]] = (
         select(
             WikibaseLanguageModel.language,
+            # pylint: disable-next=not-callable
             func.count().label("total_wikibases"),
             func.sum(case((WikibaseLanguageModel.primary, 1), else_=0)).label(
                 "primary_wikibases"
