@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from sqlalchemy import Select, and_, func, select
+from sqlalchemy import Select, and_, asc, desc, func, select
 
 from model.database import (
     WikibaseModel,
@@ -123,9 +123,9 @@ def get_sorted_wikibase_query(
 
         case SortColumn.TYPE:
             query = query.order_by(
-                WikibaseModel.wikibase_type.asc()
+                asc("wikibase_type")
                 if sort_by.dir == SortDirection.ASC
-                else WikibaseModel.wikibase_type.desc()
+                else desc("wikibase_type")
             )
 
     return query
