@@ -47,7 +47,7 @@ async def get_language_list(
         result = (await async_session.execute(paginated_query)).all()
         total_count = await async_session.scalar(
             # pylint: disable-next=not-callable
-            select(func.count()).select_from(query)
+            select(func.count()).select_from(query.subquery())
         )
 
         return Page.marshal(
