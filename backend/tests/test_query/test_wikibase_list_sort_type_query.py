@@ -109,7 +109,7 @@ async def test_wikibase_list_query_sort_type_desc():
     assert_layered_property_value(
         result.data, ["wikibaseList", "data", 2, "wikibaseType"], "OTHER"
     )
-    for i in range(3, 9):
+    for i in range(3, 10):
         assert_layered_property_value(
             result.data, ["wikibaseList", "data", i, "wikibaseType"], "CLOUD"
         )

@@ -123,7 +123,7 @@ def get_sorted_wikibase_query(
 
         case SortColumn.TYPE:
             query = query.order_by(
-                asc("wb_type") if sort_by.dir == SortDirection.ASC else desc("wb_type")
+                asc("wb_type").nulls_last() if sort_by.dir == SortDirection.ASC else desc("wb_type").nulls_first()
             )
 
     return query
