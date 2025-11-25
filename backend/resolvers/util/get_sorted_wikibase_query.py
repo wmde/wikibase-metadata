@@ -60,9 +60,9 @@ def get_sorted_wikibase_query(
     match sort_by.column:
         case SortColumn.CATEGORY:
             query = query.order_by(
-                WikibaseModel.category_id.asc()
+                WikibaseModel.category_id.asc().nulls_first()
                 if sort_by.dir == SortDirection.ASC
-                else WikibaseModel.category_id.desc()
+                else WikibaseModel.category_id.desc().nulls_last()
             )
 
         case SortColumn.EDITS:
