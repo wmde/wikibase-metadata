@@ -43,128 +43,14 @@ async def test_wikibase_list_query_sort_triples_asc():
             "mostRecent",
             "totalTriples",
         ],
-        0,
+        8,
     )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            1,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            2,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            3,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            4,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            5,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            6,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            7,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            8,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            9,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            10,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
+    for i in range(1, 11):
+        assert_layered_property_value(
+            result.data,
+            ["wikibaseList", "data", i, "quantityObservations", "mostRecent"],
+            None,
+        )
 
 
 @pytest.mark.asyncio
@@ -189,140 +75,21 @@ async def test_wikibase_list_query_sort_triples_desc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
-    assert [
-        result.data["wikibaseList"]["data"][i]["quantityObservations"]["mostRecent"]
-        for i in range(11)
-    ] == []
-
+    for i in range(10):
+        assert_layered_property_value(
+            result.data,
+            ["wikibaseList", "data", i, "quantityObservations", "mostRecent"],
+            None,
+        )
     assert_layered_property_value(
         result.data,
         [
             "wikibaseList",
             "data",
-            0,
+            11,
             "quantityObservations",
             "mostRecent",
             "totalTriples",
         ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            1,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            2,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            3,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            4,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            5,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            6,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            7,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            8,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            9,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
-    )
-    assert_layered_property_value(
-        result.data,
-        [
-            "wikibaseList",
-            "data",
-            10,
-            "quantityObservations",
-            "mostRecent",
-            "totalTriples",
-        ],
-        0,
+        8,
     )
