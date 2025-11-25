@@ -28,6 +28,8 @@ async def test_wikibase_list_query_sort_title_asc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
+    assert [result.data["wikibaseList"]["data"][i]["title"] for i in range(11)] == []
+
     assert_layered_property_value(result.data, ["wikibaseList", "data", 0, "title"], "")
     assert_layered_property_value(result.data, ["wikibaseList", "data", 1, "title"], "")
     assert_layered_property_value(result.data, ["wikibaseList", "data", 2, "title"], "")
@@ -64,6 +66,8 @@ async def test_wikibase_list_query_sort_title_desc():
     assert result.data is not None
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
+
+    assert [result.data["wikibaseList"]["data"][i]["title"] for i in range(11)] == []
 
     assert_layered_property_value(result.data, ["wikibaseList", "data", 0, "title"], "")
     assert_layered_property_value(result.data, ["wikibaseList", "data", 1, "title"], "")

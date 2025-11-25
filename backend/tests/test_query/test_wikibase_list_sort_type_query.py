@@ -28,6 +28,10 @@ async def test_wikibase_list_query_sort_type_asc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
+    assert [
+        result.data["wikibaseList"]["data"][i]["wikibaseType"] for i in range(11)
+    ] == []
+
     assert_layered_property_value(
         result.data,
         ["wikibaseList", "data", 0, "wikibaseType"],
@@ -106,6 +110,10 @@ async def test_wikibase_list_query_sort_type_desc():
     assert result.data is not None
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
+
+    assert [
+        result.data["wikibaseList"]["data"][i]["wikibaseType"] for i in range(11)
+    ] == []
 
     assert_layered_property_value(
         result.data,
