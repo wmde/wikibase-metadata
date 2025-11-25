@@ -72,8 +72,8 @@ async def get_language_list(
         )
         .order_by(
             desc("primary_wikibases"),
-            desc("total_wikibases"),
-            "language",
+            # desc("total_wikibases"),
+            # "language",
             # primary_query.c.primary_wikibases.desc(),
             # total_query.c.total_wikibases.desc(),
             # total_query.c.language,
