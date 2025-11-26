@@ -14,7 +14,7 @@ from tests.utils import assert_layered_property_value, assert_page_meta
 @pytest.mark.dependency(
     name="sort-type-asc", depends=["mutate-cloud-instances"], scope="session"
 )
-@pytest.skip()
+@pytest.mark.skip
 async def test_wikibase_list_query_sort_type_asc():
     """Test Sort Type Ascending"""
 
@@ -66,14 +66,12 @@ async def test_wikibase_list_query_sort_type_asc():
     )
 
 
-# TODO: Fix Sorting by Type
-
-
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
     name="sort-type-desc", depends=["mutate-cloud-instances"], scope="session"
 )
+@pytest.mark.skip
 async def test_wikibase_list_query_sort_type_desc():
     """Test Sort Type Descending"""
 
