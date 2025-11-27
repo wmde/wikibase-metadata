@@ -22,7 +22,8 @@ def get_connectivity_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -40,7 +41,8 @@ def get_external_identifier_obs_wikibases_query() -> Select[tuple[WikibaseModel]
                 WikibaseModel.wikibase_type == None,
                 WikibaseModel.wikibase_type != WikibaseType.TEST,
             ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -61,7 +63,8 @@ def get_log_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.script_path.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -82,7 +85,8 @@ def get_property_popularity_obs_wikibases_query() -> Select[tuple[WikibaseModel]
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -100,7 +104,8 @@ def get_quantity_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                 WikibaseModel.wikibase_type == None,
                 WikibaseModel.wikibase_type != WikibaseType.TEST,
             ),
-            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.sparql_endpoint_url.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -121,7 +126,8 @@ def get_recent_changes_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.script_path.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -142,7 +148,8 @@ def get_software_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.article_path.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.article_path.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -163,7 +170,8 @@ def get_stats_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.article_path.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.article_path.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -184,7 +192,8 @@ def get_time_to_first_value_obs_wikibases_query() -> Select[tuple[WikibaseModel]
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.script_path.has(WikibaseURLModel.id != None),
         )
     )
 
@@ -205,7 +214,8 @@ def get_user_obs_wikibases_query() -> Select[tuple[WikibaseModel]]:
                     WikibaseModel.wikibase_type != WikibaseType.TEST,
                 ),
             ),
-            WikibaseModel.script_path.has(WikibaseURLModel.id),
+            # pylint: disable-next=singleton-comparison
+            WikibaseModel.script_path.has(WikibaseURLModel.id != None),
         )
     )
 

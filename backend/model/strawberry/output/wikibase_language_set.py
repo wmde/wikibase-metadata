@@ -23,7 +23,7 @@ class WikibaseLanguageSetStrawberryModel:
                 if model.primary_language is not None
                 else None
             ),
-            additional=[l.language for l in model.additional_languages],
+            additional=sorted(l.language for l in model.additional_languages),
         )
 
 

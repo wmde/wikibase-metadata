@@ -58,7 +58,7 @@ class WikibaseSoftwareStrawberryModel:
             software_name=model.software_name,
             url=model.url,
             fetched=model.data_fetched,
-            tags=[a.tag for a in model.tags],
+            tags=sorted(a.tag for a in model.tags),
             description=model.description,
             latest_version=model.latest_version,
             quarterly_download_count=model.quarterly_download_count,

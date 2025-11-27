@@ -1,7 +1,7 @@
 """Wikibase Quantity Observation Table"""
 
 from typing import Optional
-from sqlalchemy import Integer
+from sqlalchemy import BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from model.database.base import ModelBase
@@ -16,21 +16,21 @@ class WikibaseQuantityObservationModel(ModelBase, WikibaseObservationModel):
     __tablename__ = "wikibase_quantity_observation"
 
     total_items: Mapped[Optional[int]] = mapped_column(
-        "total_items", Integer, nullable=True
+        "total_items", BigInteger, nullable=True
     )
     """Total Items"""
 
     total_lexemes: Mapped[Optional[int]] = mapped_column(
-        "total_lexemes", Integer, nullable=True
+        "total_lexemes", BigInteger, nullable=True
     )
     """Total Lexemes"""
 
     total_properties: Mapped[Optional[int]] = mapped_column(
-        "total_properties", Integer, nullable=True
+        "total_properties", BigInteger, nullable=True
     )
     """Total Properties"""
 
     total_triples: Mapped[Optional[int]] = mapped_column(
-        "total_triples", Integer, nullable=True
+        "total_triples", BigInteger, nullable=True
     )
     """Total Triples"""

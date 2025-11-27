@@ -60,7 +60,7 @@ async def test_wikibase_query_ttfv_success():
     assert_layered_property_value(
         result.data,
         ["wikibase", "timeToFirstValueObservations", "mostRecent", "initiationDate"],
-        "2012-10-26T20:05:09",
+        "2012-10-26T20:05:09+00:00",
     )
     assert_layered_property_count(
         result.data,

@@ -107,7 +107,7 @@ async def test_extension_list_query():
             None,
             1302,
             None,
-            ["User activity", "Hook"],
+            ["Hook", "User activity"],
         ),
         (
             2,
@@ -153,7 +153,7 @@ async def test_extension_list_query():
             None,
             None,
             None,
-            ["Tag", "Page action", "ContentHandler", "API", "Database"],
+            ["API", "ContentHandler", "Database", "Page action", "Tag"],
         ),
         (
             5,
@@ -183,7 +183,7 @@ async def test_extension_list_query():
             None,
             1237,
             243,
-            ["Skin", "Beta Feature"],
+            ["Beta Feature", "Skin"],
         ),
         (
             7,
@@ -198,7 +198,7 @@ async def test_extension_list_query():
             None,
             None,
             None,
-            ["Parser function", "Ajax"],
+            ["Ajax", "Parser function"],
         ),
         (
             8,
@@ -243,7 +243,7 @@ async def test_extension_list_query():
             None,
             None,
             None,
-            ["ContentHandler", "API", "Ajax"],
+            ["API", "Ajax", "ContentHandler"],
         ),
         (
             11,
