@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from sqlalchemy import Select, and_, func, select
+from sqlalchemy import Select, and_, asc, desc, func, select
 
 from model.database import (
     WikibaseModel,
@@ -60,9 +60,9 @@ def get_sorted_wikibase_query(
     match sort_by.column:
         case SortColumn.CATEGORY:
             query = query.order_by(
-                WikibaseModel.category_id.asc()
+                WikibaseModel.category_id.asc().nulls_first()
                 if sort_by.dir == SortDirection.ASC
-                else WikibaseModel.category_id.desc()
+                else WikibaseModel.category_id.desc().nulls_last()
             )
 
         case SortColumn.EDITS:
@@ -121,11 +121,12 @@ def get_sorted_wikibase_query(
                 )
             )
 
+        # TODO: Fix Sorting by Type in Postgres
         case SortColumn.TYPE:
             query = query.order_by(
-                WikibaseModel.wikibase_type.asc()
+                asc("wb_type").nulls_last()
                 if sort_by.dir == SortDirection.ASC
-                else WikibaseModel.wikibase_type.desc()
+                else desc("wb_type").nulls_first()
             )
 
     return query

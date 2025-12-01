@@ -11,16 +11,19 @@ services:
       POSTGRES_DB: app
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=scram-sha-256
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app -d app"]
       interval: 5s
       timeout: 3s
       retries: 12
-    
+
   backend:
     image: wikibase-metadata-backend
     build: 
       context: ./backend
+    dns:
+      1.1.1.1
     group_add:
       - ${TEAM_GID}
     expose:
@@ -43,11 +46,11 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_BACKEND_URL: http://localhost:8000/graphql
+        VITE_BACKEND_URL: http://backend:8000/graphql
     expose:
       - 3000
     environment:
-      VITE_BACKEND_URL: http://localhost:8000/graphql
+      VITE_BACKEND_URL: http://backend:8000/graphql
     restart: unless-stopped
 
   nginx:

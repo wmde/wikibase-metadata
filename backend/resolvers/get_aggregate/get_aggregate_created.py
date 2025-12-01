@@ -1,7 +1,7 @@
 """Get Aggregate Year Created"""
 
 from typing import Optional
-from sqlalchemy import Select, and_, select, func
+from sqlalchemy import Select, and_, select, func, extract
 
 from data import get_async_session
 from model.database import WikibaseLogMonthObservationModel
@@ -62,7 +62,7 @@ def get_created_query(
     )
     query = (
         select(
-            func.substr(WikibaseLogMonthObservationModel.first_log_date, 1, 4).label(
+            extract("year", WikibaseLogMonthObservationModel.first_log_date).label(
                 "year"
             ),
             # pylint: disable-next=not-callable

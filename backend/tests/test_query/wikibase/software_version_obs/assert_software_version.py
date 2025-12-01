@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional
-from tests.utils import assert_property_value, DATETIME_FORMAT
+from tests.utils import assert_property_value, SOFTWARE_VERSION_DATETIME_FORMAT
 
 
 def assert_software_version(
@@ -24,7 +24,7 @@ def assert_software_version(
         (
             expected_version_date
             if expected_version_date is None
-            else expected_version_date.strftime(DATETIME_FORMAT)
+            else expected_version_date.strftime(SOFTWARE_VERSION_DATETIME_FORMAT)
         ),
     )
     assert_property_value(

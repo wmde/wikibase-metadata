@@ -63,7 +63,7 @@ async def pull_wikibase_world():
                         WikibaseModel(
                             wikibase_name=record.get("itemLabel"),
                             base_url=record.get("url"),
-                            sparql_query_url=record.get("sparqlUIUrl"),
+                            sparql_frontend_url=record.get("sparqlUIUrl"),
                             sparql_endpoint_url=record.get("sparqlEndpointUrl"),
                         )
                     )
