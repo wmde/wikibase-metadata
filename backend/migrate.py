@@ -60,25 +60,30 @@ async def main():
             for c in tqdm(category_data, desc="Categories"):
                 merged_c = await session.merge(c)
                 session.add(merged_c)
-            await session.flush()
-            print("Added Categories")
+            await session.commit()
 
+    async with get_old_async_session() as old_session:
+        async with get_async_session() as session:
             software_tag_data = (
                 await old_session.scalars(select(WikibaseSoftwareTagModel))
             ).all()
             for st in tqdm(software_tag_data, desc="Software Tags"):
                 merged_st = await session.merge(st)
                 session.add(merged_st)
-            await session.flush()
+            await session.commit()
 
+    async with get_old_async_session() as old_session:
+        async with get_async_session() as session:
             software_data = (
                 await old_session.scalars(select(WikibaseSoftwareModel))
             ).all()
             for u in tqdm(software_data, desc="Software"):
                 merged_u = await session.merge(u)
                 session.add(merged_u)
-            await session.flush()
+            await session.commit()
 
+    async with get_old_async_session() as old_session:
+        async with get_async_session() as session:
             user_group_data = (
                 await old_session.scalars(select(WikibaseUserGroupModel))
             ).all()
@@ -96,9 +101,11 @@ async def main():
                 )
                 .on_conflict_do_nothing()
             )
-            await session.flush()
-            print("Added User Groups")
+            await session.commit()
+    print("Added User Groups")
 
+    async with get_old_async_session() as old_session:
+        async with get_async_session() as session:
             wikibase_query = select(WikibaseModel).options(
                 joinedload(WikibaseModel.connectivity_observations),
                 joinedload(WikibaseModel.external_identifier_observations),
@@ -116,16 +123,14 @@ async def main():
             for w in tqdm(wikibase_data, desc="Wikibases"):
                 merged_w = await session.merge(w)
                 session.add(merged_w)
-            await session.flush()
-            print("Added Wikibases")
+            await session.commit()
 
+    async with get_old_async_session() as old_session:
+        async with get_async_session() as session:
             url_data = (await old_session.scalars(select(WikibaseURLModel))).all()
             for u in tqdm(url_data, desc="URLs"):
                 merged_u = await session.merge(u)
                 session.add(merged_u)
-            await session.flush()
-            print("Added URLs")
-
             await session.commit()
 
 
