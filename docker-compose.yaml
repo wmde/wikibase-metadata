@@ -22,8 +22,6 @@ services:
     image: wikibase-metadata-backend
     build: 
       context: ./backend
-    dns:
-      1.1.1.1
     group_add:
       - ${TEAM_GID}
     expose:
