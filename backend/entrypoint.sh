@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#!/bin/bash
 
 alembic upgrade head && \
 PYTHONPATH=. python migrate.py && \
