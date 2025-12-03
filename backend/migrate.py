@@ -106,6 +106,7 @@ async def main():
 
     async with get_old_async_session() as old_session:
         async with get_async_session() as session:
+            wikibase_id_query = select(WikibaseModel.id)
             wikibase_query = select(WikibaseModel).options(
                 joinedload(WikibaseModel.connectivity_observations),
                 joinedload(WikibaseModel.external_identifier_observations),
@@ -119,9 +120,10 @@ async def main():
                 joinedload(WikibaseModel.user_observations),
                 joinedload(WikibaseModel.languages),
             )
-            wikibase_data = (await old_session.scalars(wikibase_query)).unique().all()
-            for w in tqdm(wikibase_data, desc="Wikibases"):
-                merged_w = await session.merge(w)
+            wikibase_id_list = (await old_session.scalars(wikibase_id_query)).all()
+            for id in tqdm(wikibase_id_list, desc='Wikibases'):
+                wikibase = (await old_session.scalars(wikibase_query.where(WikibaseModel.id == id))).unique().one()
+                merged_w = await session.merge(wikibase)
                 session.add(merged_w)
             await session.commit()
 
