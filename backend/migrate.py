@@ -36,6 +36,21 @@ old_async_session = sessionmaker(
     autoflush=False,
 )
 
+WIKIBASE_ID_QUERY = select(WikibaseModel.id).limit(10)
+WIKIBASE_QUERY = select(WikibaseModel).options(
+    joinedload(WikibaseModel.connectivity_observations),
+    joinedload(WikibaseModel.external_identifier_observations),
+    joinedload(WikibaseModel.log_month_observations),
+    joinedload(WikibaseModel.property_popularity_observations),
+    joinedload(WikibaseModel.quantity_observations),
+    joinedload(WikibaseModel.recent_changes_observations),
+    joinedload(WikibaseModel.software_version_observations),
+    joinedload(WikibaseModel.statistics_observations),
+    joinedload(WikibaseModel.time_to_first_value_observations),
+    joinedload(WikibaseModel.user_observations),
+    joinedload(WikibaseModel.languages),
+)
+
 
 @asynccontextmanager
 async def get_old_async_session() -> AsyncGenerator[AsyncSession, None]:
@@ -106,23 +121,18 @@ async def main():
 
     async with get_old_async_session() as old_session:
         async with get_async_session() as session:
-            wikibase_id_query = select(WikibaseModel.id)
-            wikibase_query = select(WikibaseModel).options(
-                joinedload(WikibaseModel.connectivity_observations),
-                joinedload(WikibaseModel.external_identifier_observations),
-                joinedload(WikibaseModel.log_month_observations),
-                joinedload(WikibaseModel.property_popularity_observations),
-                joinedload(WikibaseModel.quantity_observations),
-                joinedload(WikibaseModel.recent_changes_observations),
-                joinedload(WikibaseModel.software_version_observations),
-                joinedload(WikibaseModel.statistics_observations),
-                joinedload(WikibaseModel.time_to_first_value_observations),
-                joinedload(WikibaseModel.user_observations),
-                joinedload(WikibaseModel.languages),
-            )
-            wikibase_id_list = (await old_session.scalars(wikibase_id_query)).all()
-            for id in tqdm(wikibase_id_list, desc='Wikibases'):
-                wikibase = (await old_session.scalars(wikibase_query.where(WikibaseModel.id == id))).unique().one()
+            wikibase_id_list = (await old_session.scalars(WIKIBASE_ID_QUERY)).all()
+            print("Fetched ID List")
+            for wikibase_id in tqdm(wikibase_id_list, desc="Wikibases"):
+                wikibase = (
+                    (
+                        await old_session.scalars(
+                            WIKIBASE_QUERY.where(WikibaseModel.id == wikibase_id)
+                        )
+                    )
+                    .unique()
+                    .one()
+                )
                 merged_w = await session.merge(wikibase)
                 session.add(merged_w)
             await session.commit()
