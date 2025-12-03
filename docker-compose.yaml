@@ -40,7 +40,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
-    entrypoint: "./entrypoint.sh"
+    # entrypoint: "./entrypoint.sh"
+    command: ["ls", "-la"]
 
   frontend:
     image: wikibase-metadata-frontend
