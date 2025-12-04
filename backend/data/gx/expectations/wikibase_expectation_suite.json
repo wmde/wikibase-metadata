@@ -171,7 +171,7 @@
 			"id": "fcc64458-fe20-4755-a63b-5d494cd5dd40",
 			"kwargs": {
 				"column": "wb_type",
-				"value_set": ["CLOUD", "SUITE", "OTHER"]
+				"value_set": ["CLOUD", "SUITE", "OTHER", "TEST"]
 			},
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
