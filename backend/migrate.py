@@ -166,6 +166,14 @@ async def main():
                 session.add(merged_w)
             await session.commit()
 
+    async with get_old_async_session() as old_session:
+        async with get_async_session() as session:
+            url_data = (await old_session.scalars(select(WikibaseURLModel))).all()
+            for u in tqdm(url_data, desc="URLs"):
+                merged_u = await session.merge(u)
+                session.add(merged_u)
+            await session.commit()
+
     for name, query in OBSERVATION_LIST:
         async with get_old_async_session() as old_session:
             async with get_async_session() as session:
@@ -174,14 +182,6 @@ async def main():
                     merged_o = await session.merge(o)
                     session.add(merged_o)
                 await session.commit()
-
-    async with get_old_async_session() as old_session:
-        async with get_async_session() as session:
-            url_data = (await old_session.scalars(select(WikibaseURLModel))).all()
-            for u in tqdm(url_data, desc="URLs"):
-                merged_u = await session.merge(u)
-                session.add(merged_u)
-            await session.commit()
 
 
 if __name__ == "__main__":
