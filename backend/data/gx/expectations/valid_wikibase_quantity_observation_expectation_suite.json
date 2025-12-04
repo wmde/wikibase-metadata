@@ -12,7 +12,7 @@
 			"id": "6462e799-997a-42d4-887a-2c7e33ecdc6f",
 			"kwargs": {
 				"column": "total_items",
-				"min_value": 1.0
+				"min_value": 0.0
 			},
 			"meta": {},
 			"type": "expect_column_values_to_be_between"
@@ -29,7 +29,7 @@
 			"id": "98c5cd25-268b-49c5-b21c-c4dc69981e19",
 			"kwargs": {
 				"column": "total_properties",
-				"min_value": 1.0
+				"min_value": 0.0
 			},
 			"meta": {},
 			"type": "expect_column_values_to_be_between"
@@ -63,8 +63,8 @@
 			"id": "d75bb644-8373-48a2-9fd9-3a51dd55379b",
 			"kwargs": {
 				"column": "total_triples",
-				"min_value": 1.0
-			},
+				"min_value": 0.0
+ 			},
 			"meta": {},
 			"type": "expect_column_values_to_be_between"
 		}

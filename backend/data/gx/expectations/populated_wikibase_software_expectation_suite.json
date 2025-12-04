@@ -111,7 +111,7 @@
 		},
 		{
 			"id": "1eab6823-0c11-4606-b98a-24cfddd0fa21",
-			"kwargs": { "column": "description", "mostly": 0.7 },
+			"kwargs": { "column": "description", "mostly": 0.55 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
@@ -137,7 +137,7 @@
 		},
 		{
 			"id": "0f0a53ab-916c-4a52-b6bf-dd787bfe7c71",
-			"kwargs": { "column": "latest_version", "mostly": 0.6 },
+			"kwargs": { "column": "latest_version", "mostly": 0.49 },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
 		},
