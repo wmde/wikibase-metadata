@@ -43,7 +43,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
 
         model = WikibaseModel(
-            wikibase_name=wikibase_input.wikibase_name,
+            wikibase_name=wikibase_input.wikibase_name.strip(),
             description=wikibase_input.description,
             organization=wikibase_input.organization,
             country=wikibase_input.country,
