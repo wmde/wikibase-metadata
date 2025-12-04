@@ -79,20 +79,6 @@
 			"kwargs": { "column": "url" },
 			"meta": {},
 			"type": "expect_column_values_to_not_be_null"
-		},
-		{
-			"id": "31ae4f4f-55f0-4ac7-8e0d-3f17fe4fe823",
-			"kwargs": {
-				"column": "url",
-				"regex_list": [
-					"^[ \t\r\n]*$",
-					"^[ \t\r\n]+",
-					"[ \t\r\n]+$",
-					"[ \t\r\n]{2,}"
-				]
-			},
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex_list"
 		}
 	],
 	"id": "dca09a54-3872-4eee-8259-f41b4a14bbd3",

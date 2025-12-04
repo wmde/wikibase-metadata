@@ -33,6 +33,14 @@
 		{
 			"id": "4bc400ce-a637-4699-9095-123cee9c018a",
 			"name": "wikibase_language_count_validation_definition"
+		},
+		{
+			"id": "1029aae6-3596-4a75-9fea-5968768e1fee",
+			"name": "wikibase_url_path_validation_definition"
+		},
+		{
+			"id": "e5d729bb-9e6f-4642-9e56-97a733cb7b47",
+			"name": "wikibase_url_full_validation_definition"
 		}
 	]
 }
