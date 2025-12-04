@@ -84,12 +84,16 @@ def get_sorted_wikibase_query(
                     (
                         WikibaseRecentChangesObservationModel.bot_change_count
                         + WikibaseRecentChangesObservationModel.human_change_count
-                    ).asc()
+                    )
+                    .asc()
+                    .nulls_first()
                     if sort_by.dir == SortDirection.ASC
                     else (
                         WikibaseRecentChangesObservationModel.bot_change_count
                         + WikibaseRecentChangesObservationModel.human_change_count
-                    ).desc()
+                    )
+                    .desc()
+                    .nulls_last()
                 )
             )
 
@@ -115,9 +119,9 @@ def get_sorted_wikibase_query(
                     onclause=Q_RANK.c.id == WikibaseQuantityObservationModel.id,
                 )
                 .order_by(
-                    WikibaseQuantityObservationModel.total_triples.asc()
+                    WikibaseQuantityObservationModel.total_triples.asc().nulls_first()
                     if sort_by.dir == SortDirection.ASC
-                    else WikibaseQuantityObservationModel.total_triples.desc()
+                    else WikibaseQuantityObservationModel.total_triples.desc().nulls_last()
                 )
             )
 
