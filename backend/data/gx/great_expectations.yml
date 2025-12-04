@@ -457,8 +457,8 @@ fluent_datasources:
           FULL_TABLE:
             id: 347670ab-6fbf-49d5-abb6-df01dfdff639
             partitioner:
-        query: SELECT * FROM wikibase_url WHERE url_type IN ("ARTICLE_PATH",
-          "SCRIPT_PATH")
+        query: SELECT * FROM wikibase_url WHERE url_type IN ('ARTICLE_PATH',
+          'SCRIPT_PATH')
       wikibase_full_url:
         type: query
         id: 90c573ff-402d-4408-a839-42f463258217
@@ -467,7 +467,7 @@ fluent_datasources:
           FULL_TABLE:
             id: b6adfe01-180b-425e-8646-226923492ff2
             partitioner:
-        query: SELECT * FROM wikibase_url WHERE url_type NOT IN ("ARTICLE_PATH",
-          "SCRIPT_PATH")
+        query: SELECT * FROM wikibase_url WHERE url_type NOT IN ('ARTICLE_PATH',
+          'SCRIPT_PATH')
     connection_string: ${DATABASE_URL_SYNC}
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
