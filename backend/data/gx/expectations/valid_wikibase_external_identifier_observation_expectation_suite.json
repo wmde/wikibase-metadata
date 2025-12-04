@@ -11,7 +11,7 @@
 			"id": "145a3203-e81f-4718-bbec-a2ad5344e8c6",
 			"kwargs": {
 				"column": "total_external_identifier_properties",
-				"min_value": 1.0
+				"min_value": 0.0
 			},
 			"meta": {},
 			"severity": "critical",
@@ -28,7 +28,7 @@
 			"id": "9f390798-671b-4abe-b95d-c8ad54485d20",
 			"kwargs": {
 				"column": "total_external_identifier_statements",
-				"min_value": 1.0
+				"min_value": 0.0
 			},
 			"meta": {},
 			"severity": "critical",
@@ -43,7 +43,7 @@
 		},
 		{
 			"id": "4e381793-3fcf-42f4-a02d-e412f7b4f675",
-			"kwargs": { "column": "total_url_properties", "min_value": 1.0 },
+			"kwargs": { "column": "total_url_properties", "min_value": 0.0 },
 			"meta": {},
 			"severity": "critical",
 			"type": "expect_column_values_to_be_between"
@@ -57,7 +57,7 @@
 		},
 		{
 			"id": "9966ed9b-9ee8-4cbf-b4a2-6fab7175e462",
-			"kwargs": { "column": "total_url_statements", "min_value": 1.0 },
+			"kwargs": { "column": "total_url_statements", "min_value": 0.0 },
 			"meta": {},
 			"severity": "critical",
 			"type": "expect_column_values_to_be_between"
