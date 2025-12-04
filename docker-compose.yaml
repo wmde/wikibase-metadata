@@ -4,16 +4,16 @@ services:
   database:
     image: postgres:16-alpine
     volumes:
-     - ./postgres-database:/var/lib/postgresql/data:z
+     - backend-database:/var/lib/postgresql/data:z
     expose:
       - 5432
     environment:
-      POSTGRES_DB: db
-      POSTGRES_USER: user
+      POSTGRES_DB: app
+      POSTGRES_USER: app
       POSTGRES_PASSWORD: app
       POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=scram-sha-256
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
       interval: 5s
       timeout: 3s
       retries: 12
@@ -31,16 +31,13 @@ services:
       - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
-      DATABASE_URL: postgresql+asyncpg://user:app@database:5432/db
-      DATABASE_URL_OLD: ${DATABASE_URL}
-      DATABASE_URL_SYNC: postgresql://user:app@database:5432/db
+      DATABASE_URL: postgresql+asyncpg://app:app@database:5432/app
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     restart: unless-stopped
     depends_on:
       database:
         condition: service_healthy
-    entrypoint: "./entrypoint.sh"
 
   frontend:
     image: wikibase-metadata-frontend
@@ -62,3 +59,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on: [backend, frontend]
     restart: unless-stopped
+
+volumes:
+  backend-database:
