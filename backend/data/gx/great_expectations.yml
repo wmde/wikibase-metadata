@@ -246,6 +246,26 @@ fluent_datasources:
             partitioner:
         table_name: wikibase_url
         schema_name:
+      wikibase_path:
+        type: query
+        id: ffd510db-030a-4beb-ba71-badc5324993a
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 347670ab-6fbf-49d5-abb6-df01dfdff639
+            partitioner:
+        query: SELECT * FROM wikibase_url WHERE url_type IN ('ARTICLE_PATH',
+          'SCRIPT_PATH')
+      wikibase_full_url:
+        type: query
+        id: 90c573ff-402d-4408-a839-42f463258217
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: b6adfe01-180b-425e-8646-226923492ff2
+            partitioner:
+        query: SELECT * FROM wikibase_url WHERE url_type NOT IN ('ARTICLE_PATH',
+          'SCRIPT_PATH')
       wikibase_user_group_table:
         type: table
         id: 40d16dc1-8e62-4163-bb18-43c0acecab85
@@ -449,25 +469,5 @@ fluent_datasources:
             partitioner:
         query: SELECT * FROM wikibase_external_identifier_observation WHERE
           anything
-      wikibase_path:
-        type: query
-        id: ffd510db-030a-4beb-ba71-badc5324993a
-        batch_metadata: {}
-        batch_definitions:
-          FULL_TABLE:
-            id: 347670ab-6fbf-49d5-abb6-df01dfdff639
-            partitioner:
-        query: SELECT * FROM wikibase_url WHERE url_type IN ('ARTICLE_PATH',
-          'SCRIPT_PATH')
-      wikibase_full_url:
-        type: query
-        id: 90c573ff-402d-4408-a839-42f463258217
-        batch_metadata: {}
-        batch_definitions:
-          FULL_TABLE:
-            id: b6adfe01-180b-425e-8646-226923492ff2
-            partitioner:
-        query: SELECT * FROM wikibase_url WHERE url_type NOT IN ('ARTICLE_PATH',
-          'SCRIPT_PATH')
     connection_string: ${DATABASE_URL_SYNC}
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
