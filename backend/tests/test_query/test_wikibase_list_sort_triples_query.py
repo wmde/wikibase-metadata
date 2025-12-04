@@ -28,24 +28,24 @@ async def test_wikibase_list_query_sort_triples_asc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
+    for i in range(10):
+        assert_layered_property_value(
+            result.data,
+            ["wikibaseList", "data", i, "quantityObservations", "mostRecent"],
+            None,
+        )
     assert_layered_property_value(
         result.data,
         [
             "wikibaseList",
             "data",
-            0,
+            10,
             "quantityObservations",
             "mostRecent",
             "totalTriples",
         ],
         8,
     )
-    for i in range(1, 11):
-        assert_layered_property_value(
-            result.data,
-            ["wikibaseList", "data", i, "quantityObservations", "mostRecent"],
-            None,
-        )
 
 
 @pytest.mark.asyncio
@@ -70,21 +70,21 @@ async def test_wikibase_list_query_sort_triples_desc():
     assert "wikibaseList" in result.data
     assert_page_meta(result.data["wikibaseList"], 1, 11, 11, 1)
 
-    for i in range(10):
-        assert_layered_property_value(
-            result.data,
-            ["wikibaseList", "data", i, "quantityObservations", "mostRecent"],
-            None,
-        )
     assert_layered_property_value(
         result.data,
         [
             "wikibaseList",
             "data",
-            10,
+            0,
             "quantityObservations",
             "mostRecent",
             "totalTriples",
         ],
         8,
     )
+    for i in range(1, 11):
+        assert_layered_property_value(
+            result.data,
+            ["wikibaseList", "data", i, "quantityObservations", "mostRecent"],
+            None,
+        )
