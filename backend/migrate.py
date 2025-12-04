@@ -164,7 +164,6 @@ async def main():
             for w in tqdm(wikibase_data, desc="Wikibases"):
                 merged_w = await session.merge(w)
                 session.add(merged_w)
-                merged_w.wikibase_name = merged_w.wikibase_name.strip()
             await session.commit()
 
     async with get_old_async_session() as old_session:
