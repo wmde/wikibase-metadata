@@ -9,7 +9,7 @@ type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
 const headers: TableHeader[] = [
 	{ title: '', sortable: false },
-	// TODO: Fix Type sorting in Postgres
+	// TODO: T411795, Fix Sorting by Type
 	{ title: 'Type', value: SortColumn.Type, sortable: false },
 	{ title: 'Title', value: SortColumn.Title, sortable: true },
 	{ title: 'Triples', value: SortColumn.Triples, sortable: true },

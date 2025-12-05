@@ -125,7 +125,7 @@ def get_sorted_wikibase_query(
                 )
             )
 
-        # TODO: Fix Sorting by Type in Postgres
+        # TODO: T411795, Fix Sorting by Type
         case SortColumn.TYPE:
             query = query.order_by(
                 asc("wb_type").nulls_last()
