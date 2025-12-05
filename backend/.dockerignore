@@ -11,6 +11,7 @@ venv*
 # Tests & reports
 cov_html
 tests
+!tests/test_data_expectations.py
 .pytest_cache
 
 # Local data / dumps / logs / dbs
@@ -19,6 +20,7 @@ export
 logs
 *.db
 data/*.db
+data/gx/uncommitted
 
 # VCS & env
 .git

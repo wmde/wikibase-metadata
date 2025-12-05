@@ -60,7 +60,9 @@ def downgrade() -> None:
         )
         batch_op.alter_column(
             "last_log_user_type",
-            existing_type=sa.Enum("BOT", "MISSING", "USER", name="wikibaseusertype"),
+            existing_type=sa.Enum(
+                "BOT", "MISSING", "USER", "NONE", name="wikibaseusertype"
+            ),
             type_=sa.VARCHAR(length=4),
             nullable=False,
         )

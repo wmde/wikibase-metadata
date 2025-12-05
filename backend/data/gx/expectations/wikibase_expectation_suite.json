@@ -34,7 +34,8 @@
 			"id": "5342a046-55a7-4a61-908e-c461cd4a84bf",
 			"kwargs": {
 				"column": "wikibase_name",
-				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"]
+				"regex_list": ["^[ \t\r\n]*$", "^[ \t\r\n]+", "[ \t\r\n]+$"],
+				"mostly": 0.97
 			},
 			"meta": {},
 			"type": "expect_column_values_to_not_match_regex_list"
@@ -171,7 +172,7 @@
 			"id": "fcc64458-fe20-4755-a63b-5d494cd5dd40",
 			"kwargs": {
 				"column": "wb_type",
-				"value_set": ["CLOUD", "SUITE", "OTHER"]
+				"value_set": ["CLOUD", "SUITE", "OTHER", "TEST"]
 			},
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"

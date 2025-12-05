@@ -1,6 +1,6 @@
 """Test update_out_of_date_recent_changes_observations"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import pytest
 from sqlalchemy import select
 
@@ -141,5 +141,9 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
         assert observation.bot_change_count == 6
         assert observation.bot_change_user_count == 2
         assert observation.bot_change_active_user_count == 1
-        assert observation.first_change_date == datetime(2024, 3, 1, 12, 0, 0)
-        assert observation.last_change_date == datetime(2024, 3, 5, 12, 0, 0)
+        assert observation.first_change_date == datetime(
+            2024, 3, 1, 12, 0, 0, tzinfo=timezone.utc
+        )
+        assert observation.last_change_date == datetime(
+            2024, 3, 5, 12, 0, 0, tzinfo=timezone.utc
+        )

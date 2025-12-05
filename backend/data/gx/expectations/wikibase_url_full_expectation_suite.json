@@ -1,0 +1,37 @@
+{
+	"expectations": [
+		{
+			"id": "c0d2ec4e-4837-4922-bb31-c6660d7ca432",
+			"kwargs": {
+				"column": "url_type",
+				"value_set": [
+					"ACTION_QUERY_URL",
+					"BASE_URL",
+					"INDEX_QUERY_URL",
+					"SPARQL_ENDPOINT_URL",
+					"SPARQL_FRONTEND_URL",
+					"SPARQL_QUERY_URL",
+					"SPECIAL_STATISTICS_URL",
+					"SPECIAL_VERSION_URL"
+				]
+			},
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_distinct_values_to_be_in_set"
+		},
+		{
+			"id": "d12de3c1-df96-45dc-9c57-2d347821310b",
+			"kwargs": {
+				"column": "url",
+				"regex_list": ["[ \t\r\n]+", "^[ \t\r\n]*$"]
+			},
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_not_match_regex_list"
+		}
+	],
+	"id": "f3520542-dee4-410e-9e94-affefd1c5373",
+	"meta": { "great_expectations_version": "1.9.0" },
+	"name": "wikibase_url_full_expectation_suite",
+	"notes": null
+}

@@ -1,6 +1,8 @@
+alembic-postgresql-enum
 black>=25.1.0
 freezegun>=1.5.1
 great-expectations>=1.3.3
+psycopg2-binary>=2.9.11
 pylint>=3.3.3
 pytest>=8.3.4
 pytest-asyncio>=0.25.2
@@ -8,3 +10,4 @@ pytest-cov<6.0.0
 pytest-dependency>=0.6.0
 pytest-mock>=3.14.0
 pytest-order>=1.3.0
+tqdm

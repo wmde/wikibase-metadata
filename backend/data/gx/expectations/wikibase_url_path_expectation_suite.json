@@ -1,0 +1,25 @@
+{
+	"expectations": [
+		{
+			"id": "f15d94a0-add7-49c3-b8e9-280f1a856b2d",
+			"kwargs": {
+				"column": "url_type",
+				"value_set": ["ARTICLE_PATH", "SCRIPT_PATH"]
+			},
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_distinct_values_to_be_in_set"
+		},
+		{
+			"id": "31ae4f4f-55f0-4ac7-8e0d-3f17fe4fe823",
+			"kwargs": { "column": "url", "regex_list": ["[ \t\r\n]+"] },
+			"meta": {},
+			"severity": "critical",
+			"type": "expect_column_values_to_not_match_regex_list"
+		}
+	],
+	"id": "af4fa0a0-f9d5-4689-bb02-285696040625",
+	"meta": { "great_expectations_version": "1.9.0" },
+	"name": "wikibase_url_path_expectation_suite",
+	"notes": null
+}
