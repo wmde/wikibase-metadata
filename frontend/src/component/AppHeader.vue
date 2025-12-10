@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
-import routes from '@/routes'
+import routes, { currentPath } from '@/routes'
 import { mdiGithub, mdiThemeLightDark } from '@mdi/js'
 import { useTheme } from 'vuetify'
 
@@ -28,9 +28,16 @@ const theme = useTheme()
 			/>
 		</v-container>
 	</v-container>
-	<v-container>
+	<v-container class="link-container">
 		<template v-for="route in Object.keys(routes)" :key="route">
-			<a v-if="routes[route]" :href="route">{{ routes[route].name }}</a>
+			<v-btn
+				v-if="routes[route]"
+				:variant="currentPath == route ? 'outlined' : 'tonal'"
+				density="compact"
+				:href="route"
+			>
+				{{ routes[route].name }}
+			</v-btn>
 		</template>
 	</v-container>
 </template>
@@ -63,5 +70,11 @@ const theme = useTheme()
 }
 .title {
 	flex-grow: 1;
+}
+.link-container {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 6px;
+
 }
 </style>
