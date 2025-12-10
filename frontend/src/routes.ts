@@ -10,7 +10,7 @@ const routes: Record<string, Route> = {
 	'/': { component: WikibaseTableContainer, name: 'Wikibase Table' }
 }
 
-export const currentPath = ref(window.location.pathname)
-window.addEventListener('hashchange', () => (currentPath.value = window.location.pathname))
+export const currentPath = ref(window.location.hash.slice(1))
+window.addEventListener('hashchange', () => (currentPath.value = window.location.hash.slice(1)))
 
 export default routes

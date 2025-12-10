@@ -34,7 +34,7 @@ const theme = useTheme()
 				v-if="routes[route]"
 				:variant="currentPath == route ? 'outlined' : 'tonal'"
 				density="compact"
-				:href="route"
+				:href="`#${route}`"
 			>
 				{{ routes[route].name }}
 			</v-btn>
