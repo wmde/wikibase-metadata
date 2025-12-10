@@ -4,7 +4,9 @@ import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import routes, { currentPath } from '@/routes'
 import { computed } from 'vue'
 
-const currentView = computed(() => routes[currentPath.value || '/']?.component || WikibaseTableContainer)
+const currentView = computed(
+	() => routes[currentPath.value || '/']?.component || WikibaseTableContainer
+)
 </script>
 
 <template>
