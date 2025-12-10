@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
+import routes from '@/routes'
 import { mdiGithub, mdiThemeLightDark } from '@mdi/js'
 import { useTheme } from 'vuetify'
 
@@ -26,6 +27,11 @@ const theme = useTheme()
 				:icon="mdiThemeLightDark"
 			/>
 		</v-container>
+	</v-container>
+	<v-container>
+		<template v-for="route in Object.keys(routes)" :key="route">
+			<a v-if="routes[route]" :href="route">{{ routes[route].name }}</a>
+		</template>
 	</v-container>
 </template>
 
