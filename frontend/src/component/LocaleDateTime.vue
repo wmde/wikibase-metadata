@@ -6,8 +6,8 @@ defineProps<{ stat: Date | string | null | undefined }>()
 
 <template>
 	<template v-if="stat != null && stat != undefined">
-		{{ stringDate(stat).toLocaleDateString('de') }}
-		{{ stringDate(stat).toLocaleTimeString('de') }}
+		{{ stringDate(stat).toLocaleDateString('de', { timeZone: 'UTC' }) }}
+		{{ stringDate(stat).toLocaleTimeString('de', { timeZone: 'UTC' }) }}
 	</template>
 	<template v-else>–</template>
 </template>

@@ -58,7 +58,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual(
-			'1.1.1970 01:00:00'
+			'1.1.1970 00:00:00'
 		)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.attributes()).toHaveProperty(
@@ -162,7 +162,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual(
-			'1.1.1970 01:00:00'
+			'1.1.1970 00:00:00'
 		)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.attributes()).toHaveProperty(
@@ -269,7 +269,7 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual(
-			'1.1.1970 01:00:00'
+			'1.1.1970 00:00:00'
 		)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.attributes()).toHaveProperty(
@@ -281,21 +281,21 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[0]?.text()).toEqual('Q1')
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual(
-			'1.1.1970 01:00:01'
+			'1.1.1970 00:00:01'
 		)
 
 		expect(table.find('tbody').findAll('tr')[2]?.find('th').exists()).toEqual(false)
 		expect(table.find('tbody').findAll('tr')[2]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[2]?.findAll('td')[0]?.text()).toEqual('Q10')
 		expect(table.find('tbody').findAll('tr')[2]?.findAll('td')[1]?.text()).toEqual(
-			'1.1.1970 01:00:02'
+			'1.1.1970 00:00:02'
 		)
 
 		expect(table.find('tbody').findAll('tr')[3]?.find('th').exists()).toEqual(false)
 		expect(table.find('tbody').findAll('tr')[3]?.findAll('td').length).toEqual(2)
 		expect(table.find('tbody').findAll('tr')[3]?.findAll('td')[0]?.text()).toEqual('Q100')
 		expect(table.find('tbody').findAll('tr')[3]?.findAll('td')[1]?.text()).toEqual(
-			'1.1.1970 01:00:03'
+			'1.1.1970 00:00:03'
 		)
 
 		expect(table.find('tbody').findAll('tr')[4]?.find('th').exists()).toEqual(true)
