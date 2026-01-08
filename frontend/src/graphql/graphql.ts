@@ -1244,6 +1244,16 @@ export type SingleWikibaseFragment = {
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+		allObservations: Array<{
+			__typename?: 'WikibaseQuantityObservation'
+			id: string
+			observationDate: Date
+			returnedData: boolean
+			totalItems?: number | null
+			totalLexemes?: number | null
+			totalProperties?: number | null
+			totalTriples?: number | null
+		}>
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
 			observationDate: Date
@@ -1341,6 +1351,22 @@ export const SingleWikibaseFragmentDoc = {
 						selectionSet: {
 							kind: 'SelectionSet',
 							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'allObservations' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'returnedData' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalProperties' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }
+										]
+									}
+								},
 								{
 									kind: 'Field',
 									name: { kind: 'Name', value: 'mostRecent' },
@@ -1535,6 +1561,22 @@ export const SingleWikibaseDocument = {
 						selectionSet: {
 							kind: 'SelectionSet',
 							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'allObservations' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'returnedData' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalProperties' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }
+										]
+									}
+								},
 								{
 									kind: 'Field',
 									name: { kind: 'Name', value: 'mostRecent' },

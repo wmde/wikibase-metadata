@@ -22,6 +22,7 @@ describe('WikibaseDetailStats', async () => {
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
 					quantityObservations: {
+						allObservations: [],
 						mostRecent: {
 							observationDate: new Date(0),
 							totalItems: 1,
@@ -112,6 +113,7 @@ describe('WikibaseDetailStats', async () => {
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
 					quantityObservations: {
+						allObservations: [],
 						mostRecent: {
 							observationDate: new Date(0),
 							totalItems: 1,
@@ -201,7 +203,10 @@ describe('WikibaseDetailStats', async () => {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
-					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
+					quantityObservations: {
+						allObservations: [],
+						mostRecent: { observationDate: new Date(0) }
+					},
 					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
 					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
 					wikibaseType: WikibaseType.Unknown

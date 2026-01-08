@@ -51,6 +51,7 @@ describe('WikibaseDetailCard', async () => {
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
 					quantityObservations: {
+						allObservations: [],
 						mostRecent: {
 							observationDate: new Date(0),
 							totalItems: 1,

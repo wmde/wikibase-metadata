@@ -1236,6 +1236,16 @@ export type SingleWikibaseQuery = {
 		urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 		quantityObservations: {
 			__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+			allObservations: Array<{
+				__typename?: 'WikibaseQuantityObservation'
+				id: string
+				observationDate: Date
+				returnedData: boolean
+				totalItems?: number | null
+				totalLexemes?: number | null
+				totalProperties?: number | null
+				totalTriples?: number | null
+			}>
 			mostRecent?: {
 				__typename?: 'WikibaseQuantityObservation'
 				observationDate: Date
@@ -1274,6 +1284,16 @@ export type SingleWikibaseFragment = {
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+		allObservations: Array<{
+			__typename?: 'WikibaseQuantityObservation'
+			id: string
+			observationDate: Date
+			returnedData: boolean
+			totalItems?: number | null
+			totalLexemes?: number | null
+			totalProperties?: number | null
+			totalTriples?: number | null
+		}>
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
 			observationDate: Date

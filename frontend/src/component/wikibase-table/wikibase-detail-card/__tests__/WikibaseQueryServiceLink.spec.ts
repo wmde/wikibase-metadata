@@ -13,7 +13,7 @@ const testWiki: SingleWikibaseFragment = {
 		baseUrl: 'https://test-wikibase-001.test',
 		sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 	},
-	quantityObservations: {},
+	quantityObservations: { allObservations: [] },
 	recentChangesObservations: {},
 	timeToFirstValueObservations: {},
 	wikibaseType: WikibaseType.Cloud

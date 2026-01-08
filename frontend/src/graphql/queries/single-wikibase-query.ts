@@ -18,6 +18,15 @@ export const singleWikibaseQuery = gql`
 		}
 		wikibaseType
 		quantityObservations {
+			allObservations {
+				id
+				observationDate
+				returnedData
+				totalItems
+				totalLexemes
+				totalProperties
+				totalTriples
+			}
 			mostRecent {
 				observationDate
 				totalItems
