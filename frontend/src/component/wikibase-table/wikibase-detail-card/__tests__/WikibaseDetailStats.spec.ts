@@ -57,8 +57,14 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
-		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual(
+			'1.1.1970 01:00:00'
+		)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.attributes()).toHaveProperty(
+			'rowspan',
+			'1'
+		)
 
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').text()).toEqual('ITEMS')
@@ -155,8 +161,14 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
-		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual(
+			'1.1.1970 01:00:00'
+		)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.attributes()).toHaveProperty(
+			'rowspan',
+			'1'
+		)
 
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[1]?.find('th').text()).toEqual('ITEMS')
@@ -220,7 +232,15 @@ describe('WikibaseDetailStats', async () => {
 					quantityObservations: { mostRecent: { id: '-1', observationDate: new Date(0) } },
 					recentChangesObservations: { mostRecent: { id: '-1', observationDate: new Date(0) } },
 					timeToFirstValueObservations: {
-						mostRecent: { id: '-1', initiationDate: new Date(0), itemDates: [] }
+						mostRecent: {
+							id: '-1',
+							initiationDate: new Date(0),
+							itemDates: [
+								{ id: '1', q: 1, creationDate: new Date(1000) },
+								{ id: '2', q: 10, creationDate: new Date(2000) },
+								{ id: '3', q: 100, creationDate: new Date(3000) }
+							]
+						}
 					},
 					wikibaseType: WikibaseType.Unknown
 				},
@@ -243,58 +263,85 @@ describe('WikibaseDetailStats', async () => {
 		expect(table.find('thead').findAll('tr')[0]?.findAll('th')[1]?.text()).toEqual('SOURCE')
 
 		expect(table.find('tbody').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr').length).toEqual(8)
+		expect(table.find('tbody').findAll('tr').length).toEqual(11)
 
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').exists()).toEqual(true)
 		expect(table.find('tbody').findAll('tr')[0]?.find('th').text()).toEqual('FIRST RECORD')
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td').length).toEqual(2)
-		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[0]?.text()).toEqual(
+			'1.1.1970 01:00:00'
+		)
 		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.text()).toEqual('Action API')
+		expect(table.find('tbody').findAll('tr')[0]?.findAll('td')[1]?.attributes()).toHaveProperty(
+			'rowspan',
+			'4'
+		)
 
-		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[1]?.find('th').text()).toEqual('ITEMS')
+		expect(table.find('tbody').findAll('tr')[1]?.find('th').exists()).toEqual(false)
 		expect(table.find('tbody').findAll('tr')[1]?.findAll('td').length).toEqual(2)
-		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[0]?.text()).toEqual('–')
-		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual('Query Service')
-		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.attributes()).toHaveProperty(
+		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[0]?.text()).toEqual('Q1')
+		expect(table.find('tbody').findAll('tr')[1]?.findAll('td')[1]?.text()).toEqual(
+			'1.1.1970 01:00:01'
+		)
+
+		expect(table.find('tbody').findAll('tr')[2]?.find('th').exists()).toEqual(false)
+		expect(table.find('tbody').findAll('tr')[2]?.findAll('td').length).toEqual(2)
+		expect(table.find('tbody').findAll('tr')[2]?.findAll('td')[0]?.text()).toEqual('Q10')
+		expect(table.find('tbody').findAll('tr')[2]?.findAll('td')[1]?.text()).toEqual(
+			'1.1.1970 01:00:02'
+		)
+
+		expect(table.find('tbody').findAll('tr')[3]?.find('th').exists()).toEqual(false)
+		expect(table.find('tbody').findAll('tr')[3]?.findAll('td').length).toEqual(2)
+		expect(table.find('tbody').findAll('tr')[3]?.findAll('td')[0]?.text()).toEqual('Q100')
+		expect(table.find('tbody').findAll('tr')[3]?.findAll('td')[1]?.text()).toEqual(
+			'1.1.1970 01:00:03'
+		)
+
+		expect(table.find('tbody').findAll('tr')[4]?.find('th').exists()).toEqual(true)
+		expect(table.find('tbody').findAll('tr')[4]?.find('th').text()).toEqual('ITEMS')
+		expect(table.find('tbody').findAll('tr')[4]?.findAll('td').length).toEqual(2)
+		expect(table.find('tbody').findAll('tr')[4]?.findAll('td')[0]?.text()).toEqual('–')
+		expect(table.find('tbody').findAll('tr')[4]?.findAll('td')[1]?.text()).toEqual('Query Service')
+		expect(table.find('tbody').findAll('tr')[4]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'5'
 		)
 
-		expect(table.find('tbody').findAll('tr')[2]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[2]?.find('th').text()).toEqual('PROPERTIES')
-		expect(table.find('tbody').findAll('tr')[2]?.findAll('td').length).toEqual(1)
-		expect(table.find('tbody').findAll('tr')[2]?.findAll('td')[0]?.text()).toEqual('–')
-
-		expect(table.find('tbody').findAll('tr')[3]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[3]?.find('th').text()).toEqual('LEXEMES')
-		expect(table.find('tbody').findAll('tr')[3]?.findAll('td').length).toEqual(1)
-		expect(table.find('tbody').findAll('tr')[3]?.findAll('td')[0]?.text()).toEqual('–')
-
-		expect(table.find('tbody').findAll('tr')[4]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[4]?.find('th').text()).toEqual('TRIPLES')
-		expect(table.find('tbody').findAll('tr')[4]?.findAll('td').length).toEqual(1)
-		expect(table.find('tbody').findAll('tr')[4]?.findAll('td')[0]?.text()).toEqual('–')
-
 		expect(table.find('tbody').findAll('tr')[5]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[5]?.find('th').text()).toEqual('AS OF')
+		expect(table.find('tbody').findAll('tr')[5]?.find('th').text()).toEqual('PROPERTIES')
 		expect(table.find('tbody').findAll('tr')[5]?.findAll('td').length).toEqual(1)
-		expect(table.find('tbody').findAll('tr')[5]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
+		expect(table.find('tbody').findAll('tr')[5]?.findAll('td')[0]?.text()).toEqual('–')
 
 		expect(table.find('tbody').findAll('tr')[6]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[6]?.find('th').text()).toEqual('EDITS (LAST 30 DAYS)')
-		expect(table.find('tbody').findAll('tr')[6]?.findAll('td').length).toEqual(2)
+		expect(table.find('tbody').findAll('tr')[6]?.find('th').text()).toEqual('LEXEMES')
+		expect(table.find('tbody').findAll('tr')[6]?.findAll('td').length).toEqual(1)
 		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[0]?.text()).toEqual('–')
-		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.text()).toEqual('Action API')
-		expect(table.find('tbody').findAll('tr')[6]?.findAll('td')[1]?.attributes()).toHaveProperty(
+
+		expect(table.find('tbody').findAll('tr')[7]?.find('th').exists()).toEqual(true)
+		expect(table.find('tbody').findAll('tr')[7]?.find('th').text()).toEqual('TRIPLES')
+		expect(table.find('tbody').findAll('tr')[7]?.findAll('td').length).toEqual(1)
+		expect(table.find('tbody').findAll('tr')[7]?.findAll('td')[0]?.text()).toEqual('–')
+
+		expect(table.find('tbody').findAll('tr')[8]?.find('th').exists()).toEqual(true)
+		expect(table.find('tbody').findAll('tr')[8]?.find('th').text()).toEqual('AS OF')
+		expect(table.find('tbody').findAll('tr')[8]?.findAll('td').length).toEqual(1)
+		expect(table.find('tbody').findAll('tr')[8]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
+
+		expect(table.find('tbody').findAll('tr')[9]?.find('th').exists()).toEqual(true)
+		expect(table.find('tbody').findAll('tr')[9]?.find('th').text()).toEqual('EDITS (LAST 30 DAYS)')
+		expect(table.find('tbody').findAll('tr')[9]?.findAll('td').length).toEqual(2)
+		expect(table.find('tbody').findAll('tr')[9]?.findAll('td')[0]?.text()).toEqual('–')
+		expect(table.find('tbody').findAll('tr')[9]?.findAll('td')[1]?.text()).toEqual('Action API')
+		expect(table.find('tbody').findAll('tr')[9]?.findAll('td')[1]?.attributes()).toHaveProperty(
 			'rowspan',
 			'2'
 		)
 
-		expect(table.find('tbody').findAll('tr')[7]?.isVisible()).toEqual(false)
-		expect(table.find('tbody').findAll('tr')[7]?.find('th').exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr')[7]?.find('th').text()).toEqual('AS OF')
-		expect(table.find('tbody').findAll('tr')[7]?.findAll('td').length).toEqual(1)
-		expect(table.find('tbody').findAll('tr')[7]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
+		expect(table.find('tbody').findAll('tr')[10]?.isVisible()).toEqual(false)
+		expect(table.find('tbody').findAll('tr')[10]?.find('th').exists()).toEqual(true)
+		expect(table.find('tbody').findAll('tr')[10]?.find('th').text()).toEqual('AS OF')
+		expect(table.find('tbody').findAll('tr')[10]?.findAll('td').length).toEqual(1)
+		expect(table.find('tbody').findAll('tr')[10]?.findAll('td')[0]?.text()).toEqual('1.1.1970')
 	})
 })
