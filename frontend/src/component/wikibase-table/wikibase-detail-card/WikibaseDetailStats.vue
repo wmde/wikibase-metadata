@@ -21,9 +21,13 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 				<tr>
 					<th>FIRST RECORD</th>
 					<td>
-						<LocaleDateTime :stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate" />
+						<LocaleDateTime
+							:stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate"
+						/>
 					</td>
-					<td :rowspan="1+wikibase.timeToFirstValueObservations.mostRecent.itemDates.length">Action API</td>
+					<td :rowspan="1 + wikibase.timeToFirstValueObservations.mostRecent.itemDates.length">
+						Action API
+					</td>
 				</tr>
 				<tr
 					v-for="itemDate in wikibase.timeToFirstValueObservations.mostRecent.itemDates"
