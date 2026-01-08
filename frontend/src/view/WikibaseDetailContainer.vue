@@ -33,18 +33,32 @@ onBeforeMount(() => wikibaseId.value && store.searchWikibase(wikibaseId.value))
 					{
 						label: 'Triples',
 						data:
-							quantObs?.map((q) => ({
-								x: stringDate(q.observationDate).valueOf(),
-								y: q.totalTriples ?? null
-							})).sort((a, b) => compareByValue(a, b, v => v.x)) ?? []
+							quantObs
+								?.map((q) => ({
+									x: stringDate(q.observationDate).valueOf(),
+									y: q.totalTriples ?? null
+								}))
+								.sort((a, b) => compareByValue(a, b, (v) => v.x)) ?? []
 					},
 					{
 						label: 'Items',
 						data:
-							quantObs?.map((q) => ({
-								x: stringDate(q.observationDate).valueOf(),
-								y: q.totalItems ?? null
-							})).sort((a, b) => compareByValue(a, b, v => v.x)) ?? []
+							quantObs
+								?.map((q) => ({
+									x: stringDate(q.observationDate).valueOf(),
+									y: q.totalItems ?? null
+								}))
+								.sort((a, b) => compareByValue(a, b, (v) => v.x)) ?? []
+					},
+					{
+						label: 'Properties',
+						data:
+							quantObs
+								?.map((q) => ({
+									x: stringDate(q.observationDate).valueOf(),
+									y: q.totalProperties ?? null
+								}))
+								.sort((a, b) => compareByValue(a, b, (v) => v.x)) ?? []
 					}
 				]"
 			/>

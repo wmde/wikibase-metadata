@@ -11,8 +11,8 @@ import {
 	type ChartData,
 	type ChartDataset,
 	type Point
-} from 'chart.js';
-import { Line as LineChart } from 'vue-chartjs';
+} from 'chart.js'
+import { Line as LineChart } from 'vue-chartjs'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -42,5 +42,26 @@ const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
 </script>
 
 <template>
-	<LineChart :data="chartData" :options="{ scales: { x: { type: 'linear' } } }" />
+	<LineChart
+		:data="chartData"
+		:options="{
+			responsive: true,
+			scales: {
+				x: {
+					type: 'linear',
+					ticks: { callback: (tickValue) => new Date(tickValue).toLocaleDateString('de') },
+					max: new Date().getTime()
+				},
+				...Object.fromEntries(
+					datasets.map((d, idx) => [
+						`y${idx}`,
+						{
+							grid: { drawOnChartArea: idx == 0 },
+							title: { display: true, text: d.label }
+						}
+					])
+				)
+			}
+		}"
+	/>
 </template>
