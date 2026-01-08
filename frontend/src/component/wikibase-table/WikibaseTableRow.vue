@@ -33,6 +33,9 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 		<td>
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
 		</td>
+		<td>
+			<router-link :to="`/wikibase/${wikibase.id}`">Link</router-link>
+		</td>
 	</tr>
 </template>
 

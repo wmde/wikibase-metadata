@@ -7,7 +7,7 @@ import { useTheme } from 'vuetify'
 
 const theme = useTheme()
 
-const routes = computed(() => router.getRoutes())
+const routes = computed(() => router.getRoutes().filter((r) => !r.path.includes(':')))
 </script>
 
 <template>
