@@ -23,6 +23,7 @@ describe('WikibaseDetailStats', async () => {
 					},
 					quantityObservations: {
 						mostRecent: {
+							id: '-1',
 							observationDate: new Date(0),
 							totalItems: 1,
 							totalLexemes: 2,
@@ -31,9 +32,16 @@ describe('WikibaseDetailStats', async () => {
 						}
 					},
 					recentChangesObservations: {
-						mostRecent: { observationDate: new Date(0), botChangeCount: 8, humanChangeCount: 13 }
+						mostRecent: {
+							id: '-1',
+							observationDate: new Date(0),
+							botChangeCount: 8,
+							humanChangeCount: 13
+						}
 					},
-					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
+					timeToFirstValueObservations: {
+						mostRecent: { id: '-1', initiationDate: new Date(0), itemDates: [] }
+					},
 					wikibaseType: WikibaseType.Cloud
 				}
 			}
@@ -113,6 +121,7 @@ describe('WikibaseDetailStats', async () => {
 					},
 					quantityObservations: {
 						mostRecent: {
+							id: '-1',
 							observationDate: new Date(0),
 							totalItems: 1,
 							totalLexemes: 2,
@@ -121,9 +130,16 @@ describe('WikibaseDetailStats', async () => {
 						}
 					},
 					recentChangesObservations: {
-						mostRecent: { observationDate: new Date(0), botChangeCount: 8, humanChangeCount: 13 }
+						mostRecent: {
+							id: '-1',
+							observationDate: new Date(0),
+							botChangeCount: 8,
+							humanChangeCount: 13
+						}
 					},
-					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
+					timeToFirstValueObservations: {
+						mostRecent: { id: '-1', initiationDate: new Date(0), itemDates: [] }
+					},
 					wikibaseType: WikibaseType.Suite
 				}
 			}
@@ -201,9 +217,11 @@ describe('WikibaseDetailStats', async () => {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
-					quantityObservations: { mostRecent: { observationDate: new Date(0) } },
-					recentChangesObservations: { mostRecent: { observationDate: new Date(0) } },
-					timeToFirstValueObservations: { mostRecent: { initiationDate: new Date(0) } },
+					quantityObservations: { mostRecent: { id: '-1', observationDate: new Date(0) } },
+					recentChangesObservations: { mostRecent: { id: '-1', observationDate: new Date(0) } },
+					timeToFirstValueObservations: {
+						mostRecent: { id: '-1', initiationDate: new Date(0), itemDates: [] }
+					},
 					wikibaseType: WikibaseType.Unknown
 				},
 				loading: false
