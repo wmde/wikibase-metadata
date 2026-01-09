@@ -45,6 +45,13 @@ const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
 	<LineChart
 		:data="chartData"
 		:options="{
+			plugins: {
+				tooltip: {
+					callbacks: {
+						title: (items) => new Date(items[0]?.parsed.x ?? 0).toLocaleDateString('de')
+					}
+				}
+			},
 			responsive: true,
 			scales: {
 				x: {
