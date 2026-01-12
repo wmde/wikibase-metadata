@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LineGraph from '@/component/LineGraph.vue'
+import QGraph from '@/component/QGraph.vue'
 import WikibaseDetailCard from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailCard.vue'
 import { router } from '@/router'
 import { useSingleWikiStore } from '@/stores/wikibase-store'
@@ -61,6 +62,23 @@ onBeforeMount(() => wikibaseId.value && store.searchWikibase(wikibaseId.value))
 								.sort((a, b) => compareByValue(a, b, (v) => v.x)) ?? []
 					}
 				]"
+			/>
+			<QGraph
+				:dataset="{
+					label: 'Q',
+					data: [
+						{
+							x: stringDate(
+								wikibase.timeToFirstValueObservations.mostRecent?.initiationDate ?? ''
+							).valueOf(),
+							y: 0
+						},
+						...(wikibase.timeToFirstValueObservations.mostRecent?.itemDates.map((v) => ({
+							x: stringDate(v.creationDate).valueOf(),
+							y: v.q
+						})) ?? [])
+					]
+				}"
 			/>
 		</template>
 	</v-container>

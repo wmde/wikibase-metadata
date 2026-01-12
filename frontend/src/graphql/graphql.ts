@@ -1276,7 +1276,14 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseTimeToFirstValueObservation'
+			id: string
 			initiationDate?: Date | null
+			itemDates: Array<{
+				__typename?: 'WikibaseItemDate'
+				id: string
+				q: number
+				creationDate: Date
+			}>
 		} | null
 	}
 } & { ' $fragmentName'?: 'SingleWikibaseFragment' }
@@ -1416,7 +1423,22 @@ export const SingleWikibaseFragmentDoc = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
 									}
 								}
 							]
@@ -1626,7 +1648,22 @@ export const SingleWikibaseDocument = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
 									}
 								}
 							]
