@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-	CategoryScale,
 	Chart as ChartJS,
 	Legend,
 	LinearScale,
@@ -14,7 +13,7 @@ import {
 } from 'chart.js'
 import { Line as LineChart } from 'vue-chartjs'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 const { datasets } = defineProps<{ datasets: ChartDataset<'line', (number | Point | null)[]>[] }>()
 
