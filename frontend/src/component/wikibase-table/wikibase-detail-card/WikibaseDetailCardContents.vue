@@ -10,32 +10,31 @@ import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChi
 import type { SingleWikibaseFragment } from '@/graphql/types'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
-
 </script>
 
 <template>
-		<CardLoader v-if="loading" />
-		<template v-else-if="wikibase">
-			<v-container class="card-header ma-0 pa-0">
-				<v-container class="ma-0 pa-0">
-					<v-container class="url-container ma-0 pa-1">
-						<WikibaseIcon :base-url="wikibase.urls.baseUrl" />
-						<WikibaseTitle :wikibase="wikibase" />
-					</v-container>
-					<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
-						<template v-slot:activator="{ props }">
-							<WikibaseCategoryChip :category="wikibase.category" v-bind="props" class="category" />
-						</template>
-					</v-tooltip>
-					<WikibaseDescription :wikibase="wikibase" />
-					<WikibaseQueryServiceLink :wikibase="wikibase" />
+	<CardLoader v-if="loading" />
+	<template v-else-if="wikibase">
+		<v-container class="card-header ma-0 pa-0">
+			<v-container class="ma-0 pa-0">
+				<v-container class="url-container ma-0 pa-1">
+					<WikibaseIcon :base-url="wikibase.urls.baseUrl" />
+					<WikibaseTitle :wikibase="wikibase" />
 				</v-container>
-				<v-container class="wikibase-type ma-0 pa-0">
-					<AccreditedTypeChip :wikibase="wikibase" />
-				</v-container>
+				<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
+					<template v-slot:activator="{ props }">
+						<WikibaseCategoryChip :category="wikibase.category" v-bind="props" class="category" />
+					</template>
+				</v-tooltip>
+				<WikibaseDescription :wikibase="wikibase" />
+				<WikibaseQueryServiceLink :wikibase="wikibase" />
 			</v-container>
-			<WikibaseDetailStats :wikibase="wikibase" />
-		</template>
+			<v-container class="wikibase-type ma-0 pa-0">
+				<AccreditedTypeChip :wikibase="wikibase" />
+			</v-container>
+		</v-container>
+		<WikibaseDetailStats :wikibase="wikibase" />
+	</template>
 </template>
 
 <style lang="css">
