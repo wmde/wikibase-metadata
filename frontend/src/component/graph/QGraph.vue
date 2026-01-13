@@ -38,7 +38,9 @@ const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
 				tooltip: {
 					callbacks: {
 						title: (items) =>
-							`Q${items[0]?.parsed.y}: ${new Date(items[0]?.parsed.x ?? 0).toLocaleDateString('de')}`,
+							items[0]?.parsed.y == 0.5
+								? `First Record: ${new Date(items[0]?.parsed.x ?? 0).toLocaleDateString('de')}`
+								: `Q${items[0]?.parsed.y?.toLocaleString('de')}: ${new Date(items[0]?.parsed.x ?? 0).toLocaleDateString('de')}`,
 						label: () => ''
 					}
 				}
@@ -51,10 +53,12 @@ const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
 				},
 				y: {
 					grid: { drawOnChartArea: true },
-					min: 1,
+					min: 0.5,
 					ticks: {
 						callback: (tickValue) =>
-							typeof tickValue == 'number' && Math.log10(tickValue) % 1 == 0 ? `Q${tickValue}` : ''
+							typeof tickValue == 'number' && Math.log10(tickValue) % 1 == 0
+								? `Q${tickValue.toLocaleString('de')}`
+								: ''
 					},
 					type: 'logarithmic'
 				}

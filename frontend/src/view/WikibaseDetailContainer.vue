@@ -70,7 +70,7 @@ onBeforeMount(() => wikibaseId.value && store.searchWikibase(wikibaseId.value))
 							x: stringDate(
 								wikibase.timeToFirstValueObservations.mostRecent.initiationDate
 							).valueOf(),
-							y: 0
+							y: 0.5
 						},
 						...wikibase.timeToFirstValueObservations.mostRecent.itemDates.map((v) => ({
 							x: stringDate(v.creationDate).valueOf(),
