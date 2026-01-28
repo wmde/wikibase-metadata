@@ -19,6 +19,7 @@ export const singleWikibaseQuery = gql`
 		wikibaseType
 		quantityObservations {
 			mostRecent {
+				id
 				observationDate
 				totalItems
 				totalLexemes
@@ -28,6 +29,7 @@ export const singleWikibaseQuery = gql`
 		}
 		recentChangesObservations {
 			mostRecent {
+				id
 				observationDate
 				botChangeCount
 				humanChangeCount
@@ -35,7 +37,13 @@ export const singleWikibaseQuery = gql`
 		}
 		timeToFirstValueObservations {
 			mostRecent {
+				id
 				initiationDate
+				itemDates {
+					id
+					q
+					creationDate
+				}
 			}
 		}
 	}

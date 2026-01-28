@@ -1246,6 +1246,7 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
+			id: string
 			observationDate: Date
 			totalItems?: number | null
 			totalLexemes?: number | null
@@ -1257,6 +1258,7 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
+			id: string
 			observationDate: Date
 			botChangeCount?: number | null
 			humanChangeCount?: number | null
@@ -1266,7 +1268,14 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseTimeToFirstValueObservation'
+			id: string
 			initiationDate?: Date | null
+			itemDates: Array<{
+				__typename?: 'WikibaseItemDate'
+				id: string
+				q: number
+				creationDate: Date
+			}>
 		} | null
 	}
 } & { ' $fragmentName'?: 'SingleWikibaseFragment' }
@@ -1347,6 +1356,7 @@ export const SingleWikibaseFragmentDoc = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
@@ -1370,6 +1380,7 @@ export const SingleWikibaseFragmentDoc = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
@@ -1390,7 +1401,22 @@ export const SingleWikibaseFragmentDoc = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
 									}
 								}
 							]
@@ -1541,6 +1567,7 @@ export const SingleWikibaseDocument = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
@@ -1564,6 +1591,7 @@ export const SingleWikibaseDocument = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
@@ -1584,7 +1612,22 @@ export const SingleWikibaseDocument = {
 									name: { kind: 'Name', value: 'mostRecent' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
 									}
 								}
 							]

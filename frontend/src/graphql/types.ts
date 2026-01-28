@@ -1238,6 +1238,7 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseQuantityObservation'
+				id: string
 				observationDate: Date
 				totalItems?: number | null
 				totalLexemes?: number | null
@@ -1249,6 +1250,7 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseRecentChangesObservation'
+				id: string
 				observationDate: Date
 				botChangeCount?: number | null
 				humanChangeCount?: number | null
@@ -1258,7 +1260,14 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseTimeToFirstValueObservation'
+				id: string
 				initiationDate?: Date | null
+				itemDates: Array<{
+					__typename?: 'WikibaseItemDate'
+					id: string
+					q: number
+					creationDate: Date
+				}>
 			} | null
 		}
 	}
@@ -1276,6 +1285,7 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
+			id: string
 			observationDate: Date
 			totalItems?: number | null
 			totalLexemes?: number | null
@@ -1287,6 +1297,7 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
+			id: string
 			observationDate: Date
 			botChangeCount?: number | null
 			humanChangeCount?: number | null
@@ -1296,7 +1307,14 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseTimeToFirstValueObservation'
+			id: string
 			initiationDate?: Date | null
+			itemDates: Array<{
+				__typename?: 'WikibaseItemDate'
+				id: string
+				q: number
+				creationDate: Date
+			}>
 		} | null
 	}
 }
