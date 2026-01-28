@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LocaleDate from '@/component/LocaleDate.vue'
+import LocaleDateTime from '@/component/LocaleDateTime.vue'
 import LocaleNumber from '@/component/LocaleNumber.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/compute-total-edits'
@@ -20,9 +21,22 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 				<tr>
 					<th>FIRST RECORD</th>
 					<td>
-						<LocaleDate :stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate" />
+						<LocaleDateTime
+							:stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate"
+						/>
 					</td>
-					<td>Action API</td>
+					<td :rowspan="1 + wikibase.timeToFirstValueObservations.mostRecent.itemDates.length">
+						Action API
+					</td>
+				</tr>
+				<tr
+					v-for="itemDate in wikibase.timeToFirstValueObservations.mostRecent.itemDates"
+					:key="itemDate.id"
+				>
+					<td>
+						<div class="left-tab-1">Q{{ itemDate.q }}</div>
+					</td>
+					<td><LocaleDateTime :stat="itemDate.creationDate" /></td>
 				</tr>
 			</template>
 			<template v-if="wikibase.quantityObservations.mostRecent">
@@ -76,3 +90,9 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 		</tbody>
 	</v-table>
 </template>
+
+<style lang="css">
+.left-tab-1 {
+	padding-left: 1em;
+}
+</style>
