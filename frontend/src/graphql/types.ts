@@ -1248,6 +1248,7 @@ export type SingleWikibaseQuery = {
 			}>
 			mostRecent?: {
 				__typename?: 'WikibaseQuantityObservation'
+				id: string
 				observationDate: Date
 				totalItems?: number | null
 				totalLexemes?: number | null
@@ -1259,6 +1260,7 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseRecentChangesObservation'
+				id: string
 				observationDate: Date
 				botChangeCount?: number | null
 				humanChangeCount?: number | null
@@ -1303,6 +1305,7 @@ export type SingleWikibaseFragment = {
 		}>
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
+			id: string
 			observationDate: Date
 			totalItems?: number | null
 			totalLexemes?: number | null
@@ -1314,6 +1317,7 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
+			id: string
 			observationDate: Date
 			botChangeCount?: number | null
 			humanChangeCount?: number | null

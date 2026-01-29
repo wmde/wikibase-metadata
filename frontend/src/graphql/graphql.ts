@@ -1256,6 +1256,7 @@ export type SingleWikibaseFragment = {
 		}>
 		mostRecent?: {
 			__typename?: 'WikibaseQuantityObservation'
+			id: string
 			observationDate: Date
 			totalItems?: number | null
 			totalLexemes?: number | null
@@ -1267,6 +1268,7 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseRecentChangesObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseRecentChangesObservation'
+			id: string
 			observationDate: Date
 			botChangeCount?: number | null
 			humanChangeCount?: number | null
@@ -1380,6 +1382,7 @@ export const SingleWikibaseFragmentDoc = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
@@ -1403,6 +1406,7 @@ export const SingleWikibaseFragmentDoc = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
@@ -1605,6 +1609,7 @@ export const SingleWikibaseDocument = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
@@ -1628,6 +1633,7 @@ export const SingleWikibaseDocument = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
 											{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }

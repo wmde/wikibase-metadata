@@ -28,6 +28,7 @@ export const singleWikibaseQuery = gql`
 				totalTriples
 			}
 			mostRecent {
+				id
 				observationDate
 				totalItems
 				totalLexemes
@@ -37,6 +38,7 @@ export const singleWikibaseQuery = gql`
 		}
 		recentChangesObservations {
 			mostRecent {
+				id
 				observationDate
 				botChangeCount
 				humanChangeCount

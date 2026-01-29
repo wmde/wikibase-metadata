@@ -53,6 +53,7 @@ describe('WikibaseDetailCard', async () => {
 					quantityObservations: {
 						allObservations: [],
 						mostRecent: {
+							id: '-1',
 							observationDate: new Date(0),
 							totalItems: 1,
 							totalLexemes: 2,
@@ -61,7 +62,12 @@ describe('WikibaseDetailCard', async () => {
 						}
 					},
 					recentChangesObservations: {
-						mostRecent: { observationDate: new Date(0), botChangeCount: 8, humanChangeCount: 13 }
+						mostRecent: {
+							id: '-1',
+							observationDate: new Date(0),
+							botChangeCount: 8,
+							humanChangeCount: 13
+						}
 					},
 					timeToFirstValueObservations: {
 						mostRecent: { id: '-1', initiationDate: new Date(0), itemDates: [] }
