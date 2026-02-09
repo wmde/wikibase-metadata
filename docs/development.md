@@ -2,16 +2,63 @@
 
 ## Running Locally:
 
-### Bare metal
+### Requirements
 
-This definitely works on 3.10.12; other versions not guaranteed. Recommend using a python virtual environment.
+- Python version 3.12
+- Docker
+- npm
 
-Run the following in a bash terminal:
+### Backend
 
+Inside the `backend` directory:
+
+1. Start a postgres instance with docker using:
 ```bash
-$ pip install -r requirements.txt
+$ docker run -d \
+  --name postgres \
+  -e POSTGRES_PASSWORD=app \
+  -p 5432:5432 \
+  postgres:16
+```
+
+2. Create a python virtual environment:
+```bash
+$ python3.12 -m venv .venv
+$ source .venv/bin/activate
+```
+
+3. Install the requirements:
+```bash
+$ pip install -r requirements.txt && pip install -r requirements-dev.txt 
+```
+
+4. Run migrations:
+```bash
+$ alembic upgrade head
+```
+
+5. Start the server:
+```bash
 $ PYTHONPATH=. fastapi dev app.py
 ```
+
+
+### Frontend
+
+Inside the `frontend` directory:
+
+1. Install dependencies:
+```bash
+$ npm i
+```
+
+2. Start the app:
+```bash
+$ npm run dev
+```
+
+The UI should now be running on http://localhost:1573
+
 
 ## Testing Locally:
 
@@ -20,12 +67,23 @@ $ PYTHONPATH=. fastapi dev app.py
 To run all non-data tests, run the following command:
 
 ```bash
-$ git restore data/wikibase-test-data.db && PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
+$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
+```
+
+You can run just a specific test using: 
+
+```bash
+$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query/<FILE_NAME>::<TEST_NAME> -m "not data"
+```
+
+To check test coverage when running tests:
+
+```bash
+$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
 ```
 
 Here's a breakdown:
 
-- `git restore data/wikidata-test-data.db` -- The tests do not currently clean up after themselves, and as such data will be left in `data/wikibase-test-data.db` that must be reverted before the tests can be run.
 - `PYTHONPATH=.` -- The gods alone know why, but this is necessary for fastapi
 - `SETTINGS_FILE=test-settings.ini` -- directs the program to use test settings, which for the moment simply point it to the test database
 - `pytest` -- the base command at the root of all of this: run the tests
