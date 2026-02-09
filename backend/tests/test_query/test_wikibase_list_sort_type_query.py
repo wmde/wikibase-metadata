@@ -42,7 +42,6 @@ async def test_wikibase_list_query_sort_type_asc():
     ]
 
 
-
 @pytest.mark.asyncio
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_desc():
