@@ -2,7 +2,6 @@
 
 import re
 
-
 ITEM_LINKS_QUERY = """SELECT ?item ?object WHERE {
   ?item ?property ?object;
     wikibase:sitelinks [].

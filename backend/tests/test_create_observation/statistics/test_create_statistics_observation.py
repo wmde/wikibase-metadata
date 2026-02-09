@@ -7,7 +7,6 @@ from fetch_data import create_special_statistics_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context, MockResponse
 
-
 FETCH_STATISTICS_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchStatisticsData(wikibaseId: $wikibaseId)
 }"""

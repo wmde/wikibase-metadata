@@ -28,7 +28,6 @@ from model.database import (
     WikibaseUserObservationModel,
 )
 
-
 SAFE_HOUR_MARGIN = -6
 
 

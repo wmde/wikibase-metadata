@@ -14,7 +14,6 @@ from sqlalchemy.orm import mapped_column
 
 from model.database import WikibaseSoftwareVersionModel, WikibaseSoftwareModel
 
-
 # revision identifiers, used by Alembic.
 revision: str = "0833cb54870f"
 down_revision: Union[str, None] = "e3ecd40e3851"

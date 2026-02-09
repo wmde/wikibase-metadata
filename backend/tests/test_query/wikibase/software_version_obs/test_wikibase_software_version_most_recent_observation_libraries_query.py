@@ -10,9 +10,7 @@ from tests.test_query.wikibase.software_version_obs.software_version_fragment im
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_property_value
 
-
-WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_LIBRARIES_QUERY = (
-    """
+WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_LIBRARIES_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -29,9 +27,7 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 
-"""
-    + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
-)
+""" + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
 
 
 @pytest.mark.asyncio

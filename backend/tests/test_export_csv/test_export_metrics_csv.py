@@ -5,7 +5,6 @@ import pytest
 from fastapi.testclient import TestClient
 from app import app
 
-
 EXPECTED_HEADER_ROW = ",".join(
     [
         "wikibase_id",

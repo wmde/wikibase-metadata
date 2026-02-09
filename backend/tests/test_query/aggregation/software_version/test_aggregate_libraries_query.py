@@ -14,9 +14,7 @@ from tests.utils import (
     assert_page_meta,
 )
 
-
-AGGREGATE_LIBRARIES_QUERY = (
-    """
+AGGREGATE_LIBRARIES_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
   aggregateLibraryPopularity(
     pageNumber: $pageNumber
@@ -27,9 +25,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
   }
 }
 
-"""
-    + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
-)
+""" + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
 
 
 @pytest.mark.asyncio

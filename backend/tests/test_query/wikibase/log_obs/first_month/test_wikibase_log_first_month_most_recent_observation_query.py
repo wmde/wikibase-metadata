@@ -15,9 +15,7 @@ from tests.utils import (
     DATETIME_FORMAT,
 )
 
-
-WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY = (
-    """
+WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -31,9 +29,7 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 
-"""
-    + WIKIBASE_LOG_OBSERVATION_FRAGMENT
-)
+""" + WIKIBASE_LOG_OBSERVATION_FRAGMENT
 
 
 @freeze_time(datetime(2024, 4, 1))

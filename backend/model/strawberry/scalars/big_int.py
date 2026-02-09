@@ -3,7 +3,6 @@
 from typing import Union
 import strawberry
 
-
 # pylint: disable=unnecessary-lambda
 BigInt = strawberry.scalar(
     Union[int, str],  # type: ignore

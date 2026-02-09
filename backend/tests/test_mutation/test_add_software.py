@@ -13,7 +13,6 @@ from tests.utils import assert_layered_property_count, assert_layered_property_v
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
-
 LIST_SOFTWARE_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   extensionList(pageNumber: $pageNumber, pageSize: $pageSize) {

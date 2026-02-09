@@ -6,7 +6,6 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import DATETIME_FORMAT, assert_layered_property_value
 
-
 WIKIBASE_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {

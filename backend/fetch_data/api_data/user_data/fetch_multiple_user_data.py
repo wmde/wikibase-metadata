@@ -5,7 +5,6 @@ from fetch_data.api_data.user_data.user_data_url import user_url
 from fetch_data.utils.fetch_data_from_api import fetch_api_data
 from model.database import WikibaseModel
 
-
 MULTIPLE_USER_QUERY_LIMIT = 50
 
 

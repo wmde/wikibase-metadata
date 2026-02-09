@@ -5,7 +5,6 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
-
 MERGE_SOFTWARE_MUTATION = """
 mutation MyMutation($baseId: Int!, $additionalId: Int!) {
   mergeSoftwareById(baseId: $baseId, additionalId: $additionalId)

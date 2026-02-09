@@ -12,7 +12,6 @@ from alembic import op
 from alembic_postgresql_enum import TableReference
 import sqlalchemy as sa
 
-
 # revision identifiers, used by Alembic.
 revision: str = "b60498d6c3b1"
 down_revision: Union[str, Sequence[str], None] = "4c8f9a2a1b2e"

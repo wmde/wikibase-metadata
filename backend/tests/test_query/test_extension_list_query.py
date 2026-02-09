@@ -6,7 +6,6 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta, DATETIME_FORMAT
 
-
 EXTENSION_LIST_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   extensionList(pageNumber: $pageNumber, pageSize: $pageSize) {

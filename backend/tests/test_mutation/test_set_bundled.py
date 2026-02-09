@@ -5,7 +5,6 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
-
 BUNDLE_SOFTWARE_MUTATION = """
 mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
   setExtensionWbsBundled(extensionId: $extensionId, bundled: $bundled)

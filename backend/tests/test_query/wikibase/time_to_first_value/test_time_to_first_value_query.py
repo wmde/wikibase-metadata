@@ -10,7 +10,6 @@ from tests.utils import (
 )
 from tests.utils.datetime_format import DATETIME_FORMAT
 
-
 WIKIBASE_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {

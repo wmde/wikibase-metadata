@@ -8,7 +8,6 @@ from tests.utils import (
     assert_page_meta,
 )
 
-
 AGGREGATED_PROPERTY_POPULARITY_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilterInput) {
   aggregatePropertyPopularity(

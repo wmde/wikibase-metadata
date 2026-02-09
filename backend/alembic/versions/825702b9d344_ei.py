@@ -16,7 +16,6 @@ from model.database import (
     WikibaseQuantityObservationModel,
 )
 
-
 # revision identifiers, used by Alembic.
 revision: str = "825702b9d344"
 down_revision: Union[str, None] = "9cbd76e2a3af"

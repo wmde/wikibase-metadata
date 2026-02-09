@@ -12,8 +12,7 @@ fragment WikibaseSoftwareVersionFragment
 """
 
 
-WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT = (
-    """
+WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT = """
 fragment WikibaseSoftwareVersionObservationFragment
  on WikibaseSoftwareVersionObservation {
   id
@@ -24,6 +23,4 @@ fragment WikibaseSoftwareVersionObservationFragment
   }
 }
 
-"""
-    + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
-)
+""" + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
