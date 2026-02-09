@@ -9,7 +9,6 @@ from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
 from resolvers import remove_wikibase_language
 
-
 REMOVE_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {
   removeWikibaseLanguage(language: $language, wikibaseId: $wikibaseId)

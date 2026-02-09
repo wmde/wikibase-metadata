@@ -6,7 +6,6 @@ import strawberry
 
 from model.strawberry.scalars import BigInt
 
-
 PageNumberType = Annotated[
     int, strawberry.argument(description="Page Number - 1-indexed")
 ]

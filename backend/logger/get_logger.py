@@ -8,7 +8,6 @@ import sys
 from config import log_directory, log_level
 from logger.extra_formatter import OptionalExtraFormatter
 
-
 os.makedirs(f"{log_directory}/{log_level.lower()}", exist_ok=True)
 os.makedirs(f"{log_directory}/error", exist_ok=True)
 

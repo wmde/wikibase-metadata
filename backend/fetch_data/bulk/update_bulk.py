@@ -27,7 +27,6 @@ from fetch_data.sparql_data import (
 from logger import logger
 from model.database.wikibase_model import WikibaseModel
 
-
 sem = asyncio.Semaphore(64)
 
 

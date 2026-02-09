@@ -4,7 +4,6 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
 
-
 AGGREGATED_QUANTITY_QUERY = """
 query MyQuery($wikibaseFilter: WikibaseFilterInput) {
   aggregateQuantity(wikibaseFilter: $wikibaseFilter) {

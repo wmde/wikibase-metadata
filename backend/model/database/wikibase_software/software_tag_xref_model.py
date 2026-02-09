@@ -4,7 +4,6 @@ from sqlalchemy import Column, ForeignKey, Table
 
 from model.database.base import ModelBase
 
-
 software_tag_xref_table = Table(
     "wikibase_software_tag_xref",
     ModelBase.metadata,

@@ -8,7 +8,6 @@ from fetch_data import create_user_observation
 from tests.test_schema import test_schema
 from tests.utils.mock_request import get_mock_context
 
-
 FETCH_USER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchUserData(wikibaseId: $wikibaseId)
 }"""

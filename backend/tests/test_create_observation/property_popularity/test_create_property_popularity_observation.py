@@ -8,7 +8,6 @@ from fetch_data import create_property_popularity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
-
 FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchPropertyPopularityData(wikibaseId: $wikibaseId)
 }"""

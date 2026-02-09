@@ -2,7 +2,6 @@
 
 import logging
 
-
 DEFAULT_ARGS = {
     "name",
     "msg",

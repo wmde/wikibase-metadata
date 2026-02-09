@@ -14,9 +14,7 @@ from tests.utils import (
     assert_property_value,
 )
 
-
-WIKIBASE_PROPERTY_POPULARITY_ALL_OBSERVATIONS_QUERY = (
-    """
+WIKIBASE_PROPERTY_POPULARITY_ALL_OBSERVATIONS_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -28,9 +26,7 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 
-"""
-    + WIKIBASE_PROPERTY_POPULARITY_OBSERVATION_FRAGMENT
-)
+""" + WIKIBASE_PROPERTY_POPULARITY_OBSERVATION_FRAGMENT
 
 
 @pytest.mark.asyncio

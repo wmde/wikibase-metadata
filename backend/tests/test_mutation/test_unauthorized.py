@@ -7,7 +7,6 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import MockRequest
 
-
 ADD_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($wikibaseId: Int!) {
   addWikibaseLanguage(language: "French", wikibaseId: $wikibaseId)

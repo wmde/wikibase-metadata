@@ -11,7 +11,6 @@ from tests.test_create_observation.software_version.test_constants import (
 from tests.mock_info import MockBackgroundClassList, MockInfo
 from tests.utils import MockRequest, MockResponse
 
-
 FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchVersionData(wikibaseId: $wikibaseId)
 }"""

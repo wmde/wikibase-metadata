@@ -7,7 +7,6 @@ from model.strawberry.output.observation.wikibase_observation import (
     WikibaseObservationStrawberryModel,
 )
 
-
 T = TypeVar("T", bound=WikibaseObservationStrawberryModel)
 
 
