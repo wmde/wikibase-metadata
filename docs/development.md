@@ -49,7 +49,7 @@ Inside the `frontend` directory:
 
 1. Install dependencies:
 ```bash
-$ npm i
+$ npm ci
 ```
 
 2. Start the app:
@@ -67,13 +67,13 @@ The UI should now be running on http://localhost:1573
 To run all non-data tests, run the following command:
 
 ```bash
-$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
+$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data"
 ```
 
 You can run just a specific test using: 
 
 ```bash
-$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query/<FILE_NAME>::<TEST_NAME> -m "not data"
+$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query/<FILE_NAME>::<TEST_NAME>
 ```
 
 To check test coverage when running tests:
