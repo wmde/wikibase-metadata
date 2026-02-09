@@ -3,7 +3,6 @@
 import configparser
 import os
 
-
 config = configparser.ConfigParser()
 config.read(os.environ.get("SETTINGS_FILE", "settings.ini"))
 

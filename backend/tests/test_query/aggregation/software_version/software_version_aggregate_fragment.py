@@ -11,8 +11,7 @@ fragment WikibaseSoftwareVersionAggregateFragment
 """
 
 
-SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT = (
-    """
+SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT = """
 fragment WikibaseSoftwareVersionDoubleAggregatePageFragment
  on WikibaseSoftwareVersionDoubleAggregatePage {
   meta {
@@ -45,6 +44,4 @@ fragment WikibaseSoftwareVersionDoubleAggregatePageFragment
   }
 }
 
-"""
-    + SOFTWARE_VERSION_AGGREGATE_FRAGMENT
-)
+""" + SOFTWARE_VERSION_AGGREGATE_FRAGMENT

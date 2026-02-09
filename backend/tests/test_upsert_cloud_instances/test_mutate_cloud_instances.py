@@ -12,7 +12,6 @@ from tests.utils import get_mock_context
 from tests.utils.assert_property_value import assert_layered_property_count
 from tests.utils.mock_response import MockResponse
 
-
 UPDATE_CLOUD_INSTANCES_MUTATION = """
 mutation MyMutation {
   updateCloudInstances

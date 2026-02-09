@@ -12,9 +12,7 @@ from tests.test_query.wikibase.connectivity_obs.connectivity_fragment import (
 from tests.test_schema import test_schema
 from tests.utils import assert_property_value
 
-
-WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY = (
-    """
+WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -26,9 +24,7 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 
-"""
-    + WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT
-)
+""" + WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT
 
 
 @freeze_time(datetime(2024, 4, 1))

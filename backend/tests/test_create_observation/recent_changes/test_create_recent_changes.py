@@ -19,7 +19,6 @@ from model.database import WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
-
 FETCH_RECENT_CHANGES_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchRecentChangesData(wikibaseId: $wikibaseId)
 }"""

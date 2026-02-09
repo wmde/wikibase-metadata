@@ -16,7 +16,6 @@ from model.database.wikibase_observation.log.wikibase_log_month_observation_mode
 )
 from model.enum import WikibaseUserType
 
-
 # revision identifiers, used by Alembic.
 revision: str = "e0cad634525c"
 down_revision: Union[str, None] = "d6c7d96ba079"
@@ -25,8 +24,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 WikibaseLogObservationModel = (
-    sa.text(
-        """
+    sa.text("""
 SELECT
     id,
     wikibase_id,
@@ -37,8 +35,7 @@ SELECT
     last_log_user_type,
     first_month_id,
     last_month_id
-FROM wikibase_log_observation"""
-    )
+FROM wikibase_log_observation""")
     .columns(
         sa.Column("id", sa.Integer, nullable=False),
         sa.Column("wikibase_id", sa.Integer, nullable=False),

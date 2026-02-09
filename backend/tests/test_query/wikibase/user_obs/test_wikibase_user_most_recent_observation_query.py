@@ -8,9 +8,7 @@ from tests.test_query.wikibase.user_obs.user_fragment import (
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_property_value
 
-
-WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY = (
-    """
+WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {
     id
@@ -22,9 +20,7 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 
-"""
-    + WIKIBASE_USER_OBSERVATION_FRAGMENT
-)
+""" + WIKIBASE_USER_OBSERVATION_FRAGMENT
 
 
 @pytest.mark.asyncio

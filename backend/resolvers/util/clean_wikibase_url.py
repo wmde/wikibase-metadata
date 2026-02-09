@@ -4,7 +4,6 @@ import re
 
 from model.enum import WikibaseURLType
 
-
 FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=/]+", re.IGNORECASE)
 
 

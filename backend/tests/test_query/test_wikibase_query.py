@@ -4,7 +4,6 @@ import pytest
 
 from tests.test_schema import test_schema
 
-
 WIKIBASE_QUERY = """
 query MyQuery($wikibaseId: Int!) {
   wikibase(wikibaseId: $wikibaseId) {

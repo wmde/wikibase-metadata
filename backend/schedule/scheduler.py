@@ -23,7 +23,6 @@ from fetch_data import (
 from logger import logger
 from resolvers.update import update_missing_script_paths, update_missing_sparql_urls
 
-
 # Set up the scheduler
 scheduler = AsyncIOScheduler()
 
