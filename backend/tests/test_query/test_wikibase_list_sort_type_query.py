@@ -3,7 +3,7 @@
 import pytest
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, assert_page_meta
+from tests.utils import assert_page_meta
 
 
 @pytest.mark.asyncio
