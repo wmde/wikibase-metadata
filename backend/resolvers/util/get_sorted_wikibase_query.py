@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from sqlalchemy import Select, and_, asc, desc, func, select
+from sqlalchemy import Select, and_, asc, desc, func, select, cast, String
 
 from model.database import (
     WikibaseModel,
@@ -125,12 +125,11 @@ def get_sorted_wikibase_query(
                 )
             )
 
-        # TODO: T411795, Fix Sorting by Type
         case SortColumn.TYPE:
             query = query.order_by(
-                asc("wb_type").nulls_last()
+                asc(cast(WikibaseModel.wikibase_type, String))
                 if sort_by.dir == SortDirection.ASC
-                else desc("wb_type").nulls_first()
+                else desc(cast(WikibaseModel.wikibase_type, String))
             )
 
     return query
