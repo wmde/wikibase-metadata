@@ -6,6 +6,7 @@ We aim to use this to guide future product development and engineering focus, as
 
 For more details, please see:
 
+- [Tool for viewing collected data](https://wikibase-metadata.wmcloud.org/)
 - [List of metrics currently tracked](docs/data-list.md)
 - [Data Retrieval Schedule](docs/data-schedule.md)
 - [Deployment documentation](docs/deployment.md)
