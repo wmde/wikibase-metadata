@@ -48,22 +48,26 @@ async def test_add_wikibase_mutation():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
-async def test_add_wikibase_ii_mutation():
-    """Test Add Another Wikibase"""
+@pytest.mark.dependency(
+    name="add-wikibase-with-existing-base-url", depends=["add-test-categories"], scope="session"
+)
+async def test_does_not_allow_multiple_wikibases_with_same_base_url():
+    """Test Can't Add Wikibase with existing base URL"""
+
+    base_url = "https://example-wikibase.com/"
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Mock Wikibase II",
-                "description": "Another Mock wikibase for testing this codebase",
-                "organization": "Wikibase Mockery International",
-                "country": "Germany",
-                "region": "Europe",
+                "wikibaseName": "Wikibase 1",
+                "description": "",
+                "organization": "",
+                "country": "",
+                "region": "",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": "https://mock-wikibase.com/",
+                    "baseUrl": base_url,
                     "articlePath": "wiki",
                 },
             }
@@ -72,4 +76,24 @@ async def test_add_wikibase_ii_mutation():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(result.data, ["addWikibase", "id"], "2")
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Wikibase 2",
+                "description": "",
+                "organization": "",
+                "country": "",
+                "region": "",
+                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                "urls": {
+                    "baseUrl": base_url,
+                    "articlePath": "wiki",
+                },
+            }
+        },
+    )
+
+    assert len(result.errors) == 1
+    assert f'URL {base_url} already exists' in result.errors[0].message
