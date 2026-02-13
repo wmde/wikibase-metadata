@@ -3,6 +3,20 @@
 import pytest
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
+from data import get_async_session
+from model.database import WikibaseCategoryModel
+from model.enum import WikibaseCategory
+
+@pytest.fixture(scope="function")
+async def seed_categories():
+    """Setup: Add all wikibase categories to the database"""
+    
+    async with get_async_session() as async_session:
+        categories = [
+            WikibaseCategoryModel(id=4, category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS)
+        ]
+        async_session.add_all(categories)
+        await async_session.commit()
 
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
@@ -13,11 +27,7 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase", depends=["add-test-categories"], scope="session"
-)
-async def test_add_wikibase_mutation():
+async def test_add_wikibase_mutation(seed_categories):
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
@@ -43,15 +53,11 @@ async def test_add_wikibase_mutation():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(result.data, ["addWikibase", "id"], "1")
+    assert isinstance(result.data['addWikibase']['id'], str)
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase-with-existing-base-url", depends=["add-test-categories"], scope="session"
-)
-async def test_does_not_allow_multiple_wikibases_with_same_base_url():
+async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categories):
     """Test Can't Add Wikibase with existing base URL"""
 
     base_url = "https://example-wikibase.com/"

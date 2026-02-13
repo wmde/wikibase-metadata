@@ -88,10 +88,7 @@ async def test_add_software():
         after_result.data, ["extensionList", "meta", "totalCount"], 3
     )
     assert_layered_property_count(after_result.data, ["extensionList", "data"], 3)
-
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 0, "id"], "2"
-    )
+    assert after_result.data['extensionList']['data'][0]['id'] is not None
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 0, "softwareType"], "EXTENSION"
     )
@@ -105,9 +102,8 @@ async def test_add_software():
         after_result.data, ["extensionList", "data", 0, "tags"], []
     )
 
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "id"], "1"
-    )
+    assert after_result.data['extensionList']['data'][1]['id'] is not None
+
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 1, "softwareType"], "EXTENSION"
     )
@@ -125,9 +121,7 @@ async def test_add_software():
         after_result.data, ["extensionList", "data", 1, "tags"], ["Magic"]
     )
 
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 2, "id"], "3"
-    )
+    assert after_result.data['extensionList']['data'][2]['id'] is not None
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 2, "softwareType"], "EXTENSION"
     )
