@@ -15,6 +15,7 @@ class WikibaseURLModel(ModelBase):
 
     __table_args__ = (
         UniqueConstraint("wikibase_id", "url_type", name="unique_wikibase_url_type"),
+        UniqueConstraint("url", name="unique_wikibase_url"),
     )
 
     id: Mapped[int] = mapped_column("id", Integer, primary_key=True, autoincrement=True)
