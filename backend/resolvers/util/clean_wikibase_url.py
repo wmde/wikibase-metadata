@@ -9,6 +9,7 @@ FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=/]+", re.IGNORECASE)
 
 
 def normalize_url(url: str) -> str:
+    """Normalize a URL"""
     if not url.startswith(("http://", "https://")):
         url = "http://" + url
 
@@ -32,11 +33,11 @@ def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
         assert FULL_URL_PATTERN.match(
             stripped_url
         ), f"{url_type} must be full URL, {stripped_url}"
-        
+
         return normalize_url(stripped_url)
-    else:
-        assert not FULL_URL_PATTERN.match(
-            stripped_url
-        ), f"{url_type} must not be full URL, {stripped_url}"
+
+    assert not FULL_URL_PATTERN.match(
+        stripped_url
+    ), f"{url_type} must not be full URL, {stripped_url}"
 
     return stripped_url

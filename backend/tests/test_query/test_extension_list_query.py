@@ -1,14 +1,10 @@
+# pylint: disable=redefined-outer-name
 """Test Wikibase List"""
 
 from datetime import datetime, timezone
 from typing import Optional
 import pytest
 from tests.test_schema import test_schema
-from tests.test_create_observation.software_version.test_constants import (
-    DATA_DIRECTORY,
-)
-from tests.utils import MockResponse
-from fetch_data import update_software_data
 from tests.utils import assert_layered_property_value, assert_page_meta, DATETIME_FORMAT
 from data import get_async_session
 from model.database import WikibaseSoftwareModel
@@ -17,10 +13,11 @@ from fetch_data.soup_data.software import (
     fetch_or_create_tags,
 )
 
+# pylint: disable=too-many-statements
 @pytest.fixture(scope="function")
 async def software_data():
     """Setup: Create test software/extension data directly in database"""
-    
+
     async with get_async_session() as async_session:
 
         fetched_time = datetime(2024, 3, 1, tzinfo=timezone.utc)
@@ -41,7 +38,7 @@ async def software_data():
         babel.tags = await fetch_or_create_tags(async_session, ["Parser function"])
         async_session.add(babel)
         await async_session.flush()
-        
+
         # Google Analytics Integration
         gai = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -57,7 +54,7 @@ async def software_data():
         gai.tags = await fetch_or_create_tags(async_session, ["Hook", "User activity"])
         async_session.add(gai)
         await async_session.flush()
-        
+
         # LabeledSectionTransclusion
         lst = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -72,7 +69,7 @@ async def software_data():
         lst.tags = await fetch_or_create_tags(async_session, ["Parser function", "Tag"])
         async_session.add(lst)
         await async_session.flush()
-        
+
         # Miraheze Magic
         mm = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -83,7 +80,7 @@ async def software_data():
         mm.tags = await fetch_or_create_tags(async_session, ["Magic", "extensionname"])
         async_session.add(mm)
         await async_session.flush()
-        
+
         # ProofreadPage
         pp = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -95,10 +92,16 @@ async def software_data():
         pp.data_fetched = fetched_time
         pp.latest_version = "Continuous updates"
         pp.mediawiki_bundled = False
-        pp.tags = await fetch_or_create_tags(async_session, ["API", "ContentHandler", "Database", "Page action", "Tag"])
+        pp.tags = await fetch_or_create_tags(async_session, [
+            "API",
+            "ContentHandler",
+            "Database",
+            "Page action",
+            "Tag"
+        ])
         async_session.add(pp)
         await async_session.flush()
-        
+
         # Scribunto
         scribunto = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -116,7 +119,7 @@ async def software_data():
         scribunto.tags = await fetch_or_create_tags(async_session, ["Parser extension"])
         async_session.add(scribunto)
         await async_session.flush()
-        
+
         # UniversalLanguageSelector
         uls = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -133,7 +136,7 @@ async def software_data():
         uls.tags = await fetch_or_create_tags(async_session, ["Beta Feature", "Skin"])
         async_session.add(uls)
         await async_session.flush()
-        
+
         # WikibaseClient
         wbc = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -147,7 +150,7 @@ async def software_data():
         wbc.tags = await fetch_or_create_tags(async_session, ["Ajax", "Parser function"])
         async_session.add(wbc)
         await async_session.flush()
-        
+
         # WikibaseLib
         wbl = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -162,7 +165,7 @@ async def software_data():
         wbl.tags = []
         async_session.add(wbl)
         await async_session.flush()
-        
+
         # WikibaseManifest
         wbm = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -177,7 +180,7 @@ async def software_data():
         wbm.tags = await fetch_or_create_tags(async_session, ["API"])
         async_session.add(wbm)
         await async_session.flush()
-        
+
         # WikibaseRepository
         wbr = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -192,7 +195,7 @@ async def software_data():
         wbr.tags = await fetch_or_create_tags(async_session, ["API", "Ajax", "ContentHandler"])
         async_session.add(wbr)
         await async_session.flush()
-        
+
         # WikibaseView
         wbv = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
@@ -204,7 +207,7 @@ async def software_data():
         wbv.tags = []
         async_session.add(wbv)
         await async_session.flush()
-        
+
         await async_session.commit()
 
 EXTENSION_LIST_QUERY = """
@@ -238,7 +241,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_extension_list_query(software_data):
+async def test_extension_list_query(software_data): # pylint: disable=unused-argument
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -460,9 +463,9 @@ async def test_extension_list_query(software_data):
 )
 # pylint: disable-next=too-many-arguments,too-many-positional-arguments
 async def test_extension_list_query_parameterized(
-    software_data,
+    software_data, # pylint: disable=unused-argument
     idx: int,
-    expected_id: str,
+    expected_id: str, # pylint: disable=unused-argument
     expected_name: str,
     expected_url: str,
     expected_archived: bool,

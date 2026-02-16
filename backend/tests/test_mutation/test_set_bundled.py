@@ -1,3 +1,4 @@
+# pylint: disable=redefined-outer-name
 """Test Merge Software"""
 
 import pytest
@@ -12,7 +13,7 @@ from model.enum import WikibaseSoftwareType
 @pytest.fixture(scope="function")
 async def test_extension():
     """Setup: Create a test extension in the database"""
-    
+
     async with get_async_session() as async_session:
         extension = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,

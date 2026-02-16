@@ -1,3 +1,4 @@
+# pylint: disable=redefined-outer-name
 """Test Upsert Cloud Instances"""
 
 import os
@@ -15,7 +16,7 @@ from tests.utils import MockResponse
 @pytest.fixture(scope="function")
 async def cloud_instance_data(mocker):
     """Setup: Insert initial cloud instance data before each test"""
-    
+
     with open(
         os.path.join(DATA_DIRECTORY, "instances-one.json"), "rb"
     ) as instances_json:
@@ -27,9 +28,9 @@ async def cloud_instance_data(mocker):
 
 
 @pytest.mark.asyncio
-async def test_insert_cloud_instances(cloud_instance_data):
+async def test_insert_cloud_instances(cloud_instance_data): # pylint: disable=unused-argument
     """Test initial cloud instance creation"""
-    
+
     async with get_async_session() as async_session:
         search = "%tcdict.wikibase.cloud%"
         stmt = (
@@ -38,7 +39,7 @@ async def test_insert_cloud_instances(cloud_instance_data):
             .where(WikibaseURLModel.url.like(search))
         )
         found = (await async_session.scalars(stmt)).one_or_none()
-        
+
         assert found is not None
         assert found.wikibase_name == "Teochew Dictionary"
         assert found.description is None
@@ -50,9 +51,9 @@ async def test_insert_cloud_instances(cloud_instance_data):
         assert found.sparql_endpoint_url.url == "https://tcdict.wikibase.cloud/query/sparql"
 
 @pytest.mark.asyncio
-async def test_update_cloud_instances(mocker, cloud_instance_data):
+async def test_update_cloud_instances(mocker, cloud_instance_data): # pylint: disable=unused-argument
     """Test updating an existing cloud instance"""
-    
+
     with open(
         os.path.join(DATA_DIRECTORY, "instances-one-updated.json"), "rb"
     ) as instances_json:
@@ -60,9 +61,9 @@ async def test_update_cloud_instances(mocker, cloud_instance_data):
             "requests.get",
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
-        
+
         await update_cloud_instances()
-        
+
         async with get_async_session() as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
@@ -71,7 +72,7 @@ async def test_update_cloud_instances(mocker, cloud_instance_data):
                 .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
-            
+
             assert found is not None
             assert found.wikibase_name == "Teochew Dictionary UPDATED"
             assert found.description == "A new description"
@@ -83,7 +84,7 @@ async def test_update_cloud_instances(mocker, cloud_instance_data):
             assert found.sparql_endpoint_url.url == "https://tcdict.wikibase.cloud/query/sparql"
 
 @pytest.mark.asyncio
-async def test_transform_to_cloud_instance(mocker, cloud_instance_data):
+async def test_transform_to_cloud_instance(mocker, cloud_instance_data): # pylint: disable=unused-argument
     """Test transforming a non-cloud instance to cloud instance"""
     async with get_async_session() as async_session:
         search = "%tcdict.wikibase.cloud%"
@@ -96,7 +97,7 @@ async def test_transform_to_cloud_instance(mocker, cloud_instance_data):
         assert found is not None
         found.wikibase_type = WikibaseType.SUITE
         await async_session.commit()
-    
+
     with open(
         os.path.join(DATA_DIRECTORY, "instances-one.json"), "rb"
     ) as instances_json:
@@ -104,9 +105,9 @@ async def test_transform_to_cloud_instance(mocker, cloud_instance_data):
             "requests.get",
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
-        
+
         await update_cloud_instances()
-        
+
         async with get_async_session() as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
@@ -115,7 +116,7 @@ async def test_transform_to_cloud_instance(mocker, cloud_instance_data):
                 .where(WikibaseURLModel.url.like(search))
             )
             found = (await async_session.scalars(stmt)).one_or_none()
-            
+
             assert found is not None
             assert found.wikibase_name == "Teochew Dictionary"
             assert found.description is None
