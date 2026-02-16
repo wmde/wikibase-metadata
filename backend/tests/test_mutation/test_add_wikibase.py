@@ -2,7 +2,6 @@
 
 import pytest
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value
 from data import get_async_session
 from model.database import WikibaseCategoryModel
 from model.enum import WikibaseCategory
@@ -73,7 +72,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categor
                 "region": "",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": base_url,
+                    f"baseUrl": base_url,
                     "articlePath": "wiki",
                 },
             }
@@ -94,7 +93,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categor
                 "region": "",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": base_url,
+                    f"baseUrl": base_url,
                     "articlePath": "wiki",
                 },
             }
@@ -102,4 +101,56 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categor
     )
 
     assert len(result.errors) == 1
-    assert f'URL {base_url} already exists' in result.errors[0].message
+    assert result.errors[0].message == f'URL {base_url} already exists'
+
+@pytest.mark.asyncio
+async def test_does_not_allow_multiple_wikibases_with_same_sparql(seed_categories):
+    """Test Can't Add Wikibase with existing sqarql URL"""
+
+    url_types = ['sparqlEndpointUrl', 'sparqlFrontendUrl']
+
+    for i, url_type in enumerate(url_types):
+        url = f"https://example.com/sparql{i}"
+        result = await test_schema.execute(
+            ADD_WIKIBASE_QUERY,
+            variable_values={
+                "wikibaseInput": {
+                    "wikibaseName": f"Wikibase {i}",
+                    "description": "",
+                    "organization": "",
+                    "country": "",
+                    "region": "",
+                    "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                    "urls": {
+                        "baseUrl": f"https://example{i}.com/",
+                        f"{url_type}": f"{url}",
+                        "articlePath": "wiki",
+                    },
+                }
+            },
+        )
+
+        assert result.errors is None
+        assert result.data is not None
+
+        result = await test_schema.execute(
+            ADD_WIKIBASE_QUERY,
+            variable_values={
+                "wikibaseInput": {
+                    "wikibaseName": f"Wikibase {i}a",
+                    "description": "",
+                    "organization": "",
+                    "country": "",
+                    "region": "",
+                    "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                    "urls": {
+                        "baseUrl": f"https://example2{i}b.com/",
+                        f"{url_type}": f"{url}",
+                        "articlePath": "wiki",
+                    },
+                }
+            },
+        )
+
+        assert len(result.errors) == 1
+        assert result.errors[0].message == f'URL {url} already exists'
