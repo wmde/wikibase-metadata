@@ -59,7 +59,7 @@ async def test_add_wikibase_mutation(seed_categories):
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categories):
     """Test Can't Add Wikibase with existing base URL"""
 
-    base_url = "https://example-wikibase.com/"
+    base_url = "https://example-wikibase.com"
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
@@ -104,7 +104,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categor
     assert result.errors[0].message == f'URL {base_url} already exists'
 
 @pytest.mark.asyncio
-async def test_does_not_allow_multiple_wikibases_with_same_sparql(seed_categories):
+async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(seed_categories):
     """Test Can't Add Wikibase with existing sqarql URL"""
 
     url_types = ['sparqlEndpointUrl', 'sparqlFrontendUrl']
@@ -115,14 +115,14 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql(seed_categorie
             ADD_WIKIBASE_QUERY,
             variable_values={
                 "wikibaseInput": {
-                    "wikibaseName": f"Wikibase {i}",
+                    "wikibaseName": f"Wikibase {i} A",
                     "description": "",
                     "organization": "",
                     "country": "",
                     "region": "",
                     "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                     "urls": {
-                        "baseUrl": f"https://example{i}.com/",
+                        "baseUrl": f"https://example{i}.com",
                         f"{url_type}": f"{url}",
                         "articlePath": "wiki",
                     },
@@ -137,14 +137,14 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql(seed_categorie
             ADD_WIKIBASE_QUERY,
             variable_values={
                 "wikibaseInput": {
-                    "wikibaseName": f"Wikibase {i}a",
+                    "wikibaseName": f"Wikibase {i} B",
                     "description": "",
                     "organization": "",
                     "country": "",
                     "region": "",
                     "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                     "urls": {
-                        "baseUrl": f"https://example2{i}b.com/",
+                        "baseUrl": f"https://example2{i}.com",
                         f"{url_type}": f"{url}",
                         "articlePath": "wiki",
                     },
@@ -154,3 +154,59 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql(seed_categorie
 
         assert len(result.errors) == 1
         assert result.errors[0].message == f'URL {url} already exists'
+
+@pytest.mark.asyncio
+async def test_normalizes_urls(seed_categories):
+    """Test Add Wikibase"""
+
+    base_url = "example.com"
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Mock Wikibase",
+                "description": "Mock wikibase for testing this codebase",
+                "organization": "Wikibase Mockery International",
+                "country": "Germany",
+                "region": "Europe",
+                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                "urls": {
+                    "baseUrl": f"http://{base_url}",
+                    "articlePath": "/wiki",
+                },
+            }
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    url_variations = [
+        f"https://{base_url}",
+        f"http://{base_url}/",
+        f"https://{base_url}/",
+    ]
+
+    for i, url in enumerate(url_variations):
+        result = await test_schema.execute(
+            ADD_WIKIBASE_QUERY,
+            variable_values={
+                "wikibaseInput": {
+                    "wikibaseName": f"Wikibase {i}",
+                    "description": "",
+                    "organization": "",
+                    "country": "",
+                    "region": "",
+                    "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                    "urls": {
+                        "baseUrl": url,
+                        "articlePath": "wiki",
+                    },
+                }
+            },
+        )
+
+        assert result.errors is not None, f"Expected error for duplicate URL: {url}"
+        assert len(result.errors) == 1
+        assert result.errors[0].message == f'URL https://{base_url} already exists'
