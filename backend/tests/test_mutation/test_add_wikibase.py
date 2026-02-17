@@ -3,23 +3,6 @@
 
 import pytest
 from tests.test_schema import test_schema
-from data import get_async_session
-from model.database import WikibaseCategoryModel
-from model.enum import WikibaseCategory
-
-
-@pytest.fixture(scope="function")
-async def seed_categories():
-    """Setup: Add all wikibase categories to the database"""
-
-    async with get_async_session() as async_session:
-        categories = [
-            WikibaseCategoryModel(
-                id=4, category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
-            )
-        ]
-        async_session.add_all(categories)
-        await async_session.commit()
 
 
 ADD_WIKIBASE_QUERY = """
@@ -32,7 +15,7 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
 
 @pytest.mark.asyncio
 async def test_add_wikibase_mutation(
-    seed_categories,
+    db_session,
 ):  # pylint: disable=unused-argument
     """Test Add Wikibase"""
 
@@ -40,7 +23,7 @@ async def test_add_wikibase_mutation(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Mock Wikibase",
+                "wikibaseName": "Mock Wikibase Add",
                 "description": "Mock wikibase for testing this codebase",
                 "organization": "Wikibase Mockery International",
                 "country": "Germany",
@@ -64,7 +47,7 @@ async def test_add_wikibase_mutation(
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
-    seed_categories,
+    db_session,
 ):  # pylint: disable=unused-argument
     """Test Can't Add Wikibase with existing base URL"""
 
@@ -74,7 +57,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Wikibase 1",
+                "wikibaseName": "Wikibase Add",
                 "description": "",
                 "organization": "",
                 "country": "",
@@ -95,7 +78,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Wikibase 2",
+                "wikibaseName": "Wikibase Add 2",
                 "description": "",
                 "organization": "",
                 "country": "",
@@ -115,7 +98,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
-    seed_categories,
+    db_session,
 ):  # pylint: disable=unused-argument
     """Test Can't Add Wikibase with existing sqarql URL"""
 
@@ -169,10 +152,10 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
 
 
 @pytest.mark.asyncio
-async def test_normalizes_urls(seed_categories):  # pylint: disable=unused-argument
+async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
     """Test Add Wikibase"""
 
-    base_url = "example.com"
+    base_url = "example-1234.com"
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,

@@ -6,7 +6,7 @@ from data.database_connection import async_engine
 from unittest.mock import patch
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 async def db_session():
     """Each test runs in a transaction that gets rolled back"""
     async with async_engine.connect() as connection:
