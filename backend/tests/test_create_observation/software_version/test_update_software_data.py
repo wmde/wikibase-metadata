@@ -14,6 +14,11 @@ from tests.utils import MockResponse
 
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
+@pytest.mark.dependency(
+    name="update-software-data",
+    depends=["software-version-success", "merge-software-by-id"],
+    scope="session",
+)
 @pytest.mark.version
 async def test_update_software_data(mocker):
     """Test Update Software Data"""
