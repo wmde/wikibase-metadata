@@ -7,6 +7,7 @@ from data import get_async_session
 from model.database import WikibaseCategoryModel
 from model.enum import WikibaseCategory
 
+
 @pytest.fixture(scope="function")
 async def seed_categories():
     """Setup: Add all wikibase categories to the database"""
@@ -14,12 +15,12 @@ async def seed_categories():
     async with get_async_session() as async_session:
         categories = [
             WikibaseCategoryModel(
-                id=4,
-                category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+                id=4, category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
             )
         ]
         async_session.add_all(categories)
         await async_session.commit()
+
 
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
@@ -30,7 +31,9 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
 
 
 @pytest.mark.asyncio
-async def test_add_wikibase_mutation(seed_categories): # pylint: disable=unused-argument
+async def test_add_wikibase_mutation(
+    seed_categories,
+):  # pylint: disable=unused-argument
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
@@ -56,11 +59,13 @@ async def test_add_wikibase_mutation(seed_categories): # pylint: disable=unused-
 
     assert result.errors is None
     assert result.data is not None
-    assert isinstance(result.data['addWikibase']['id'], str)
+    assert isinstance(result.data["addWikibase"]["id"], str)
 
 
 @pytest.mark.asyncio
-async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categories): # pylint: disable=unused-argument
+async def test_does_not_allow_multiple_wikibases_with_same_base_url(
+    seed_categories,
+):  # pylint: disable=unused-argument
     """Test Can't Add Wikibase with existing base URL"""
 
     base_url = "https://example-wikibase.com"
@@ -105,13 +110,16 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(seed_categor
     )
 
     assert len(result.errors) == 1
-    assert result.errors[0].message == f'URL {base_url} already exists'
+    assert result.errors[0].message == f"URL {base_url} already exists"
+
 
 @pytest.mark.asyncio
-async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(seed_categories): # pylint: disable=unused-argument
+async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
+    seed_categories,
+):  # pylint: disable=unused-argument
     """Test Can't Add Wikibase with existing sqarql URL"""
 
-    url_types = ['sparqlEndpointUrl', 'sparqlFrontendUrl']
+    url_types = ["sparqlEndpointUrl", "sparqlFrontendUrl"]
 
     for i, url_type in enumerate(url_types):
         url = f"https://example.com/sparql{i}"
@@ -157,10 +165,11 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(seed_categ
         )
 
         assert len(result.errors) == 1
-        assert result.errors[0].message == f'URL {url} already exists'
+        assert result.errors[0].message == f"URL {url} already exists"
+
 
 @pytest.mark.asyncio
-async def test_normalizes_urls(seed_categories): # pylint: disable=unused-argument
+async def test_normalizes_urls(seed_categories):  # pylint: disable=unused-argument
     """Test Add Wikibase"""
 
     base_url = "example.com"
@@ -213,4 +222,4 @@ async def test_normalizes_urls(seed_categories): # pylint: disable=unused-argume
 
         assert result.errors is not None, f"Expected error for duplicate URL: {url}"
         assert len(result.errors) == 1
-        assert result.errors[0].message == f'URL https://{base_url} already exists'
+        assert result.errors[0].message == f"URL https://{base_url} already exists"

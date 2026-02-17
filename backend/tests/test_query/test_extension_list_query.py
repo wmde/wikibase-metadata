@@ -1,4 +1,4 @@
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name,line-too-long
 """Test Wikibase List"""
 
 from datetime import datetime, timezone
@@ -12,6 +12,7 @@ from model.enum import WikibaseSoftwareType
 from fetch_data.soup_data.software import (
     fetch_or_create_tags,
 )
+
 
 # pylint: disable=too-many-statements
 @pytest.fixture(scope="function")
@@ -44,7 +45,9 @@ async def software_data():
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="Google Analytics Integration",
         )
-        gai.url = "https://www.mediawiki.org/wiki/Extension:Google_Analytics_Integration"
+        gai.url = (
+            "https://www.mediawiki.org/wiki/Extension:Google_Analytics_Integration"
+        )
         gai.archived = False
         gai.description = "Automatically inserts Google Universal Analytics (and/or other web analytics) tracking code at the bottom of MediaWiki pages"
         gai.data_fetched = fetched_time
@@ -60,7 +63,9 @@ async def software_data():
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="LabeledSectionTransclusion",
         )
-        lst.url = "https://www.mediawiki.org/wiki/Extension:Labeled_Section_Transclusion"
+        lst.url = (
+            "https://www.mediawiki.org/wiki/Extension:Labeled_Section_Transclusion"
+        )
         lst.archived = False
         lst.description = "Enables marked sections of text to be transcluded"
         lst.data_fetched = fetched_time
@@ -92,13 +97,9 @@ async def software_data():
         pp.data_fetched = fetched_time
         pp.latest_version = "Continuous updates"
         pp.mediawiki_bundled = False
-        pp.tags = await fetch_or_create_tags(async_session, [
-            "API",
-            "ContentHandler",
-            "Database",
-            "Page action",
-            "Tag"
-        ])
+        pp.tags = await fetch_or_create_tags(
+            async_session, ["API", "ContentHandler", "Database", "Page action", "Tag"]
+        )
         async_session.add(pp)
         await async_session.flush()
 
@@ -147,7 +148,9 @@ async def software_data():
         wbc.description = "Client for structured data repository"
         wbc.data_fetched = fetched_time
         wbc.mediawiki_bundled = False
-        wbc.tags = await fetch_or_create_tags(async_session, ["Ajax", "Parser function"])
+        wbc.tags = await fetch_or_create_tags(
+            async_session, ["Ajax", "Parser function"]
+        )
         async_session.add(wbc)
         await async_session.flush()
 
@@ -192,7 +195,9 @@ async def software_data():
         wbr.data_fetched = fetched_time
         wbr.latest_version = "Continuous updates"
         wbr.mediawiki_bundled = False
-        wbr.tags = await fetch_or_create_tags(async_session, ["API", "Ajax", "ContentHandler"])
+        wbr.tags = await fetch_or_create_tags(
+            async_session, ["API", "Ajax", "ContentHandler"]
+        )
         async_session.add(wbr)
         await async_session.flush()
 
@@ -209,6 +214,7 @@ async def software_data():
         await async_session.flush()
 
         await async_session.commit()
+
 
 EXTENSION_LIST_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
@@ -241,7 +247,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_extension_list_query(software_data): # pylint: disable=unused-argument
+async def test_extension_list_query(software_data):  # pylint: disable=unused-argument
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -463,9 +469,9 @@ async def test_extension_list_query(software_data): # pylint: disable=unused-arg
 )
 # pylint: disable-next=too-many-arguments,too-many-positional-arguments
 async def test_extension_list_query_parameterized(
-    software_data, # pylint: disable=unused-argument
+    software_data,  # pylint: disable=unused-argument
     idx: int,
-    expected_id: str, # pylint: disable=unused-argument
+    expected_id: str,  # pylint: disable=unused-argument
     expected_name: str,
     expected_url: str,
     expected_archived: bool,

@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from data.database_connection import async_engine
 from unittest.mock import patch
 
+
 @pytest.fixture(autouse=True)
 async def db_session():
     """Each test runs in a transaction that gets rolled back"""
@@ -20,7 +21,7 @@ async def db_session():
             )
 
             # Patch the session maker in your database module
-            with patch('data.database_connection.async_session', test_session_local):
+            with patch("data.database_connection.async_session", test_session_local):
                 yield connection
 
             # Rollback happens automatically when context exits

@@ -13,6 +13,7 @@ from fetch_data.soup_data.software import (
     fetch_or_create_tags,
 )
 
+
 @pytest.fixture(scope="function")
 async def test_software():
     """Setup: Create test software extensions in the database"""
@@ -65,8 +66,8 @@ async def test_merge_software_by_id_mutation(test_software):
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
         variable_values={
-            "baseId": test_software['first_id'],
-            "additionalId": test_software['third_id']
+            "baseId": test_software["first_id"],
+            "additionalId": test_software["third_id"],
         },
         context_value=get_mock_context("test-auth-token"),
     )
@@ -77,7 +78,9 @@ async def test_merge_software_by_id_mutation(test_software):
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-async def test_merge_software_by_id_mutation_fail_same_id(test_software): # pylint: disable=unused-argument
+async def test_merge_software_by_id_mutation_fail_same_id(
+    test_software,
+):  # pylint: disable=unused-argument
     """Test Merge Software by ID - Same IDs"""
 
     result = await test_schema.execute(
@@ -96,7 +99,7 @@ async def test_merge_software_by_id_mutation_fail_not_found(test_software):
 
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": test_software['first_id'], "additionalId": 999999},
+        variable_values={"baseId": test_software["first_id"], "additionalId": 999999},
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is not None

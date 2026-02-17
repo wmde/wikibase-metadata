@@ -28,7 +28,9 @@ async def cloud_instance_data(mocker):
 
 
 @pytest.mark.asyncio
-async def test_insert_cloud_instances(cloud_instance_data): # pylint: disable=unused-argument
+async def test_insert_cloud_instances(
+    cloud_instance_data,
+):  # pylint: disable=unused-argument
     """Test initial cloud instance creation"""
 
     async with get_async_session() as async_session:
@@ -48,10 +50,16 @@ async def test_insert_cloud_instances(cloud_instance_data): # pylint: disable=un
         assert found.script_path.url == "/w"
         assert found.article_path.url == "/wiki"
         assert found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
-        assert found.sparql_endpoint_url.url == "https://tcdict.wikibase.cloud/query/sparql"
+        assert (
+            found.sparql_endpoint_url.url
+            == "https://tcdict.wikibase.cloud/query/sparql"
+        )
+
 
 @pytest.mark.asyncio
-async def test_update_cloud_instances(mocker, cloud_instance_data): # pylint: disable=unused-argument
+async def test_update_cloud_instances(
+    mocker, cloud_instance_data
+):  # pylint: disable=unused-argument
     """Test updating an existing cloud instance"""
 
     with open(
@@ -80,11 +88,19 @@ async def test_update_cloud_instances(mocker, cloud_instance_data): # pylint: di
             assert found.url.url == "https://tcdict.wikibase.cloud"
             assert found.script_path.url == "/w"
             assert found.article_path.url == "/wiki"
-            assert found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
-            assert found.sparql_endpoint_url.url == "https://tcdict.wikibase.cloud/query/sparql"
+            assert (
+                found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
+            )
+            assert (
+                found.sparql_endpoint_url.url
+                == "https://tcdict.wikibase.cloud/query/sparql"
+            )
+
 
 @pytest.mark.asyncio
-async def test_transform_to_cloud_instance(mocker, cloud_instance_data): # pylint: disable=unused-argument
+async def test_transform_to_cloud_instance(
+    mocker, cloud_instance_data
+):  # pylint: disable=unused-argument
     """Test transforming a non-cloud instance to cloud instance"""
     async with get_async_session() as async_session:
         search = "%tcdict.wikibase.cloud%"
@@ -124,5 +140,10 @@ async def test_transform_to_cloud_instance(mocker, cloud_instance_data): # pylin
             assert found.url.url == "https://tcdict.wikibase.cloud"
             assert found.script_path.url == "/w"
             assert found.article_path.url == "/wiki"
-            assert found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
-            assert found.sparql_endpoint_url.url == "https://tcdict.wikibase.cloud/query/sparql"
+            assert (
+                found.sparql_frontend_url.url == "https://tcdict.wikibase.cloud/query/"
+            )
+            assert (
+                found.sparql_endpoint_url.url
+                == "https://tcdict.wikibase.cloud/query/sparql"
+            )

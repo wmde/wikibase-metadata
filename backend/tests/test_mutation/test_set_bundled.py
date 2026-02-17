@@ -16,14 +16,14 @@ async def test_extension():
 
     async with get_async_session() as async_session:
         extension = WikibaseSoftwareModel(
-            software_type=WikibaseSoftwareType.EXTENSION,
-            software_name="something"
+            software_type=WikibaseSoftwareType.EXTENSION, software_name="something"
         )
         extension.id = 3
         async_session.add(extension)
         await async_session.commit()
 
         return extension.id
+
 
 BUNDLE_SOFTWARE_MUTATION = """
 mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
