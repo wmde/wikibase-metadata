@@ -12,11 +12,11 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
 }"""
 
 
+@pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
     name="add-wikibase", depends=["add-test-categories"], scope="session"
 )
-@pytest.mark.asyncio
 async def test_add_wikibase_mutation():
     """Test Add Wikibase"""
 
@@ -98,6 +98,8 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
 async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
     db_session,
 ):  # pylint: disable=unused-argument
