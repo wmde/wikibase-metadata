@@ -45,6 +45,33 @@ async def test_add_wikibase_mutation():
     assert result.data is not None
     assert isinstance(result.data["addWikibase"]["id"], str)
 
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
+async def test_add_wikibase_ii_mutation():
+    """Test Add Another Wikibase"""
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Mock Wikibase II",
+                "description": "Another Mock wikibase for testing this codebase",
+                "organization": "Wikibase Mockery International",
+                "country": "Germany",
+                "region": "Europe",
+                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                "urls": {
+                    "baseUrl": "https://mock-wikibase.com/",
+                    "articlePath": "wiki",
+                },
+            }
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert isinstance(result.data["addWikibase"]["id"], str)
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
@@ -98,8 +125,6 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
 async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
     db_session,
 ):  # pylint: disable=unused-argument
