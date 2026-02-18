@@ -161,7 +161,7 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Mock Wikibase",
+                "wikibaseName": "Mock Wikibase Normalize",
                 "description": "Mock wikibase for testing this codebase",
                 "organization": "Wikibase Mockery International",
                 "country": "Germany",
