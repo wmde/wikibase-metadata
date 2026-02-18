@@ -183,7 +183,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
 
 @pytest.mark.asyncio
 async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
-    """Test Add Wikibase"""
+    """Test Normalizes the base URL when adding a Wikibase"""
 
     base_url = "example-1234.com"
 
