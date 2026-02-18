@@ -4,7 +4,6 @@
 import pytest
 from tests.test_schema import test_schema
 
-
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
   addWikibase(wikibaseInput: $wikibaseInput) {
@@ -12,18 +11,19 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
   }
 }"""
 
-
+@pytest.mark.mutation
+@pytest.mark.dependency(
+    name="add-wikibase", depends=["add-test-categories"], scope="session"
+)
 @pytest.mark.asyncio
-async def test_add_wikibase_mutation(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_add_wikibase_mutation():
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Mock Wikibase Add",
+                "wikibaseName": "Mock Wikibase",
                 "description": "Mock wikibase for testing this codebase",
                 "organization": "Wikibase Mockery International",
                 "country": "Germany",
@@ -203,6 +203,5 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
             },
         )
 
-        assert result.errors is not None, f"Expected error for duplicate URL: {url}"
         assert len(result.errors) == 1
         assert result.errors[0].message == f"URL https://{base_url} already exists"
