@@ -81,7 +81,7 @@ async def test_add_wikibase_script_path():
     assert_layered_property_value(
         after_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com/",
+        expected_value="https://example.com",
     )
     assert_layered_property_value(
         after_adding_result.data,

@@ -11,6 +11,7 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
   }
 }"""
 
+
 @pytest.mark.mutation
 @pytest.mark.dependency(
     name="add-wikibase", depends=["add-test-categories"], scope="session"
