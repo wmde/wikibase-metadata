@@ -59,7 +59,7 @@ async def test_wikibase_list_query():
     )
 
     for url_name, url in [
-        ("baseUrl", "https://example.com/"),
+        ("baseUrl", "https://example.com"),
         ("actionApi", "https://example.com/w/api.php"),
         ("articlePath", "/wiki"),
         ("indexApi", "https://example.com/w/index.php"),
@@ -132,7 +132,7 @@ async def test_wikibase_list_query_page_two():
     assert_layered_property_value(result_datum, ["languages", "additional"], [])
 
     for url_name, url in [
-        ("baseUrl", "https://mock-wikibase.com/"),
+        ("baseUrl", "https://mock-wikibase.com"),
         # ("actionApi", "https://mock-wikibase.com/w/api.php"),
         ("articlePath", "wiki"),
         # ("indexApi", "https://mock-wikibase.com/w/index.php"),

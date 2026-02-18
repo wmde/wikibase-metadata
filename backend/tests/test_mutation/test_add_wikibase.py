@@ -45,6 +45,7 @@ async def test_add_wikibase_mutation():
     assert result.data is not None
     assert isinstance(result.data["addWikibase"]["id"], str)
 
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
@@ -72,6 +73,7 @@ async def test_add_wikibase_ii_mutation():
     assert result.errors is None
     assert result.data is not None
     assert isinstance(result.data["addWikibase"]["id"], str)
+
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
