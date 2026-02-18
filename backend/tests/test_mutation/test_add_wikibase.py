@@ -3,6 +3,7 @@
 
 import pytest
 from tests.test_schema import test_schema
+from tests.utils import assert_layered_property_value
 
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
@@ -43,7 +44,7 @@ async def test_add_wikibase_mutation():
 
     assert result.errors is None
     assert result.data is not None
-    assert isinstance(result.data["addWikibase"]["id"], str)
+    assert_layered_property_value(result.data, ["addWikibase", "id"], "1")
 
 
 @pytest.mark.asyncio
@@ -72,7 +73,7 @@ async def test_add_wikibase_ii_mutation():
 
     assert result.errors is None
     assert result.data is not None
-    assert isinstance(result.data["addWikibase"]["id"], str)
+    assert result.data["addWikibase"]["id"] == "2"
 
 
 @pytest.mark.asyncio

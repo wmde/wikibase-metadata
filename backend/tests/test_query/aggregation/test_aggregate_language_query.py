@@ -99,12 +99,12 @@ async def test_aggregate_languages_query():
     [
         ([], 7),
         (["CLOUD"], 7),
-        (["OTHER"], 6),
+        (["OTHER"], 7),
         (["SUITE"], 1),
-        (["CLOUD", "OTHER"], 6),
+        (["CLOUD", "OTHER"], 7),
         (["CLOUD", "SUITE"], 1),
-        (["OTHER", "SUITE"], 0),
-        (["CLOUD", "OTHER", "SUITE"], 0),
+        (["OTHER", "SUITE"], 1),
+        (["CLOUD", "OTHER", "SUITE"], 1),
     ],
 )
 @pytest.mark.user

@@ -1,6 +1,8 @@
+# pylint: disable=redefined-outer-name
 """Test Update Primary Language"""
 
 import pytest
+import pytest_asyncio
 
 from tests.test_schema import test_schema
 from tests.test_mutation.test_update_wikibase_language.query import (
@@ -14,6 +16,51 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
   updateWikibasePrimaryLanguage(language: $language, wikibaseId: $wikibaseId)
 }"""
 
+@pytest_asyncio.fixture(scope="function")
+async def get_test_wikibase_id():
+    """Get the ID of a wikibase that exists in the DB"""
+    result = await test_schema.execute(
+        """
+        query {
+          wikibaseList(pageNumber: 1, pageSize: 1) {
+            data {
+              id
+            }
+          }
+        }
+        """
+    )
+    assert result.errors is None
+    assert result.data is not None
+    return int(result.data["wikibaseList"]["data"][0]["id"])
+
+@pytest_asyncio.fixture(scope="function")
+async def get_wikibase_without_primary_language():
+    """Get the ID of a wikibase that has no primary language"""
+    list_result = await test_schema.execute(
+        """
+        query {
+          wikibaseList(pageNumber: 1, pageSize: 100) {
+            data {
+              id
+              languages {
+                primary
+              }
+            }
+          }
+        }
+        """
+    )
+    assert list_result.errors is None
+    assert list_result.data is not None
+
+    # Find first wikibase without primary language
+    for wikibase in list_result.data["wikibaseList"]["data"]:
+        if wikibase["languages"]["primary"] is None:
+            return int(wikibase["id"])
+
+    pytest.fail("No wikibase found without primary language")
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
@@ -22,20 +69,22 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
     depends=["remove-wikibase-language-2"],
     scope="session",
 )
-async def test_update_wikibase_primary_language_to_current_additional():
+async def test_update_wikibase_primary_language_to_current_additional(get_test_wikibase_id):
     """
     Test Updating Primary Language
 
     Primary exists; new Primary already listed in Additional
     """
 
+    wikibase_id = get_test_wikibase_id
+
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
     assert_layered_property_value(
-        before_updating_result.data, ["wikibase", "id"], expected_value="1"
+        before_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -58,12 +107,12 @@ async def test_update_wikibase_primary_language_to_current_additional():
     assert update_result.data["updateWikibasePrimaryLanguage"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
     assert_layered_property_value(
-        after_updating_result.data, ["wikibase", "id"], expected_value="1"
+        after_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         after_updating_result.data,
@@ -84,20 +133,22 @@ async def test_update_wikibase_primary_language_to_current_additional():
     depends=["update-wikibase-primary-language-1"],
     scope="session",
 )
-async def test_update_wikibase_primary_language_to_new():
+async def test_update_wikibase_primary_language_to_new(get_test_wikibase_id):
     """
     Test Updating Primary Language
 
     Primary exists; new Primary not listed in Additional
     """
 
+    wikibase_id = get_test_wikibase_id
+
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
     assert_layered_property_value(
-        before_updating_result.data, ["wikibase", "id"], expected_value="1"
+        before_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -114,12 +165,12 @@ async def test_update_wikibase_primary_language_to_new():
     assert update_result
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
     assert_layered_property_value(
-        after_updating_result.data, ["wikibase", "id"], expected_value="1"
+        after_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         after_updating_result.data,
@@ -140,20 +191,21 @@ async def test_update_wikibase_primary_language_to_new():
     depends=["update-wikibase-primary-language-2"],
     scope="session",
 )
-async def test_update_wikibase_primary_language_to_same():
+async def test_update_wikibase_primary_language_to_same(get_test_wikibase_id):
     """
     Test Updating Primary Language
 
     Primary exists; new Primary same as Primary
     """
 
+    wikibase_id = get_test_wikibase_id
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
     assert_layered_property_value(
-        before_updating_result.data, ["wikibase", "id"], expected_value="1"
+        before_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -170,12 +222,12 @@ async def test_update_wikibase_primary_language_to_same():
     assert update_result
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
     assert_layered_property_value(
-        after_updating_result.data, ["wikibase", "id"], expected_value="1"
+        after_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         after_updating_result.data,
@@ -196,20 +248,22 @@ async def test_update_wikibase_primary_language_to_same():
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_new_primary_language():
+async def test_update_wikibase_new_primary_language(get_wikibase_without_primary_language):
     """
     Test Updating Primary Language
 
     Primary does not exist
     """
 
+    wikibase_id = get_wikibase_without_primary_language
+
     before_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 5}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
     assert_layered_property_value(
-        before_updating_result.data, ["wikibase", "id"], expected_value="5"
+        before_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -222,16 +276,16 @@ async def test_update_wikibase_new_primary_language():
         expected_value=[],
     )
 
-    update_result = await update_wikibase_primary_language(5, "Íslenska")
+    update_result = await update_wikibase_primary_language(wikibase_id, "Íslenska")
     assert update_result
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 5}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
     assert_layered_property_value(
-        after_updating_result.data, ["wikibase", "id"], expected_value="5"
+        after_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
     )
     assert_layered_property_value(
         after_updating_result.data,
