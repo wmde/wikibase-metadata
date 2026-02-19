@@ -16,11 +16,11 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
   updateWikibasePrimaryLanguage(language: $language, wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest_asyncio.fixture(scope="function")
 async def get_test_wikibase_id():
     """Get the ID of a wikibase that exists in the DB"""
-    result = await test_schema.execute(
-        """
+    result = await test_schema.execute("""
         query {
           wikibaseList(pageNumber: 1, pageSize: 1) {
             data {
@@ -28,17 +28,16 @@ async def get_test_wikibase_id():
             }
           }
         }
-        """
-    )
+        """)
     assert result.errors is None
     assert result.data is not None
     return int(result.data["wikibaseList"]["data"][0]["id"])
 
+
 @pytest_asyncio.fixture(scope="function")
 async def get_wikibase_without_primary_language():
     """Get the ID of a wikibase that has no primary language"""
-    list_result = await test_schema.execute(
-        """
+    list_result = await test_schema.execute("""
         query {
           wikibaseList(pageNumber: 1, pageSize: 100) {
             data {
@@ -49,8 +48,7 @@ async def get_wikibase_without_primary_language():
             }
           }
         }
-        """
-    )
+        """)
     assert list_result.errors is None
     assert list_result.data is not None
 
@@ -69,7 +67,9 @@ async def get_wikibase_without_primary_language():
     depends=["remove-wikibase-language-2"],
     scope="session",
 )
-async def test_update_wikibase_primary_language_to_current_additional(get_test_wikibase_id):
+async def test_update_wikibase_primary_language_to_current_additional(
+    get_test_wikibase_id,
+):
     """
     Test Updating Primary Language
 
@@ -248,7 +248,9 @@ async def test_update_wikibase_primary_language_to_same(get_test_wikibase_id):
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_new_primary_language(get_wikibase_without_primary_language):
+async def test_update_wikibase_new_primary_language(
+    get_wikibase_without_primary_language,
+):
     """
     Test Updating Primary Language
 

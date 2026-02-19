@@ -22,12 +22,13 @@ mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
   updateWikibaseType(wikibaseId: $wikibaseId, wikibaseType: $wikibaseType)
 }"""
 
+
 @pytest_asyncio.fixture(scope="function")
 def get_test_wikibase_id():
     """Get the ID of a wikibase that exists in the DB, optionally filtered by type"""
+
     async def _get_id(wikibase_type=None):
-        result = await test_schema.execute(
-            """
+        result = await test_schema.execute("""
             query {
               wikibaseList(pageNumber: 1, pageSize: 100) {
                 data {
@@ -36,8 +37,7 @@ def get_test_wikibase_id():
                 }
               }
             }
-            """
-        )
+            """)
         assert result.errors is None
         assert result.data is not None
 
@@ -52,6 +52,7 @@ def get_test_wikibase_id():
         return int(wikibases[0]["id"])
 
     return _get_id
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
