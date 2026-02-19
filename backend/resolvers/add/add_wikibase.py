@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
-from model.enum import WikibaseURLType
+from model.enum import WikibaseURLType, WikibaseType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
 from resolvers.util.clean_wikibase_url import clean_up_url
@@ -48,6 +48,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             organization=wikibase_input.organization,
             country=wikibase_input.country,
             region=wikibase_input.region,
+            wikibase_type=WikibaseType[wikibase_input.wikibase_type],
             base_url=clean_up_url(
                 wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
             ),
