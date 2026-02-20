@@ -21,7 +21,8 @@ services:
   backend:
     image: wikibase-metadata-backend
     build: 
-      context: ./backend
+      context: .
+      dockerfile: backend/Dockerfile
     group_add:
       - ${TEAM_GID}
     expose:
@@ -75,6 +76,5 @@ services:
       - ./logs/:/app/logs/:z
       - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
     depends_on:
-      database:
-        condition: service_healthy
+      - backend
     restart: unless-stopped

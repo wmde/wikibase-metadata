@@ -3,7 +3,8 @@
 import strawberry
 from strawberry import Info
 
-from resolvers import authenticate, merge_software_by_id, set_extension_wbs_bundled
+from resolvers.authentication import authenticate
+from resolvers.update import merge_software_by_id, set_extension_wbs_bundled
 
 
 @strawberry.type
