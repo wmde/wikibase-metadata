@@ -6,13 +6,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 # Install Python deps first for caching
-COPY requirements.txt ./requirements.txt
-COPY requirements-dev.txt ./requirements-dev.txt
+COPY backend/requirements.txt ./requirements.txt
+COPY backend/requirements-dev.txt ./requirements-dev.txt
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir -r requirements-dev.txt
 
 # Copy backend + app code (use .dockerignore to keep this lean)
-COPY . .
+COPY backend/ .
+
+COPY scheduler/ scheduler/
+
 
 # Need to be writable during database checks
 RUN chown 10001 -R ./data/gx/plugins
