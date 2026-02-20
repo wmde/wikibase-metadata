@@ -324,7 +324,7 @@ class WikibaseModel(ModelBase):
         script_path: Optional[str] = None,
         sparql_endpoint_url: Optional[str] = None,
         sparql_frontend_url: Optional[str] = None,
-        wikibase_type: Optional[WikibaseType] = WikibaseType.UNKNOWN
+        wikibase_type: Optional[WikibaseType] = WikibaseType.UNKNOWN,
     ):
         self.wikibase_name = wikibase_name
         self.description = description

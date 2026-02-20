@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
-from model.enum import WikibaseURLType, WikibaseType
+from model.enum import WikibaseURLType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
 from resolvers.util.clean_wikibase_url import clean_up_url

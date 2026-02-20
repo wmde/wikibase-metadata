@@ -5,8 +5,8 @@ from sqlalchemy import select
 from model.enum.wikibase_url_type_enum import WikibaseURLType
 from model.enum.wikibase_category_enum import WikibaseCategory
 from model.enum.wikibase_type_enum import WikibaseType
-from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
+from data.database_connection import get_async_session
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
 
@@ -17,12 +17,14 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
   }
 }"""
 
+
 async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
     """Get Wikibase from Database by ID"""
     async with get_async_session() as session:
         return await session.scalar(
             select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
         )
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
@@ -57,8 +59,8 @@ async def test_add_wikibase_mutation():
     assert result.errors is None
     assert result.data is not None
 
-    id = int(result.data["addWikibase"]["id"])
-    wikibase = await get_wikibase_by_id(id)
+    wikibase_id = int(result.data["addWikibase"]["id"])
+    wikibase = await get_wikibase_by_id(wikibase_id)
 
     assert wikibase.wikibase_name == "Mock Wikibase"
     assert wikibase.wikibase_type == WikibaseType.SUITE
@@ -66,7 +68,10 @@ async def test_add_wikibase_mutation():
     assert wikibase.organization == "Wikibase Mockery International"
     assert wikibase.country == "Germany"
     assert wikibase.region == "Europe"
-    assert wikibase.category.category == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+    assert (
+        wikibase.category.category
+        == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+    )
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
     assert wikibase.url.url == "https://example.com/"
 
@@ -74,10 +79,11 @@ async def test_add_wikibase_mutation():
     # without a wikibase_type
     async with get_async_session() as session:
         wikibase_to_update = await session.scalar(
-            select(WikibaseModel).where(WikibaseModel.id == id)
+            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
         )
         wikibase_to_update.wikibase_type = None
         await session.commit()
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
