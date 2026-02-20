@@ -473,7 +473,7 @@ export type WikibaseInput = {
 	test?: InputMaybe<Scalars['Boolean']['input']>
 	urls: WikibaseUrlSetInput
 	wikibaseName: Scalars['String']['input']
-	wikibaseType: String
+	wikibaseType: string
 }
 
 export type WikibaseItemDate = {
