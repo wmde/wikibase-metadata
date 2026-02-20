@@ -1,6 +1,10 @@
 """Test Add Wikibase"""
 
 import pytest
+from sqlalchemy import select
+from model.enum.wikibase_type_enum import WikibaseType
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
 
@@ -11,6 +15,12 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
   }
 }"""
 
+async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
+    """Get Wikibase from Database by ID"""
+    async with get_async_session() as session:
+        return await session.scalar(
+            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+        )
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
@@ -25,6 +35,7 @@ async def test_add_wikibase_mutation():
         variable_values={
             "wikibaseInput": {
                 "wikibaseName": "Mock Wikibase",
+                "wikibaseType": "SUITE",
                 "description": "Mock wikibase for testing this codebase",
                 "organization": "Wikibase Mockery International",
                 "country": "Germany",
@@ -43,8 +54,11 @@ async def test_add_wikibase_mutation():
 
     assert result.errors is None
     assert result.data is not None
-    assert_layered_property_value(result.data, ["addWikibase", "id"], "1")
 
+    id = int(result.data["addWikibase"]["id"])
+    wikibase = await get_wikibase_by_id(id)
+
+    assert wikibase.wikibase_type == WikibaseType.SUITE
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
