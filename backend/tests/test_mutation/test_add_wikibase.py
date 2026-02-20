@@ -2,6 +2,8 @@
 
 import pytest
 from sqlalchemy import select
+from model.enum.wikibase_url_type_enum import WikibaseURLType
+from model.enum.wikibase_category_enum import WikibaseCategory
 from model.enum.wikibase_type_enum import WikibaseType
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
@@ -58,7 +60,24 @@ async def test_add_wikibase_mutation():
     id = int(result.data["addWikibase"]["id"])
     wikibase = await get_wikibase_by_id(id)
 
+    assert wikibase.wikibase_name == "Mock Wikibase"
     assert wikibase.wikibase_type == WikibaseType.SUITE
+    assert wikibase.description == "Mock wikibase for testing this codebase"
+    assert wikibase.organization == "Wikibase Mockery International"
+    assert wikibase.country == "Germany"
+    assert wikibase.region == "Europe"
+    assert wikibase.category.category == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+    assert wikibase.url.url_type == WikibaseURLType.BASE_URL
+    assert wikibase.url.url == "https://example.com/"
+
+    # Set wikibase_type to None, as other tests require this database entry to be peristed
+    # without a wikibase_type
+    async with get_async_session() as session:
+        wikibase_to_update = await session.scalar(
+            select(WikibaseModel).where(WikibaseModel.id == id)
+        )
+        wikibase_to_update.wikibase_type = None
+        await session.commit()
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
