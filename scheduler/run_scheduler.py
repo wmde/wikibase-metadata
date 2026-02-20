@@ -1,7 +1,7 @@
 import asyncio
 from functools import partial
 
-from schedule.scheduler import create_scheduler, health_handler
+from .core import create_scheduler, health_handler
 
 
 async def main():

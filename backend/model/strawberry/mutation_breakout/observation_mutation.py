@@ -26,7 +26,7 @@ from fetch_data import (
     update_all_user_observations,
 )
 from fetch_data.bulk.bulk_task_result import BulkTaskResult
-from resolvers import authenticate
+from resolvers.authentication import authenticate
 
 
 @strawberry.type
