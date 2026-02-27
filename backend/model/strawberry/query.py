@@ -21,6 +21,7 @@ from model.strawberry.output import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
 )
+from strawberry.types import Info
 from resolvers import (
     get_aggregate_created,
     get_aggregate_external_identifier,
@@ -50,7 +51,7 @@ class Query:
     @strawberry.field(description="List of Wikibases")
     async def wikibase_list(
         self,
-        info,
+        info: strawberry.Info,
         page_number: PageNumberType,
         page_size: PageSizeType,
         wikibase_filter: Optional[WikibaseFilterInput] = None,
