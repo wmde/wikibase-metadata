@@ -231,9 +231,7 @@ class WikibaseStrawberryModel:
                 (
                     await async_session.scalars(
                         select(WikibaseModel)
-                        .options(
-                            joinedload(WikibaseModel.recent_changes_observations)
-                        )
+                        .options(joinedload(WikibaseModel.recent_changes_observations))
                         .where(WikibaseModel.id == int(self.id))
                     )
                 )
