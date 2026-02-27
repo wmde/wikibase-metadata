@@ -31,9 +31,7 @@ async def get_wikibase_page(
         # pylint: disable-next=not-callable
         select(func.count()).select_from(query.subquery())
     )
-    base_query = (
-    query.order_by(WikibaseModel.id)
-    .options(
+    base_query = query.order_by(WikibaseModel.id).options(
         selectinload(WikibaseModel.primary_language),
         selectinload(WikibaseModel.additional_languages),
         selectinload(WikibaseModel.url),
@@ -52,16 +50,13 @@ async def get_wikibase_page(
         selectinload(WikibaseModel.statistics_observations),
         selectinload(WikibaseModel.time_to_first_value_observations),
         selectinload(WikibaseModel.user_observations),
-        )
     )
 
     if page_size == -1:
         paginated_query = base_query
     else:
-        paginated_query = (
-            base_query
-            .offset((page_number - 1) * page_size)
-            .limit(page_size)
+        paginated_query = base_query.offset((page_number - 1) * page_size).limit(
+            page_size
         )
 
     results = (await async_session.scalars(paginated_query)).all()

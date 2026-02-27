@@ -13,6 +13,7 @@ from resolvers.authentication import authenticate_token
 from schedule import scheduler
 from data.database_connection import get_async_session
 
+
 # Ensure the scheduler shuts down properly on application exit.
 @asynccontextmanager
 # pylint: disable-next=redefined-outer-name,unused-argument
@@ -45,10 +46,14 @@ def read_root():
 
 
 async def get_context():
+    """Get database session context"""
     async with get_async_session() as session:
         yield {"db": session}
 
-app.include_router(GraphQLRouter(schema=schema, context_getter=get_context), prefix="/graphql")
+
+app.include_router(
+    GraphQLRouter(schema=schema, context_getter=get_context), prefix="/graphql"
+)
 
 
 @app.get("/csv/metrics")
