@@ -21,7 +21,6 @@ from model.strawberry.output import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
 )
-from strawberry.types import Info
 from resolvers import (
     get_aggregate_created,
     get_aggregate_external_identifier,
