@@ -9,7 +9,7 @@ from config import database_connection_string
 
 async_engine = create_async_engine(
     database_connection_string,
-    connect_args={"timeout": 30},  # Wait seconds for a lock before failing
+    connect_args={"timeout": 30},
 )
 
 async_session = sessionmaker(
@@ -25,8 +25,11 @@ async_session = sessionmaker(
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     """Get Async Session"""
     async with async_session() as session:
-        async with session.begin():
-            try:
-                yield session
-            finally:
-                await session.close()
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
