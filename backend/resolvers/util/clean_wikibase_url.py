@@ -10,8 +10,6 @@ FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=/]+", re.IGNORECASE)
 
 def normalize_url(url: str) -> str:
     """Normalize a URL"""
-    if not url.startswith(("http://", "https://")):
-        url = "http://" + url
 
     p = urlparse(url)
     host = p.hostname.lower()
