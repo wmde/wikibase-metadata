@@ -44,12 +44,12 @@ class WikibaseStrawberryModel:
     location: WikibaseLocationStrawberryModel = strawberry.field(
         description="Wikibase Location"
     )
-
     languages: WikibaseLanguageSetStrawberryModel = strawberry.field(
         description="Languages"
     )
-
     urls: WikibaseURLSetStrawberryModel = strawberry.field(description="URLs")
+
+    _model: strawberry.Private[Optional[WikibaseModel]]
 
     @strawberry.field(description="Connectivity Data")
     async def connectivity_observations(
@@ -59,6 +59,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Connectivity Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseConnectivityObservationStrawberryModel.marshal(o)
+                    for o in self._model.connectivity_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -86,6 +93,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon External Identifier Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseExternalIdentifierObservationStrawberryModel.marshal(o)
+                    for o in self._model.external_identifier_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -111,6 +125,8 @@ class WikibaseStrawberryModel:
     async def log_observations(self) -> WikibaseLogObservationStrawberryModel:
         """Summon Log Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseLogObservationStrawberryModel.marshal(self._model)
         async with get_async_session() as async_session:
             model = (
                 (
@@ -131,8 +147,15 @@ class WikibaseStrawberryModel:
     ) -> WikibaseObservationSetStrawberryModel[
         WikibasePropertyPopularityObservationStrawberryModel
     ]:
-        """Summon Property Popularity Data on Specific Request"""
+        """Summon Log Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibasePropertyPopularityObservationStrawberryModel.marshal(o)
+                    for o in self._model.property_popularity_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -162,6 +185,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Quantity Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseQuantityObservationStrawberryModel.marshal(o)
+                    for o in self._model.quantity_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -189,6 +219,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Recent Changes Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseRecentChangesObservationStrawberryModel.marshal(o)
+                    for o in self._model.recent_changes_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -216,6 +253,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Software Version Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseSoftwareVersionObservationStrawberryModel.marshal(o)
+                    for o in self._model.software_version_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -245,6 +289,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Statistics Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseStatisticsObservationStrawberryModel.marshal(o)
+                    for o in self._model.statistics_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -272,6 +323,13 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Time to First Value Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseTimeToFirstValueObservationStrawberryModel.marshal(o)
+                    for o in self._model.time_to_first_value_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -299,6 +357,13 @@ class WikibaseStrawberryModel:
     ) -> WikibaseObservationSetStrawberryModel[WikibaseUserObservationStrawberryModel]:
         """Summon User Data on Specific Request"""
 
+        if self._model is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                [
+                    WikibaseUserObservationStrawberryModel.marshal(o)
+                    for o in self._model.user_observations
+                ]
+            )
         async with get_async_session() as async_session:
             model = (
                 (
@@ -332,4 +397,5 @@ class WikibaseStrawberryModel:
             languages=WikibaseLanguageSetStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
             wikibase_type=model.wikibase_type or WikibaseType.UNKNOWN,
+            _model=model,
         )

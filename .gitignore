@@ -27,3 +27,4 @@ lerna-debug.log*
 
 # Data
 postgres-database/
+temp_*
