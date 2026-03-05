@@ -5,6 +5,7 @@ import strawberry
 
 from model.enum.wikibase_category_enum import WikibaseCategory
 from model.strawberry.input.wikibase_url_input import WikibaseURLSetInput
+from model.enum.wikibase_type_enum import WikibaseType
 
 
 @strawberry.input
@@ -26,3 +27,5 @@ class WikibaseInput:
     test: Optional[bool] = False
 
     urls: WikibaseURLSetInput
+
+    wikibase_type: Optional[WikibaseType] = None
