@@ -10,7 +10,7 @@ from model.enum import WikibaseCategory
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(name="add-test-categories")
-async def test_add_software():
+async def test_add_test_categories():
     """Add Categories to Test Data"""
 
     async with get_async_session() as async_session:
