@@ -24,3 +24,4 @@ log_directory = os.path.expandvars(
 )
 
 log_level = os.path.expandvars(config.get("logging", "log_level", fallback="INFO"))
+is_testing = os.getenv("ENVIRONMENT") == "test"
