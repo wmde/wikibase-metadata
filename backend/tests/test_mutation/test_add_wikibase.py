@@ -108,8 +108,8 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
     )
 
     assert result.data is not None
-    
-    wikibase_id = result.data['addWikibase']['id']
+
+    wikibase_id = result.data["addWikibase"]["id"]
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
@@ -129,7 +129,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert result.data['addWikibase']['id'] == wikibase_id
+    assert result.data["addWikibase"]["id"] == wikibase_id
 
 
 @pytest.mark.asyncio
@@ -183,7 +183,6 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
         )
 
 
-
 @pytest.mark.asyncio
 async def test_normalizes_urls(
     db_session, wikibase_categories
@@ -212,7 +211,7 @@ async def test_normalizes_urls(
 
     assert result.data is not None
 
-    wikibase_id = result.data['addWikibase']['id']
+    wikibase_id = result.data["addWikibase"]["id"]
 
     url_variations = [
         f"https://{base_url}",
@@ -277,3 +276,4 @@ async def test_marks_localhost_urls_as_test(
         wikibase = db_result.scalar_one()
         assert wikibase.test is True
         assert wikibase_id == result.data['addWikibase']['id']
+        assert wikibase_id == result.data["addWikibase"]["id"]
