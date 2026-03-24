@@ -17,8 +17,9 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
     async with get_async_session() as async_session:
 
-        # If base URL already exists, return existing wikibase silently
-        clean_base_url = clean_up_url(wikibase_input.urls.base_url, WikibaseURLType.BASE_URL)
+        clean_base_url = clean_up_url(
+            wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
+        )
         existing = await async_session.scalar(
             select(WikibaseModel)
             .join(WikibaseModel.url)

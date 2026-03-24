@@ -9,7 +9,6 @@ from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
 from data.database_connection import get_async_session
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value
 
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
@@ -103,7 +102,7 @@ async def test_add_wikibase_ii_mutation():
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": "https://mock-wikibase.com/",
+                    "baseUrl": "https://mock-wikibase.com",
                     "articlePath": "wiki",
                 },
             }
