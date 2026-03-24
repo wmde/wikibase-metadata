@@ -101,7 +101,7 @@ async def test_add_wikibase_ii_mutation():
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": "https://mock-wikibase.com/",
+                    "baseUrl": "https://mock-wikibase.com",
                     "articlePath": "wiki",
                 },
                 "reuse": True,
