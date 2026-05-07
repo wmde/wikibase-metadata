@@ -32,6 +32,7 @@ EXPECTED_HEADER_ROW = ",".join(
         "software_version_observation_date",
         "software_name",
         "version",
+        "manifest",
     ]
 )
 EXPECTED_PATTERN_LIST = [
@@ -64,6 +65,7 @@ EXPECTED_PATTERN_LIST = [
     re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
     re.compile(r"(MediaWiki|)"),
     re.compile(r"(\d+\.\d+\.\d+|)"),
+    re.compile(r"(True|False)"),
 ]
 
 

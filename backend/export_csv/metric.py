@@ -243,7 +243,7 @@ def get_metrics_query() -> Select:
             case(
                 (most_recent_successful_manifest_obs.c.software_name != None, True),
                 _else=False,
-            ).label("Manifest"),
+            ).label("manifest"),
         )
         .join(
             WikibaseURLModel,
