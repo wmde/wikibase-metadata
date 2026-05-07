@@ -74,7 +74,7 @@ async def test_add_wikibase_mutation():
         == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
     )
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
-    assert wikibase.url.url == "https://example.com/"
+    assert wikibase.url.url == "https://example.com"
 
     # Set wikibase_type to None, as other tests require this database entry to be peristed
     # without a wikibase_type
