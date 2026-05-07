@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from sqlalchemy import Select, and_, or_, select
+from sqlalchemy import Select, or_, select
 
 from model.database import WikibaseModel
 from model.enum import WikibaseType
