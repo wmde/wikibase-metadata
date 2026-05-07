@@ -76,6 +76,9 @@ class WikibaseModel(ModelBase):
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
     """Test Wikibase?"""
 
+    reuse: Mapped[Optional[bool]] = mapped_column("reuse", Boolean, nullable=True)
+    """Display Wikibase"""
+
     # LANGUAGES
     languages: Mapped[list[WikibaseLanguageModel]] = relationship(
         "WikibaseLanguageModel",
