@@ -241,6 +241,7 @@ def get_metrics_query() -> Select:
             most_recent_successful_mediawiki_obs.c.software_name,
             most_recent_successful_mediawiki_obs.c.version,
             case(
+                # pylint: disable-next=singleton-comparison
                 (most_recent_successful_manifest_obs.c.software_name != None, True),
                 _else=False,
             ).label("manifest"),
