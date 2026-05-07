@@ -15,6 +15,7 @@ from resolvers import (
     remove_wikibase_language,
     remove_wikibase_url,
     update_wikibase_primary_language,
+    update_wikibase_reuse_flag,
     update_wikibase_type,
     upsert_wikibase_url,
 )
@@ -58,6 +59,13 @@ class UpsertWikibaseMutation:
 
         authenticate(info)
         return await remove_wikibase_url(wikibase_id, url_type)
+
+    @strawberry.mutation(description="Set Reuse Flag for Wikibase")
+    async def set_reuse_flag(self, info: Info, wikibase_id: int, reuse: bool) -> bool:
+        """Set Reuse Flag for Wikibase"""
+
+        authenticate(info)
+        return await update_wikibase_reuse_flag(wikibase_id, reuse)
 
     @strawberry.mutation(
         description="Update the list of known Wikibase Cloud instances from API"
