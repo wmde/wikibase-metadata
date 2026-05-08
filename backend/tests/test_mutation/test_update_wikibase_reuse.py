@@ -69,7 +69,7 @@ async def test_set_wikibase_reuse_false():
         UPDATE_WIKIBASE_REUSE_MUTATION,
         variable_values={
             "wikibaseId": before_adding_reuse_true_ids.pop(),
-            "reuse": True,
+            "reuse": False,
         },
         context_value=get_mock_context("test-auth-token"),
     )
