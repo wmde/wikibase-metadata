@@ -33,6 +33,7 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 }
 """
 
+
 @pytest.mark.skip
 @pytest.mark.asyncio
 @pytest.mark.mutation
