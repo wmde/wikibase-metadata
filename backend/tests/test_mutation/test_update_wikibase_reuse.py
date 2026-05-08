@@ -8,24 +8,27 @@ from tests.utils import assert_layered_property_value, get_mock_context
 
 WIKIBASE_COUNT_QUERY = """
 query PageWikibases {
-  filtered: wikibaseList(pageNumber: 1, pageSize: 1) {
+  filtered: wikibaseList(pageNumber: 1, pageSize: 100) {
     meta {
       totalCount
     }
     data {
-        id
+      id
     }
   }
-  unfiltered: wikibaseList(pageNumber: 1, pageSize: 1, wikibaseFilter: { ignoreReuse: true } ) {
+  unfiltered: wikibaseList(
+    pageNumber: 1
+    pageSize: 100
+    wikibaseFilter: { ignoreReuse: true }
+  ) {
     meta {
       totalCount
     }
     data {
-        id
+      id
     }
   }
-}
-"""
+}"""
 
 UPDATE_WIKIBASE_REUSE_MUTATION = """
 mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
@@ -57,15 +60,17 @@ async def test_set_wikibase_reuse_true():
     )
 
     before_adding_reuse_all_ids = {
-        w["id"] for w in before_adding_result.data["unfiltered"]["data"]
+        int(w["id"]) for w in before_adding_result.data["unfiltered"]["data"]
     }
+    assert len(before_adding_reuse_all_ids) > 0, f"{before_adding_result.data}"
     before_adding_reuse_true_ids = {
-        w["id"] for w in before_adding_result.data["filtered"]["data"]
+        int(w["id"]) for w in before_adding_result.data["filtered"]["data"]
     }
+    assert len(before_adding_reuse_true_ids) > 0, f"{before_adding_result.data}"
     before_adding_reuse_false_ids = (
         before_adding_reuse_all_ids - before_adding_reuse_true_ids
     )
-    assert len(before_adding_reuse_false_ids) == 1
+    assert len(before_adding_reuse_false_ids) > 0, f"{before_adding_result.data}"
 
     for wiki_id in before_adding_reuse_false_ids:
         update_result = await test_schema.execute(
