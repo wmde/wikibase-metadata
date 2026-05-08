@@ -104,6 +104,7 @@ async def test_add_wikibase_ii_mutation():
                     "baseUrl": "https://mock-wikibase.com/",
                     "articlePath": "wiki",
                 },
+                "reuse": True,
             }
         },
     )
