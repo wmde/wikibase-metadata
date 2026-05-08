@@ -16,7 +16,7 @@ query PageWikibases {
         id
     }
   }
-  unfiltered: wikibaseList(pageNumber: 1, pageSize: 1, wikibaseFilter: { ignoreReuse:True } ) {
+  unfiltered: wikibaseList(pageNumber: 1, pageSize: 1, wikibaseFilter: { ignoreReuse: true } ) {
     meta {
       totalCount
     }
