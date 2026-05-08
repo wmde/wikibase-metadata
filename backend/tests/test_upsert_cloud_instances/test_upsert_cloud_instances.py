@@ -126,9 +126,7 @@ async def test_update_cloud_instances(mocker):
 
 
 @pytest.mark.dependency(
-    name="transform-cloud-instance",
-    depends=["update-cloud-instance"],
-    scope="session",
+    name="transform-cloud-instance", depends=["update-cloud-instance"], scope="session"
 )
 @pytest.mark.asyncio
 async def test_transform_to_cloud_instance(mocker):
