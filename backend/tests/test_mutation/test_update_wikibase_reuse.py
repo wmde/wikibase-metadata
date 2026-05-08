@@ -42,6 +42,7 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 @pytest.mark.dependency(
     name="wikibase-set-reuse-false",
     depends=["transform-cloud-instance"],
+    scope="session",
 )
 async def test_set_wikibase_reuse_false():
     """Set Wikibase Reuse False"""
