@@ -335,6 +335,7 @@ class WikibaseModel(ModelBase):
         self.country = country
         self.region = region
         self.checked = False
+        self.reuse = False
         self.test = False
         self.wikibase_type = wikibase_type
 
