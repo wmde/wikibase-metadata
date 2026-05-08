@@ -23,9 +23,9 @@ mutation MyMutation {
     name="mutate-cloud-instances", depends=["query-cloud-instances"], scope="session"
 )
 @pytest.mark.asyncio
-async def test_query_cloud_instance(mocker):
+async def test_add_cloud_instance(mocker):
     """
-    test whether querying the wikibase list via graphql returns a cloud instance
+    test adding a list of cloud instances
     """
 
     with open(
