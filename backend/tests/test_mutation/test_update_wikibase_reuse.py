@@ -65,6 +65,7 @@ async def test_set_wikibase_reuse_true():
     before_adding_reuse_false_ids = (
         before_adding_reuse_all_ids - before_adding_reuse_true_ids
     )
+    assert len(before_adding_reuse_false_ids) == 1
 
     for wiki_id in before_adding_reuse_false_ids:
         update_result = await test_schema.execute(
@@ -80,10 +81,10 @@ async def test_set_wikibase_reuse_true():
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
-        after_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=2
+        after_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=3
     )
     assert_layered_property_value(
-        after_adding_result.data, ["unfiltered", "meta", "totalCount"], expected_value=2
+        after_adding_result.data, ["unfiltered", "meta", "totalCount"], expected_value=3
     )
 
 
