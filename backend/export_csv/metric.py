@@ -243,7 +243,7 @@ def get_metrics_query() -> Select:
             case(
                 # pylint: disable-next=singleton-comparison
                 (most_recent_successful_manifest_obs.c.software_name != None, True),
-                _else=False,
+                else_=False,
             ).label("manifest"),
         )
         .join(
