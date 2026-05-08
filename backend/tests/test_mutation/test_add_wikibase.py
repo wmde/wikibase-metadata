@@ -3,13 +3,10 @@
 
 import pytest
 from sqlalchemy import select
-from model.enum.wikibase_url_type_enum import WikibaseURLType
-from model.enum.wikibase_category_enum import WikibaseCategory
-from model.enum.wikibase_type_enum import WikibaseType
-from model.database.wikibase_model import WikibaseModel
+from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
+from model.database import WikibaseModel
 from data.database_connection import get_async_session
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value
 
 ADD_WIKIBASE_QUERY = """
 mutation MyMutation($wikibaseInput: WikibaseInput!) {
@@ -74,7 +71,7 @@ async def test_add_wikibase_mutation():
         == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
     )
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
-    assert wikibase.url.url == "https://example.com/"
+    assert wikibase.url.url == "https://example.com"
 
     # Set wikibase_type to None, as other tests require this database entry to be peristed
     # without a wikibase_type
