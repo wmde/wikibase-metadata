@@ -6,7 +6,7 @@ import pytest
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
 
-WIKIBASE_COUNT_QUERY = """
+WIKIBASE_FILTERED_AND_UNFILTERED_QUERY = """
 query PageWikibases {
   filtered: wikibaseList(pageNumber: 1, pageSize: 100) {
     meta {
@@ -47,7 +47,9 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 async def test_set_wikibase_reuse_true():
     """Set Wikibase Reuse True"""
 
-    before_adding_result = await test_schema.execute(WIKIBASE_COUNT_QUERY)
+    before_adding_result = await test_schema.execute(
+        WIKIBASE_FILTERED_AND_UNFILTERED_QUERY
+    )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
@@ -62,15 +64,13 @@ async def test_set_wikibase_reuse_true():
     before_adding_reuse_all_ids = {
         int(w["id"]) for w in before_adding_result.data["unfiltered"]["data"]
     }
-    assert len(before_adding_reuse_all_ids) > 0, f"{before_adding_result.data}"
     before_adding_reuse_true_ids = {
         int(w["id"]) for w in before_adding_result.data["filtered"]["data"]
     }
-    assert len(before_adding_reuse_true_ids) > 0, f"{before_adding_result.data}"
     before_adding_reuse_false_ids = (
         before_adding_reuse_all_ids - before_adding_reuse_true_ids
     )
-    assert len(before_adding_reuse_false_ids) > 0, f"{before_adding_result.data}"
+    assert len(before_adding_reuse_false_ids) == 1, f"{before_adding_result.data}"
 
     for wiki_id in before_adding_reuse_false_ids:
         update_result = await test_schema.execute(
@@ -82,7 +82,9 @@ async def test_set_wikibase_reuse_true():
         assert update_result.data is not None
         assert update_result.data["setReuseFlag"] is True
 
-    after_adding_result = await test_schema.execute(WIKIBASE_COUNT_QUERY)
+    after_adding_result = await test_schema.execute(
+        WIKIBASE_FILTERED_AND_UNFILTERED_QUERY
+    )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
@@ -102,7 +104,9 @@ async def test_set_wikibase_reuse_true():
 async def test_set_wikibase_reuse_false():
     """Set Wikibase Reuse False"""
 
-    before_adding_result = await test_schema.execute(WIKIBASE_COUNT_QUERY)
+    before_adding_result = await test_schema.execute(
+        WIKIBASE_FILTERED_AND_UNFILTERED_QUERY
+    )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
@@ -123,7 +127,9 @@ async def test_set_wikibase_reuse_false():
     assert update_result.data is not None
     assert update_result.data["setReuseFlag"] is True
 
-    after_adding_result = await test_schema.execute(WIKIBASE_COUNT_QUERY)
+    after_adding_result = await test_schema.execute(
+        WIKIBASE_FILTERED_AND_UNFILTERED_QUERY
+    )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
