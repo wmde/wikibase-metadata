@@ -38,7 +38,7 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 @pytest.mark.mutation
 @pytest.mark.dependency(
     name="wikibase-set-reuse-true",
-    depends=["add-wikibase", "transform-cloud-instances"],
+    depends=["transform-cloud-instance"],
     scope="session",
 )
 async def test_set_wikibase_reuse_true():
