@@ -18,4 +18,4 @@ class WikibaseFilterInput:
     """Filter Wikibases"""
 
     wikibase_type: Optional[WikibaseTypeInput]
-    ignore_reuse: Optional[bool]
+    ignore_reuse: Optional[bool] = None
