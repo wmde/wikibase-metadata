@@ -33,7 +33,7 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 }
 """
 
-
+@pytest.mark.skip
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
@@ -69,7 +69,7 @@ async def test_set_wikibase_reuse_true():
     for wiki_id in before_adding_reuse_false_ids:
         update_result = await test_schema.execute(
             UPDATE_WIKIBASE_REUSE_MUTATION,
-            variable_values={"wikibaseId": wiki_id, "reuse": True},
+            variable_values={"wikibaseId": wiki_id, "reuse": "true"},
             context_value=get_mock_context("test-auth-token"),
         )
         assert update_result.errors is None

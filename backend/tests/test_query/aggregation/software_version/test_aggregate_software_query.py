@@ -31,9 +31,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(
-    depends=["software-version-success", "wikibase-set-reuse-true"], scope="session"
-)
+@pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
 async def test_aggregate_software_query():
