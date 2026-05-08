@@ -48,12 +48,12 @@ async def test_set_wikibase_reuse_true():
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
-        before_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=1
+        before_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=2
     )
     assert_layered_property_value(
         before_adding_result.data,
         ["unfiltered", "meta", "totalCount"],
-        expected_value=2,
+        expected_value=3,
     )
 
     before_adding_reuse_all_ids = {
