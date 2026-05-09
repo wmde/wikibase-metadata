@@ -40,6 +40,9 @@ const theme = useTheme()
 	flex-flow: row wrap;
 	align-items: center;
 	justify-content: space-between;
+	max-width: 100%;
+	width: 100%;
+	outline-color: oklch(0.708 0 0);
 }
 .left-header {
 	display: flex;
