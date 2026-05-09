@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
-import { mdiGithub, mdiThemeLightDark } from '@mdi/js'
-import { useTheme } from 'vuetify'
+import img from '@/media/icon/wikibase_symbol_RGB_cropped.png';
+import { mdiThemeLightDark } from '@mdi/js';
+import { useTheme } from 'vuetify';
 
 const theme = useTheme()
 </script>
@@ -18,12 +18,6 @@ const theme = useTheme()
 			</v-container>
 		</v-container>
 		<v-container class="ma-0 pa-0 right-header shrink">
-			<v-btn
-				class="github"
-				href="https://github.com/wmde/wikibase-metadata"
-				density="comfortable"
-				:icon="mdiGithub"
-			/>
 			<v-btn
 				class="theme-switch"
 				v-on:click="theme.toggle()"
