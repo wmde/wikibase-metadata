@@ -19,6 +19,7 @@ const theme = useTheme()
 		</v-container>
 		<v-container class="ma-0 pa-0 right-header shrink">
 			<v-btn
+				v-if="false"
 				class="theme-switch"
 				v-on:click="theme.toggle()"
 				density="comfortable"
