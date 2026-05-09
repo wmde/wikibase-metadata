@@ -10,7 +10,12 @@ const theme = useTheme()
 	<v-container class="pa-1 header">
 		<v-container class="ma-0 pa-0 left-header shrink">
 			<v-container class="ma-0 pa-0 icon shrink"><v-img :src="img" eager /></v-container>
-			<v-container class="ma-0 pa-0 title shrink">Wikibase Ecosystem</v-container>
+			<v-container class="ma-0 pa-0 title-container shrink">
+				<v-container class="ma-0 pa-0 title shrink">Wikibase Ecosystem</v-container>
+				<v-container class="ma-0 pa-0 subtitle shrink">
+					Discover stable Wikibases around the world
+				</v-container>
+			</v-container>
 		</v-container>
 		<v-container class="ma-0 pa-0 right-header shrink">
 			<v-btn
@@ -55,7 +60,16 @@ const theme = useTheme()
 	height: 50px;
 	width: 50px;
 }
-.title {
+.title-container {
 	flex-grow: 1;
+}
+.title {
+	font-size: 20px;
+	font-weight: 700;
+	font-family: Montserrat;
+}
+.subtitle {
+	font-size: 14px;
+	font-family: Roboto;
 }
 </style>
