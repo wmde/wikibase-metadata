@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
+import img from '@/media/icon/wikibase_symbol_RGB.png'
 import { mdiThemeLightDark } from '@mdi/js'
 import { useTheme } from 'vuetify'
 
