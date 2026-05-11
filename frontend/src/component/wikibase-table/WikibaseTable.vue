@@ -39,6 +39,12 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		:page="pageNumber"
 		@update:page="store.setPageNumber"
 		:items-per-page="pageSize"
+		:items-per-page-options="[
+			{ value: 25, title: '25' },
+			{ value: 50, title: '50' },
+			{ value: 100, title: '100' },
+			{ value: -1, title: '$vuetify.dataFooter.itemsPerPageAll' }
+		]"
 		@update:items-per-page="store.setPageSize"
 		:sort-by="sortBy"
 		@update:sort-by="
