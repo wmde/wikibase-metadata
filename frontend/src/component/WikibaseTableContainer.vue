@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
-import WikibaseTypeFilter from '@/component/wikibase-table/WikibaseTypeFilter.vue'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { computed, onBeforeMount } from 'vue'
 
@@ -13,7 +12,6 @@ onBeforeMount(() => store.fetchWikibasePage())
 
 <template>
 	<v-container class="wikibase-table-container my-0 px-6 py-8">
-		<WikibaseTypeFilter v-if="false" />
 		<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 		<WikibaseTable />
 	</v-container>
