@@ -8,11 +8,9 @@ import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sor
 type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
 const headers: TableHeader[] = [
-	// { title: '', sortable: false },
-	// { title: 'Type', value: SortColumn.Type, sortable: true },
 	{ title: 'Title', value: SortColumn.Title, sortable: true },
 	{ title: 'Triples', value: SortColumn.Triples, sortable: true },
-	{ title: 'Edits (last 30 days)', value: SortColumn.Edits, sortable: true },
+	{ title: 'Edits', value: SortColumn.Edits, sortable: true },
 	{ title: 'Category', value: SortColumn.Category, sortable: true },
 	{ title: 'Description', sortable: false },
 	{ title: '', sortable: false }
@@ -62,11 +60,46 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		:items="wikibases"
 		:items-length="totalCount ?? 0"
 		:loading="loading"
-		striped="even"
+		hover
 		class="wikibase-table"
 	>
+		<template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+			<tr>
+				<template v-for="(column, idx) in columns" :key="idx">
+					<th class="table-header-cell">
+						<div class="d-flex align-center">
+							<span
+								class="me-2 cursor-pointer table-header-cell-title"
+								@click="toggleSort(column)"
+								v-text="column.title"
+							/>
+							<v-icon v-if="isSorted(column)" :icon="getSortIcon(column)" color="medium-emphasis" />
+						</div>
+						<span class="table-header-cell-subtitle" v-if="column.title == 'Edits'"
+							>(last 30 days)</span
+						>
+					</th>
+				</template>
+			</tr>
+		</template>
 		<template v-slot:item="{ item, index }">
 			<WikibaseTableRow :wikibase="item" :index="(pageNumber - 1) * pageSize + index" />
 		</template>
 	</v-data-table-server>
 </template>
+
+<style lang="css">
+.table-header-cell {
+	background-color: oklch(98.5% 0.002 247.839);
+	font-family: Montserrat;
+	color: rgb(0, 0, 0);
+}
+.table-header-cell-title {
+	font-weight: 700 !important;
+	font-size: 16px;
+}
+.table-header-cell-subtitle {
+	font-size: 14px;
+	font-weight: 400 !important;
+}
+</style>
