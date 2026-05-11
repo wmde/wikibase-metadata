@@ -64,11 +64,12 @@ async def test_set_wikibase_reuse_false():
     before_adding_reuse_true_ids = {
         int(w["id"]) for w in before_adding_result.data["filtered"]["data"]
     }
+    affecting_id = before_adding_reuse_true_ids.pop()
 
     update_result = await test_schema.execute(
         UPDATE_WIKIBASE_REUSE_MUTATION,
         variable_values={
-            "wikibaseId": before_adding_reuse_true_ids.pop(),
+            "wikibaseId": affecting_id,
             "reuse": False,
         },
         context_value=get_mock_context("test-auth-token"),
@@ -85,9 +86,15 @@ async def test_set_wikibase_reuse_false():
     assert_layered_property_value(
         after_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=1
     )
+    assert affecting_id not in [
+        int(w["id"]) for w in after_adding_result.data["filtered"]["data"]
+    ]
     assert_layered_property_value(
         after_adding_result.data, ["unfiltered", "meta", "totalCount"], expected_value=3
     )
+    assert affecting_id in [
+        int(w["id"]) for w in after_adding_result.data["unfiltered"]["data"]
+    ]
 
 
 @pytest.mark.asyncio
