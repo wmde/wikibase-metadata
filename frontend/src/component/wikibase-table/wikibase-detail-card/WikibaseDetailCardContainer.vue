@@ -16,8 +16,22 @@ watch(dialog, () => dialog.value && store.searchWikibase(props.wikibaseId))
 <template>
 	<v-dialog class="wikibase-detail-dialog" width="auto" v-model="dialog">
 		<template v-slot:activator="{ props: activatorProps }">
-			<v-btn v-bind="activatorProps" density="comfortable">Details</v-btn>
+			<v-btn v-bind="activatorProps" density="comfortable" variant="outlined" class="detail-button">
+				Details
+			</v-btn>
 		</template>
 		<WikibaseDetailCard :wikibase="wikibase" :loading="loading" />
 	</v-dialog>
 </template>
+
+<style lang="css">
+.detail-button {
+	background-color: oklch(96.7% 0.003 264.542);
+	text-transform: none;
+	font-family: Roboto;
+	font-size: 16px;
+}
+.detail-button :hover {
+	background-color: oklch(92.8% 0.006 264.531);
+}
+</style>
