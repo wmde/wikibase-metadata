@@ -2,6 +2,7 @@
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
+import { mdiSwapVertical } from '@mdi/js'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
@@ -71,7 +72,11 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 							<span class="me-2 cursor-pointer table-header-cell-title" @click="toggleSort(column)">
 								{{ column.title }}
 							</span>
-							<v-icon v-if="isSorted(column)" :icon="getSortIcon(column)" color="medium-emphasis" />
+							<v-icon
+								v-if="column.sortable"
+								:icon="isSorted(column) ? getSortIcon(column) : mdiSwapVertical"
+								color="medium-emphasis"
+							/>
 						</div>
 						<span class="table-header-cell-subtitle" v-if="column.title == 'Edits'"
 							>(last 30 days)</span
