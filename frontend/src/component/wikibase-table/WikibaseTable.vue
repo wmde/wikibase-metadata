@@ -68,11 +68,9 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 				<template v-for="(column, idx) in columns" :key="idx">
 					<th class="table-header-cell">
 						<div class="d-flex align-center">
-							<span
-								class="me-2 cursor-pointer table-header-cell-title"
-								@click="toggleSort(column)"
-								v-text="column.title"
-							/>
+							<span class="me-2 cursor-pointer table-header-cell-title" @click="toggleSort(column)">
+								{{ column.title }}
+							</span>
 							<v-icon v-if="isSorted(column)" :icon="getSortIcon(column)" color="medium-emphasis" />
 						</div>
 						<span class="table-header-cell-subtitle" v-if="column.title == 'Edits'"
