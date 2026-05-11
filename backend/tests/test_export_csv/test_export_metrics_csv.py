@@ -9,6 +9,7 @@ EXPECTED_HEADER_ROW = ",".join(
     [
         "wikibase_id",
         "wikibase_type",
+        "reuse",
         "base_url",
         "quantity_observation_date",
         "total_items",
@@ -37,6 +38,7 @@ EXPECTED_HEADER_ROW = ",".join(
 EXPECTED_PATTERN_LIST = [
     re.compile(r"\d+"),
     re.compile(r"(WikibaseType\.(CLOUD|OTHER|SUITE)|)"),
+    re.compile(r"(True|False|)"),
     re.compile(r"https?://[a-z0-9\-_.\?=/]+"),
     # Quantity
     re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),

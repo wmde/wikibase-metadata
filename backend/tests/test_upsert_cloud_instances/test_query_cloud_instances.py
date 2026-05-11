@@ -7,7 +7,9 @@ from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
 
 
 @pytest.mark.dependency(
-    name="query-cloud-instances", depends=["transform-cloud-instances"], scope="session"
+    name="query-cloud-instances",
+    depends=["transform-cloud-instance", "wikibase-set-reuse-true"],
+    scope="session",
 )
 @pytest.mark.asyncio
 async def test_query_cloud_instance():

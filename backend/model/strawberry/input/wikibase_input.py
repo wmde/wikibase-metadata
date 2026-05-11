@@ -3,9 +3,8 @@
 from typing import Optional
 import strawberry
 
-from model.enum.wikibase_category_enum import WikibaseCategory
+from model.enum import WikibaseCategory, WikibaseType
 from model.strawberry.input.wikibase_url_input import WikibaseURLSetInput
-from model.enum.wikibase_type_enum import WikibaseType
 
 
 @strawberry.input
@@ -25,6 +24,8 @@ class WikibaseInput:
     category: Optional[WikibaseCategory] = None
 
     test: Optional[bool] = False
+
+    reuse: Optional[bool] = False
 
     urls: WikibaseURLSetInput
 

@@ -15,8 +15,12 @@ def get_filtered_wikibase_query(
     """Filtered list of Wikibases"""
 
     query = select(WikibaseModel).where(WikibaseModel.checked)
+
     if wikibase_filter is None:
-        return query
+        return query.where(WikibaseModel.reuse)
+
+    if not wikibase_filter.ignore_reuse:
+        query = query.where(WikibaseModel.reuse)
 
     if wikibase_filter.wikibase_type is not None:
         if (
