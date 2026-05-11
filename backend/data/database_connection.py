@@ -6,12 +6,12 @@ from contextlib import asynccontextmanager
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
-from config import database_connection_string, is_testing
+from config import database_connection_string
 
 async_engine = create_async_engine(
     database_connection_string,
     connect_args={"timeout": 30},
-    poolclass=NullPool if is_testing else None,
+    poolclass=NullPool,
 )
 
 async_session = sessionmaker(

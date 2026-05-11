@@ -1,8 +1,10 @@
 """Get Wikibase List"""
 
-from typing import Any, Optional
+from typing import Optional
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
+
+from data import get_async_session
 
 from model.database import WikibaseModel
 from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
@@ -16,7 +18,6 @@ from resolvers.util import get_filtered_wikibase_query, get_sorted_wikibase_quer
 
 
 async def get_wikibase_page(
-    async_session: Any,
     page_number: PageNumberType,
     page_size: PageSizeType,
     wikibase_filter: Optional[WikibaseFilterInput],
@@ -27,11 +28,13 @@ async def get_wikibase_page(
     query = get_filtered_wikibase_query(wikibase_filter)
     query = get_sorted_wikibase_query(query, sort_by)
 
-    total_count = await async_session.scalar(
-        # pylint: disable-next=not-callable
-        select(func.count()).select_from(query.subquery())
-    )
-    base_query = query.order_by(WikibaseModel.id).options(
+    async with get_async_session() as async_session:
+        total_count = await async_session.scalar(
+            # pylint: disable-next=not-callable
+            select(func.count()).select_from(query.subquery())
+        )
+
+        base_query = query.order_by(WikibaseModel.id).options(
         selectinload(WikibaseModel.primary_language),
         selectinload(WikibaseModel.additional_languages),
         selectinload(WikibaseModel.url),

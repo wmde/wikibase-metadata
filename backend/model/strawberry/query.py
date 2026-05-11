@@ -58,10 +58,7 @@ class Query:
     ) -> Page[WikibaseStrawberryModel]:
         """List of Wikibases"""
 
-        session = info.context["db"]
-
         return await get_wikibase_page(
-            async_session=session,
             page_number=page_number,
             page_size=page_size,
             wikibase_filter=wikibase_filter,

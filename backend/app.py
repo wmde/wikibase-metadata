@@ -44,17 +44,7 @@ def read_root():
     """Root"""
     return {"Hello": "World"}
 
-
-async def get_context():
-    """Get database session context"""
-    async with get_async_session() as session:
-        yield {"db": session}
-
-
-app.include_router(
-    GraphQLRouter(schema=schema, context_getter=get_context), prefix="/graphql"
-)
-
+app.include_router(GraphQLRouter(schema=schema), prefix="/graphql")
 
 @app.get("/csv/metrics")
 async def metric_csv(authorization: Optional[str] = None):
