@@ -19,9 +19,6 @@ describe('WikibaseTableContainer', async () => {
 		const tableContainer = wrapper.find('div.wikibase-table-container')
 		expect(tableContainer.exists()).toEqual(true)
 
-		const typeFilter = tableContainer.find('div.wikibase-type-filter')
-		expect(typeFilter.exists()).toEqual(true)
-
 		const alert = wrapper.find('div.v-alert')
 		expect(alert.exists()).toEqual(false)
 

@@ -32,7 +32,7 @@ describe('WikibaseDetailCardContainer', async () => {
 		const button = wrapper.find('button.v-btn')
 		expect(button.exists()).toEqual(true)
 		expect(button.classes()).toContain('v-btn--density-comfortable')
-		expect(button.text()).toEqual('VIEW')
+		expect(button.text()).toEqual('Details')
 
 		await button.trigger('click')
 		await nextTick()

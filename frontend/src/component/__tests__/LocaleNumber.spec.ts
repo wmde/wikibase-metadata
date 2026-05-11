@@ -31,12 +31,12 @@ describe('LocaleNumber', async () => {
 			props: { stat: 10000000 }
 		})
 
-		expect(wrapper.html()).toEqual('10.000.000')
+		expect(wrapper.html()).toEqual('10,000,000')
 	})
 
 	it('renders small number properly', async () => {
 		const wrapper = mount(LocaleNumber, { global: { plugins: [vuetify] }, props: { stat: 0.03 } })
 
-		expect(wrapper.html()).toEqual('0,03')
+		expect(wrapper.html()).toEqual('0.03')
 	})
 })

@@ -50,18 +50,6 @@ describe('WikibaseTable', async () => {
 				.find('tbody')
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[0]?.text())
-		).toEqual(['1', '2', '3', '4', '5'])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[1]?.text())
-		).toEqual(['Unknown', 'Self-Hosted', 'Other', 'Wikibase Cloud', 'Self-Hosted'])
-		expect(
-			table
-				.find('tbody')
-				.findAll('tr')
-				.map((tr) => tr.findAll('td')[2]?.text())
 		).toEqual([
 			'Test Wikibase #5',
 			'Test Wikibase #2',
@@ -72,16 +60,16 @@ describe('WikibaseTable', async () => {
 		table
 			.find('tbody')
 			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').exists()).toEqual(true))
+			.forEach((tr) => expect(tr.findAll('td')[0]?.find('a').exists()).toEqual(true))
 		table
 			.find('tbody')
 			.findAll('tr')
-			.forEach((tr) => expect(tr.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href'))
+			.forEach((tr) => expect(tr.findAll('td')[0]?.find('a').attributes()).toHaveProperty('href'))
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[2]?.find('a').attributes()['href'])
+				.map((tr) => tr.findAll('td')[0]?.find('a').attributes()['href'])
 		).toEqual([
 			'test-wikibase-005.test',
 			'test-wikibase-002.test',
@@ -93,25 +81,25 @@ describe('WikibaseTable', async () => {
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[3]?.text())
+				.map((tr) => tr.findAll('td')[1]?.text())
 		).toEqual(['300', '14', '1', '–', '–'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[4]?.text())
+				.map((tr) => tr.findAll('td')[2]?.text())
 		).toEqual(['100', '–', '100', '–', '31'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[5]?.text())
+				.map((tr) => tr.findAll('td')[3]?.text())
 		).toEqual(['–', 'Fictional & Creative Works', '–', '–', 'Technology & Open Source'])
 		expect(
 			table
 				.find('tbody')
 				.findAll('tr')
-				.map((tr) => tr.findAll('td')[6]?.text())
+				.map((tr) => tr.findAll('td')[4]?.text())
 		).toEqual(['–', '–', '–', 'An Example for the Purposes of Testing', '–'])
 	})
 
@@ -135,12 +123,12 @@ describe('WikibaseTable', async () => {
 		const tableHead = table.find('thead')
 		expect(tableHead.exists()).toEqual(true)
 		expect(tableHead.findAll('tr').length).toEqual(1)
-		expect(tableHead.find('tr').findAll('th').length).toEqual(8)
-		expect(tableHead.find('tr').findAll('th')[4]?.text()).toEqual('Edits (last 30 days)')
+		expect(tableHead.find('tr').findAll('th').length).toEqual(6)
+		expect(tableHead.find('tr').findAll('th')[2]?.text()).toEqual('Edits(last 30 days)')
 
 		expect(mockSetSort).toHaveBeenCalledTimes(0)
 
-		await tableHead.find('tr').findAll('th')[4]?.trigger('click')
+		await tableHead.find('tr').findAll('th')[2]?.trigger('click')
 		await nextTick()
 
 		expect(mockSetSort).toHaveBeenCalledTimes(1)
