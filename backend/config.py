@@ -12,9 +12,13 @@ assert auth_token is not None, "No Authentication Token Found"
 database_connection_string = os.path.expandvars(
     config.get("database", "database_connection_string")
 )
-
-old_database_connection_string = os.path.expandvars(
-    config.get("database", "old_database_connection_string")
+_old_database_connection_string_var = config.get(
+    "database", "old_database_connection_string", fallback=None
+)
+old_database_connection_string = (
+    os.path.expandvars(_old_database_connection_string_var)
+    if _old_database_connection_string_var is not None
+    else None
 )
 
 enable_scheduler = config.getboolean("scheduler", "enable", fallback=True)
