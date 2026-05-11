@@ -8,14 +8,14 @@ import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sor
 type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
 const headers: TableHeader[] = [
-	{ title: '', sortable: false },
-	{ title: 'Type', value: SortColumn.Type, sortable: true },
+	// { title: '', sortable: false },
+	// { title: 'Type', value: SortColumn.Type, sortable: true },
 	{ title: 'Title', value: SortColumn.Title, sortable: true },
 	{ title: 'Triples', value: SortColumn.Triples, sortable: true },
 	{ title: 'Edits (last 30 days)', value: SortColumn.Edits, sortable: true },
 	{ title: 'Category', value: SortColumn.Category, sortable: true },
 	{ title: 'Description', sortable: false },
-	{ title: 'Details', sortable: false }
+	{ title: '', sortable: false }
 ]
 
 const store = useWikiStore()

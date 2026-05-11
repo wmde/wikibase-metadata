@@ -11,8 +11,8 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 
 <template>
 	<tr>
-		<td>{{ index + 1 }}</td>
-		<td>
+		<td v-if="false">{{ index + 1 }}</td>
+		<td v-if="false">
 			<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 		</td>
 		<td>
@@ -28,7 +28,7 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 			<WikibaseCategoryChip :category="wikibase.category" />
 		</td>
 		<td>
-			<div class="overflow">{{ wikibase.description ?? '–' }}</div>
+			{{ wikibase.description ?? '–' }}
 		</td>
 		<td>
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
@@ -39,9 +39,5 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 <style lang="css">
 .wikibase-type-chip {
 	min-width: 40px;
-}
-.overflow {
-	max-height: 4em;
-	overflow-y: scroll;
 }
 </style>
