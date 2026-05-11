@@ -12,7 +12,7 @@ onBeforeMount(() => store.fetchWikibasePage())
 </script>
 
 <template>
-	<v-container class="wikibase-table-container ma-0 pa-0">
+	<v-container class="wikibase-table-container my-0 pa-0">
 		<WikibaseTypeFilter />
 		<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 		<WikibaseTable />
