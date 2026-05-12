@@ -23,6 +23,8 @@ defineProps<{ wikibase: WbFragment }>()
 			<WikibaseCategoryChip :category="wikibase.category" />
 		</td>
 		<td class="wikibase-table-cell">
+			<template v-if="wikibase.description">{{ wikibase.description }}</template>
+			<template v-else>&mdash;</template>
 			{{ wikibase.description ?? '–' }}
 		</td>
 		<td class="wikibase-table-cell">

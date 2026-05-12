@@ -5,6 +5,7 @@ import { useWikiStore } from '@/stores/wikibase-page-store'
 import { mdiSwapVertical } from '@mdi/js'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
+import PaginationFooter from './PaginationFooter.vue'
 
 type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
@@ -61,7 +62,8 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		:items="wikibases"
 		:items-length="totalCount ?? 0"
 		:loading="loading"
-		class="wikibase-table"
+		hide-default-footer
+		class="wikibase-table mb-8"
 	>
 		<template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr class="table-header-row">
@@ -88,6 +90,7 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 			<WikibaseTableRow :wikibase="item" />
 		</template>
 	</v-data-table-server>
+	<pagination-footer />
 </template>
 
 <style lang="css">
