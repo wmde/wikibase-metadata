@@ -17,7 +17,7 @@ import { computed, ref, watch, type Ref } from 'vue'
 
 provideApolloClient(apolloClient)
 
-type WikibasePageData = { meta: { totalCount: number }; data: WbFragment[] }
+type WikibasePageData = { meta: { totalCount: number; totalPages: number }; data: WbFragment[] }
 
 export type WikibasePageStoreType = {
 	fetchWikibasePage: () => void

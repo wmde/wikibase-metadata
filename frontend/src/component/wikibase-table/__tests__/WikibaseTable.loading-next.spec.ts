@@ -15,7 +15,7 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 		wikibasePage: {
 			...mockWikiStore.wikibasePage,
 			loading: true,
-			data: { data: testWikibases, meta: { totalCount: testWikibases.length } }
+			data: { data: testWikibases, meta: { totalCount: testWikibases.length, totalPages: 1 } }
 		}
 	})
 }))

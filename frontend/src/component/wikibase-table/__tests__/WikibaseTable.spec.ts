@@ -20,7 +20,7 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 		wikibasePage: {
 			...mockWikiStore.wikibasePage,
 			data: {
-				meta: { totalCount: testWikibases.length },
+				meta: { totalCount: testWikibases.length, totalPages: 1 },
 				data: testWikibases.sort(
 					(a, b) =>
 						(b.quantityObservations.mostRecent?.totalTriples ?? 0) -

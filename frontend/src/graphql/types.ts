@@ -473,7 +473,7 @@ export type WikibaseInput = {
 	test?: InputMaybe<Scalars['Boolean']['input']>
 	urls: WikibaseUrlSetInput
 	wikibaseName: Scalars['String']['input']
-	wikibaseType: string
+	wikibaseType?: InputMaybe<WikibaseType>
 }
 
 export type WikibaseItemDate = {
@@ -1331,7 +1331,7 @@ export type PageWikibasesQuery = {
 	__typename?: 'Query'
 	wikibaseList: {
 		__typename?: 'WikibasePage'
-		meta: { __typename?: 'PageMetadata'; totalCount: number }
+		meta: { __typename?: 'PageMetadata'; totalCount: number; totalPages: number }
 		data: Array<{
 			__typename?: 'Wikibase'
 			id: string
