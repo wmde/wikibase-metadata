@@ -49,7 +49,36 @@ class WikibaseStrawberryModel:
     )
     urls: WikibaseURLSetStrawberryModel = strawberry.field(description="URLs")
 
-    _model: strawberry.Private[Optional[WikibaseModel]]
+    _connectivity_observations: strawberry.Private[
+        Optional[list[WikibaseConnectivityObservationStrawberryModel]]
+    ]
+    _external_identifier_observations: strawberry.Private[
+        Optional[list[WikibaseExternalIdentifierObservationStrawberryModel]]
+    ]
+    _log_observations: strawberry.Private[
+        Optional[WikibaseLogObservationStrawberryModel]
+    ]
+    _property_popularity_observations: strawberry.Private[
+        Optional[list[WikibasePropertyPopularityObservationStrawberryModel]]
+    ]
+    _quantity_observations: strawberry.Private[
+        Optional[list[WikibaseQuantityObservationStrawberryModel]]
+    ]
+    _recent_changes_observations: strawberry.Private[
+        Optional[list[WikibaseRecentChangesObservationStrawberryModel]]
+    ]
+    _software_version_observations: strawberry.Private[
+        Optional[list[WikibaseSoftwareVersionObservationStrawberryModel]]
+    ]
+    _statistics_observations: strawberry.Private[
+        Optional[list[WikibaseStatisticsObservationStrawberryModel]]
+    ]
+    _time_to_first_value_observations: strawberry.Private[
+        Optional[list[WikibaseTimeToFirstValueObservationStrawberryModel]]
+    ]
+    _user_observations: strawberry.Private[
+        Optional[list[WikibaseUserObservationStrawberryModel]]
+    ]
 
     @strawberry.field(description="Connectivity Data")
     async def connectivity_observations(
@@ -59,12 +88,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Connectivity Data on Specific Request"""
 
-        if self._model is not None:
+        if self._connectivity_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseConnectivityObservationStrawberryModel.marshal(o)
-                    for o in self._model.connectivity_observations
-                ]
+                self._connectivity_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -93,12 +119,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon External Identifier Data on Specific Request"""
 
-        if self._model is not None:
+        if self._external_identifier_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseExternalIdentifierObservationStrawberryModel.marshal(o)
-                    for o in self._model.external_identifier_observations
-                ]
+                self._external_identifier_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -125,8 +148,8 @@ class WikibaseStrawberryModel:
     async def log_observations(self) -> WikibaseLogObservationStrawberryModel:
         """Summon Log Data on Specific Request"""
 
-        if self._model is not None:
-            return WikibaseLogObservationStrawberryModel.marshal(self._model)
+        if self._log_observations is not None:
+            return self._log_observations
         async with get_async_session() as async_session:
             model = (
                 (
@@ -147,14 +170,11 @@ class WikibaseStrawberryModel:
     ) -> WikibaseObservationSetStrawberryModel[
         WikibasePropertyPopularityObservationStrawberryModel
     ]:
-        """Summon Log Data on Specific Request"""
+        """Summon Property Popularity Data on Specific Request"""
 
-        if self._model is not None:
+        if self._property_popularity_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibasePropertyPopularityObservationStrawberryModel.marshal(o)
-                    for o in self._model.property_popularity_observations
-                ]
+                self._property_popularity_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -185,12 +205,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Quantity Data on Specific Request"""
 
-        if self._model is not None:
+        if self._quantity_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseQuantityObservationStrawberryModel.marshal(o)
-                    for o in self._model.quantity_observations
-                ]
+                self._quantity_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -219,12 +236,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Recent Changes Data on Specific Request"""
 
-        if self._model is not None:
+        if self._recent_changes_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseRecentChangesObservationStrawberryModel.marshal(o)
-                    for o in self._model.recent_changes_observations
-                ]
+                self._recent_changes_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -253,12 +267,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Software Version Data on Specific Request"""
 
-        if self._model is not None:
+        if self._software_version_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseSoftwareVersionObservationStrawberryModel.marshal(o)
-                    for o in self._model.software_version_observations
-                ]
+                self._software_version_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -289,12 +300,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Statistics Data on Specific Request"""
 
-        if self._model is not None:
+        if self._statistics_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseStatisticsObservationStrawberryModel.marshal(o)
-                    for o in self._model.statistics_observations
-                ]
+                self._statistics_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -323,12 +331,9 @@ class WikibaseStrawberryModel:
     ]:
         """Summon Time to First Value Data on Specific Request"""
 
-        if self._model is not None:
+        if self._time_to_first_value_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseTimeToFirstValueObservationStrawberryModel.marshal(o)
-                    for o in self._model.time_to_first_value_observations
-                ]
+                self._time_to_first_value_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -357,12 +362,9 @@ class WikibaseStrawberryModel:
     ) -> WikibaseObservationSetStrawberryModel[WikibaseUserObservationStrawberryModel]:
         """Summon User Data on Specific Request"""
 
-        if self._model is not None:
+        if self._user_observations is not None:
             return WikibaseObservationSetStrawberryModel.marshal(
-                [
-                    WikibaseUserObservationStrawberryModel.marshal(o)
-                    for o in self._model.user_observations
-                ]
+                self._user_observations
             )
         async with get_async_session() as async_session:
             model = (
@@ -386,6 +388,23 @@ class WikibaseStrawberryModel:
     @classmethod
     def marshal(cls, model: WikibaseModel) -> "WikibaseStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
+        from sqlalchemy.orm.base import instance_state  # pylint: disable=import-outside-toplevel
+
+        state = instance_state(model)
+
+        def get_preloaded(attr: str):
+            return getattr(model, attr) if attr in state.dict else None
+
+        connectivity = get_preloaded("connectivity_observations")
+        external_identifier = get_preloaded("external_identifier_observations")
+        log_month = get_preloaded("log_month_observations")
+        property_popularity = get_preloaded("property_popularity_observations")
+        quantity = get_preloaded("quantity_observations")
+        recent_changes = get_preloaded("recent_changes_observations")
+        software_version = get_preloaded("software_version_observations")
+        statistics = get_preloaded("statistics_observations")
+        time_to_first_value = get_preloaded("time_to_first_value_observations")
+        user = get_preloaded("user_observations")
 
         return cls(
             id=strawberry.ID(model.id),
@@ -397,5 +416,44 @@ class WikibaseStrawberryModel:
             languages=WikibaseLanguageSetStrawberryModel.marshal(model),
             urls=WikibaseURLSetStrawberryModel.marshal(model),
             wikibase_type=model.wikibase_type or WikibaseType.UNKNOWN,
-            _model=model,
+            _connectivity_observations=(
+                [WikibaseConnectivityObservationStrawberryModel.marshal(o) for o in connectivity]
+                if connectivity is not None else None
+            ),
+            _external_identifier_observations=(
+                [WikibaseExternalIdentifierObservationStrawberryModel.marshal(o) for o in external_identifier]
+                if external_identifier is not None else None
+            ),
+            _log_observations=(
+                WikibaseLogObservationStrawberryModel.marshal(model)
+                if log_month is not None else None
+            ),
+            _property_popularity_observations=(
+                [WikibasePropertyPopularityObservationStrawberryModel.marshal(o) for o in property_popularity]
+                if property_popularity is not None else None
+            ),
+            _quantity_observations=(
+                [WikibaseQuantityObservationStrawberryModel.marshal(o) for o in quantity]
+                if quantity is not None else None
+            ),
+            _recent_changes_observations=(
+                [WikibaseRecentChangesObservationStrawberryModel.marshal(o) for o in recent_changes]
+                if recent_changes is not None else None
+            ),
+            _software_version_observations=(
+                [WikibaseSoftwareVersionObservationStrawberryModel.marshal(o) for o in software_version]
+                if software_version is not None else None
+            ),
+            _statistics_observations=(
+                [WikibaseStatisticsObservationStrawberryModel.marshal(o) for o in statistics]
+                if statistics is not None else None
+            ),
+            _time_to_first_value_observations=(
+                [WikibaseTimeToFirstValueObservationStrawberryModel.marshal(o) for o in time_to_first_value]
+                if time_to_first_value is not None else None
+            ),
+            _user_observations=(
+                [WikibaseUserObservationStrawberryModel.marshal(o) for o in user]
+                if user is not None else None
+            ),
         )
