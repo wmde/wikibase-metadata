@@ -68,7 +68,7 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 				<template v-for="(column, idx) in columns" :key="idx">
 					<th :class="'table-header-cell' + column.sortable ? ' v-data-table__th--sortable' : ''">
 						<div class="d-flex align-center">
-							<span class="me-2 cursor-pointer table-header-cell-title" @click="toggleSort(column)">
+							<span class="me-0 cursor-pointer table-header-cell-title" @click="toggleSort(column)">
 								{{ column.title }}
 							</span>
 							<v-icon
@@ -77,9 +77,9 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 								color="medium-emphasis"
 							/>
 						</div>
-						<span class="table-header-cell-subtitle" v-if="column.title == 'Edits'"
-							>(last 30 days)</span
-						>
+						<span class="table-header-cell-subtitle" v-if="column.title == 'Edits'">
+							(last 30 days)
+						</span>
 					</th>
 				</template>
 			</tr>
@@ -94,16 +94,16 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 .table-header-row {
 	background-color: oklch(98.5% 0.002 247.839);
 }
-.table-header-cell {
+.table-header-cell-title {
 	font-family: Montserrat;
+	font-size: 16px;
+	font-weight: 700 !important;
 	color: rgb(0, 0, 0);
 }
-.table-header-cell-title {
-	font-weight: 700 !important;
-	font-size: 16px;
-}
 .table-header-cell-subtitle {
+	font-family: Montserrat;
 	font-size: 14px;
 	font-weight: 400 !important;
+	color: rgb(0, 0, 0);
 }
 </style>
