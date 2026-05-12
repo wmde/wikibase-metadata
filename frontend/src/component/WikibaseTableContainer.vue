@@ -4,6 +4,8 @@ import { useWikiStore } from '@/stores/wikibase-page-store'
 import { computed, onBeforeMount } from 'vue'
 
 const store = useWikiStore()
+const showCount = computed(() => store.wikibasePage.data?.data.length)
+const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 
 const error = computed(() => store.wikibasePage.errorState)
 
@@ -13,6 +15,18 @@ onBeforeMount(() => store.fetchWikibasePage())
 <template>
 	<v-container class="wikibase-table-container my-0 px-6 py-8">
 		<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
+		<v-container v-if="totalCount && showCount" class="show-count mb-6 pa-0">
+			Showing {{ showCount.toLocaleString('en') }} of
+			{{ totalCount.toLocaleString('en') }} instances
+		</v-container>
 		<WikibaseTable />
 	</v-container>
 </template>
+
+<style lang="css">
+.show-count {
+	font-family: Roboto;
+	font-size: 16px;
+	color: #000;
+}
+</style>
