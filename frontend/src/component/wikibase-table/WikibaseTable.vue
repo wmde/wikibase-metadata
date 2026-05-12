@@ -84,8 +84,8 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 				</template>
 			</tr>
 		</template>
-		<template v-slot:item="{ item, index }">
-			<WikibaseTableRow :wikibase="item" :index="(pageNumber - 1) * pageSize + index" />
+		<template v-slot:item="{ item }">
+			<WikibaseTableRow :wikibase="item" />
 		</template>
 	</v-data-table-server>
 </template>

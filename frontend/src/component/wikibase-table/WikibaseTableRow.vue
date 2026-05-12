@@ -5,7 +5,7 @@ import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChi
 import type { WbFragment } from '@/graphql/types'
 import computeTotalEdits from '@/util/compute-total-edits'
 
-defineProps<{ wikibase: WbFragment; index: number }>()
+defineProps<{ wikibase: WbFragment }>()
 </script>
 
 <template>
