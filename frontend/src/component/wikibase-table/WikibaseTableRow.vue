@@ -10,29 +10,36 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 
 <template>
 	<tr>
-		<td>
-			<a :href="wikibase.urls.baseUrl">{{ wikibase.title }}</a>
+		<td class="wikibase-table-cell">
+			<a :href="wikibase.urls.baseUrl" class="wikibase-title-link">{{ wikibase.title }}</a>
 		</td>
-		<td>
+		<td class="wikibase-table-cell">
 			<LocaleNumber :stat="wikibase.quantityObservations.mostRecent?.totalTriples" />
 		</td>
-		<td>
+		<td class="wikibase-table-cell">
 			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
 		</td>
 		<td>
 			<WikibaseCategoryChip :category="wikibase.category" />
 		</td>
-		<td>
+		<td class="wikibase-table-cell">
 			{{ wikibase.description ?? '–' }}
 		</td>
-		<td>
+		<td class="wikibase-table-cell">
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
 		</td>
 	</tr>
 </template>
 
 <style lang="css">
+.wikibase-table-cell {
+	font-family: Roboto;
+	font-size: 16px;
+}
 .wikibase-type-chip {
 	min-width: 40px;
+}
+.wikibase-title-link {
+	text-decoration: none;
 }
 </style>

@@ -30,6 +30,9 @@ watch(dialog, () => dialog.value && store.searchWikibase(props.wikibaseId))
 	text-transform: none;
 	font-family: Roboto;
 	font-size: 16px;
+	letter-spacing: inherit;
+	border-radius: calc(0.625rem - 2px);
+	border-color: rgba(0, 0, 0, 0.1);
 }
 .detail-button :hover {
 	background-color: oklch(92.8% 0.006 264.531);

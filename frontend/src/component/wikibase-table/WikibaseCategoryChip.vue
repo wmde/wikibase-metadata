@@ -36,3 +36,10 @@ const categoryTitle = (cat: WikibaseCategory | null | undefined): string => {
 <template>
 	<v-chip class="wikibase-category-chip">{{ categoryTitle(category) }}</v-chip>
 </template>
+
+<style lang="css">
+.wikibase-category-chip {
+	font-family: Roboto;
+	font-size: 14px;
+}
+</style>
