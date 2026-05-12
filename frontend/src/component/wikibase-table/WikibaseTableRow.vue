@@ -22,11 +22,7 @@ defineProps<{ wikibase: WbFragment }>()
 		<td>
 			<WikibaseCategoryChip :category="wikibase.category" />
 		</td>
-		<td class="wikibase-table-cell">
-			<template v-if="wikibase.description">{{ wikibase.description }}</template>
-			<template v-else>&mdash;</template>
-			{{ wikibase.description ?? '–' }}
-		</td>
+		<td class="wikibase-table-cell">{{ wikibase.description ?? '–' }}</td>
 		<td class="wikibase-table-cell">
 			<WikibaseDetailCardContainer :wikibase-id="Number.parseInt(wikibase.id)" />
 		</td>
