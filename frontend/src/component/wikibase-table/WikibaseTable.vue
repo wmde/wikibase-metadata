@@ -68,7 +68,7 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		<template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr class="table-header-row">
 				<template v-for="(column, idx) in columns" :key="idx">
-					<th :class="'table-header-cell' + column.sortable ? ' v-data-table__th--sortable' : ''">
+					<th class="table-header-cell">
 						<div class="d-flex align-center">
 							<span class="me-0 cursor-pointer table-header-cell-title" @click="toggleSort(column)">
 								{{ column.title }}

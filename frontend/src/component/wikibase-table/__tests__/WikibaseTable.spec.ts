@@ -124,11 +124,11 @@ describe('WikibaseTable', async () => {
 		expect(tableHead.exists()).toEqual(true)
 		expect(tableHead.findAll('tr').length).toEqual(1)
 		expect(tableHead.find('tr').findAll('th').length).toEqual(6)
-		expect(tableHead.find('tr').findAll('th')[2]?.text()).toEqual('Edits(last 30 days)')
+		expect(tableHead.find('tr').findAll('th')[2]?.text()).toEqual('Edits (last 30 days)')
 
 		expect(mockSetSort).toHaveBeenCalledTimes(0)
 
-		await tableHead.find('tr').findAll('th')[2]?.trigger('click')
+		await tableHead.find('tr').findAll('th')[2]?.find('span.cursor-pointer')?.trigger('click')
 		await nextTick()
 
 		expect(mockSetSort).toHaveBeenCalledTimes(1)

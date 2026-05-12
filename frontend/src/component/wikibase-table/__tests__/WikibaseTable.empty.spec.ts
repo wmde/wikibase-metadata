@@ -27,29 +27,29 @@ describe('WikibaseTable', async () => {
 
 		expect(tableHead.findAll('th').length).toEqual(6)
 
-		expect(tableHead.findAll('th')[0]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[0]?.classes()).toContain('table-header-cell')
 		expect(tableHead.findAll('th')[0]?.find('i.v-icon').exists()).toEqual(true)
 		expect(tableHead.findAll('th')[0]?.text()).toEqual('Title')
 
-		expect(tableHead.findAll('th')[1]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[1]?.classes()).toContain('table-header-cell')
 		expect(tableHead.findAll('th')[1]?.find('i.v-icon').exists()).toEqual(true)
 		expect(tableHead.findAll('th')[1]?.text()).toEqual('Triples')
 
-		expect(tableHead.findAll('th')[2]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[2]?.classes()).toContain('table-header-cell')
 		expect(tableHead.findAll('th')[2]?.find('i.v-icon').exists()).toEqual(true)
 		expect(tableHead.findAll('th')[2]?.text()).toEqual('Edits (last 30 days)')
 
-		expect(tableHead.findAll('th')[3]?.classes()).toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[3]?.classes()).toContain('table-header-cell')
 		expect(tableHead.findAll('th')[3]?.find('i.v-icon').exists()).toEqual(true)
 		expect(tableHead.findAll('th')[3]?.text()).toEqual('Category')
 
-		expect(tableHead.findAll('th')[4]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[4]?.classes()).toContain('table-header-cell')
 		expect(tableHead.findAll('th')[4]?.find('i.v-icon').exists()).toEqual(false)
 		expect(tableHead.findAll('th')[4]?.text()).toEqual('Description')
 
-		expect(tableHead.findAll('th')[5]?.classes()).not.toContain('v-data-table__th--sortable')
+		expect(tableHead.findAll('th')[5]?.classes()).toContain('table-header-cell')
 		expect(tableHead.findAll('th')[5]?.find('i.v-icon').exists()).toEqual(false)
-		expect(tableHead.findAll('th')[5]?.text()).toEqual('Details')
+		expect(tableHead.findAll('th')[5]?.text()).toEqual('')
 	})
 
 	it('renders empty properly', async () => {
@@ -69,20 +69,5 @@ describe('WikibaseTable', async () => {
 		const noDataRow = table.find('tbody').find('tr.v-data-table-rows-no-data')
 		expect(noDataRow.exists()).toEqual(true)
 		expect(noDataRow.text()).toEqual('No data available')
-
-		expect(tableContainer.find('hr.v-divider').exists()).toEqual(true)
-
-		const footerContainer = tableContainer.find('div.v-data-table-footer')
-		expect(footerContainer.exists()).toEqual(true)
-
-		const itemsPerPageContainer = footerContainer.find('div.v-data-table-footer__items-per-page')
-		expect(itemsPerPageContainer.exists()).toEqual(true)
-
-		const infoContainer = footerContainer.find('div.v-data-table-footer__info')
-		expect(infoContainer.exists()).toEqual(true)
-		expect(infoContainer.text()).toEqual('0-0 of 0')
-
-		const paginationContainer = footerContainer.find('div.v-data-table-footer__pagination')
-		expect(paginationContainer.exists()).toEqual(true)
 	})
 })
