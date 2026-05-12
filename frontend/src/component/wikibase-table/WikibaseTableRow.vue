@@ -9,7 +9,7 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 </script>
 
 <template>
-	<tr>
+	<tr class="wikibase-table-row">
 		<td class="wikibase-table-cell">
 			<a :href="wikibase.urls.baseUrl" class="wikibase-title-link">{{ wikibase.title }}</a>
 		</td>
@@ -32,6 +32,9 @@ defineProps<{ wikibase: WbFragment; index: number }>()
 </template>
 
 <style lang="css">
+.wikibase-table-row:hover {
+	background-color: oklch(98.5% 0.002 247.839);
+}
 .wikibase-table-cell {
 	font-family: Roboto;
 	font-size: 16px;

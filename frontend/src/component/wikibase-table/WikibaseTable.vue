@@ -61,11 +61,10 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		:items="wikibases"
 		:items-length="totalCount ?? 0"
 		:loading="loading"
-		hover
 		class="wikibase-table"
 	>
 		<template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
-			<tr>
+			<tr class="table-header-row">
 				<template v-for="(column, idx) in columns" :key="idx">
 					<th :class="'table-header-cell' + column.sortable ? ' v-data-table__th--sortable' : ''">
 						<div class="d-flex align-center">
@@ -92,8 +91,10 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 </template>
 
 <style lang="css">
-.table-header-cell {
+.table-header-row {
 	background-color: oklch(98.5% 0.002 247.839);
+}
+.table-header-cell {
 	font-family: Montserrat;
 	color: rgb(0, 0, 0);
 }
