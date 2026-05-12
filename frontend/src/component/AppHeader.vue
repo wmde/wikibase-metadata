@@ -61,8 +61,7 @@ const theme = useTheme()
 	width: auto;
 }
 .icon .v-img {
-	height: 50px;
-	width: 50px;
+	width: 96px;
 }
 .title-container {
 	flex-grow: 1;
@@ -73,7 +72,7 @@ const theme = useTheme()
 	font-family: Montserrat;
 }
 .subtitle {
-	font-size: 14px;
+	font-size: 16px;
 	font-family: Roboto;
 }
 </style>
