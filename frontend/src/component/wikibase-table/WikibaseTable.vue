@@ -94,6 +94,9 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 </template>
 
 <style lang="css">
+.wikibase-table {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
 .table-header-row {
 	background-color: oklch(98.5% 0.002 247.839);
 }

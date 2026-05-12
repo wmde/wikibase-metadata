@@ -15,7 +15,7 @@ watch(internalValue, () => onChange(internalValue.value))
 		width="6rem"
 		height="1.75rem"
 		density="compact"
-		variant="outlined"
+		variant="solo-filled"
 	/>
 </template>
 
@@ -23,8 +23,13 @@ watch(internalValue, () => onChange(internalValue.value))
 .selection {
 	font-family: Roboto;
 	font-size: 16px;
-	border-color: oklch(87.2 0.01 285.338);
+	border: 1px solid oklch(87.2% 0.01 285.338);
 	border-radius: calc(0.625rem - 2px);
+}
+.selection .v-input,
+.selection .v-input__control,
+.selection .v-field {
+	border-radius: inherit !important;
 }
 .selection .v-input__details {
 	display: none;

@@ -73,6 +73,8 @@ const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 <style lang="css">
 .pagination-container {
 	background-color: white;
+	/* border-top: 1px solid grey; */
+	border-top: 1px solid oklch(87.2% 0.01 285.338);
 }
 .pagination-row-container {
 	display: flex;
