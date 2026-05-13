@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import AccreditedTypeChip from '@/component/wikibase-table/wikibase-detail-card/AccreditedTypeChip.vue'
 import CardLoader from '@/component/wikibase-table/wikibase-detail-card/CardLoader.vue'
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
 import WikibaseQueryServiceLink from '@/component/wikibase-table/wikibase-detail-card/WikibaseQueryServiceLink.vue'
 import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/WikibaseTitle.vue'
 import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
+import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import { useTheme } from 'vuetify'
 
@@ -22,22 +22,14 @@ const theme = useTheme()
 	>
 		<CardLoader v-if="loading" />
 		<template v-else-if="wikibase">
-			<v-container class="card-header ma-0 pa-0">
-				<v-container class="ma-0 pa-0">
-					<v-container class="url-container ma-0 pa-0">
-						<WikibaseTitle :wikibase="wikibase" />
-					</v-container>
-					<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
-						<template v-slot:activator="{ props }">
-							<WikibaseCategoryChip :category="wikibase.category" v-bind="props" class="category" />
-						</template>
-					</v-tooltip>
-					<WikibaseDescription :wikibase="wikibase" />
-					<WikibaseQueryServiceLink :wikibase="wikibase" />
+			<v-container class="ma-0 pa-0">
+				<WikibaseTitle :wikibase="wikibase" />
+				<v-container class="ma-0 pa-0 tag-container">
+					<WikibaseCategoryChip :category="wikibase.category" class="category" />
+					<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 				</v-container>
-				<v-container class="wikibase-type ma-0 pa-0">
-					<AccreditedTypeChip :wikibase="wikibase" />
-				</v-container>
+				<WikibaseDescription :wikibase="wikibase" />
+				<WikibaseQueryServiceLink :wikibase="wikibase" />
 			</v-container>
 			<WikibaseDetailStats :wikibase="wikibase" />
 		</template>
@@ -51,6 +43,11 @@ const theme = useTheme()
 	justify-content: space-between;
 	max-width: 500px;
 	border-color: rgba(255, 255, 255, 0.12);
+}
+.tag-container {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 0.75rem;
 }
 .card-header {
 	display: flex;
