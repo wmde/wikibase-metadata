@@ -3,7 +3,6 @@ import AccreditedTypeChip from '@/component/wikibase-table/wikibase-detail-card/
 import CardLoader from '@/component/wikibase-table/wikibase-detail-card/CardLoader.vue'
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
-import WikibaseIcon from '@/component/wikibase-table/wikibase-detail-card/WikibaseIcon.vue'
 import WikibaseQueryServiceLink from '@/component/wikibase-table/wikibase-detail-card/WikibaseQueryServiceLink.vue'
 import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/WikibaseTitle.vue'
 import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
@@ -25,8 +24,7 @@ const theme = useTheme()
 		<template v-else-if="wikibase">
 			<v-container class="card-header ma-0 pa-0">
 				<v-container class="ma-0 pa-0">
-					<v-container class="url-container ma-0 pa-1">
-						<WikibaseIcon :base-url="wikibase.urls.baseUrl" />
+					<v-container class="url-container ma-0 pa-0">
 						<WikibaseTitle :wikibase="wikibase" />
 					</v-container>
 					<v-tooltip v-if="wikibase.category" class="desc-tooltip" text="Manually chosen">
