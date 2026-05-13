@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import WikibaseStatistic from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistic.vue'
-import type { SingleWikibaseFragment } from '@/graphql/types'
-import stringDate from '@/util/string-date'
+import WikibaseStatistic from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistic.vue';
+import type { SingleWikibaseFragment } from '@/graphql/types';
+import stringDate from '@/util/string-date';
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-container class="ma-0 pa-0 statistics-container">
+	<v-container class="ma-0 pa-0 pb-8 statistics-container">
 		<v-container class="ma-0 mb-4 pa-0 title">Statistics</v-container>
 		<v-container class="ma-0 pa-0 stats-container">
 			<WikibaseStatistic

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { SingleWikibaseFragment } from '@/graphql/types'
-import { mdiLink, mdiMagnify } from '@mdi/js'
+import type { SingleWikibaseFragment } from '@/graphql/types';
+import { mdiLink, mdiMagnify } from '@mdi/js';
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-container class="ma-0 pa-0 access-container">
+	<v-container class="ma-0 pa-0 pb-8 access-container">
 		<v-container class="ma-0 mb-4 pa-0 title">Access</v-container>
 		<v-container class="ma-0 pa-0 acc-container">
 			<v-btn
