@@ -1,98 +1,62 @@
 <script setup lang="ts">
-import LocaleDate from '@/component/LocaleDate.vue'
-import LocaleDateTime from '@/component/LocaleDateTime.vue'
-import LocaleNumber from '@/component/LocaleNumber.vue'
+import WikibaseStatistic from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistic.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
-import computeTotalEdits from '@/util/compute-total-edits'
+import stringDate from '@/util/string-date'
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-table striped="odd" class="wikibase-detail-stats">
-		<thead>
-			<tr>
-				<th colspan="2">STATISTIC</th>
-				<th>SOURCE</th>
-			</tr>
-		</thead>
-		<tbody>
-			<template v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate">
-				<tr>
-					<th>FIRST RECORD</th>
-					<td>
-						<LocaleDateTime
-							:stat="wikibase.timeToFirstValueObservations.mostRecent.initiationDate"
-						/>
-					</td>
-					<td :rowspan="1 + wikibase.timeToFirstValueObservations.mostRecent.itemDates.length">
-						Action API
-					</td>
-				</tr>
-				<tr
-					v-for="itemDate in wikibase.timeToFirstValueObservations.mostRecent.itemDates"
-					:key="itemDate.id"
-				>
-					<td>
-						<div class="left-tab-1">Q{{ itemDate.q }}</div>
-					</td>
-					<td><LocaleDateTime :stat="itemDate.creationDate" /></td>
-				</tr>
-			</template>
-			<template v-if="wikibase.quantityObservations.mostRecent">
-				<tr>
-					<th>ITEMS</th>
-					<td>
-						<LocaleNumber :stat="wikibase.quantityObservations.mostRecent.totalItems" />
-					</td>
-					<td rowspan="5">Query Service</td>
-				</tr>
-				<tr>
-					<th>PROPERTIES</th>
-					<td>
-						<LocaleNumber :stat="wikibase.quantityObservations.mostRecent.totalProperties" />
-					</td>
-				</tr>
-				<tr>
-					<th>LEXEMES</th>
-					<td>
-						<LocaleNumber :stat="wikibase.quantityObservations.mostRecent.totalLexemes" />
-					</td>
-				</tr>
-				<tr>
-					<th>TRIPLES</th>
-					<td>
-						<LocaleNumber :stat="wikibase.quantityObservations.mostRecent.totalTriples" />
-					</td>
-				</tr>
-				<tr>
-					<th>AS OF</th>
-					<td>
-						<LocaleDate :stat="wikibase.quantityObservations.mostRecent.observationDate" />
-					</td>
-				</tr>
-			</template>
-			<template v-if="wikibase.recentChangesObservations.mostRecent">
-				<tr>
-					<th>EDITS (LAST 30 DAYS)</th>
-					<td>
-						<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
-					</td>
-					<td rowspan="2">Action API</td>
-				</tr>
-				<tr style="display: none">
-					<th>AS OF</th>
-					<td>
-						<LocaleDate :stat="wikibase.recentChangesObservations.mostRecent.observationDate" />
-					</td>
-				</tr>
-			</template>
-		</tbody>
-	</v-table>
+	<v-container class="ma-0 pa-0 statistics-container">
+		<v-container class="ma-0 mb-4 pa-0 title">Statistics</v-container>
+		<v-container class="ma-0 pa-0 stats-container">
+			<WikibaseStatistic
+				v-if="wikibase.quantityObservations.mostRecent?.totalTriples != null"
+				label="Total Triples"
+				:value="wikibase.quantityObservations.mostRecent.totalTriples"
+			/>
+			<WikibaseStatistic
+				v-if="wikibase.recentChangesObservations.mostRecent"
+				label="Edits (Last 30 days)"
+				:value="
+					(wikibase.recentChangesObservations.mostRecent?.botChangeCount ?? 0) +
+					(wikibase.recentChangesObservations.mostRecent?.humanChangeCount ?? 0)
+				"
+			/>
+			<WikibaseStatistic
+				v-if="wikibase.quantityObservations.mostRecent?.totalItems != null"
+				label="Items"
+				:value="wikibase.quantityObservations.mostRecent.totalItems"
+			/>
+			<WikibaseStatistic
+				v-if="wikibase.quantityObservations.mostRecent?.totalProperties != null"
+				label="Properties"
+				:value="wikibase.quantityObservations.mostRecent.totalProperties"
+			/>
+			<WikibaseStatistic
+				v-if="wikibase.quantityObservations.mostRecent?.totalLexemes != null"
+				label="Lexemes"
+				:value="wikibase.quantityObservations.mostRecent.totalLexemes"
+			/>
+			<WikibaseStatistic
+				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate != null"
+				label="First Record"
+				:value="stringDate(wikibase.timeToFirstValueObservations.mostRecent?.initiationDate)"
+			/>
+		</v-container>
+	</v-container>
 </template>
 
 <style lang="css">
-.left-tab-1 {
-	padding-left: 1em;
+.stats-container {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.75rem;
+}
+.statistics-container .title {
+	font-family: Montserrat;
+	font-weight: 700;
+	font-size: 20px;
+	color: rgb(0, 0, 0);
 }
 </style>
