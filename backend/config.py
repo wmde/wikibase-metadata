@@ -12,13 +12,11 @@ assert auth_token is not None, "No Authentication Token Found"
 database_connection_string = os.path.expandvars(
     config.get("database", "database_connection_string")
 )
-_old_database_connection_string_var = config.get(
-    "database", "old_database_connection_string", fallback=None
-)
-old_database_connection_string = (
-    os.path.expandvars(_old_database_connection_string_var)
-    if _old_database_connection_string_var is not None
-    else None
+
+database_connection_string = "postgresql+asyncpg://postgres:app@localhost:5432/postgres"
+
+old_database_connection_string = os.path.expandvars(
+    config.get("database", "database_connection_string")
 )
 
 enable_scheduler = config.getboolean("scheduler", "enable", fallback=True)
@@ -27,4 +25,7 @@ log_directory = os.path.expandvars(
     config.get("logging", "log_directory", fallback="logs")
 )
 
+log_directory = "logs"
+
 log_level = os.path.expandvars(config.get("logging", "log_level", fallback="INFO"))
+log_level = "INFO"

@@ -388,7 +388,9 @@ class WikibaseStrawberryModel:
     @classmethod
     def marshal(cls, model: WikibaseModel) -> "WikibaseStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
-        from sqlalchemy.orm.base import instance_state  # pylint: disable=import-outside-toplevel
+        from sqlalchemy.orm.base import (
+            instance_state,
+        )  # pylint: disable=import-outside-toplevel
 
         state = instance_state(model)
 
@@ -417,43 +419,77 @@ class WikibaseStrawberryModel:
             urls=WikibaseURLSetStrawberryModel.marshal(model),
             wikibase_type=model.wikibase_type or WikibaseType.UNKNOWN,
             _connectivity_observations=(
-                [WikibaseConnectivityObservationStrawberryModel.marshal(o) for o in connectivity]
-                if connectivity is not None else None
+                [
+                    WikibaseConnectivityObservationStrawberryModel.marshal(o)
+                    for o in connectivity
+                ]
+                if connectivity is not None
+                else None
             ),
             _external_identifier_observations=(
-                [WikibaseExternalIdentifierObservationStrawberryModel.marshal(o) for o in external_identifier]
-                if external_identifier is not None else None
+                [
+                    WikibaseExternalIdentifierObservationStrawberryModel.marshal(o)
+                    for o in external_identifier
+                ]
+                if external_identifier is not None
+                else None
             ),
             _log_observations=(
                 WikibaseLogObservationStrawberryModel.marshal(model)
-                if log_month is not None else None
+                if log_month is not None
+                else None
             ),
             _property_popularity_observations=(
-                [WikibasePropertyPopularityObservationStrawberryModel.marshal(o) for o in property_popularity]
-                if property_popularity is not None else None
+                [
+                    WikibasePropertyPopularityObservationStrawberryModel.marshal(o)
+                    for o in property_popularity
+                ]
+                if property_popularity is not None
+                else None
             ),
             _quantity_observations=(
-                [WikibaseQuantityObservationStrawberryModel.marshal(o) for o in quantity]
-                if quantity is not None else None
+                [
+                    WikibaseQuantityObservationStrawberryModel.marshal(o)
+                    for o in quantity
+                ]
+                if quantity is not None
+                else None
             ),
             _recent_changes_observations=(
-                [WikibaseRecentChangesObservationStrawberryModel.marshal(o) for o in recent_changes]
-                if recent_changes is not None else None
+                [
+                    WikibaseRecentChangesObservationStrawberryModel.marshal(o)
+                    for o in recent_changes
+                ]
+                if recent_changes is not None
+                else None
             ),
             _software_version_observations=(
-                [WikibaseSoftwareVersionObservationStrawberryModel.marshal(o) for o in software_version]
-                if software_version is not None else None
+                [
+                    WikibaseSoftwareVersionObservationStrawberryModel.marshal(o)
+                    for o in software_version
+                ]
+                if software_version is not None
+                else None
             ),
             _statistics_observations=(
-                [WikibaseStatisticsObservationStrawberryModel.marshal(o) for o in statistics]
-                if statistics is not None else None
+                [
+                    WikibaseStatisticsObservationStrawberryModel.marshal(o)
+                    for o in statistics
+                ]
+                if statistics is not None
+                else None
             ),
             _time_to_first_value_observations=(
-                [WikibaseTimeToFirstValueObservationStrawberryModel.marshal(o) for o in time_to_first_value]
-                if time_to_first_value is not None else None
+                [
+                    WikibaseTimeToFirstValueObservationStrawberryModel.marshal(o)
+                    for o in time_to_first_value
+                ]
+                if time_to_first_value is not None
+                else None
             ),
             _user_observations=(
                 [WikibaseUserObservationStrawberryModel.marshal(o) for o in user]
-                if user is not None else None
+                if user is not None
+                else None
             ),
         )
