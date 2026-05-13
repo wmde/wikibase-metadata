@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CardLoader from '@/component/wikibase-table/wikibase-detail-card/CardLoader.vue'
+import WikibaseAccess from '@/component/wikibase-table/wikibase-detail-card/WikibaseAccess.vue'
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
 import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/WikibaseTitle.vue'
@@ -30,6 +31,7 @@ const theme = useTheme()
 				<WikibaseDescription :wikibase="wikibase" />
 			</v-container>
 			<WikibaseDetailStats :wikibase="wikibase" />
+			<WikibaseAccess :wikibase="wikibase" />
 		</template>
 	</v-card>
 </template>
