@@ -95,6 +95,8 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             if wikibase_input.category is not None
             else None
         )
+        model.test = wikibase_input.test
+        model.reuse = wikibase_input.reuse or False
 
         async_session.add(model)
 

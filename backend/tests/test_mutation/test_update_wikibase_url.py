@@ -188,7 +188,7 @@ async def test_remove_wikibase_sparql_frontend_url():
 @pytest.mark.mutation
 @pytest.mark.dependency(
     name="remove-wikibase-article-path",
-    depends=["mutate-cloud-instances"],
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
     scope="session",
 )
 async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):

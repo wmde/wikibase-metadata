@@ -9,7 +9,9 @@ from tests.utils import assert_layered_property_value, assert_page_meta
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
-    name="sort-title-asc", depends=["mutate-cloud-instances"], scope="session"
+    name="sort-title-asc",
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
+    scope="session",
 )
 async def test_wikibase_list_query_sort_title_asc():
     """Test Sort Title Ascending"""
@@ -84,7 +86,9 @@ async def test_wikibase_list_query_sort_title_asc():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.dependency(
-    name="sort-title-desc", depends=["mutate-cloud-instances"], scope="session"
+    name="sort-title-desc",
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
+    scope="session",
 )
 async def test_wikibase_list_query_sort_title_desc():
     """Test Sort Title Descending"""

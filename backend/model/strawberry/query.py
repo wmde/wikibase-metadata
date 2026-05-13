@@ -43,13 +43,14 @@ class Query:
 
     @strawberry.field(description="Wikibase Instance")
     async def wikibase(self, wikibase_id: int) -> WikibaseStrawberryModel:
-        """Wikibase Istance"""
+        """Wikibase Instance"""
 
         return await get_wikibase(wikibase_id)
 
     @strawberry.field(description="List of Wikibases")
-    async def wikibase_list(
+    async def wikibase_list(  # pylint: disable=unused-argument
         self,
+        info: strawberry.Info,
         page_number: PageNumberType,
         page_size: PageSizeType,
         wikibase_filter: Optional[WikibaseFilterInput] = None,

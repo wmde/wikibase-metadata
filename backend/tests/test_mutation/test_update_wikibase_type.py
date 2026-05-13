@@ -142,7 +142,7 @@ async def test_update_wikibase_type_to_suite(get_test_wikibase_id):
 @pytest.mark.mutation
 @pytest.mark.dependency(
     name="update-wikibase-type-test",
-    depends=["mutate-cloud-instances"],
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
     scope="session",
 )
 async def test_update_wikibase_type_to_test(get_test_wikibase_id):
@@ -182,7 +182,9 @@ async def test_update_wikibase_type_to_test(get_test_wikibase_id):
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(depends=["mutate-cloud-instances"], scope="session")
+@pytest.mark.dependency(
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"], scope="session"
+)
 async def test_update_wikibase_type_to_same(get_test_wikibase_id):
     """Test Update to Current Value"""
 

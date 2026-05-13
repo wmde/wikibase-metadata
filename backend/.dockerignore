@@ -22,6 +22,9 @@ logs
 data/*.db
 data/gx/uncommitted
 
+# Migrate
+migrate.py
+
 # VCS & env
 .git
 .gitignore

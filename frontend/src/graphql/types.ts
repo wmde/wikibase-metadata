@@ -61,6 +61,8 @@ export type Mutation = {
 	removeWikibaseUrl: Scalars['Boolean']['output']
 	/** Set Extension Bundled with WBS */
 	setExtensionWbsBundled: Scalars['Boolean']['output']
+	/** Set Reuse Flag for Wikibase */
+	setReuseFlag: Scalars['Boolean']['output']
 	/** Fetch Connectivity Data from All Wikibase Instances */
 	updateAllConnectivityData: BulkTaskResult
 	/** Fetch External Identifier Data from All Wikibase Instances */
@@ -159,6 +161,11 @@ export type MutationRemoveWikibaseUrlArgs = {
 export type MutationSetExtensionWbsBundledArgs = {
 	bundled?: Scalars['Boolean']['input']
 	extensionId: Scalars['Int']['input']
+}
+
+export type MutationSetReuseFlagArgs = {
+	reuse: Scalars['Boolean']['input']
+	wikibaseId: Scalars['Int']['input']
 }
 
 export type MutationUpdateAllLogDataArgs = {
@@ -461,6 +468,7 @@ export type WikibaseExternalIdentifierObservationWikibaseObservationSet = {
 }
 
 export type WikibaseFilterInput = {
+	ignoreReuse?: InputMaybe<Scalars['Boolean']['input']>
 	wikibaseType?: InputMaybe<WikibaseTypeInput>
 }
 
@@ -470,10 +478,11 @@ export type WikibaseInput = {
 	description?: InputMaybe<Scalars['String']['input']>
 	organization?: InputMaybe<Scalars['String']['input']>
 	region?: InputMaybe<Scalars['String']['input']>
+	reuse?: InputMaybe<Scalars['Boolean']['input']>
 	test?: InputMaybe<Scalars['Boolean']['input']>
 	urls: WikibaseUrlSetInput
 	wikibaseName: Scalars['String']['input']
-	wikibaseType: string
+	wikibaseType?: InputMaybe<WikibaseType>
 }
 
 export type WikibaseItemDate = {

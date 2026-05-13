@@ -28,3 +28,4 @@ failed_queries/
 
 # Data
 postgres-database/
+temp_*
