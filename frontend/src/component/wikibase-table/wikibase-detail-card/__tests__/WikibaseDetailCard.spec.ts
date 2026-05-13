@@ -15,8 +15,8 @@ describe('WikibaseDetailCard', async () => {
 		expect(container.exists()).toEqual(true)
 		expect(container.classes()).toContain('v-card')
 		expect(container.classes()).toContain('v-card--variant-outlined')
-		expect(container.classes()).toContain('ma-1')
-		expect(container.classes()).toContain('pa-1')
+		expect(container.classes()).toContain('ma-0')
+		expect(container.classes()).toContain('pa-6')
 
 		expect(container.find('div.wikibase-detail-card-loader').exists()).toEqual(true)
 	})
@@ -31,8 +31,8 @@ describe('WikibaseDetailCard', async () => {
 		expect(container.exists()).toEqual(true)
 		expect(container.classes()).toContain('v-card')
 		expect(container.classes()).toContain('v-card--variant-outlined')
-		expect(container.classes()).toContain('ma-1')
-		expect(container.classes()).toContain('pa-1')
+		expect(container.classes()).toContain('ma-0')
+		expect(container.classes()).toContain('pa-6')
 
 		expect(container.find('div.wikibase-detail-card-loader').exists()).toEqual(false)
 	})
@@ -81,8 +81,8 @@ describe('WikibaseDetailCard', async () => {
 		expect(container.exists()).toEqual(true)
 		expect(container.classes()).toContain('v-card')
 		expect(container.classes()).toContain('v-card--variant-outlined')
-		expect(container.classes()).toContain('ma-1')
-		expect(container.classes()).toContain('pa-1')
+		expect(container.classes()).toContain('ma-0')
+		expect(container.classes()).toContain('pa-6')
 
 		expect(container.find('div.wikibase-detail-card-loader').exists()).toEqual(false)
 
@@ -90,24 +90,21 @@ describe('WikibaseDetailCard', async () => {
 		expect(header.exists()).toEqual(true)
 		expect(header.classes()).toContain('v-container')
 
-		const urlContainer = header.find('div.url-container')
-		expect(urlContainer.exists()).toEqual(true)
-		expect(urlContainer.classes()).toContain('v-container')
-		expect(urlContainer.classes()).toContain('ma-0')
-		expect(urlContainer.classes()).toContain('pa-1')
+		expect(header.find('div.wikibase-title').exists()).toEqual(true)
 
-		expect(urlContainer.find('div.wikibase-title').exists()).toEqual(true)
+		const tagContainer = header.find('div.tag-container')
+		expect(tagContainer.exists()).toEqual(true)
+		expect(tagContainer.classes()).toContain('v-container')
+		expect(tagContainer.classes()).toContain('ma-0')
+		expect(tagContainer.classes()).toContain('mb-4')
+		expect(tagContainer.classes()).toContain('pa-0')
+		expect(tagContainer.find('span.wikibase-category-chip').exists()).toEqual(true)
+		expect(tagContainer.find('span.wikibase-type-chip').exists()).toEqual(true)
 
-		expect(header.find('span.wikibase-category-chip').exists()).toEqual(true)
 		expect(header.find('div.description').exists()).toEqual(true)
 
-		expect(header.find('div.wikibase-sparql-url').exists()).toEqual(true)
-
-		const wikibaseTypeContainer = header.find('div.wikibase-type')
-		expect(wikibaseTypeContainer.exists()).toEqual(true)
-		expect(wikibaseTypeContainer.classes()).toContain('v-container')
-		expect(wikibaseTypeContainer.find('span.wikibase-type-chip').exists()).toEqual(true)
-
-		expect(container.find('div.wikibase-detail-stats').exists()).toEqual(true)
+		expect(container.find('div.statistics-container').exists()).toEqual(true)
+		expect(container.find('div.access-container').exists()).toEqual(true)
+		expect(container.find('div.growth-container').exists()).toEqual(true)
 	})
 })

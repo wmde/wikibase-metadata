@@ -23,7 +23,7 @@ const theme = useTheme()
 	>
 		<CardLoader v-if="loading" />
 		<template v-else-if="wikibase">
-			<v-container class="ma-0 pa-0 pb-8">
+			<v-container class="ma-0 pa-0 pb-8 card-header">
 				<WikibaseTitle :wikibase="wikibase" />
 				<v-container class="ma-0 pa-0 mb-4 tag-container">
 					<WikibaseCategoryChip :category="wikibase.category" icon />
