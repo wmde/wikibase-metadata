@@ -16,14 +16,14 @@ const theme = useTheme()
 <template>
 	<v-card
 		variant="outlined"
-		class="wikibase-detail-card ma-1 pa-1"
+		class="wikibase-detail-card ma-0 pa-6"
 		:style="{ backgroundColor: theme.current.value.colors.background }"
 	>
 		<CardLoader v-if="loading" />
 		<template v-else-if="wikibase">
-			<v-container class="ma-0 pa-0">
+			<v-container class="ma-0 pa-0 pb-8">
 				<WikibaseTitle :wikibase="wikibase" />
-				<v-container class="ma-0 pa-0 tag-container">
+				<v-container class="ma-0 pa-0 mb-4 tag-container">
 					<WikibaseCategoryChip :category="wikibase.category" class="category" />
 					<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 				</v-container>
@@ -36,11 +36,9 @@ const theme = useTheme()
 
 <style lang="css">
 .wikibase-detail-card {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: space-between;
 	max-width: 500px;
 	border-color: rgba(255, 255, 255, 0.12);
+	border-radius: 0.625rem !important;
 }
 .tag-container {
 	display: flex;
