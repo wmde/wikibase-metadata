@@ -17,7 +17,7 @@ defineProps<{ wikibase: WbFragment }>()
 			<LocaleNumber :stat="wikibase.quantityObservations.mostRecent?.totalTriples" />
 		</td>
 		<td class="wikibase-table-cell">
-			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations)" />
+			<LocaleNumber :stat="computeTotalEdits(wikibase.recentChangesObservations.mostRecent)" />
 		</td>
 		<td>
 			<WikibaseCategoryChip :category="wikibase.category" />

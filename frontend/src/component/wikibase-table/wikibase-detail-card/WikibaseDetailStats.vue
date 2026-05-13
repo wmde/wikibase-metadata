@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import WikibaseStatistic from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistic.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
+import computeTotalEdits from '@/util/compute-total-edits'
 import stringDate from '@/util/string-date'
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
@@ -11,32 +12,25 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 		<v-container class="ma-0 mb-4 pa-0 title">Statistics</v-container>
 		<v-container class="ma-0 pa-0 stats-container">
 			<WikibaseStatistic
-				v-if="wikibase.quantityObservations.mostRecent?.totalTriples != null"
 				label="Total Triples"
-				:value="wikibase.quantityObservations.mostRecent.totalTriples"
+				:value="wikibase.quantityObservations.mostRecent?.totalTriples"
 			/>
 			<WikibaseStatistic
 				v-if="wikibase.recentChangesObservations.mostRecent"
 				label="Edits (Last 30 days)"
-				:value="
-					(wikibase.recentChangesObservations.mostRecent?.botChangeCount ?? 0) +
-					(wikibase.recentChangesObservations.mostRecent?.humanChangeCount ?? 0)
-				"
+				:value="computeTotalEdits(wikibase.recentChangesObservations.mostRecent)"
 			/>
 			<WikibaseStatistic
-				v-if="wikibase.quantityObservations.mostRecent?.totalItems != null"
 				label="Items"
-				:value="wikibase.quantityObservations.mostRecent.totalItems"
+				:value="wikibase.quantityObservations.mostRecent?.totalItems"
 			/>
 			<WikibaseStatistic
-				v-if="wikibase.quantityObservations.mostRecent?.totalProperties != null"
 				label="Properties"
-				:value="wikibase.quantityObservations.mostRecent.totalProperties"
+				:value="wikibase.quantityObservations.mostRecent?.totalProperties"
 			/>
 			<WikibaseStatistic
-				v-if="wikibase.quantityObservations.mostRecent?.totalLexemes != null"
 				label="Lexemes"
-				:value="wikibase.quantityObservations.mostRecent.totalLexemes"
+				:value="wikibase.quantityObservations.mostRecent?.totalLexemes"
 			/>
 			<WikibaseStatistic
 				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate != null"

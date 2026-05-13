@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const { value } = defineProps<{ label: string; value: number | Date }>()
+const { value } = defineProps<{ label: string; value: number | Date | null | undefined }>()
 const valueString = computed(() =>
-	value instanceof Date ? value.toLocaleString('de').replace(',', '') : value.toLocaleString('en')
+	value != null
+		? value instanceof Date
+			? value.toLocaleString('de').replace(',', '')
+			: value.toLocaleString('en')
+		: undefined
 )
 </script>
 
 <template>
-	<v-container class="ma-0 p-4 statistic">
+	<v-container class="ma-0 p-4 statistic" v-if="value != null">
 		<v-container class="ma-0 pa-0 statistic-label shrink">
 			{{ label }}
 		</v-container>
