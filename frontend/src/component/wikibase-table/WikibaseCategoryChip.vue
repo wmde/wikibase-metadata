@@ -2,7 +2,7 @@
 import { WikibaseCategory } from '@/graphql/types'
 import { mdiTagOutline } from '@mdi/js'
 
-defineProps<{ category: WikibaseCategory | null | undefined }>()
+defineProps<{ category: WikibaseCategory | null | undefined; icon?: boolean }>()
 
 const categoryTitle = (cat: WikibaseCategory | null | undefined): string => {
 	switch (cat) {
@@ -37,7 +37,7 @@ const categoryTitle = (cat: WikibaseCategory | null | undefined): string => {
 <template>
 	<v-chip
 		class="wikibase-category-chip"
-		:prepend-icon="mdiTagOutline"
+		:prepend-icon="icon ? mdiTagOutline : undefined"
 		size="large"
 		density="compact"
 	>

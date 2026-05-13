@@ -26,7 +26,7 @@ const theme = useTheme()
 			<v-container class="ma-0 pa-0 pb-8">
 				<WikibaseTitle :wikibase="wikibase" />
 				<v-container class="ma-0 pa-0 mb-4 tag-container">
-					<WikibaseCategoryChip :category="wikibase.category" class="category" />
+					<WikibaseCategoryChip :category="wikibase.category" icon />
 					<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 				</v-container>
 				<WikibaseDescription :wikibase="wikibase" />
