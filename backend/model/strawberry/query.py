@@ -48,6 +48,7 @@ class Query:
         return await get_wikibase(wikibase_id)
 
     @strawberry.field(description="List of Wikibases")
+    # pylint: disable-next=unused-argument
     async def wikibase_list(
         self,
         info: strawberry.Info,
@@ -55,7 +56,7 @@ class Query:
         page_size: PageSizeType,
         wikibase_filter: Optional[WikibaseFilterInput] = None,
         sort_by: Optional[WikibaseSortInput] = None,
-    ) -> Page[WikibaseStrawberryModel]: # pylint: disable=unused-argument
+    ) -> Page[WikibaseStrawberryModel]:
         """List of Wikibases"""
 
         return await get_wikibase_page(
