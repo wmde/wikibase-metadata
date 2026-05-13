@@ -2,8 +2,10 @@
 
 from typing import Optional
 from sqlalchemy import func, select
+from sqlalchemy.orm import selectinload
 
 from data import get_async_session
+
 from model.database import WikibaseModel
 from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
 from model.strawberry.output import (
@@ -31,13 +33,37 @@ async def get_wikibase_page(
             # pylint: disable-next=not-callable
             select(func.count()).select_from(query.subquery())
         )
-        results = (
-            await async_session.scalars(
-                query.order_by(WikibaseModel.id)
-                .offset((page_number - 1) * page_size)
-                .limit(page_size)
+
+        base_query = query.order_by(WikibaseModel.id).options(
+            selectinload(WikibaseModel.primary_language),
+            selectinload(WikibaseModel.additional_languages),
+            selectinload(WikibaseModel.url),
+            selectinload(WikibaseModel.article_path),
+            selectinload(WikibaseModel.script_path),
+            selectinload(WikibaseModel.sparql_endpoint_url),
+            selectinload(WikibaseModel.sparql_frontend_url),
+            selectinload(WikibaseModel.category),
+            selectinload(WikibaseModel.connectivity_observations),
+            selectinload(WikibaseModel.external_identifier_observations),
+            selectinload(WikibaseModel.log_month_observations),
+            selectinload(WikibaseModel.property_popularity_observations),
+            selectinload(WikibaseModel.quantity_observations),
+            selectinload(WikibaseModel.recent_changes_observations),
+            selectinload(WikibaseModel.software_version_observations),
+            selectinload(WikibaseModel.statistics_observations),
+            selectinload(WikibaseModel.time_to_first_value_observations),
+            selectinload(WikibaseModel.user_observations),
+        )
+
+        if page_size == -1:
+            paginated_query = base_query
+        else:
+            paginated_query = base_query.offset((page_number - 1) * page_size).limit(
+                page_size
             )
-        ).all()
+
+        results = (await async_session.scalars(paginated_query)).all()
+
         return Page.marshal(
             page_number,
             page_size,

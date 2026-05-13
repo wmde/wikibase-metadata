@@ -12,7 +12,7 @@ from tests.test_upsert_cloud_instances.constant import DATA_DIRECTORY
 from tests.utils import MockResponse
 
 
-@pytest.mark.dependency(name="insert-cloud-instances", scope="session")
+@pytest.mark.dependency(name="insert-cloud-instance", scope="session")
 @pytest.mark.asyncio
 async def test_insert_cloud_instances(mocker):
     """
@@ -67,10 +67,11 @@ async def test_insert_cloud_instances(mocker):
                 found.sparql_endpoint_url.url
                 == "https://tcdict.wikibase.cloud/query/sparql"
             )
+            assert found.reuse is False
 
 
 @pytest.mark.dependency(
-    name="update-cloud-instances", depends=["insert-cloud-instances"], scope="session"
+    name="update-cloud-instance", depends=["insert-cloud-instance"], scope="session"
 )
 @pytest.mark.asyncio
 async def test_update_cloud_instances(mocker):
@@ -125,9 +126,7 @@ async def test_update_cloud_instances(mocker):
 
 
 @pytest.mark.dependency(
-    name="transform-cloud-instances",
-    depends=["update-cloud-instances"],
-    scope="session",
+    name="transform-cloud-instance", depends=["update-cloud-instance"], scope="session"
 )
 @pytest.mark.asyncio
 async def test_transform_to_cloud_instance(mocker):

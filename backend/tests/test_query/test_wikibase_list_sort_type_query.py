@@ -8,7 +8,9 @@ from tests.utils import assert_page_meta
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="sort-type-asc", depends=["mutate-cloud-instances"], scope="session"
+    name="sort-type-asc",
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
+    scope="session",
 )
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_asc():
@@ -47,7 +49,9 @@ async def test_wikibase_list_query_sort_type_asc():
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
-    name="sort-type-desc", depends=["mutate-cloud-instances"], scope="session"
+    name="sort-type-desc",
+    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
+    scope="session",
 )
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_desc():

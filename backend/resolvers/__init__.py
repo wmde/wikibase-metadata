@@ -23,6 +23,7 @@ from resolvers.update import (
     remove_wikibase_url,
     set_extension_wbs_bundled,
     update_wikibase_primary_language,
+    update_wikibase_reuse_flag,
     update_wikibase_type,
     upsert_wikibase_url,
 )
