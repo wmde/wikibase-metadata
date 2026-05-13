@@ -2,7 +2,6 @@
 import CardLoader from '@/component/wikibase-table/wikibase-detail-card/CardLoader.vue'
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
-import WikibaseQueryServiceLink from '@/component/wikibase-table/wikibase-detail-card/WikibaseQueryServiceLink.vue'
 import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/WikibaseTitle.vue'
 import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
@@ -29,7 +28,6 @@ const theme = useTheme()
 					<WikibaseTypeChip :wikibase-type="wikibase.wikibaseType" />
 				</v-container>
 				<WikibaseDescription :wikibase="wikibase" />
-				<WikibaseQueryServiceLink :wikibase="wikibase" />
 			</v-container>
 			<WikibaseDetailStats :wikibase="wikibase" />
 		</template>
