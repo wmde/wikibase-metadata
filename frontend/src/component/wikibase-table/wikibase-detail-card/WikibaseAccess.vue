@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { SingleWikibaseFragment } from '@/graphql/types';
-import { mdiLink, mdiMagnify } from '@mdi/js';
+import type { SingleWikibaseFragment } from '@/graphql/types'
+import { mdiLink, mdiMagnify } from '@mdi/js'
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>

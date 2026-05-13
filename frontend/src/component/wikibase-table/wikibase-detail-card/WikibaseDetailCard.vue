@@ -8,6 +8,7 @@ import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChi
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import { useTheme } from 'vuetify'
+import WikibaseGrowth from './WikibaseGrowth.vue'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
 
@@ -32,6 +33,10 @@ const theme = useTheme()
 			</v-container>
 			<WikibaseDetailStats :wikibase="wikibase" />
 			<WikibaseAccess :wikibase="wikibase" />
+			<WikibaseGrowth
+				v-if="wikibase.timeToFirstValueObservations.mostRecent"
+				:obs="wikibase.timeToFirstValueObservations.mostRecent"
+			/>
 		</template>
 	</v-card>
 </template>

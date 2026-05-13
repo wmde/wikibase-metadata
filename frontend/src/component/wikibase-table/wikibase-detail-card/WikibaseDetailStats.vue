@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import WikibaseStatistic from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistic.vue';
-import type { SingleWikibaseFragment } from '@/graphql/types';
-import stringDate from '@/util/string-date';
+import WikibaseStatistic from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistic.vue'
+import type { SingleWikibaseFragment } from '@/graphql/types'
+import stringDate from '@/util/string-date'
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
