@@ -3,6 +3,7 @@
 from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
+from sqlalchemy.orm.base import instance_state
 import strawberry
 
 from data.database_connection import get_async_session
@@ -388,10 +389,6 @@ class WikibaseStrawberryModel:
     @classmethod
     def marshal(cls, model: WikibaseModel) -> "WikibaseStrawberryModel":
         """Coerce Database Model to Strawberry Model"""
-        from sqlalchemy.orm.base import (
-            instance_state,
-        )  # pylint: disable=import-outside-toplevel
-
         state = instance_state(model)
 
         def get_preloaded(attr: str):

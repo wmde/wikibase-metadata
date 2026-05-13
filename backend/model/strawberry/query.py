@@ -55,7 +55,7 @@ class Query:
         page_size: PageSizeType,
         wikibase_filter: Optional[WikibaseFilterInput] = None,
         sort_by: Optional[WikibaseSortInput] = None,
-    ) -> Page[WikibaseStrawberryModel]:
+    ) -> Page[WikibaseStrawberryModel]: # pylint: disable=unused-argument
         """List of Wikibases"""
 
         return await get_wikibase_page(
