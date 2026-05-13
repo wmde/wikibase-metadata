@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import VSelectWorking from '@/component/wikibase-table/VSelectWorking.vue'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import {
 	mdiChevronDoubleLeft,
@@ -7,7 +8,6 @@ import {
 	mdiChevronRight
 } from '@mdi/js'
 import { computed } from 'vue'
-import VSelectWorking from './VSelectWorking.vue'
 
 const store = useWikiStore()
 

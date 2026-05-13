@@ -43,7 +43,7 @@ describe('WikibaseDetailStats', async () => {
 				}
 			}
 		})
-		
+
 		const container = wrapper.find('div.statistics-container')
 		expect(container.exists()).toEqual(true)
 
@@ -55,17 +55,41 @@ describe('WikibaseDetailStats', async () => {
 		expect(subContainer.exists()).toEqual(true)
 
 		expect(subContainer.findAll('div.statistic')).toHaveLength(6)
-		expect(subContainer.findAll('div.statistic')[0]?.find('div.statistic-label').text()).toEqual('Total Triples')
-		expect(subContainer.findAll('div.statistic')[0]?.find('div.statistic-value').text()).toEqual('5')
-		expect(subContainer.findAll('div.statistic')[1]?.find('div.statistic-label').text()).toEqual('Edits (Last 30 days)')
-		expect(subContainer.findAll('div.statistic')[1]?.find('div.statistic-value').text()).toEqual('21')
-		expect(subContainer.findAll('div.statistic')[2]?.find('div.statistic-label').text()).toEqual('Items')
-		expect(subContainer.findAll('div.statistic')[2]?.find('div.statistic-value').text()).toEqual('1')
-		expect(subContainer.findAll('div.statistic')[3]?.find('div.statistic-label').text()).toEqual('Properties')
-		expect(subContainer.findAll('div.statistic')[3]?.find('div.statistic-value').text()).toEqual('3')
-		expect(subContainer.findAll('div.statistic')[4]?.find('div.statistic-label').text()).toEqual('Lexemes')
-		expect(subContainer.findAll('div.statistic')[4]?.find('div.statistic-value').text()).toEqual('2')
-		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-label').text()).toEqual('First Record')
-		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-value').text()).toEqual('1.1.1970 01:00:00')
+		expect(subContainer.findAll('div.statistic')[0]?.find('div.statistic-label').text()).toEqual(
+			'Total Triples'
+		)
+		expect(subContainer.findAll('div.statistic')[0]?.find('div.statistic-value').text()).toEqual(
+			'5'
+		)
+		expect(subContainer.findAll('div.statistic')[1]?.find('div.statistic-label').text()).toEqual(
+			'Edits (Last 30 days)'
+		)
+		expect(subContainer.findAll('div.statistic')[1]?.find('div.statistic-value').text()).toEqual(
+			'21'
+		)
+		expect(subContainer.findAll('div.statistic')[2]?.find('div.statistic-label').text()).toEqual(
+			'Items'
+		)
+		expect(subContainer.findAll('div.statistic')[2]?.find('div.statistic-value').text()).toEqual(
+			'1'
+		)
+		expect(subContainer.findAll('div.statistic')[3]?.find('div.statistic-label').text()).toEqual(
+			'Properties'
+		)
+		expect(subContainer.findAll('div.statistic')[3]?.find('div.statistic-value').text()).toEqual(
+			'3'
+		)
+		expect(subContainer.findAll('div.statistic')[4]?.find('div.statistic-label').text()).toEqual(
+			'Lexemes'
+		)
+		expect(subContainer.findAll('div.statistic')[4]?.find('div.statistic-value').text()).toEqual(
+			'2'
+		)
+		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-label').text()).toEqual(
+			'First Record'
+		)
+		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-value').text()).toEqual(
+			'1.1.1970 01:00:00'
+		)
 	})
 })

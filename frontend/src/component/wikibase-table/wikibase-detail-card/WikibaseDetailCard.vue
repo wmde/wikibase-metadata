@@ -3,12 +3,12 @@ import CardLoader from '@/component/wikibase-table/wikibase-detail-card/CardLoad
 import WikibaseAccess from '@/component/wikibase-table/wikibase-detail-card/WikibaseAccess.vue'
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
 import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
+import WikibaseGrowth from '@/component/wikibase-table/wikibase-detail-card/WikibaseGrowth.vue'
 import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/WikibaseTitle.vue'
 import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import { useTheme } from 'vuetify'
-import WikibaseGrowth from './WikibaseGrowth.vue'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
 

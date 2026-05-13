@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import PaginationFooter from '@/component/wikibase-table/PaginationFooter.vue'
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { mdiSwapVertical } from '@mdi/js'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
-import PaginationFooter from './PaginationFooter.vue'
 
 type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
