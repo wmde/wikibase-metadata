@@ -7,7 +7,7 @@ defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 </script>
 
 <template>
-	<v-expansion-panels class="growth-container" flat>
+	<v-expansion-panels class="growth-container" flat v-if="obs.initiationDate || obs.itemDates">
 		<v-expansion-panel>
 			<v-expansion-panel-title class="title">Growth Milestones</v-expansion-panel-title>
 			<v-expansion-panel-text class="ma-0 pa-0">
