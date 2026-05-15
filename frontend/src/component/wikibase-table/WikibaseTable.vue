@@ -29,6 +29,7 @@ const sortBy = computed<SortItem[]>((): SortItem[] =>
 		: []
 )
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
+const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 const wikibases = computed<WbFragment[] | undefined>(() =>
 	store.wikibasePage.loading ? undefined : store.wikibasePage.data?.data
 )
@@ -90,7 +91,14 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 			<WikibaseTableRow :wikibase="item" />
 		</template>
 	</v-data-table-server>
-	<pagination-footer />
+	<pagination-footer
+		:page-number="pageNumber"
+		:page-size="pageSize"
+		:total-count="totalCount"
+		:total-pages="totalPages"
+		:set-page-number="store.setPageNumber"
+		:set-page-size="store.setPageSize"
+	/>
 </template>
 
 <style lang="css">

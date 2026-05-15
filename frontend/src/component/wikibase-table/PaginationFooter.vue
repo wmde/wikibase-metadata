@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import VSelectWorking from '@/component/wikibase-table/VSelectWorking.vue'
-import { useWikiStore } from '@/stores/wikibase-page-store'
 import {
 	mdiChevronDoubleLeft,
 	mdiChevronDoubleRight,
 	mdiChevronLeft,
 	mdiChevronRight
 } from '@mdi/js'
-import { computed } from 'vue'
 
-const store = useWikiStore()
-
-const pageNumber = computed(() => store.pageNumber)
-const pageSize = computed(() => store.pageSize)
-const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
-const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
+defineProps<{
+	pageNumber: number
+	pageSize: number
+	totalCount: number | undefined
+	totalPages: number | undefined
+	setPageNumber: (i: number) => void
+	setPageSize: (i: number) => void
+}>()
 </script>
 
 <template>
@@ -24,9 +24,9 @@ const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 	>
 		<v-container class="ma-0 pa-0 pagination-row-container">
 			<v-container class="item-number-container ma-0 pa-0 shrink">
-				{{ ((pageNumber - 1) * pageSize + 1).toLocaleString('en') }}&ndash;{{
-					Math.min(pageNumber * pageSize, totalCount).toLocaleString('en')
-				}}
+				<span>{{ ((pageNumber - 1) * pageSize + 1).toLocaleString('en') }}</span>
+				<span>&ndash;</span>
+				<span>{{ Math.min(pageNumber * pageSize, totalCount).toLocaleString('en') }}</span>
 				of
 				{{ totalCount.toLocaleString('en') }}
 			</v-container>
@@ -35,28 +35,28 @@ const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 					:icon="mdiChevronDoubleLeft"
 					:disabled="pageNumber == 1"
 					variant="plain"
-					v-on:click="store.setPageNumber(1)"
+					v-on:click="setPageNumber(1)"
 					class="ma-0 pa-0"
 				/>
 				<v-btn
 					:icon="mdiChevronLeft"
 					:disabled="pageNumber == 1"
 					variant="plain"
-					v-on:click="store.setPageNumber(pageNumber - 1)"
+					v-on:click="setPageNumber(pageNumber - 1)"
 					class="ma-0 pa-0"
 				/>
 				<v-btn
 					:icon="mdiChevronRight"
 					:disabled="pageNumber == totalPages"
 					variant="plain"
-					v-on:click="store.setPageNumber(pageNumber + 1)"
+					v-on:click="setPageNumber(pageNumber + 1)"
 					class="ma-0 pa-0"
 				/>
 				<v-btn
 					:icon="mdiChevronDoubleRight"
 					:disabled="pageNumber == totalPages"
 					variant="plain"
-					v-on:click="store.setPageNumber(totalPages)"
+					v-on:click="setPageNumber(totalPages)"
 					class="ma-0 pa-0"
 				/>
 			</v-container>
@@ -64,7 +64,7 @@ const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 		<v-container class="page-size-container ma-0 pa-0">
 			<span class="page-size-label">Items per page:</span>
 			<v-container class="ma-0 pa-0 shrink">
-				<v-select-working :on-change="store.setPageSize" />
+				<v-select-working :on-change="setPageSize" />
 			</v-container>
 		</v-container>
 	</v-container>
