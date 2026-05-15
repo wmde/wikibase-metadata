@@ -89,7 +89,7 @@ describe('WikibaseDetailStats', async () => {
 			'First Record'
 		)
 		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-value').text()).toEqual(
-			'1.1.1970 01:00:00'
+			'1.1.1970 00:00:00'
 		)
 	})
 })
