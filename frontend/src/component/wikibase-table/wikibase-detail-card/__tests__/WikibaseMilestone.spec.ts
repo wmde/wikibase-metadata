@@ -1,11 +1,11 @@
-import WikibaseGrowthMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseGrowthMilestone.vue'
+import WikibaseMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseMilestone.vue'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-describe('WikibaseGrowthMilestone', async () => {
+describe('WikibaseMilestone', async () => {
 	it('renders properly', async () => {
-		const wrapper = mount(WikibaseGrowthMilestone, {
+		const wrapper = mount(WikibaseMilestone, {
 			global: { plugins: [vuetify] },
 			props: { label: 'First Record', entities: 0, entityDate: new Date(2026, 5, 15) }
 		})
@@ -27,7 +27,7 @@ describe('WikibaseGrowthMilestone', async () => {
 	})
 
 	it('renders single entity', async () => {
-		const wrapper = mount(WikibaseGrowthMilestone, {
+		const wrapper = mount(WikibaseMilestone, {
 			global: { plugins: [vuetify] },
 			props: { label: 'First Record', entities: 1, entityDate: new Date(2026, 5, 15) }
 		})
@@ -49,7 +49,7 @@ describe('WikibaseGrowthMilestone', async () => {
 	})
 
 	it('renders multiple entity', async () => {
-		const wrapper = mount(WikibaseGrowthMilestone, {
+		const wrapper = mount(WikibaseMilestone, {
 			global: { plugins: [vuetify] },
 			props: { label: 'First Record', entities: 2, entityDate: new Date(2026, 5, 15) }
 		})

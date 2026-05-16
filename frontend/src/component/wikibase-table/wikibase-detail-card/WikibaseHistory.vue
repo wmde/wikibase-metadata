@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import WikibaseGrowthMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseGrowthMilestone.vue'
+import WikibaseMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseMilestone.vue'
 import type { WikibaseTimeToFirstValueObservation } from '@/graphql/types'
 import stringDate from '@/util/string-date'
 
@@ -7,18 +7,18 @@ defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 </script>
 
 <template>
-	<v-expansion-panels class="growth-container" flat v-if="obs.initiationDate || obs.itemDates">
+	<v-expansion-panels class="history-container" flat v-if="obs.initiationDate || obs.itemDates">
 		<v-expansion-panel>
-			<v-expansion-panel-title class="title">Growth Milestones</v-expansion-panel-title>
+			<v-expansion-panel-title class="title">Edit History</v-expansion-panel-title>
 			<v-expansion-panel-text class="ma-0 pa-0">
 				<v-container class="ma-0 pa-0 grow-container">
-					<WikibaseGrowthMilestone
+					<WikibaseMilestone
 						v-if="obs.initiationDate"
 						label="First Record"
 						:entities="1"
 						:entity-date="stringDate(obs.initiationDate)"
 					/>
-					<WikibaseGrowthMilestone
+					<WikibaseMilestone
 						v-for="item in obs.itemDates"
 						:key="item.id"
 						:label="`Q${item.q}`"

@@ -105,6 +105,6 @@ describe('WikibaseDetailCard', async () => {
 
 		expect(container.find('div.statistics-container').exists()).toEqual(true)
 		expect(container.find('div.access-container').exists()).toEqual(true)
-		expect(container.find('div.growth-container').exists()).toEqual(true)
+		expect(container.find('div.history-container').exists()).toEqual(true)
 	})
 })
