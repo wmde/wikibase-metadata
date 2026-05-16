@@ -43,7 +43,7 @@ const theme = useTheme()
 
 <style lang="css">
 .wikibase-detail-card {
-	max-width: 600px;
+	width: 600px;
 	border-color: rgba(255, 255, 255, 0.12);
 	border-radius: 0.625rem !important;
 }
