@@ -36,7 +36,7 @@ const categoryTitle = (cat: WikibaseCategory | null | undefined): string => {
 
 <template>
 	<v-chip
-		class="wikibase-category-chip"
+		:class="`wikibase-category-chip ${icon ? 'wikibase-category-chip-icon' : ''}`"
 		:prepend-icon="icon ? mdiTagOutline : undefined"
 		size="large"
 		density="compact"
@@ -48,8 +48,10 @@ const categoryTitle = (cat: WikibaseCategory | null | undefined): string => {
 <style lang="css">
 .wikibase-category-chip {
 	border-radius: calc(0.625rem - 2px);
-	padding: 4px 8px 4px 16px !important;
 	padding-block: 0.125rem;
+}
+.wikibase-category-chip-icon {
+	padding: 4px 8px 4px 16px !important;
 }
 .wikibase-category-chip .v-chip__content {
 	font-family: Roboto;
