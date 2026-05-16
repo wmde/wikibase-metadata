@@ -1,12 +1,12 @@
-import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
+import WikibaseStatistics from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistics.vue'
 import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 
-describe('WikibaseDetailStats', async () => {
+describe('WikibaseStatistics', async () => {
 	it('renders wiki properly', async () => {
-		const wrapper = mount(WikibaseDetailStats, {
+		const wrapper = mount(WikibaseStatistics, {
 			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
 			props: {
 				wikibase: {

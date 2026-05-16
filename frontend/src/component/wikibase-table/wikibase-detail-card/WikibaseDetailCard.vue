@@ -2,8 +2,8 @@
 import CardLoader from '@/component/wikibase-table/wikibase-detail-card/CardLoader.vue'
 import WikibaseAccess from '@/component/wikibase-table/wikibase-detail-card/WikibaseAccess.vue'
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
-import WikibaseDetailStats from '@/component/wikibase-table/wikibase-detail-card/WikibaseDetailStats.vue'
 import WikibaseGrowth from '@/component/wikibase-table/wikibase-detail-card/WikibaseGrowth.vue'
+import WikibaseStatistics from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistics.vue'
 import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/WikibaseTitle.vue'
 import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
@@ -31,7 +31,7 @@ const theme = useTheme()
 				</v-container>
 				<WikibaseDescription :wikibase="wikibase" />
 			</v-container>
-			<WikibaseDetailStats :wikibase="wikibase" />
+			<WikibaseStatistics :wikibase="wikibase" />
 			<WikibaseAccess :wikibase="wikibase" />
 			<WikibaseGrowth
 				v-if="wikibase.timeToFirstValueObservations.mostRecent"
