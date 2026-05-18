@@ -15,10 +15,18 @@ const pageWikibasesQuery = gql`
 		) {
 			meta {
 				totalCount
+				totalPages
 			}
 			data {
 				...WB
 			}
+		}
+		aggregateQuantity(wikibaseFilter: $wikibaseFilter) {
+			totalTriples
+		}
+		aggregateRecentChanges(wikibaseFilter: $wikibaseFilter) {
+			botChangeCount
+			humanChangeCount
 		}
 	}
 

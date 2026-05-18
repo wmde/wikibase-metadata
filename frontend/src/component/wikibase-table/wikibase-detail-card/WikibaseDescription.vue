@@ -5,11 +5,15 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
 
 <template>
-	<v-tooltip v-if="wikibase.description" class="desc-tooltip" text="Manually written">
-		<template v-slot:activator="{ props }">
-			<v-container v-bind="props" class="description ma-0 pa-1">
-				{{ wikibase.description }}
-			</v-container>
-		</template>
-	</v-tooltip>
+	<v-container class="description ma-0 pa-0">
+		{{ wikibase.description }}
+	</v-container>
 </template>
+<style lang="css">
+.description {
+	font-family: Roboto;
+	font-size: 16px;
+	color: rgb(0, 0, 0);
+	line-height: 1.6;
+}
+</style>

@@ -1,4 +1,4 @@
-import { SortColumn, SortDirection, WikibaseType } from '@/graphql/types'
+import { SortColumn, SortDirection, WikibaseType, type PageWikibasesQuery } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -27,27 +27,33 @@ describe('useWikiStore', async () => {
 	})
 
 	it('reflects query results', async () => {
-		mockOnResult.mockImplementationOnce((fn) =>
-			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
-		)
+		const results: PageWikibasesQuery = {
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
+			aggregateQuantity: { totalTriples: 0 },
+			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+		}
+		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiStore()
 
 		expect(store.pageNumber).toEqual(1)
-		expect(store.pageSize).toEqual(10)
+		expect(store.pageSize).toEqual(25)
 		expect(store.wikibaseFilter).toEqual({
 			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 		})
 		expect(store.wikibasePage).toEqual({
-			data: { data: [], meta: { totalCount: 0 } },
+			data: { data: [], meta: { totalCount: 0, totalPages: 0, totalEdits: 0, totalTriples: 0 } },
 			errorState: false,
 			loading: false
 		})
 	})
 
 	it('calls load on fetchWikibasePage', async () => {
-		mockOnResult.mockImplementationOnce((fn) =>
-			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
-		)
+		const results: PageWikibasesQuery = {
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
+			aggregateQuantity: { totalTriples: 0 },
+			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+		}
+		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
@@ -56,9 +62,12 @@ describe('useWikiStore', async () => {
 	})
 
 	it('calls load on includeWikibaseTypes', async () => {
-		mockOnResult.mockImplementationOnce((fn) =>
-			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
-		)
+		const results: PageWikibasesQuery = {
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
+			aggregateQuantity: { totalTriples: 0 },
+			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+		}
+		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
@@ -69,9 +78,12 @@ describe('useWikiStore', async () => {
 	})
 
 	it('calls load on setPageNumber', async () => {
-		mockOnResult.mockImplementationOnce((fn) =>
-			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
-		)
+		const results: PageWikibasesQuery = {
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
+			aggregateQuantity: { totalTriples: 0 },
+			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+		}
+		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
@@ -82,22 +94,28 @@ describe('useWikiStore', async () => {
 	})
 
 	it('calls load on setPageSize', async () => {
-		mockOnResult.mockImplementationOnce((fn) =>
-			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
-		)
+		const results: PageWikibasesQuery = {
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
+			aggregateQuantity: { totalTriples: 0 },
+			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+		}
+		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
-		store.setPageSize(25)
+		store.setPageSize(50)
 		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
 
 	it('calls load on setSort', async () => {
-		mockOnResult.mockImplementationOnce((fn) =>
-			fn({ data: { wikibaseList: { meta: { totalCount: 0 }, data: [] } } })
-		)
+		const results: PageWikibasesQuery = {
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
+			aggregateQuantity: { totalTriples: 0 },
+			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+		}
+		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)

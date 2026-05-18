@@ -1301,8 +1301,14 @@ export type PageWikibasesQuery = {
 	__typename?: 'Query'
 	wikibaseList: {
 		__typename?: 'WikibasePage'
-		meta: { __typename?: 'PageMetadata'; totalCount: number }
+		meta: { __typename?: 'PageMetadata'; totalCount: number; totalPages: number }
 		data: Array<{ __typename?: 'Wikibase' } & { ' $fragmentRefs'?: { WbFragment: WbFragment } }>
+	}
+	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
+	aggregateRecentChanges: {
+		__typename?: 'WikibaseRecentChangesAggregate'
+		botChangeCount: number
+		humanChangeCount: number
 	}
 }
 
@@ -1719,7 +1725,10 @@ export const PageWikibasesDocument = {
 									name: { kind: 'Name', value: 'meta' },
 									selectionSet: {
 										kind: 'SelectionSet',
-										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalCount' } }]
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalPages' } }
+										]
 									}
 								},
 								{
@@ -1730,6 +1739,39 @@ export const PageWikibasesDocument = {
 										selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'WB' } }]
 									}
 								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'aggregateQuantity' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'aggregateRecentChanges' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
 							]
 						}
 					}

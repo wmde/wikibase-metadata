@@ -1,21 +1,21 @@
 <script setup lang="ts">
+import PaginationFooter from '@/component/wikibase-table/PaginationFooter.vue'
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
+import { mdiSwapVertical } from '@mdi/js'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
 
 type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
 const headers: TableHeader[] = [
-	{ title: '', sortable: false },
-	{ title: 'Type', value: SortColumn.Type, sortable: true },
 	{ title: 'Title', value: SortColumn.Title, sortable: true },
 	{ title: 'Triples', value: SortColumn.Triples, sortable: true },
-	{ title: 'Edits (last 30 days)', value: SortColumn.Edits, sortable: true },
+	{ title: 'Edits', value: SortColumn.Edits, sortable: true },
 	{ title: 'Category', value: SortColumn.Category, sortable: true },
 	{ title: 'Description', sortable: false },
-	{ title: 'Details', sortable: false }
+	{ title: '', sortable: false }
 ]
 
 const store = useWikiStore()
@@ -29,6 +29,7 @@ const sortBy = computed<SortItem[]>((): SortItem[] =>
 		: []
 )
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
+const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 const wikibases = computed<WbFragment[] | undefined>(() =>
 	store.wikibasePage.loading ? undefined : store.wikibasePage.data?.data
 )
@@ -39,6 +40,12 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		:page="pageNumber"
 		@update:page="store.setPageNumber"
 		:items-per-page="pageSize"
+		:items-per-page-options="[
+			{ value: 25, title: '25' },
+			{ value: 50, title: '50' },
+			{ value: 100, title: '100' },
+			{ value: -1, title: '$vuetify.dataFooter.itemsPerPageAll' }
+		]"
 		@update:items-per-page="store.setPageSize"
 		:sort-by="sortBy"
 		@update:sort-by="
@@ -56,11 +63,61 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 		:items="wikibases"
 		:items-length="totalCount ?? 0"
 		:loading="loading"
-		striped="even"
-		class="wikibase-table"
+		hide-default-footer
+		class="wikibase-table mb-8"
 	>
-		<template v-slot:item="{ item, index }">
-			<WikibaseTableRow :wikibase="item" :index="(pageNumber - 1) * pageSize + index" />
+		<template v-slot:headers="{ columns, isSorted, getSortIcon, toggleSort }">
+			<tr class="table-header-row">
+				<template v-for="(column, idx) in columns" :key="idx">
+					<th class="table-header-cell">
+						<div class="d-flex align-center">
+							<span class="me-0 cursor-pointer table-header-cell-title" @click="toggleSort(column)">
+								{{ column.title }}
+							</span>
+							<v-icon
+								v-if="column.sortable"
+								:icon="isSorted(column) ? getSortIcon(column) : mdiSwapVertical"
+								color="medium-emphasis"
+							/>
+						</div>
+						<span class="table-header-cell-subtitle" v-if="column.title == 'Edits'">
+							(last 30 days)
+						</span>
+					</th>
+				</template>
+			</tr>
+		</template>
+		<template v-slot:item="{ item }">
+			<WikibaseTableRow :wikibase="item" />
 		</template>
 	</v-data-table-server>
+	<pagination-footer
+		:page-number="pageNumber"
+		:page-size="pageSize"
+		:total-count="totalCount"
+		:total-pages="totalPages"
+		:set-page-number="store.setPageNumber"
+		:set-page-size="store.setPageSize"
+	/>
 </template>
+
+<style lang="css">
+.wikibase-table {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.table-header-row {
+	background-color: oklch(98.5% 0.002 247.839);
+}
+.table-header-cell-title {
+	font-family: Montserrat;
+	font-size: 16px;
+	font-weight: 700 !important;
+	color: rgb(0, 0, 0);
+}
+.table-header-cell-subtitle {
+	font-family: Montserrat;
+	font-size: 14px;
+	font-weight: 400 !important;
+	color: rgb(0, 0, 0);
+}
+</style>
