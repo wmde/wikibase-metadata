@@ -301,4 +301,11 @@ async def test_marks_localhost_urls_as_test(
     )
 
     assert result.errors is None
-    assert result.data["addWikibase"]["test"] is True
+    wikibase_id = int(result.data["addWikibase"]["id"])
+
+    async with get_async_session() as session:
+        db_result = await session.execute(
+            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+        )
+        wikibase = db_result.scalar_one()
+        assert wikibase.test is True
