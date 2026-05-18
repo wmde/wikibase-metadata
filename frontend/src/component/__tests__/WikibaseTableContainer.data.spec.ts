@@ -22,7 +22,20 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 			...mockWikiStore.wikibasePage,
 			data: {
 				data: testWikibases.slice(2),
-				meta: { totalCount: testWikibases.length, totalPages: Math.ceil(testWikibases.length / 3) }
+				meta: {
+					totalCount: testWikibases.length,
+					totalPages: Math.ceil(testWikibases.length / 3),
+					totalEdits: testWikibases
+						.map((w) => w.recentChangesObservations.mostRecent)
+						.reduce(
+							(sum: number, current) =>
+								sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
+							0
+						),
+					totalTriples: testWikibases
+						.map((w) => w.quantityObservations.mostRecent)
+						.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
+				}
 			}
 		}
 	})
