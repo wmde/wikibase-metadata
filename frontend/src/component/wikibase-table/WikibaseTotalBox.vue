@@ -7,7 +7,7 @@ const powerString = (power: number) => {
 	const dict: Record<number, string> = { 0: '', 1: 'Th', 2: 'M', 3: 'B', 4: 'T' }
 	return dict[power]
 }
-const roundValue = (value: number) => Math.round(value * 10) / 10
+const roundValue = (value: number): number => Math.round(value * 10) / 10
 </script>
 
 <template>
