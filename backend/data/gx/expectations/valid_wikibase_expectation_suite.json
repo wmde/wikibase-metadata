@@ -2,13 +2,13 @@
 	"expectations": [
 		{
 			"id": "9041fc41-a287-4d70-a4f8-6fe4b4911d2e",
-			"kwargs": { "column": "valid", "value_set": [1] },
+			"kwargs": { "column": "valid", "value_set": [true] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		},
 		{
 			"id": "d7bd4bfd-989e-4753-93c8-bdaaba7cff82",
-			"kwargs": { "column": "test", "value_set": [0] },
+			"kwargs": { "column": "test", "value_set": [false] },
 			"meta": {},
 			"type": "expect_column_distinct_values_to_be_in_set"
 		}
