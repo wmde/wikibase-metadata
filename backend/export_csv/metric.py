@@ -1,7 +1,7 @@
 """Metrics CSV"""
 
 from fastapi.responses import StreamingResponse
-from sqlalchemy import Select, and_, func, or_, select
+from sqlalchemy import Select, and_, case, func, or_, select
 
 from export_csv.util import export_csv
 from model.database import (
@@ -160,7 +160,7 @@ def get_metrics_query() -> Select:
         .where((WikibaseSoftwareVersionObservationModel.returned_data))
         .subquery()
     )
-    most_recent_successful_sv_obs = (
+    most_recent_successful_mediawiki_obs = (
         select(
             WikibaseSoftwareVersionObservationModel.wikibase_id,
             WikibaseSoftwareVersionObservationModel.observation_date,
@@ -178,7 +178,25 @@ def get_metrics_query() -> Select:
             ),
         )
         .where(WikibaseSoftwareModel.software_name == "MediaWiki")
-        .cte(name="filtered_software_version_observations")
+        .cte(name="filtered_mediawiki_version_observations")
+    )
+    most_recent_successful_manifest_obs = (
+        select(
+            WikibaseSoftwareVersionObservationModel.wikibase_id,
+            WikibaseSoftwareModel.software_name,
+        )
+        .select_from(WikibaseSoftwareVersionObservationModel)
+        .join(WikibaseSoftwareVersionModel)
+        .join(WikibaseSoftwareModel)
+        .join(
+            sv_rank_subquery,
+            onclause=and_(
+                WikibaseSoftwareVersionObservationModel.id == sv_rank_subquery.c.id,
+                sv_rank_subquery.c.rank == 1,
+            ),
+        )
+        .where(WikibaseSoftwareModel.software_name.like("WikibaseManifest"))
+        .cte(name="filtered_manifest_version_observations")
     )
 
     query = (
@@ -218,11 +236,16 @@ def get_metrics_query() -> Select:
             most_recent_successful_rc_obs.c.bot_change_user_count_five_plus.label(
                 "bot_change_active_user_count"
             ),
-            most_recent_successful_sv_obs.c.observation_date.label(
+            most_recent_successful_mediawiki_obs.c.observation_date.label(
                 "software_version_observation_date"
             ),
-            most_recent_successful_sv_obs.c.software_name,
-            most_recent_successful_sv_obs.c.version,
+            most_recent_successful_mediawiki_obs.c.software_name,
+            most_recent_successful_mediawiki_obs.c.version,
+            case(
+                # pylint: disable-next=singleton-comparison
+                (most_recent_successful_manifest_obs.c.software_name != None, True),
+                else_=False,
+            ).label("manifest"),
         )
         .join(
             WikibaseURLModel,
@@ -250,9 +273,15 @@ def get_metrics_query() -> Select:
             isouter=True,
         )
         .join(
-            most_recent_successful_sv_obs,
+            most_recent_successful_mediawiki_obs,
             onclause=filtered_wikibase_subquery.c.id
-            == most_recent_successful_sv_obs.c.wikibase_id,
+            == most_recent_successful_mediawiki_obs.c.wikibase_id,
+            isouter=True,
+        )
+        .join(
+            most_recent_successful_manifest_obs,
+            onclause=filtered_wikibase_subquery.c.id
+            == most_recent_successful_manifest_obs.c.wikibase_id,
             isouter=True,
         )
     )
