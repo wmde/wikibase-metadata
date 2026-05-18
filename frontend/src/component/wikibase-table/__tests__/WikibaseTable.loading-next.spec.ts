@@ -15,7 +15,23 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 		wikibasePage: {
 			...mockWikiStore.wikibasePage,
 			loading: true,
-			data: { data: testWikibases, meta: { totalCount: testWikibases.length, totalPages: 1 } }
+			data: {
+				data: testWikibases,
+				meta: {
+					totalCount: testWikibases.length,
+					totalPages: 1,
+					totalEdits: testWikibases
+						.map((w) => w.recentChangesObservations.mostRecent)
+						.reduce(
+							(sum: number, current) =>
+								sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
+							0
+						),
+					totalTriples: testWikibases
+						.map((w) => w.quantityObservations.mostRecent)
+						.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
+				}
+			}
 		}
 	})
 }))
