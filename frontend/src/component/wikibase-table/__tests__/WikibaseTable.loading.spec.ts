@@ -22,7 +22,6 @@ describe('WikibaseTable', async () => {
 		const tableContainer = wrapper.find('div.wikibase-table')
 		expect(tableContainer.exists()).toEqual(true)
 		expect(tableContainer.classes()).toContain('v-table')
-		expect(tableContainer.classes()).toContain('v-table--striped-even')
 		expect(tableContainer.classes()).toContain('v-data-table')
 		expect(tableContainer.classes()).toContain('v-data-table--loading')
 

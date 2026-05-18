@@ -15,6 +15,7 @@ const pageWikibasesQuery = gql`
 		) {
 			meta {
 				totalCount
+				totalPages
 			}
 			data {
 				...WB
