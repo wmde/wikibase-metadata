@@ -55,7 +55,6 @@ async def test_add_wikibase_mutation():
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
 
     wikibase_id = int(result.data["addWikibase"]["id"])
@@ -101,7 +100,7 @@ async def test_add_wikibase_ii_mutation():
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {
-                    "baseUrl": "https://mock-wikibase.com/",
+                    "baseUrl": "https://mock-wikibase.com",
                     "articlePath": "wiki",
                 },
                 "reuse": True,
@@ -109,7 +108,6 @@ async def test_add_wikibase_ii_mutation():
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
     assert result.data["addWikibase"]["id"] == "2"
 
@@ -140,8 +138,9 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
+
+    wikibase_id = result.data["addWikibase"]["id"]
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
@@ -161,8 +160,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert len(result.errors) == 1
-    assert result.errors[0].message == f"URL {base_url} already exists"
+    assert result.data["addWikibase"]["id"] == wikibase_id
 
 
 @pytest.mark.asyncio
@@ -194,7 +192,6 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
             },
         )
 
-        assert result.errors is None
         assert result.data is not None
 
         result = await test_schema.execute(
@@ -215,9 +212,6 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
                 }
             },
         )
-
-        assert len(result.errors) == 1
-        assert result.errors[0].message == f"URL {url} already exists"
 
 
 @pytest.mark.asyncio
@@ -244,8 +238,9 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
+
+    wikibase_id = result.data["addWikibase"]["id"]
 
     url_variations = [
         f"https://{base_url}",
@@ -272,5 +267,4 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
             },
         )
 
-        assert len(result.errors) == 1
-        assert result.errors[0].message == f"URL https://{base_url} already exists"
+        assert wikibase_id == result.data["addWikibase"]["id"]

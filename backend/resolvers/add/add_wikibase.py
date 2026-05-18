@@ -17,6 +17,17 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
     async with get_async_session() as async_session:
 
+        clean_base_url = clean_up_url(
+            wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
+        )
+        existing = await async_session.scalar(
+            select(WikibaseModel)
+            .join(WikibaseModel.url)
+            .where(WikibaseURLModel.url == clean_base_url)
+        )
+        if existing is not None:
+            return WikibaseStrawberryModel.marshal(existing)
+
         assert (
             await async_session.scalar(
                 # pylint: disable-next=not-callable
@@ -28,9 +39,6 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             f"Wikibase with name {wikibase_input.wikibase_name.strip()} already exists"
         )
 
-        await assert_new_url(
-            async_session, wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
-        )
         await assert_new_url(
             async_session,
             wikibase_input.urls.sparql_endpoint_url,
@@ -49,9 +57,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             country=wikibase_input.country,
             region=wikibase_input.region,
             wikibase_type=wikibase_input.wikibase_type,
-            base_url=clean_up_url(
-                wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
-            ),
+            base_url=clean_base_url,
             article_path=(
                 clean_up_url(
                     wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH
