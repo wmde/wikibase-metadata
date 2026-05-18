@@ -274,3 +274,28 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
 
         assert len(result.errors) == 1
         assert result.errors[0].message == f"URL https://{base_url} already exists"
+
+@pytest.mark.asyncio
+async def test_marks_localhost_urls_as_test(db_session):  # pylint: disable=unused-argument
+    """Test marks all Wikibases with a URL containing 'localhost' as test"""
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Localhost Wikibase",
+                "description": "Mock wikibase for testing this codebase",
+                "organization": "Wikibase Mockery International",
+                "country": "Germany",
+                "region": "Europe",
+                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                "urls": {
+                    "baseUrl": "http://localhost:8000",
+                    "articlePath": "/wiki",
+                },
+            }
+        },
+    )
+
+    assert result.errors is None
+    assert result.data["addWikibase"]["test"] == True
