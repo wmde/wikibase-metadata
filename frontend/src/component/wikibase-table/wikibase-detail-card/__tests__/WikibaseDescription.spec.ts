@@ -15,6 +15,7 @@ describe('WikibaseDescription', async () => {
 					category: WikibaseCategory.FictionalAndCreativeWorks,
 					description: 'A test description',
 					urls: { baseUrl: 'https://test-wikibase-001.test' },
+					externalIdentifierObservations: {},
 					quantityObservations: {},
 					recentChangesObservations: {},
 					timeToFirstValueObservations: {},
