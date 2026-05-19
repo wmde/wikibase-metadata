@@ -1252,6 +1252,13 @@ export type SingleWikibaseFragment = {
 	description?: string | null
 	wikibaseType: WikibaseType
 	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
+	externalIdentifierObservations: {
+		__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseExternalIdentifierObservation'
+			totalExternalIdentifierStatements?: number | null
+		} | null
+	}
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 		mostRecent?: {
@@ -1354,6 +1361,28 @@ export const SingleWikibaseFragmentDoc = {
 						}
 					},
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'externalIdentifierObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'totalExternalIdentifierStatements' }
+											}
+										]
+									}
+								}
+							]
+						}
+					},
 					{
 						kind: 'Field',
 						name: { kind: 'Name', value: 'quantityObservations' },
@@ -1565,6 +1594,28 @@ export const SingleWikibaseDocument = {
 						}
 					},
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'externalIdentifierObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'totalExternalIdentifierStatements' }
+											}
+										]
+									}
+								}
+							]
+						}
+					},
 					{
 						kind: 'Field',
 						name: { kind: 'Name', value: 'quantityObservations' },
