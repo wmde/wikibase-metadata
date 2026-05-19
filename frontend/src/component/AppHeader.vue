@@ -31,48 +31,48 @@ const theme = useTheme()
 	</v-container>
 </template>
 
-<style lang="css">
+<style lang="scss">
 .header-container {
 	max-width: 100%;
 	width: 100%;
 	outline-color: oklch(0.708 0 0);
 	background-color: white;
 	border-bottom: 1px solid oklch(92.8% 0.006 264.531);
-}
-.header {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: center;
-	justify-content: space-between;
-}
-.left-header {
-	display: flex;
-	flex-flow: row wrap;
-	gap: 8px;
-	align-items: center;
-}
-.right-header {
-	display: flex;
-	flex-flow: row wrap;
-	gap: 8px;
-	align-items: center;
-}
-.shrink {
-	width: auto;
-}
-.icon .v-img {
-	width: 96px;
-}
-.title-container {
-	flex-grow: 1;
-}
-.title {
-	font-size: 20px;
-	font-weight: 700;
-	font-family: Montserrat;
-}
-.subtitle {
-	font-size: 16px;
-	font-family: Roboto;
+	.header {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.left-header {
+		display: flex;
+		flex-flow: row wrap;
+		gap: 8px;
+		align-items: center;
+	}
+	.right-header {
+		display: flex;
+		flex-flow: row wrap;
+		gap: 8px;
+		align-items: center;
+	}
+	.shrink {
+		width: auto;
+	}
+	.icon .v-img {
+		width: 96px;
+	}
+	.title-container {
+		flex-grow: 1;
+	}
+	.title {
+		font-size: 20px;
+		font-weight: 700;
+		font-family: Montserrat;
+	}
+	.subtitle {
+		font-size: 16px;
+		font-family: Roboto;
+	}
 }
 </style>

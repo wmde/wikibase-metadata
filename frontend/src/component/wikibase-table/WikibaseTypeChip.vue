@@ -11,16 +11,16 @@ defineProps<{ wikibaseType: WikibaseType | null | undefined }>()
 	</v-chip>
 </template>
 
-<style lang="css">
+<style lang="scss">
 .wikibase-type-chip {
 	border-radius: calc(0.625rem - 2px);
 	padding: 0 8px !important;
 	border-color: oklch(87.2% 0.01 285.338);
 	height: 30px !important;
-}
-.wikibase-type-chip .v-chip__content {
-	font-family: Roboto;
-	font-size: 16px;
-	font-weight: 500;
+	.v-chip__content {
+		font-family: Roboto;
+		font-size: 16px;
+		font-weight: 500;
+	}
 }
 </style>
