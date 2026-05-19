@@ -42,15 +42,17 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 </template>
 
 <style lang="css">
-.stats-container {
-	display: flex;
-	flex-flow: column nowrap;
-	gap: 0.75rem;
-}
-.statistics-container .title {
-	font-family: Montserrat;
-	font-weight: 700;
-	font-size: 20px;
-	color: rgb(0, 0, 0);
+.statistics-container {
+	.stats-container {
+		display: flex;
+		flex-flow: column nowrap;
+		gap: 0.75rem;
+	}
+	.title {
+		font-family: Montserrat;
+		font-weight: 700;
+		font-size: 20px;
+		color: rgb(0, 0, 0);
+	}
 }
 </style>
