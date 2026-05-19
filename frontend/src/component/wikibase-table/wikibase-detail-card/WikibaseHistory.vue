@@ -31,7 +31,7 @@ defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 	</v-expansion-panels>
 </template>
 
-<style lang="css">
+<style lang="scss">
 .growth-container {
 	.grow-container {
 		display: flex;

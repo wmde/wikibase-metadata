@@ -41,7 +41,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 	</v-container>
 </template>
 
-<style lang="css">
+<style lang="scss">
 .statistics-container {
 	.stats-container {
 		display: flex;
