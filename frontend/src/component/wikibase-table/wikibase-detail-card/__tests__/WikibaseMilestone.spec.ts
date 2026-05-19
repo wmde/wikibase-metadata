@@ -48,7 +48,7 @@ describe('WikibaseMilestone', async () => {
 		expect(date.text()).toEqual('15.6.2026 00:00:00')
 	})
 
-	it('renders multiple entity', async () => {
+	it('renders multiple entities', async () => {
 		const wrapper = mount(WikibaseMilestone, {
 			global: { plugins: [vuetify] },
 			props: { label: 'First Record', entities: 2, entityDate: new Date(2026, 5, 15) }
