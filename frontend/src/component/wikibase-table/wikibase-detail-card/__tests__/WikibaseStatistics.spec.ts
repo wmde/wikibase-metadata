@@ -18,7 +18,11 @@ describe('WikibaseStatistics', async () => {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
-					externalIdentifierObservations: {},
+					externalIdentifierObservations: {
+						mostRecent: {
+							totalExternalIdentifierStatements: 5
+						}
+					},
 					quantityObservations: {
 						mostRecent: {
 							id: '-1',
@@ -55,7 +59,7 @@ describe('WikibaseStatistics', async () => {
 		const subContainer = container.find('div.stats-container')
 		expect(subContainer.exists()).toEqual(true)
 
-		expect(subContainer.findAll('div.statistic')).toHaveLength(6)
+		expect(subContainer.findAll('div.statistic')).toHaveLength(7)
 		expect(subContainer.findAll('div.statistic')[0]?.find('div.statistic-label').text()).toEqual(
 			'Total Triples'
 		)
@@ -87,9 +91,15 @@ describe('WikibaseStatistics', async () => {
 			'2'
 		)
 		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-label').text()).toEqual(
-			'First Record'
+			'External Identifiers'
 		)
 		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-value').text()).toEqual(
+			'5'
+		)
+		expect(subContainer.findAll('div.statistic')[6]?.find('div.statistic-label').text()).toEqual(
+			'First Record'
+		)
+		expect(subContainer.findAll('div.statistic')[6]?.find('div.statistic-value').text()).toEqual(
 			'1.1.1970 00:00:00'
 		)
 	})
