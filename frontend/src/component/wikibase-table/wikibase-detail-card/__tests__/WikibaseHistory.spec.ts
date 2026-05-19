@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
 describe('WikibaseHistory', async () => {
-	it('renders nothing', async () => {
+	it('renders nothing when given no data', async () => {
 		const wrapper = mount(WikibaseHistory, {
 			global: { plugins: [vuetify] },
 			props: {
