@@ -26,6 +26,14 @@ const theme = useTheme()
 					density="comfortable"
 					:icon="mdiThemeLightDark"
 				/>
+				<v-btn
+					class="feedback-button px-3 py-0 ma-0"
+					variant="outlined"
+					href="https://wikimedia.sslsurvey.de/-WBS-Federated-Values-Feedback"
+					target="_blank"
+				>
+					Give Feedback
+				</v-btn>
 			</v-container>
 		</v-container>
 	</v-container>
@@ -55,6 +63,17 @@ const theme = useTheme()
 		flex-flow: row wrap;
 		gap: 8px;
 		align-items: center;
+		.feedback-button {
+			font-family: Roboto;
+			font-size: 16px;
+			font-weight: 500;
+			color: rgb(54, 40, 245);
+			border-color: rgb(54, 40, 245);
+			text-transform: none;
+			line-height: calc(1.25 / 0.875);
+			border-radius: calc(0.625rem - 2px);
+			letter-spacing: normal;
+		}
 	}
 	.shrink {
 		width: auto;
