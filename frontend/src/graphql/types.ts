@@ -1248,6 +1248,8 @@ export type SingleWikibaseQuery = {
 			__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
 			mostRecent?: {
 				__typename?: 'WikibaseExternalIdentifierObservation'
+				id: string
+				observationDate: Date
 				totalExternalIdentifierStatements?: number | null
 			} | null
 		}
@@ -1302,6 +1304,8 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseExternalIdentifierObservation'
+			id: string
+			observationDate: Date
 			totalExternalIdentifierStatements?: number | null
 		} | null
 	}

@@ -19,6 +19,8 @@ export const singleWikibaseQuery = gql`
 		wikibaseType
 		externalIdentifierObservations {
 			mostRecent {
+				id
+				observationDate
 				totalExternalIdentifierStatements
 			}
 		}

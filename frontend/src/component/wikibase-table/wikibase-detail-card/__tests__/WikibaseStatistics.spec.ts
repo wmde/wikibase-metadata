@@ -20,6 +20,8 @@ describe('WikibaseStatistics', async () => {
 					},
 					externalIdentifierObservations: {
 						mostRecent: {
+							id: '-1',
+							observationDate: new Date(0),
 							totalExternalIdentifierStatements: 5
 						}
 					},

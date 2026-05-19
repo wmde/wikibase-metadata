@@ -1256,6 +1256,8 @@ export type SingleWikibaseFragment = {
 		__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
 		mostRecent?: {
 			__typename?: 'WikibaseExternalIdentifierObservation'
+			id: string
+			observationDate: Date
 			totalExternalIdentifierStatements?: number | null
 		} | null
 	}
@@ -1373,6 +1375,8 @@ export const SingleWikibaseFragmentDoc = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{
 												kind: 'Field',
 												name: { kind: 'Name', value: 'totalExternalIdentifierStatements' }
@@ -1606,6 +1610,8 @@ export const SingleWikibaseDocument = {
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
 											{
 												kind: 'Field',
 												name: { kind: 'Name', value: 'totalExternalIdentifierStatements' }
