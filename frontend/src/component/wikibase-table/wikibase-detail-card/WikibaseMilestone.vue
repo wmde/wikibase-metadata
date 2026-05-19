@@ -43,5 +43,6 @@ defineProps<{ label: string; entities: number; entityDate: Date }>()
 	font-family: Roboto;
 	font-size: 16px;
 	color: rgb(0, 0, 0);
+	text-align: right;
 }
 </style>
