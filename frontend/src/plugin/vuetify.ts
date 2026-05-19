@@ -8,7 +8,7 @@ const vuetify = createVuetify({
 	components,
 	directives,
 	icons: { defaultSet: 'mdi', aliases, sets: { mdi } },
-	theme: { defaultTheme: 'system' }
+	theme: { defaultTheme: 'light' }
 })
 
 export default vuetify

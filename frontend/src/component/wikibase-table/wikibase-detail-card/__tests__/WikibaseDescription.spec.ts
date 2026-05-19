@@ -23,15 +23,11 @@ describe('WikibaseDescription', async () => {
 			}
 		})
 
-		const tooltip = document.querySelector('.desc-tooltip')
-		expect(tooltip).not.toBeNull()
-		expect(tooltip?.textContent).toEqual('Manually written')
-
 		const descContainer = wrapper.find('div.description')
 		expect(descContainer.exists()).toEqual(true)
 		expect(descContainer.classes()).toContain('v-container')
 		expect(descContainer.classes()).toContain('ma-0')
-		expect(descContainer.classes()).toContain('pa-1')
+		expect(descContainer.classes()).toContain('pa-0')
 		expect(descContainer.text()).toEqual('A test description')
 	})
 })

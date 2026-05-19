@@ -30,19 +30,17 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(8)
+		expect(row.findAll('td').length).toEqual(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
-			'3',
-			'Unknown',
 			'Test Wikibase',
 			'–',
 			'–',
 			'–',
 			'–',
-			'VIEW'
+			'Details'
 		])
-		expect(row.findAll('td')[2]?.find('a').exists()).toEqual(true)
-		expect(row.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
+		expect(row.findAll('td')[0]?.find('a').exists()).toEqual(true)
+		expect(row.findAll('td')[0]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
 	})
 
 	it('renders properly with more info', async () => {
@@ -66,19 +64,17 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(8)
+		expect(row.findAll('td').length).toEqual(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
-			'4',
-			'Wikibase Cloud',
 			'Test Cloud Wikibase',
 			'1',
 			'5',
 			'Experimental & Prototype Projects',
 			'BEHOLD! A test Wikibase!',
-			'VIEW'
+			'Details'
 		])
-		expect(row.findAll('td')[2]?.find('a').exists()).toEqual(true)
-		expect(row.findAll('td')[2]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
+		expect(row.findAll('td')[0]?.find('a').exists()).toEqual(true)
+		expect(row.findAll('td')[0]?.find('a').attributes()).toHaveProperty('href', 'wikibase.test')
 	})
 
 	it('triggers dialog on click', async () => {

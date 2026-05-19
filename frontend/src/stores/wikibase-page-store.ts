@@ -17,7 +17,7 @@ import { computed, ref, watch, type Ref } from 'vue'
 
 provideApolloClient(apolloClient)
 
-type WikibasePageData = { meta: { totalCount: number }; data: WbFragment[] }
+type WikibasePageData = { meta: { totalCount: number; totalPages: number }; data: WbFragment[] }
 
 export type WikibasePageStoreType = {
 	fetchWikibasePage: () => void
@@ -52,7 +52,7 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	const pageNumber = ref(1)
 	const setPageNumber = (i: number) => (pageNumber.value = i)
 
-	const pageSize = ref(10)
+	const pageSize = ref(25)
 	const setPageSize = (i: number) => (pageSize.value = i)
 	watch(pageSize, () => setPageNumber(1))
 

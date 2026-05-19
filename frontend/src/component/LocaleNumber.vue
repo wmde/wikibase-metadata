@@ -4,7 +4,7 @@ defineProps<{ stat: number | null | undefined }>()
 
 <template>
 	<template v-if="stat != null && stat != undefined">
-		{{ stat.toLocaleString('de') }}
+		{{ stat.toLocaleString('en') }}
 	</template>
 	<template v-else>–</template>
 </template>

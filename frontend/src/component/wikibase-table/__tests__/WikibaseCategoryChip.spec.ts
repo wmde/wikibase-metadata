@@ -1,8 +1,8 @@
+import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import { WikibaseCategory } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import WikibaseCategoryChip from '../WikibaseCategoryChip.vue'
 
 describe('WikibaseCategoryChip', async () => {
 	it.each([

@@ -29,7 +29,7 @@ describe('useWikiStore', async () => {
 		const store = useWikiStore()
 
 		expect(store.pageNumber).toEqual(1)
-		expect(store.pageSize).toEqual(10)
+		expect(store.pageSize).toEqual(25)
 		expect(store.wikibaseFilter).toEqual({
 			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 		})
