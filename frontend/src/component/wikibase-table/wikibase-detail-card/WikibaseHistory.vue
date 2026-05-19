@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import WikibaseMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseMilestone.vue';
-import type { WikibaseTimeToFirstValueObservation } from '@/graphql/types';
-import stringDate from '@/util/string-date';
+import WikibaseMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseMilestone.vue'
+import type { WikibaseTimeToFirstValueObservation } from '@/graphql/types'
+import stringDate from '@/util/string-date'
 
 defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 </script>
