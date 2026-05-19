@@ -15,7 +15,6 @@ defineProps<{ wikibaseType: WikibaseType | null | undefined }>()
 .wikibase-type-chip {
 	border-radius: calc(0.625rem - 2px);
 	padding: 0 8px !important;
-	/* padding-block: 0.125rem; */
 	border-color: oklch(87.2% 0.01 285.338);
 	height: 30px !important;
 }
