@@ -23,10 +23,9 @@ def upgrade():
         UPDATE wikibase
         SET test = True
         WHERE id IN (
-            SELECT w.id FROM wikibase w
-            JOIN wikibase_url u ON u.wikibase_id = w.id
+            SELECT wikibase_id FROM wikibase_url u
             WHERE u.url LIKE '%localhost%'
-            AND u.url_type = 'BASE_URL'
+            AND u.url_type = 'BASE_URL';
         )
     """)
 
