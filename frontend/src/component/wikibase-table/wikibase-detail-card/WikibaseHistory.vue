@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import WikibaseMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseMilestone.vue'
-import type { WikibaseTimeToFirstValueObservation } from '@/graphql/types'
-import stringDate from '@/util/string-date'
+import WikibaseMilestone from '@/component/wikibase-table/wikibase-detail-card/WikibaseMilestone.vue';
+import type { WikibaseTimeToFirstValueObservation } from '@/graphql/types';
+import stringDate from '@/util/string-date';
 
 defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 </script>
@@ -11,7 +11,7 @@ defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 		<v-expansion-panel>
 			<v-expansion-panel-title class="title">Edit History</v-expansion-panel-title>
 			<v-expansion-panel-text class="ma-0 pa-0">
-				<v-container class="ma-0 pa-0 grow-container">
+				<v-container class="ma-0 pa-0 milestone-container">
 					<WikibaseMilestone
 						v-if="obs.initiationDate"
 						label="First Record"
@@ -32,8 +32,8 @@ defineProps<{ obs: Partial<WikibaseTimeToFirstValueObservation> }>()
 </template>
 
 <style lang="scss">
-.growth-container {
-	.grow-container {
+.history-container {
+	.milestone-container {
 		display: flex;
 		flex-flow: column nowrap;
 		gap: 0.75rem;
