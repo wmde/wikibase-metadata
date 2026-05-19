@@ -32,24 +32,26 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 	</v-container>
 </template>
 
-<style lang="css">
-.acc-container {
-	display: flex;
-	flex-flow: column nowrap;
-	gap: 0.75rem;
-}
-.acc-container a {
-	display: flex;
-	justify-content: flex-start;
-	text-transform: none;
-	color: rgb(54, 40, 245);
-	border-color: rgb(54, 40, 245);
-	gap: 0.75rem;
-}
-.access-container .title {
-	font-family: Montserrat;
-	font-weight: 700;
-	font-size: 20px;
-	color: rgb(0, 0, 0);
+<style lang="scss">
+.access-container {
+	.acc-container {
+		display: flex;
+		flex-flow: column nowrap;
+		gap: 0.75rem;
+		a {
+			display: flex;
+			justify-content: flex-start;
+			text-transform: none;
+			color: rgb(54, 40, 245);
+			border-color: rgb(54, 40, 245);
+			gap: 0.75rem;
+		}
+	}
+	.title {
+		font-family: Montserrat;
+		font-weight: 700;
+		font-size: 20px;
+		color: rgb(0, 0, 0);
+	}
 }
 </style>
