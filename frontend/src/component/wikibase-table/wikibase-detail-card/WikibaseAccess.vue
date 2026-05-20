@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import type { SingleWikibaseFragment } from '@/graphql/types'
+import { computed } from 'vue'
 import { mdiLink, mdiMagnify } from '@mdi/js'
 import { FileBox } from 'lucide-vue-next'
 
-defineProps<{ wikibase: SingleWikibaseFragment }>()
+const props = defineProps<{ wikibase: SingleWikibaseFragment }>()
+
+const actionApiUrl = computed(() => {
+    const base = props.wikibase.urls.baseUrl.replace(/\/$/, '')
+    const scriptPath = props.wikibase.urls.scriptPath ?? '/w'
+    return `${base}${scriptPath}/api.php`
+})
 </script>
 
 <template>
@@ -33,7 +40,7 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 				:prepend-icon="FileBox"
 				size="large"
 				variant="outlined"
-				:href="wikibase.urls.baseUrl"
+				:href="actionApiUrl"
 				target="_blank"
 			>
 				API
