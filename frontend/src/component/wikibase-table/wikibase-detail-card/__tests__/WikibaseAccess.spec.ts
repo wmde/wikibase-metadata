@@ -6,8 +6,8 @@ import { describe, expect, it } from 'vitest'
 
 describe('WikibaseAccess', async () => {
 	it('renders properly', async () => {
-		const baseUrl = 'https://test-wikibase-001.test';
-		const scriptPath = '/w';
+		const baseUrl = 'https://test-wikibase-001.test'
+		const scriptPath = '/w'
 
 		const wrapper = mount(WikibaseAccess, {
 			global: { plugins: [vuetify] },
@@ -58,12 +58,9 @@ describe('WikibaseAccess', async () => {
 			'https://query.test-wikibase-001.test'
 		)
 
-		const apiButton = buttonContainer.find('#api-button');
-		expect(apiButton.text()).toEqual('API');
-		expect(apiButton.attributes()).toHaveProperty('target', '_blank');
-		expect(apiButton.attributes()).toHaveProperty(
-			'href',
-			`${baseUrl}${scriptPath}/api.php`
-		)
+		const apiButton = buttonContainer.find('#api-button')
+		expect(apiButton.text()).toEqual('API')
+		expect(apiButton.attributes()).toHaveProperty('target', '_blank')
+		expect(apiButton.attributes()).toHaveProperty('href', `${baseUrl}${scriptPath}/api.php`)
 	})
 })

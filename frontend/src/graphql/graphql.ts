@@ -1251,11 +1251,11 @@ export type SingleWikibaseFragment = {
 	category?: WikibaseCategory | null
 	description?: string | null
 	wikibaseType: WikibaseType
-	urls: { 
-		__typename?: 'WikibaseURLSet';
-		baseUrl: string;
-		sparqlFrontendUrl?: string | null;
-		scriptPath?: string | null;
+	urls: {
+		__typename?: 'WikibaseURLSet'
+		baseUrl: string
+		sparqlFrontendUrl?: string | null
+		scriptPath?: string | null
 	}
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'

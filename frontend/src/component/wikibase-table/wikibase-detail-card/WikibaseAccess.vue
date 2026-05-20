@@ -7,9 +7,9 @@ import { FileBox } from 'lucide-vue-next'
 const props = defineProps<{ wikibase: SingleWikibaseFragment }>()
 
 const actionApiUrl = computed(() => {
-    const base = props.wikibase.urls.baseUrl.replace(/\/$/, '')
-    const scriptPath = props.wikibase.urls.scriptPath ?? '/w'
-    return `${base}${scriptPath}/api.php`
+	const base = props.wikibase.urls.baseUrl.replace(/\/$/, '')
+	const scriptPath = props.wikibase.urls.scriptPath ?? '/w'
+	return `${base}${scriptPath}/api.php`
 })
 </script>
 

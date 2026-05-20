@@ -1291,9 +1291,9 @@ export type SingleWikibaseFragment = {
 	description?: string | null
 	wikibaseType: WikibaseType
 	urls: {
-		__typename?: 'WikibaseURLSet';
-		baseUrl: string;
-		sparqlFrontendUrl?: string | null,
+		__typename?: 'WikibaseURLSet'
+		baseUrl: string
+		sparqlFrontendUrl?: string | null
 		scriptPath?: string | null
 	}
 	quantityObservations: {
