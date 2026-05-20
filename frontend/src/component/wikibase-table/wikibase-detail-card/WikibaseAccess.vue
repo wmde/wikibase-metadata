@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import { mdiLink, mdiMagnify } from '@mdi/js'
+import { FileBox } from 'lucide-vue-next'
 
 defineProps<{ wikibase: SingleWikibaseFragment }>()
 </script>
@@ -27,6 +28,15 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 				target="_blank"
 			>
 				Query Service
+			</v-btn>
+			<v-btn
+				:prepend-icon="FileBox"
+				size="large"
+				variant="outlined"
+				:href="wikibase.urls.baseUrl"
+				target="_blank"
+			>
+				API
 			</v-btn>
 		</v-container>
 	</v-container>
