@@ -42,6 +42,7 @@ const actionApiUrl = computed(() => {
 				variant="outlined"
 				:href="actionApiUrl"
 				target="_blank"
+				id="api-button"
 			>
 				API
 			</v-btn>
