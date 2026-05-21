@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import { computed } from 'vue'
-import { mdiLink, mdiMagnify } from '@mdi/js'
-import { FileBox } from 'lucide-vue-next'
+import { mdiLink, mdiMagnify, mdiApi } from '@mdi/js'
 
 const { wikibase } = defineProps<{ wikibase: SingleWikibaseFragment }>()
 
@@ -44,7 +43,7 @@ const actionApiUrl = computed(() => {
 			</v-btn>
 			<v-btn
 				v-if="actionApiUrl"
-				:prepend-icon="FileBox"
+				:prepend-icon="mdiApi"
 				size="large"
 				variant="outlined"
 				:href="actionApiUrl"
