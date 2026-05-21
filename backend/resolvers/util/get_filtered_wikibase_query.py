@@ -5,7 +5,7 @@ from typing import Optional
 
 from sqlalchemy import Select, or_, select
 
-from model.database import WikibaseModel
+from model.database import WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseType
 from model.strawberry.input import WikibaseFilterInput
 
@@ -26,13 +26,15 @@ def get_filtered_wikibase_query(
     if wikibase_filter.search_text is not None:
         assert re.match(
             r"^[a-z0-9.\- ]+$", wikibase_filter.search_text, re.IGNORECASE
-        ), f"Disallowed Characters: {re.sub(r"[a-z0-9.\- ]", "", wikibase_filter.search_text)}"
+        ), f"Disallowed Characters: {re.sub(r"[a-z0-9.\- ]", r"", wikibase_filter.search_text)}"
         query = query.where(
             or_(
                 WikibaseModel.wikibase_name.like(
                     "%" + wikibase_filter.search_text + "%"
                 ),
-                WikibaseModel.url.like("%" + wikibase_filter.search_text + "%"),
+                WikibaseModel.url.has(
+                    WikibaseURLModel.url.like("%" + wikibase_filter.search_text + "%")
+                ),
             )
         )
 
