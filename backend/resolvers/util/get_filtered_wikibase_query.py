@@ -1,5 +1,6 @@
 """Get Filtered Wikibase Query"""
 
+import re
 from typing import Optional
 
 from sqlalchemy import Select, or_, select
@@ -21,6 +22,19 @@ def get_filtered_wikibase_query(
 
     if not wikibase_filter.ignore_reuse:
         query = query.where(WikibaseModel.reuse)
+
+    if wikibase_filter.search_text is not None:
+        assert re.match(
+            r"^[a-z0-9.\- ]+$", wikibase_filter.search_text, re.IGNORECASE
+        ), f"Disallowed Characters: {re.sub(r"[a-z0-9.\- ]", "", wikibase_filter.search_text)}"
+        query = query.where(
+            or_(
+                WikibaseModel.wikibase_name.like(
+                    "%" + wikibase_filter.search_text + "%"
+                ),
+                WikibaseModel.url.like("%" + wikibase_filter.search_text + "%"),
+            )
+        )
 
     if wikibase_filter.wikibase_type is not None:
         if (

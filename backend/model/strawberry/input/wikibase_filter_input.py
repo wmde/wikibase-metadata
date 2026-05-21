@@ -17,5 +17,6 @@ class WikibaseTypeInput:
 class WikibaseFilterInput:
     """Filter Wikibases"""
 
-    wikibase_type: Optional[WikibaseTypeInput] = None
     ignore_reuse: Optional[bool] = None
+    search_text: Optional[str] = None
+    wikibase_type: Optional[WikibaseTypeInput] = None
