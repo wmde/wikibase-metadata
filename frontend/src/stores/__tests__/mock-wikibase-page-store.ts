@@ -12,7 +12,8 @@ const mockWikiStore: WikibasePageStoreType = {
 	sortBy: { column: SortColumn.Triples, dir: SortDirection.Desc },
 	setSort: vi.fn().mockName('sortByColumn'),
 	wikibaseFilter: {},
-	includeWikibaseTypes: vi.fn().mockName('includeWikibaseTypes')
+	includeWikibaseTypes: vi.fn().mockName('includeWikibaseTypes'),
+	searchWikibaseText: vi.fn().mockName('searchWikibaseText')
 }
 
 export default mockWikiStore
