@@ -64,4 +64,31 @@ describe('WikibaseAccess', async () => {
 		expect(apiButton.attributes()).toHaveProperty('target', '_blank')
 		expect(apiButton.attributes()).toHaveProperty('href', `${baseUrl}${scriptPath}/api.php`)
 	})
+
+	it("does not render API button if wikibase doesn't have a scriptPath", async () => {
+		const wrapper = mount(WikibaseAccess, {
+			global: { plugins: [vuetify] },
+			props: {
+				wikibase: {
+					id: '1',
+					title: 'Test Wikibase',
+					category: WikibaseCategory.FictionalAndCreativeWorks,
+					description: 'A test description',
+					urls: {
+						baseUrl: 'https://test-wikibase-001.test',
+						sparqlFrontendUrl: 'https://query.test-wikibase-001.test'
+					},
+					quantityObservations: {},
+					recentChangesObservations: {},
+					timeToFirstValueObservations: {},
+					wikibaseType: WikibaseType.Cloud
+				}
+			}
+		})
+
+		const accessContainer = wrapper.find('div.access-container')
+		const buttonContainer = accessContainer.find('div.acc-container')
+		const apiButton = buttonContainer.find('#api-button')
+		expect(apiButton.exists()).toEqual(false)
+	})
 })
