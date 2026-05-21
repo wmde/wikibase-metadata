@@ -7,15 +7,15 @@ import { FileBox } from 'lucide-vue-next'
 const { wikibase } = defineProps<{ wikibase: SingleWikibaseFragment }>()
 
 const actionApiUrl = computed(() => {
-	const scriptPath = wikibase.urls.scriptPath
+	const { baseUrl, scriptPath } = wikibase.urls
 
 	if (!scriptPath) {
 		return null
 	}
 
-	const base = wikibase.urls.baseUrl.replace(/\/$/, '')
-	const s = '/' + scriptPath.replace(/^\/|\/$/g, '') // remove leading and trailing slashes
-	return `${base}${s}/api.php`
+	const base = baseUrl.replace(/\/+$/, '')
+	const s = scriptPath.replace(/^\/|\/$/g, '') // remove leading and trailing slashes
+	return `${base}/${s}/api.php`
 })
 </script>
 
