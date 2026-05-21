@@ -4,12 +4,18 @@ import { computed } from 'vue'
 import { mdiLink, mdiMagnify } from '@mdi/js'
 import { FileBox } from 'lucide-vue-next'
 
-const props = defineProps<{ wikibase: SingleWikibaseFragment }>()
+const { wikibase } = defineProps<{ wikibase: SingleWikibaseFragment }>()
 
 const actionApiUrl = computed(() => {
-	const base = props.wikibase.urls.baseUrl.replace(/\/$/, '')
-	const scriptPath = props.wikibase.urls.scriptPath ?? '/w'
-	return `${base}${scriptPath}/api.php`
+	const scriptPath = wikibase.urls.scriptPath
+
+	if (!scriptPath) {
+		return null
+	}
+
+	const base = wikibase.urls.baseUrl.replace(/\/$/, '')
+	const s = '/' + scriptPath.replace(/^\/|\/$/g, '') // remove leading and trailing slashes
+	return `${base}${s}/api.php`
 })
 </script>
 
@@ -37,6 +43,7 @@ const actionApiUrl = computed(() => {
 				Query Service
 			</v-btn>
 			<v-btn
+				v-if="actionApiUrl"
 				:prepend-icon="FileBox"
 				size="large"
 				variant="outlined"
