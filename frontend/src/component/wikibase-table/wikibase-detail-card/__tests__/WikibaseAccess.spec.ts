@@ -58,7 +58,7 @@ describe('WikibaseAccess', async () => {
 			'https://query.test-wikibase-001.test'
 		)
 		expect(buttonContainer.findAll('.v-btn')[1]?.attributes()).toHaveProperty('target', '_blank')
-		
+
 		const apiButton = buttonContainer.find('#api-button')
 		expect(apiButton.text()).toEqual('API')
 		expect(apiButton.attributes()).toHaveProperty('target', '_blank')
