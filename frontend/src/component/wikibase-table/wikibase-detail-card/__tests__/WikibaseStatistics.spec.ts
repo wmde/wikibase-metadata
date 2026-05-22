@@ -37,7 +37,7 @@ describe('WikibaseStatistics', async () => {
 						}
 					},
 					timeToFirstValueObservations: {
-						mostRecent: { id: '-1', initiationDate: new Date(0), itemDates: [] }
+						mostRecent: { id: '-1', initiationDate: new Date('1.1.1970 00:00:00'), itemDates: [] }
 					},
 					wikibaseType: WikibaseType.Cloud
 				}
