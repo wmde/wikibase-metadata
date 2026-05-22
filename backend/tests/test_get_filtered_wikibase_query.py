@@ -1,3 +1,5 @@
+# pylint: disable=line-too-long,trailing-whitespace
+
 """Test get_filtered_wikibase_query"""
 
 import pytest
