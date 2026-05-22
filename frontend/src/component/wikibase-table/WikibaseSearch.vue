@@ -19,6 +19,7 @@ watch(searchValue, () => deouncedSetValue(searchValue.value))
 			:prepend-icon="mdiMagnify"
 			v-model="searchValue"
 			label="Search Wikibase instances..."
+			:rules="[(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters']"
 		/>
 	</v-container>
 </template>
