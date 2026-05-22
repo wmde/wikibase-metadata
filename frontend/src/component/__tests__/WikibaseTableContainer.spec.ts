@@ -25,6 +25,9 @@ describe('WikibaseTableContainer', async () => {
 		const showing = wrapper.find('div.show-count')
 		expect(showing.exists()).toEqual(false)
 
+		const search = wrapper.find('div.search-text')
+		expect(search.exists()).toEqual(true)
+
 		const table = tableContainer.find('div.wikibase-table')
 		expect(table.exists()).toEqual(true)
 	})
