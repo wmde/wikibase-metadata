@@ -24,19 +24,22 @@ def get_filtered_wikibase_query(
         query = query.where(WikibaseModel.reuse)
 
     if wikibase_filter.search_text is not None:
-        assert re.match(
-            r"^[a-z0-9.\- ]+$", wikibase_filter.search_text, re.IGNORECASE
-        ), f"Disallowed Characters: {re.sub(r"[a-z0-9.\- ]", r"", wikibase_filter.search_text)}"
-        query = query.where(
-            or_(
-                WikibaseModel.wikibase_name.like(
-                    "%" + wikibase_filter.search_text + "%"
-                ),
-                WikibaseModel.url.has(
-                    WikibaseURLModel.url.like("%" + wikibase_filter.search_text + "%")
-                ),
+        if len(wikibase_filter.search_text) > 0:
+            assert re.match(
+                r"^[a-z0-9.\- ]+$", wikibase_filter.search_text, re.IGNORECASE
+            ), f"Disallowed Characters: {re.sub(r"[a-z0-9.\- ]", r"", wikibase_filter.search_text)}"
+            query = query.where(
+                or_(
+                    WikibaseModel.wikibase_name.like(
+                        "%" + wikibase_filter.search_text + "%"
+                    ),
+                    WikibaseModel.url.has(
+                        WikibaseURLModel.url.like(
+                            "%" + wikibase_filter.search_text + "%"
+                        )
+                    ),
+                )
             )
-        )
 
     if wikibase_filter.wikibase_type is not None:
         if (
