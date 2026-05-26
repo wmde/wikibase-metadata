@@ -1,8 +1,21 @@
 <script setup lang="ts">
 import type { SingleWikibaseFragment } from '@/graphql/types'
-import { mdiLink, mdiMagnify } from '@mdi/js'
+import { computed } from 'vue'
+import { mdiLink, mdiMagnify, mdiApi } from '@mdi/js'
 
-defineProps<{ wikibase: SingleWikibaseFragment }>()
+const { wikibase } = defineProps<{ wikibase: SingleWikibaseFragment }>()
+
+const actionApiUrl = computed(() => {
+	const { baseUrl, scriptPath } = wikibase.urls
+
+	if (!scriptPath) {
+		return null
+	}
+
+	const base = baseUrl.replace(/\/+$/, '')
+	const s = scriptPath.replace(/^\/|\/$/g, '') // remove leading and trailing slashes
+	return `${base}/${s}/api.php`
+})
 </script>
 
 <template>
@@ -27,6 +40,17 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 				target="_blank"
 			>
 				Query Service
+			</v-btn>
+			<v-btn
+				v-if="actionApiUrl"
+				:prepend-icon="mdiApi"
+				size="large"
+				variant="outlined"
+				:href="actionApiUrl"
+				target="_blank"
+				id="api-button"
+			>
+				API
 			</v-btn>
 		</v-container>
 	</v-container>

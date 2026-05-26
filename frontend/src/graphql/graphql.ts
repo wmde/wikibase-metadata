@@ -1251,7 +1251,12 @@ export type SingleWikibaseFragment = {
 	category?: WikibaseCategory | null
 	description?: string | null
 	wikibaseType: WikibaseType
-	urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
+	urls: {
+		__typename?: 'WikibaseURLSet'
+		baseUrl: string
+		scriptPath?: string | null
+		sparqlFrontendUrl?: string | null
+	}
 	externalIdentifierObservations: {
 		__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
 		mostRecent?: {
@@ -1364,6 +1369,7 @@ export const SingleWikibaseFragmentDoc = {
 							kind: 'SelectionSet',
 							selections: [
 								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } },
 								{ kind: 'Field', name: { kind: 'Name', value: 'sparqlFrontendUrl' } }
 							]
 						}
@@ -1599,6 +1605,7 @@ export const SingleWikibaseDocument = {
 							kind: 'SelectionSet',
 							selections: [
 								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } },
 								{ kind: 'Field', name: { kind: 'Name', value: 'sparqlFrontendUrl' } }
 							]
 						}
