@@ -2,7 +2,7 @@
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { mdiMagnify } from '@mdi/js'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const store = useWikiStore()
 
@@ -13,9 +13,6 @@ watch(searchValue, () => deouncedSetValue(searchValue.value))
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
 ]
-const violation = computed(
-	() => rules.map((ruleFn) => ruleFn(searchValue.value)).filter((result) => result != true)[0]
-)
 </script>
 
 <template>
@@ -28,7 +25,6 @@ const violation = computed(
 			label="Search Wikibase instances..."
 			:rules="rules"
 		/>
-		<v-container v-if="violation" class="error-message ma-0 pa-0">{{ violation }}</v-container>
 	</v-container>
 </template>
 
@@ -39,9 +35,6 @@ const violation = computed(
 	background: #f3f3f5;
 	font-family: Roboto;
 
-	.v-input__details {
-		display: none;
-	}
 	div.v-input__prepend {
 		padding-top: 14px !important;
 	}
@@ -57,9 +50,6 @@ const violation = computed(
 	}
 	label.v-field-label--floating {
 		color: #444;
-	}
-	.error-message {
-		color: rgb(176 0 32);
 	}
 }
 </style>
