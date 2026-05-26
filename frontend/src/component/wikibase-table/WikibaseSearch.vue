@@ -2,13 +2,20 @@
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { mdiMagnify } from '@mdi/js'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const store = useWikiStore()
 
 const searchValue = ref('')
 const [deouncedSetValue] = debounce((v: string) => store.searchWikibaseText(v), 300)
 watch(searchValue, () => deouncedSetValue(searchValue.value))
+
+const rules: ((value: string) => true | string)[] = [
+	(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
+]
+const violation = computed(
+	() => rules.map((ruleFn) => ruleFn(searchValue.value)).filter((result) => result != true)[0]
+)
 </script>
 
 <template>
@@ -19,8 +26,9 @@ watch(searchValue, () => deouncedSetValue(searchValue.value))
 			:prepend-icon="mdiMagnify"
 			v-model="searchValue"
 			label="Search Wikibase instances..."
-			:rules="[(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters']"
+			:rules="rules"
 		/>
+		<v-container v-if="violation" class="error-message ma-0 pa-0">{{ violation }}</v-container>
 	</v-container>
 </template>
 
@@ -49,6 +57,9 @@ watch(searchValue, () => deouncedSetValue(searchValue.value))
 	}
 	label.v-field-label--floating {
 		color: #444;
+	}
+	.error-message {
+		color: rgb(176 0 32);
 	}
 }
 </style>
