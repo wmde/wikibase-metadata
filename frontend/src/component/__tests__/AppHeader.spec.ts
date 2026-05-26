@@ -30,6 +30,18 @@ describe('AppHeader', async () => {
 		const rightSection = headerContainer.find('div.right-header')
 		expect(rightSection.exists()).toEqual(true)
 		expect(rightSection.classes()).toContain('shrink')
+
+		const feedbackButton = rightSection.find('a.feedback-button')
+		expect(feedbackButton.exists()).toEqual(true)
+		expect(feedbackButton.classes()).toContain('ma-0')
+		expect(feedbackButton.classes()).toContain('px-3')
+		expect(feedbackButton.classes()).toContain('py-0')
+		expect(feedbackButton.text()).toEqual('Give Feedback')
+		expect(feedbackButton.attributes()).toHaveProperty(
+			'href',
+			'https://wikimedia.sslsurvey.de/-WBS-Federated-Values-Feedback'
+		)
+		expect(feedbackButton.attributes()).toHaveProperty('target', '_blank')
 	})
 
 	it.skip('changes theme on button push', async () => {
