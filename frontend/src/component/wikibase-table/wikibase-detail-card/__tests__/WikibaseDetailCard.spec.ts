@@ -2,7 +2,7 @@ import WikibaseDetailCard from '@/component/wikibase-table/wikibase-detail-card/
 import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('WikibaseDetailCard', async () => {
 	it('renders loading properly', async () => {
@@ -39,7 +39,7 @@ describe('WikibaseDetailCard', async () => {
 
 	it('renders wiki properly', async () => {
 		const wrapper = mount(WikibaseDetailCard, {
-			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
+			global: { plugins: [vuetify] },
 			props: {
 				wikibase: {
 					id: '1',
@@ -50,6 +50,7 @@ describe('WikibaseDetailCard', async () => {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
+					externalIdentifierObservations: {},
 					quantityObservations: {
 						mostRecent: {
 							id: '-1',

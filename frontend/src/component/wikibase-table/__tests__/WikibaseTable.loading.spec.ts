@@ -27,7 +27,7 @@ describe('WikibaseTable', async () => {
 
 		const table = tableContainer.find('table')
 		expect(table.exists()).toEqual(true)
-		expect(table.find('tbody').findAll('tr').length).toEqual(1)
+		expect(table.find('tbody').findAll('tr')).toHaveLength(1)
 
 		const loadingRow = table.find('tbody').find('tr.v-data-table-rows-loading')
 		expect(loadingRow.exists()).toEqual(true)

@@ -22,6 +22,7 @@ describe('WikibaseAccess', async () => {
 						sparqlFrontendUrl: 'https://query.test-wikibase-001.test',
 						scriptPath: scriptPath
 					},
+					externalIdentifierObservations: {},
 					quantityObservations: {},
 					recentChangesObservations: {},
 					timeToFirstValueObservations: {},
@@ -78,6 +79,7 @@ describe('WikibaseAccess', async () => {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://query.test-wikibase-001.test'
 					},
+					externalIdentifierObservations: {},
 					quantityObservations: {},
 					recentChangesObservations: {},
 					timeToFirstValueObservations: {},

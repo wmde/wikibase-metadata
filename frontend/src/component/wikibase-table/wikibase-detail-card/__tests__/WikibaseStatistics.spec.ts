@@ -2,12 +2,12 @@ import WikibaseStatistics from '@/component/wikibase-table/wikibase-detail-card/
 import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('WikibaseStatistics', async () => {
 	it('renders wiki properly', async () => {
 		const wrapper = mount(WikibaseStatistics, {
-			global: { mocks: { Image: vi.mockObject(Image) }, plugins: [vuetify] },
+			global: { plugins: [vuetify] },
 			props: {
 				wikibase: {
 					id: '1',
@@ -17,6 +17,13 @@ describe('WikibaseStatistics', async () => {
 					urls: {
 						baseUrl: 'https://test-wikibase-001.test',
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
+					},
+					externalIdentifierObservations: {
+						mostRecent: {
+							id: '-1',
+							observationDate: new Date(0),
+							totalExternalIdentifierStatements: 5
+						}
 					},
 					quantityObservations: {
 						mostRecent: {
@@ -54,7 +61,7 @@ describe('WikibaseStatistics', async () => {
 		const subContainer = container.find('div.stats-container')
 		expect(subContainer.exists()).toEqual(true)
 
-		expect(subContainer.findAll('div.statistic')).toHaveLength(6)
+		expect(subContainer.findAll('div.statistic')).toHaveLength(7)
 		expect(subContainer.findAll('div.statistic')[0]?.find('div.statistic-label').text()).toEqual(
 			'Total Triples'
 		)
@@ -86,9 +93,15 @@ describe('WikibaseStatistics', async () => {
 			'2'
 		)
 		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-label').text()).toEqual(
-			'First Record'
+			'External Identifiers'
 		)
 		expect(subContainer.findAll('div.statistic')[5]?.find('div.statistic-value').text()).toEqual(
+			'5'
+		)
+		expect(subContainer.findAll('div.statistic')[6]?.find('div.statistic-label').text()).toEqual(
+			'First Record'
+		)
+		expect(subContainer.findAll('div.statistic')[6]?.find('div.statistic-value').text()).toEqual(
 			'1.1.1970 00:00:00'
 		)
 	})

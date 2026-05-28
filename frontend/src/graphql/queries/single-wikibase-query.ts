@@ -14,9 +14,17 @@ export const singleWikibaseQuery = gql`
 		description
 		urls {
 			baseUrl
+			scriptPath
 			sparqlFrontendUrl
 		}
 		wikibaseType
+		externalIdentifierObservations {
+			mostRecent {
+				id
+				observationDate
+				totalExternalIdentifierStatements
+			}
+		}
 		quantityObservations {
 			mostRecent {
 				id

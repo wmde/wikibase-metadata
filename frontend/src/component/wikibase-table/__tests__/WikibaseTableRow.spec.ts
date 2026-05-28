@@ -30,7 +30,7 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(6)
+		expect(row.findAll('td')).toHaveLength(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'Test Wikibase',
 			'–',
@@ -64,7 +64,7 @@ describe('WikibaseTableRow', async () => {
 		const row = wrapper.find('tr')
 		expect(row.exists()).toEqual(true)
 
-		expect(row.findAll('td').length).toEqual(6)
+		expect(row.findAll('td')).toHaveLength(6)
 		expect(row.findAll('td').map((td) => td.text())).toEqual([
 			'Test Cloud Wikibase',
 			'1',
