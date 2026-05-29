@@ -1,11 +1,10 @@
 """Parse Config"""
 
+import configparser
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-import configparser
-import os
 
 config = configparser.ConfigParser()
 config.read(os.environ.get("SETTINGS_FILE", "settings.ini"))
