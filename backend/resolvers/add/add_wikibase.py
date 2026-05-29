@@ -25,8 +25,9 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             .join(WikibaseModel.url)
             .where(WikibaseURLModel.url == clean_base_url)
         )
+
         if existing is not None:
-            return WikibaseStrawberryModel.marshal(existing)
+            return await update_wikibase(async_session, existing.id, wikibase_input)
 
         assert (
             await async_session.scalar(
@@ -131,3 +132,81 @@ async def assert_new_url(
                 select(func.count()).where(WikibaseURLModel.url == clean_url)
             )
         ) == 0, f"URL {clean_url} already exists"
+
+
+async def update_wikibase(
+    async_session: AsyncSession, wikibase_id: int, wikibase_input: WikibaseInput
+) -> WikibaseStrawberryModel:
+    """Update Existing Wikibase"""
+
+    model = await async_session.scalar(
+        select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+    )
+
+    clean_base_url = clean_up_url(
+        wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
+    )
+
+    model.wikibase_name = wikibase_input.wikibase_name
+    model.description = wikibase_input.description
+    model.organization = wikibase_input.organization
+    model.country = wikibase_input.country
+    model.region = wikibase_input.region
+    model.wikibase_type = wikibase_input.wikibase_type
+
+    model.url.url = clean_base_url
+
+    if wikibase_input.urls.article_path is not None:
+        model.set_article_path(
+            clean_up_url(wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH)
+        )
+    else:
+        model.article_path = None
+
+    if wikibase_input.urls.script_path is not None:
+        model.set_script_path(
+            clean_up_url(wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH)
+        )
+    else:
+        model.script_path = None
+
+    if wikibase_input.urls.sparql_endpoint_url is not None:
+        model.set_sparql_endpoint_url(
+            clean_up_url(
+                wikibase_input.urls.sparql_endpoint_url,
+                WikibaseURLType.SPARQL_ENDPOINT_URL,
+            )
+        )
+    else:
+        model.sparql_endpoint_url = None
+
+    if wikibase_input.urls.sparql_frontend_url is not None:
+        model.set_sparql_frontend_url(
+            clean_up_url(
+                wikibase_input.urls.sparql_frontend_url,
+                WikibaseURLType.SPARQL_FRONTEND_URL,
+            )
+        )
+    else:
+        model.sparql_frontend_url = None
+
+    model.category = (
+        (
+            await async_session.scalars(
+                select(WikibaseCategoryModel).where(
+                    WikibaseCategoryModel.category == wikibase_input.category.name
+                )
+            )
+        ).one()
+        if wikibase_input.category is not None
+        else None
+    )
+    model.test = (
+        wikibase_input.test or "localhost" in wikibase_input.urls.base_url.lower()
+    )
+    model.reuse = wikibase_input.reuse or False
+
+    await async_session.flush()
+    await async_session.refresh(model)
+
+    return WikibaseStrawberryModel.marshal(model)
