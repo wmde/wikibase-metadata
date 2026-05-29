@@ -12,7 +12,9 @@
 
 Inside the `backend` directory:
 
-1. Start a postgres instance with docker using:
+1. Create a `.env` file matching the `.env.template` file.
+
+2. Start a postgres instance with docker using:
 ```bash
 $ docker run -d \
   --name postgres \
@@ -21,23 +23,22 @@ $ docker run -d \
   postgres:16
 ```
 
-2. Create a python virtual environment:
+3. Create a python virtual environment:
 ```bash
 $ python3.12 -m venv .venv
 $ source .venv/bin/activate
 ```
 
-3. Install the requirements:
+4. Install the requirements:
 ```bash
 $ pip install -r requirements.txt && pip install -r requirements-dev.txt 
 ```
 
-4. Run migrations:
+5. Run migrations:
 ```bash
 $ alembic upgrade head
 ```
-
-5. Start the server:
+6. Start the server:
 ```bash
 $ PYTHONPATH=. fastapi dev app.py
 ```
