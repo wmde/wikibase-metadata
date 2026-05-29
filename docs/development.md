@@ -12,7 +12,7 @@
 
 Inside the `backend` directory:
 
-1. Create a `.env` file matching the `.env.template` file.
+1. Make a copy of `.env.template` and rename it to `.env`
 
 2. Start a postgres instance with docker using:
 ```bash
@@ -48,12 +48,14 @@ $ PYTHONPATH=. fastapi dev app.py
 
 Inside the `frontend` directory:
 
-1. Install dependencies:
+1. Make a copy of `.env.template` and rename it to `.env`
+
+2. Install dependencies:
 ```bash
 $ npm ci
 ```
 
-2. Start the app:
+3. Start the app:
 ```bash
 $ npm run dev
 ```
