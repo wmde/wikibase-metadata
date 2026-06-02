@@ -6,15 +6,11 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-createApp(App)
-	.use(VueMatomo, {
-		host: 'stats.wikimedia.de',
-		siteId: 12
-	})
-	.mount('#app')
-
 app.use(vuetify)
-
 app.use(createPinia())
+app.use(VueMatomo, {
+	host: 'https://stats.wikimedia.de',
+	siteId: 12
+})
 
 app.mount('#app')
