@@ -469,5 +469,15 @@ fluent_datasources:
             partitioner:
         query: SELECT * FROM wikibase_external_identifier_observation WHERE
           anything
+      nonarchived_wikibase_software_records:
+        type: query
+        id: 292ccce6-1972-4824-ad7b-696d6a40935e
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 657f9d7e-339f-492e-8baf-59a5d47a0bda
+            partitioner:
+        query: SELECT * FROM wikibase_software WHERE url IS NOT NULL AND NOT
+          archived
     connection_string: ${DATABASE_URL_SYNC}
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5
