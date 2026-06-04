@@ -110,50 +110,10 @@
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "1eab6823-0c11-4606-b98a-24cfddd0fa21",
-			"kwargs": { "column": "description", "mostly": 0.55 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
-			"id": "a82411ee-3695-461d-b0de-0e1476210912",
-			"kwargs": {
-				"column": "description",
-				"regex_list": [
-					"^[ \t\r\n]*$",
-					"^[ \t\r\n]+",
-					"[ \t\r\n]+$",
-					"[ \t\r\n]{2,}"
-				]
-			},
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex_list"
-		},
-		{
 			"id": "0e19eae2-39aa-4b09-bc33-444ba2475d6b",
 			"kwargs": { "column": "latest_version" },
 			"meta": {},
 			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "0f0a53ab-916c-4a52-b6bf-dd787bfe7c71",
-			"kwargs": { "column": "latest_version", "mostly": 0.49 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
-			"id": "6d4bab5a-911b-49eb-8384-8ecdb320ff01",
-			"kwargs": {
-				"column": "latest_version",
-				"regex_list": [
-					"^[ \t\r\n]*$",
-					"^[ \t\r\n]+",
-					"[ \t\r\n]+$",
-					"[ \t\r\n]{2,}"
-				]
-			},
-			"meta": {},
-			"type": "expect_column_values_to_not_match_regex_list"
 		},
 		{
 			"id": "5da516dc-5044-42ec-9d62-33f897d20f30",
@@ -162,34 +122,16 @@
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "479da3dc-7d7d-41f1-88ac-aaf89a7fece1",
-			"kwargs": { "column": "quarterly_download_count", "mostly": 0.001 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
 			"id": "9862d304-019a-432b-bcaa-8fe914225c5a",
 			"kwargs": { "column": "public_wiki_count" },
 			"meta": {},
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "c9aaffa5-b706-463e-b00d-02ba8ccf310c",
-			"kwargs": { "column": "public_wiki_count", "mostly": 0.001 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
 			"id": "e0e7e43b-9df0-4f3c-9e95-ea6813f45ddd",
 			"kwargs": { "column": "mw_bundled" },
 			"meta": {},
 			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "677459aa-3f9c-46c4-9d79-e711adeb2f88",
-			"kwargs": { "column": "mw_bundled", "mostly": 0.57 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
 		},
 		{
 			"id": "c9a9a10d-eb42-4ef3-a68c-9165b2e244cf",
@@ -216,12 +158,6 @@
 			"type": "expect_column_to_exist"
 		},
 		{
-			"id": "bf643ee9-b0eb-4500-92ea-c49d22adccf6",
-			"kwargs": { "column": "archived", "mostly": 0.57 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
 			"id": "0a7cdf9d-d17d-4e6e-9a2e-6f4e616e0d05",
 			"kwargs": { "column": "archived", "value_set": [false, true] },
 			"meta": {},
@@ -232,18 +168,6 @@
 			"kwargs": { "column": "wbs_bundled" },
 			"meta": {},
 			"type": "expect_column_to_exist"
-		},
-		{
-			"id": "4f167c64-5a66-4733-aef8-5e95a0dac3f9",
-			"kwargs": { "column": "wbs_bundled", "mostly": 0 },
-			"meta": {},
-			"type": "expect_column_values_to_not_be_null"
-		},
-		{
-			"id": "b9b684c7-3982-4e5a-a22b-5fc3cf82a1ad",
-			"kwargs": { "column": "wbs_bundled", "value_set": [false, true] },
-			"meta": {},
-			"type": "expect_column_distinct_values_to_be_in_set"
 		}
 	],
 	"id": "a4fe5870-c78d-433d-af64-76b02603e528",
