@@ -191,7 +191,7 @@
 		},
 		{
 			"id": "677459aa-3f9c-46c4-9d79-e711adeb2f88",
-			"kwargs": { "column": "mw_bundled", "mostly": 0.57 },
+			"kwargs": { "column": "mw_bundled" },
 			"meta": {},
 			"severity": "critical",
 			"type": "expect_column_values_to_not_be_null"
@@ -226,7 +226,7 @@
 		},
 		{
 			"id": "0a7cdf9d-d17d-4e6e-9a2e-6f4e616e0d05",
-			"kwargs": { "column": "archived", "value_set": [false, true] },
+			"kwargs": { "column": "archived", "value_set": [false] },
 			"meta": {},
 			"severity": "critical",
 			"type": "expect_column_values_to_be_in_set"
