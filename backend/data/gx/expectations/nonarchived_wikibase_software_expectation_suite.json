@@ -191,7 +191,7 @@
 		},
 		{
 			"id": "677459aa-3f9c-46c4-9d79-e711adeb2f88",
-			"kwargs": { "column": "mw_bundled" },
+			"kwargs": { "column": "mw_bundled", "mostly": 0.99 },
 			"meta": {},
 			"severity": "critical",
 			"type": "expect_column_values_to_not_be_null"
