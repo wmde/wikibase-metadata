@@ -7,14 +7,14 @@ import { computed, ref, watch } from 'vue'
 const store = useWikiStore()
 
 const searchValue = ref('')
-const [deouncedSetValue] = debounce((v: string) => store.searchWikibaseText(v), 300)
-watch(searchValue, () => deouncedSetValue(searchValue.value))
+const [deouncedSearch] = debounce((v: string) => store.searchWikibaseText(v), 300)
+watch(searchValue, () => deouncedSearch(searchValue.value))
 
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
 ]
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
-const extraRules = computed((): ((value: string) => RuleResult)[] => [
+const displayRules = computed((): ((value: string) => RuleResult)[] => [
 	(value: string) => /^[a-z0-9\- .]*$/.test(value) || { prepend: 'Disallowed Characters' },
 	(value: string) =>
 		value.length == 0 || (store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0)
@@ -25,8 +25,8 @@ const extraRules = computed((): ((value: string) => RuleResult)[] => [
 					append: ' — try a different keyword or category'
 				}
 ])
-const ruleResults = computed(() =>
-	extraRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
+const displayRuleResults = computed(() =>
+	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
 )
 </script>
 
@@ -43,7 +43,7 @@ const ruleResults = computed(() =>
 			/>
 		</v-container>
 		<v-label class="search-error">
-			<div v-for="(result, idx) in ruleResults" :key="idx">
+			<div v-for="(result, idx) in displayRuleResults" :key="idx">
 				<span v-if="result.prepend" class="prepend">{{ result.prepend }}</span>
 				<span v-if="result.includeValue" class="search-value">"{{ searchValue }}"</span>
 				<span v-if="result.append" class="append">{{ result.append }}</span>
