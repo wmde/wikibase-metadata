@@ -2,7 +2,7 @@
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { mdiMagnify } from '@mdi/js'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const store = useWikiStore()
 
@@ -13,18 +13,42 @@ watch(searchValue, () => deouncedSetValue(searchValue.value))
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
 ]
+type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
+const extraRules = computed((): ((value: string) => RuleResult)[] => [
+	(value: string) => /^[a-z0-9\- .]*$/.test(value) || { prepend: 'Disallowed Characters' },
+	(value: string) =>
+		value.length == 0 || (store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0)
+			? true
+			: {
+					prepend: 'No results for ',
+					includeValue: true,
+					append: ' — try a different keyword or category'
+				}
+])
+const ruleResults = computed(() =>
+	extraRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
+)
 </script>
 
 <template>
-	<v-container class="search-text ma-0 mb-6 pa-0 pl-3">
-		<v-text-field
-			class="ma-0 pa-0"
-			variant="plain"
-			:prepend-icon="mdiMagnify"
-			v-model="searchValue"
-			label="Search Wikibase instances..."
-			:rules="rules"
-		/>
+	<v-container class="search-container ma-0 mb-6 pa-0">
+		<v-container class="ma-0 pa-0 pl-3 search-text">
+			<v-text-field
+				class="ma-0 pa-0"
+				variant="plain"
+				:prepend-icon="mdiMagnify"
+				v-model="searchValue"
+				label="Search Wikibase instances..."
+				:rules="rules"
+			/>
+		</v-container>
+		<v-label class="search-error">
+			<div v-for="(result, idx) in ruleResults" :key="idx">
+				<span v-if="result.prepend" class="prepend">{{ result.prepend }}</span>
+				<span v-if="result.includeValue" class="search-value">"{{ searchValue }}"</span>
+				<span v-if="result.append" class="append">{{ result.append }}</span>
+			</div>
+		</v-label>
 	</v-container>
 </template>
 
@@ -35,21 +59,42 @@ const rules: ((value: string) => true | string)[] = [
 	background: #f3f3f5;
 	font-family: Roboto;
 
+	div.v-input__details {
+		display: none;
+	}
+
 	div.v-input__prepend {
 		padding-top: 14px !important;
 	}
 	label.v-label {
 		top: 14px !important;
+		transform: none !important;
 	}
+	label.v-field-label--floating {
+		display: none;
+	}
+
 	input {
 		margin: 0 0 4px;
 		padding: 0;
-		// font-family: Roboto;
 		font-size: 16px;
 		color: rgb(0, 0, 0);
 	}
 	label.v-field-label--floating {
 		color: #444;
+	}
+}
+.search-error {
+	font-family: Roboto;
+	font-size: 14px;
+	color: rgb(107, 114, 128);
+	margin-top: 8px;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: start;
+	span.search-value {
+		color: black;
+		font-weight: bolder;
 	}
 }
 </style>
