@@ -28,11 +28,13 @@ const displayRules = computed((): ((value: string) => RuleResult)[] => [
 const displayRuleResults = computed(() =>
 	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
 )
+
+const focused = ref(false)
 </script>
 
 <template>
 	<v-container class="search-container ma-0 mb-6 pa-0">
-		<v-container class="ma-0 pa-0 pl-3 search-text">
+		<v-container :class="`ma-0 pa-0 pl-3 search-text ${focused ? 'search-text-focused' : ''}`">
 			<v-text-field
 				class="ma-0 pa-0"
 				variant="plain"
@@ -40,6 +42,8 @@ const displayRuleResults = computed(() =>
 				v-model="searchValue"
 				label="Search Wikibase instances..."
 				:rules="rules"
+				:focused="focused"
+				@update:focused="(v: boolean) => focused = v"
 			/>
 		</v-container>
 		<v-label class="search-error">
@@ -56,7 +60,7 @@ const displayRuleResults = computed(() =>
 .search-text {
 	border: 1px solid oklch(87.2% 0.01 285.338);
 	border-radius: calc(0.625rem - 2px);
-	background: #f3f3f5;
+	background: white;
 	font-family: Roboto;
 
 	div.v-input__details {
@@ -96,5 +100,9 @@ const displayRuleResults = computed(() =>
 		color: black;
 		font-weight: bolder;
 	}
+}
+
+.search-text-focused {
+	border-color: rgb(54,40,245);
 }
 </style>
