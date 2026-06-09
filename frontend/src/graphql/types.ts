@@ -1244,7 +1244,21 @@ export type SingleWikibaseQuery = {
 		category?: WikibaseCategory | null
 		description?: string | null
 		wikibaseType: WikibaseType
-		urls: { __typename?: 'WikibaseURLSet'; baseUrl: string; sparqlFrontendUrl?: string | null }
+		urls: {
+			__typename?: 'WikibaseURLSet'
+			baseUrl: string
+			scriptPath?: string | null
+			sparqlFrontendUrl?: string | null
+		}
+		externalIdentifierObservations: {
+			__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
+			mostRecent?: {
+				__typename?: 'WikibaseExternalIdentifierObservation'
+				id: string
+				observationDate: Date
+				totalExternalIdentifierStatements?: number | null
+			} | null
+		}
 		quantityObservations: {
 			__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
 			mostRecent?: {
@@ -1294,8 +1308,17 @@ export type SingleWikibaseFragment = {
 	urls: {
 		__typename?: 'WikibaseURLSet'
 		baseUrl: string
-		sparqlFrontendUrl?: string | null
 		scriptPath?: string | null
+		sparqlFrontendUrl?: string | null
+	}
+	externalIdentifierObservations: {
+		__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseExternalIdentifierObservation'
+			id: string
+			observationDate: Date
+			totalExternalIdentifierStatements?: number | null
+		} | null
 	}
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'

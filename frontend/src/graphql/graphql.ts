@@ -1255,8 +1255,17 @@ export type SingleWikibaseFragment = {
 	urls: {
 		__typename?: 'WikibaseURLSet'
 		baseUrl: string
-		sparqlFrontendUrl?: string | null
 		scriptPath?: string | null
+		sparqlFrontendUrl?: string | null
+	}
+	externalIdentifierObservations: {
+		__typename?: 'WikibaseExternalIdentifierObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseExternalIdentifierObservation'
+			id: string
+			observationDate: Date
+			totalExternalIdentifierStatements?: number | null
+		} | null
 	}
 	quantityObservations: {
 		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
@@ -1361,11 +1370,36 @@ export const SingleWikibaseFragmentDoc = {
 							kind: 'SelectionSet',
 							selections: [
 								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } },
 								{ kind: 'Field', name: { kind: 'Name', value: 'sparqlFrontendUrl' } }
 							]
 						}
 					},
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'externalIdentifierObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'totalExternalIdentifierStatements' }
+											}
+										]
+									}
+								}
+							]
+						}
+					},
 					{
 						kind: 'Field',
 						name: { kind: 'Name', value: 'quantityObservations' },
@@ -1572,11 +1606,36 @@ export const SingleWikibaseDocument = {
 							kind: 'SelectionSet',
 							selections: [
 								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } },
 								{ kind: 'Field', name: { kind: 'Name', value: 'sparqlFrontendUrl' } }
 							]
 						}
 					},
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'externalIdentifierObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'totalExternalIdentifierStatements' }
+											}
+										]
+									}
+								}
+							]
+						}
+					},
 					{
 						kind: 'Field',
 						name: { kind: 'Name', value: 'quantityObservations' },

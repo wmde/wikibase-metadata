@@ -33,6 +33,12 @@ defineProps<{ wikibase: SingleWikibaseFragment }>()
 				:value="wikibase.quantityObservations.mostRecent?.totalLexemes"
 			/>
 			<WikibaseStatistic
+				label="External Identifiers"
+				:value="
+					wikibase.externalIdentifierObservations.mostRecent?.totalExternalIdentifierStatements
+				"
+			/>
+			<WikibaseStatistic
 				v-if="wikibase.timeToFirstValueObservations.mostRecent?.initiationDate != null"
 				label="First Record"
 				:value="stringDate(wikibase.timeToFirstValueObservations.mostRecent?.initiationDate)"
