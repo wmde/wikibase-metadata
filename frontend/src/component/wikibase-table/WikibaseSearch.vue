@@ -11,13 +11,15 @@ const [deouncedSearch] = debounce((v: string) => store.searchWikibaseText(v), 30
 watch(searchValue, () => deouncedSearch(searchValue.value))
 
 const rules: ((value: string) => true | string)[] = [
-	(value: string) => /^[a-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
+	(value: string) => /^[A-Za-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
 ]
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
 const displayRules = computed((): ((value: string) => RuleResult)[] => [
-	(value: string) => /^[a-z0-9\- .]*$/.test(value) || { prepend: 'Disallowed Characters' },
+	(value: string) => /^[A-Za-z0-9\- .]*$/.test(value) || { prepend: 'Disallowed Characters' },
 	(value: string) =>
-		value.length == 0 || (store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0)
+		value.length == 0 ||
+		store.wikibasePage.loading ||
+		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0)
 			? true
 			: {
 					prepend: 'No results for ',

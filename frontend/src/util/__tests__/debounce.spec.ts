@@ -6,6 +6,7 @@ function sleep(milliseconds: number) {
 		setTimeout(resolve, milliseconds)
 	})
 }
+
 describe('debounce', async () => {
 	it('calls debouncedFunc only once in given period', async () => {
 		const testFn = vi.fn().mockName('testFn')
