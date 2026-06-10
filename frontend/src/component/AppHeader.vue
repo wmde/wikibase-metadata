@@ -14,7 +14,8 @@ const theme = useTheme()
 				<v-container class="ma-0 pa-0 title-container shrink">
 					<v-container class="ma-0 pa-0 title shrink">Wikibase Ecosystem</v-container>
 					<v-container class="ma-0 pa-0 subtitle shrink">
-						An early prototype for discovering stable Wikibases and their data — tell us what you think!
+						An early prototype for discovering stable Wikibases and their data — tell us what you
+						think!
 					</v-container>
 				</v-container>
 			</v-container>
