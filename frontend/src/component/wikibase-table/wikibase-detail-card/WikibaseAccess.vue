@@ -2,20 +2,13 @@
 import type { SingleWikibaseFragment } from '@/graphql/types'
 import { computed } from 'vue'
 import { mdiLink, mdiMagnify, mdiApi } from '@mdi/js'
+import getActionApiUrl from '@/util/getActionApiUrl'
 
 const { wikibase } = defineProps<{ wikibase: SingleWikibaseFragment }>()
 
 const actionApiUrl = computed(() => {
 	const { baseUrl, scriptPath } = wikibase.urls
-
-	if (scriptPath === null || scriptPath === undefined) {
-		return null
-	}
-
-	const base = baseUrl.replace(/\/+$/, '')
-	// remove extra leading and trailing slashes
-	const s = scriptPath.trim() ? `/${scriptPath.replace(/^\/|\/$/g, '')}/` : '/'
-	return `${base}${s}api.php`
+	return getActionApiUrl(baseUrl, scriptPath)
 })
 </script>
 
