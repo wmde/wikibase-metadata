@@ -7,8 +7,8 @@ import { computed, ref, watch } from 'vue'
 const store = useWikiStore()
 
 const searchValue = ref('')
-const [deouncedSearch] = debounce((v: string) => store.searchWikibaseText(v), 300)
-watch(searchValue, () => deouncedSearch(searchValue.value))
+const [debouncedSearch] = debounce((v: string) => store.searchWikibaseText(v), 300)
+watch(searchValue, () => debouncedSearch(searchValue.value))
 
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => /^[A-Za-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
