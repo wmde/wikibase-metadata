@@ -43,7 +43,7 @@ const focused = ref(false)
 				label="Search Wikibase instances..."
 				:rules="rules"
 				:focused="focused"
-				@update:focused="(v: boolean) => focused = v"
+				@update:focused="(v: boolean) => (focused = v)"
 			/>
 		</v-container>
 		<v-label class="search-error">
@@ -103,6 +103,6 @@ const focused = ref(false)
 }
 
 .search-text-focused {
-	border-color: rgb(54,40,245);
+	border-color: rgb(54, 40, 245);
 }
 </style>
