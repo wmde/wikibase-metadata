@@ -8,13 +8,13 @@ const { wikibase } = defineProps<{ wikibase: SingleWikibaseFragment }>()
 const actionApiUrl = computed(() => {
 	const { baseUrl, scriptPath } = wikibase.urls
 
-	if (scriptPath === null) {
+	if (scriptPath === null || scriptPath === undefined) {
 		return null
 	}
 
 	const base = baseUrl.replace(/\/+$/, '')
 	// remove extra leading and trailing slashes
-	const s = scriptPath ? `/${scriptPath.replace(/^\/|\/$/g, '')}/` : '/'
+	const s = scriptPath.trim() ? `/${scriptPath.replace(/^\/|\/$/g, '')}/` : '/'
 	return `${base}${s}api.php`
 })
 </script>
