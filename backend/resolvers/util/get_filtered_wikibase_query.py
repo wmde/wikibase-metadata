@@ -40,14 +40,10 @@ def get_filtered_wikibase_query(
                 WikibaseModel.url.has(
                     WikibaseURLModel.url.like("%" + wikibase_filter.search_text + "%")
                 ),
-                or_(
-                    # pylint: disable-next=singleton-comparison
-                    WikibaseModel.category_id == None,
-                    WikibaseModel.category.has(
-                        cast(WikibaseCategoryModel.category, String).like(
-                            "%" + wikibase_filter.search_text.replace(" ", "_") + "%"
-                        )
-                    ),
+                WikibaseModel.category.has(
+                    cast(WikibaseCategoryModel.category, String).like(
+                        "%" + wikibase_filter.search_text.replace(" ", "_") + "%"
+                    )
                 ),
             )
         )
