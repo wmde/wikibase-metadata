@@ -55,7 +55,6 @@ async def test_add_wikibase_mutation():
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
 
     wikibase_id = int(result.data["addWikibase"]["id"])
@@ -109,16 +108,15 @@ async def test_add_wikibase_ii_mutation():
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
     assert result.data["addWikibase"]["id"] == "2"
 
 
 @pytest.mark.asyncio
-async def test_does_not_allow_multiple_wikibases_with_same_base_url(
+async def test_updates_wikibase_if_base_url_already_exists(
     db_session,
 ):  # pylint: disable=unused-argument
-    """Test Can't Add Wikibase with existing base URL"""
+    """Test Updates existing Wikibase if base URL already exists"""
 
     base_url = "https://example-wikibase.com"
 
@@ -126,7 +124,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Wikibase Add",
+                "wikibaseName": "Example Wikibase 1",
                 "description": "",
                 "organization": "",
                 "country": "",
@@ -140,14 +138,15 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
+
+    wikibase_id = result.data["addWikibase"]["id"]
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Wikibase Add 2",
+                "wikibaseName": "Example Wikibase 2",
                 "description": "",
                 "organization": "",
                 "country": "",
@@ -161,8 +160,12 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert len(result.errors) == 1
-    assert result.errors[0].message == f"URL {base_url} already exists"
+    async with get_async_session() as session:
+        db_result = await session.execute(
+            select(WikibaseModel).where(WikibaseModel.id == int(wikibase_id))
+        )
+        wikibase = db_result.scalar_one()
+        assert wikibase.wikibase_name == "Example Wikibase 2"
 
 
 @pytest.mark.asyncio
@@ -247,6 +250,8 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
     assert result.errors is None
     assert result.data is not None
 
+    wikibase_id = result.data["addWikibase"]["id"]
+
     url_variations = [
         f"https://{base_url}",
         f"http://{base_url}/",
@@ -272,8 +277,7 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
             },
         )
 
-        assert len(result.errors) == 1
-        assert result.errors[0].message == f"URL https://{base_url} already exists"
+        assert wikibase_id == result.data["addWikibase"]["id"]
 
 
 @pytest.mark.asyncio
