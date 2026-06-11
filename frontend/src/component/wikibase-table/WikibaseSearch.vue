@@ -6,16 +6,18 @@ import { computed, ref, watch } from 'vue'
 
 const store = useWikiStore()
 
+const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
+
 const searchValue = ref('')
 const [debouncedSearch] = debounce((v: string) => store.searchWikibaseText(v), 300)
 watch(searchValue, () => debouncedSearch(searchValue.value))
 
 const rules: ((value: string) => true | string)[] = [
-	(value: string) => /^[A-Za-z0-9\- .]*$/.test(value) || 'Disallowed Characters'
+	(value: string) => ALLOWED_CHARACTERS.test(value) || 'Disallowed Characters'
 ]
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
 const displayRules = computed((): ((value: string) => RuleResult)[] => [
-	(value: string) => /^[A-Za-z0-9\- .]*$/.test(value) || { prepend: 'Disallowed Characters' },
+	(value: string) => ALLOWED_CHARACTERS.test(value) || { prepend: 'Disallowed Characters' },
 	(value: string) =>
 		value.length == 0 ||
 		store.wikibasePage.loading ||
