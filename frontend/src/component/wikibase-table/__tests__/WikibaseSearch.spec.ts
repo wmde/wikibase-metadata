@@ -83,6 +83,46 @@ describe('WikibaseSearch', async () => {
 		expect(mockSearchWikibaseText).lastCalledWith('ASDF')
 	})
 
+	it('searches undefined if empty', async () => {
+		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(0)
+
+		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+
+		const container = wrapper.find('.search-container')
+		expect(container.exists()).toEqual(true)
+
+		const searchContainer = container.find('.search-text')
+		expect(searchContainer.exists()).toEqual(true)
+
+		const textField = searchContainer.find('.v-text-field')
+		expect(textField.exists()).toEqual(true)
+
+		const input = textField.find('input')
+		expect(input.exists()).toEqual(true)
+
+		await input.trigger('click')
+		await nextTick()
+
+		await input.setValue('ASDF')
+		await nextTick()
+
+		await sleep(300)
+
+		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(1)
+		expect(mockSearchWikibaseText).lastCalledWith('ASDF')
+
+		await input.trigger('click')
+		await nextTick()
+
+		await input.setValue('')
+		await nextTick()
+
+		await sleep(300)
+
+		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(2)
+		expect(mockSearchWikibaseText).lastCalledWith(undefined)
+	})
+
 	it('raises error on non-allowed characters', async () => {
 		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
 

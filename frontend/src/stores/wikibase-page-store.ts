@@ -41,7 +41,7 @@ export type WikibasePageStoreType = {
 	setSort: (sortBy: WikibaseSortInput | undefined) => void
 	wikibaseFilter: WikibaseFilterInput | Ref<WikibaseFilterInput>
 	includeWikibaseTypes: (t: WikibaseType[]) => void
-	searchWikibaseText: (s: string) => void
+	searchWikibaseText: (s: string | undefined) => void
 }
 
 const { load, onResult, loading, error } = useLazyQuery<
@@ -88,7 +88,7 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	})
 	const includeWikibaseTypes = (t: WikibaseType[]) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
-	const searchWikibaseText = (s: string) =>
+	const searchWikibaseText = (s: string | undefined) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, searchText: s })
 	watch(wikibaseFilter, () => setPageNumber(1))
 
