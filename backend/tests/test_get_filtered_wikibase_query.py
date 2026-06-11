@@ -83,7 +83,9 @@ def test_get_query_search_text_filled():
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse AND (wikibase.wikibase_name LIKE :wikibase_name_1 OR (EXISTS (SELECT 1 
 FROM wikibase_url 
-WHERE wikibase.id = wikibase_url.wikibase_id AND wikibase_url.url_type = :url_type_1 AND wikibase_url.url LIKE :url_1)))"""
+WHERE wikibase.id = wikibase_url.wikibase_id AND wikibase_url.url_type = :url_type_1 AND wikibase_url.url LIKE :url_1)) OR wikibase.wikibase_category_id IS NULL OR (EXISTS (SELECT 1 
+FROM wikibase_category 
+WHERE wikibase_category.id = wikibase.wikibase_category_id AND wikibase_category.category LIKE :category_1)))"""
     )
 
 
