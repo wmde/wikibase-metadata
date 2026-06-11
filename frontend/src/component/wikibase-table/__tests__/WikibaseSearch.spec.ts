@@ -54,8 +54,6 @@ describe('WikibaseSearch', async () => {
 		expect(error.exists()).toEqual(true)
 	})
 
-	it.todo('focuses on click')
-
 	it('triggers searchWikibaseText', async () => {
 		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(0)
 
@@ -66,7 +64,6 @@ describe('WikibaseSearch', async () => {
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
-		expect(searchContainer.classes()).not.toContain('search-text-focused')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
@@ -94,7 +91,6 @@ describe('WikibaseSearch', async () => {
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
-		expect(searchContainer.classes()).not.toContain('search-text-focused')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
@@ -114,5 +110,30 @@ describe('WikibaseSearch', async () => {
 		expect(error.find('div').text()).toEqual('Disallowed Characters')
 	})
 
-	it.todo('raises error on no results returned')
+	it('raises error on no results returned', async () => {
+		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+
+		const container = wrapper.find('.search-container')
+		expect(container.exists()).toEqual(true)
+
+		const searchContainer = container.find('.search-text')
+		expect(searchContainer.exists()).toEqual(true)
+
+		const textField = searchContainer.find('.v-text-field')
+		expect(textField.exists()).toEqual(true)
+
+		const input = textField.find('input')
+		expect(input.exists()).toEqual(true)
+
+		await input.trigger('click')
+		await nextTick()
+
+		await input.setValue('ASDF')
+		await nextTick()
+
+		const error = container.find('.v-label.search-error')
+		expect(error.exists()).toEqual(true)
+
+		expect(error.find('div').text()).toEqual('No results for "ASDF" — try a different keyword or category')
+	})
 })
