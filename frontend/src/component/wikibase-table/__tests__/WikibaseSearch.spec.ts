@@ -134,6 +134,8 @@ describe('WikibaseSearch', async () => {
 		const error = container.find('.v-label.search-error')
 		expect(error.exists()).toEqual(true)
 
-		expect(error.find('div').text()).toEqual('No results for "ASDF" — try a different keyword or category')
+		expect(error.find('div').text()).toEqual(
+			'No results for "ASDF" — try a different keyword or category'
+		)
 	})
 })

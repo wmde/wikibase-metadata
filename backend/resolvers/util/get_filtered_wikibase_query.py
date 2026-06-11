@@ -41,6 +41,7 @@ def get_filtered_wikibase_query(
                     WikibaseURLModel.url.like("%" + wikibase_filter.search_text + "%")
                 ),
                 or_(
+                    # pylint: disable-next=singleton-comparison
                     WikibaseModel.category_id == None,
                     WikibaseModel.category.has(
                         WikibaseCategoryModel.category.like(
