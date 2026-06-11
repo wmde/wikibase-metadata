@@ -70,39 +70,48 @@ defineProps<{
 	</v-container>
 </template>
 
-<style lang="css">
+<style lang="scss">
 .pagination-container {
 	background-color: white;
 	/* border-top: 1px solid grey; */
 	border-top: 1px solid oklch(87.2% 0.01 285.338);
-}
-.pagination-row-container {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: center;
-	gap: 1rem;
-	justify-content: center;
-}
-.item-number-container {
-	font-family: Roboto;
-	font-size: 16px;
-	color: #000;
-}
-.button-container {
-	display: flex;
-	flex-flow: row nowrap;
-	gap: 0.25rem;
-}
-.button-container .v-icon svg,
-.button-container .v-btn {
-	height: 36px;
-	width: 36px;
-}
-.page-size-container {
-	display: flex;
-	flex-flow: row nowrap;
-	gap: 0.75rem;
-	align-items: center;
-	justify-content: center;
+
+	.shrink {
+		width: auto;
+	}
+
+	.pagination-row-container {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		gap: 1rem;
+		justify-content: center;
+		width: 100%;
+	}
+	.item-number-container {
+		font-family: Roboto;
+		font-size: 16px;
+		color: #000;
+		width: auto;
+	}
+	.button-container {
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 0.25rem;
+		width: auto;
+		.v-icon svg,
+		.v-btn {
+			height: 36px;
+			width: 36px;
+		}
+	}
+	.page-size-container {
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 0.75rem;
+		align-items: center;
+		justify-content: center;
+		width: auto;
+	}
 }
 </style>

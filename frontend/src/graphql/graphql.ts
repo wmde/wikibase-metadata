@@ -472,6 +472,7 @@ export type WikibaseExternalIdentifierObservationWikibaseObservationSet = {
 
 export type WikibaseFilterInput = {
 	ignoreReuse?: InputMaybe<Scalars['Boolean']['input']>
+	searchText?: InputMaybe<Scalars['String']['input']>
 	wikibaseType?: InputMaybe<WikibaseTypeInput>
 }
 
