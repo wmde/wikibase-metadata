@@ -42,7 +42,7 @@ def get_filtered_wikibase_query(
                 ),
                 WikibaseModel.category.has(
                     cast(WikibaseCategoryModel.category, String).like(
-                        "%" + wikibase_filter.search_text.replace(" ", "_") + "%"
+                        "%" + wikibase_filter.search_text.replace(" ", "_").upper() + "%"
                     )
                 ),
             )
