@@ -3,7 +3,7 @@
 import re
 from typing import Optional
 
-from sqlalchemy import Select, or_, select
+from sqlalchemy import Select, String, cast, or_, select
 
 from model.database import WikibaseModel, WikibaseCategoryModel, WikibaseURLModel
 from model.enum import WikibaseType
@@ -44,7 +44,7 @@ def get_filtered_wikibase_query(
                     # pylint: disable-next=singleton-comparison
                     WikibaseModel.category_id == None,
                     WikibaseModel.category.has(
-                        WikibaseCategoryModel.category.like(
+                        cast(WikibaseCategoryModel.category, String).like(
                             "%" + wikibase_filter.search_text.replace(" ", "_") + "%"
                         )
                     ),
