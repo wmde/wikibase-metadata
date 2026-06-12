@@ -57,7 +57,7 @@ async def test_extension_list_query():
 @pytest.mark.query
 @pytest.mark.version
 @pytest.mark.dependency(
-    depends=["update-software-data", "test-set-bundled"], scope="session"
+    depends=["update-software-data"], scope="session"
 )
 @pytest.mark.parametrize(
     [
