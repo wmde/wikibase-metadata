@@ -13,8 +13,7 @@ mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="test-set-bundled")
-async def test_set_bundled():
+async def test_set_bundled(db_session):
     """Test Set Extension Bundled"""
 
     result = await test_schema.execute(

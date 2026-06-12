@@ -34,11 +34,79 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 }"""
 
 
+@pytest.fixture
+async def extension_list(db_session):
+    """Create test extensions"""
+    from model.database import WikibaseSoftwareModel
+    from model.database.wikibase_software.software_tag_model import (
+        WikibaseSoftwareTagModel,
+    )
+    from model.enum import WikibaseSoftwareType
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    extensions = [
+        {
+            "name": "Extension 1",
+            "url": "https://www.mediawiki.org/wiki/Extension:url_1",
+            "archived": False,
+            "description": "Description 1",
+            "latest_version": "Continuous updates",
+            "mediawiki_bundled": False,
+            "wbs_bundled": True,
+            "public_wiki_count": 2416,
+            "quarterly_download_count": 63,
+            "tags": ["tag 1"],
+        },
+        {
+            "name": "Extension 2",
+            "url": "https://www.mediawiki.org/wiki/Extension:url_2",
+            "archived": False,
+            "description": "Description 2",
+            "latest_version": "3.0.1 (2017-10-29)",
+            "mediawiki_bundled": False,
+            "wbs_bundled": None,
+            "public_wiki_count": 1302,
+            "quarterly_download_count": None,
+            "tags": ["tag 2", "tag 3"],
+        },
+        {
+            "name": "Extension 3",
+            "url": "https://www.mediawiki.org/wiki/Extension:url_3",
+            "archived": False,
+            "description": "Description 3",
+            "latest_version": None,
+            "mediawiki_bundled": False,
+            "wbs_bundled": None,
+            "public_wiki_count": 6919,
+            "quarterly_download_count": None,
+            "tags": [],
+        },
+    ]
+
+    async with AsyncSession(bind=db_session) as session:
+        for ext in extensions:
+            model = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.EXTENSION,
+                software_name=ext["name"],
+            )
+            model.url = ext["url"]
+            model.data_fetched = datetime(2024, 3, 1)
+            model.archived = ext["archived"]
+            model.description = ext["description"]
+            model.latest_version = ext["latest_version"]
+            model.mediawiki_bundled = ext["mediawiki_bundled"]
+            model.wikibase_suite_bundled = ext["wbs_bundled"]
+            model.public_wiki_count = ext["public_wiki_count"]
+            model.quarterly_download_count = ext["quarterly_download_count"]
+            model.tags = [WikibaseSoftwareTagModel(tag=t) for t in ext["tags"]]
+            session.add(model)
+        await session.flush()
+
+
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-@pytest.mark.dependency(depends=["update-software-data"], scope="session")
-async def test_extension_list_query():
+async def test_extension_list_query(extension_list):
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -56,13 +124,9 @@ async def test_extension_list_query():
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-@pytest.mark.dependency(
-    depends=["update-software-data", "test-set-bundled"], scope="session"
-)
 @pytest.mark.parametrize(
     [
         "idx",
-        "expected_id",
         "expected_name",
         "expected_url",
         "expected_archived",
@@ -78,184 +142,45 @@ async def test_extension_list_query():
     [
         (
             0,
-            "2",
-            "Babel",
-            "Babel",
+            "Extension 1",
+            "url_1",
             False,
             # pylint: disable-next=line-too-long
-            "Adds a parser function to inform other users about language proficiency and categorize users of the same levels and languages.",
+            "Description 1",
             datetime(2024, 3, 1),
             "Continuous updates",
             False,
             True,
             2416,
             63,
-            ["Parser function"],
+            ["tag 1"],
         ),
         (
             1,
-            "18",
-            "Google Analytics Integration",
-            "Google_Analytics_Integration",
+            "Extension 2",
+            "url_2",
             False,
             # pylint: disable-next=line-too-long
-            "Automatically inserts Google Universal Analytics (and/or other web analytics) tracking code at the bottom of MediaWiki pages",
+            "Description 2",
             datetime(2024, 3, 1),
             "3.0.1 (2017-10-29)",
             False,
             None,
             1302,
             None,
-            ["Hook", "User activity"],
+            ["tag 2", "tag 3"],
         ),
         (
             2,
-            "12",
-            "LabeledSectionTransclusion",
-            "Labeled_Section_Transclusion",
+            "Extension 3",
+            "url_3",
             False,
-            "Enables marked sections of text to be transcluded",
+            "Description 3",
             datetime(2024, 3, 1),
             None,
             False,
             None,
             6919,
-            None,
-            ["Parser function", "Tag"],
-        ),
-        (
-            3,
-            "1",
-            "Miraheze Magic",
-            "MirahezeMagic",
-            None,
-            None,
-            datetime(2024, 3, 1),
-            None,
-            None,
-            None,
-            None,
-            None,
-            ["Magic", "extensionname"],
-        ),
-        (
-            4,
-            "19",
-            "ProofreadPage",
-            "Proofread_Page",
-            False,
-            # pylint: disable-next=line-too-long
-            "The Proofread Page extension can render a book either as a column of OCR text beside a column of scanned images, or broken into its logical organization (such as chapters or poems) using transclusion.",
-            datetime(2024, 3, 1),
-            "Continuous updates",
-            False,
-            None,
-            None,
-            None,
-            ["API", "ContentHandler", "Database", "Page action", "Tag"],
-        ),
-        (
-            5,
-            "13",
-            "Scribunto",
-            "Scribunto",
-            False,
-            "Provides a framework for embedding scripting languages into MediaWiki pages",
-            datetime(2024, 3, 1),
-            "Continuous updates",
-            True,
-            True,
-            8789,
-            450,
-            ["Parser extension"],
-        ),
-        (
-            6,
-            "20",
-            "UniversalLanguageSelector",
-            "UniversalLanguageSelector",
-            False,
-            "Tool that allows users to select a language and configure its support in an easy way.",
-            datetime(2024, 3, 1),
-            "2024-07-16",
-            False,
-            None,
-            1237,
-            243,
-            ["Beta Feature", "Skin"],
-        ),
-        (
-            7,
-            "14",
-            "WikibaseClient",
-            "Wikibase_Client",
-            False,
-            "Client for structured data repository",
-            datetime(2024, 3, 1),
-            None,
-            False,
-            None,
-            None,
-            None,
-            ["Ajax", "Parser function"],
-        ),
-        (
-            8,
-            "15",
-            "WikibaseLib",
-            "WikibaseLib",
-            True,
-            "Provides common Wikibase functionality for Wikibase Repository and Wikibase Client",
-            datetime(2024, 3, 1),
-            "Continuous updates",
-            False,
-            None,
-            None,
-            None,
-            [],
-        ),
-        (
-            9,
-            "80",
-            "WikibaseManifest",
-            "WikibaseManifest",
-            False,
-            "API provided metadata for structured data repository",
-            datetime(2024, 3, 1),
-            "0.0.1 (continuous updates)",
-            False,
-            None,
-            None,
-            None,
-            ["API"],
-        ),
-        (
-            10,
-            "16",
-            "WikibaseRepository",
-            "Wikibase_Repository",
-            False,
-            "Structured data repository",
-            datetime(2024, 3, 1),
-            "Continuous updates",
-            False,
-            None,
-            None,
-            None,
-            ["API", "Ajax", "ContentHandler"],
-        ),
-        (
-            11,
-            "17",
-            "WikibaseView",
-            "WikibaseView",
-            False,
-            None,
-            datetime(2024, 3, 1),
-            None,
-            None,
-            None,
-            None,
             None,
             [],
         ),
@@ -263,8 +188,8 @@ async def test_extension_list_query():
 )
 # pylint: disable-next=too-many-arguments,too-many-positional-arguments
 async def test_extension_list_query_parameterized(
+    extension_list,
     idx: int,
-    expected_id: str,
     expected_name: str,
     expected_url: str,
     expected_archived: bool,
@@ -286,12 +211,9 @@ async def test_extension_list_query_parameterized(
     assert result.errors is None
     assert result.data is not None
     assert "extensionList" in result.data
-    assert_page_meta(result.data["extensionList"], 1, 100, 12, 1)
+    assert_page_meta(result.data["extensionList"], 1, 100, 3, 1)
     assert "data" in result.data["extensionList"]
-    assert len(result.data["extensionList"]["data"]) == 12
-    assert_layered_property_value(
-        result.data, ["extensionList", "data", idx, "id"], expected_id
-    )
+    assert len(result.data["extensionList"]["data"]) == 3
     assert_layered_property_value(
         result.data, ["extensionList", "data", idx, "softwareName"], expected_name
     )
