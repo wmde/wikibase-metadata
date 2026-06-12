@@ -1,7 +1,6 @@
 """Test Wikibase Query"""
 
 import pytest
-from sqlalchemy import insert
 from tests.test_schema import test_schema
 from model.database import WikibaseModel
 from data.database_connection import get_async_session

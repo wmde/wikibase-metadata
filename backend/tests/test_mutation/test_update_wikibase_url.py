@@ -126,11 +126,10 @@ async def test_add_wikibase_script_path():
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.dependency(
-    name="remove-wikibase-sparql-frontend-url",
     depends=["add-wikibase"],
     scope="session",
 )
-async def test_remove_wikibase_sparql_frontend_url():
+async def test_remove_wikibase_sparql_frontend_url(db_session):
     """Remove Wikibase URL"""
 
     before_removing_result = await test_schema.execute(
