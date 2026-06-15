@@ -41,8 +41,8 @@ def get_filtered_wikibase_query(
                     WikibaseURLModel.url.ilike("%" + wikibase_filter.search_text + "%")
                 ),
                 WikibaseModel.category.has(
-                    cast(WikibaseCategoryModel.category, String).ilike(
-                        "%" + wikibase_filter.search_text.replace(" ", "_") + "%"
+                    cast(WikibaseCategoryModel.category, String).like(
+                        "%" + wikibase_filter.search_text.replace(" ", "_").upper() + "%"
                     )
                 ),
             )
