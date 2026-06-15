@@ -82,7 +82,7 @@ extensions = [
 
 
 @pytest.fixture
-async def extension_list_fixture(db_session):  # pylint: disable=unused-argument
+async def extension_list(db_session):  # pylint: disable=unused-argument
     """Create test extensions"""
 
     async with AsyncSession(bind=db_session) as session:
@@ -110,8 +110,8 @@ async def extension_list_fixture(db_session):  # pylint: disable=unused-argument
 @pytest.mark.query
 @pytest.mark.version
 async def test_extension_list_query(
-    extension_list_fixture,
-):  # pylint: disable=unused-argument
+    extension_list,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -132,8 +132,8 @@ async def test_extension_list_query(
 @pytest.mark.query
 @pytest.mark.version
 async def test_extension_list_query_parameterized(
-    extension_list_fixture,
-):  # pylint: disable=unused-argument
+    extension_list,
+):  # pylint: disable=unused-argument, disable=redefined-outer-name
     """Test Extension List Parameterized"""
 
     result = await test_schema.execute(
