@@ -29,11 +29,11 @@ async def wikibase_fixture(db_session):  # pylint: disable=unused-argument
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_query_authorized(wikibase_fixture):
+async def test_wikibase_query_authorized(wikibase):
     """Test Query Wikibase Authorized"""
 
     result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
 
     assert result.errors is None
