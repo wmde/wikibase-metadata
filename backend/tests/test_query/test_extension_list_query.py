@@ -49,6 +49,7 @@ extensions = [
         "wbs_bundled": True,
         "public_wiki_count": 2416,
         "quarterly_download_count": 63,
+        "fetched": datetime(2024, 3, 1),
         "tags": ["tag 1"],
     },
     {
@@ -61,6 +62,7 @@ extensions = [
         "wbs_bundled": None,
         "public_wiki_count": 1302,
         "quarterly_download_count": None,
+        "fetched": datetime(2024, 3, 1),
         "tags": ["tag 2", "tag 3"],
     },
     {
@@ -73,6 +75,7 @@ extensions = [
         "wbs_bundled": None,
         "public_wiki_count": 6919,
         "quarterly_download_count": None,
+        "fetched": datetime(2024, 3, 1),
         "tags": [],
     },
 ]
@@ -97,6 +100,7 @@ async def extension_list(db_session):  # pylint: disable=unused-argument
             model.wikibase_suite_bundled = ext["wbs_bundled"]
             model.public_wiki_count = ext["public_wiki_count"]
             model.quarterly_download_count = ext["quarterly_download_count"]
+            model.fetched = ext["fetched"]
             model.tags = [WikibaseSoftwareTagModel(tag=t) for t in ext["tags"]]
             session.add(model)
         await session.flush()
@@ -105,7 +109,7 @@ async def extension_list(db_session):  # pylint: disable=unused-argument
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_extension_list_query(extension_list):  # pylint: disable=unused-argument
+async def test_extension_list_query(extension_list_fixture):  # pylint: disable=unused-argument
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -126,8 +130,10 @@ async def test_extension_list_query(extension_list):  # pylint: disable=unused-a
 @pytest.mark.query
 @pytest.mark.version
 async def test_extension_list_query_parameterized(
-    extension_list,
+    extension_list_fixture,
 ):  # pylint: disable=unused-argument
+    """Test Extension List Parameterized"""
+
     result = await test_schema.execute(
         EXTENSION_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 100}
     )
@@ -144,6 +150,7 @@ async def test_extension_list_query_parameterized(
             ),
             None,
         )
+
         assert entry is not None
         assert entry["softwareName"] == ext["name"]
         assert entry["softwareType"] == "EXTENSION"
