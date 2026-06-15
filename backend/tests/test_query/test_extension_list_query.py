@@ -4,6 +4,12 @@ from datetime import datetime
 import pytest
 from tests.test_schema import test_schema
 from tests.utils import DATETIME_FORMAT
+from model.database import WikibaseSoftwareModel
+from model.database.wikibase_software.software_tag_model import (
+    WikibaseSoftwareTagModel,
+)
+from model.enum import WikibaseSoftwareType
+from sqlalchemy.ext.asyncio import AsyncSession
 
 EXTENSION_LIST_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
@@ -33,56 +39,48 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 }"""
 
 extensions = [
-        {
-            "name": "Extension 1",
-            "url": "https://www.mediawiki.org/wiki/Extension:url_1",
-            "archived": False,
-            "description": "Description 1",
-            "latest_version": "Continuous updates",
-            "mediawiki_bundled": False,
-            "wbs_bundled": True,
-            "public_wiki_count": 2416,
-            "quarterly_download_count": 63,
-            "tags": ["tag 1"],
-        },
-        {
-            "name": "Extension 2",
-            "url": "https://www.mediawiki.org/wiki/Extension:url_2",
-            "archived": False,
-            "description": "Description 2",
-            "latest_version": "3.0.1 (2017-10-29)",
-            "mediawiki_bundled": False,
-            "wbs_bundled": None,
-            "public_wiki_count": 1302,
-            "quarterly_download_count": None,
-            "tags": ["tag 2", "tag 3"],
-        },
-        {
-            "name": "Extension 3",
-            "url": "https://www.mediawiki.org/wiki/Extension:url_3",
-            "archived": False,
-            "description": "Description 3",
-            "latest_version": None,
-            "mediawiki_bundled": False,
-            "wbs_bundled": None,
-            "public_wiki_count": 6919,
-            "quarterly_download_count": None,
-            "tags": [],
-        },
-    ]
+    {
+        "name": "Extension 1",
+        "url": "https://www.mediawiki.org/wiki/Extension:url_1",
+        "archived": False,
+        "description": "Description 1",
+        "latest_version": "Continuous updates",
+        "mediawiki_bundled": False,
+        "wbs_bundled": True,
+        "public_wiki_count": 2416,
+        "quarterly_download_count": 63,
+        "tags": ["tag 1"],
+    },
+    {
+        "name": "Extension 2",
+        "url": "https://www.mediawiki.org/wiki/Extension:url_2",
+        "archived": False,
+        "description": "Description 2",
+        "latest_version": "3.0.1 (2017-10-29)",
+        "mediawiki_bundled": False,
+        "wbs_bundled": None,
+        "public_wiki_count": 1302,
+        "quarterly_download_count": None,
+        "tags": ["tag 2", "tag 3"],
+    },
+    {
+        "name": "Extension 3",
+        "url": "https://www.mediawiki.org/wiki/Extension:url_3",
+        "archived": False,
+        "description": "Description 3",
+        "latest_version": None,
+        "mediawiki_bundled": False,
+        "wbs_bundled": None,
+        "public_wiki_count": 6919,
+        "quarterly_download_count": None,
+        "tags": [],
+    },
+]
 
 
 @pytest.fixture
-async def extension_list(db_session): # pylint: disable=unused-argument
+async def extension_list(db_session):  # pylint: disable=unused-argument
     """Create test extensions"""
-    from model.database import WikibaseSoftwareModel
-    from model.database.wikibase_software.software_tag_model import (
-        WikibaseSoftwareTagModel,
-    )
-    from model.enum import WikibaseSoftwareType
-    from sqlalchemy.ext.asyncio import AsyncSession
-
-    
 
     async with AsyncSession(bind=db_session) as session:
         for ext in extensions:
@@ -107,7 +105,7 @@ async def extension_list(db_session): # pylint: disable=unused-argument
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_extension_list_query(extension_list):
+async def test_extension_list_query(extension_list):  # pylint: disable=unused-argument
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -127,7 +125,9 @@ async def test_extension_list_query(extension_list):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_extension_list_query_parameterized(extension_list):
+async def test_extension_list_query_parameterized(
+    extension_list,
+):  # pylint: disable=unused-argument
     result = await test_schema.execute(
         EXTENSION_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 100}
     )
@@ -137,16 +137,20 @@ async def test_extension_list_query_parameterized(extension_list):
 
     for ext in extensions:
         entry = next(
-       (item for item in result.data["extensionList"]['data'] if item["softwareName"] == ext["name"]),
-        None,
-)       
+            (
+                item
+                for item in result.data["extensionList"]["data"]
+                if item["softwareName"] == ext["name"]
+            ),
+            None,
+        )
         assert entry is not None
         assert entry["softwareName"] == ext["name"]
         assert entry["softwareType"] == "EXTENSION"
         assert entry["url"] == ext["url"]
         assert entry["archived"] == ext["archived"]
         assert entry["description"] == ext["description"]
-        # assert entry["fetched"] == ext["fetched"].strftime(DATETIME_FORMAT)
+        assert entry["fetched"] == ext["fetched"].strftime(DATETIME_FORMAT)
         assert entry["latestVersion"] == ext["latest_version"]
         assert entry["mediawikiBundled"] == ext["mediawiki_bundled"]
         assert entry["wikibaseSuiteBundled"] == ext["wbs_bundled"]

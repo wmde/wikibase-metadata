@@ -15,7 +15,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase(db_session):
+async def wikibase_fixture(db_session):  # pylint: disable=unused-argument
     """Create a test wikibase"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -29,11 +29,11 @@ async def wikibase(db_session):
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_query_authorized(wikibase):
+async def test_wikibase_query_authorized(wikibase_fixture):
     """Test Query Wikibase Authorized"""
 
     result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase.id}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert result.errors is None
