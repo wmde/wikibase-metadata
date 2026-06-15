@@ -129,7 +129,9 @@ async def test_add_wikibase_script_path():
     depends=["add-wikibase"],
     scope="session",
 )
-async def test_remove_wikibase_sparql_frontend_url(db_session): # pylint: disable=unused-argument
+async def test_remove_wikibase_sparql_frontend_url(
+    db_session,
+):  # pylint: disable=unused-argument
     """Remove Wikibase URL"""
 
     before_removing_result = await test_schema.execute(

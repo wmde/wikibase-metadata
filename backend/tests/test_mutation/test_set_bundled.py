@@ -13,7 +13,7 @@ mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-async def test_set_bundled(db_session): # pylint: disable=unused-argument
+async def test_set_bundled(db_session):  # pylint: disable=unused-argument
     """Test Set Extension Bundled"""
 
     result = await test_schema.execute(
