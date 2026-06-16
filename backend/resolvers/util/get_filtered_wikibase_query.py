@@ -34,20 +34,18 @@ def get_filtered_wikibase_query(
             raise ValueError(f"Disallowed Characters: {disallowed_characters}")
         query = query.where(
             or_(
-                WikibaseModel.wikibase_name.like(
+                WikibaseModel.wikibase_name.ilike(
                     "%" + wikibase_filter.search_text + "%"
                 ),
                 WikibaseModel.url.has(
-                    WikibaseURLModel.url.like("%" + wikibase_filter.search_text + "%")
+                    WikibaseURLModel.url.ilike("%" + wikibase_filter.search_text + "%")
                 ),
-                or_(
-                    # pylint: disable-next=singleton-comparison
-                    WikibaseModel.category_id == None,
-                    WikibaseModel.category.has(
-                        cast(WikibaseCategoryModel.category, String).like(
-                            "%" + wikibase_filter.search_text.replace(" ", "_") + "%"
-                        )
-                    ),
+                WikibaseModel.category.has(
+                    cast(WikibaseCategoryModel.category, String).like(
+                        "%"
+                        + wikibase_filter.search_text.replace(" ", "_").upper()
+                        + "%"
+                    )
                 ),
             )
         )

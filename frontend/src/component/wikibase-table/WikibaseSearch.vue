@@ -9,8 +9,8 @@ const store = useWikiStore()
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 
 const searchValue = ref('')
-const [debouncedSearch] = debounce((v: string) => store.searchWikibaseText(v), 300)
-watch(searchValue, () => debouncedSearch(searchValue.value))
+const [debouncedSearch] = debounce((v: string | undefined) => store.searchWikibaseText(v), 300)
+watch(searchValue, () => debouncedSearch(searchValue.value ? searchValue.value : undefined))
 
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => ALLOWED_CHARACTERS.test(value) || 'Disallowed Characters'
