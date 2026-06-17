@@ -142,22 +142,19 @@ async def test_add_wikibase_script_path():
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="remove-wikibase-sparql-frontend-url",
-    depends=["add-wikibase"],
-    scope="session",
-)
-async def test_remove_wikibase_sparql_frontend_url():
+async def test_remove_wikibase_sparql_frontend_url(
+    wikibase,
+    db_session,
+):  # pylint: disable=unused-argument
     """Remove Wikibase URL"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="1"
+        before_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -173,7 +170,7 @@ async def test_remove_wikibase_sparql_frontend_url():
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 1,
+            "wikibaseId": wikibase.id,
             "urlType": "SPARQL_FRONTEND_URL",
         },
         context_value=get_mock_context("test-auth-token"),
@@ -183,12 +180,12 @@ async def test_remove_wikibase_sparql_frontend_url():
     assert remove_result.data["removeWikibaseUrl"] is True
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value="1"
+        after_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -200,7 +197,6 @@ async def test_remove_wikibase_sparql_frontend_url():
         ["wikibase", "urls", "sparqlFrontendUrl"],
         expected_value=None,
     )
-
 
 @pytest.mark.asyncio
 async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):
