@@ -31,9 +31,6 @@ async def wikibase_software(db_session):
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id", depends=["add-test-software"], scope="session"
-)
 async def test_merge_software_by_id_mutation():
     """Test Add Wikibase"""
 
