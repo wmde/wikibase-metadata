@@ -3,6 +3,8 @@
 import time
 from urllib.error import HTTPError
 import pytest
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import create_quantity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
@@ -10,6 +12,25 @@ from tests.utils import get_mock_context
 FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchQuantityData(wikibaseId: $wikibaseId)
 }"""
+
+@pytest.fixture
+async def wikibase_with_sparql_quantity(db_session):
+    """Create a wikibase with sparql endpoint for quantity tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Quantity Test Wikibase",
+            base_url="https://quantity-test-example.com",
+            sparql_endpoint_url="https://quantity-test-example.com/sparql",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
 
 
 @pytest.mark.asyncio
@@ -43,13 +64,11 @@ async def test_create_quantity_observation_success(mocker):
     assert result.data["fetchQuantityData"]
 
 
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="quantity-failure", depends=["quantity-success"], scope="session"
-)
 @pytest.mark.quantity
 @pytest.mark.sparql
-async def test_create_quantity_observation_failure(mocker):
+async def test_create_quantity_observation_failure(wikibase_with_sparql_quantity, mocker):
     """Test"""
 
     time.sleep(1)
@@ -68,5 +87,5 @@ async def test_create_quantity_observation_failure(mocker):
             ),
         ],
     )
-    success = await create_quantity_observation(1)
+    success = await create_quantity_observation(wikibase_with_sparql_quantity)
     assert success is False

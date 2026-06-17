@@ -6,6 +6,8 @@ import json
 from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import create_log_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context, MockResponse, ParsedUrl
@@ -223,26 +225,35 @@ async def test_create_log_last_observation_error(mocker):
     success = await create_log_observation(1, first_month=False)
     assert success is False
 
+@pytest.fixture
+async def wikibase_with_script_path(db_session):
+    """Create a wikibase with script path for log observation tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Log Test Wikibase",
+            base_url="https://example.com",
+            script_path="/w",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        return wikibase
 
 @freeze_time(datetime(2024, 3, 3))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-2",
-    depends=[
-        "log-first-success-1",
-        "log-last-success-1",
-        "log-first-failure",
-        "log-last-failure",
-    ],
-    scope="session",
-)
 @pytest.mark.log
-async def test_create_log_last_observation_no_last_month(mocker):
+async def test_create_log_last_observation_no_last_month(wikibase_with_script_path, mocker):
     """
     Test One-Pull Per Month, No Data In Range Returned Scenario
 
     log_month_id 5, last month, success, no data"""
 
+    print('asdf')
+    print(wikibase_with_script_path)
     mock_logs: list[dict] = []
     for i in range(70):
         mock_logs.append(
@@ -289,5 +300,5 @@ async def test_create_log_last_observation_no_last_month(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(1, first_month=False)
+    success = await create_log_observation(wikibase_with_script_path.id, first_month=False)
     assert success

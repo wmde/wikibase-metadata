@@ -3,6 +3,7 @@
 import time
 from urllib.error import HTTPError
 import pytest
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import create_external_identifier_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
@@ -10,6 +11,28 @@ from tests.utils import get_mock_context
 FETCH_EXTERNAL_IDENTIFIER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchExternalIdentifierData(wikibaseId: $wikibaseId)
 }"""
+
+@pytest.fixture
+async def wikibase_with_sparql(db_session):
+    """Create a wikibase with sparql endpoint for observation tests"""
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = WikibaseModel(
+            wikibase_name="EI Test Wikibase",
+            base_url="https://example.com",
+            sparql_endpoint_url="https://query.example.com/sparql",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+        await session.commit()
+        return wikibase_id
 
 
 @pytest.mark.asyncio
@@ -50,14 +73,9 @@ async def test_create_external_identifier_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="external-identifier-failure",
-    depends=["external-identifier-success"],
-    scope="session",
-)
 @pytest.mark.ei
 @pytest.mark.sparql
-async def test_create_external_identifier_observation_failure(mocker):
+async def test_create_external_identifier_observation_failure(wikibase_with_sparql, mocker):
     """Test"""
 
     time.sleep(1)
@@ -76,5 +94,5 @@ async def test_create_external_identifier_observation_failure(mocker):
             ),
         ],
     )
-    success = await create_external_identifier_observation(1)
+    success = await create_external_identifier_observation(wikibase_with_sparql)
     assert success is False

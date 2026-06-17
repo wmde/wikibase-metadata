@@ -1,6 +1,7 @@
 """Test Bulk Log Update"""
 
 import pytest
+from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
@@ -14,20 +15,28 @@ mutation MyMutation($firstMonth: Boolean!) {
 }
 """
 
+@pytest.fixture
+async def three_wikibases_with_script_path(db_session):
+    """Create 3 test wikibases with script path for log observation tests"""
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    async with AsyncSession(bind=db_session) as session:
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Log Test Wikibase {i}",
+                base_url=f"https://example-{i}.com",
+                script_path="/w",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+        await session.flush()
+        await session.commit()
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-fail-all",
-    depends=[
-        "mutate-cloud-instances",
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
-@pytest.mark.mutation
-async def test_update_all_log_first_observations_fail(mocker):
+async def test_update_all_log_first_observations_fail(three_wikibases_with_script_path, mocker):
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
@@ -35,7 +44,7 @@ async def test_update_all_log_first_observations_fail(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "https://example.com/w/api.php"
+        assert query.base_url.endswith("/w/api.php")
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
 
@@ -59,18 +68,7 @@ async def test_update_all_log_first_observations_fail(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-fail-all",
-    depends=[
-        "mutate-cloud-instances",
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
-@pytest.mark.mutation
-async def test_update_all_log_last_observations_fail(mocker):
+async def test_update_all_log_last_observations_fail(three_wikibases_with_script_path, mocker):
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
@@ -78,7 +76,7 @@ async def test_update_all_log_last_observations_fail(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "https://example.com/w/api.php"
+        assert query.base_url.endswith("/w/api.php")
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
 

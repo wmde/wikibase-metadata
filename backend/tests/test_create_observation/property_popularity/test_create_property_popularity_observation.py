@@ -4,6 +4,8 @@ import asyncio
 import time
 from urllib.error import HTTPError
 import pytest
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import create_property_popularity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
@@ -51,16 +53,28 @@ async def test_create_property_popularity_observation_success(mocker):
     assert result.data is not None
     assert result.data["fetchPropertyPopularityData"]
 
+@pytest.fixture
+async def wikibase_with_sparql(db_session):
+    """Create a wikibase with sparql endpoint"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Property Test Wikibase",
+            base_url="https://property-test-example.com",
+            sparql_endpoint_url="https://property-test-example.com/sparql",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        return wikibase
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="property-popularity-failure",
-    depends=["property-popularity-success"],
-    scope="session",
-)
 @pytest.mark.property
 @pytest.mark.sparql
-async def test_create_property_popularity_observation_failure(mocker):
+async def test_create_property_popularity_observation_failure(wikibase_with_sparql, mocker):
     """Test"""
 
     mocker.patch(
@@ -75,5 +89,5 @@ async def test_create_property_popularity_observation_failure(mocker):
             )
         ],
     )
-    success = await create_property_popularity_observation(1)
+    success = await create_property_popularity_observation(wikibase_with_sparql.id)
     assert success is False

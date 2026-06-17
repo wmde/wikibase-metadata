@@ -1,6 +1,8 @@
 """Test Bulk Property Popularity Update"""
 
 import pytest
+from model.database.wikibase_model import WikibaseModel
+from data.database_connection import get_async_session
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -14,20 +16,26 @@ mutation MyMutation {
 }
 """
 
+@pytest.fixture
+async def three_wikibases_with_sparql(db_session):
+    """Create 3 test wikibases with sparql endpoint for property popularity tests"""
+    async with get_async_session() as session:
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Property Test Wikibase {i}",
+                base_url=f"https://property-example-{i}.com",
+                sparql_endpoint_url=f"https://property-example-{i}.com/sparql",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+        await session.flush()
+
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="property-popularity-fail-all",
-    depends=[
-        "mutate-cloud-instances",
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
-@pytest.mark.mutation
-async def test_update_all_property_popularity_observations_fail(mocker):
+async def test_update_all_property_popularity_observations_fail(three_wikibases_with_sparql, mocker):
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs):
