@@ -4,6 +4,8 @@ from math import floor
 import time
 import pytest
 from requests import ReadTimeout
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import create_user_observation
 from tests.test_schema import test_schema
 from tests.utils.mock_request import get_mock_context
@@ -16,6 +18,25 @@ FETCH_USER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
 
 TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
+
+@pytest.fixture
+async def wikibase_with_script_path_user(db_session):
+    """Create a wikibase with script path for user observation tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="User Test Wikibase",
+            base_url="https://user-test-example.com",
+            script_path="/w",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
 
 
 @pytest.mark.asyncio
@@ -75,9 +96,8 @@ async def test_create_user_observation_single_pull(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-2000", depends=["user-20"], scope="session")
 @pytest.mark.user
-async def test_create_user_observation_multiple_pull(mocker):
+async def test_create_user_observation_multiple_pull(wikibase_with_script_path_user, mocker):
     """Test Data, Multiple Pull Scenario"""
 
     time.sleep(1)
@@ -107,5 +127,5 @@ async def test_create_user_observation_multiple_pull(mocker):
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=user_chunks,
     )
-    success = await create_user_observation(1)
+    success = await create_user_observation(wikibase_with_script_path_user)
     assert success

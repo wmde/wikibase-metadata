@@ -16,6 +16,24 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
   fetchLogData(wikibaseId: $wikibaseId, firstMonth: $firstMonth)
 }"""
 
+@pytest.fixture
+async def wikibase_with_script_path_log(db_session):
+    """Create a wikibase with script path for log observation tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Log Error Test Wikibase",
+            base_url="https://log-error-test-example.com",
+            script_path="/w",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
 
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
@@ -187,11 +205,8 @@ async def test_create_log_observation_last_success(mocker):
 
 @freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-failure", depends=["log-first-success-1"], scope="session"
-)
 @pytest.mark.log
-async def test_create_log_first_observation_error(mocker):
+async def test_create_log_first_observation_error(wikibase_with_script_path_log, mocker):
     """
     Test One-Pull Per Month, Error Returned Scenario
 
@@ -202,17 +217,14 @@ async def test_create_log_first_observation_error(mocker):
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_log_observation(1, first_month=True)
+    success = await create_log_observation(wikibase_with_script_path_log, first_month=True)
     assert success is False
 
 
 @freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-failure", depends=["log-last-success-1"], scope="session"
-)
 @pytest.mark.log
-async def test_create_log_last_observation_error(mocker):
+async def test_create_log_last_observation_error(wikibase_with_script_path_log, mocker):
     """
     Test One-Pull Per Month, Error Returned Scenario
 
@@ -222,7 +234,7 @@ async def test_create_log_last_observation_error(mocker):
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_log_observation(1, first_month=False)
+    success = await create_log_observation(wikibase_with_script_path_log, first_month=False)
     assert success is False
 
 @pytest.fixture

@@ -14,17 +14,29 @@ FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchPropertyPopularityData(wikibaseId: $wikibaseId)
 }"""
 
+@pytest.fixture
+async def wikibase_with_sparql(db_session):
+    """Create a wikibase with sparql endpoint"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Property Test Wikibase",
+            base_url="https://property-test-example.com",
+            sparql_endpoint_url="https://property-test-example.com/sparql",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        return wikibase
+
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="property-popularity-success",
-    depends=["property-popularity-success-ood"],
-    scope="session",
-)
-@pytest.mark.mutation
 @pytest.mark.property
 @pytest.mark.sparql
-async def test_create_property_popularity_observation_success(mocker):
+async def test_create_property_popularity_observation_success(wikibase_with_sparql, mocker):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
     await asyncio.to_thread(time.sleep, 1)
@@ -45,31 +57,13 @@ async def test_create_property_popularity_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_PROPERTY_POPULARITY_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_sparql.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
     assert result.data is not None
     assert result.data["fetchPropertyPopularityData"]
-
-@pytest.fixture
-async def wikibase_with_sparql(db_session):
-    """Create a wikibase with sparql endpoint"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Property Test Wikibase",
-            base_url="https://property-test-example.com",
-            sparql_endpoint_url="https://property-test-example.com/sparql",
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        return wikibase
 
 @pytest.mark.asyncio
 @pytest.mark.property

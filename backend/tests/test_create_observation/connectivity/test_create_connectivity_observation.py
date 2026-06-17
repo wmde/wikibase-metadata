@@ -104,14 +104,8 @@ async def test_create_connectivity_observation_success(
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(
-    name="connectivity-success-complex",
-    depends=["connectivity-success-simple-5"],
-    scope="session",
-)
-@pytest.mark.mutation
 @pytest.mark.sparql
-async def test_create_connectivity_observation_success_complex(mocker):
+async def test_create_connectivity_observation_success_complex(wikibase, mocker):
     """Test"""
 
     returned_links = []
@@ -136,7 +130,7 @@ async def test_create_connectivity_observation_success_complex(mocker):
 
     result = await test_schema.execute(
         FETCH_CONNECTIVITY_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase.id},
         context_value=get_mock_context("test-auth-token"),
     )
 

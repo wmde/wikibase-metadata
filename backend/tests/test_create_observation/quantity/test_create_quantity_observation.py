@@ -34,13 +34,9 @@ async def wikibase_with_sparql_quantity(db_session):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="quantity-success", depends=["quantity-success-ood"], scope="session"
-)
-@pytest.mark.mutation
 @pytest.mark.quantity
 @pytest.mark.sparql
-async def test_create_quantity_observation_success(mocker):
+async def test_create_quantity_observation_success(wikibase_with_sparql_quantity, mocker):
     """Test"""
 
     mocker.patch(
@@ -55,7 +51,7 @@ async def test_create_quantity_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_QUANTITY_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_sparql_quantity},
         context_value=get_mock_context("test-auth-token"),
     )
 
