@@ -4,19 +4,38 @@ from datetime import datetime, timezone
 import pytest
 from sqlalchemy import select
 
+from model.database.wikibase_model import WikibaseModel
 from data.database_connection import get_async_session
 from fetch_data import update_out_of_date_recent_changes_observations
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from model.database import WikibaseRecentChangesObservationModel
 
+@pytest.fixture
+async def wikibase_with_script_path_recent_changes(db_session):
+    """Create a wikibase with script path for recent changes observation tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Recent Changes OOD Test Wikibase",
+            base_url="https://recent-changes-ood-example.com",
+            script_path="/w",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="recent-changes-success-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
-async def test_update_out_of_date_recent_changes_observations_success(mocker):
+# @pytest.mark.dependency(
+#     name="recent-changes-success-ood",
+#     depends=["add-wikibase", "add-wikibase-script-path"],
+#     scope="session",
+# )
+async def test_update_out_of_date_recent_changes_observations_success(wikibase_with_script_path_recent_changes, mocker):
     """Test success scenario"""
 
     mock_changes_human = [
@@ -128,7 +147,7 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
     async with get_async_session() as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .where(WikibaseRecentChangesObservationModel.wikibase_id == wikibase_with_script_path_recent_changes)
             .order_by(WikibaseRecentChangesObservationModel.observation_date.desc())
         )
         observation = (await async_session.scalars(query)).first()
