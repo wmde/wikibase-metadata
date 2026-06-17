@@ -4,6 +4,8 @@
 import pytest
 import pytest_asyncio
 
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
 
@@ -61,6 +63,22 @@ def get_wikibase_id_by_base_url():
         pytest.fail(f"No wikibase found with baseUrl: {base_url}")
 
     return _get_id
+
+@pytest.fixture
+async def wikibase(db_session):  # pylint: disable=unused-argument
+    """Create a test wikibase"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Test Wikibase",
+            base_url="https://example.com",
+            sparql_frontend_url="https://query.example.com",
+            sparql_endpoint_url="https://query.example.com/sparql-wrong",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        session.add(wikibase)
+        await session.flush()
+        return wikibase
 
 
 @pytest.mark.asyncio
@@ -309,17 +327,14 @@ async def test_update_wikibase_url():
         expected_value="https://query.example.com/sparql",
     )
 
-
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
-async def test_update_wikibase_article_path_fail():
+async def test_update_wikibase_article_path_fail(wikibase):
     """Update Wikibase URL Fail"""
 
     update_result = await test_schema.execute(
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 1,
+            "wikibaseId": wikibase.id,
             "url": "https://example.com/wiki",
             "urlType": "ARTICLE_PATH",
         },
