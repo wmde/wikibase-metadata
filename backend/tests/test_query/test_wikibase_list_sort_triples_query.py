@@ -1,19 +1,46 @@
 """Test Sort Wikibase List"""
 
 import pytest
+from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import WikibaseQuantityObservationModel
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
+from datetime import datetime, timezone
 
+@pytest.fixture
+async def eleven_wikibases_with_one_quantity(db_session):
+    """Create 11 wikibases - 10 with no observations, 1 with quantity observation"""
+    async with get_async_session() as session:
+        for i in range(11):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Triples Sort Test Wikibase {i}",
+                base_url=f"https://triples-sort-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+            await session.flush()
+            await session.refresh(wikibase)
+
+            if i == 10:
+                observation = WikibaseQuantityObservationModel()
+                observation.wikibase_id = wikibase.id
+                observation.returned_data = True
+                observation.observation_date = datetime(2024, 3, 6, tzinfo=timezone.utc)
+                observation.total_triples = 8
+                observation.total_items = 0
+                observation.total_lexemes = 0
+                observation.total_properties = 0
+                session.add(observation)
+        await session.flush()
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    name="sort-trip-asc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
-async def test_wikibase_list_query_sort_triples_asc():
+async def test_wikibase_list_query_sort_triples_asc(eleven_wikibases_with_one_quantity):
     """Test Sort Triples Ascending"""
 
     result = await test_schema.execute(
@@ -52,12 +79,7 @@ async def test_wikibase_list_query_sort_triples_asc():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    name="sort-trip-desc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
-async def test_wikibase_list_query_sort_triples_desc():
+async def test_wikibase_list_query_sort_triples_desc(eleven_wikibases_with_one_quantity):
     """Test Sort Triples Descending"""
 
     result = await test_schema.execute(

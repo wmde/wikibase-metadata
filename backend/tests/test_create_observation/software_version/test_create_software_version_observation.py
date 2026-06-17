@@ -3,6 +3,8 @@
 import os
 import time
 import pytest
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import create_software_version_observation
 from tests.test_schema import test_schema
 from tests.test_create_observation.software_version.test_constants import (
@@ -15,6 +17,24 @@ FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchVersionData(wikibaseId: $wikibaseId)
 }"""
 
+@pytest.fixture
+async def wikibase_with_article_path(db_session):
+    """Create a wikibase with article path for software version tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Software Version Test Wikibase",
+            base_url="https://software-version-test-example.com",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
 
 @pytest.mark.asyncio
 @pytest.mark.dependency(
@@ -99,14 +119,9 @@ async def test_create_software_version_observation_success_ii(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-failure",
-    depends=["software-version-success"],
-    scope="session",
-)
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_failure(mocker):
+async def test_create_software_version_observation_failure(wikibase_with_article_path, mocker):
     """Test Failure Scenario"""
 
     time.sleep(1)
@@ -116,6 +131,6 @@ async def test_create_software_version_observation_failure(mocker):
         side_effect=[MockResponse("", 500)],
     )
     mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
-    success = await create_software_version_observation(1, mock_info)
+    success = await create_software_version_observation(wikibase_with_article_path, mock_info)
     assert success is False
     assert len(mock_info.context["background_tasks"].tasks) == 1

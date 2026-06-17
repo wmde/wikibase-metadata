@@ -1,19 +1,42 @@
 """Test Sort Wikibase List"""
 
 import pytest
+from sqlalchemy import select
+from model.database.wikibase_model import WikibaseModel
+from data.database_connection import get_async_session
+from model.database.wikibase_category_model import WikibaseCategoryModel
+from model.enum.wikibase_category_enum import WikibaseCategory
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 
+@pytest.fixture
+async def eleven_wikibases_with_categories(db_session):
+    """Create 11 wikibases - 9 with no category, 2 with EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"""
+    async with get_async_session() as session:
+        category = WikibaseCategoryModel()
+        category.category = WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+        session.add(category)
+        await session.flush()
+        await session.refresh(category)
+        category_id = category.id
+
+        for i in range(11):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Category Sort Test Wikibase {i}",
+                base_url=f"https://category-sort-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            wikibase.category_id = category_id if i >= 9 else None
+            session.add(wikibase)
+        await session.flush()
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    name="sort-cat-asc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
-async def test_wikibase_list_query_sort_category_asc():
+async def test_wikibase_list_query_sort_category_asc(eleven_wikibases_with_categories):
     """Test Sort Category Ascending"""
 
     result = await test_schema.execute(
@@ -62,12 +85,7 @@ async def test_wikibase_list_query_sort_category_asc():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    name="sort-cat-desc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
-async def test_wikibase_list_query_sort_category_desc():
+async def test_wikibase_list_query_sort_category_desc(eleven_wikibases_with_categories):
     """Test Sort Category Descending"""
 
     result = await test_schema.execute(
