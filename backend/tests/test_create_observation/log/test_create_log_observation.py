@@ -22,7 +22,7 @@ async def wikibase_with_script_path_log(db_session):
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Log Error Test Wikibase",
-            base_url="https://log-error-test-example.com",
+            base_url="https://example.com",
             script_path="/w",
         )
         wikibase.checked = True
@@ -37,18 +37,13 @@ async def wikibase_with_script_path_log(db_session):
 
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
-)
 @pytest.mark.log
-@pytest.mark.mutation
-async def test_create_log_observation_first_success(mocker):
+async def test_create_log_observation_first_success(wikibase_with_script_path_log, mocker):
     """
     Test One-Pull Per Month, Data Returned Scenario
 
     log_month_id 1, first month, users, 'thanks/thank'
     """
-
     mock_logs: list[dict] = []
     for i in range(70):
         mock_logs.append(
@@ -65,7 +60,6 @@ async def test_create_log_observation_first_success(mocker):
             }
         )
     oldest_mock_log = min(mock_logs, key=lambda x: x.get("timestamp"))
-
     def mockery(*args, **kwargs) -> MockResponse:
         assert kwargs.get("timeout") == 300
 
@@ -114,17 +108,15 @@ async def test_create_log_observation_first_success(mocker):
                 )
 
         raise NotImplementedError(query.raw_url)
-
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
 
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
-        variable_values={"wikibaseId": 1, "firstMonth": True},
+        variable_values={"wikibaseId": wikibase_with_script_path_log, "firstMonth": True},
         context_value=get_mock_context("test-auth-token"),
     )
-
     assert result.errors is None
     assert result.data is not None
     assert result.data["fetchLogData"]
@@ -132,12 +124,8 @@ async def test_create_log_observation_first_success(mocker):
 
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
-)
 @pytest.mark.log
-@pytest.mark.mutation
-async def test_create_log_observation_last_success(mocker):
+async def test_create_log_observation_last_success(wikibase_with_script_path_log, mocker):
     """
     Test One-Pull Per Month, Data Returned Scenario
 
@@ -194,7 +182,7 @@ async def test_create_log_observation_last_success(mocker):
 
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
-        variable_values={"wikibaseId": 1, "firstMonth": False},
+        variable_values={"wikibaseId": wikibase_with_script_path_log, "firstMonth": False},
         context_value=get_mock_context("test-auth-token"),
     )
 

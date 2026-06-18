@@ -3,6 +3,9 @@
 import os
 import pytest
 
+from model.enum.wikibase_type_enum import WikibaseType
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import (
     DATA_DIRECTORY,
@@ -18,12 +21,45 @@ mutation MyMutation {
 }
 """
 
+@pytest.fixture
+async def wikibase_list(db_session):
+    """Create the wikibases required by the cloud instance test."""
 
-@pytest.mark.dependency(
-    name="mutate-cloud-instances", depends=["query-cloud-instances"], scope="session"
-)
+    from model.database import WikibaseModel
+    from model.enum import WikibaseType
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    wikibases = [
+        {
+            "wikibase_name": "Local Wikibase",
+            "type": WikibaseType["SUITE"],
+        },
+        {
+            "wikibase_name": "Another Wikibase",
+            "type": WikibaseType["OTHER"],
+        },
+        {
+            "wikibase_name": "Existing Cloud Wikibase",
+            "type": WikibaseType["CLOUD"],
+        },
+    ]
+
+    async with AsyncSession(bind=db_session) as session:
+        for i, wb in enumerate(wikibases):
+            session.add(
+                WikibaseModel(
+                    wikibase_name=wb["wikibase_name"],
+                    wikibase_type=wb["type"],
+                    base_url=f"https://example-{i}.com"
+                )
+            )
+
+        await session.flush()
+
+    return wikibases
+
 @pytest.mark.asyncio
-async def test_add_cloud_instance(mocker):
+async def test_add_cloud_instance(wikibase_list, mocker):
     """
     test adding a list of cloud instances
     """

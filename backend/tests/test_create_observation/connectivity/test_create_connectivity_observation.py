@@ -38,7 +38,6 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
             [("Q1", "Q1")],
             marks=pytest.mark.dependency(
                 name="connectivity-success-simple-1",
-                depends=["connectivity-success-ood"],
                 scope="session",
             ),
         ),
@@ -84,7 +83,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
     ],
 )
 async def test_create_connectivity_observation_success(
-    mocker, links: list[tuple[str, str]]
+    wikibase, mocker, links: list[tuple[str, str]]
 ):
     """Test"""
 
@@ -98,7 +97,7 @@ async def test_create_connectivity_observation_success(
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
-    success = await create_connectivity_observation(1)
+    success = await create_connectivity_observation(wikibase.id)
     assert success
 
 

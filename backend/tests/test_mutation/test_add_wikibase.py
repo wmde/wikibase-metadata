@@ -3,6 +3,7 @@
 
 import pytest
 from sqlalchemy import select
+from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
 from model.database import WikibaseModel
 from data.database_connection import get_async_session
@@ -23,13 +24,21 @@ async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
             select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
         )
 
+@pytest.fixture
+async def wikibase_categories(db_session):
+    """Create wikibase categories"""
+    async with get_async_session() as async_session:
+        async_session.add(
+            WikibaseCategoryModel(
+                category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+            )
+        )
+
+        await async_session.commit()
+
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase", depends=["add-test-categories"], scope="session"
-)
-async def test_add_wikibase_mutation():
+async def test_add_wikibase_mutation(wikibase_categories):
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
@@ -46,7 +55,6 @@ async def test_add_wikibase_mutation():
                 "urls": {
                     "baseUrl": "https://example.com/",
                     "articlePath": "/wiki",
-                    # "scriptPath": "/w",  # will be set in add-wikibase-script-path test
                     "sparqlEndpointUrl": "https://query.example.com/sparql-wrong",
                     "sparqlFrontendUrl": "https://query.example.com",
                 },
@@ -73,15 +81,6 @@ async def test_add_wikibase_mutation():
     )
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
     assert wikibase.url.url == "https://example.com"
-
-    # Set wikibase_type to None, as other tests require this database entry to be peristed
-    # without a wikibase_type
-    async with get_async_session() as session:
-        wikibase_to_update = await session.scalar(
-            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
-        )
-        wikibase_to_update.wikibase_type = None
-        await session.commit()
 
 
 @pytest.mark.asyncio

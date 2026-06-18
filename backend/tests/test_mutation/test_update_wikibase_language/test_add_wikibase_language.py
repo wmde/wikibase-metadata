@@ -2,6 +2,8 @@
 
 import pytest
 
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
@@ -14,22 +16,33 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
   addWikibaseLanguage(language: $language, wikibaseId: $wikibaseId)
 }"""
 
+@pytest.fixture
+async def wikibase(db_session):  # pylint: disable=unused-argument
+    """Create a test wikibase"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Test Wikibase",
+            base_url="https://wikibase-fixture.com",
+        )
+        wikibase.checked = True
+        session.add(wikibase)
+        await session.flush()
+
+        await add_wikibase_language(wikibase.id, "French")
+        return wikibase
+
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase-language-1", depends=["add-wikibase"], scope="session"
-)
-async def test_add_wikibase_language_one():
+async def test_add_wikibase_language_one(wikibase):
     """Add Wikibase Language"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
-        before_adding_result.data, ["wikibase", "id"], expected_value="1"
+        before_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -44,7 +57,7 @@ async def test_add_wikibase_language_one():
 
     add_result = await test_schema.execute(
         ADD_WIKIBASE_LANGUAGE_MUTATION,
-        variable_values={"wikibaseId": 1, "language": "French"},
+        variable_values={"wikibaseId": wikibase.id, "language": "French"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert add_result.errors is None
@@ -52,12 +65,12 @@ async def test_add_wikibase_language_one():
     assert add_result.data["addWikibaseLanguage"] is True
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
-        after_adding_result.data, ["wikibase", "id"], expected_value="1"
+        after_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         after_adding_result.data,
@@ -73,19 +86,16 @@ async def test_add_wikibase_language_one():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase-language-2", depends=["add-wikibase-language-1"], scope="session"
-)
-async def test_add_wikibase_language_two():
+async def test_add_wikibase_language_two(wikibase):
     """Add Wikibase Language"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
-        before_adding_result.data, ["wikibase", "id"], expected_value="1"
+        before_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -99,16 +109,16 @@ async def test_add_wikibase_language_two():
     )
 
     for lang in ["Deutsch", "Cymru", "French", "Albanian", "English", "Babylonian"]:
-        add_result = await add_wikibase_language(wikibase_id=1, language=lang)
+        add_result = await add_wikibase_language(wikibase_id=wikibase.id, language=lang)
         assert add_result
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
-        after_adding_result.data, ["wikibase", "id"], expected_value="1"
+        after_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         after_adding_result.data,

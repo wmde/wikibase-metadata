@@ -5,22 +5,37 @@ import json
 
 from freezegun import freeze_time
 import pytest
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from fetch_data import (
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
 )
 from tests.utils import MockResponse, ParsedUrl
 
+@pytest.fixture
+async def wikibase(db_session):
+    """Create a wikibase with script path for user observation tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="User Test Wikibase",
+            base_url="https://example.com",
+            script_path="/w",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
 
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-success-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
 @pytest.mark.log
-async def test_update_out_of_date_log_first_observations_success(mocker):
+async def test_update_out_of_date_log_first_observations_success(wikibase, mocker):
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [
@@ -82,13 +97,8 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
 
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
 @pytest.mark.log
-async def test_update_out_of_date_log_last_observations_success(mocker):
+async def test_update_out_of_date_log_last_observations_success(wikibase, mocker):
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [

@@ -3,6 +3,8 @@
 
 import pytest
 
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
 
@@ -36,15 +38,78 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 }
 """
 
+@pytest.fixture
+async def wikibase(db_session):  # pylint: disable=unused-argument
+    """Create a test wikibase"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Test Wikibase",
+            base_url="https://example.com",
+            sparql_endpoint_url="https://query.example.com",
+        )
+        wikibase.checked = True
+        session.add(wikibase)
+        await session.flush()
+        return wikibase
+
+@pytest.fixture
+async def wikibases_mixed_reuse(db_session):
+    """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
+    async with get_async_session() as session:
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Reuse True Wikibase {i}",
+                base_url=f"https://reuse-true-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+
+        for i in range(2):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Reuse False Wikibase {i}",
+                base_url=f"https://reuse-false-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = False
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+
+        await session.flush()
+
+@pytest.fixture
+async def wikibase_reuse_false_fixture(db_session):
+    """Create wikibases """
+    async with get_async_session() as session:
+        # for i in range(3):
+        #     wikibase = WikibaseModel(
+        #         wikibase_name=f"Reuse True Wikibase {i}",
+        #         base_url=f"https://reuse-true-example-{i}.com",
+        #     )
+        #     wikibase.checked = True
+        #     wikibase.reuse = True
+        #     wikibase.test = False
+        #     wikibase.wikibase_type = None
+        #     session.add(wikibase)
+
+        for i in range(2):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Reuse False Wikibase {i}",
+                base_url=f"https://reuse-false-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = False
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+
+        await session.flush()
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="wikibase-set-reuse-false",
-    depends=["transform-cloud-instance"],
-    scope="session",
-)
-async def test_set_wikibase_reuse_false():
+async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture):
     """Set Wikibase Reuse False"""
 
     before_adding_result = await test_schema.execute(
@@ -52,6 +117,7 @@ async def test_set_wikibase_reuse_false():
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
+    print(before_adding_result.data["filtered"])
     assert_layered_property_value(
         before_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=2
     )
@@ -96,15 +162,36 @@ async def test_set_wikibase_reuse_false():
         int(w["id"]) for w in after_adding_result.data["unfiltered"]["data"]
     ]
 
+@pytest.fixture
+async def wikibase_reuse_true_fixture(db_session):
+    """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name=f"Reuse True Wikibase",
+            base_url=f"https://reuse-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+
+        for i in range(2):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Reuse False Wikibase {i}",
+                base_url=f"https://reuse-false-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = False
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+
+        await session.flush()
+
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="wikibase-set-reuse-true",
-    depends=["transform-cloud-instance", "wikibase-set-reuse-false"],
-    scope="session",
-)
-async def test_set_wikibase_reuse_true():
+async def test_set_wikibase_reuse_true(wikibase_reuse_true_fixture):
     """Set Wikibase Reuse True"""
 
     before_adding_result = await test_schema.execute(
@@ -154,15 +241,8 @@ async def test_set_wikibase_reuse_true():
         after_adding_result.data, ["unfiltered", "meta", "totalCount"], expected_value=3
     )
 
-
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="cloud-wikibase-set-reuse-true",
-    depends=["mutate-cloud-instances"],
-    scope="session",
-)
-async def test_set_cloud_wikibase_reuse_true():
+async def test_set_cloud_wikibase_reuse_true(wikibases_mixed_reuse):
     """Set Cloud Wikibases Reuse True"""
 
     before_adding_result = await test_schema.execute(
@@ -176,7 +256,7 @@ async def test_set_cloud_wikibase_reuse_true():
     assert_layered_property_value(
         before_adding_result.data,
         ["unfiltered", "meta", "totalCount"],
-        expected_value=11,
+        expected_value=5,
     )
 
     before_adding_reuse_all_ids = {
@@ -188,7 +268,7 @@ async def test_set_cloud_wikibase_reuse_true():
     before_adding_reuse_false_ids = (
         before_adding_reuse_all_ids - before_adding_reuse_true_ids
     )
-    assert len(before_adding_reuse_false_ids) == 8, f"{before_adding_result.data}"
+    assert len(before_adding_reuse_false_ids) == 2, f"{before_adding_result.data}"
 
     for wiki_id in before_adding_reuse_false_ids:
         update_result = await test_schema.execute(
@@ -206,10 +286,10 @@ async def test_set_cloud_wikibase_reuse_true():
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
-        after_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=11
+        after_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=5
     )
     assert_layered_property_value(
         after_adding_result.data,
         ["unfiltered", "meta", "totalCount"],
-        expected_value=11,
+        expected_value=5,
     )

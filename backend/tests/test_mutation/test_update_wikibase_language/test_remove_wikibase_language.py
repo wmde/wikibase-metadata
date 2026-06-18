@@ -81,22 +81,16 @@ async def test_remove_wikibase_language_one(wikibase):
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="remove-wikibase-language-2",
-    depends=["add-wikibase-language-2"],
-    scope="session",
-)
-async def test_remove_wikibase_language_two():
-    """Remove Wikibase Language"""
+async def test_remove_wikibase_language_two(wikibase_with_additional_languages):
+    """Remove Wikibase Language - Additional"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_with_additional_languages.id}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="1"
+        before_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase_with_additional_languages.id)
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -106,19 +100,19 @@ async def test_remove_wikibase_language_two():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "English"],
+        expected_value=["Cymru", "Deutsch"],
     )
 
-    remove_result = await remove_wikibase_language(wikibase_id=1, language="English")
+    remove_result = await remove_wikibase_language(wikibase_id=wikibase_with_additional_languages.id, language="Cymru")
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_with_additional_languages.id}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value="1"
+        after_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase_with_additional_languages.id)
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -128,7 +122,7 @@ async def test_remove_wikibase_language_two():
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch"],
+        expected_value=["Deutsch"],
     )
 
 
