@@ -20,7 +20,7 @@ TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
 TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 @pytest.fixture
-async def wikibase_with_script_path_user(db_session):
+async def wikibase(db_session):
     """Create a wikibase with script path for user observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -40,11 +40,8 @@ async def wikibase_with_script_path_user(db_session):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="user-failure", depends=["user-empty-ood"], scope="session"
-)
 @pytest.mark.user
-async def test_create_user_observation_failure(mocker):
+async def test_create_user_observation_failure(wikibase, mocker):
     """Test Error Scenario"""
 
     time.sleep(1)
@@ -53,7 +50,7 @@ async def test_create_user_observation_failure(mocker):
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_user_observation(1)
+    success = await create_user_observation(wikibase)
     assert success is False
 
 
@@ -97,7 +94,7 @@ async def test_create_user_observation_single_pull(mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.user
-async def test_create_user_observation_multiple_pull(wikibase_with_script_path_user, mocker):
+async def test_create_user_observation_multiple_pull(wikibase, mocker):
     """Test Data, Multiple Pull Scenario"""
 
     time.sleep(1)
@@ -127,5 +124,5 @@ async def test_create_user_observation_multiple_pull(wikibase_with_script_path_u
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=user_chunks,
     )
-    success = await create_user_observation(wikibase_with_script_path_user)
+    success = await create_user_observation(wikibase)
     assert success

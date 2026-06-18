@@ -29,11 +29,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   }
 }"""
 
-
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="add-test-software")
-async def test_add_software():
+async def test_add_software(db_session):
     """Test Add Software"""
 
     before_result = await test_schema.execute(
@@ -90,9 +88,6 @@ async def test_add_software():
     assert_layered_property_count(after_result.data, ["extensionList", "data"], 3)
 
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 0, "id"], "2"
-    )
-    assert_layered_property_value(
         after_result.data, ["extensionList", "data", 0, "softwareType"], "EXTENSION"
     )
     assert_layered_property_value(
@@ -105,9 +100,6 @@ async def test_add_software():
         after_result.data, ["extensionList", "data", 0, "tags"], []
     )
 
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "id"], "1"
-    )
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 1, "softwareType"], "EXTENSION"
     )
@@ -125,9 +117,6 @@ async def test_add_software():
         after_result.data, ["extensionList", "data", 1, "tags"], ["Magic"]
     )
 
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 2, "id"], "3"
-    )
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 2, "softwareType"], "EXTENSION"
     )

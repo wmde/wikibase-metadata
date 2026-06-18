@@ -82,20 +82,16 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase-script-path", depends=["add-wikibase"], scope="session"
-)
-async def test_add_wikibase_script_path():
+async def test_add_wikibase_script_path(wikibase):
     """Add Wikibase URL"""
 
     before_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
-        before_adding_result.data, ["wikibase", "id"], expected_value="1"
+        before_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -111,7 +107,7 @@ async def test_add_wikibase_script_path():
     add_result = await test_schema.execute(
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 1,
+            "wikibaseId": wikibase.id,
             "url": "/w/",
             "urlType": "SCRIPT_PATH",
         },
@@ -122,12 +118,12 @@ async def test_add_wikibase_script_path():
     assert add_result.data["upsertWikibaseUrl"] is True
 
     after_adding_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
-        after_adding_result.data, ["wikibase", "id"], expected_value="1"
+        after_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         after_adding_result.data,
@@ -265,20 +261,16 @@ async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(
-    name="update-wikibase-url", depends=["add-wikibase"], scope="session"
-)
-async def test_update_wikibase_url():
+async def test_update_wikibase_url(wikibase):
     """Update Wikibase URL"""
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert before_updating_result.errors is None
     assert before_updating_result.data is not None
     assert_layered_property_value(
-        before_updating_result.data, ["wikibase", "id"], expected_value="1"
+        before_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         before_updating_result.data,
@@ -294,7 +286,7 @@ async def test_update_wikibase_url():
     update_result = await test_schema.execute(
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 1,
+            "wikibaseId": wikibase.id,
             "url": "https://query.example.com/sparql",
             "urlType": "SPARQL_ENDPOINT_URL",
         },
@@ -305,12 +297,12 @@ async def test_update_wikibase_url():
     assert update_result.data["upsertWikibaseUrl"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert after_updating_result.errors is None
     assert after_updating_result.data is not None
     assert_layered_property_value(
-        after_updating_result.data, ["wikibase", "id"], expected_value="1"
+        after_updating_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         after_updating_result.data,

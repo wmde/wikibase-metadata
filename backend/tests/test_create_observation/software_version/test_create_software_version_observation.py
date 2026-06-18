@@ -37,15 +37,9 @@ async def wikibase_with_article_path(db_session):
     return wikibase_id
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-success",
-    depends=["software-version-fail-ood"],
-    scope="session",
-)
-@pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_success(mocker):
+async def test_create_software_version_observation_success(wikibase_with_article_path, mocker):
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -66,7 +60,7 @@ async def test_create_software_version_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_SOFTWARE_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_article_path},
         context_value=test_context,
     )
 
@@ -78,15 +72,9 @@ async def test_create_software_version_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-success-ii",
-    depends=["add-wikibase-ii"],
-    scope="session",
-)
-@pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_success_ii(mocker):
+async def test_create_software_version_observation_success_ii(wikibase_with_article_path, mocker):
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -107,7 +95,7 @@ async def test_create_software_version_observation_success_ii(mocker):
 
     result = await test_schema.execute(
         FETCH_SOFTWARE_MUTATION,
-        variable_values={"wikibaseId": 2},
+        variable_values={"wikibaseId": wikibase_with_article_path},
         context_value=test_context,
     )
 
