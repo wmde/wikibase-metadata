@@ -1,6 +1,5 @@
 """Test Wikibase List"""
 
-
 import pytest
 from model.database.wikibase_model import WikibaseModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
@@ -15,6 +14,7 @@ from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.enum.wikibase_category_enum import WikibaseCategory
 from sqlalchemy import select
 
+
 @pytest.fixture
 async def two_wikibases_with_full_data(db_session):
     """Create two wikibases with full data for wikibase list tests"""
@@ -23,7 +23,8 @@ async def two_wikibases_with_full_data(db_session):
         # get or create category
         category = await session.scalar(
             select(WikibaseCategoryModel).where(
-                WikibaseCategoryModel.category == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+                WikibaseCategoryModel.category
+                == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
             )
         )
         if category is None:
@@ -54,7 +55,9 @@ async def two_wikibases_with_full_data(db_session):
         await session.refresh(wikibase)
 
         wikibase.set_primary_language("Hindi")
-        wikibase.set_additional_languages(["Albanian", "Babylonian", "Cymru", "Deutsch", "French"])
+        wikibase.set_additional_languages(
+            ["Albanian", "Babylonian", "Cymru", "Deutsch", "French"]
+        )
 
         wikibase2 = WikibaseModel(
             wikibase_name="Mock Wikibase II",
@@ -132,6 +135,7 @@ async def test_wikibase_list_query(two_wikibases_with_full_data):
         "userObservations",
     ]:
         assert obs in result_datum
+
 
 @pytest.mark.asyncio
 @pytest.mark.query

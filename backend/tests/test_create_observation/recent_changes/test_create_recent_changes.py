@@ -142,6 +142,7 @@ async def test_create_recent_changes_counts():
     assert result.first_change_date == datetime(2024, 3, 1, 12, 0, 0, tzinfo=UTC)
     assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0, tzinfo=UTC)
 
+
 @pytest.fixture
 async def wikibase_with_script_path_rc(db_session):
     """Create a wikibase with script path for recent changes observation tests"""
@@ -163,20 +164,27 @@ async def wikibase_with_script_path_rc(db_session):
 
 
 @pytest.mark.asyncio
-async def test_create_recent_changes_observation_exception_timeout(mocker, wikibase_with_script_path_rc):
+async def test_create_recent_changes_observation_exception_timeout(
+    mocker, wikibase_with_script_path_rc
+):
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         side_effect=ReadTimeout,
     )
 
-    success = await create_recent_changes_observation(wikibase_id=wikibase_with_script_path_rc)
+    success = await create_recent_changes_observation(
+        wikibase_id=wikibase_with_script_path_rc
+    )
     assert not success
 
     async with get_async_session() as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == wikibase_with_script_path_rc)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path_rc
+            )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
         observation = (await async_session.scalars(query)).first()
@@ -189,20 +197,27 @@ async def test_create_recent_changes_observation_exception_timeout(mocker, wikib
 
 
 @pytest.mark.asyncio
-async def test_create_recent_changes_observation_exception_decode(mocker, wikibase_with_script_path_rc):
+async def test_create_recent_changes_observation_exception_decode(
+    mocker, wikibase_with_script_path_rc
+):
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         side_effect=JSONDecodeError("Fail", "{]}", 1),
     )
 
-    success = await create_recent_changes_observation(wikibase_id=wikibase_with_script_path_rc)
+    success = await create_recent_changes_observation(
+        wikibase_id=wikibase_with_script_path_rc
+    )
     assert not success
 
     async with get_async_session() as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == wikibase_with_script_path_rc)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path_rc
+            )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
         observation = (await async_session.scalars(query)).first()
@@ -215,7 +230,9 @@ async def test_create_recent_changes_observation_exception_decode(mocker, wikiba
 
 
 @pytest.mark.asyncio
-async def test_create_recent_changes_observation_fail(mocker, wikibase_with_script_path_rc):
+async def test_create_recent_changes_observation_fail(
+    mocker, wikibase_with_script_path_rc
+):
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
@@ -235,7 +252,10 @@ async def test_create_recent_changes_observation_fail(mocker, wikibase_with_scri
     async with get_async_session() as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == wikibase_with_script_path_rc)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path_rc
+            )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
         observation = (await async_session.scalars(query)).first()

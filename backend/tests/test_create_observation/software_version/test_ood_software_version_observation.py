@@ -4,6 +4,7 @@ import pytest
 from fetch_data import update_out_of_date_software_observations
 from tests.utils import MockResponse
 
+
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.version

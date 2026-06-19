@@ -8,10 +8,12 @@ from tests.test_mutation.test_update_wikibase_language.query import (
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
 from resolvers import remove_wikibase_language
+
 REMOVE_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {
   removeWikibaseLanguage(language: $language, wikibaseId: $wikibaseId)
 }"""
+
 
 @pytest.mark.asyncio
 async def test_remove_wikibase_language_one(wikibase_fixture):
@@ -23,7 +25,9 @@ async def test_remove_wikibase_language_one(wikibase_fixture):
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase_fixture.id)
+        before_removing_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_fixture.id),
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -53,7 +57,9 @@ async def test_remove_wikibase_language_two(wikibase_fixture):
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase_fixture.id)
+        before_removing_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_fixture.id),
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -66,7 +72,9 @@ async def test_remove_wikibase_language_two(wikibase_fixture):
         expected_value=["Cymru", "Deutsch"],
     )
 
-    remove_result = await remove_wikibase_language(wikibase_id=wikibase_fixture.id, language="Cymru")
+    remove_result = await remove_wikibase_language(
+        wikibase_id=wikibase_fixture.id, language="Cymru"
+    )
     assert remove_result
 
     after_removing_result = await test_schema.execute(
@@ -75,7 +83,9 @@ async def test_remove_wikibase_language_two(wikibase_fixture):
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase_fixture.id)
+        after_removing_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_fixture.id),
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -109,7 +119,9 @@ async def test_remove_wikibase_language_three(wikibase_fixture):
         expected_value=["Cymru", "Deutsch"],
     )
 
-    remove_result = await remove_wikibase_language(wikibase_id=wikibase_fixture.id, language="Greek")
+    remove_result = await remove_wikibase_language(
+        wikibase_id=wikibase_fixture.id, language="Greek"
+    )
     assert remove_result
 
     after_removing_result = await test_schema.execute(

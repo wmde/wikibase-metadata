@@ -11,6 +11,7 @@ from model.enum import WikibaseType
 from tests.test_upsert_cloud_instances.constant import DATA_DIRECTORY
 from tests.utils import MockResponse
 
+
 @pytest.fixture
 async def wikibase(db_session):  # pylint: disable=unused-argument
     """Create a test wikibase"""
@@ -24,6 +25,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
         session.add(wikibase)
         await session.flush()
         return wikibase
+
 
 @pytest.mark.asyncio
 async def test_insert_cloud_instances(db_session, mocker):

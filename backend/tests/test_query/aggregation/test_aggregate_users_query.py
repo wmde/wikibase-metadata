@@ -5,9 +5,15 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.user.wikibase_user_group_model import WikibaseUserGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_model import WikibaseUserObservationModel
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import WikibaseUserObservationGroupModel
+from model.database.wikibase_observation.user.wikibase_user_group_model import (
+    WikibaseUserGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_model import (
+    WikibaseUserObservationModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
+    WikibaseUserObservationGroupModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
 
@@ -20,6 +26,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
   }
 }
 """
+
 
 @pytest.fixture
 async def wikibase_with_user_observation(db_session):

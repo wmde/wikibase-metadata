@@ -12,6 +12,7 @@ FETCH_EXTERNAL_IDENTIFIER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchExternalIdentifierData(wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest.fixture
 async def wikibase_with_sparql(db_session):
     """Create a wikibase with sparql endpoint for observation tests"""
@@ -38,7 +39,9 @@ async def wikibase_with_sparql(db_session):
 @pytest.mark.asyncio
 @pytest.mark.ei
 @pytest.mark.sparql
-async def test_create_external_identifier_observation_success(wikibase_with_sparql, mocker):
+async def test_create_external_identifier_observation_success(
+    wikibase_with_sparql, mocker
+):
     """Test"""
 
     mocker.patch(
@@ -69,7 +72,9 @@ async def test_create_external_identifier_observation_success(wikibase_with_spar
 @pytest.mark.asyncio
 @pytest.mark.ei
 @pytest.mark.sparql
-async def test_create_external_identifier_observation_failure(wikibase_with_sparql, mocker):
+async def test_create_external_identifier_observation_failure(
+    wikibase_with_sparql, mocker
+):
     """Test"""
 
     time.sleep(1)

@@ -19,6 +19,7 @@ TEST_USER_GROUPS = ["bureaucrat", "sysop", "bot", "editor", "administrator"]
 
 TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
+
 @pytest.fixture
 async def wikibase(db_session):
     """Create a wikibase with script path for user observation tests"""

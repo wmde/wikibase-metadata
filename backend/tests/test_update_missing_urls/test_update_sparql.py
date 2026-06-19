@@ -6,14 +6,19 @@ import pytest
 
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from resolvers.update import update_missing_sparql_urls
 from tests.test_schema import test_schema
 from tests.test_update_missing_urls.constant import DATA_DIRECTORY, WIKIBASE_URLS_QUERY
 from tests.utils import MockResponse, assert_layered_property_value
+
 
 @pytest.fixture
 async def wikibase_with_manifest(db_session):
@@ -59,6 +64,7 @@ async def wikibase_with_manifest(db_session):
         wikibase_id = wikibase.id
     return wikibase_id
 
+
 @pytest.mark.asyncio
 async def test_update_missing_sparql_urls(wikibase_with_manifest, mocker):
     """Test update_missing_sparql_urls"""
@@ -72,7 +78,9 @@ async def test_update_missing_sparql_urls(wikibase_with_manifest, mocker):
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
     assert_layered_property_value(
-        before_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase_with_manifest)
+        before_adding_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_with_manifest),
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -99,7 +107,9 @@ async def test_update_missing_sparql_urls(wikibase_with_manifest, mocker):
     assert after_adding_result.errors is None
     assert after_adding_result.data is not None
     assert_layered_property_value(
-        after_adding_result.data, ["wikibase", "id"], expected_value=str(wikibase_with_manifest)
+        after_adding_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_with_manifest),
     )
     assert_layered_property_value(
         after_adding_result.data,

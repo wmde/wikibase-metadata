@@ -10,6 +10,7 @@ from tests.test_update_missing_urls.constant import DATA_DIRECTORY, WIKIBASE_URL
 from tests.utils import MockResponse
 from tests.utils.assert_property_value import assert_layered_property_value
 
+
 @pytest.fixture
 async def wikibase(db_session):
     """Create a wikibase with article path for software version tests"""
@@ -27,6 +28,7 @@ async def wikibase(db_session):
         await session.refresh(wikibase)
         wikibase_id = wikibase.id
     return wikibase_id
+
 
 @pytest.mark.asyncio
 async def test_update_missing_script_paths(wikibase, mocker):

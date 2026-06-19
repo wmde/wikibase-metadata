@@ -14,6 +14,7 @@ FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchPropertyPopularityData(wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest.fixture
 async def wikibase_with_sparql(db_session):
     """Create a wikibase with sparql endpoint"""
@@ -36,7 +37,9 @@ async def wikibase_with_sparql(db_session):
 @pytest.mark.asyncio
 @pytest.mark.property
 @pytest.mark.sparql
-async def test_create_property_popularity_observation_success(wikibase_with_sparql, mocker):
+async def test_create_property_popularity_observation_success(
+    wikibase_with_sparql, mocker
+):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
     await asyncio.to_thread(time.sleep, 1)
@@ -65,10 +68,13 @@ async def test_create_property_popularity_observation_success(wikibase_with_spar
     assert result.data is not None
     assert result.data["fetchPropertyPopularityData"]
 
+
 @pytest.mark.asyncio
 @pytest.mark.property
 @pytest.mark.sparql
-async def test_create_property_popularity_observation_failure(wikibase_with_sparql, mocker):
+async def test_create_property_popularity_observation_failure(
+    wikibase_with_sparql, mocker
+):
     """Test"""
 
     mocker.patch(

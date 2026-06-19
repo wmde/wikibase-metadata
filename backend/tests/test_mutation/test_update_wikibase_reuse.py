@@ -38,6 +38,7 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 }
 """
 
+
 @pytest.fixture
 async def wikibase(db_session):  # pylint: disable=unused-argument
     """Create a test wikibase"""
@@ -51,6 +52,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
         session.add(wikibase)
         await session.flush()
         return wikibase
+
 
 @pytest.fixture
 async def wikibases_mixed_reuse(db_session):
@@ -80,9 +82,10 @@ async def wikibases_mixed_reuse(db_session):
 
         await session.flush()
 
+
 @pytest.fixture
 async def wikibase_reuse_false_fixture(db_session):
-    """Create wikibases """
+    """Create wikibases"""
     async with get_async_session() as session:
         # for i in range(3):
         #     wikibase = WikibaseModel(
@@ -107,6 +110,7 @@ async def wikibase_reuse_false_fixture(db_session):
             session.add(wikibase)
 
         await session.flush()
+
 
 @pytest.mark.asyncio
 async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture):
@@ -161,6 +165,7 @@ async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture):
     assert affecting_id in [
         int(w["id"]) for w in after_adding_result.data["unfiltered"]["data"]
     ]
+
 
 @pytest.fixture
 async def wikibase_reuse_true_fixture(db_session):
@@ -240,6 +245,7 @@ async def test_set_wikibase_reuse_true(wikibase_reuse_true_fixture):
     assert_layered_property_value(
         after_adding_result.data, ["unfiltered", "meta", "totalCount"], expected_value=3
     )
+
 
 @pytest.mark.asyncio
 async def test_set_cloud_wikibase_reuse_true(wikibases_mixed_reuse):

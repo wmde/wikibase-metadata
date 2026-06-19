@@ -4,8 +4,12 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from model.enum.wikibase_type_enum import WikibaseType
@@ -35,11 +39,18 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 """ + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
 
+
 @pytest.fixture
 async def five_wikibases_with_software_versions(db_session):
     """Create 5 software entries; 4 reachable via UNKNOWN type, 1 only via SUITE"""
     async with get_async_session() as session:
-        software_names = ["SoftwareA", "SoftwareB", "SoftwareC", "SoftwareD", "SoftwareE"]
+        software_names = [
+            "SoftwareA",
+            "SoftwareB",
+            "SoftwareC",
+            "SoftwareD",
+            "SoftwareE",
+        ]
         software_entries = {}
         for name in software_names:
             software = WikibaseSoftwareModel(
@@ -90,6 +101,7 @@ async def five_wikibases_with_software_versions(db_session):
             session.add(version)
 
         await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.agg
@@ -162,7 +174,9 @@ async def test_aggregate_software_query():
     ],
 )
 @pytest.mark.version
-async def test_aggregate_software_query_filtered(five_wikibases_with_software_versions, exclude: list, expected_count: int):
+async def test_aggregate_software_query_filtered(
+    five_wikibases_with_software_versions, exclude: list, expected_count: int
+):
     """Test Aggregated Software Query"""
 
     result = await test_schema.execute(

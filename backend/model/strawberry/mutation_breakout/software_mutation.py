@@ -5,6 +5,7 @@ from strawberry import Info
 
 from resolvers import authenticate, merge_software_by_id, set_extension_wbs_bundled
 
+
 @strawberry.type
 class SoftwareMutation:
     """Software-Related Mutations"""

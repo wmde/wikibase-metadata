@@ -5,8 +5,12 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from tests.test_query.wikibase.software_version_obs.assert_software_version import (
@@ -36,6 +40,7 @@ query MyQuery($wikibaseId: Int!) {
 }
 
 """ + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
+
 
 @pytest.fixture
 async def wikibase_with_skins_observation(db_session):
@@ -100,7 +105,9 @@ async def wikibase_with_skins_observation(db_session):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_wikibase_software_version_most_recent_observation_skins_query(wikibase_with_skins_observation):
+async def test_wikibase_software_version_most_recent_observation_skins_query(
+    wikibase_with_skins_observation,
+):
     """Test Wikibase Most Recent Software Version Installed Skins Observation Query"""
 
     wikibase_id, observation_id, skin_ids = wikibase_with_skins_observation
@@ -124,11 +131,18 @@ async def test_wikibase_software_version_most_recent_observation_skins_query(wik
     assert_property_value(most_recent, "returnedData", True)
 
     assert_layered_property_count(most_recent, ["installedSkins"], 3)
-    for index, (name, expected_version, expected_version_date, expected_version_hash) in enumerate([
-        ("MonoBook", None, None, None),
-        ("Timeless", "0.8.9", None, None),
-        ("Vector", None, None, None),
-    ]):
+    for index, (
+        name,
+        expected_version,
+        expected_version_date,
+        expected_version_hash,
+    ) in enumerate(
+        [
+            ("MonoBook", None, None, None),
+            ("Timeless", "0.8.9", None, None),
+            ("Vector", None, None, None),
+        ]
+    ):
         assert_software_version(
             most_recent["installedSkins"][index],
             skin_ids[name],

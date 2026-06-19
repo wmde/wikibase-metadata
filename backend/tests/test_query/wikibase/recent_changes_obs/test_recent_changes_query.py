@@ -5,7 +5,9 @@ from datetime import datetime
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import WikibaseRecentChangesObservationModel
+from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import (
+    WikibaseRecentChangesObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import DATETIME_FORMAT, assert_layered_property_value
 from datetime import timezone
@@ -32,6 +34,7 @@ query MyQuery($wikibaseId: Int!) {
   }
 }
 """
+
 
 @pytest.fixture
 async def wikibase_with_recent_changes_observation(db_session):
@@ -61,8 +64,12 @@ async def wikibase_with_recent_changes_observation(db_session):
         observation.bot_change_active_user_count = 1
         # observation.first_change_date = datetime(2024, 3, 1, 12, 0, 0)
         # observation.last_change_date = datetime(2024, 3, 5, 12, 0, 0)
-        observation.first_change_date = datetime(2024, 3, 1, 12, 0, 0, tzinfo=timezone.utc)
-        observation.last_change_date = datetime(2024, 3, 5, 12, 0, 0, tzinfo=timezone.utc)
+        observation.first_change_date = datetime(
+            2024, 3, 1, 12, 0, 0, tzinfo=timezone.utc
+        )
+        observation.last_change_date = datetime(
+            2024, 3, 5, 12, 0, 0, tzinfo=timezone.utc
+        )
         observation.observation_date = datetime(2024, 3, 6, tzinfo=timezone.utc)
         session.add(observation)
         await session.flush()
@@ -72,10 +79,13 @@ async def wikibase_with_recent_changes_observation(db_session):
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_query_recent_changes_success(wikibase_with_recent_changes_observation):
+async def test_wikibase_query_recent_changes_success(
+    wikibase_with_recent_changes_observation,
+):
     """Test success scenario"""
     result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_with_recent_changes_observation.id}
+        WIKIBASE_QUERY,
+        variable_values={"wikibaseId": wikibase_with_recent_changes_observation.id},
     )
 
     assert result.errors is None

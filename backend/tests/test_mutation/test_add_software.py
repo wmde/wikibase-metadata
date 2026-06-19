@@ -29,6 +29,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   }
 }"""
 
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
 async def test_add_software(db_session):

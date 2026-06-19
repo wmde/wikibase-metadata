@@ -6,6 +6,7 @@ from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_page_meta
 
+
 @pytest.fixture
 async def wikibases_with_types(db_session):
     """Create test wikibases with various types"""
@@ -37,6 +38,7 @@ async def wikibases_with_types(db_session):
             wikibase.wikibase_type = wikibase_type
             session.add(wikibase)
         await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.query

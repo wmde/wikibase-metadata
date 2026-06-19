@@ -6,6 +6,7 @@ from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
 from tests.utils import MockResponse
 
+
 @pytest.fixture
 async def wikibase(db_session):
     """Create a wikibase with article path and no software observations"""
@@ -21,6 +22,7 @@ async def wikibase(db_session):
         wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.soup

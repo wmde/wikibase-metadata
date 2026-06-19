@@ -4,6 +4,7 @@ import pytest
 from model.database.wikibase_model import WikibaseModel
 from fetch_data import update_out_of_date_connectivity_observations
 
+
 @pytest.fixture
 async def wikibase_out_of_date_connectivity(db_session):
     """Create 1 wikibase with no connectivity observations (out of date)"""
@@ -26,7 +27,9 @@ async def wikibase_out_of_date_connectivity(db_session):
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-async def test_update_out_of_date_connectivity_observations(wikibase_out_of_date_connectivity, mocker):
+async def test_update_out_of_date_connectivity_observations(
+    wikibase_out_of_date_connectivity, mocker
+):
     """Test"""
 
     mocker.patch(

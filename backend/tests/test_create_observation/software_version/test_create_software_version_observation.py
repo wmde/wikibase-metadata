@@ -17,6 +17,7 @@ FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchVersionData(wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest.fixture
 async def wikibase_with_article_path(db_session):
     """Create a wikibase with article path for software version tests"""
@@ -36,10 +37,13 @@ async def wikibase_with_article_path(db_session):
         wikibase_id = wikibase.id
     return wikibase_id
 
+
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_success(wikibase_with_article_path, mocker):
+async def test_create_software_version_observation_success(
+    wikibase_with_article_path, mocker
+):
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -74,7 +78,9 @@ async def test_create_software_version_observation_success(wikibase_with_article
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_success_ii(wikibase_with_article_path, mocker):
+async def test_create_software_version_observation_success_ii(
+    wikibase_with_article_path, mocker
+):
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -109,7 +115,9 @@ async def test_create_software_version_observation_success_ii(wikibase_with_arti
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_failure(wikibase_with_article_path, mocker):
+async def test_create_software_version_observation_failure(
+    wikibase_with_article_path, mocker
+):
     """Test Failure Scenario"""
 
     time.sleep(1)
@@ -119,6 +127,8 @@ async def test_create_software_version_observation_failure(wikibase_with_article
         side_effect=[MockResponse("", 500)],
     )
     mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
-    success = await create_software_version_observation(wikibase_with_article_path, mock_info)
+    success = await create_software_version_observation(
+        wikibase_with_article_path, mock_info
+    )
     assert success is False
     assert len(mock_info.context["background_tasks"].tasks) == 1

@@ -44,8 +44,11 @@ async def get_wikibase_without_primary_language():
 
     pytest.fail("No wikibase found without primary language")
 
+
 @pytest.fixture
-async def wikibase_with_additional_languages(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_additional_languages(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a test wikibase"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -132,7 +135,9 @@ async def test_update_wikibase_primary_language_to_current_additional(
     name="update-wikibase-primary-language-2",
     scope="session",
 )
-async def test_update_wikibase_primary_language_to_new(wikibase_with_additional_languages):
+async def test_update_wikibase_primary_language_to_new(
+    wikibase_with_additional_languages,
+):
     """
     Test Updating Primary Language
 
@@ -184,7 +189,9 @@ async def test_update_wikibase_primary_language_to_new(wikibase_with_additional_
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_primary_language_to_same(wikibase_with_additional_languages):
+async def test_update_wikibase_primary_language_to_same(
+    wikibase_with_additional_languages,
+):
     """
     Test Updating Primary Language
 
@@ -232,6 +239,7 @@ async def test_update_wikibase_primary_language_to_same(wikibase_with_additional
         ["wikibase", "languages", "additional"],
         expected_value=["Cymru", "Deutsch"],
     )
+
 
 @pytest.fixture
 async def wikibase_without_language(db_session):  # pylint: disable=unused-argument

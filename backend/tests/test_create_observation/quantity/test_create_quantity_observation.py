@@ -13,6 +13,7 @@ FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchQuantityData(wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest.fixture
 async def wikibase_with_sparql_quantity(db_session):
     """Create a wikibase with sparql endpoint for quantity tests"""
@@ -36,7 +37,9 @@ async def wikibase_with_sparql_quantity(db_session):
 @pytest.mark.asyncio
 @pytest.mark.quantity
 @pytest.mark.sparql
-async def test_create_quantity_observation_success(wikibase_with_sparql_quantity, mocker):
+async def test_create_quantity_observation_success(
+    wikibase_with_sparql_quantity, mocker
+):
     """Test"""
 
     mocker.patch(
@@ -60,11 +63,12 @@ async def test_create_quantity_observation_success(wikibase_with_sparql_quantity
     assert result.data["fetchQuantityData"]
 
 
-
 @pytest.mark.asyncio
 @pytest.mark.quantity
 @pytest.mark.sparql
-async def test_create_quantity_observation_failure(wikibase_with_sparql_quantity, mocker):
+async def test_create_quantity_observation_failure(
+    wikibase_with_sparql_quantity, mocker
+):
     """Test"""
 
     time.sleep(1)

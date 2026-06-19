@@ -7,6 +7,7 @@ from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
 
+
 @pytest.fixture
 async def wikibase_fixture(db_session):
     """Create Wikibase Test Fixture"""
@@ -24,10 +25,11 @@ async def wikibase_fixture(db_session):
         wikibase.wikibase_type = WikibaseType["CLOUD"]
         session.add(wikibase)
         await session.flush()
-        print('asdf')
+        print("asdf")
         print(wikibase)
         print(wikibase.id)
         return wikibase
+
 
 # @pytest.mark.dependency(
 #     name="query-cloud-instances",
