@@ -13,29 +13,10 @@ from fetch_data import (
 )
 from tests.utils import MockResponse, ParsedUrl
 
-@pytest.fixture
-async def wikibase(db_session):
-    """Create a wikibase with script path for user observation tests"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="User Test Wikibase",
-            base_url="https://example.com",
-            script_path="/w",
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
-
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_update_out_of_date_log_first_observations_success(wikibase, mocker):
+async def test_update_out_of_date_log_first_observations_success(wikibase_fixture, mocker):
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [
@@ -98,7 +79,7 @@ async def test_update_out_of_date_log_first_observations_success(wikibase, mocke
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_update_out_of_date_log_last_observations_success(wikibase, mocker):
+async def test_update_out_of_date_log_last_observations_success(wikibase_fixture, mocker):
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [

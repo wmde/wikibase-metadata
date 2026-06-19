@@ -39,23 +39,29 @@ async def db_session():
 async def wikibase_fixture(db_session):
     """Create Wikibase Test Fixture"""
     from sqlalchemy.ext.asyncio import AsyncSession
+    from resolvers import add_wikibase_language
 
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://example.com",
             sparql_endpoint_url="https://example.com/sparql",
+            script_path="/w",
+            article_path="/wiki"
         )
         wikibase.checked = True
         wikibase.reuse = True
         wikibase.test = False
-        wikibase.wikibase_type = None
+        wikibase.wikibase_type = "CLOUD"
         session.add(wikibase)
         await session.flush()
-        print('asdf')
-        print(wikibase)
-        print(wikibase.id)
+
+        await add_wikibase_language(wikibase.id, "French")
+        for lang in ["Deutsch", "Cymru"]:
+            await add_wikibase_language(wikibase_id=wikibase.id, language=lang)
+        
         return wikibase
+    
 
 
 @pytest.fixture

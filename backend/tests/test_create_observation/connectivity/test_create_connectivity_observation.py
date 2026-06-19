@@ -2,8 +2,6 @@
 
 from urllib.error import HTTPError
 import pytest
-from model.database.wikibase_model import WikibaseModel
-from data.database_connection import get_async_session
 from fetch_data import create_connectivity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
@@ -11,21 +9,6 @@ from tests.utils import get_mock_context
 FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchConnectivityData(wikibaseId: $wikibaseId)
 }"""
-
-@pytest.fixture
-async def wikibase(db_session):  # pylint: disable=unused-argument
-    """Create a test wikibase"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Test Wikibase",
-            base_url="https://example.com",
-            sparql_endpoint_url="https://query.example.com",
-            # script_path="/sparql"
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        return wikibase
 
 
 @pytest.mark.asyncio
@@ -83,7 +66,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
     ],
 )
 async def test_create_connectivity_observation_success(
-    wikibase, mocker, links: list[tuple[str, str]]
+    wikibase_fixture, mocker, links: list[tuple[str, str]]
 ):
     """Test"""
 
@@ -97,14 +80,14 @@ async def test_create_connectivity_observation_success(
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
-    success = await create_connectivity_observation(wikibase.id)
+    success = await create_connectivity_observation(wikibase_fixture.id)
     assert success
 
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-async def test_create_connectivity_observation_success_complex(wikibase, mocker):
+async def test_create_connectivity_observation_success_complex(wikibase_fixture, mocker):
     """Test"""
 
     returned_links = []
@@ -129,7 +112,7 @@ async def test_create_connectivity_observation_success_complex(wikibase, mocker)
 
     result = await test_schema.execute(
         FETCH_CONNECTIVITY_MUTATION,
-        variable_values={"wikibaseId": wikibase.id},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -141,7 +124,7 @@ async def test_create_connectivity_observation_success_complex(wikibase, mocker)
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-async def test_create_connectivity_observation_failure(wikibase, mocker):
+async def test_create_connectivity_observation_failure(wikibase_fixture, mocker):
     """Test"""
 
     mocker.patch(
@@ -156,5 +139,5 @@ async def test_create_connectivity_observation_failure(wikibase, mocker):
             )
         ],
     )
-    success = await create_connectivity_observation(wikibase.id)
+    success = await create_connectivity_observation(wikibase_fixture.id)
     assert success is False

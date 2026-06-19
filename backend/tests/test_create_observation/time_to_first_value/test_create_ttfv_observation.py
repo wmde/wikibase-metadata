@@ -3,8 +3,6 @@
 import re
 import time
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse
 from tests.utils.mock_request import get_mock_context
@@ -15,28 +13,10 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchTimeToFirstValueData(wikibaseId: $wikibaseId)
 }"""
 
-@pytest.fixture
-async def wikibase(db_session):
-    """Create a wikibase with article path for software version tests"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Software Version Test Wikibase",
-            base_url="https://example.com",
-            article_path="/wiki",
-            script_path="/w"
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
 
 @pytest.mark.asyncio
 @pytest.mark.soup
-async def test_create_ttfv_observation_success(wikibase, mocker):
+async def test_create_ttfv_observation_success(wikibase_fixture, mocker):
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -101,7 +81,7 @@ async def test_create_ttfv_observation_success(wikibase, mocker):
 
     result = await test_schema.execute(
         FETCH_TTFV_MUTATION,
-        variable_values={"wikibaseId": wikibase},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
