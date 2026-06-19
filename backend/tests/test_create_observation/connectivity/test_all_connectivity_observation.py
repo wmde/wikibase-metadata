@@ -21,16 +21,17 @@ async def wikibase(db_session):
     from sqlalchemy.ext.asyncio import AsyncSession
 
     async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name=f"Connectivity Test Wikibase",
-            base_url=f"https://connectivity-example.com",
-            sparql_endpoint_url=f"https://connectivity-example.com/sparql",
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
-        session.add(wikibase)
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Connectivity Test Wikibase",
+                base_url=f"https://connectivity-example-{i}.com",
+                sparql_endpoint_url=f"https://connectivity-example-{i}.com/sparql",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
         await session.flush()
 
 @pytest.mark.asyncio

@@ -82,37 +82,6 @@ async def test_add_wikibase_mutation(wikibase_categories):
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
     assert wikibase.url.url == "https://example.com"
 
-
-@pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
-async def test_add_wikibase_ii_mutation():
-    """Test Add Another Wikibase"""
-
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Mock Wikibase II",
-                "description": "Another Mock wikibase for testing this codebase",
-                "organization": "Wikibase Mockery International",
-                "country": "Germany",
-                "region": "Europe",
-                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
-                "urls": {
-                    "baseUrl": "https://mock-wikibase.com/",
-                    "articlePath": "wiki",
-                },
-                "reuse": True,
-            }
-        },
-    )
-
-    assert result.errors is None
-    assert result.data is not None
-    assert result.data["addWikibase"]["id"] == "2"
-
-
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
     db_session,

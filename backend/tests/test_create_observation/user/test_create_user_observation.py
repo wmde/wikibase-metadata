@@ -55,10 +55,10 @@ async def test_create_user_observation_failure(wikibase, mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(name="user-20", depends=["user-failure"], scope="session")
-@pytest.mark.mutation
+# @pytest.mark.dependency(name="user-20", depends=["user-failure"], scope="session")
+# @pytest.mark.mutation
 @pytest.mark.user
-async def test_create_user_observation_single_pull(mocker):
+async def test_create_user_observation_single_pull(wikibase, mocker):
     """Test Data, Single Pull Scenario"""
 
     time.sleep(1)
@@ -83,7 +83,7 @@ async def test_create_user_observation_single_pull(mocker):
 
     result = await test_schema.execute(
         FETCH_USER_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase},
         context_value=get_mock_context("test-auth-token"),
     )
 

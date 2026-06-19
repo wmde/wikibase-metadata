@@ -30,11 +30,6 @@ async def wikibase_with_script_path_recent_changes(db_session):
     return wikibase_id
 
 @pytest.mark.asyncio
-# @pytest.mark.dependency(
-#     name="recent-changes-success-ood",
-#     depends=["add-wikibase", "add-wikibase-script-path"],
-#     scope="session",
-# )
 async def test_update_out_of_date_recent_changes_observations_success(wikibase_with_script_path_recent_changes, mocker):
     """Test success scenario"""
 

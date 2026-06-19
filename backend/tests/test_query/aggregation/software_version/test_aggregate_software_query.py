@@ -1,7 +1,14 @@
 """Test Aggregated Software Query"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import pytest
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
+from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
+from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_software.software_model import WikibaseSoftwareModel
+from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
+from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
 )
@@ -28,6 +35,61 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 """ + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
 
+@pytest.fixture
+async def five_wikibases_with_software_versions(db_session):
+    """Create 5 software entries; 4 reachable via UNKNOWN type, 1 only via SUITE"""
+    async with get_async_session() as session:
+        software_names = ["SoftwareA", "SoftwareB", "SoftwareC", "SoftwareD", "SoftwareE"]
+        software_entries = {}
+        for name in software_names:
+            software = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.SOFTWARE,
+                software_name=name,
+            )
+            session.add(software)
+            await session.flush()
+            await session.refresh(software)
+            software_entries[name] = software
+
+        # 4 software entries on UNKNOWN (None) type wikibases - never excluded by these filters
+        # 1 software entry (SoftwareE) only on a SUITE wikibase - dropped when SUITE excluded
+        assignments = [
+            ("SoftwareA", None),
+            ("SoftwareB", None),
+            ("SoftwareC", None),
+            ("SoftwareD", None),
+            ("SoftwareE", WikibaseType.SUITE),
+        ]
+
+        for i, (software_name, wikibase_type) in enumerate(assignments):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Aggregate Software Test Wikibase {i}",
+                base_url=f"https://aggregate-software-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = wikibase_type
+            session.add(wikibase)
+            await session.flush()
+            await session.refresh(wikibase)
+
+            obs = WikibaseSoftwareVersionObservationModel()
+            obs.wikibase_id = wikibase.id
+            obs.returned_data = True
+            obs.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+            session.add(obs)
+            await session.flush()
+            await session.refresh(obs)
+
+            version = WikibaseSoftwareVersionModel(
+                software=software_entries[software_name],
+                version="1.0",
+            )
+            version.wikibase_software_version_observation_id = obs.id
+            session.add(version)
+
+        await session.flush()
 
 @pytest.mark.asyncio
 @pytest.mark.agg
@@ -86,10 +148,6 @@ async def test_aggregate_software_query():
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
@@ -104,7 +162,7 @@ async def test_aggregate_software_query():
     ],
 )
 @pytest.mark.version
-async def test_aggregate_software_query_filtered(exclude: list, expected_count: int):
+async def test_aggregate_software_query_filtered(five_wikibases_with_software_versions, exclude: list, expected_count: int):
     """Test Aggregated Software Query"""
 
     result = await test_schema.execute(
