@@ -69,6 +69,7 @@ async def test_aggregate_skins_query_page_one():
         )
 
 
+# asdf
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query

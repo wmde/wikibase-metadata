@@ -24,23 +24,23 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    depends=["statistics-success", "statistics-failure"], scope="session"
-)
+# @pytest.mark.dependency(
+#     depends=["statistics-success", "statistics-failure"], scope="session"
+# )
 @pytest.mark.query
 @pytest.mark.statistics
-async def test_wikibase_statistics_all_observations_query():
+async def test_wikibase_statistics_all_observations_query(wikibase_fixture):
     """Test Wikibase All Statistics Observations"""
 
     result = await test_schema.execute(
-        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert result.errors is None
     assert result.data is not None
     assert "wikibase" in result.data
     result_wikibase = result.data["wikibase"]
-    assert_property_value(result_wikibase, "id", "1")
+    assert_property_value(result_wikibase, "id", str(wikibase_fixture.id))
     assert "statisticsObservations" in result_wikibase
 
     assert "allObservations" in result_wikibase["statisticsObservations"]

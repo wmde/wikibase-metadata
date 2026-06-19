@@ -195,14 +195,11 @@ async def test_remove_wikibase_sparql_frontend_url(
     )
 
 @pytest.mark.asyncio
-async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):
+async def test_remove_wikibase_article_path(wikibase):
     """Remove Wikibase article path"""
 
-    base_url = "https://biodiversity.wikibase.cloud"
-    wikibase_id = await get_wikibase_id_by_base_url(base_url)
-
     before_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
@@ -210,7 +207,7 @@ async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value=base_url,
+        expected_value="https://example.com",
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -220,13 +217,13 @@ async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "specialStatisticsUrl"],
-        expected_value="https://biodiversity.wikibase.cloud/wiki/Special:Statistics",
+        expected_value="https://example.com/wiki/Special:Statistics",
     )
 
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": wikibase_id,
+            "wikibaseId": wikibase.id,
             "urlType": "ARTICLE_PATH",
         },
         context_value=get_mock_context("test-auth-token"),
@@ -236,17 +233,17 @@ async def test_remove_wikibase_article_path(get_wikibase_id_by_base_url):
     assert remove_result.data["removeWikibaseUrl"] is True
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_URLS_QUERY, variable_values={"wikibaseId": wikibase.id}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase_id)
+        after_removing_result.data, ["wikibase", "id"], expected_value=str(wikibase.id)
     )
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://biodiversity.wikibase.cloud",
+        expected_value="https://example.com",
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -336,15 +333,13 @@ async def test_update_wikibase_article_path_fail(wikibase):
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
-async def test_update_wikibase_base_url_fail():
+async def test_update_wikibase_base_url_fail(wikibase):
     """Update Wikibase URL Fail"""
 
     update_result = await test_schema.execute(
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
-            "wikibaseId": 1,
+            "wikibaseId": wikibase.id,
             "url": "localhost/wikibase",
             "urlType": "BASE_URL",
         },
