@@ -2,11 +2,7 @@
 """Test Update Wikibase Type"""
 
 import pytest
-import pytest_asyncio
 
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
 
@@ -26,63 +22,13 @@ mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
 }"""
 
 
-@pytest_asyncio.fixture(scope="function")
-def get_test_wikibase_id():
-    """Get the ID of a wikibase that exists in the DB, optionally filtered by type"""
-
-    async def _get_id(wikibase_type=None):
-        result = await test_schema.execute("""
-            query {
-              wikibaseList(pageNumber: 1, pageSize: 100) {
-                data {
-                  id
-                  wikibaseType
-                }
-              }
-            }
-            """)
-        assert result.errors is None
-        assert result.data is not None
-
-        wikibases = result.data["wikibaseList"]["data"]
-
-        if wikibase_type:
-            for wikibase in wikibases:
-                if wikibase["wikibaseType"] == wikibase_type:
-                    return int(wikibase["id"])
-            pytest.fail(f"No wikibase found with type: {wikibase_type}")
-
-        return int(wikibases[0]["id"])
-
-    return _get_id
-
-@pytest.fixture
-async def wikibase(db_session):
-    """Create a wikibase with article path for software version tests"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Software Version Test Wikibase",
-            base_url="https://example.com",
-            article_path="/wiki",
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType["CLOUD"]
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        return wikibase
-
 @pytest.mark.asyncio
-async def test_update_wikibase_type(wikibase):
+async def test_update_wikibase_type(wikibase_fixture):
     """Test Update to Other"""
 
-    wikibase_id = wikibase.id
-    
     for wikibase_type in ["OTHER", "UNKNOWN", "SUITE", "TEST"]:
         before_updating_result = await test_schema.execute(
-            WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
+            WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
         )
 
         assert before_updating_result.errors is None
@@ -91,7 +37,7 @@ async def test_update_wikibase_type(wikibase):
 
         update_result = await test_schema.execute(
             UPDATE_WIKIBASE_TYPE_MUTATION,
-            variable_values={"wikibaseId": wikibase_id, "wikibaseType": wikibase_type},
+            variable_values={"wikibaseId": wikibase_fixture.id, "wikibaseType": wikibase_type},
             context_value=get_mock_context("test-auth-token"),
         )
         
@@ -100,7 +46,7 @@ async def test_update_wikibase_type(wikibase):
         assert update_result.data["updateWikibaseType"] is True
 
         after_updating_result = await test_schema.execute(
-            WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
+            WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
         )
 
         assert after_updating_result.errors is None
@@ -109,14 +55,12 @@ async def test_update_wikibase_type(wikibase):
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_type_to_same(wikibase):
+async def test_update_wikibase_type_to_same(wikibase_fixture):
     """Test Update to Current Value"""
 
-    # wikibase_id = await get_test_wikibase_id("CLOUD")
-    wikibase_id = wikibase.id
 
     before_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert before_updating_result.errors is None
@@ -128,7 +72,7 @@ async def test_update_wikibase_type_to_same(wikibase):
 
     update_result = await test_schema.execute(
         UPDATE_WIKIBASE_TYPE_MUTATION,
-        variable_values={"wikibaseId": wikibase_id, "wikibaseType": "CLOUD"},
+        variable_values={"wikibaseId": wikibase_fixture.id, "wikibaseType": "CLOUD"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None
@@ -136,7 +80,7 @@ async def test_update_wikibase_type_to_same(wikibase):
     assert update_result.data["updateWikibaseType"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert after_updating_result.errors is None

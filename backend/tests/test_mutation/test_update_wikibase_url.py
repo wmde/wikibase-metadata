@@ -66,7 +66,7 @@ def get_wikibase_id_by_base_url():
 
 @pytest.fixture
 async def wikibase(db_session):  # pylint: disable=unused-argument
-    """Create a test wikibase"""
+    """Create a test wikibase without a script path"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
