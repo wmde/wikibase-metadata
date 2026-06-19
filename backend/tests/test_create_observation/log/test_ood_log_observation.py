@@ -13,10 +13,13 @@ from fetch_data import (
 )
 from tests.utils import MockResponse, ParsedUrl
 
+
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_update_out_of_date_log_first_observations_success(wikibase_fixture, mocker):
+async def test_update_out_of_date_log_first_observations_success(
+    wikibase_fixture, mocker
+):
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [
@@ -79,7 +82,9 @@ async def test_update_out_of_date_log_first_observations_success(wikibase_fixtur
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_update_out_of_date_log_last_observations_success(wikibase_fixture, mocker):
+async def test_update_out_of_date_log_last_observations_success(
+    wikibase_fixture, mocker
+):
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [

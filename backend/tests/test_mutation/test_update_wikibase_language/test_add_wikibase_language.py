@@ -16,8 +16,11 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
   addWikibaseLanguage(language: $language, wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest.fixture
-async def wikibase_without_primary_language(db_session):  # pylint: disable=unused-argument
+async def wikibase_without_primary_language(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a test wikibase"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -30,8 +33,11 @@ async def wikibase_without_primary_language(db_session):  # pylint: disable=unus
 
         return wikibase
 
+
 @pytest.fixture
-async def wikibase_without_additional_languages(db_session):  # pylint: disable=unused-argument
+async def wikibase_without_additional_languages(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a test wikibase"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

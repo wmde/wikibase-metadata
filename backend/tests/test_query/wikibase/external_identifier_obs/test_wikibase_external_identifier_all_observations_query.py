@@ -1,7 +1,9 @@
 """Test Wikibase All External Identifier Observations"""
 
 import pytest
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import WikibaseExternalIdentifierObservationModel
+from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
+    WikibaseExternalIdentifierObservationModel,
+)
 from tests.test_query.wikibase.external_identifier_obs.assert_external_identifier import (
     assert_external_identifier,
 )
@@ -12,7 +14,9 @@ from tests.test_schema import test_schema
 from tests.utils import assert_property_value
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import WikibaseQuantityObservationModel
+from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
+    WikibaseQuantityObservationModel,
+)
 from tests.test_query.wikibase.quantity_obs.assert_quantity import assert_quantity
 from datetime import datetime, timezone
 
@@ -80,7 +84,9 @@ async def wikibase_with_two_ei_observations(db_session):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.ei
-async def test_wikibase_external_identifier_all_observations_query(wikibase_with_two_ei_observations):
+async def test_wikibase_external_identifier_all_observations_query(
+    wikibase_with_two_ei_observations,
+):
     """Test Wikibase All External Identifier Observations"""
 
     wikibase_id, obs1_id, obs2_id = wikibase_with_two_ei_observations

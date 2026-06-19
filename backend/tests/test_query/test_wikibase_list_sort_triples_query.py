@@ -1,13 +1,16 @@
 """Test Sort Wikibase List"""
 
 import pytest
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import WikibaseQuantityObservationModel
+from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
+    WikibaseQuantityObservationModel,
+)
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 from datetime import datetime, timezone
+
 
 @pytest.fixture
 async def eleven_wikibases_with_one_quantity(db_session):
@@ -37,6 +40,7 @@ async def eleven_wikibases_with_one_quantity(db_session):
                 observation.total_properties = 0
                 session.add(observation)
         await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.query
@@ -79,7 +83,9 @@ async def test_wikibase_list_query_sort_triples_asc(eleven_wikibases_with_one_qu
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_triples_desc(eleven_wikibases_with_one_quantity):
+async def test_wikibase_list_query_sort_triples_desc(
+    eleven_wikibases_with_one_quantity,
+):
     """Test Sort Triples Descending"""
 
     result = await test_schema.execute(

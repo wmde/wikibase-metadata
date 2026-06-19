@@ -14,6 +14,7 @@ mutation MyMutation($baseId: Int!, $additionalId: Int!) {
   mergeSoftwareById(baseId: $baseId, additionalId: $additionalId)
 }"""
 
+
 @pytest.fixture
 async def wikibase_software(db_session):
     """Create two software entries with different types"""
@@ -50,7 +51,10 @@ async def test_merge_software_by_id_mutation_fail_same_id(wikibase_software):
 
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": wikibase_software.id, "additionalId": wikibase_software.id},
+        variable_values={
+            "baseId": wikibase_software.id,
+            "additionalId": wikibase_software.id,
+        },
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is not None
@@ -88,8 +92,11 @@ async def two_software_different_types(db_session):
         await session.refresh(software2)
         return software1.id, software2.id
 
+
 @pytest.mark.asyncio
-async def test_merge_software_by_id_mutation_fail_different_types(two_software_different_types):
+async def test_merge_software_by_id_mutation_fail_different_types(
+    two_software_different_types,
+):
     """Test Add Wikibase"""
 
     base_id, additional_id = two_software_different_types

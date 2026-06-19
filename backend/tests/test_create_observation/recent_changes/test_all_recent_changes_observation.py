@@ -16,6 +16,7 @@ mutation MyMutation {
 }
 """
 
+
 @pytest.fixture
 async def three_wikibases_with_script_path(db_session):
     """Create 3 test wikibases with script path for recent changes tests"""
@@ -35,7 +36,9 @@ async def three_wikibases_with_script_path(db_session):
 
 
 @pytest.mark.asyncio
-async def test_update_all_recent_changes_observations_fail(three_wikibases_with_script_path, mocker):
+async def test_update_all_recent_changes_observations_fail(
+    three_wikibases_with_script_path, mocker
+):
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:

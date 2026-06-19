@@ -10,6 +10,7 @@ from fetch_data import update_out_of_date_recent_changes_observations
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from model.database import WikibaseRecentChangesObservationModel
 
+
 @pytest.fixture
 async def wikibase_with_script_path_recent_changes(db_session):
     """Create a wikibase with script path for recent changes observation tests"""
@@ -29,8 +30,11 @@ async def wikibase_with_script_path_recent_changes(db_session):
         wikibase_id = wikibase.id
     return wikibase_id
 
+
 @pytest.mark.asyncio
-async def test_update_out_of_date_recent_changes_observations_success(wikibase_with_script_path_recent_changes, mocker):
+async def test_update_out_of_date_recent_changes_observations_success(
+    wikibase_with_script_path_recent_changes, mocker
+):
     """Test success scenario"""
 
     mock_changes_human = [
@@ -142,7 +146,10 @@ async def test_update_out_of_date_recent_changes_observations_success(wikibase_w
     async with get_async_session() as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == wikibase_with_script_path_recent_changes)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path_recent_changes
+            )
             .order_by(WikibaseRecentChangesObservationModel.observation_date.desc())
         )
         observation = (await async_session.scalars(query)).first()

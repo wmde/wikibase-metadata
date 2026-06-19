@@ -4,9 +4,15 @@ from datetime import datetime, timezone
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-from model.database.wikibase_observation.user.wikibase_user_group_model import WikibaseUserGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import WikibaseUserObservationGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_model import WikibaseUserObservationModel
+from model.database.wikibase_observation.user.wikibase_user_group_model import (
+    WikibaseUserGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
+    WikibaseUserObservationGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_model import (
+    WikibaseUserObservationModel,
+)
 from data.database_connection import async_engine, get_async_session
 from unittest.mock import patch
 from dotenv import load_dotenv
@@ -47,7 +53,7 @@ async def wikibase_fixture(db_session):
             base_url="https://example.com",
             sparql_endpoint_url="https://example.com/sparql",
             script_path="/w",
-            article_path="/wiki"
+            article_path="/wiki",
         )
         wikibase.checked = True
         wikibase.reuse = True
@@ -59,9 +65,8 @@ async def wikibase_fixture(db_session):
         await add_wikibase_language(wikibase.id, "French")
         for lang in ["Deutsch", "Cymru"]:
             await add_wikibase_language(wikibase_id=wikibase.id, language=lang)
-        
+
         return wikibase
-    
 
 
 @pytest.fixture
@@ -86,7 +91,7 @@ async def three_wikibases_fixture(db_session):
             wikibase_ids.append(wikibase.id)
 
         return wikibase_ids
-    
+
 
 @pytest.fixture
 async def wikibase_with_user_observation(db_session):

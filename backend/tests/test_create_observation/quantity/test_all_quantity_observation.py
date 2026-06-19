@@ -16,6 +16,7 @@ mutation MyMutation {
 }
 """
 
+
 @pytest.fixture
 async def ten_wikibases_with_sparql(db_session):
     """Create 10 test wikibases with sparql endpoint for quantity tests"""
@@ -32,6 +33,7 @@ async def ten_wikibases_with_sparql(db_session):
             wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
+
 
 @pytest.mark.asyncio
 async def test_update_all_quantity_observations_fail(ten_wikibases_with_sparql, mocker):

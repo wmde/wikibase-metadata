@@ -37,10 +37,13 @@ async def test_update_wikibase_type(wikibase_fixture):
 
         update_result = await test_schema.execute(
             UPDATE_WIKIBASE_TYPE_MUTATION,
-            variable_values={"wikibaseId": wikibase_fixture.id, "wikibaseType": wikibase_type},
+            variable_values={
+                "wikibaseId": wikibase_fixture.id,
+                "wikibaseType": wikibase_type,
+            },
             context_value=get_mock_context("test-auth-token"),
         )
-        
+
         assert update_result.errors is None
         assert update_result.data is not None
         assert update_result.data["updateWikibaseType"] is True
@@ -51,13 +54,12 @@ async def test_update_wikibase_type(wikibase_fixture):
 
         assert after_updating_result.errors is None
         assert after_updating_result.data is not None
-        assert after_updating_result.data["wikibase"]["wikibaseType"] == wikibase_type 
+        assert after_updating_result.data["wikibase"]["wikibaseType"] == wikibase_type
 
 
 @pytest.mark.asyncio
 async def test_update_wikibase_type_to_same(wikibase_fixture):
     """Test Update to Current Value"""
-
 
     before_updating_result = await test_schema.execute(
         WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}

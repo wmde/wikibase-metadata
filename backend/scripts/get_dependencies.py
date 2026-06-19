@@ -175,9 +175,7 @@ def build_removal_order(graph):
     while graph:
 
         leaf_nodes = sorted(
-            node
-            for node, dependents in graph.items()
-            if len(dependents) == 0
+            node for node, dependents in graph.items() if len(dependents) == 0
         )
 
         if not leaf_nodes:
@@ -235,10 +233,7 @@ def main(root_dir):
 
     print(f"Tests with dependencies: {len(dependency_map)}")
 
-    relationship_count = sum(
-        len(v)
-        for v in dependency_map.values()
-    )
+    relationship_count = sum(len(v) for v in dependency_map.values())
 
     print(f"Dependency relationships: {relationship_count}")
 
@@ -247,10 +242,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 2:
 
-        print(
-            "Usage:\n"
-            "python test_dependency_order.py <directory>"
-        )
+        print("Usage:\n" "python test_dependency_order.py <directory>")
 
         sys.exit(1)
 

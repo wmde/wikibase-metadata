@@ -24,6 +24,7 @@ async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
             select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
         )
 
+
 @pytest.fixture
 async def wikibase_categories(db_session):
     """Create wikibase categories"""
@@ -81,6 +82,7 @@ async def test_add_wikibase_mutation(wikibase_categories):
     )
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
     assert wikibase.url.url == "https://example.com"
+
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(

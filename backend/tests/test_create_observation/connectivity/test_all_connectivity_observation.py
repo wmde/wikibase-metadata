@@ -15,6 +15,7 @@ mutation MyMutation {
 }
 """
 
+
 @pytest.fixture
 async def wikibase(db_session):
     """Create 3 test wikibases for connectivity tests"""
@@ -33,6 +34,7 @@ async def wikibase(db_session):
             wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation

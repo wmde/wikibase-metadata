@@ -16,6 +16,7 @@ FETCH_STATISTICS_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
+
 @pytest.fixture
 async def wikibase_with_article_path_stats(db_session):
     """Create a wikibase with article path for statistics tests"""
@@ -39,7 +40,9 @@ async def wikibase_with_article_path_stats(db_session):
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.statistics
-async def test_create_statistics_observation_success(wikibase_with_article_path_stats, mocker):
+async def test_create_statistics_observation_success(
+    wikibase_with_article_path_stats, mocker
+):
     """Test Data Returned Scenario"""
 
     with open(
@@ -65,7 +68,9 @@ async def test_create_statistics_observation_success(wikibase_with_article_path_
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.statistics
-async def test_create_statistics_observation_failure(wikibase_with_article_path_stats, mocker):
+async def test_create_statistics_observation_failure(
+    wikibase_with_article_path_stats, mocker
+):
     """Test Failure Scenario"""
 
     time.sleep(1)
@@ -74,5 +79,7 @@ async def test_create_statistics_observation_failure(wikibase_with_article_path_
         "fetch_data.soup_data.create_statistics_data_observation.requests.get",
         side_effect=[MockResponse("", 500)],
     )
-    success = await create_special_statistics_observation(wikibase_with_article_path_stats)
+    success = await create_special_statistics_observation(
+        wikibase_with_article_path_stats
+    )
     assert success is False

@@ -4,8 +4,12 @@ from datetime import datetime
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.time_to_first_value.item_date_model import WikibaseItemDateModel
-from model.database.wikibase_observation.time_to_first_value.ttfv_observation_model import WikibaseTimeToFirstValueObservationModel
+from model.database.wikibase_observation.time_to_first_value.item_date_model import (
+    WikibaseItemDateModel,
+)
+from model.database.wikibase_observation.time_to_first_value.ttfv_observation_model import (
+    WikibaseTimeToFirstValueObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import (
     assert_layered_property_count,
@@ -36,6 +40,7 @@ query MyQuery($wikibaseId: Int!) {
 }
 """
 
+
 @pytest.fixture
 async def wikibase_with_ttfv_observation(db_session):
     """Create a wikibase with a time to first value observation"""
@@ -54,7 +59,9 @@ async def wikibase_with_ttfv_observation(db_session):
 
         observation = WikibaseTimeToFirstValueObservationModel(wikibase_id=wikibase.id)
         observation.returned_data = True
-        observation.initiation_date = datetime(2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc)
+        observation.initiation_date = datetime(
+            2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc
+        )
         session.add(observation)
         await session.flush()
         await session.refresh(observation)
@@ -65,7 +72,7 @@ async def wikibase_with_ttfv_observation(db_session):
             (100, datetime(2012, 10, 29, 21, 48, 13, tzinfo=timezone.utc)),
             (1001, datetime(2013, 8, 11, 4, 55, 58, tzinfo=timezone.utc)),
         ]
-        
+
         item_date_ids = []
         for item_number, creation_date in item_dates:
             item_date = WikibaseItemDateModel()
@@ -117,20 +124,36 @@ async def test_wikibase_query_ttfv_success(wikibase_with_ttfv_observation):
         4,
     )
     assert_item_date(
-        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"]["itemDates"][0],
-        item_date_ids[0], 1, datetime(2012, 10, 29, 18, 18, 48),
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][0],
+        item_date_ids[0],
+        1,
+        datetime(2012, 10, 29, 18, 18, 48),
     )
     assert_item_date(
-        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"]["itemDates"][1],
-        item_date_ids[1], 15, datetime(2012, 10, 29, 17, 3, 21),
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][1],
+        item_date_ids[1],
+        15,
+        datetime(2012, 10, 29, 17, 3, 21),
     )
     assert_item_date(
-        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"]["itemDates"][2],
-        item_date_ids[2], 100, datetime(2012, 10, 29, 21, 48, 13),
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][2],
+        item_date_ids[2],
+        100,
+        datetime(2012, 10, 29, 21, 48, 13),
     )
     assert_item_date(
-        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"]["itemDates"][3],
-        item_date_ids[3], 1001, datetime(2013, 8, 11, 4, 55, 58),
+        result.data["wikibase"]["timeToFirstValueObservations"]["mostRecent"][
+            "itemDates"
+        ][3],
+        item_date_ids[3],
+        1001,
+        datetime(2013, 8, 11, 4, 55, 58),
     )
 
 

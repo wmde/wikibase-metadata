@@ -5,7 +5,9 @@ from freezegun import freeze_time
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import WikibaseLogMonthObservationModel
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
 )
@@ -31,6 +33,7 @@ query MyQuery($wikibaseId: Int!) {
 }
 
 """ + WIKIBASE_LOG_OBSERVATION_FRAGMENT
+
 
 @pytest.fixture
 async def wikibase_with_log_observation(db_session):
@@ -73,13 +76,16 @@ async def wikibase_with_log_observation(db_session):
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_last_month_most_recent_observation_query(wikibase_with_log_observation):
+async def test_wikibase_log_last_month_most_recent_observation_query(
+    wikibase_with_log_observation,
+):
     """Test Wikibase Most Recent Log Observation"""
 
     wikibase_id, observation_id = wikibase_with_log_observation
 
     result = await test_schema.execute(
-        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None

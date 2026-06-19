@@ -13,6 +13,7 @@ mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
   setExtensionWbsBundled(extensionId: $extensionId, bundled: $bundled)
 }"""
 
+
 @pytest.fixture
 async def extension_software(db_session):
     """Create a test extension"""

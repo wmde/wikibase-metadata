@@ -16,6 +16,7 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
   fetchLogData(wikibaseId: $wikibaseId, firstMonth: $firstMonth)
 }"""
 
+
 @pytest.fixture
 async def wikibase_with_script_path_log(db_session):
     """Create a wikibase with script path for log observation tests"""
@@ -35,10 +36,13 @@ async def wikibase_with_script_path_log(db_session):
         wikibase_id = wikibase.id
     return wikibase_id
 
+
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_create_log_observation_first_success(wikibase_with_script_path_log, mocker):
+async def test_create_log_observation_first_success(
+    wikibase_with_script_path_log, mocker
+):
     """
     Test One-Pull Per Month, Data Returned Scenario
 
@@ -60,6 +64,7 @@ async def test_create_log_observation_first_success(wikibase_with_script_path_lo
             }
         )
     oldest_mock_log = min(mock_logs, key=lambda x: x.get("timestamp"))
+
     def mockery(*args, **kwargs) -> MockResponse:
         assert kwargs.get("timeout") == 300
 
@@ -108,13 +113,17 @@ async def test_create_log_observation_first_success(wikibase_with_script_path_lo
                 )
 
         raise NotImplementedError(query.raw_url)
+
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
 
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_script_path_log, "firstMonth": True},
+        variable_values={
+            "wikibaseId": wikibase_with_script_path_log,
+            "firstMonth": True,
+        },
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is None
@@ -125,7 +134,9 @@ async def test_create_log_observation_first_success(wikibase_with_script_path_lo
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_create_log_observation_last_success(wikibase_with_script_path_log, mocker):
+async def test_create_log_observation_last_success(
+    wikibase_with_script_path_log, mocker
+):
     """
     Test One-Pull Per Month, Data Returned Scenario
 
@@ -182,7 +193,10 @@ async def test_create_log_observation_last_success(wikibase_with_script_path_log
 
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_script_path_log, "firstMonth": False},
+        variable_values={
+            "wikibaseId": wikibase_with_script_path_log,
+            "firstMonth": False,
+        },
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -194,7 +208,9 @@ async def test_create_log_observation_last_success(wikibase_with_script_path_log
 @freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_create_log_first_observation_error(wikibase_with_script_path_log, mocker):
+async def test_create_log_first_observation_error(
+    wikibase_with_script_path_log, mocker
+):
     """
     Test One-Pull Per Month, Error Returned Scenario
 
@@ -205,7 +221,9 @@ async def test_create_log_first_observation_error(wikibase_with_script_path_log,
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_log_observation(wikibase_with_script_path_log, first_month=True)
+    success = await create_log_observation(
+        wikibase_with_script_path_log, first_month=True
+    )
     assert success is False
 
 
@@ -222,8 +240,11 @@ async def test_create_log_last_observation_error(wikibase_with_script_path_log, 
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_log_observation(wikibase_with_script_path_log, first_month=False)
+    success = await create_log_observation(
+        wikibase_with_script_path_log, first_month=False
+    )
     assert success is False
+
 
 @pytest.fixture
 async def wikibase_with_script_path(db_session):
@@ -243,16 +264,19 @@ async def wikibase_with_script_path(db_session):
         await session.refresh(wikibase)
         return wikibase
 
+
 @freeze_time(datetime(2024, 3, 3))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_create_log_last_observation_no_last_month(wikibase_with_script_path, mocker):
+async def test_create_log_last_observation_no_last_month(
+    wikibase_with_script_path, mocker
+):
     """
     Test One-Pull Per Month, No Data In Range Returned Scenario
 
     log_month_id 5, last month, success, no data"""
 
-    print('asdf')
+    print("asdf")
     print(wikibase_with_script_path)
     mock_logs: list[dict] = []
     for i in range(70):
@@ -300,5 +324,7 @@ async def test_create_log_last_observation_no_last_month(wikibase_with_script_pa
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(wikibase_with_script_path.id, first_month=False)
+    success = await create_log_observation(
+        wikibase_with_script_path.id, first_month=False
+    )
     assert success

@@ -21,6 +21,7 @@ mutation MyMutation {
 }
 """
 
+
 @pytest.fixture
 async def wikibase_list(db_session):
     """Create the wikibases required by the cloud instance test."""
@@ -50,13 +51,14 @@ async def wikibase_list(db_session):
                 WikibaseModel(
                     wikibase_name=wb["wikibase_name"],
                     wikibase_type=wb["type"],
-                    base_url=f"https://example-{i}.com"
+                    base_url=f"https://example-{i}.com",
                 )
             )
 
         await session.flush()
 
     return wikibases
+
 
 @pytest.mark.asyncio
 async def test_add_cloud_instance(wikibase_list, mocker):

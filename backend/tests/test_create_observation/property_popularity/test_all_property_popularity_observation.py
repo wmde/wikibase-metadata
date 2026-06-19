@@ -16,6 +16,7 @@ mutation MyMutation {
 }
 """
 
+
 @pytest.fixture
 async def three_wikibases_with_sparql(db_session):
     """Create 3 test wikibases with sparql endpoint for property popularity tests"""
@@ -35,7 +36,9 @@ async def three_wikibases_with_sparql(db_session):
 
 
 @pytest.mark.asyncio
-async def test_update_all_property_popularity_observations_fail(three_wikibases_with_sparql, mocker):
+async def test_update_all_property_popularity_observations_fail(
+    three_wikibases_with_sparql, mocker
+):
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs):

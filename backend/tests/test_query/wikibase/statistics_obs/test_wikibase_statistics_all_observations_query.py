@@ -33,7 +33,8 @@ async def test_wikibase_statistics_all_observations_query(wikibase_fixture):
     """Test Wikibase All Statistics Observations"""
 
     result = await test_schema.execute(
-        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
+        WIKIBASE_STATISTICS_ALL_OBSERVATIONS_QUERY,
+        variable_values={"wikibaseId": wikibase_fixture.id},
     )
 
     assert result.errors is None

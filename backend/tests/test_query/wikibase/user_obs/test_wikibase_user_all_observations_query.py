@@ -5,9 +5,15 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.user.wikibase_user_group_model import WikibaseUserGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import WikibaseUserObservationGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_model import WikibaseUserObservationModel
+from model.database.wikibase_observation.user.wikibase_user_group_model import (
+    WikibaseUserGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
+    WikibaseUserObservationGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_model import (
+    WikibaseUserObservationModel,
+)
 from tests.test_query.wikibase.user_obs.assert_user import assert_user_group
 from tests.test_query.wikibase.user_obs.user_fragment import (
     WIKIBASE_USER_OBSERVATION_FRAGMENT,
@@ -70,7 +76,9 @@ async def wikibase_with_two_user_observations(db_session):
         await session.refresh(obs2)
 
         group_all = WikibaseUserGroupModel(group_name="*", wikibase_default_group=True)
-        group_sysop = WikibaseUserGroupModel(group_name="sysop", wikibase_default_group=True)
+        group_sysop = WikibaseUserGroupModel(
+            group_name="sysop", wikibase_default_group=True
+        )
         session.add(group_all)
         session.add(group_sysop)
         await session.flush()
@@ -115,13 +123,16 @@ async def wikibase_with_two_user_observations(db_session):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.user
-async def test_wikibase_user_all_observations_query(wikibase_with_two_user_observations):
+async def test_wikibase_user_all_observations_query(
+    wikibase_with_two_user_observations,
+):
     """Test Wikibase All User Observations"""
 
     data = wikibase_with_two_user_observations
 
     result = await test_schema.execute(
-        WIKIBASE_USER_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": data["wikibase_id"]}
+        WIKIBASE_USER_ALL_OBSERVATIONS_QUERY,
+        variable_values={"wikibaseId": data["wikibase_id"]},
     )
 
     assert result.errors is None

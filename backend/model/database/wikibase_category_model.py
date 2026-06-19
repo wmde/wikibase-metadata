@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from model.database.base import ModelBase
 from model.enum import WikibaseCategory
 
+
 class WikibaseCategoryModel(ModelBase):
     """Wikibase Category Table"""
 

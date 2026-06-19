@@ -7,7 +7,9 @@ from fetch_data import update_out_of_date_quantity_observations
 @pytest.mark.asyncio
 @pytest.mark.quantity
 @pytest.mark.sparql
-async def test_update_out_of_date_quantity_observations_success(wikibase_fixture, mocker):
+async def test_update_out_of_date_quantity_observations_success(
+    wikibase_fixture, mocker
+):
     """Test"""
 
     mocker.patch(

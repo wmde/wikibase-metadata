@@ -87,7 +87,9 @@ async def test_create_connectivity_observation_success(
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-async def test_create_connectivity_observation_success_complex(wikibase_fixture, mocker):
+async def test_create_connectivity_observation_success_complex(
+    wikibase_fixture, mocker
+):
     """Test"""
 
     returned_links = []

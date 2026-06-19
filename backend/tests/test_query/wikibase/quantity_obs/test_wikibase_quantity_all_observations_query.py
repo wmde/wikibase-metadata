@@ -5,7 +5,9 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import WikibaseQuantityObservationModel
+from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
+    WikibaseQuantityObservationModel,
+)
 from tests.test_query.wikibase.quantity_obs.assert_quantity import assert_quantity
 from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
     WIKIBASE_QUANTITY_OBSERVATION_FRAGMENT,
@@ -77,13 +79,16 @@ async def wikibase_with_two_quantity_observations(db_session):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.quantity
-async def test_wikibase_quantity_all_observations_query(wikibase_with_two_quantity_observations):
+async def test_wikibase_quantity_all_observations_query(
+    wikibase_with_two_quantity_observations,
+):
     """Test Wikibase All Quantity Observations"""
 
     wikibase_id, obs1_id, obs2_id = wikibase_with_two_quantity_observations
 
     result = await test_schema.execute(
-        WIKIBASE_QUANTITY_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_QUANTITY_ALL_OBSERVATIONS_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None

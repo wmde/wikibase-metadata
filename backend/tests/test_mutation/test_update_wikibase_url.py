@@ -64,6 +64,7 @@ def get_wikibase_id_by_base_url():
 
     return _get_id
 
+
 @pytest.fixture
 async def wikibase(db_session):  # pylint: disable=unused-argument
     """Create a test wikibase without a script path"""
@@ -194,6 +195,7 @@ async def test_remove_wikibase_sparql_frontend_url(
         expected_value=None,
     )
 
+
 @pytest.mark.asyncio
 async def test_remove_wikibase_article_path(wikibase):
     """Remove Wikibase article path"""
@@ -311,6 +313,7 @@ async def test_update_wikibase_url(wikibase):
         ["wikibase", "urls", "sparqlEndpointUrl"],
         expected_value="https://query.example.com/sparql",
     )
+
 
 @pytest.mark.asyncio
 async def test_update_wikibase_article_path_fail(wikibase):

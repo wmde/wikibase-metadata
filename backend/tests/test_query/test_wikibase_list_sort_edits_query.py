@@ -5,11 +5,14 @@ import datetime
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import WikibaseRecentChangesObservationModel
+from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import (
+    WikibaseRecentChangesObservationModel,
+)
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 from datetime import timezone, datetime
+
 
 @pytest.fixture
 async def eleven_wikibases_with_one_recent_changes(db_session):
@@ -39,15 +42,21 @@ async def eleven_wikibases_with_one_recent_changes(db_session):
                 observation.bot_change_count = 6
                 observation.bot_change_user_count = 2
                 observation.bot_change_active_user_count = 1
-                observation.first_change_date = datetime(2024, 3, 1, 12, 0, 0, tzinfo=timezone.utc)
-                observation.last_change_date = datetime(2024, 3, 5, 12, 0, 0, tzinfo=timezone.utc)
+                observation.first_change_date = datetime(
+                    2024, 3, 1, 12, 0, 0, tzinfo=timezone.utc
+                )
+                observation.last_change_date = datetime(
+                    2024, 3, 5, 12, 0, 0, tzinfo=timezone.utc
+                )
                 session.add(observation)
         await session.flush()
 
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_edits_asc(eleven_wikibases_with_one_recent_changes):
+async def test_wikibase_list_query_sort_edits_asc(
+    eleven_wikibases_with_one_recent_changes,
+):
     """Test Sort Edits Ascending"""
 
     result = await test_schema.execute(
@@ -98,7 +107,9 @@ async def test_wikibase_list_query_sort_edits_asc(eleven_wikibases_with_one_rece
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_edits_desc(eleven_wikibases_with_one_recent_changes):
+async def test_wikibase_list_query_sort_edits_desc(
+    eleven_wikibases_with_one_recent_changes,
+):
     """Test Sort Edits Descending"""
 
     result = await test_schema.execute(

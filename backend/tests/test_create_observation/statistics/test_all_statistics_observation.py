@@ -16,6 +16,7 @@ mutation MyMutation {
 }
 """
 
+
 @pytest.fixture
 async def three_wikibases_with_article_path_stats(db_session):
     """Create 3 test wikibases with article path for statistics tests"""
@@ -33,8 +34,11 @@ async def three_wikibases_with_article_path_stats(db_session):
             session.add(wikibase)
         await session.flush()
 
+
 @pytest.mark.asyncio
-async def test_update_all_statistics_observations_fail(three_wikibases_with_article_path_stats, mocker):
+async def test_update_all_statistics_observations_fail(
+    three_wikibases_with_article_path_stats, mocker
+):
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs):

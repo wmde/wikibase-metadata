@@ -3,6 +3,7 @@
 import pytest
 from fetch_data import update_out_of_date_user_observations
 
+
 @pytest.mark.asyncio
 @pytest.mark.user
 async def test_update_out_of_date_user_observations_empty(wikibase_fixture, mocker):
