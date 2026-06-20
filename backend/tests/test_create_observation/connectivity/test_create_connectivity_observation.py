@@ -67,7 +67,7 @@ FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 )
 async def test_create_connectivity_observation_success(
     wikibase_fixture, mocker, links: list[tuple[str, str]]
-):
+): # pylint: redefined-outer-name
     """Test"""
 
     returned_links = []
@@ -89,7 +89,7 @@ async def test_create_connectivity_observation_success(
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(
     wikibase_fixture, mocker
-):
+): # pylint: redefined-outer-name
     """Test"""
 
     returned_links = []

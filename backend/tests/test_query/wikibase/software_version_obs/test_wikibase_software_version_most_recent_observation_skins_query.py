@@ -43,7 +43,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_skins_observation(db_session):
+async def wikibase_with_skins_observation(db_session): # pylint: disable=unused-argument
     """Create a wikibase with software version observation containing 3 skins"""
     async with get_async_session() as session:
         skins = [

@@ -9,7 +9,7 @@ from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
 
 
 @pytest.fixture
-async def wikibase_fixture(db_session):
+async def wikibase(db_session):
     """Create Wikibase Test Fixture"""
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -31,13 +31,8 @@ async def wikibase_fixture(db_session):
         return wikibase
 
 
-# @pytest.mark.dependency(
-#     name="query-cloud-instances",
-#     depends=["transform-cloud-instance", "wikibase-set-reuse-true"],
-#     scope="session",
-# )
 @pytest.mark.asyncio
-async def test_query_cloud_instance(wikibase_fixture):
+async def test_query_cloud_instance(wikibase): # pylint: disable=unused-argument, redefined-outer-name 
     """
     test whether querying the wikibase list via graphql returns a cloud instance
     """

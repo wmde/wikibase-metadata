@@ -36,7 +36,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_two_ei_observations(db_session):
+async def wikibase_with_two_ei_observations(db_session): # pylint: disable=unused-argument
     """Create a wikibase with two external identifier observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

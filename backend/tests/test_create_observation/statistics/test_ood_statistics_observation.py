@@ -8,7 +8,7 @@ from tests.utils import MockResponse
 
 
 @pytest.fixture
-async def wikibase(db_session):
+async def wikibase(db_session): # pylint: disable=unused-argument
     """Create a wikibase with article path and no software observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -27,7 +27,7 @@ async def wikibase(db_session):
 @pytest.mark.asyncio
 @pytest.mark.soup
 @pytest.mark.statistics
-async def test_update_out_of_date_stats_observations_fail(wikibase, mocker):
+async def test_update_out_of_date_stats_observations_fail(wikibase, mocker): # pylint: disable=unused-argument
     """Test Data Returned Scenario"""
 
     mocker.patch(

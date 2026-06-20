@@ -18,7 +18,7 @@ DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
 
 @pytest.fixture
-async def wikibase_with_article_path_stats(db_session):
+async def wikibase_with_article_path_stats(db_session): # pylint: disable=unused-argument
     """Create a wikibase with article path for statistics tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

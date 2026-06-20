@@ -15,7 +15,7 @@ mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
 
 
 @pytest.fixture
-async def extension_software(db_session):
+async def extension_software(db_session): # pylint: disable=unused-argument
     """Create a test extension"""
     async with get_async_session() as session:
         software = WikibaseSoftwareModel(

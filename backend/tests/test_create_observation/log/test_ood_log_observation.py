@@ -19,7 +19,7 @@ from tests.utils import MockResponse, ParsedUrl
 @pytest.mark.log
 async def test_update_out_of_date_log_first_observations_success(
     wikibase_fixture, mocker
-):
+): # pylint: disable=unused-argument, redefined-outer-name
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [
@@ -84,7 +84,7 @@ async def test_update_out_of_date_log_first_observations_success(
 @pytest.mark.log
 async def test_update_out_of_date_log_last_observations_success(
     wikibase_fixture, mocker
-):
+): # pylint: disable=unused-argument, redefined-outer-name
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [

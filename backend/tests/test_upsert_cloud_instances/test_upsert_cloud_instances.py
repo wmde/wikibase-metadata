@@ -28,7 +28,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_insert_cloud_instances(db_session, mocker):
+async def test_insert_cloud_instances(db_session, mocker): # pylint: disable=unused-argument
     """
     test updating the local database with a single cloud instance fetched from the API
 
@@ -85,7 +85,7 @@ async def test_insert_cloud_instances(db_session, mocker):
 
 
 @pytest.mark.asyncio
-async def test_update_cloud_instances(wikibase, mocker):
+async def test_update_cloud_instances(wikibase, mocker): # pylint: disable=unused-argument, redefined-outer-name
     """
     test updating the local database with a single cloud instance fetched from the API
     the update of an existing entry
@@ -137,7 +137,7 @@ async def test_update_cloud_instances(wikibase, mocker):
 
 
 @pytest.mark.asyncio
-async def test_transform_to_cloud_instance(wikibase, mocker):
+async def test_transform_to_cloud_instance(wikibase, mocker): # pylint: disable=unused-argument, redefined-outer-name
     """
     test updating the local database with a single cloud instance fetched from the API
     the update of an existing entry that was not a cloud instance before

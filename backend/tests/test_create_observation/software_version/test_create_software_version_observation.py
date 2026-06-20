@@ -19,7 +19,7 @@ FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_article_path(db_session):
+async def wikibase_with_article_path(db_session): # pylint: disable=unused-argument
     """Create a wikibase with article path for software version tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
