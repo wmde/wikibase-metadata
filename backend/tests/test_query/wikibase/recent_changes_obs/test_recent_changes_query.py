@@ -37,7 +37,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_recent_changes_observation(db_session):
+async def wikibase_with_recent_changes_observation(db_session): # pylint: disable=unused-argument
     """Create a wikibase with a recent changes observation"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

@@ -3,9 +3,6 @@
 import os
 import pytest
 
-from model.enum.wikibase_type_enum import WikibaseType
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import (
     DATA_DIRECTORY,
@@ -56,12 +53,11 @@ async def wikibase_list(db_session):
             )
 
         await session.flush()
-
     return wikibases
 
 
 @pytest.mark.asyncio
-async def test_add_cloud_instance(wikibase_list, mocker):
+async def test_add_cloud_instance(wikibase_list, mocker): # pylint: disable=unused-argument, redefined-outer-name
     """
     test adding a list of cloud instances
     """

@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 
 
 @pytest.fixture
-async def eleven_wikibases_with_one_quantity(db_session):
+async def eleven_wikibases_with_one_quantity(db_session): # pylint: disable=unused-argument
     """Create 11 wikibases - 10 with no observations, 1 with quantity observation"""
     async with get_async_session() as session:
         for i in range(11):
@@ -44,7 +44,7 @@ async def eleven_wikibases_with_one_quantity(db_session):
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_triples_asc(eleven_wikibases_with_one_quantity):
+async def test_wikibase_list_query_sort_triples_asc(eleven_wikibases_with_one_quantity): # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Triples Ascending"""
 
     result = await test_schema.execute(
@@ -85,7 +85,7 @@ async def test_wikibase_list_query_sort_triples_asc(eleven_wikibases_with_one_qu
 @pytest.mark.query
 async def test_wikibase_list_query_sort_triples_desc(
     eleven_wikibases_with_one_quantity,
-):
+): # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Triples Descending"""
 
     result = await test_schema.execute(

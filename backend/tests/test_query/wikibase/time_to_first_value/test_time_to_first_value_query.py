@@ -42,7 +42,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_ttfv_observation(db_session):
+async def wikibase_with_ttfv_observation(db_session): # pylint: disable=unused-argument
     """Create a wikibase with a time to first value observation"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

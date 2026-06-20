@@ -12,7 +12,7 @@ from model.database import WikibaseRecentChangesObservationModel
 
 
 @pytest.fixture
-async def wikibase_with_script_path_recent_changes(db_session):
+async def wikibase_with_script_path_recent_changes(db_session): # pylint: disable=unused-argument
     """Create a wikibase with script path for recent changes observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

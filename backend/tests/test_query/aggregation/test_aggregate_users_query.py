@@ -29,7 +29,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(db_session):
+async def wikibase_with_user_observation(db_session): # pylint: disable=unused-argument
     """Create a wikibase with user observation for aggregate users tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -76,7 +76,7 @@ async def wikibase_with_user_observation(db_session):
 @pytest.mark.agg
 @pytest.mark.user
 @pytest.mark.query
-async def test_aggregate_users_query(wikibase_with_user_observation):
+async def test_aggregate_users_query(wikibase_with_user_observation): # pylint: disable=unused-argument, redefined-outer-name
     """Test Aggregate Users Query"""
 
     result = await test_schema.execute(AGGREGATED_USERS_QUERY)

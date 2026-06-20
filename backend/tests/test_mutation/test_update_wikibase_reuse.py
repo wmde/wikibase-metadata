@@ -55,7 +55,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.fixture
-async def wikibases_mixed_reuse(db_session):
+async def wikibases_mixed_reuse(db_session): # pylint: disable=unused-argument
     """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
     async with get_async_session() as session:
         for i in range(3):
@@ -84,7 +84,7 @@ async def wikibases_mixed_reuse(db_session):
 
 
 @pytest.fixture
-async def wikibase_reuse_false_fixture(db_session):
+async def wikibase_reuse_false_fixture(db_session): # pylint: disable=unused-argument
     """Create wikibases"""
     async with get_async_session() as session:
         # for i in range(3):
@@ -168,7 +168,7 @@ async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture):
 
 
 @pytest.fixture
-async def wikibase_reuse_true_fixture(db_session):
+async def wikibase_reuse_true_fixture(db_session): # pylint: disable=unused-argument
     """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

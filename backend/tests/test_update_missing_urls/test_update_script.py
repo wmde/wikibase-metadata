@@ -12,7 +12,7 @@ from tests.utils.assert_property_value import assert_layered_property_value
 
 
 @pytest.fixture
-async def wikibase(db_session):
+async def wikibase(db_session): # pylint: disable=unused-argument
     """Create a wikibase with article path for software version tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

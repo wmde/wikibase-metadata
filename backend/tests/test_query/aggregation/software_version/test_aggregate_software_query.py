@@ -41,7 +41,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def five_wikibases_with_software_versions(db_session):
+async def five_wikibases_with_software_versions(db_session): # pylint: disable=unused-argument
     """Create 5 software entries; 4 reachable via UNKNOWN type, 1 only via SUITE"""
     async with get_async_session() as session:
         software_names = [

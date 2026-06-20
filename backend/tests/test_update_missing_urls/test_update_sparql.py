@@ -21,7 +21,7 @@ from tests.utils import MockResponse, assert_layered_property_value
 
 
 @pytest.fixture
-async def wikibase_with_manifest(db_session):
+async def wikibase_with_manifest(db_session): # pylint: disable=unused-argument
     """Create a wikibase with WikibaseManifest software version observation"""
     async with get_async_session() as session:
         manifest_software = WikibaseSoftwareModel(

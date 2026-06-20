@@ -21,7 +21,7 @@ TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 
 @pytest.fixture
-async def wikibase(db_session):
+async def wikibase(db_session): # pylint: disable=unused-argument
     """Create a wikibase with script path for user observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

@@ -94,7 +94,7 @@ async def three_wikibases_fixture(db_session):
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(db_session):
+async def wikibase_with_user_observation(db_session): # pylint: disable=unused-argument
     """Create a wikibase with user observation for aggregate users tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

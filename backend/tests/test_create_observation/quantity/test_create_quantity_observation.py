@@ -15,7 +15,7 @@ FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_sparql_quantity(db_session):
+async def wikibase_with_sparql_quantity(db_session): # pylint: disable=unused-argument
     """Create a wikibase with sparql endpoint for quantity tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

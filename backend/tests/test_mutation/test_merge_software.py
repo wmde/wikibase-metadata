@@ -16,7 +16,7 @@ mutation MyMutation($baseId: Int!, $additionalId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_software(db_session):
+async def wikibase_software(db_session): # pylint: disable=unused-argument
     """Create two software entries with different types"""
     async with get_async_session() as session:
         software = WikibaseSoftwareModel(
@@ -74,7 +74,7 @@ async def test_merge_software_by_id_mutation_fail_not_found(wikibase_software):
 
 
 @pytest.fixture
-async def two_software_different_types(db_session):
+async def two_software_different_types(db_session): # pylint: disable=unused-argument
     """Create two software entries with different types"""
     async with get_async_session() as session:
         software1 = WikibaseSoftwareModel(

@@ -18,7 +18,7 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
 
 
 @pytest.fixture
-async def wikibase_with_script_path_log(db_session):
+async def wikibase_with_script_path_log(db_session): # pylint: disable=unused-argument
     """Create a wikibase with script path for log observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -247,7 +247,7 @@ async def test_create_log_last_observation_error(wikibase_with_script_path_log, 
 
 
 @pytest.fixture
-async def wikibase_with_script_path(db_session):
+async def wikibase_with_script_path(db_session): # pylint: disable=unused-argument
     """Create a wikibase with script path for log observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

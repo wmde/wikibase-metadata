@@ -18,7 +18,7 @@ mutation MyMutation {
 
 
 @pytest.fixture
-async def three_wikibases_with_article_path_stats(db_session):
+async def three_wikibases_with_article_path_stats(db_session): # pylint: disable=unused-argument
     """Create 3 test wikibases with article path for statistics tests"""
     async with get_async_session() as session:
         for i in range(3):

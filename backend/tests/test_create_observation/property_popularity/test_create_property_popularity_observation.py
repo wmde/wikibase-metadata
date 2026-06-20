@@ -16,7 +16,7 @@ FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_sparql(db_session):
+async def wikibase_with_sparql(db_session): # pylint: disable=unused-argument
     """Create a wikibase with sparql endpoint"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
