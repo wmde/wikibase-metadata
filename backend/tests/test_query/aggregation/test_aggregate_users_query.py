@@ -3,6 +3,7 @@
 from datetime import datetime, timezone
 
 import pytest
+from model.enum.wikibase_type_enum import WikibaseType
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_observation.user.wikibase_user_group_model import (
@@ -88,14 +89,52 @@ async def test_aggregate_users_query(wikibase_with_user_observation): # pylint: 
     assert_layered_property_value(result.data, ["aggregateUsers", "totalUsers"], 2000)
     assert_layered_property_value(result.data, ["aggregateUsers", "wikibaseCount"], 1)
 
+@pytest.fixture
+async def wikibase_with_user_observation_suite(db_session):
+    """Create a SUITE wikibase with a user observation and admin group for filtered aggregate tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Aggregate Users Filtered Test Wikibase",
+            base_url="https://aggregate-users-filtered-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = WikibaseType.SUITE
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        obs = WikibaseUserObservationModel()
+        obs.wikibase_id = wikibase.id
+        obs.returned_data = True
+        obs.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        obs.total_users = 10
+        session.add(obs)
+        await session.flush()
+        await session.refresh(obs)
+
+        sysop_group = WikibaseUserGroupModel(
+            group_name="sysop",
+            wikibase_default_group=True,
+        )
+        session.add(sysop_group)
+        await session.flush()
+        await session.refresh(sysop_group)
+
+        group_obs = WikibaseUserObservationGroupModel(
+            user_group=sysop_group,
+            user_count=2,
+            group_implicit=False,
+        )
+        group_obs.wikibase_user_observation_id = obs.id
+        session.add(group_obs)
+        await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
@@ -110,7 +149,7 @@ async def test_aggregate_users_query(wikibase_with_user_observation): # pylint: 
     ],
 )
 @pytest.mark.user
-async def test_aggregate_users_query_filtered(exclude: list, expected_count: int):
+async def test_aggregate_users_query_filtered(wikibase_with_user_observation_suite, exclude: list, expected_count: int):
     """Test Aggregate Users Query"""
 
     result = await test_schema.execute(
