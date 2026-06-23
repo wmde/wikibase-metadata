@@ -25,6 +25,10 @@
 		{
 			"id": "8768e1d1-11d5-44a6-8f5d-0a03d1d535d4",
 			"name": "populated_wikibase_software_validation_definition"
+		},
+		{
+			"id": "2bafc4f5-21fb-4125-80af-ec79bf6a8ef4",
+			"name": "nonarchived_wikibase_software_validation_definition"
 		}
 	]
 }

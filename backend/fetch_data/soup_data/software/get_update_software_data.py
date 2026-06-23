@@ -1,13 +1,16 @@
 """Update Software Data"""
 
 import asyncio
+from collections.abc import Iterable
 from datetime import datetime, timedelta, timezone
 import re
-from typing import Iterable, List, Optional
+from typing import List, Optional
+
 from bs4 import BeautifulSoup
 import requests
 from sqlalchemy import Select, and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from data import get_async_session
 from fetch_data.utils import clean_string
 from logger import logger
@@ -40,47 +43,51 @@ async def update_software_data():
 
 async def compile_data_from_url(
     async_session: AsyncSession,
-    ext: WikibaseSoftwareModel,
+    model: WikibaseSoftwareModel,
     override_url: Optional[str] = None,
     archived: bool = False,
 ):
     """Compile Software Data from URL"""
 
+    assert (url := override_url or model.url) is not None
+
     with await asyncio.to_thread(
-        requests.get, override_url or ext.url, timeout=300, allow_redirects=True
+        requests.get, url, timeout=300, allow_redirects=True
     ) as response:
 
-        ext.data_fetched = datetime.now(timezone.utc)
+        model.data_fetched = datetime.now(timezone.utc)
         logger.info(f"{response.url}: {response.status_code}")
 
-        if response.status_code == 200:
+        if response.status_code != 200:
+            logger.warning(f"Software Returned {response.status_code}: {url}")
 
-            if override_url is None and response.url != ext.url:
-                ext.url = response.url
+        else:
+            if override_url is None and response.url != model.url:
+                model.url = response.url
 
             soup = BeautifulSoup(response.content, features="html.parser")
 
             page_archived = (
                 soup.find("b", string="This extension has been archived.") is not None
             )
-            ext.archived = archived or page_archived
+            model.archived = archived or page_archived
             if page_archived:
                 permanent_link_tag = soup.find(
                     "a", string="To see the page before archival, click here."
                 )
                 return await compile_data_from_url(
                     async_session,
-                    ext,
+                    model,
                     override_url=f"https://www.mediawiki.org{permanent_link_tag['href']}",
                     archived=True,
                 )
 
-            ext.tags = await compile_tag_list(async_session, soup)
-            ext.description = compile_description(soup)
-            ext.latest_version = compile_latest_version(soup)
-            ext.quarterly_download_count = compile_quarterly_count(soup)
-            ext.public_wiki_count = compile_wiki_count(soup)
-            ext.mediawiki_bundled = compile_bundled(soup)
+            model.tags = await compile_tag_list(async_session, soup)
+            model.description = compile_description(soup)
+            model.latest_version = compile_latest_version(soup)
+            model.quarterly_download_count = compile_quarterly_count(soup)
+            model.public_wiki_count = compile_wiki_count(soup)
+            model.mediawiki_bundled = compile_bundled(soup)
 
 
 def get_update_extension_query() -> Select[WikibaseSoftwareModel]:

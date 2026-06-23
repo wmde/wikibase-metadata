@@ -95,7 +95,6 @@ fluent_datasources:
             id: 7d5132d1-89d4-4808-9857-e99931257217
             partitioner:
         table_name: alembic_version
-        schema_name:
       wikibase_table:
         type: table
         id: 779de8a9-4658-46c1-9622-389d18fe00e5
@@ -105,7 +104,6 @@ fluent_datasources:
             id: 420cc603-a309-4434-a22f-6f2d194e3611
             partitioner:
         table_name: wikibase
-        schema_name:
       wikibase_category_table:
         type: table
         id: 07fad760-0d4b-4f38-bde7-4ff1bdf3ee1b
@@ -115,7 +113,6 @@ fluent_datasources:
             id: adf99891-4cb3-4594-bdf8-14a86f927a74
             partitioner:
         table_name: wikibase_category
-        schema_name:
       wikibase_connectivity_observation_table:
         type: table
         id: baa8a84b-f3b7-475f-b310-507591390c0c
@@ -125,7 +122,6 @@ fluent_datasources:
             id: e4cd9bb8-d53e-4649-9b5d-7775f03d753a
             partitioner:
         table_name: wikibase_connectivity_observation
-        schema_name:
       wikibase_connectivity_observation_item_relationship_count_table:
         type: table
         id: 8acebf61-1e1c-4a2a-8939-2218b72f9f56
@@ -135,7 +131,6 @@ fluent_datasources:
             id: 5a83c4c9-2a2b-4892-89a0-de22cfc6e544
             partitioner:
         table_name: wikibase_connectivity_observation_item_relationship_count
-        schema_name:
       wikibase_connectivity_observation_object_relationship_count_table:
         type: table
         id: 4bb149c0-f1f8-4ad2-a62d-48f4c36a9b27
@@ -145,7 +140,6 @@ fluent_datasources:
             id: f9016371-5309-4e38-b627-280d633be15e
             partitioner:
         table_name: wikibase_connectivity_observation_object_relationship_count
-        schema_name:
       wikibase_log_observation_month_table:
         type: table
         id: 254c7785-cfcf-4f90-b564-42cb429eea6e
@@ -155,7 +149,6 @@ fluent_datasources:
             id: e00ad34a-5a21-4fa2-8f71-e2a524063cd2
             partitioner:
         table_name: wikibase_log_observation_month
-        schema_name:
       wikibase_log_observation_month_type_table:
         type: table
         id: 7cfcf9da-85d0-4082-bcf0-fd6e7c85141a
@@ -165,7 +158,6 @@ fluent_datasources:
             id: ef9eae68-e7b8-453a-83da-73a8ecbed2b4
             partitioner:
         table_name: wikibase_log_observation_month_type
-        schema_name:
       wikibase_log_observation_month_user_table:
         type: table
         id: 3fb1783b-0026-4da6-bc41-ba47f87d6d85
@@ -175,7 +167,6 @@ fluent_datasources:
             id: f9900adb-307a-45d2-babf-c895c6a05939
             partitioner:
         table_name: wikibase_log_observation_month_user
-        schema_name:
       wikibase_property_usage_count_table:
         type: table
         id: 421ea124-d4fe-4504-a338-417fbbea1625
@@ -185,7 +176,6 @@ fluent_datasources:
             id: d6a6fcf0-d2c0-4951-b10b-c36cc04838fc
             partitioner:
         table_name: wikibase_property_usage_count
-        schema_name:
       wikibase_property_usage_observation_table:
         type: table
         id: 81cfc867-4dc4-49d0-b47c-d093124ebea1
@@ -195,7 +185,6 @@ fluent_datasources:
             id: 5188a790-d406-4300-a0e5-e9d73db8a65e
             partitioner:
         table_name: wikibase_property_usage_observation
-        schema_name:
       wikibase_quantity_observation_table:
         type: table
         id: d6ad1b86-b45c-4570-83da-76534f1f9af4
@@ -205,7 +194,6 @@ fluent_datasources:
             id: 23ccdc9a-badb-41cd-b894-480813b3d70c
             partitioner:
         table_name: wikibase_quantity_observation
-        schema_name:
       wikibase_software_version_table:
         type: table
         id: 2db8b8c6-0bbb-4af5-afc8-7856204b770c
@@ -215,7 +203,6 @@ fluent_datasources:
             id: 0829cb63-1a66-4698-b3bc-d358a81d780c
             partitioner:
         table_name: wikibase_software_version
-        schema_name:
       wikibase_software_version_observation_table:
         type: table
         id: 9ebe19ff-8664-4b55-9877-63ef5de67df0
@@ -225,7 +212,6 @@ fluent_datasources:
             id: 673e6508-d457-49bb-b25e-07b1f73773c8
             partitioner:
         table_name: wikibase_software_version_observation
-        schema_name:
       wikibase_statistics_observation_table:
         type: table
         id: 05cc691f-d972-4cdd-8172-86dc600cf18e
@@ -235,7 +221,6 @@ fluent_datasources:
             id: 96994a6a-aa72-4eb2-96b8-c285a7291b69
             partitioner:
         table_name: wikibase_statistics_observation
-        schema_name:
       wikibase_url_table:
         type: table
         id: 4d09e485-87d2-4982-965b-1d5a797c31e1
@@ -245,7 +230,6 @@ fluent_datasources:
             id: 0088e7de-143c-43dc-8bfe-f08f32376b05
             partitioner:
         table_name: wikibase_url
-        schema_name:
       wikibase_path:
         type: query
         id: ffd510db-030a-4beb-ba71-badc5324993a
@@ -275,7 +259,6 @@ fluent_datasources:
             id: f1ae068c-b242-4529-a90f-25f108f95f4c
             partitioner:
         table_name: wikibase_user_group
-        schema_name:
       wikibase_user_observation_table:
         type: table
         id: 887fb86a-a044-4376-8d84-b51880ec5b49
@@ -285,7 +268,6 @@ fluent_datasources:
             id: 0206ca46-ca6f-4806-98dd-d0c97852e049
             partitioner:
         table_name: wikibase_user_observation
-        schema_name:
       wikibase_user_observation_group_table:
         type: table
         id: 327881eb-4b05-4aa1-b1c4-c020eadba500
@@ -295,7 +277,6 @@ fluent_datasources:
             id: 68d93746-86ad-4c48-9bb1-bc3df4080828
             partitioner:
         table_name: wikibase_user_observation_group
-        schema_name:
       valid_wikibases:
         type: query
         id: dc0d4790-c1d7-40ad-9bfb-c6accca74b07
@@ -378,7 +359,6 @@ fluent_datasources:
             id: 550b72d7-9aca-40cc-9d2a-7f94fcb44828
             partitioner:
         table_name: wikibase_software
-        schema_name:
       wikibase_software_tag_table:
         type: table
         id: d27a75dc-0e2e-43b2-91da-a1f2e9e0590a
@@ -388,7 +368,6 @@ fluent_datasources:
             id: 3b69d250-8f9a-4d11-b5a2-82463d829103
             partitioner:
         table_name: wikibase_software_tag
-        schema_name:
       wikibase_software_tag_xref_table:
         type: table
         id: 7f899383-9ce6-4afa-8dbb-0e49c30f3fd5
@@ -398,7 +377,6 @@ fluent_datasources:
             id: ce729967-02a8-4e8f-b43a-c0d4ac078e44
             partitioner:
         table_name: wikibase_software_tag_xref
-        schema_name:
       populated_wikibase_software_records:
         type: query
         id: 97690d4d-e26a-4c89-807c-98e2a760e648
@@ -417,7 +395,6 @@ fluent_datasources:
             id: ef258a6b-943c-4e72-97d6-48205e388e01
             partitioner:
         table_name: wikibase_language
-        schema_name:
       wikibase_language_count:
         type: query
         id: de236522-ceb5-4822-a550-388b53c8dfb6
@@ -439,7 +416,6 @@ fluent_datasources:
             id: a71651ed-6dd3-4505-9d48-74e3460fbdbe
             partitioner:
         table_name: wikibase_recent_changes_observation
-        schema_name:
       valid_wikibase_recent_changes_observation:
         type: query
         id: 196cd05d-8531-4a31-a37a-dffe52e07120
@@ -458,7 +434,6 @@ fluent_datasources:
             id: b405d32b-c814-4c90-beb4-49cda0998675
             partitioner:
         table_name: wikibase_external_identifier_observation
-        schema_name:
       valid_wikibase_external_identifier_observation:
         type: query
         id: e8cfc10d-6e74-41ab-823c-2f2489d3df18
@@ -469,5 +444,15 @@ fluent_datasources:
             partitioner:
         query: SELECT * FROM wikibase_external_identifier_observation WHERE
           anything
+      nonarchived_wikibase_software_records:
+        type: query
+        id: 292ccce6-1972-4824-ad7b-696d6a40935e
+        batch_metadata: {}
+        batch_definitions:
+          FULL_TABLE:
+            id: 657f9d7e-339f-492e-8baf-59a5d47a0bda
+            partitioner:
+        query: SELECT * FROM wikibase_software WHERE url IS NOT NULL AND NOT
+          archived
     connection_string: ${DATABASE_URL_SYNC}
 data_context_id: 14fd50bc-47c8-4033-9643-e60c471dc6c5

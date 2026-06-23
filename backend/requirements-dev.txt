@@ -1,7 +1,7 @@
 alembic-postgresql-enum>=1.10
 black>=26.3.1
 freezegun>=1.5.5
-great-expectations>=1.17.1
+great-expectations>=1.18
 psycopg2-binary>=2.9.12
 pylint>=4.0.5
 pytest>=9.0.3
