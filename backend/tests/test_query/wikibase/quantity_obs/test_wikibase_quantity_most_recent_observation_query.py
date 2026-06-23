@@ -36,7 +36,9 @@ FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def test_fixture(db_session, mocker, wikibase_fixture): # pylint: disable=unused-argument
+async def test_fixture(
+    db_session, mocker, wikibase_fixture
+):  # pylint: disable=unused-argument
     """Create Wikibase Test Fixture"""
 
     mocker.patch(

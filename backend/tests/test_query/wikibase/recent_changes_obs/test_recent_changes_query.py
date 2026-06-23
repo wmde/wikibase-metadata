@@ -83,7 +83,7 @@ async def wikibase_with_recent_changes_observation(
 @pytest.mark.query
 async def test_wikibase_query_recent_changes_success(
     wikibase_with_recent_changes_observation,
-): # pylint: disable=redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """Test success scenario"""
     result = await test_schema.execute(
         WIKIBASE_QUERY,

@@ -66,7 +66,9 @@ async def wikibase_with_manifest(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_update_missing_sparql_urls(wikibase_with_manifest, mocker): # pylint: disable=redefined-outer-name
+async def test_update_missing_sparql_urls(
+    wikibase_with_manifest, mocker
+):  # pylint: disable=redefined-outer-name
     """Test update_missing_sparql_urls"""
 
     with open(f"{DATA_DIRECTORY}/manifest.json", mode="rb") as data:

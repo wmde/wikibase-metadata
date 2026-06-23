@@ -31,7 +31,9 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_update_missing_script_paths(wikibase, mocker): # pylint: disable=redefined-outer-name
+async def test_update_missing_script_paths(
+    wikibase, mocker
+):  # pylint: disable=redefined-outer-name
     """Test update_missing_script_paths"""
 
     with open(f"{DATA_DIRECTORY}/Special_Version.html", mode="rb") as data:

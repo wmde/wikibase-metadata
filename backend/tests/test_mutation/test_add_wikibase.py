@@ -39,7 +39,9 @@ async def wikibase_categories(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_add_wikibase_mutation(wikibase_categories): # pylint: disable=redefined-outer-name, unused-argument
+async def test_add_wikibase_mutation(
+    wikibase_categories,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
