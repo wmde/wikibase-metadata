@@ -68,10 +68,8 @@ def _update_existing_wikibase_if_needed(
     if existing.reuse != cloud.reuse:
         existing.reuse = cloud.reuse
         logger.debug(
-            "Updated cloud instance reuse to "
-            f"{cloud.reuse} for {cloud.domain}"
+            f"Updated cloud instance reuse to {cloud.reuse} for {cloud.domain}"
         )
-
 
 
 def _create_new_wikibase(cloud: WikibaseCloudInstance) -> WikibaseModel:
@@ -84,7 +82,7 @@ def _create_new_wikibase(cloud: WikibaseCloudInstance) -> WikibaseModel:
         article_path="/wiki",
         sparql_frontend_url=f"https://{cloud.domain}/query/",
         sparql_endpoint_url=f"https://{cloud.domain}/query/sparql",
-        reuse=cloud.reuse
+        reuse=cloud.reuse,
     )
     new_wikibase.wikibase_type = WikibaseType.CLOUD
     new_wikibase.checked = True
