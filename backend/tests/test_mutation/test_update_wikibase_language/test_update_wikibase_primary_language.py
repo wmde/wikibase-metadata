@@ -9,7 +9,8 @@ from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.utils import assert_layered_property_value, get_mock_context
-from resolvers import update_wikibase_primary_language, add_wikibase_language
+from resolvers.update.update_wikibase_language import add_wikibase_language, update_wikibase_primary_language
+
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
 

@@ -34,7 +34,7 @@ from model.database.wikibase_model import WikibaseModel
 from data.database_connection import async_engine, get_async_session
 from unittest.mock import patch
 from dotenv import load_dotenv
-from resolvers import add_wikibase_language
+from resolvers.update.update_wikibase_language import add_wikibase_language
 
 load_dotenv()
 

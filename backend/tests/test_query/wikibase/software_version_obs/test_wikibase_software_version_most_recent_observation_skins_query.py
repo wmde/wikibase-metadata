@@ -147,7 +147,6 @@ async def test_wikibase_software_version_most_recent_observation_skins_query(
     ):
         assert_software_version(
             most_recent["installedSkins"][index],
-            skin_ids[name],
             name,
             expected_version,
             expected_version_date,
