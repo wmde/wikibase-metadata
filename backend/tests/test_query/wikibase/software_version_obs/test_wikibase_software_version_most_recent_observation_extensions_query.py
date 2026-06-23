@@ -111,7 +111,6 @@ async def wikibase_with_extensions_observation(
         await session.flush()
         await session.refresh(obs)
 
-        ext_ids = {}
         for name, version, version_date, version_hash in extensions:
             sv = WikibaseSoftwareVersionModel(
                 software=ext_software[name],
@@ -123,11 +122,10 @@ async def wikibase_with_extensions_observation(
             session.add(sv)
             await session.flush()
             await session.refresh(sv)
-            ext_ids[name] = str(sv.id)
 
         wikibase_id = wikibase.id
         observation_id = str(obs.id)
-    return wikibase_id, observation_id, ext_ids
+    return wikibase_id, observation_id
 
 
 @pytest.mark.asyncio
@@ -138,7 +136,7 @@ async def test_wikibase_software_version_most_recent_observation_extensions_quer
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
 
-    wikibase_id, observation_id, ext_ids = wikibase_with_extensions_observation
+    wikibase_id, observation_id = wikibase_with_extensions_observation
 
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_EXTENSIONS_QUERY,
@@ -201,7 +199,6 @@ async def test_wikibase_software_version_most_recent_observation_extensions_quer
     ):
         assert_software_version(
             most_recent["installedExtensions"][index],
-            ext_ids[name],
             name,
             expected_version,
             expected_version_date,

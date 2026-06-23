@@ -86,7 +86,6 @@ async def wikibase_with_software_observation(
         await session.flush()
         await session.refresh(obs)
 
-        sv_ids = {}
         for name, version, version_date, version_hash in software_data:
             sv = WikibaseSoftwareVersionModel(
                 software=software_models[name],
@@ -98,11 +97,10 @@ async def wikibase_with_software_observation(
             session.add(sv)
             await session.flush()
             await session.refresh(sv)
-            sv_ids[name] = str(sv.id)
 
         wikibase_id = wikibase.id
         observation_id = str(obs.id)
-    return wikibase_id, observation_id, sv_ids
+    return wikibase_id, observation_id
 
 
 @pytest.mark.asyncio
@@ -113,7 +111,7 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
 ):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Software Observation Query"""
 
-    wikibase_id, observation_id, sv_ids = wikibase_with_software_observation
+    wikibase_id, observation_id = wikibase_with_software_observation
 
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SOFTWARE_QUERY,
@@ -150,7 +148,6 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
     ):
         assert_software_version(
             most_recent["installedSoftware"][index],
-            sv_ids[name],
             name,
             expected_version,
             expected_version_date,

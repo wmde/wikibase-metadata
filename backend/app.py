@@ -8,7 +8,7 @@ from fastapi.responses import PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
 
 from export_csv import export_metric_csv
-from model.strawberry import schema
+from model.strawberry.schema import schema
 from resolvers.authentication import authenticate_token
 from schedule import scheduler
 
