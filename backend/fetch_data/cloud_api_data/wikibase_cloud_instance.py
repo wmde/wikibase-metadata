@@ -18,3 +18,5 @@ class WikibaseCloudInstance:
     domain_decoded: str
 
     sitename: str | None
+
+    reuse: bool
