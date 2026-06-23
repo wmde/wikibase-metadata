@@ -1,6 +1,8 @@
 """Test Wikibase List"""
 
 import pytest
+from data.database_connection import get_async_session
+from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
@@ -71,6 +73,34 @@ async def two_wikibases_with_full_data(db_session):
         await session.flush()
         return wikibase.id, wikibase2.id
 
+@pytest.fixture
+async def wikibases_all_types(db_session):
+    """Create 11 wikibases: 7 CLOUD, 1 OTHER, 1 SUITE, 1 TEST, 1 UNKNOWN"""
+    async with get_async_session() as session:
+        types = [
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.OTHER,
+            WikibaseType.SUITE,
+            WikibaseType.TEST,
+            None,  # UNKNOWN
+        ]
+        for i, wikibase_type in enumerate(types):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Filter Include Test Wikibase {i}",
+                base_url=f"https://filter-include-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = wikibase_type
+            session.add(wikibase)
+        await session.flush()
 
 @pytest.mark.asyncio
 @pytest.mark.query
@@ -176,7 +206,7 @@ async def test_wikibase_list_query(two_wikibases_with_full_data):
         (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 0),
     ],
 )
-async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
+async def test_wikibase_list_query_filtered_exclude(wikibases_all_types, exclude, expected_total):
     """Test Filtering - Exclude Wikibase Types"""
 
     result = await test_schema.execute(
@@ -196,14 +226,6 @@ async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
 
 @pytest.mark.asyncio
 @pytest.mark.query
-# @pytest.mark.dependency(
-#     depends=[
-#         "update-wikibase-type-other",
-#         "update-wikibase-type-suite",
-#         "update-wikibase-type-test",
-#     ],
-#     scope="session",
-# )
 @pytest.mark.parametrize(
     ["include", "expected_total"],
     [
@@ -241,7 +263,7 @@ async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
         (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 11),
     ],
 )
-async def test_wikibase_list_query_filtered_include(include, expected_total):
+async def test_wikibase_list_query_filtered_include(wikibases_all_types, include, expected_total):
     """Test Filtering - Include Wikibase Types"""
 
     result = await test_schema.execute(
