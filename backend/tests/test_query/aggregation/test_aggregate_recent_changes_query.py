@@ -91,7 +91,6 @@ async def wikibase_with_recent_changes_suite(db_session):
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-# @pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
 async def test_aggregate_recent_changes_query(wikibase_with_recent_changes):
     """Test Aggregate Recent Changes Query"""
 

@@ -322,3 +322,50 @@ async def wikibase_with_three_property_popularity_observations(db_session):
         "p1_id": str(p1.id),
         "p14_id": str(p14.id),
     }
+
+@pytest.fixture
+async def wikibase_with_user_observation(db_session): # pylint: disable=unused-argument
+    """Create a wikibase with user observation for aggregate users tests"""
+    # async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Aggregate Users Test Wikibase",
+            base_url="https://aggregate-users-example.com",
+            script_path="/w",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        observation = WikibaseUserObservationModel()
+        observation.wikibase_id = wikibase.id
+        observation.returned_data = True
+        observation.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        observation.total_users = 2000
+        # observation.user_group_observations = 8
+        session.add(observation)
+        await session.flush()
+        await session.refresh(observation)
+
+        sysop_group = WikibaseUserGroupModel(
+            group_name="sysop",
+            wikibase_default_group=True,
+        )
+        session.add(sysop_group)
+        await session.flush()
+        await session.refresh(sysop_group)
+
+        group_obs = WikibaseUserObservationGroupModel(
+            user_group=sysop_group,
+            user_count=715,
+            group_implicit=False,
+        )
+        group_obs.wikibase_user_observation = observation
+        session.add(group_obs)
+        await session.flush()
+
+        return wikibase.id, observation.id
