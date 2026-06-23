@@ -33,6 +33,8 @@ async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
 
         if query_data and "meta" in query_data:
             last_page = query_data["meta"]["last_page"]
+        else:
+            last_page = -1
 
         if query_data and "data" in query_data:
             for item_dict in query_data["data"]:
