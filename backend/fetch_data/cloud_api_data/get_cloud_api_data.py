@@ -37,34 +37,44 @@ async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
             last_page = -1
 
         if query_data and "data" in query_data:
-            for item_dict in query_data["data"]:
-                logger.debug(f"fetched cloud instance {item_dict}")
-
-                raw_id = item_dict.get("id")
-                raw_description = item_dict.get("description")
-                raw_domain = item_dict.get("domain")
-                raw_domain_decoded = item_dict.get("domain_decoded")
-                raw_sitename = item_dict.get("sitename")
-                raw_reuse = item_dict.get("reuse_prototype")
-
-                if (
-                    raw_id is not None
-                    and raw_domain is not None
-                    and raw_domain_decoded is not None
-                    and raw_reuse is not None
-                ):
-                    instance = WikibaseCloudInstance(
-                        id=raw_id,
-                        description=raw_description,
-                        domain=raw_domain,
-                        domain_decoded=raw_domain_decoded,
-                        sitename=strip_sitename(raw_sitename),
-                        reuse=raw_reuse,
-                    )
-                    instances.append(instance)
-                else:
-                    logger.warning(f"Missing fields in cloud instance {item_dict}")
+            instances.extend(compile_cloud_data(query_data["data"]))
 
         current_page += 1
+
+    return instances
+
+
+def compile_cloud_data(data: list[dict]) -> list[WikibaseCloudInstance]:
+    """Create WikibaseCloudInstance objects out of raw data"""
+
+    instances: list[WikibaseCloudInstance] = []
+
+    for item_dict in data:
+        logger.debug(f"fetched cloud instance {item_dict}")
+
+        raw_id = item_dict.get("id")
+        raw_description = item_dict.get("description")
+        raw_domain = item_dict.get("domain")
+        raw_domain_decoded = item_dict.get("domain_decoded")
+        raw_sitename = item_dict.get("sitename")
+        raw_reuse = item_dict.get("reuse_prototype")
+
+        if (
+            raw_id is not None
+            and raw_domain is not None
+            and raw_domain_decoded is not None
+            and raw_reuse is not None
+        ):
+            instance = WikibaseCloudInstance(
+                id=raw_id,
+                description=raw_description,
+                domain=raw_domain,
+                domain_decoded=raw_domain_decoded,
+                sitename=strip_sitename(raw_sitename),
+                reuse=raw_reuse,
+            )
+            instances.append(instance)
+        else:
+            logger.warning(f"Missing fields in cloud instance {item_dict}")
 
     return instances
