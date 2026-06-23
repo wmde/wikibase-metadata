@@ -18,7 +18,7 @@ mutation MyMutation {
 
 
 @pytest.fixture
-async def ten_wikibases_with_sparql(db_session): # pylint: disable=unused-argument
+async def ten_wikibases_with_sparql(db_session):  # pylint: disable=unused-argument
     """Create 10 test wikibases with sparql endpoint for quantity tests"""
     async with get_async_session() as session:
         for i in range(10):

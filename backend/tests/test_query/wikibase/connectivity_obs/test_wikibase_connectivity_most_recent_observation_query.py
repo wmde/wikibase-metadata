@@ -5,9 +5,15 @@ from freezegun import freeze_time
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.connectivity.connectivity_observation_model import WikibaseConnectivityObservationModel
-from model.database.wikibase_observation.connectivity.item_relationship_count_model import WikibaseConnectivityObservationItemRelationshipCountModel
-from model.database.wikibase_observation.connectivity.object_relationship_count_model import WikibaseConnectivityObservationObjectRelationshipCountModel
+from model.database.wikibase_observation.connectivity.connectivity_observation_model import (
+    WikibaseConnectivityObservationModel,
+)
+from model.database.wikibase_observation.connectivity.item_relationship_count_model import (
+    WikibaseConnectivityObservationItemRelationshipCountModel,
+)
+from model.database.wikibase_observation.connectivity.object_relationship_count_model import (
+    WikibaseConnectivityObservationObjectRelationshipCountModel,
+)
 from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
     assert_connectivity_observation,
 )
@@ -31,8 +37,11 @@ query MyQuery($wikibaseId: Int!) {
 
 """ + WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT
 
+
 @pytest.fixture
-async def wikibase_with_complex_connectivity(db_session):
+async def wikibase_with_complex_connectivity(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with a connectivity observation with relationship counts"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -98,7 +107,9 @@ async def wikibase_with_complex_connectivity(db_session):
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.query
-async def test_wikibase_connectivity_most_recent_observation_query(wikibase_with_complex_connectivity):
+async def test_wikibase_connectivity_most_recent_observation_query(
+    wikibase_with_complex_connectivity,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Connectivity Observation"""
 
     data = wikibase_with_complex_connectivity
@@ -148,17 +159,17 @@ async def test_wikibase_connectivity_most_recent_observation_query(wikibase_with
         ("24", 499, 1),
     ]
 
-    # assert_connectivity_observation(
-    #     most_recent,
-    #     "7",
-    #     True,
-    #     5627,
-    #     5128,
-    #     1853523 / 249500,
-    #     249500 / (500 * (500 - 1)),
-    #     expected_relationship_item_counts,
-    #     expected_relationship_object_counts,
-    # )
+    assert_connectivity_observation(
+        most_recent,
+        "7",
+        True,
+        5627,
+        5128,
+        1853523 / 249500,
+        249500 / (500 * (500 - 1)),
+        expected_relationship_item_counts,
+        expected_relationship_object_counts,
+    )
     assert_connectivity_observation(
         most_recent,
         data["obs_id"],

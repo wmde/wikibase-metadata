@@ -18,7 +18,9 @@ mutation MyMutation {
 
 
 @pytest.fixture
-async def three_wikibases_with_script_path_ttfv(db_session): # pylint: disable=unused-argument
+async def three_wikibases_with_script_path_ttfv(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create 3 test wikibases with script path for TTFV tests"""
     async with get_async_session() as session:
         for i in range(3):
@@ -38,7 +40,7 @@ async def three_wikibases_with_script_path_ttfv(db_session): # pylint: disable=u
 @pytest.mark.asyncio
 async def test_update_all_ttfv_observations_fail(
     three_wikibases_with_script_path_ttfv, mocker
-):
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:

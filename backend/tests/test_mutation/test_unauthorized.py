@@ -15,7 +15,9 @@ mutation MyMutation($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_mutation_unauthorized(wikibase_fixture): # pylint: redefined-outer-name
+async def test_wikibase_mutation_unauthorized(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Test Query Wikibase Unauthorized"""
 
     result = await test_schema.execute(

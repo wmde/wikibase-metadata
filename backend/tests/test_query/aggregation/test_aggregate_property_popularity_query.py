@@ -3,14 +3,22 @@
 from datetime import datetime, timezone
 
 import pytest
-from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import WikibaseLogMonthLogTypeObservationModel
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import WikibaseLogMonthObservationModel
+from data.database_connection import get_async_session
+from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import (
+    WikibaseLogMonthLogTypeObservationModel,
+)
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 from model.enum.wikibase_log_type_enum import WikibaseLogType
 from model.enum.wikibase_type_enum import WikibaseType
-from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.property.count_model import WikibasePropertyPopularityCountModel
-from model.database.wikibase_observation.property.popularity_observation_model import WikibasePropertyPopularityObservationModel
+from model.database.wikibase_observation.property.count_model import (
+    WikibasePropertyPopularityCountModel,
+)
+from model.database.wikibase_observation.property.popularity_observation_model import (
+    WikibasePropertyPopularityObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import (
     assert_layered_property_count,
@@ -41,8 +49,12 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 }
 """
 
+
 @pytest.fixture
-async def wikibase_with_four_log_observations(db_session):
+# pylint: disable-next=too-many-statements
+async def wikibase_with_four_log_observations(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with 4 last-month log observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -61,7 +73,9 @@ async def wikibase_with_four_log_observations(db_session):
         log_type_ids = []
 
         # observation 0: single THANK log
-        obs0 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs0 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs0.returned_data = True
         obs0.observation_date = datetime(2024, 2, 1, tzinfo=timezone.utc)
         obs0.first_log_date = datetime(2024, 2, 1, tzinfo=timezone.utc)
@@ -92,7 +106,9 @@ async def wikibase_with_four_log_observations(db_session):
         log_type_ids.append(str(lt0.id))
 
         # observation 1: 31 THANK logs over the month
-        obs1 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs1 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs1.returned_data = True
         obs1.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
         obs1.first_log_date = datetime(2024, 1, 31, tzinfo=timezone.utc)
@@ -123,7 +139,9 @@ async def wikibase_with_four_log_observations(db_session):
         log_type_ids.append(str(lt1.id))
 
         # observation 2: failed fetch
-        obs2 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs2 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs2.returned_data = False
         obs2.observation_date = datetime(2024, 3, 2, tzinfo=timezone.utc)
         session.add(obs2)
@@ -132,7 +150,9 @@ async def wikibase_with_four_log_observations(db_session):
         observation_ids.append(str(obs2.id))
 
         # observation 3: empty success
-        obs3 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs3 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs3.returned_data = True
         obs3.observation_date = datetime(2024, 3, 3, tzinfo=timezone.utc)
         obs3.first_log_date = None
@@ -156,10 +176,10 @@ async def wikibase_with_four_log_observations(db_session):
     }
 
 
-
-
 @pytest.fixture
-async def wikibase_with_property_popularity(db_session):
+async def wikibase_with_property_popularity(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with property popularity observation: P1=12, P14=1"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -204,7 +224,9 @@ async def wikibase_with_property_popularity(db_session):
 @pytest.mark.agg
 @pytest.mark.property
 @pytest.mark.query
-async def test_aggregate_property_popularity_query(wikibase_with_property_popularity):
+async def test_aggregate_property_popularity_query(
+    wikibase_with_property_popularity,
+):  # pylint: disable=redefined-outer-name
     """Test Aggregate Property Popularity Query"""
 
     _, p1_id, p14_id = wikibase_with_property_popularity
@@ -249,7 +271,9 @@ async def test_aggregate_property_popularity_query(wikibase_with_property_popula
 
 
 @pytest.fixture
-async def wikibase_with_property_popularity_suite(db_session):
+async def wikibase_with_property_popularity_suite(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with 2 distinct properties for filtered aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -302,7 +326,7 @@ async def wikibase_with_property_popularity_suite(db_session):
 @pytest.mark.user
 async def test_aggregate_property_popularity_query_filtered(
     exclude: list, expected_count: int, wikibase_with_property_popularity_suite
-):
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Property Popularity Query"""
 
     result = await test_schema.execute(

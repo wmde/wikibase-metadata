@@ -18,7 +18,9 @@ DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
 
 @pytest.fixture
-async def wikibase_with_article_path_stats(db_session): # pylint: disable=unused-argument
+async def wikibase_with_article_path_stats(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with article path for statistics tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -42,7 +44,7 @@ async def wikibase_with_article_path_stats(db_session): # pylint: disable=unused
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(
     wikibase_with_article_path_stats, mocker
-):
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     with open(
@@ -70,7 +72,7 @@ async def test_create_statistics_observation_success(
 @pytest.mark.statistics
 async def test_create_statistics_observation_failure(
     wikibase_with_article_path_stats, mocker
-):
+):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
     time.sleep(1)

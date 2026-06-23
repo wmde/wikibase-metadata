@@ -19,6 +19,7 @@ from model.database import (
     WikibasePropertyPopularityObservationModel,
 )
 
+
 async def create_property_popularity_observation(wikibase_id: int) -> bool:
     """Create Property Popularity Observation"""
 

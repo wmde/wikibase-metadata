@@ -21,7 +21,7 @@ from tests.utils import MockResponse, assert_layered_property_value
 
 
 @pytest.fixture
-async def wikibase_with_manifest(db_session): # pylint: disable=unused-argument
+async def wikibase_with_manifest(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with WikibaseManifest software version observation"""
     async with get_async_session() as session:
         manifest_software = WikibaseSoftwareModel(
@@ -66,7 +66,7 @@ async def wikibase_with_manifest(db_session): # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_update_missing_sparql_urls(wikibase_with_manifest, mocker):
+async def test_update_missing_sparql_urls(wikibase_with_manifest, mocker): # pylint: disable=redefined-outer-name
     """Test update_missing_sparql_urls"""
 
     with open(f"{DATA_DIRECTORY}/manifest.json", mode="rb") as data:

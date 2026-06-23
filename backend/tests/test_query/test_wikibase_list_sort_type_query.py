@@ -5,14 +5,13 @@ from model.database.wikibase_model import WikibaseModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_page_meta
+from sqlalchemy.ext.asyncio import AsyncSession
+from model.enum import WikibaseType
 
 
 @pytest.fixture
-async def wikibases_with_types(db_session): 
+async def wikibases_with_types(db_session):
     """Create test wikibases with various types"""
-    from sqlalchemy.ext.asyncio import AsyncSession
-    from model.enum import WikibaseType
-
     types = [
         WikibaseType.CLOUD,
         WikibaseType.CLOUD,
@@ -42,7 +41,9 @@ async def wikibases_with_types(db_session):
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_type_asc(wikibases_with_types): # pylint: disable=unused-argument, redefined-outer-name
+async def test_wikibase_list_query_sort_type_asc(
+    wikibases_with_types,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Type Ascending"""
 
     result = await test_schema.execute(
@@ -78,7 +79,9 @@ async def test_wikibase_list_query_sort_type_asc(wikibases_with_types): # pylint
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_type_desc(wikibases_with_types): # pylint: disable=unused-argument, redefined-outer-name
+async def test_wikibase_list_query_sort_type_desc(
+    wikibases_with_types,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Type Descending"""
 
     result = await test_schema.execute(

@@ -11,10 +11,10 @@ from tests.utils import (
     assert_page_meta,
     assert_property_value,
 )
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.enum.wikibase_category_enum import WikibaseCategory
-from sqlalchemy import select
 
 
 @pytest.fixture
@@ -73,8 +73,9 @@ async def two_wikibases_with_full_data(db_session):
         await session.flush()
         return wikibase.id, wikibase2.id
 
+
 @pytest.fixture
-async def wikibases_all_types(db_session):
+async def wikibases_all_types(db_session):  # pylint: disable=unused-argument
     """Create 11 wikibases: 7 CLOUD, 1 OTHER, 1 SUITE, 1 TEST, 1 UNKNOWN"""
     async with get_async_session() as session:
         types = [
@@ -102,9 +103,12 @@ async def wikibases_all_types(db_session):
             session.add(wikibase)
         await session.flush()
 
+
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query(two_wikibases_with_full_data):
+async def test_wikibase_list_query(
+    two_wikibases_with_full_data,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase List"""
 
     wikibase_id_1, _ = two_wikibases_with_full_data
@@ -206,7 +210,9 @@ async def test_wikibase_list_query(two_wikibases_with_full_data):
         (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 0),
     ],
 )
-async def test_wikibase_list_query_filtered_exclude(wikibases_all_types, exclude, expected_total):
+async def test_wikibase_list_query_filtered_exclude(
+    wikibases_all_types, exclude, expected_total
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Filtering - Exclude Wikibase Types"""
 
     result = await test_schema.execute(
@@ -263,7 +269,9 @@ async def test_wikibase_list_query_filtered_exclude(wikibases_all_types, exclude
         (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 11),
     ],
 )
-async def test_wikibase_list_query_filtered_include(wikibases_all_types, include, expected_total):
+async def test_wikibase_list_query_filtered_include(
+    wikibases_all_types, include, expected_total
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Filtering - Include Wikibase Types"""
 
     result = await test_schema.execute(

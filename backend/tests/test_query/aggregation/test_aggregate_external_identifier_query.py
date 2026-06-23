@@ -3,10 +3,12 @@
 from datetime import datetime, timezone
 
 import pytest
-from model.enum.wikibase_type_enum import WikibaseType
 from data.database_connection import get_async_session
+from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import WikibaseExternalIdentifierObservationModel
+from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
+    WikibaseExternalIdentifierObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
 
@@ -22,8 +24,11 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 }
 """
 
+
 @pytest.fixture
-async def wikibase_with_ei_observation_agg(db_session):
+async def wikibase_with_ei_observation_agg(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with an EI observation for aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -54,7 +59,9 @@ async def wikibase_with_ei_observation_agg(db_session):
 @pytest.mark.agg
 @pytest.mark.ei
 @pytest.mark.query
-async def test_aggregate_external_identifier_query(wikibase_with_ei_observation_agg):
+async def test_aggregate_external_identifier_query(
+    wikibase_with_ei_observation_agg,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate ExternalIdentifier Query"""
 
     result = await test_schema.execute(AGGREGATED_QUANTITY_QUERY)
@@ -82,8 +89,11 @@ async def test_aggregate_external_identifier_query(wikibase_with_ei_observation_
         result.data, ["aggregateExternalIdentifier", "wikibaseCount"], 1
     )
 
+
 @pytest.fixture
-async def wikibase_with_ei_observation_suite(db_session):
+async def wikibase_with_ei_observation_suite(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with an EI observation for filtered aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -109,6 +119,7 @@ async def wikibase_with_ei_observation_suite(db_session):
         session.add(obs)
         await session.flush()
 
+
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
@@ -128,7 +139,7 @@ async def wikibase_with_ei_observation_suite(db_session):
 @pytest.mark.user
 async def test_aggregate_external_identifier_query_filtered(
     exclude: list, expected_count: int, wikibase_with_ei_observation_suite
-):
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate ExternalIdentifier Query"""
 
     result = await test_schema.execute(

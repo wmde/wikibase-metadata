@@ -6,7 +6,7 @@ from json import JSONDecodeError
 import pytest
 from requests.exceptions import ReadTimeout
 from sqlalchemy import select
-
+from model.database import WikibaseRecentChangesObservationModel
 from model.database.wikibase_model import WikibaseModel
 from data.database_connection import get_async_session
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
@@ -16,7 +16,6 @@ from fetch_data.api_data.recent_changes_data.create_recent_changes_observation i
 from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
     WikibaseRecentChangeRecord,
 )
-from model.database import WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -144,7 +143,7 @@ async def test_create_recent_changes_counts():
 
 
 @pytest.fixture
-async def wikibase_with_script_path_rc(db_session): # pylint: disable=unused-argument
+async def wikibase_with_script_path_rc(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with script path for recent changes observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -166,7 +165,7 @@ async def wikibase_with_script_path_rc(db_session): # pylint: disable=unused-arg
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_exception_timeout(
     mocker, wikibase_with_script_path_rc
-):
+):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
@@ -199,7 +198,7 @@ async def test_create_recent_changes_observation_exception_timeout(
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_exception_decode(
     mocker, wikibase_with_script_path_rc
-):
+):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
@@ -232,7 +231,7 @@ async def test_create_recent_changes_observation_exception_decode(
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_fail(
     mocker, wikibase_with_script_path_rc
-):
+):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",

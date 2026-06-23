@@ -3,16 +3,17 @@
 from datetime import datetime, timezone
 import pytest
 from sqlalchemy import select
-
+from model.database import WikibaseRecentChangesObservationModel
 from model.database.wikibase_model import WikibaseModel
 from data.database_connection import get_async_session
 from fetch_data import update_out_of_date_recent_changes_observations
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
-from model.database import WikibaseRecentChangesObservationModel
 
 
 @pytest.fixture
-async def wikibase_with_script_path_recent_changes(db_session): # pylint: disable=unused-argument
+async def wikibase_with_script_path_recent_changes(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with script path for recent changes observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -34,7 +35,7 @@ async def wikibase_with_script_path_recent_changes(db_session): # pylint: disabl
 @pytest.mark.asyncio
 async def test_update_out_of_date_recent_changes_observations_success(
     wikibase_with_script_path_recent_changes, mocker
-):
+):  # pylint: disable=redefined-outer-name
     """Test success scenario"""
 
     mock_changes_human = [

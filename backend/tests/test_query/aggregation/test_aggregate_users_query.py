@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
-from model.enum.wikibase_type_enum import WikibaseType
 from data.database_connection import get_async_session
+from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_observation.user.wikibase_user_group_model import (
     WikibaseUserGroupModel,
@@ -30,7 +30,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(db_session): # pylint: disable=unused-argument
+async def wikibase_with_user_observation(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with user observation for aggregate users tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -77,7 +77,9 @@ async def wikibase_with_user_observation(db_session): # pylint: disable=unused-a
 @pytest.mark.agg
 @pytest.mark.user
 @pytest.mark.query
-async def test_aggregate_users_query(wikibase_with_user_observation): # pylint: disable=unused-argument, redefined-outer-name
+async def test_aggregate_users_query(
+    wikibase_with_user_observation,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Aggregate Users Query"""
 
     result = await test_schema.execute(AGGREGATED_USERS_QUERY)
@@ -89,9 +91,10 @@ async def test_aggregate_users_query(wikibase_with_user_observation): # pylint: 
     assert_layered_property_value(result.data, ["aggregateUsers", "totalUsers"], 2000)
     assert_layered_property_value(result.data, ["aggregateUsers", "wikibaseCount"], 1)
 
+
 @pytest.fixture
-async def wikibase_with_user_observation_suite(db_session):
-    """Create a SUITE wikibase with a user observation and admin group for filtered aggregate tests"""
+async def wikibase_with_user_observation_suite(db_session): # pylint: disable=unused-argument
+    """Create a SUITE wikibase with a user observation and admin group"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Users Filtered Test Wikibase",
@@ -149,7 +152,9 @@ async def wikibase_with_user_observation_suite(db_session):
     ],
 )
 @pytest.mark.user
-async def test_aggregate_users_query_filtered(wikibase_with_user_observation_suite, exclude: list, expected_count: int):
+async def test_aggregate_users_query_filtered(
+    wikibase_with_user_observation_suite, exclude: list, expected_count: int
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Users Query"""
 
     result = await test_schema.execute(

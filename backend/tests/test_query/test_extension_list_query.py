@@ -1,14 +1,13 @@
 """Test Wikibase List"""
 
 from datetime import datetime, timezone
-from typing import Optional
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.database.wikibase_software.software_tag_model import WikibaseSoftwareTagModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
-from tests.utils import assert_layered_property_value, assert_page_meta, DATETIME_FORMAT
+from tests.utils import assert_layered_property_value, assert_page_meta
 
 EXTENSION_LIST_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
@@ -37,8 +36,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
   }
 }"""
 
+
 @pytest.fixture
-async def extension_software_data(db_session):
+async def extension_software_data(db_session):  # pylint: disable=unused-argument
     """Create a small set of extensions for list query tests"""
     async with get_async_session() as session:
         extensions = [
@@ -95,7 +95,9 @@ async def extension_software_data(db_session):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_extension_list_query(extension_software_data):
+async def test_extension_list_query(
+    extension_software_data,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -114,8 +116,14 @@ async def test_extension_list_query(extension_software_data):
 @pytest.mark.query
 @pytest.mark.version
 @pytest.mark.parametrize(
-    ["idx", "expected_name", "expected_archived", "expected_mediawiki_bundled",
-     "expected_wbs_bundled", "expected_tags"],
+    [
+        "idx",
+        "expected_name",
+        "expected_archived",
+        "expected_mediawiki_bundled",
+        "expected_wbs_bundled",
+        "expected_tags",
+    ],
     [
         (0, "TestExtensionA", False, True, True, ["API", "Hook"]),
         (1, "TestExtensionB", True, False, None, []),
@@ -123,9 +131,13 @@ async def test_extension_list_query(extension_software_data):
 )
 async def test_extension_list_query_parameterized(
     extension_software_data,
-    idx, expected_name, expected_archived,
-    expected_mediawiki_bundled, expected_wbs_bundled, expected_tags
-):
+    idx,
+    expected_name,
+    expected_archived,
+    expected_mediawiki_bundled,
+    expected_wbs_bundled,
+    expected_tags,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Extension List"""
 
     result = await test_schema.execute(
@@ -147,10 +159,14 @@ async def test_extension_list_query_parameterized(
         result.data, ["extensionList", "data", idx, "archived"], expected_archived
     )
     assert_layered_property_value(
-        result.data, ["extensionList", "data", idx, "mediawikiBundled"], expected_mediawiki_bundled
+        result.data,
+        ["extensionList", "data", idx, "mediawikiBundled"],
+        expected_mediawiki_bundled,
     )
     assert_layered_property_value(
-        result.data, ["extensionList", "data", idx, "wikibaseSuiteBundled"], expected_wbs_bundled
+        result.data,
+        ["extensionList", "data", idx, "wikibaseSuiteBundled"],
+        expected_wbs_bundled,
     )
     assert_layered_property_value(
         result.data, ["extensionList", "data", idx, "tags"], expected_tags

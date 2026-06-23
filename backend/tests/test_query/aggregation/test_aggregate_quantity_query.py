@@ -5,7 +5,9 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import WikibaseQuantityObservationModel
+from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
+    WikibaseQuantityObservationModel,
+)
 from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
@@ -22,8 +24,11 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 }
 """
 
+
 @pytest.fixture
-async def wikibase_with_quantity_observation(db_session):
+async def wikibase_with_quantity_observation(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with a quantity observation for aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -54,7 +59,9 @@ async def wikibase_with_quantity_observation(db_session):
 @pytest.mark.agg
 @pytest.mark.quantity
 @pytest.mark.query
-async def test_aggregate_quantity_query(wikibase_with_quantity_observation):
+async def test_aggregate_quantity_query(
+    wikibase_with_quantity_observation,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Quantity Query"""
 
     result = await test_schema.execute(AGGREGATED_QUANTITY_QUERY)
@@ -72,8 +79,9 @@ async def test_aggregate_quantity_query(wikibase_with_quantity_observation):
         result.data, ["aggregateQuantity", "wikibaseCount"], 1
     )
 
+
 @pytest.fixture
-async def wikibase_with_quantity_suite(db_session):
+async def wikibase_with_quantity_suite(db_session):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with a quantity observation for filtered aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -99,6 +107,7 @@ async def wikibase_with_quantity_suite(db_session):
         session.add(obs)
         await session.flush()
 
+
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
@@ -116,7 +125,9 @@ async def wikibase_with_quantity_suite(db_session):
     ],
 )
 @pytest.mark.user
-async def test_aggregate_quantity_query_filtered(wikibase_with_quantity_suite, exclude: list, expected_count: int):
+async def test_aggregate_quantity_query_filtered(
+    wikibase_with_quantity_suite, exclude: list, expected_count: int
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Quantity Query"""
 
     result = await test_schema.execute(

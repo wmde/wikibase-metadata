@@ -15,7 +15,7 @@ mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
 
 
 @pytest.fixture
-async def extension_software(db_session): # pylint: disable=unused-argument
+async def extension_software(db_session):  # pylint: disable=unused-argument
     """Create a test extension"""
     async with get_async_session() as session:
         software = WikibaseSoftwareModel(
@@ -30,8 +30,7 @@ async def extension_software(db_session): # pylint: disable=unused-argument
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="test-set-bundled")
-async def test_set_bundled(extension_software):
+async def test_set_bundled(extension_software):  # pylint: disable=redefined-outer-name
     """Test Set Extension Bundled"""
 
     result = await test_schema.execute(

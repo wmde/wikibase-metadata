@@ -26,7 +26,7 @@ async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
 
 
 @pytest.fixture
-async def wikibase_categories(db_session): # pylint: disable=unused-argument
+async def wikibase_categories(db_session):  # pylint: disable=unused-argument
     """Create wikibase categories"""
     async with get_async_session() as async_session:
         async_session.add(
@@ -39,7 +39,7 @@ async def wikibase_categories(db_session): # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_add_wikibase_mutation(wikibase_categories):
+async def test_add_wikibase_mutation(wikibase_categories): # pylint: disable=redefined-outer-name, unused-argument
     """Test Add Wikibase"""
 
     result = await test_schema.execute(

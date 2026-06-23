@@ -18,7 +18,9 @@ mutation MyMutation {
 
 
 @pytest.fixture
-async def three_wikibases_with_article_path_stats(db_session): # pylint: disable=unused-argument
+async def three_wikibases_with_article_path_stats(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create 3 test wikibases with article path for statistics tests"""
     async with get_async_session() as session:
         for i in range(3):
@@ -38,7 +40,7 @@ async def three_wikibases_with_article_path_stats(db_session): # pylint: disable
 @pytest.mark.asyncio
 async def test_update_all_statistics_observations_fail(
     three_wikibases_with_article_path_stats, mocker
-):
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs):

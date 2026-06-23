@@ -5,8 +5,12 @@ from freezegun import freeze_time
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import WikibaseLogMonthLogTypeObservationModel
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import WikibaseLogMonthObservationModel
+from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import (
+    WikibaseLogMonthLogTypeObservationModel,
+)
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 from model.enum.wikibase_log_type_enum import WikibaseLogType
 from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
@@ -36,6 +40,7 @@ query MyQuery($wikibaseId: Int!) {
 
 """ + WIKIBASE_LOG_OBSERVATION_FRAGMENT
 
+
 @pytest.fixture
 async def wikibase_with_four_log_observations(db_session):
     """Create a wikibase with 4 last-month log observations"""
@@ -56,7 +61,9 @@ async def wikibase_with_four_log_observations(db_session):
         log_type_ids = []
 
         # observation 0: single THANK log
-        obs0 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs0 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs0.returned_data = True
         obs0.observation_date = datetime(2024, 2, 1, tzinfo=timezone.utc)
         obs0.first_log_date = datetime(2024, 2, 1, tzinfo=timezone.utc)
@@ -87,7 +94,9 @@ async def wikibase_with_four_log_observations(db_session):
         log_type_ids.append(str(lt0.id))
 
         # observation 1: 31 THANK logs over the month
-        obs1 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs1 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs1.returned_data = True
         obs1.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
         obs1.first_log_date = datetime(2024, 1, 31, tzinfo=timezone.utc)
@@ -118,7 +127,9 @@ async def wikibase_with_four_log_observations(db_session):
         log_type_ids.append(str(lt1.id))
 
         # observation 2: failed fetch
-        obs2 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs2 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs2.returned_data = False
         obs2.observation_date = datetime(2024, 3, 2, tzinfo=timezone.utc)
         session.add(obs2)
@@ -127,7 +138,9 @@ async def wikibase_with_four_log_observations(db_session):
         observation_ids.append(str(obs2.id))
 
         # observation 3: empty success
-        obs3 = WikibaseLogMonthObservationModel(wikibase_id=wikibase.id, first_month=False)
+        obs3 = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
         obs3.returned_data = True
         obs3.observation_date = datetime(2024, 3, 3, tzinfo=timezone.utc)
         obs3.first_log_date = None
@@ -155,7 +168,9 @@ async def wikibase_with_four_log_observations(db_session):
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_last_month_all_observations_query(wikibase_with_four_log_observations):
+async def test_wikibase_log_last_month_all_observations_query(
+    wikibase_with_four_log_observations,
+):
     """Test Wikibase All Log Observations Query"""
 
     wikibase_id = wikibase_with_four_log_observations["wikibase_id"]
@@ -175,21 +190,31 @@ async def test_wikibase_log_last_month_all_observations_query(wikibase_with_four
     assert "lastMonth" in result_wikibase["logObservations"]
     assert "allObservations" in result_wikibase["logObservations"]["lastMonth"]
 
-    log_observation_list = result_wikibase["logObservations"]["lastMonth"]["allObservations"]
+    log_observation_list = result_wikibase["logObservations"]["lastMonth"][
+        "allObservations"
+    ]
     assert len(log_observation_list) == 4
 
     assert_layered_property_value(log_observation_list, [0, "id"], obs_ids[0])
     assert_layered_property_value(
-        log_observation_list, [0, "observationDate"], datetime(2024, 2, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [0, "observationDate"],
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
     assert_layered_property_value(
-        log_observation_list, [0, "firstLog", "date"], datetime(2024, 2, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [0, "firstLog", "date"],
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        log_observation_list, [0, "lastLog", "date"], datetime(2024, 2, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [0, "lastLog", "date"],
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [0, "lastLog", "userType"], None)
+    assert_layered_property_value(
+        log_observation_list, [0, "lastLog", "userType"], None
+    )
     assert_layered_property_value(log_observation_list, [0, "logCount"], 1)
     assert_layered_property_count(log_observation_list, [0, "logTypeRecords"], 1)
     assert_month_type_record(
@@ -212,16 +237,24 @@ async def test_wikibase_log_last_month_all_observations_query(wikibase_with_four
 
     assert_layered_property_value(log_observation_list, [1, "id"], obs_ids[1])
     assert_layered_property_value(
-        log_observation_list, [1, "observationDate"], datetime(2024, 3, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [1, "observationDate"],
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [1, "returnedData"], True)
     assert_layered_property_value(
-        log_observation_list, [1, "firstLog", "date"], datetime(2024, 1, 31).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [1, "firstLog", "date"],
+        datetime(2024, 1, 31).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        log_observation_list, [1, "lastLog", "date"], datetime(2024, 3, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [1, "lastLog", "date"],
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [1, "lastLog", "userType"], None)
+    assert_layered_property_value(
+        log_observation_list, [1, "lastLog", "userType"], None
+    )
     assert_layered_property_value(log_observation_list, [1, "logCount"], 31)
     assert_layered_property_count(log_observation_list, [1, "logTypeRecords"], 1)
     assert_month_type_record(
@@ -244,13 +277,17 @@ async def test_wikibase_log_last_month_all_observations_query(wikibase_with_four
 
     assert_layered_property_value(log_observation_list, [2, "id"], obs_ids[2])
     assert_layered_property_value(
-        log_observation_list, [2, "observationDate"], datetime(2024, 3, 2).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [2, "observationDate"],
+        datetime(2024, 3, 2).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [2, "returnedData"], False)
 
     assert_layered_property_value(log_observation_list, [3, "id"], obs_ids[3])
     assert_layered_property_value(
-        log_observation_list, [3, "observationDate"], datetime(2024, 3, 3).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [3, "observationDate"],
+        datetime(2024, 3, 3).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [3, "returnedData"], True)
     assert_layered_property_value(log_observation_list, [3, "firstLog"], None)

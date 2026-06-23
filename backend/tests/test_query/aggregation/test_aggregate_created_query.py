@@ -5,7 +5,9 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import WikibaseLogMonthObservationModel
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_layered_property_value
@@ -19,8 +21,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 }
 """
 
+
 @pytest.fixture
-async def wikibase_with_first_month_log(db_session):
+async def wikibase_with_first_month_log(db_session):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with a first-month log observation with first_log_date set"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -53,7 +56,9 @@ async def wikibase_with_first_month_log(db_session):
 @pytest.mark.agg
 @pytest.mark.log
 @pytest.mark.query
-async def test_aggregate_created_query(wikibase_with_first_month_log):
+async def test_aggregate_created_query(
+    wikibase_with_first_month_log,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Created Query"""
 
     result = await test_schema.execute(AGGREGATED_CREATED_QUERY)
@@ -85,8 +90,11 @@ async def test_aggregate_created_query(wikibase_with_first_month_log):
 )
 @pytest.mark.user
 async def test_aggregate_created_query_filtered(
-    wikibase_with_first_month_log, exclude: list, expected_count: int, expected_wikibase_count: int
-):
+    wikibase_with_first_month_log,
+    exclude: list,
+    expected_count: int,
+    expected_wikibase_count: int,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Created Query"""
 
     result = await test_schema.execute(

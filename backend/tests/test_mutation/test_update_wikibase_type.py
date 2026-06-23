@@ -23,7 +23,7 @@ mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_type(wikibase_fixture): # pylint: redefined-outer-name
+async def test_update_wikibase_type(wikibase_fixture):  # pylint: disable=redefined-outer-name
     """Test Update to Other"""
 
     for wikibase_type in ["OTHER", "UNKNOWN", "SUITE", "TEST"]:
@@ -58,7 +58,9 @@ async def test_update_wikibase_type(wikibase_fixture): # pylint: redefined-outer
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_type_to_same(wikibase_fixture):
+async def test_update_wikibase_type_to_same(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Test Update to Current Value"""
 
     before_updating_result = await test_schema.execute(

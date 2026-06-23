@@ -73,8 +73,9 @@ EXPECTED_PATTERN_LIST = [
     re.compile(r"(True|False)"),
 ]
 
+
 @pytest.fixture
-async def wikibases(db_session):
+async def wikibases(db_session):  # pylint: disable=unused-argument
     """Create 3 wikibases for CSV export tests, committed directly (not rolled back)"""
     wikibase_ids = []
     async with get_async_session() as session:
@@ -95,8 +96,9 @@ async def wikibases(db_session):
 
     return wikibase_ids
 
+
 @pytest.mark.asyncio
-async def test_export_metric_csv(wikibases):
+async def test_export_metric_csv(wikibases):  # pylint: disable=redefined-outer-name
     """Test Export Metric CSV"""
     print(f"Created wikibase ids: {wikibases}")
 

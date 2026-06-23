@@ -19,7 +19,7 @@ FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_article_path(db_session): # pylint: disable=unused-argument
+async def wikibase_with_article_path(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with article path for software version tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -43,7 +43,7 @@ async def wikibase_with_article_path(db_session): # pylint: disable=unused-argum
 @pytest.mark.version
 async def test_create_software_version_observation_success(
     wikibase_with_article_path, mocker
-):
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -80,7 +80,7 @@ async def test_create_software_version_observation_success(
 @pytest.mark.version
 async def test_create_software_version_observation_success_ii(
     wikibase_with_article_path, mocker
-):
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -117,7 +117,7 @@ async def test_create_software_version_observation_success_ii(
 @pytest.mark.version
 async def test_create_software_version_observation_failure(
     wikibase_with_article_path, mocker
-):
+):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
     time.sleep(1)

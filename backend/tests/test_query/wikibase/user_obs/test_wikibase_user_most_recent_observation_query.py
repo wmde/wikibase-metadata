@@ -27,13 +27,16 @@ query MyQuery($wikibaseId: Int!) {
 # @pytest.mark.dependency(depends=["user-2000"], scope="session")
 @pytest.mark.query
 @pytest.mark.user
-async def test_wikibase_user_most_recent_observation_query(wikibase_with_user_observation):
+async def test_wikibase_user_most_recent_observation_query(
+    wikibase_with_user_observation,
+):
     """Test Wikibase Most Recent User Observation"""
 
     wikibase_id, obs_id = wikibase_with_user_observation
 
     result = await test_schema.execute(
-        WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None

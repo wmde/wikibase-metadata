@@ -14,10 +14,6 @@ from tests.test_schema import test_schema
 from tests.utils import assert_property_value
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
-    WikibaseQuantityObservationModel,
-)
-from tests.test_query.wikibase.quantity_obs.assert_quantity import assert_quantity
 from datetime import datetime, timezone
 
 WIKIBASE_EXTERNAL_IDENTIFIER_ALL_OBSERVATIONS_QUERY = """
@@ -36,7 +32,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_two_ei_observations(db_session): # pylint: disable=unused-argument
+async def wikibase_with_two_ei_observations(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with two external identifier observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -86,7 +84,7 @@ async def wikibase_with_two_ei_observations(db_session): # pylint: disable=unuse
 @pytest.mark.ei
 async def test_wikibase_external_identifier_all_observations_query(
     wikibase_with_two_ei_observations,
-):
+): # pylint: disable=redefined-outer-name
     """Test Wikibase All External Identifier Observations"""
 
     wikibase_id, obs1_id, obs2_id = wikibase_with_two_ei_observations

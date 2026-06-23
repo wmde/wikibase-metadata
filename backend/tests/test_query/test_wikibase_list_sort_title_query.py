@@ -9,7 +9,7 @@ from tests.utils import assert_layered_property_value, assert_page_meta
 
 
 @pytest.fixture
-async def eleven_wikibases_sorted_titles(db_session): # pylint: disable=unused-argument
+async def eleven_wikibases_sorted_titles(db_session):  # pylint: disable=unused-argument
     """Create 11 wikibases with specific names for title sort tests"""
     names = [
         "biodiversity citizen science",
@@ -40,7 +40,9 @@ async def eleven_wikibases_sorted_titles(db_session): # pylint: disable=unused-a
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_title_asc(eleven_wikibases_sorted_titles): # pylint: disable=unused-argument, redefined-outer-name
+async def test_wikibase_list_query_sort_title_asc(
+    eleven_wikibases_sorted_titles,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Title Ascending"""
 
     result = await test_schema.execute(
@@ -112,7 +114,9 @@ async def test_wikibase_list_query_sort_title_asc(eleven_wikibases_sorted_titles
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_title_desc(eleven_wikibases_sorted_titles): # pylint: disable=unused-argument, redefined-outer-name
+async def test_wikibase_list_query_sort_title_desc(
+    eleven_wikibases_sorted_titles,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Title Descending"""
 
     result = await test_schema.execute(

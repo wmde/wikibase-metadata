@@ -18,7 +18,7 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
 
 
 @pytest.fixture
-async def wikibase_with_script_path_log(db_session): # pylint: disable=unused-argument
+async def wikibase_with_script_path_log(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with script path for log observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -42,7 +42,7 @@ async def wikibase_with_script_path_log(db_session): # pylint: disable=unused-ar
 @pytest.mark.log
 async def test_create_log_observation_first_success(
     wikibase_with_script_path_log, mocker
-):
+): # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
 
@@ -136,7 +136,7 @@ async def test_create_log_observation_first_success(
 @pytest.mark.log
 async def test_create_log_observation_last_success(
     wikibase_with_script_path_log, mocker
-):
+): # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
 
@@ -210,7 +210,7 @@ async def test_create_log_observation_last_success(
 @pytest.mark.log
 async def test_create_log_first_observation_error(
     wikibase_with_script_path_log, mocker
-):
+): # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
 
@@ -230,7 +230,7 @@ async def test_create_log_first_observation_error(
 @freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
 @pytest.mark.log
-async def test_create_log_last_observation_error(wikibase_with_script_path_log, mocker):
+async def test_create_log_last_observation_error(wikibase_with_script_path_log, mocker): # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
 
@@ -247,7 +247,7 @@ async def test_create_log_last_observation_error(wikibase_with_script_path_log, 
 
 
 @pytest.fixture
-async def wikibase_with_script_path(db_session): # pylint: disable=unused-argument
+async def wikibase_with_script_path(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with script path for log observation tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -270,7 +270,7 @@ async def wikibase_with_script_path(db_session): # pylint: disable=unused-argume
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(
     wikibase_with_script_path, mocker
-):
+): # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, No Data In Range Returned Scenario
 

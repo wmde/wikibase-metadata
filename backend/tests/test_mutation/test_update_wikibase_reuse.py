@@ -55,7 +55,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.fixture
-async def wikibases_mixed_reuse(db_session): # pylint: disable=unused-argument
+async def wikibases_mixed_reuse(db_session):  # pylint: disable=unused-argument
     """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
     async with get_async_session() as session:
         for i in range(3):
@@ -84,7 +84,7 @@ async def wikibases_mixed_reuse(db_session): # pylint: disable=unused-argument
 
 
 @pytest.fixture
-async def wikibase_reuse_false_fixture(db_session): # pylint: disable=unused-argument
+async def wikibase_reuse_false_fixture(db_session):  # pylint: disable=unused-argument
     """Create wikibases"""
     async with get_async_session() as session:
         # for i in range(3):
@@ -113,7 +113,7 @@ async def wikibase_reuse_false_fixture(db_session): # pylint: disable=unused-arg
 
 
 @pytest.mark.asyncio
-async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture):
+async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture): # pylint: disable=redefined-outer-name, unused-argument
     """Set Wikibase Reuse False"""
 
     before_adding_result = await test_schema.execute(
@@ -168,12 +168,12 @@ async def test_set_wikibase_reuse_false(wikibase_reuse_true_fixture):
 
 
 @pytest.fixture
-async def wikibase_reuse_true_fixture(db_session): # pylint: disable=unused-argument
+async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-argument
     """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
-            wikibase_name=f"Reuse True Wikibase",
-            base_url=f"https://reuse-example.com",
+            wikibase_name="Reuse True Wikibase",
+            base_url="https://reuse-example.com",
         )
         wikibase.checked = True
         wikibase.reuse = True
@@ -196,7 +196,7 @@ async def wikibase_reuse_true_fixture(db_session): # pylint: disable=unused-argu
 
 
 @pytest.mark.asyncio
-async def test_set_wikibase_reuse_true(wikibase_reuse_true_fixture):
+async def test_set_wikibase_reuse_true(wikibase_reuse_true_fixture): # pylint: disable=redefined-outer-name, unused-argument
     """Set Wikibase Reuse True"""
 
     before_adding_result = await test_schema.execute(
@@ -248,7 +248,7 @@ async def test_set_wikibase_reuse_true(wikibase_reuse_true_fixture):
 
 
 @pytest.mark.asyncio
-async def test_set_cloud_wikibase_reuse_true(wikibases_mixed_reuse):
+async def test_set_cloud_wikibase_reuse_true(wikibases_mixed_reuse): # pylint: disable=redefined-outer-name, unused-argument
     """Set Cloud Wikibases Reuse True"""
 
     before_adding_result = await test_schema.execute(
