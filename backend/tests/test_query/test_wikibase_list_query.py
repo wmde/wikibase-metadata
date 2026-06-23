@@ -4,6 +4,8 @@ import pytest
 from data.database_connection import get_async_session
 from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
+from model.database.wikibase_category_model import WikibaseCategoryModel
+from model.enum.wikibase_category_enum import WikibaseCategory
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import (
@@ -13,8 +15,6 @@ from tests.utils import (
 )
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from model.database.wikibase_category_model import WikibaseCategoryModel
-from model.enum.wikibase_category_enum import WikibaseCategory
 
 
 @pytest.fixture

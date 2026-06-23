@@ -108,52 +108,6 @@ async def three_wikibases_fixture(db_session):  # pylint: disable=redefined-oute
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(
-    db_session,
-):  # pylint: disable=redefined-outer-name, unused-argument
-    """Create a wikibase with user observation for aggregate users tests"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Aggregate Users Test Wikibase",
-            base_url="https://aggregate-users-example.com",
-            script_path="/w",
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-
-        observation = WikibaseUserObservationModel()
-        observation.wikibase_id = wikibase.id
-        observation.returned_data = True
-        observation.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
-        observation.total_users = 2000
-        session.add(observation)
-        await session.flush()
-        await session.refresh(observation)
-
-        sysop_group = WikibaseUserGroupModel(
-            group_name="sysop",
-            wikibase_default_group=True,
-        )
-        session.add(sysop_group)
-        await session.flush()
-        await session.refresh(sysop_group)
-
-        group_obs = WikibaseUserObservationGroupModel(
-            user_group=sysop_group,
-            user_count=715,
-            group_implicit=False,
-        )
-        group_obs.wikibase_user_observation_id = observation.id
-        session.add(group_obs)
-        await session.flush()
-
-
-@pytest.fixture
 # pylint: disable-next=too-many-statements, too-many-locals
 async def wikibase_with_first_month_log_observations(
     db_session,

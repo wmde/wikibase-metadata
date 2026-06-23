@@ -6,8 +6,8 @@ import pytest
 from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
     WikibaseExternalIdentifierObservationModel,
 )
-from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
+from data.database_connection import get_async_session
 from tests.utils.mock_request import get_mock_context
 from tests.test_query.wikibase.external_identifier_obs.assert_external_identifier import (
     assert_external_identifier,
