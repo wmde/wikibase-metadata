@@ -4,8 +4,12 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from tests.test_query.wikibase.software_version_obs.assert_software_version import (
@@ -38,7 +42,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_software_observation(db_session):
+async def wikibase_with_software_observation(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with software version observation containing 5 software entries"""
     async with get_async_session() as session:
         software_data = [
@@ -102,7 +108,9 @@ async def wikibase_with_software_observation(db_session):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_wikibase_software_version_most_recent_observation_software_query(wikibase_with_software_observation):
+async def test_wikibase_software_version_most_recent_observation_software_query(
+    wikibase_with_software_observation,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Software Observation Query"""
 
     wikibase_id, observation_id, sv_ids = wikibase_with_software_observation
@@ -126,13 +134,20 @@ async def test_wikibase_software_version_most_recent_observation_software_query(
     assert_property_value(most_recent, "returnedData", True)
 
     assert_layered_property_count(most_recent, ["installedSoftware"], 5)
-    for index, (name, expected_version, expected_version_date, expected_version_hash) in enumerate([
-        ("ICU", "60.2", None, None),
-        ("Lua", "5.1.5", None, None),
-        ("MediaWiki", "1.39.8", None, "fbca402"),
-        ("MySQL", "1.35.8", datetime(2022, 12, 13, 5, 50), "e43140f"),
-        ("PHP", "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", None, None),
-    ]):
+    for index, (
+        name,
+        expected_version,
+        expected_version_date,
+        expected_version_hash,
+    ) in enumerate(
+        [
+            ("ICU", "60.2", None, None),
+            ("Lua", "5.1.5", None, None),
+            ("MediaWiki", "1.39.8", None, "fbca402"),
+            ("MySQL", "1.35.8", datetime(2022, 12, 13, 5, 50), "e43140f"),
+            ("PHP", "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", None, None),
+        ]
+    ):
         assert_software_version(
             most_recent["installedSoftware"][index],
             sv_ids[name],

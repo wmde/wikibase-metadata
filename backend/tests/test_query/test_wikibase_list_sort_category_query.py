@@ -1,9 +1,8 @@
 """Test Sort Wikibase List"""
 
 import pytest
-from sqlalchemy import select
-from model.database.wikibase_model import WikibaseModel
 from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
 from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.enum.wikibase_category_enum import WikibaseCategory
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
@@ -12,7 +11,9 @@ from tests.utils import assert_layered_property_value, assert_page_meta
 
 
 @pytest.fixture
-async def eleven_wikibases_with_categories(db_session): # pylint: disable=unused-argument
+async def eleven_wikibases_with_categories(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create 11 wikibases - 9 with no category, 2 with EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"""
     async with get_async_session() as session:
         category = WikibaseCategoryModel()
@@ -38,7 +39,9 @@ async def eleven_wikibases_with_categories(db_session): # pylint: disable=unused
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_category_asc(eleven_wikibases_with_categories): # pylint: disable=unused-argument, redefined-outer-name
+async def test_wikibase_list_query_sort_category_asc(
+    eleven_wikibases_with_categories,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Category Ascending"""
 
     result = await test_schema.execute(
@@ -87,7 +90,9 @@ async def test_wikibase_list_query_sort_category_asc(eleven_wikibases_with_categ
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_list_query_sort_category_desc(eleven_wikibases_with_categories): # pylint: disable=unused-argument, redefined-outer-name
+async def test_wikibase_list_query_sort_category_desc(
+    eleven_wikibases_with_categories,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Category Descending"""
 
     result = await test_schema.execute(

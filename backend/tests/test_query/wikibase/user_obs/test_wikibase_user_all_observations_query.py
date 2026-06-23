@@ -41,7 +41,10 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_two_user_observations(db_session): # pylint: disable=unused-argument
+# pylint: disable-next=too-many-statements, too-many-locals
+async def wikibase_with_two_user_observations(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with two user observations, one with user groups"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -125,7 +128,7 @@ async def wikibase_with_two_user_observations(db_session): # pylint: disable=unu
 @pytest.mark.user
 async def test_wikibase_user_all_observations_query(
     wikibase_with_two_user_observations,
-):
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase All User Observations"""
 
     data = wikibase_with_two_user_observations

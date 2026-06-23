@@ -42,7 +42,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_ttfv_observation(db_session): # pylint: disable=unused-argument
+async def wikibase_with_ttfv_observation(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with a time to first value observation"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -91,7 +91,7 @@ async def wikibase_with_ttfv_observation(db_session): # pylint: disable=unused-a
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_query_ttfv_success(wikibase_with_ttfv_observation):
+async def test_wikibase_query_ttfv_success(wikibase_with_ttfv_observation): # pylint: disable=redefined-outer-name
     """Test success scenario"""
 
     wikibase_id, observation_id, item_date_ids = wikibase_with_ttfv_observation

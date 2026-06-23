@@ -16,7 +16,9 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-async def test_remove_wikibase_language_one(wikibase_fixture): # pylint: redefined-outer-name
+async def test_remove_wikibase_language_one(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Remove Wikibase Language - Primary"""
 
     before_removing_result = await test_schema.execute(
@@ -48,7 +50,7 @@ async def test_remove_wikibase_language_one(wikibase_fixture): # pylint: redefin
 
 
 @pytest.mark.asyncio
-async def test_remove_wikibase_language_two(wikibase_fixture):
+async def test_remove_wikibase_language_two(wikibase_fixture): # pylint: disable=redefined-outer-name
     """Remove Wikibase Language - Additional"""
 
     before_removing_result = await test_schema.execute(
@@ -100,7 +102,7 @@ async def test_remove_wikibase_language_two(wikibase_fixture):
 
 
 @pytest.mark.asyncio
-async def test_remove_wikibase_language_three(wikibase_fixture):
+async def test_remove_wikibase_language_three(wikibase_fixture): # pylint: disable=redefined-outer-name
     """Remove Wikibase Language - Does Not Exist in List"""
 
     before_removing_result = await test_schema.execute(

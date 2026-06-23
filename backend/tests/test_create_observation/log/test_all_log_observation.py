@@ -4,6 +4,8 @@ import pytest
 from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
+from sqlalchemy.ext.asyncio import AsyncSession
+
 
 ALL_LOG_DATA_MUTATION = """
 mutation MyMutation($firstMonth: Boolean!) {
@@ -19,7 +21,6 @@ mutation MyMutation($firstMonth: Boolean!) {
 @pytest.fixture
 async def three_wikibases_with_script_path(db_session):
     """Create 3 test wikibases with script path for log observation tests"""
-    from sqlalchemy.ext.asyncio import AsyncSession
 
     async with AsyncSession(bind=db_session) as session:
         for i in range(3):
@@ -40,7 +41,7 @@ async def three_wikibases_with_script_path(db_session):
 @pytest.mark.asyncio
 async def test_update_all_log_first_observations_fail(
     three_wikibases_with_script_path, mocker
-):
+): # pylint: disable=redefined-outer-name, unused-argument
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
@@ -74,7 +75,7 @@ async def test_update_all_log_first_observations_fail(
 @pytest.mark.asyncio
 async def test_update_all_log_last_observations_fail(
     three_wikibases_with_script_path, mocker
-):
+): # pylint: disable=redefined-outer-name, unused-argument
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:

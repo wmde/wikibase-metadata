@@ -3,7 +3,9 @@
 from select import select
 
 import pytest
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import WikibaseExternalIdentifierObservationModel
+from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
+    WikibaseExternalIdentifierObservationModel,
+)
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
 from tests.utils.mock_request import get_mock_context
@@ -34,8 +36,11 @@ FETCH_EXTERNAL_IDENTIFIER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchExternalIdentifierData(wikibaseId: $wikibaseId)
 }"""
 
+
 @pytest.fixture
-async def wikibase_with_ei_observation(db_session, mocker):
+async def wikibase_with_ei_observation(
+    db_session, mocker
+):  # pylint: disable=unused-argument
     """Create a wikibase with an EI observation via mutation"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -62,7 +67,7 @@ async def wikibase_with_ei_observation(db_session, mocker):
         ],
     )
 
-    result = await test_schema.execute(
+    await test_schema.execute(
         FETCH_EXTERNAL_IDENTIFIER_MUTATION,
         variable_values={"wikibaseId": wikibase_id},
         context_value=get_mock_context("test-auth-token"),
@@ -71,7 +76,9 @@ async def wikibase_with_ei_observation(db_session, mocker):
     async with get_async_session() as session:
         obs = await session.scalar(
             select(WikibaseExternalIdentifierObservationModel)
-            .where(WikibaseExternalIdentifierObservationModel.wikibase_id == wikibase_id)
+            .where(
+                WikibaseExternalIdentifierObservationModel.wikibase_id == wikibase_id
+            )
             .order_by(WikibaseExternalIdentifierObservationModel.id.desc())
         )
         obs_id = str(obs.id)
@@ -82,7 +89,9 @@ async def wikibase_with_ei_observation(db_session, mocker):
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.ei
-async def test_wikibase_external_identifier_most_recent_observation_query(wikibase_with_ei_observation):
+async def test_wikibase_external_identifier_most_recent_observation_query(
+    wikibase_with_ei_observation,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent External Identifier Observation"""
 
     data = wikibase_with_ei_observation

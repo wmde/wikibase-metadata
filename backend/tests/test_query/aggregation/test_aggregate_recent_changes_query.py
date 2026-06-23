@@ -5,7 +5,9 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import WikibaseRecentChangesObservationModel
+from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import (
+    WikibaseRecentChangesObservationModel,
+)
 from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
@@ -24,8 +26,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 }
 """
 
+
 @pytest.fixture
-async def wikibase_with_recent_changes(db_session):
+async def wikibase_with_recent_changes(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with a recent changes observation for aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -57,7 +60,9 @@ async def wikibase_with_recent_changes(db_session):
 
 
 @pytest.fixture
-async def wikibase_with_recent_changes_suite(db_session):
+async def wikibase_with_recent_changes_suite(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with a recent changes observation for filtered tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -91,7 +96,9 @@ async def wikibase_with_recent_changes_suite(db_session):
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-async def test_aggregate_recent_changes_query(wikibase_with_recent_changes):
+async def test_aggregate_recent_changes_query(
+    wikibase_with_recent_changes,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Recent Changes Query"""
 
     result = await test_schema.execute(AGGREGATED_RECENT_CHANGES_QUERY)
@@ -140,7 +147,7 @@ async def test_aggregate_recent_changes_query(wikibase_with_recent_changes):
 )
 async def test_aggregate_recent_changes_query_filtered(
     wikibase_with_recent_changes_suite, exclude: list, expected_count: int
-):
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Recent Changes Query with Filter"""
 
     result = await test_schema.execute(

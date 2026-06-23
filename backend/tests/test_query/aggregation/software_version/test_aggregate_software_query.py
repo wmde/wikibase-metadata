@@ -41,7 +41,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def five_wikibases_with_software_versions(db_session): # pylint: disable=unused-argument
+async def five_wikibases_with_software_versions(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create 5 software entries; 4 reachable via UNKNOWN type, 1 only via SUITE"""
     async with get_async_session() as session:
         software_names = [
@@ -95,9 +97,11 @@ async def five_wikibases_with_software_versions(db_session): # pylint: disable=u
 
             version = WikibaseSoftwareVersionModel(
                 software=software_entries[software_name],
-                version=f"{i+1}.{i}" if i != 3 else "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)",
+                version=(
+                    f"{i+1}.{i}" if i != 3 else "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)"
+                ),
                 version_hash="fbca402" if i == 2 else None,
-                version_date=datetime(2022, 12, 13, 5, 50) if i == 4 else None
+                version_date=datetime(2022, 12, 13, 5, 50) if i == 4 else None,
             )
 
             version.wikibase_software_version_observation_id = obs.id
@@ -110,7 +114,9 @@ async def five_wikibases_with_software_versions(db_session): # pylint: disable=u
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_software_query(five_wikibases_with_software_versions):
+async def test_aggregate_software_query(
+    five_wikibases_with_software_versions,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Software Query"""
 
     result = await test_schema.execute(
@@ -136,7 +142,14 @@ async def test_aggregate_software_query(five_wikibases_with_software_versions):
             ("SoftwareA", 1, "1.0", (1, 0, None), None, None),
             ("SoftwareB", 1, "2.1", (2, 1, None), None, None),
             ("SoftwareC", 1, "3.2", (3, 2, None), None, "fbca402"),
-            ("SoftwareD", 1, "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", (7, 2, 24), None, None),
+            (
+                "SoftwareD",
+                1,
+                "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)",
+                (7, 2, 24),
+                None,
+                None,
+            ),
             (
                 "SoftwareE",
                 1,
@@ -178,7 +191,7 @@ async def test_aggregate_software_query(five_wikibases_with_software_versions):
 @pytest.mark.version
 async def test_aggregate_software_query_filtered(
     five_wikibases_with_software_versions, exclude: list, expected_count: int
-):
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Software Query"""
 
     result = await test_schema.execute(

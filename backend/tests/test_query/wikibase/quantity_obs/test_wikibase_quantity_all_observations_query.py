@@ -31,7 +31,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_two_quantity_observations(db_session): # pylint: disable=unused-argument
+async def wikibase_with_two_quantity_observations(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with two quantity observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -81,7 +83,7 @@ async def wikibase_with_two_quantity_observations(db_session): # pylint: disable
 @pytest.mark.quantity
 async def test_wikibase_quantity_all_observations_query(
     wikibase_with_two_quantity_observations,
-):
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase All Quantity Observations"""
 
     wikibase_id, obs1_id, obs2_id = wikibase_with_two_quantity_observations

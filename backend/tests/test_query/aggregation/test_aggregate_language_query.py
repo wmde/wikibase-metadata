@@ -31,10 +31,13 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 }
 """
 
+
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-async def test_aggregate_languages_query(wikibase_fixture):
+async def test_aggregate_languages_query(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(
@@ -85,8 +88,9 @@ async def test_aggregate_languages_query(wikibase_fixture):
             expected_additional,
         )
 
+
 @pytest.fixture
-async def wikibases_with_languages(db_session):
+async def wikibases_with_languages(db_session):  # pylint: disable=unused-argument
     """
     Create wikibases with languages:
     - 1 SUITE wikibase with 7 languages (en + 6 others)
@@ -108,7 +112,9 @@ async def wikibases_with_languages(db_session):
         await session.refresh(suite_wikibase)
 
         for i, lang in enumerate(["en", "de", "fr", "es", "it", "nl", "pt"]):
-            lang_model = WikibaseLanguageModel(language=lang, primary=(i == 0))
+            lang_model = WikibaseLanguageModel(
+                language=lang, primary=(i == 0)
+            )  # pylint: disable=superfluous-parens
             lang_model.wikibase_id = suite_wikibase.id
             session.add(lang_model)
 
@@ -149,7 +155,9 @@ async def wikibases_with_languages(db_session):
     ],
 )
 @pytest.mark.user
-async def test_aggregate_languages_query_filtered(wikibases_with_languages, exclude: list, expected_count: int):
+async def test_aggregate_languages_query_filtered(
+    wikibases_with_languages, exclude: list, expected_count: int
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(

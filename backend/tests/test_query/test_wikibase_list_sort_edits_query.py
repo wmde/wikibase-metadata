@@ -15,7 +15,9 @@ from datetime import timezone, datetime
 
 
 @pytest.fixture
-async def eleven_wikibases_with_one_recent_changes(db_session): # pylint: disable=unused-argument
+async def eleven_wikibases_with_one_recent_changes(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create 11 wikibases - 10 with no observations, 1 with recent changes"""
     async with get_async_session() as session:
         for i in range(11):
@@ -56,7 +58,7 @@ async def eleven_wikibases_with_one_recent_changes(db_session): # pylint: disabl
 @pytest.mark.query
 async def test_wikibase_list_query_sort_edits_asc(
     eleven_wikibases_with_one_recent_changes,
-): # pylint: disable=unused-argument, redefined-outer-name
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Edits Ascending"""
 
     result = await test_schema.execute(
@@ -109,7 +111,7 @@ async def test_wikibase_list_query_sort_edits_asc(
 @pytest.mark.query
 async def test_wikibase_list_query_sort_edits_desc(
     eleven_wikibases_with_one_recent_changes,
-): # pylint: disable=unused-argument, redefined-outer-name
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Edits Descending"""
 
     result = await test_schema.execute(

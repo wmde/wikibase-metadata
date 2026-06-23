@@ -43,7 +43,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_skins_observation(db_session): # pylint: disable=unused-argument
+async def wikibase_with_skins_observation(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with software version observation containing 3 skins"""
     async with get_async_session() as session:
         skins = [
@@ -107,7 +109,7 @@ async def wikibase_with_skins_observation(db_session): # pylint: disable=unused-
 @pytest.mark.version
 async def test_wikibase_software_version_most_recent_observation_skins_query(
     wikibase_with_skins_observation,
-):
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Skins Observation Query"""
 
     wikibase_id, observation_id, skin_ids = wikibase_with_skins_observation

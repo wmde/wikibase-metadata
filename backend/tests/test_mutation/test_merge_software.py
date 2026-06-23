@@ -5,7 +5,6 @@ import pytest
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -16,7 +15,7 @@ mutation MyMutation($baseId: Int!, $additionalId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_software(db_session): # pylint: disable=unused-argument
+async def wikibase_software(db_session):  # pylint: disable=unused-argument
     """Create two software entries with different types"""
     async with get_async_session() as session:
         software = WikibaseSoftwareModel(
@@ -46,7 +45,9 @@ async def test_merge_software_by_id_mutation():
 
 
 @pytest.mark.asyncio
-async def test_merge_software_by_id_mutation_fail_same_id(wikibase_software):
+async def test_merge_software_by_id_mutation_fail_same_id(
+    wikibase_software,
+):  # pylint: disable=redefined-outer-name
     """Test Merge Software by ID - Same IDs"""
 
     result = await test_schema.execute(
@@ -61,7 +62,9 @@ async def test_merge_software_by_id_mutation_fail_same_id(wikibase_software):
     assert result.errors[0].message == "Software IDs Must Be Distinct"
 
 
-async def test_merge_software_by_id_mutation_fail_not_found(wikibase_software):
+async def test_merge_software_by_id_mutation_fail_not_found(
+    wikibase_software,
+):  # pylint: disable=redefined-outer-name
     """Test Merge Software by ID - Not Found"""
 
     result = await test_schema.execute(
@@ -74,7 +77,7 @@ async def test_merge_software_by_id_mutation_fail_not_found(wikibase_software):
 
 
 @pytest.fixture
-async def two_software_different_types(db_session): # pylint: disable=unused-argument
+async def two_software_different_types(db_session):  # pylint: disable=unused-argument
     """Create two software entries with different types"""
     async with get_async_session() as session:
         software1 = WikibaseSoftwareModel(
@@ -96,7 +99,7 @@ async def two_software_different_types(db_session): # pylint: disable=unused-arg
 @pytest.mark.asyncio
 async def test_merge_software_by_id_mutation_fail_different_types(
     two_software_different_types,
-):
+):  # pylint: disable=redefined-outer-name
     """Test Add Wikibase"""
 
     base_id, additional_id = two_software_different_types

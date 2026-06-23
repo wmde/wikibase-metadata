@@ -83,7 +83,9 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-async def test_add_wikibase_script_path(wikibase):
+async def test_add_wikibase_script_path(
+    wikibase,
+):  # pylint: disable=redefined-outer-name
     """Add Wikibase URL"""
 
     before_adding_result = await test_schema.execute(
@@ -142,7 +144,7 @@ async def test_add_wikibase_script_path(wikibase):
 async def test_remove_wikibase_sparql_frontend_url(
     wikibase,
     db_session,
-):  # pylint: disable=unused-argument
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Remove Wikibase URL"""
 
     before_removing_result = await test_schema.execute(
@@ -197,7 +199,9 @@ async def test_remove_wikibase_sparql_frontend_url(
 
 
 @pytest.mark.asyncio
-async def test_remove_wikibase_article_path(wikibase):
+async def test_remove_wikibase_article_path(
+    wikibase,
+):  # pylint: disable=redefined-outer-name
     """Remove Wikibase article path"""
 
     before_removing_result = await test_schema.execute(
@@ -260,7 +264,7 @@ async def test_remove_wikibase_article_path(wikibase):
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_url(wikibase):
+async def test_update_wikibase_url(wikibase):  # pylint: disable=redefined-outer-name
     """Update Wikibase URL"""
 
     before_updating_result = await test_schema.execute(
@@ -316,7 +320,9 @@ async def test_update_wikibase_url(wikibase):
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_article_path_fail(wikibase):
+async def test_update_wikibase_article_path_fail(
+    wikibase,
+):  # pylint: disable=redefined-outer-name
     """Update Wikibase URL Fail"""
 
     update_result = await test_schema.execute(
@@ -336,7 +342,9 @@ async def test_update_wikibase_article_path_fail(wikibase):
 
 
 @pytest.mark.asyncio
-async def test_update_wikibase_base_url_fail(wikibase):
+async def test_update_wikibase_base_url_fail(
+    wikibase,
+):  # pylint: disable=redefined-outer-name
     """Update Wikibase URL Fail"""
 
     update_result = await test_schema.execute(

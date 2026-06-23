@@ -5,9 +5,15 @@ from freezegun import freeze_time
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.connectivity.connectivity_observation_model import WikibaseConnectivityObservationModel
-from model.database.wikibase_observation.connectivity.item_relationship_count_model import WikibaseConnectivityObservationItemRelationshipCountModel
-from model.database.wikibase_observation.connectivity.object_relationship_count_model import WikibaseConnectivityObservationObjectRelationshipCountModel
+from model.database.wikibase_observation.connectivity.connectivity_observation_model import (
+    WikibaseConnectivityObservationModel,
+)
+from model.database.wikibase_observation.connectivity.item_relationship_count_model import (
+    WikibaseConnectivityObservationItemRelationshipCountModel,
+)
+from model.database.wikibase_observation.connectivity.object_relationship_count_model import (
+    WikibaseConnectivityObservationObjectRelationshipCountModel,
+)
 from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
     assert_connectivity_observation,
 )
@@ -33,7 +39,10 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_connectivity_observations(db_session):
+# pylint: disable-next=too-many-statements
+async def wikibase_with_connectivity_observations(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with 3 connectivity observations: empty, simple, and failed"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -113,13 +122,16 @@ async def wikibase_with_connectivity_observations(db_session):
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.query
-async def test_wikibase_connectivity_all_observations_query(wikibase_with_connectivity_observations):
+async def test_wikibase_connectivity_all_observations_query(
+    wikibase_with_connectivity_observations,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase All Connectivity Observations Query"""
 
     data = wikibase_with_connectivity_observations
 
     result = await test_schema.execute(
-        WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": data["wikibase_id"]}
+        WIKIBASE_CONNECTIVITY_ALL_OBSERVATIONS_QUERY,
+        variable_values={"wikibaseId": data["wikibase_id"]},
     )
 
     assert result.errors is None
@@ -130,23 +142,35 @@ async def test_wikibase_connectivity_all_observations_query(wikibase_with_connec
     assert "connectivityObservations" in result_wikibase
 
     assert "allObservations" in result_wikibase["connectivityObservations"]
-    connectivity_observation_list = result_wikibase["connectivityObservations"]["allObservations"]
+    connectivity_observation_list = result_wikibase["connectivityObservations"][
+        "allObservations"
+    ]
     assert len(connectivity_observation_list) == 3
 
     assert_connectivity_observation(
         connectivity_observation_list[0],
         data["obs1_id"],
         True,
-        0, 0, None, None, [], [],
+        0,
+        0,
+        None,
+        None,
+        [],
+        [],
     )
 
     assert_connectivity_observation(
         connectivity_observation_list[1],
         data["obs2_id"],
         True,
-        1, 1, 1.0, 1 / 4,
+        1,
+        1,
+        1.0,
+        1 / 4,
         [(data["item_rc_id"], 1, 1)],
         [(data["object_rc_id"], 1, 1)],
     )
 
-    assert_connectivity_observation(connectivity_observation_list[2], data["obs3_id"], False)
+    assert_connectivity_observation(
+        connectivity_observation_list[2], data["obs3_id"], False
+    )

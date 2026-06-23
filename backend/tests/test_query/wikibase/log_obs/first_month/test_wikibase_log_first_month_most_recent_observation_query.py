@@ -36,7 +36,9 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_first_month_most_recent_observation_query(wikibase_with_first_month_log_observations):
+async def test_wikibase_log_first_month_most_recent_observation_query(
+    wikibase_with_first_month_log_observations,
+):
     """Test Wikibase Most Recent Log Observation"""
 
     data = wikibase_with_first_month_log_observations
@@ -46,7 +48,8 @@ async def test_wikibase_log_first_month_most_recent_observation_query(wikibase_w
     ut_ids = data["user_type"]
 
     result = await test_schema.execute(
-        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None
@@ -65,10 +68,14 @@ async def test_wikibase_log_first_month_most_recent_observation_query(wikibase_w
     )
     assert_property_value(most_recent, "returnedData", True)
     assert_layered_property_value(
-        most_recent, ["firstLog", "date"], datetime(2023, 10, 24).strftime(DATETIME_FORMAT)
+        most_recent,
+        ["firstLog", "date"],
+        datetime(2023, 10, 24).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        most_recent, ["lastLog", "date"], datetime(2023, 11, 23).strftime(DATETIME_FORMAT)
+        most_recent,
+        ["lastLog", "date"],
+        datetime(2023, 11, 23).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(most_recent, ["lastLog", "userType"], "USER")
     assert_property_value(most_recent, "logCount", 31)
@@ -92,13 +99,45 @@ async def test_wikibase_log_first_month_most_recent_observation_query(wikibase_w
     )
 
     assert_layered_property_count(most_recent, ["userTypeRecords"], 3)
-    for index, (expected_id, expected_user_type, expected_first_log_date,
-                expected_last_log_date, expected_log_count, expected_user_count,
-                expected_active_user_count) in enumerate([
-        (ut_ids[0], "BOT", datetime(2023, 10, 26), datetime(2023, 11, 21), 10, 1, 1),
-        (ut_ids[1], "MISSING", datetime(2023, 10, 25), datetime(2023, 11, 22), 10, 1, 1),
-        (ut_ids[2], "USER", datetime(2023, 10, 24), datetime(2023, 11, 23), 11, 1, 1),
-    ]):
+    for index, (
+        expected_id,
+        expected_user_type,
+        expected_first_log_date,
+        expected_last_log_date,
+        expected_log_count,
+        expected_user_count,
+        expected_active_user_count,
+    ) in enumerate(
+        [
+            (
+                ut_ids[0],
+                "BOT",
+                datetime(2023, 10, 26),
+                datetime(2023, 11, 21),
+                10,
+                1,
+                1,
+            ),
+            (
+                ut_ids[1],
+                "MISSING",
+                datetime(2023, 10, 25),
+                datetime(2023, 11, 22),
+                10,
+                1,
+                1,
+            ),
+            (
+                ut_ids[2],
+                "USER",
+                datetime(2023, 10, 24),
+                datetime(2023, 11, 23),
+                11,
+                1,
+                1,
+            ),
+        ]
+    ):
         assert_month_type_record(
             most_recent["userTypeRecords"][index],
             expected_id=expected_id,

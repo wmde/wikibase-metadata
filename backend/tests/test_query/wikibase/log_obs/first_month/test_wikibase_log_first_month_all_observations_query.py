@@ -15,7 +15,12 @@ from tests.utils import (
     DATETIME_FORMAT,
 )
 from datetime import timezone
-from model.database import WikibaseModel, WikibaseLogMonthObservationModel, WikibaseLogMonthLogTypeObservationModel, WikibaseLogMonthUserTypeObservationModel
+from model.database import (
+    WikibaseModel,
+    WikibaseLogMonthObservationModel,
+    WikibaseLogMonthLogTypeObservationModel,
+    WikibaseLogMonthUserTypeObservationModel,
+)
 from model.enum import WikibaseLogType, WikibaseUserType
 from data.database_connection import get_async_session
 
@@ -40,7 +45,9 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_first_month_all_observations_query(wikibase_with_first_month_log_observations):
+async def test_wikibase_log_first_month_all_observations_query(
+    wikibase_with_first_month_log_observations,
+):
     """Test Wikibase All Log Observations Query"""
 
     data = wikibase_with_first_month_log_observations
@@ -62,21 +69,31 @@ async def test_wikibase_log_first_month_all_observations_query(wikibase_with_fir
     assert "firstMonth" in result_wikibase["logObservations"]
     assert "allObservations" in result_wikibase["logObservations"]["firstMonth"]
 
-    log_observation_list = result_wikibase["logObservations"]["firstMonth"]["allObservations"]
+    log_observation_list = result_wikibase["logObservations"]["firstMonth"][
+        "allObservations"
+    ]
     assert len(log_observation_list) == 3
 
     assert_layered_property_value(log_observation_list, [0, "id"], observation_ids[0])
     assert_layered_property_value(
-        log_observation_list, [0, "observationDate"], datetime(2024, 2, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [0, "observationDate"],
+        datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
     assert_layered_property_value(
-        log_observation_list, [0, "firstLog", "date"], datetime(2024, 1, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [0, "firstLog", "date"],
+        datetime(2024, 1, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        log_observation_list, [0, "lastLog", "date"], datetime(2024, 1, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [0, "lastLog", "date"],
+        datetime(2024, 1, 1).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [0, "lastLog", "userType"], None)
+    assert_layered_property_value(
+        log_observation_list, [0, "lastLog", "userType"], None
+    )
     assert_layered_property_value(log_observation_list, [0, "logCount"], 1)
     assert_layered_property_value(log_observation_list, [0, "allUsers"], 0)
     assert_layered_property_value(log_observation_list, [0, "activeUsers"], 0)
@@ -100,16 +117,24 @@ async def test_wikibase_log_first_month_all_observations_query(wikibase_with_fir
 
     assert_layered_property_value(log_observation_list, [1, "id"], observation_ids[1])
     assert_layered_property_value(
-        log_observation_list, [1, "observationDate"], datetime(2024, 3, 1).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [1, "observationDate"],
+        datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [1, "returnedData"], True)
     assert_layered_property_value(
-        log_observation_list, [1, "firstLog", "date"], datetime(2023, 10, 24).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [1, "firstLog", "date"],
+        datetime(2023, 10, 24).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(
-        log_observation_list, [1, "lastLog", "date"], datetime(2023, 11, 23).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [1, "lastLog", "date"],
+        datetime(2023, 11, 23).strftime(DATETIME_FORMAT),
     )
-    assert_layered_property_value(log_observation_list, [1, "lastLog", "userType"], "USER")
+    assert_layered_property_value(
+        log_observation_list, [1, "lastLog", "userType"], "USER"
+    )
     assert_layered_property_value(log_observation_list, [1, "logCount"], 31)
     assert_layered_property_value(log_observation_list, [1, "allUsers"], 3)
     assert_layered_property_value(log_observation_list, [1, "activeUsers"], 3)
@@ -141,9 +166,33 @@ async def test_wikibase_log_first_month_all_observations_query(wikibase_with_fir
         expected_active_user_count,
     ) in enumerate(
         [
-            (user_type_ids[0], "BOT", datetime(2023, 10, 26), datetime(2023, 11, 21), 10, 1, 1),
-            (user_type_ids[1], "MISSING", datetime(2023, 10, 25), datetime(2023, 11, 22), 10, 1, 1),
-            (user_type_ids[2], "USER", datetime(2023, 10, 24), datetime(2023, 11, 23), 11, 1, 1),
+            (
+                user_type_ids[0],
+                "BOT",
+                datetime(2023, 10, 26),
+                datetime(2023, 11, 21),
+                10,
+                1,
+                1,
+            ),
+            (
+                user_type_ids[1],
+                "MISSING",
+                datetime(2023, 10, 25),
+                datetime(2023, 11, 22),
+                10,
+                1,
+                1,
+            ),
+            (
+                user_type_ids[2],
+                "USER",
+                datetime(2023, 10, 24),
+                datetime(2023, 11, 23),
+                11,
+                1,
+                1,
+            ),
         ]
     ):
         assert_month_type_record(
@@ -159,6 +208,8 @@ async def test_wikibase_log_first_month_all_observations_query(wikibase_with_fir
 
     assert_layered_property_value(log_observation_list, [2, "id"], observation_ids[2])
     assert_layered_property_value(
-        log_observation_list, [2, "observationDate"], datetime(2024, 3, 2).strftime(DATETIME_FORMAT)
+        log_observation_list,
+        [2, "observationDate"],
+        datetime(2024, 3, 2).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [2, "returnedData"], False)

@@ -2,16 +2,17 @@
 
 from datetime import datetime, timezone
 import pytest
-from model.enum.wikibase_type_enum import WikibaseType
 from data.database_connection import get_async_session
+from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
-from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
-    assert_software_version_aggregate,
-)
 from tests.test_query.aggregation.software_version.software_version_aggregate_fragment import (
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
@@ -35,8 +36,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 """ + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
 
+
 @pytest.fixture
-async def wikibase_with_three_extensions(db_session):
+async def wikibase_with_three_extensions(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with 3 extension software versions"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -74,8 +76,11 @@ async def wikibase_with_three_extensions(db_session):
 
         await session.flush()
 
+
 @pytest.fixture
-async def wikibases_with_extensions_for_filter(db_session):
+async def wikibases_with_extensions_for_filter(
+    db_session,
+):  # pylint: disable=unused-argument
     """11 extensions on UNKNOWN wikibase, 1 on SUITE for filtered aggregate tests"""
     async with get_async_session() as session:
         # UNKNOWN wikibase with 11 extensions
@@ -141,17 +146,22 @@ async def wikibases_with_extensions_for_filter(db_session):
         await session.flush()
         await session.refresh(suite_software)
 
-        suite_version = WikibaseSoftwareVersionModel(software=suite_software, version="1.0")
+        suite_version = WikibaseSoftwareVersionModel(
+            software=suite_software, version="1.0"
+        )
         suite_version.wikibase_software_version_observation_id = obs_suite.id
         session.add(suite_version)
 
         await session.flush()
 
+
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_extensions_query_page_one(wikibase_with_three_extensions):
+async def test_aggregate_extensions_query_page_one(
+    wikibase_with_three_extensions,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Extensions Query - page 1"""
 
     result = await test_schema.execute(
@@ -161,14 +171,18 @@ async def test_aggregate_extensions_query_page_one(wikibase_with_three_extension
     assert result.errors is None
     assert result.data is not None
     assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 2, 3, 2)
-    assert_layered_property_count(result.data, ["aggregateExtensionPopularity", "data"], 2)
+    assert_layered_property_count(
+        result.data, ["aggregateExtensionPopularity", "data"], 2
+    )
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_extensions_query_page_two(wikibase_with_three_extensions):
+async def test_aggregate_extensions_query_page_two(
+    wikibase_with_three_extensions,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Extensions Query - page 2"""
 
     result = await test_schema.execute(
@@ -178,14 +192,18 @@ async def test_aggregate_extensions_query_page_two(wikibase_with_three_extension
     assert result.errors is None
     assert result.data is not None
     assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 2, 3, 2)
-    assert_layered_property_count(result.data, ["aggregateExtensionPopularity", "data"], 1)
+    assert_layered_property_count(
+        result.data, ["aggregateExtensionPopularity", "data"], 1
+    )
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_extensions_query_page_three(wikibase_with_three_extensions):
+async def test_aggregate_extensions_query_page_three(
+    wikibase_with_three_extensions,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Extensions Query - page 3 empty"""
 
     result = await test_schema.execute(
@@ -195,7 +213,9 @@ async def test_aggregate_extensions_query_page_three(wikibase_with_three_extensi
     assert result.errors is None
     assert result.data is not None
     assert_page_meta(result.data["aggregateExtensionPopularity"], 3, 2, 3, 2)
-    assert_layered_property_count(result.data, ["aggregateExtensionPopularity", "data"], 0)
+    assert_layered_property_count(
+        result.data, ["aggregateExtensionPopularity", "data"], 0
+    )
 
 
 @pytest.mark.asyncio
@@ -214,11 +234,10 @@ async def test_aggregate_extensions_query_page_three(wikibase_with_three_extensi
         (["CLOUD", "OTHER", "SUITE"], 11),
     ],
 )
-
 @pytest.mark.version
 async def test_aggregate_extensions_query_filtered(
     exclude: list, expected_count: int, wikibases_with_extensions_for_filter
-):
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Extensions Query filtered"""
 
     result = await test_schema.execute(

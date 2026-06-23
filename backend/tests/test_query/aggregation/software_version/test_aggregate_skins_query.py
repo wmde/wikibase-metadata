@@ -6,8 +6,12 @@ import pytest
 
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from model.enum.wikibase_type_enum import WikibaseType
@@ -37,8 +41,11 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 """ + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
 
+
 @pytest.fixture
-async def wikibase_with_three_named_skins(db_session):
+async def wikibase_with_three_named_skins(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with 3 specific skin software versions"""
     async with get_async_session() as session:
         skin_data = [
@@ -84,11 +91,14 @@ async def wikibase_with_three_named_skins(db_session):
 
         await session.flush()
 
+
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_skins_query_page_one(wikibase_with_three_named_skins):
+async def test_aggregate_skins_query_page_one(
+    wikibase_with_three_named_skins,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Skins Query"""
 
     result = await test_schema.execute(
@@ -122,8 +132,9 @@ async def test_aggregate_skins_query_page_one(wikibase_with_three_named_skins):
             None,
         )
 
+
 @pytest.fixture
-async def wikibase_with_three_skins(db_session):
+async def wikibase_with_three_skins(db_session):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with 3 distinct skin software versions"""
     async with get_async_session() as session:
         skin_names = ["SkinA", "SkinB", "SkinC"]
@@ -183,7 +194,9 @@ async def wikibase_with_three_skins(db_session):
     ],
 )
 @pytest.mark.user
-async def test_aggregate_users_query_filtered(wikibase_with_three_skins, exclude: list, expected_count: int):
+async def test_aggregate_users_query_filtered(
+    wikibase_with_three_skins, exclude: list, expected_count: int
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Users Query"""
 
     result = await test_schema.execute(

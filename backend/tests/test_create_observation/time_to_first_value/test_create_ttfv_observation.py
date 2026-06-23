@@ -16,7 +16,9 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.soup
-async def test_create_ttfv_observation_success(wikibase_fixture, mocker): # pylint: redefined-outer-name
+async def test_create_ttfv_observation_success(
+    wikibase_fixture, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)

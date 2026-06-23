@@ -5,14 +5,15 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from model.enum.wikibase_type_enum import WikibaseType
-from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
-    assert_software_version_aggregate,
-)
 from tests.test_query.aggregation.software_version.software_version_aggregate_fragment import (
     SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT,
 )
@@ -38,7 +39,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def wikibase_with_three_libraries(db_session):
+async def wikibase_with_three_libraries(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with 3 library software versions for pagination tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -61,7 +62,11 @@ async def wikibase_with_three_libraries(db_session):
         await session.flush()
         await session.refresh(obs)
 
-        for name, version in [("lib/a", "1.0.0"), ("lib/b", "2.0.0"), ("lib/c", "3.0.0")]:
+        for name, version in [
+            ("lib/a", "1.0.0"),
+            ("lib/b", "2.0.0"),
+            ("lib/c", "3.0.0"),
+        ]:
             software = WikibaseSoftwareModel(
                 software_type=WikibaseSoftwareType.LIBRARY,
                 software_name=name,
@@ -78,7 +83,9 @@ async def wikibase_with_three_libraries(db_session):
 
 
 @pytest.fixture
-async def wikibases_with_libraries_for_filter(db_session):
+async def wikibases_with_libraries_for_filter(
+    db_session,
+):  # pylint: disable=unused-argument
     """SUITE wikibase with libraries — drops to 0 when SUITE excluded"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -121,7 +128,9 @@ async def wikibases_with_libraries_for_filter(db_session):
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_libraries_query_page_one(wikibase_with_three_libraries):
+async def test_aggregate_libraries_query_page_one(
+    wikibase_with_three_libraries,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Libraries Query - page 1"""
 
     result = await test_schema.execute(
@@ -131,14 +140,18 @@ async def test_aggregate_libraries_query_page_one(wikibase_with_three_libraries)
     assert result.errors is None
     assert result.data is not None
     assert_page_meta(result.data["aggregateLibraryPopularity"], 1, 2, 3, 2)
-    assert_layered_property_count(result.data, ["aggregateLibraryPopularity", "data"], 2)
+    assert_layered_property_count(
+        result.data, ["aggregateLibraryPopularity", "data"], 2
+    )
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_libraries_query_page_two(wikibase_with_three_libraries):
+async def test_aggregate_libraries_query_page_two(
+    wikibase_with_three_libraries,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregated Libraries Query - page 2"""
 
     result = await test_schema.execute(
@@ -148,7 +161,9 @@ async def test_aggregate_libraries_query_page_two(wikibase_with_three_libraries)
     assert result.errors is None
     assert result.data is not None
     assert_page_meta(result.data["aggregateLibraryPopularity"], 2, 2, 3, 2)
-    assert_layered_property_count(result.data, ["aggregateLibraryPopularity", "data"], 1)
+    assert_layered_property_count(
+        result.data, ["aggregateLibraryPopularity", "data"], 1
+    )
 
 
 @pytest.mark.asyncio
@@ -170,7 +185,7 @@ async def test_aggregate_libraries_query_page_two(wikibase_with_three_libraries)
 @pytest.mark.version
 async def test_aggregate_libraries_query_filtered(
     exclude: list, expected_count: int, wikibases_with_libraries_for_filter
-):
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Library Query"""
 
     result = await test_schema.execute(

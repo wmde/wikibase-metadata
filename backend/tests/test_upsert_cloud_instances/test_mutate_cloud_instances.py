@@ -11,6 +11,9 @@ from tests.test_upsert_cloud_instances.constant import (
 from tests.utils import get_mock_context
 from tests.utils.assert_property_value import assert_layered_property_count
 from tests.utils.mock_response import MockResponse
+from model.database import WikibaseModel
+from model.enum import WikibaseType
+from sqlalchemy.ext.asyncio import AsyncSession
 
 UPDATE_CLOUD_INSTANCES_MUTATION = """
 mutation MyMutation {
@@ -22,10 +25,6 @@ mutation MyMutation {
 @pytest.fixture
 async def wikibase_list(db_session):
     """Create the wikibases required by the cloud instance test."""
-
-    from model.database import WikibaseModel
-    from model.enum import WikibaseType
-    from sqlalchemy.ext.asyncio import AsyncSession
 
     wikibases = [
         {
@@ -57,7 +56,9 @@ async def wikibase_list(db_session):
 
 
 @pytest.mark.asyncio
-async def test_add_cloud_instance(wikibase_list, mocker): # pylint: disable=unused-argument, redefined-outer-name
+async def test_add_cloud_instance(
+    wikibase_list, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """
     test adding a list of cloud instances
     """

@@ -29,7 +29,9 @@ query MyQuery($wikibaseId: Int!) {
 # )
 @pytest.mark.query
 @pytest.mark.statistics
-async def test_wikibase_statistics_all_observations_query(wikibase_fixture):
+async def test_wikibase_statistics_all_observations_query(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase All Statistics Observations"""
 
     result = await test_schema.execute(

@@ -12,26 +12,26 @@ from tests.utils.assert_property_value import assert_layered_property_value
 
 
 @pytest.fixture
-async def wikibase(db_session): # pylint: disable=unused-argument
+async def wikibase(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with article path for software version tests"""
     async with get_async_session() as session:
-        wikibase = WikibaseModel(
+        test_wikibase = WikibaseModel(
             wikibase_name="Software Version Test Wikibase",
             base_url="https://example.com",
             article_path="/wiki",
         )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        session.add(wikibase)
+        test_wikibase.checked = True
+        test_wikibase.reuse = True
+        test_wikibase.test = False
+        session.add(test_wikibase)
         await session.flush()
-        await session.refresh(wikibase)
-        wikibase_id = wikibase.id
+        await session.refresh(test_wikibase)
+        wikibase_id = test_wikibase.id
     return wikibase_id
 
 
 @pytest.mark.asyncio
-async def test_update_missing_script_paths(wikibase, mocker):
+async def test_update_missing_script_paths(wikibase, mocker): # pylint: disable=redefined-outer-name
     """Test update_missing_script_paths"""
 
     with open(f"{DATA_DIRECTORY}/Special_Version.html", mode="rb") as data:

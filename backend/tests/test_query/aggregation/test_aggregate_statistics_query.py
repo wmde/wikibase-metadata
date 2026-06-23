@@ -3,10 +3,12 @@
 from datetime import datetime, timezone
 
 import pytest
-from model.enum.wikibase_type_enum import WikibaseType
 from data.database_connection import get_async_session
+from model.enum.wikibase_type_enum import WikibaseType
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.statistics.wikibase_statistics_observation_model import WikibaseStatisticsObservationModel
+from model.database.wikibase_observation.statistics.wikibase_statistics_observation_model import (
+    WikibaseStatisticsObservationModel,
+)
 from tests.test_query.wikibase.statistics_obs.assert_statistics import (
     assert_edits,
     assert_files,
@@ -42,8 +44,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 }
 """
 
+
 @pytest.fixture
-async def wikibase_with_statistics(db_session):
+async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with a statistics observation"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -78,7 +81,9 @@ async def wikibase_with_statistics(db_session):
 @pytest.mark.agg
 @pytest.mark.statistics
 @pytest.mark.query
-async def test_aggregate_statistics_query(wikibase_with_statistics):
+async def test_aggregate_statistics_query(
+    wikibase_with_statistics,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Statistics Query"""
 
     result = await test_schema.execute(AGGREGATED_STATISTICS_QUERY)
@@ -96,8 +101,9 @@ async def test_aggregate_statistics_query(wikibase_with_statistics):
     )
     assert_users(result.data["aggregateStatistics"], 5, 17, 465)
 
+
 @pytest.fixture
-async def wikibase_with_statistics_suite(db_session):
+async def wikibase_with_statistics_suite(db_session):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with a statistics observation for filtered tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -125,7 +131,7 @@ async def wikibase_with_statistics_suite(db_session):
         obs.active_users = 2
         obs.total_admin = 1
         session.add(obs)
-        await session.flush()    
+        await session.flush()
 
 
 @pytest.mark.asyncio
@@ -145,7 +151,9 @@ async def wikibase_with_statistics_suite(db_session):
     ],
 )
 @pytest.mark.user
-async def test_aggregate_statistics_query_filtered(wikibase_with_statistics_suite, exclude: list, expected_count: int):
+async def test_aggregate_statistics_query_filtered(
+    wikibase_with_statistics_suite, exclude: list, expected_count: int
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Statistics Query"""
 
     result = await test_schema.execute(
