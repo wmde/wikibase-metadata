@@ -1,6 +1,8 @@
 """Test Aggregate Users Query"""
 
 import pytest
+from model.database.wikibase_model import WikibaseModel
+from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 
@@ -27,12 +29,10 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 }
 """
 
-
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["update-wikibase-primary-language-3"], scope="session")
 @pytest.mark.query
-async def test_aggregate_languages_query():
+async def test_aggregate_languages_query(wikibase_fixture):
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(
@@ -46,7 +46,7 @@ async def test_aggregate_languages_query():
         result.data["aggregateLanguagePopularity"],
         expected_page_number=1,
         expected_page_size=10,
-        expected_total_count=6,
+        expected_total_count=3,
         expected_total_pages=1,
     )
 
@@ -57,12 +57,9 @@ async def test_aggregate_languages_query():
         expected_additional,
     ) in enumerate(
         [
-            ("Hindi", 1, 1, 0),
-            ("Albanian", 1, 0, 1),
-            ("Babylonian", 1, 0, 1),
+            ("French", 1, 1, 0),
             ("Cymru", 1, 0, 1),
             ("Deutsch", 1, 0, 1),
-            ("French", 1, 0, 1),
         ]
     ):
         assert_layered_property_value(
@@ -86,14 +83,48 @@ async def test_aggregate_languages_query():
             expected_additional,
         )
 
+# TODO: why doesn't this work?
+@pytest.fixture
+async def wikibases(db_session):
+    """Create 3 test wikibases for connectivity tests"""
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    async with AsyncSession(bind=db_session) as session:
+        for i in range(6):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Test Wikibase {i}",
+                base_url=f"https://example-{i}.com",
+                sparql_endpoint_url=f"https://example-{i}.com/sparql",
+                wikibase_type=WikibaseType.OTHER
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = WikibaseType.OTHER
+            session.add(wikibase)
+            await session.flush()
+        
+        wikibase = WikibaseModel(
+                wikibase_name=f"Test Wikibase Suite",
+                base_url=f"https://example-suite.com",
+                sparql_endpoint_url=f"https://example-suite.com/sparql",
+                wikibase_type=WikibaseType.SUITE
+            )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = WikibaseType.SUITE
+        session.add(wikibase)
+        await session.flush()
+
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-    scope="session",
-)
+# @pytest.mark.dependency(
+#     depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
+#     scope="session",
+# )
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
@@ -108,7 +139,7 @@ async def test_aggregate_languages_query():
     ],
 )
 @pytest.mark.user
-async def test_aggregate_languages_query_filtered(exclude: list, expected_count: int):
+async def test_aggregate_languages_query_filtered(wikibases, exclude: list, expected_count: int):
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(

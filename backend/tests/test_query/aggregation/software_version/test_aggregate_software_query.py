@@ -95,8 +95,11 @@ async def five_wikibases_with_software_versions(db_session): # pylint: disable=u
 
             version = WikibaseSoftwareVersionModel(
                 software=software_entries[software_name],
-                version="1.0",
+                version=f"{i+1}.{i}" if i != 3 else "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)",
+                version_hash="fbca402" if i == 2 else None,
+                version_date=datetime(2022, 12, 13, 5, 50) if i == 4 else None
             )
+
             version.wikibase_software_version_observation_id = obs.id
             session.add(version)
 
@@ -105,10 +108,9 @@ async def five_wikibases_with_software_versions(db_session): # pylint: disable=u
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_software_query():
+async def test_aggregate_software_query(five_wikibases_with_software_versions):
     """Test Aggregated Software Query"""
 
     result = await test_schema.execute(
@@ -131,17 +133,17 @@ async def test_aggregate_software_query():
         expected_version_hash,
     ) in enumerate(
         [
-            ("ICU", 2, "60.2", (60, 2, None), None, None),
-            ("Lua", 2, "5.1.5", (5, 1, 5), None, None),
-            ("MediaWiki", 2, "1.39.8", (1, 39, 8), None, "fbca402"),
-            ("PHP", 2, "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", (7, 2, 24), None, None),
+            ("SoftwareA", 1, "1.0", (1, 0, None), None, None),
+            ("SoftwareB", 1, "2.1", (2, 1, None), None, None),
+            ("SoftwareC", 1, "3.2", (3, 2, None), None, "fbca402"),
+            ("SoftwareD", 1, "7.2.24-0ubuntu0.18.04.3 (fpm-fcgi)", (7, 2, 24), None, None),
             (
-                "MySQL",
+                "SoftwareE",
                 1,
-                "1.35.8",
-                (1, 35, 8),
+                "5.4",
+                (5, 4, None),
                 datetime(2022, 12, 13, 5, 50),
-                "e43140f",
+                None,
             ),
         ]
     ):

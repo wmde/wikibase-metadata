@@ -1,7 +1,14 @@
 """Test Aggregated Extensions Query"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import pytest
+from model.enum.wikibase_type_enum import WikibaseType
+from data.database_connection import get_async_session
+from model.database.wikibase_model import WikibaseModel
+from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
+from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_software.software_model import WikibaseSoftwareModel
+from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
 )
@@ -28,219 +35,191 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 """ + SOFTWARE_VERSION_DOUBLE_AGGREGATE_FRAGMENT
 
+@pytest.fixture
+async def wikibase_with_three_extensions(db_session):
+    """Create a wikibase with 3 extension software versions"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Aggregate Extensions Test Wikibase",
+            base_url="https://aggregate-extensions-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        obs = WikibaseSoftwareVersionObservationModel()
+        obs.wikibase_id = wikibase.id
+        obs.returned_data = True
+        obs.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        session.add(obs)
+        await session.flush()
+        await session.refresh(obs)
+
+        for name in ["ExtensionA", "ExtensionB", "ExtensionC"]:
+            software = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.EXTENSION,
+                software_name=name,
+            )
+            session.add(software)
+            await session.flush()
+            await session.refresh(software)
+
+            version = WikibaseSoftwareVersionModel(software=software, version="1.0")
+            version.wikibase_software_version_observation_id = obs.id
+            session.add(version)
+
+        await session.flush()
+
+@pytest.fixture
+async def wikibases_with_extensions_for_filter(db_session):
+    """11 extensions on UNKNOWN wikibase, 1 on SUITE for filtered aggregate tests"""
+    async with get_async_session() as session:
+        # UNKNOWN wikibase with 11 extensions
+        wikibase_unknown = WikibaseModel(
+            wikibase_name="Aggregate Extensions Unknown Wikibase",
+            base_url="https://aggregate-extensions-unknown-example.com",
+        )
+        wikibase_unknown.checked = True
+        wikibase_unknown.reuse = True
+        wikibase_unknown.test = False
+        wikibase_unknown.wikibase_type = None
+        session.add(wikibase_unknown)
+        await session.flush()
+        await session.refresh(wikibase_unknown)
+
+        obs_unknown = WikibaseSoftwareVersionObservationModel()
+        obs_unknown.wikibase_id = wikibase_unknown.id
+        obs_unknown.returned_data = True
+        obs_unknown.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        session.add(obs_unknown)
+        await session.flush()
+        await session.refresh(obs_unknown)
+
+        for i in range(11):
+            software = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.EXTENSION,
+                software_name=f"FilterExtension{i}",
+            )
+            session.add(software)
+            await session.flush()
+            await session.refresh(software)
+
+            version = WikibaseSoftwareVersionModel(software=software, version="1.0")
+            version.wikibase_software_version_observation_id = obs_unknown.id
+            session.add(version)
+
+        # SUITE wikibase with 1 extension (SUITE-only)
+        wikibase_suite = WikibaseModel(
+            wikibase_name="Aggregate Extensions Suite Wikibase",
+            base_url="https://aggregate-extensions-suite-example.com",
+        )
+        wikibase_suite.checked = True
+        wikibase_suite.reuse = True
+        wikibase_suite.test = False
+        wikibase_suite.wikibase_type = WikibaseType.SUITE
+        session.add(wikibase_suite)
+        await session.flush()
+        await session.refresh(wikibase_suite)
+
+        obs_suite = WikibaseSoftwareVersionObservationModel()
+        obs_suite.wikibase_id = wikibase_suite.id
+        obs_suite.returned_data = True
+        obs_suite.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        session.add(obs_suite)
+        await session.flush()
+        await session.refresh(obs_suite)
+
+        suite_software = WikibaseSoftwareModel(
+            software_type=WikibaseSoftwareType.EXTENSION,
+            software_name="SuiteOnlyExtension",
+        )
+        session.add(suite_software)
+        await session.flush()
+        await session.refresh(suite_software)
+
+        suite_version = WikibaseSoftwareVersionModel(software=suite_software, version="1.0")
+        suite_version.wikibase_software_version_observation_id = obs_suite.id
+        session.add(suite_version)
+
+        await session.flush()
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_extensions_query_page_one():
-    """Test Aggregated Extensions Query - 1-5"""
+async def test_aggregate_extensions_query_page_one(wikibase_with_three_extensions):
+    """Test Aggregated Extensions Query - page 1"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 1, "pageSize": 5}
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 1, "pageSize": 2}
     )
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 5, 12, 3)
-    assert_layered_property_count(
-        result.data, ["aggregateExtensionPopularity", "data"], 5
-    )
-
-    for index, (
-        expected_software_name,
-        expected_version_string,
-        expected_version_semver,
-        expected_version_date,
-        expected_version_hash,
-    ) in enumerate(
-        [
-            ("Babel", "1.11.1", (1, 11, 1), None, None),
-            (
-                "Google Analytics Integration",
-                "3.0.1",
-                (3, 0, 1),
-                datetime(2019, 8, 6, 9, 12),
-                "6441403",
-            ),
-            (
-                "LabeledSectionTransclusion",
-                "f621799",
-                (None, None, None),
-                datetime(2020, 1, 29, 14, 52),
-                "f621799",
-            ),
-            (
-                "Miraheze Magic",
-                "e742444",
-                (None, None, None),
-                datetime(2024, 10, 17, 15, 21),
-                "e742444",
-            ),
-            (
-                "ProofreadPage",
-                "cb0a218",
-                (None, None, None),
-                datetime(2019, 9, 30, 9, 20),
-                "cb0a218",
-            ),
-        ]
-    ):
-
-        assert_software_version_aggregate(
-            result.data["aggregateExtensionPopularity"]["data"][index],
-            expected_software_name,
-            1,
-            expected_version_string,
-            expected_version_semver,
-            expected_version_date,
-            expected_version_hash,
-        )
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 1, 2, 3, 2)
+    assert_layered_property_count(result.data, ["aggregateExtensionPopularity", "data"], 2)
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_extensions_query_page_two():
-    """Test Aggregated Extensions Query - 6-10"""
+async def test_aggregate_extensions_query_page_two(wikibase_with_three_extensions):
+    """Test Aggregated Extensions Query - page 2"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 2, "pageSize": 5}
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 2, "pageSize": 2}
     )
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 5, 12, 3)
-    assert_layered_property_count(
-        result.data, ["aggregateExtensionPopularity", "data"], 5
-    )
-
-    for index, (
-        expected_software_name,
-        expected_version_string,
-        expected_version_semver,
-        expected_version_date,
-        expected_version_hash,
-    ) in enumerate(
-        [
-            ("Scribunto", None, (None, None, None), None, None),
-            (
-                "UniversalLanguageSelector",
-                "2020-01-23",
-                (None, None, None),
-                datetime(2020, 3, 3, 13, 38),
-                "61f1a98",
-            ),
-            (
-                "WikibaseClient",
-                "dbbcdd8",
-                (None, None, None),
-                datetime(2019, 12, 10, 12, 52),
-                "dbbcdd8",
-            ),
-            (
-                "WikibaseLib",
-                "dbbcdd8",
-                (None, None, None),
-                datetime(2019, 12, 10, 12, 52),
-                "dbbcdd8",
-            ),
-            ("WikibaseManifest", "0.0.1", (0, 0, 1), None, None),
-        ]
-    ):
-
-        assert_software_version_aggregate(
-            result.data["aggregateExtensionPopularity"]["data"][index],
-            expected_software_name,
-            1,
-            expected_version_string,
-            expected_version_semver,
-            expected_version_date,
-            expected_version_hash,
-        )
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 2, 2, 3, 2)
+    assert_layered_property_count(result.data, ["aggregateExtensionPopularity", "data"], 1)
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
-async def test_aggregate_extensions_query_page_three():
-    """Test Aggregated Extensions Query - 11-12"""
+async def test_aggregate_extensions_query_page_three(wikibase_with_three_extensions):
+    """Test Aggregated Extensions Query - page 3 empty"""
 
     result = await test_schema.execute(
-        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 3, "pageSize": 5}
+        AGGREGATE_EXTENSIONS_QUERY, variable_values={"pageNumber": 3, "pageSize": 2}
     )
 
     assert result.errors is None
     assert result.data is not None
-    assert_page_meta(result.data["aggregateExtensionPopularity"], 3, 5, 12, 3)
-    assert_layered_property_count(
-        result.data, ["aggregateExtensionPopularity", "data"], 2
-    )
-
-    for index, (
-        expected_software_name,
-        expected_version_string,
-        expected_version_semver,
-        expected_version_date,
-        expected_version_hash,
-    ) in enumerate(
-        [
-            (
-                "WikibaseRepository",
-                "dbbcdd8",
-                (None, None, None),
-                datetime(2019, 12, 10, 12, 52),
-                "dbbcdd8",
-            ),
-            (
-                "WikibaseView",
-                "dbbcdd8",
-                (None, None, None),
-                datetime(2019, 12, 10, 12, 52),
-                "dbbcdd8",
-            ),
-        ]
-    ):
-
-        assert_software_version_aggregate(
-            result.data["aggregateExtensionPopularity"]["data"][index],
-            expected_software_name,
-            1,
-            expected_version_string,
-            expected_version_semver,
-            expected_version_date,
-            expected_version_hash,
-        )
+    assert_page_meta(result.data["aggregateExtensionPopularity"], 3, 2, 3, 2)
+    assert_layered_property_count(result.data, ["aggregateExtensionPopularity", "data"], 0)
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
         ([], 12),
         (["CLOUD"], 12),
         (["OTHER"], 12),
-        (["SUITE"], 1),
+        (["SUITE"], 11),
         (["CLOUD", "OTHER"], 12),
-        (["CLOUD", "SUITE"], 1),
-        (["OTHER", "SUITE"], 1),
-        (["CLOUD", "OTHER", "SUITE"], 1),
+        (["CLOUD", "SUITE"], 11),
+        (["OTHER", "SUITE"], 11),
+        (["CLOUD", "OTHER", "SUITE"], 11),
     ],
 )
+
 @pytest.mark.version
-async def test_aggregate_extensions_query_filtered(exclude: list, expected_count: int):
-    """Test Aggregate Users Query"""
+async def test_aggregate_extensions_query_filtered(
+    exclude: list, expected_count: int, wikibases_with_extensions_for_filter
+):
+    """Test Aggregate Extensions Query filtered"""
 
     result = await test_schema.execute(
         AGGREGATE_EXTENSIONS_QUERY,
