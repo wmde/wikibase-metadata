@@ -43,11 +43,13 @@ async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
                 raw_domain = item_dict.get("domain")
                 raw_domain_decoded = item_dict.get("domain_decoded")
                 raw_sitename = item_dict.get("sitename")
+                raw_reuse = item_dict.get("reuse_prototype")
 
                 if (
                     raw_id is not None
                     and raw_domain is not None
                     and raw_domain_decoded is not None
+                    and raw_reuse is not None
                 ):
                     instance = WikibaseCloudInstance(
                         id=raw_id,
@@ -55,6 +57,7 @@ async def fetch_cloud_instances() -> list[WikibaseCloudInstance]:
                         domain=raw_domain,
                         domain_decoded=raw_domain_decoded,
                         sitename=strip_sitename(raw_sitename),
+                        reuse=raw_reuse,
                     )
                     instances.append(instance)
                 else:
