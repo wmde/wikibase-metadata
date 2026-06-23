@@ -17,7 +17,8 @@
 				"jobs": 0,
 				"cirrussearch-article-words": 216
 			},
-			"logo_url": "https:\/\/storage.googleapis.com\/wikibase-cloud-static\/sites\/e4eedf984f8ab92a960522815974fa5e\/logos\/135.png?u=1714333570"
+			"logo_url": "https:\/\/storage.googleapis.com\/wikibase-cloud-static\/sites\/e4eedf984f8ab92a960522815974fa5e\/logos\/135.png?u=1714333570",
+			"reuse_prototype": false
 		}
 	]
 }
