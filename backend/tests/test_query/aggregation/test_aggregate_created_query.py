@@ -51,7 +51,6 @@ async def wikibase_with_first_month_log(db_session):
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-# @pytest.mark.dependency(depends=["log-first-success-1"], scope="session")
 @pytest.mark.log
 @pytest.mark.query
 async def test_aggregate_created_query(wikibase_with_first_month_log):

@@ -1,6 +1,8 @@
 """Test Aggregate Users Query"""
 
 import pytest
+from data.database_connection import get_async_session
+from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_model import WikibaseModel
 from model.enum.wikibase_type_enum import WikibaseType
 from tests.test_schema import test_schema
@@ -83,48 +85,56 @@ async def test_aggregate_languages_query(wikibase_fixture):
             expected_additional,
         )
 
-# TODO: why doesn't this work?
 @pytest.fixture
-async def wikibases(db_session):
-    """Create 3 test wikibases for connectivity tests"""
-    from sqlalchemy.ext.asyncio import AsyncSession
+async def wikibases_with_languages(db_session):
+    """
+    Create wikibases with languages:
+    - 1 SUITE wikibase with 7 languages (en + 6 others)
+    - 1 non-SUITE wikibase with 1 language (en)
+    Excluding SUITE drops from 7 to 1 (only 'en' remains via non-SUITE wikibase)
+    """
+    async with get_async_session() as session:
+        # SUITE wikibase with 7 languages
+        suite_wikibase = WikibaseModel(
+            wikibase_name="Languages Suite Test Wikibase",
+            base_url="https://languages-suite-example.com",
+        )
+        suite_wikibase.checked = True
+        suite_wikibase.reuse = True
+        suite_wikibase.test = False
+        suite_wikibase.wikibase_type = WikibaseType.SUITE
+        session.add(suite_wikibase)
+        await session.flush()
+        await session.refresh(suite_wikibase)
 
-    async with AsyncSession(bind=db_session) as session:
-        for i in range(6):
-            wikibase = WikibaseModel(
-                wikibase_name=f"Test Wikibase {i}",
-                base_url=f"https://example-{i}.com",
-                sparql_endpoint_url=f"https://example-{i}.com/sparql",
-                wikibase_type=WikibaseType.OTHER
-            )
-            wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = WikibaseType.OTHER
-            session.add(wikibase)
-            await session.flush()
-        
-        wikibase = WikibaseModel(
-                wikibase_name=f"Test Wikibase Suite",
-                base_url=f"https://example-suite.com",
-                sparql_endpoint_url=f"https://example-suite.com/sparql",
-                wikibase_type=WikibaseType.SUITE
-            )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
-        session.add(wikibase)
+        for i, lang in enumerate(["en", "de", "fr", "es", "it", "nl", "pt"]):
+            lang_model = WikibaseLanguageModel(language=lang, primary=(i == 0))
+            lang_model.wikibase_id = suite_wikibase.id
+            session.add(lang_model)
+
+        # non-SUITE wikibase with just 'en'
+        other_wikibase = WikibaseModel(
+            wikibase_name="Languages Other Test Wikibase",
+            base_url="https://languages-other-example.com",
+        )
+        other_wikibase.checked = True
+        other_wikibase.reuse = True
+        other_wikibase.test = False
+        other_wikibase.wikibase_type = None
+        session.add(other_wikibase)
+        await session.flush()
+        await session.refresh(other_wikibase)
+
+        lang_model = WikibaseLanguageModel(language="en", primary=True)
+        lang_model.wikibase_id = other_wikibase.id
+        session.add(lang_model)
+
         await session.flush()
 
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-# @pytest.mark.dependency(
-#     depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-#     scope="session",
-# )
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
@@ -139,7 +149,7 @@ async def wikibases(db_session):
     ],
 )
 @pytest.mark.user
-async def test_aggregate_languages_query_filtered(wikibases, exclude: list, expected_count: int):
+async def test_aggregate_languages_query_filtered(wikibases_with_languages, exclude: list, expected_count: int):
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(

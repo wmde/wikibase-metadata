@@ -41,7 +41,7 @@ async def test_wikibase_statistics_most_recent_observation_query():
     result_wikibase = result.data["wikibase"]
     assert_property_value(result_wikibase, "id", "1")
     assert "statisticsObservations" in result_wikibase
-    assert "mostRecent" in result_wikibase["statisticsObservations"]
+    assert "mostRecent" in result_wikibase["statisticsObservationsisticsObservations"]
     most_recent = result_wikibase["statisticsObservations"]["mostRecent"]
 
     assert_statistics(
