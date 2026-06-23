@@ -91,7 +91,9 @@ async def wikibase_with_ttfv_observation(db_session):  # pylint: disable=unused-
 
 @pytest.mark.asyncio
 @pytest.mark.query
-async def test_wikibase_query_ttfv_success(wikibase_with_ttfv_observation): # pylint: disable=redefined-outer-name
+async def test_wikibase_query_ttfv_success(
+    wikibase_with_ttfv_observation,
+):  # pylint: disable=redefined-outer-name
     """Test success scenario"""
 
     wikibase_id, observation_id, item_date_ids = wikibase_with_ttfv_observation

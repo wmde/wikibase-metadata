@@ -8,7 +8,9 @@ from tests.utils import MockResponse
 
 
 @pytest.fixture
-async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name, unused-argument
+async def wikibase_fixture(
+    db_session,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with article path and no software observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

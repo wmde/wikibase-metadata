@@ -84,7 +84,7 @@ async def wikibase_with_two_ei_observations(
 @pytest.mark.ei
 async def test_wikibase_external_identifier_all_observations_query(
     wikibase_with_two_ei_observations,
-): # pylint: disable=redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase All External Identifier Observations"""
 
     wikibase_id, obs1_id, obs2_id = wikibase_with_two_ei_observations

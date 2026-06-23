@@ -59,7 +59,7 @@ async def db_session():
 
 
 @pytest.fixture
-async def wikibase_fixture(db_session): # pylint: disable=redefined-outer-name
+async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
     """Create Wikibase Test Fixture"""
 
     async with AsyncSession(bind=db_session) as session:
@@ -85,7 +85,7 @@ async def wikibase_fixture(db_session): # pylint: disable=redefined-outer-name
 
 
 @pytest.fixture
-async def three_wikibases_fixture(db_session): # pylint: disable=redefined-outer-name
+async def three_wikibases_fixture(db_session):  # pylint: disable=redefined-outer-name
     """Create 3 test wikibases for connectivity tests"""
 
     async with AsyncSession(bind=db_session) as session:
@@ -108,7 +108,9 @@ async def three_wikibases_fixture(db_session): # pylint: disable=redefined-outer
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(db_session): # pylint: disable=redefined-outer-name, unused-argument
+async def wikibase_with_user_observation(
+    db_session,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with user observation for aggregate users tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -153,7 +155,9 @@ async def wikibase_with_user_observation(db_session): # pylint: disable=redefine
 
 @pytest.fixture
 # pylint: disable-next=too-many-statements, too-many-locals
-async def wikibase_with_first_month_log_observations(db_session): # pylint: disable=redefined-outer-name, unused-argument
+async def wikibase_with_first_month_log_observations(
+    db_session,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with 3 first-month log observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -302,7 +306,9 @@ async def wikibase_with_first_month_log_observations(db_session): # pylint: disa
 
 
 @pytest.fixture
-async def wikibase_with_three_property_popularity_observations(db_session): # pylint: disable=redefined-outer-name, unused-argument
+async def wikibase_with_three_property_popularity_observations(
+    db_session,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with 3 property popularity observations: empty, P1/P14, and failed"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -369,7 +375,9 @@ async def wikibase_with_three_property_popularity_observations(db_session): # py
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(db_session): # pylint: disable=redefined-outer-name, unused-argument
+async def wikibase_with_user_observation(
+    db_session,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with user observation for aggregate users tests"""
     # async with get_async_session() as session:
     async with AsyncSession(bind=db_session) as session:

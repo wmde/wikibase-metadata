@@ -93,7 +93,9 @@ async def test_aggregate_users_query(
 
 
 @pytest.fixture
-async def wikibase_with_user_observation_suite(db_session): # pylint: disable=unused-argument
+async def wikibase_with_user_observation_suite(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a SUITE wikibase with a user observation and admin group"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

@@ -6,7 +6,6 @@ from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
 ALL_LOG_DATA_MUTATION = """
 mutation MyMutation($firstMonth: Boolean!) {
   updateAllLogData(firstMonth: $firstMonth) {
@@ -41,7 +40,7 @@ async def three_wikibases_with_script_path(db_session):
 @pytest.mark.asyncio
 async def test_update_all_log_first_observations_fail(
     three_wikibases_with_script_path, mocker
-): # pylint: disable=redefined-outer-name, unused-argument
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
@@ -75,7 +74,7 @@ async def test_update_all_log_first_observations_fail(
 @pytest.mark.asyncio
 async def test_update_all_log_last_observations_fail(
     three_wikibases_with_script_path, mocker
-): # pylint: disable=redefined-outer-name, unused-argument
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
