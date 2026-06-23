@@ -4,6 +4,7 @@ import pytest
 from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
     WikibaseExternalIdentifierObservationModel,
 )
+from model.database.wikibase_model import WikibaseModel
 from tests.test_query.wikibase.external_identifier_obs.assert_external_identifier import (
     assert_external_identifier,
 )
@@ -13,7 +14,6 @@ from tests.test_query.wikibase.external_identifier_obs.external_identifier_fragm
 from tests.test_schema import test_schema
 from tests.utils import assert_property_value
 from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
 from datetime import datetime, timezone
 
 WIKIBASE_EXTERNAL_IDENTIFIER_ALL_OBSERVATIONS_QUERY = """

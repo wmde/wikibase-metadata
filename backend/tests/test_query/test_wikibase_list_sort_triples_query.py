@@ -4,8 +4,8 @@ import pytest
 from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
     WikibaseQuantityObservationModel,
 )
-from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
+from data.database_connection import get_async_session
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
