@@ -4,9 +4,15 @@ from datetime import datetime, timezone
 
 import pytest
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.user.wikibase_user_group_model import WikibaseUserGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import WikibaseUserObservationGroupModel
-from model.database.wikibase_observation.user.wikibase_user_observation_model import WikibaseUserObservationModel
+from model.database.wikibase_observation.user.wikibase_user_group_model import (
+    WikibaseUserGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
+    WikibaseUserObservationGroupModel,
+)
+from model.database.wikibase_observation.user.wikibase_user_observation_model import (
+    WikibaseUserObservationModel,
+)
 from tests.test_query.wikibase.user_obs.assert_user import assert_user_group
 from tests.test_query.wikibase.user_obs.user_fragment import (
     WIKIBASE_USER_OBSERVATION_FRAGMENT,
@@ -28,6 +34,7 @@ query MyQuery($wikibaseId: Int!) {
 }
 
 """ + WIKIBASE_USER_OBSERVATION_FRAGMENT
+
 
 @pytest.fixture
 async def wikibase_with_user_observation(db_session):
@@ -86,12 +93,13 @@ async def wikibase_with_user_observation(db_session):
 
         return wikibase.id, observation.id
 
+
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.user
 async def test_wikibase_user_most_recent_observation_query(
     wikibase_with_user_observation,
-): # pylint: disable=redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent User Observation"""
 
     wikibase_id, obs_id = wikibase_with_user_observation
@@ -125,8 +133,8 @@ async def test_wikibase_user_most_recent_observation_query(
         [
             ("*", True, True, 2000),
             ("autoconfirmed", True, True, 2000),
-            ( "user", True, True, 2000),
-            ( "bot", False, False, 754),
+            ("user", True, True, 2000),
+            ("bot", False, False, 754),
             ("bureaucrat", True, False, 715),
             ("sysop", True, False, 715),
             ("administrator", False, False, 708),

@@ -8,6 +8,7 @@ from resolvers.authentication import authenticate
 from resolvers.update.merge_software import merge_software_by_id
 from resolvers.update.set_extension_wbs_bundled import set_extension_wbs_bundled
 
+
 @strawberry.type
 class SoftwareMutation:
     """Software-Related Mutations"""
