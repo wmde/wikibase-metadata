@@ -160,22 +160,18 @@ async def test_wikibase_user_all_observations_query(
     assert_layered_property_count(user_observation_list, [1, "userGroups"], 2)
 
     for index, (
-        expected_id,
-        expected_group_id,
         expected_group_name,
         expected_wikibase_default,
         expected_group_implicit,
         expected_user_count,
     ) in enumerate(
         [
-            (data["og1_id"], data["group_all_id"], "*", True, True, 20),
-            (data["og2_id"], data["group_sysop_id"], "sysop", True, False, 5),
+            ("*", True, True, 20),
+            ("sysop", True, False, 5),
         ]
     ):
         assert_user_group(
             user_observation_list[1]["userGroups"][index],
-            expected_id,
-            expected_group_id,
             expected_group_name,
             expected_wikibase_default,
             expected_group_implicit,

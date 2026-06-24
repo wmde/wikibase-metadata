@@ -17,64 +17,23 @@ FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 @pytest.mark.parametrize(
     ["links"],
     [
-        pytest.param(
-            [("Q1", "Q1")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-1",
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [("Q1", "Q2")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-2",
-                depends=["connectivity-success-simple-1"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-            ],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-3",
-                depends=["connectivity-success-simple-2"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [("Q1", "Q2"), ("Q2", "Q1")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-4",
-                depends=["connectivity-success-simple-3"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [("Q1", "Q2"), ("Q2", "Q3")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-5",
-                depends=["connectivity-success-simple-4"],
-                scope="session",
-            ),
-        ),
+        pytest.param([("Q1", "Q1")]),
+        pytest.param([("Q1", "Q2")]),
+        pytest.param([
+            ("Q1", "Q2"), ("Q1", "Q2"), ("Q1", "Q2"),
+            ("Q1", "Q2"), ("Q1", "Q2"), ("Q1", "Q2"),
+        ]),
+        pytest.param([("Q1", "Q2"), ("Q2", "Q1")]),
+        pytest.param([("Q1", "Q2"), ("Q2", "Q3")]),
     ],
 )
-async def test_create_connectivity_observation_success(
-    wikibase_fixture, mocker, links: list[tuple[str, str]]
-):  # pylint: redefined-outer-name
+async def test_create_connectivity_observation_success(wikibase_fixture, mocker, links):
     """Test"""
 
-    returned_links = []
-    for link in links:
-        returned_links.append(
-            {"item": {"value": link[0]}, "object": {"value": link[1]}}
-        )
+    returned_links = [
+        {"item": {"value": link[0]}, "object": {"value": link[1]}}
+        for link in links
+    ]
 
     mocker.patch(
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
@@ -87,9 +46,7 @@ async def test_create_connectivity_observation_success(
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-async def test_create_connectivity_observation_success_complex(
-    wikibase_fixture, mocker
-):  # pylint: redefined-outer-name
+async def test_create_connectivity_observation_success_complex(wikibase_fixture, mocker):
     """Test"""
 
     returned_links = []

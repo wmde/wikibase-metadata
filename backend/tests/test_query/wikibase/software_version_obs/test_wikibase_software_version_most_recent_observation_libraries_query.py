@@ -38,7 +38,7 @@ query MyQuery($wikibaseId: Int!) {
 """ + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
 
 @pytest.fixture
-async def wikibase_with_libraries_observation(db_session):
+async def wikibase_with_libraries_observation(db_session): # pylint: disable=unused-argument
     """Create a wikibase with software version observation containing 59 libraries"""
     async with get_async_session() as session:
         library_data = [
@@ -148,10 +148,9 @@ async def wikibase_with_libraries_observation(db_session):
     return wikibase_id, observation_id, sv_ids
 
 @pytest.mark.asyncio
-# @pytest.mark.dependency(depends=["software-version-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.version
-async def test_wikibase_software_version_most_recent_observation_libraries_query(wikibase_with_libraries_observation):
+async def test_wikibase_software_version_most_recent_observation_libraries_query(wikibase_with_libraries_observation): # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Libraries Observation Query"""
 
     wikibase_id, obs_id, sv_ids = wikibase_with_libraries_observation

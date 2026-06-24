@@ -31,8 +31,8 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argument
-    """Create a wikibase with a statistics observation"""
+async def wikibase_with_statistics(db_session): # pylint: disable=unused-argument
+    """Create a wikibase with a statistics observation for aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Statistics Test Wikibase",
@@ -60,19 +60,22 @@ async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argume
         obs.total_admin = 17
         session.add(obs)
         await session.flush()
-        return wikibase
+        await session.refresh(obs)
 
+        wikibase_id = wikibase.id
+        obs_id = str(obs.id)
+
+    return wikibase_id, obs_id
 
 @pytest.mark.asyncio
-# @pytest.mark.dependency(depends=["statistics-success"], scope="session")
 @pytest.mark.query
 @pytest.mark.statistics
 async def test_wikibase_statistics_most_recent_observation_query(
-    wikibase_with_statistics,
+    wikibase_with_statistics
 ):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Statistics Observation"""
 
-    wikibase_id = wikibase_with_statistics.id
+    wikibase_id, obs_id = wikibase_with_statistics
 
     result = await test_schema.execute(
         WIKIBASE_STATISTICS_MOST_RECENT_OBSERVATION_QUERY,
@@ -85,12 +88,12 @@ async def test_wikibase_statistics_most_recent_observation_query(
     result_wikibase = result.data["wikibase"]
     assert_property_value(result_wikibase, "id", str(wikibase_id))
     assert "statisticsObservations" in result_wikibase
-    assert "mostRecent" in result_wikibase["statisticsObservationsisticsObservations"]
+    assert "mostRecent" in result_wikibase["statisticsObservations"]
     most_recent = result_wikibase["statisticsObservations"]["mostRecent"]
 
     assert_statistics(
         most_recent,
-        "2",
+        obs_id,
         True,
         (36150323, 36150323 / 12655622),  # edits
         (30,),  # files
