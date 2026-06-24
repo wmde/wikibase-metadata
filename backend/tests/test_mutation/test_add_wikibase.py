@@ -88,8 +88,8 @@ async def test_add_wikibase_mutation(
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
-    db_session,
-):  # pylint: disable=unused-argument
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Can't Add Wikibase with existing base URL"""
 
     base_url = "https://example-wikibase.com"
@@ -139,7 +139,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
-    db_session,
+    db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
     """Test Can't Add Wikibase with existing sqarql URL"""
 
@@ -193,7 +193,9 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
 
 
 @pytest.mark.asyncio
-async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
+async def test_normalizes_urls(
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Normalizes the base URL when adding a Wikibase"""
 
     base_url = "example-1234.com"
@@ -250,8 +252,8 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
 
 @pytest.mark.asyncio
 async def test_marks_localhost_urls_as_test(
-    db_session,
-):  # pylint: disable=unused-argument
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test marks all Wikibases with a URL containing 'localhost' as test"""
 
     result = await test_schema.execute(

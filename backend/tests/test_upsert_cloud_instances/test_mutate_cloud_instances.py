@@ -27,29 +27,22 @@ async def wikibase_list(db_session):
     """Create the wikibases required by the cloud instance test."""
 
     wikibases = [
-        {
-            "wikibase_name": "Local Wikibase",
-            "type": WikibaseType["SUITE"],
-        },
-        {
-            "wikibase_name": "Another Wikibase",
-            "type": WikibaseType["OTHER"],
-        },
-        {
-            "wikibase_name": "Existing Cloud Wikibase",
-            "type": WikibaseType["CLOUD"],
-        },
+        {"wikibase_name": "Local Wikibase", "type": WikibaseType["SUITE"]},
+        {"wikibase_name": "Another Wikibase", "type": WikibaseType["OTHER"]},
+        {"wikibase_name": "Existing Cloud Wikibase", "type": WikibaseType["CLOUD"]},
     ]
 
     async with AsyncSession(bind=db_session) as session:
         for i, wb in enumerate(wikibases):
-            session.add(
-                WikibaseModel(
-                    wikibase_name=wb["wikibase_name"],
-                    wikibase_type=wb["type"],
-                    base_url=f"https://example-{i}.com",
-                )
+            wikibase = WikibaseModel(
+                wikibase_name=wb["wikibase_name"],
+                wikibase_type=wb["type"],
+                base_url=f"https://example-{i}.com",
             )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            session.add(wikibase)
 
         await session.flush()
     return wikibases
