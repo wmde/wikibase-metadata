@@ -1,7 +1,6 @@
 """Test Wikibase Most Recent External Identifier Observation Query"""
 
-from select import select
-
+from sqlalchemy import select
 import pytest
 from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
     WikibaseExternalIdentifierObservationModel,

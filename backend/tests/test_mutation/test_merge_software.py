@@ -29,14 +29,35 @@ async def wikibase_software(db_session):  # pylint: disable=unused-argument
         return software
 
 
+@pytest.fixture
+async def two_wikibase_softwares(db_session):  # pylint: disable=unused-argument
+    """Create two software entries with different types"""
+    async with get_async_session() as session:
+        software_ids = []
+        for i in range(2):
+            software = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.EXTENSION,
+                software_name=f"Test Extension {i}",
+            )
+
+            session.add(software)
+            await session.flush()
+            await session.refresh(software)
+            software_ids.append(software.id)
+        return software_ids
+
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
-async def test_merge_software_by_id_mutation():
+async def test_merge_software_by_id_mutation(
+    two_wikibase_softwares,
+):  # pylint: disable=redefined-outer-name
     """Test Add Wikibase"""
 
+    id_1, id_2 = two_wikibase_softwares
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": 1, "additionalId": 3},
+        variable_values={"baseId": id_1, "additionalId": id_2},
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is None
