@@ -31,7 +31,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_statistics(db_session): # pylint: disable=unused-argument
+async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with a statistics observation for aggregate tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -67,11 +67,12 @@ async def wikibase_with_statistics(db_session): # pylint: disable=unused-argumen
 
     return wikibase_id, obs_id
 
+
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.statistics
 async def test_wikibase_statistics_most_recent_observation_query(
-    wikibase_with_statistics
+    wikibase_with_statistics,
 ):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Statistics Observation"""
 

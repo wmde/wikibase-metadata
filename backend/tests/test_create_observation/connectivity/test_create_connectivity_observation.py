@@ -19,10 +19,16 @@ FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
     [
         pytest.param([("Q1", "Q1")]),
         pytest.param([("Q1", "Q2")]),
-        pytest.param([
-            ("Q1", "Q2"), ("Q1", "Q2"), ("Q1", "Q2"),
-            ("Q1", "Q2"), ("Q1", "Q2"), ("Q1", "Q2"),
-        ]),
+        pytest.param(
+            [
+                ("Q1", "Q2"),
+                ("Q1", "Q2"),
+                ("Q1", "Q2"),
+                ("Q1", "Q2"),
+                ("Q1", "Q2"),
+                ("Q1", "Q2"),
+            ]
+        ),
         pytest.param([("Q1", "Q2"), ("Q2", "Q1")]),
         pytest.param([("Q1", "Q2"), ("Q2", "Q3")]),
     ],
@@ -31,8 +37,7 @@ async def test_create_connectivity_observation_success(wikibase_fixture, mocker,
     """Test"""
 
     returned_links = [
-        {"item": {"value": link[0]}, "object": {"value": link[1]}}
-        for link in links
+        {"item": {"value": link[0]}, "object": {"value": link[1]}} for link in links
     ]
 
     mocker.patch(
@@ -46,7 +51,9 @@ async def test_create_connectivity_observation_success(wikibase_fixture, mocker,
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-async def test_create_connectivity_observation_success_complex(wikibase_fixture, mocker):
+async def test_create_connectivity_observation_success_complex(
+    wikibase_fixture, mocker
+):
     """Test"""
 
     returned_links = []

@@ -5,8 +5,12 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import WikibaseSoftwareVersionModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import WikibaseSoftwareVersionObservationModel
+from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareVersionModel,
+)
+from model.database.wikibase_observation.version.wikibase_version_observation_model import (
+    WikibaseSoftwareVersionObservationModel,
+)
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from tests.test_query.wikibase.software_version_obs.assert_software_version import (
@@ -37,8 +41,11 @@ query MyQuery($wikibaseId: Int!) {
 
 """ + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
 
+
 @pytest.fixture
-async def wikibase_with_libraries_observation(db_session): # pylint: disable=unused-argument
+async def wikibase_with_libraries_observation(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with software version observation containing 59 libraries"""
     async with get_async_session() as session:
         library_data = [
@@ -136,7 +143,9 @@ async def wikibase_with_libraries_observation(db_session): # pylint: disable=unu
 
         sv_ids = {}
         for name, version in library_data:
-            sv = WikibaseSoftwareVersionModel(software=lib_models[name], version=version)
+            sv = WikibaseSoftwareVersionModel(
+                software=lib_models[name], version=version
+            )
             sv.wikibase_software_version_observation_id = obs.id
             session.add(sv)
             await session.flush()
@@ -147,10 +156,13 @@ async def wikibase_with_libraries_observation(db_session): # pylint: disable=unu
         observation_id = str(obs.id)
     return wikibase_id, observation_id, sv_ids
 
+
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.version
-async def test_wikibase_software_version_most_recent_observation_libraries_query(wikibase_with_libraries_observation): # pylint: disable=redefined-outer-name
+async def test_wikibase_software_version_most_recent_observation_libraries_query(
+    wikibase_with_libraries_observation,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Libraries Observation Query"""
 
     wikibase_id, obs_id, sv_ids = wikibase_with_libraries_observation

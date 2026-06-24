@@ -10,10 +10,17 @@ from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
 from resolvers.add.add_wikibase import add_wikibase
 from resolvers.authentication import authenticate
-from resolvers.update.update_wikibase_language import add_wikibase_language, remove_wikibase_language, update_wikibase_primary_language
+from resolvers.update.update_wikibase_language import (
+    add_wikibase_language,
+    remove_wikibase_language,
+    update_wikibase_primary_language,
+)
 from resolvers.update.update_wikibase_flag import update_wikibase_reuse_flag
 from resolvers.update.update_wikibase_type import update_wikibase_type
-from resolvers.update.update_wikibase_url import remove_wikibase_url, upsert_wikibase_url
+from resolvers.update.update_wikibase_url import (
+    remove_wikibase_url,
+    upsert_wikibase_url,
+)
 
 
 @strawberry.type

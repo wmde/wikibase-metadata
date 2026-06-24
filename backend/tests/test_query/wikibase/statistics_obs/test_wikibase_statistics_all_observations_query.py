@@ -5,7 +5,9 @@ from datetime import datetime, timezone
 import pytest
 from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.statistics.wikibase_statistics_observation_model import WikibaseStatisticsObservationModel
+from model.database.wikibase_observation.statistics.wikibase_statistics_observation_model import (
+    WikibaseStatisticsObservationModel,
+)
 from tests.test_query.wikibase.statistics_obs.assert_statistics import assert_statistics
 from tests.test_query.wikibase.statistics_obs.statistics_fragment import (
     WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT,
@@ -27,8 +29,11 @@ query MyQuery($wikibaseId: Int!) {
 
 """ + WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT
 
+
 @pytest.fixture
-async def wikibase_with_three_statistics_observations(db_session): # pylint: disable=unused-argument
+async def wikibase_with_three_statistics_observations(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a wikibase with 3 statistics observations: failed, success, failed"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -84,7 +89,9 @@ async def wikibase_with_three_statistics_observations(db_session): # pylint: dis
 @pytest.mark.asyncio
 @pytest.mark.query
 @pytest.mark.statistics
-async def test_wikibase_statistics_all_observations_query(wikibase_with_three_statistics_observations): # pylint: disable=redefined-outer-name
+async def test_wikibase_statistics_all_observations_query(
+    wikibase_with_three_statistics_observations,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase All Statistics Observations"""
 
     wikibase_id, obs_ids = wikibase_with_three_statistics_observations
@@ -102,7 +109,9 @@ async def test_wikibase_statistics_all_observations_query(wikibase_with_three_st
     assert "statisticsObservations" in result_wikibase
 
     assert "allObservations" in result_wikibase["statisticsObservations"]
-    statistics_observation_list = result_wikibase["statisticsObservations"]["allObservations"]
+    statistics_observation_list = result_wikibase["statisticsObservations"][
+        "allObservations"
+    ]
     assert len(statistics_observation_list) == 3
 
     assert_statistics(statistics_observation_list[0], obs_ids[0], False)
