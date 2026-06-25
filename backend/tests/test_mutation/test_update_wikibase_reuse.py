@@ -159,12 +159,39 @@ async def test_set_wikibase_reuse_false(
 
 
 @pytest.fixture
-async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-argument
-    """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
+async def wikibase_reuse_true_fixture(db_session): # pylint: disable=unused-argument
+    """Create 2 reuse=True and 1 reuse=False wikibase"""
+    async with get_async_session() as session:
+        for i in range(2):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Reuse True Wikibase {i}",
+                base_url=f"https://reuse-true-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+
+        wikibase = WikibaseModel(
+            wikibase_name="Reuse False Wikibase",
+            base_url="https://reuse-false-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = False
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+
+        await session.flush()
+
+@pytest.fixture
+async def wikibase_reuse_false_majority_fixture(db_session): # pylint: disable=unused-argument
+    """Create 1 reuse=True and 2 reuse=False wikibases"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Reuse True Wikibase",
-            base_url="https://reuse-example.com",
+            base_url="https://reuse-true-single-example.com",
         )
         wikibase.checked = True
         wikibase.reuse = True
@@ -175,7 +202,7 @@ async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-arg
         for i in range(2):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse False Wikibase {i}",
-                base_url=f"https://reuse-false-example-{i}.com",
+                base_url=f"https://reuse-false-majority-example-{i}.com",
             )
             wikibase.checked = True
             wikibase.reuse = False
@@ -185,10 +212,9 @@ async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-arg
 
         await session.flush()
 
-
 @pytest.mark.asyncio
 async def test_set_wikibase_reuse_true(
-    wikibase_reuse_true_fixture,
+    wikibase_reuse_false_majority_fixture,
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Set Wikibase Reuse True"""
 
