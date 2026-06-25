@@ -111,7 +111,6 @@ async def test_add_wikibase_language_one(
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
 async def test_add_wikibase_language_two(
     wikibase_without_additional_languages,
 ):  # pylint: disable=redefined-outer-name

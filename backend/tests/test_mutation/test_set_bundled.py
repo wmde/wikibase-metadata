@@ -29,7 +29,6 @@ async def extension_software(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
 async def test_set_bundled(extension_software):  # pylint: disable=redefined-outer-name
     """Test Set Extension Bundled"""
 

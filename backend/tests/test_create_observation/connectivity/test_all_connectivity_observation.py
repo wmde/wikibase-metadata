@@ -37,7 +37,6 @@ async def wikibase(db_session):
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
 async def test_update_all_connectivity_observations_fail(wikibase, mocker):
     """Test Weird Error Scenario"""
 
