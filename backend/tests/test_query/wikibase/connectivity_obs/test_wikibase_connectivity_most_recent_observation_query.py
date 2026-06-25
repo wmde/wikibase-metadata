@@ -39,7 +39,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_complex_connectivity(db_session):
+async def wikibase_with_complex_connectivity(db_session): # pylint: disable=unused-argument
     """Create a wikibase with a connectivity observation with relationship counts"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
