@@ -159,7 +159,7 @@ async def test_set_wikibase_reuse_false(
 
 
 @pytest.fixture
-async def wikibase_reuse_true_fixture(db_session): # pylint: disable=unused-argument
+async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-argument
     """Create 2 reuse=True and 1 reuse=False wikibase"""
     async with get_async_session() as session:
         for i in range(2):
@@ -185,8 +185,11 @@ async def wikibase_reuse_true_fixture(db_session): # pylint: disable=unused-argu
 
         await session.flush()
 
+
 @pytest.fixture
-async def wikibase_reuse_false_majority_fixture(db_session): # pylint: disable=unused-argument
+async def wikibase_reuse_false_majority_fixture(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create 1 reuse=True and 2 reuse=False wikibases"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -211,6 +214,7 @@ async def wikibase_reuse_false_majority_fixture(db_session): # pylint: disable=u
             session.add(wikibase)
 
         await session.flush()
+
 
 @pytest.mark.asyncio
 async def test_set_wikibase_reuse_true(
