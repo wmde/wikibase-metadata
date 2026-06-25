@@ -39,7 +39,7 @@ describe('AppHeader', async () => {
 		expect(feedbackButton.text()).toEqual('Give Feedback')
 		expect(feedbackButton.attributes()).toHaveProperty(
 			'href',
-			'https://wikimedia.sslsurvey.de/-WBS-Federated-Values-Feedback'
+			'https://wikimedia.sslsurvey.de/-WBS--Wikibase-Explorer-Feedback'
 		)
 		expect(feedbackButton.attributes()).toHaveProperty('target', '_blank')
 	})
