@@ -29,7 +29,7 @@ const theme = useTheme()
 				<v-btn
 					class="feedback-button px-3 py-0 ma-0"
 					variant="outlined"
-					href="https://wikimedia.sslsurvey.de/-WBS-Federated-Values-Feedback"
+					href="https://wikimedia.sslsurvey.de/-WBS--Wikibase-Explorer-Feedback"
 					target="_blank"
 				>
 					Give Feedback
