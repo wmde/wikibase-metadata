@@ -23,32 +23,6 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 }"""
 
 
-@pytest_asyncio.fixture(scope="function")
-async def get_wikibase_without_primary_language():
-    """Get the ID of a wikibase that has no primary language"""
-    list_result = await test_schema.execute("""
-        query {
-          wikibaseList(pageNumber: 1, pageSize: 100) {
-            data {
-              id
-              languages {
-                primary
-              }
-            }
-          }
-        }
-        """)
-    assert list_result.errors is None
-    assert list_result.data is not None
-
-    # Find first wikibase without primary language
-    for wikibase in list_result.data["wikibaseList"]["data"]:
-        if wikibase["languages"]["primary"] is None:
-            return int(wikibase["id"])
-
-    pytest.fail("No wikibase found without primary language")
-
-
 @pytest.fixture
 async def wikibase_with_additional_languages(
     db_session,
@@ -71,10 +45,6 @@ async def wikibase_with_additional_languages(
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="update-wikibase-primary-language-1",
-    scope="session",
-)
 async def test_update_wikibase_primary_language_to_current_additional(
     wikibase_with_additional_languages,
 ):
@@ -135,13 +105,9 @@ async def test_update_wikibase_primary_language_to_current_additional(
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="update-wikibase-primary-language-2",
-    scope="session",
-)
 async def test_update_wikibase_primary_language_to_new(
     wikibase_with_additional_languages,
-):
+): # pylint: disable=redefined-outer-name
     """
     Test Updating Primary Language
 
@@ -195,7 +161,7 @@ async def test_update_wikibase_primary_language_to_new(
 @pytest.mark.asyncio
 async def test_update_wikibase_primary_language_to_same(
     wikibase_with_additional_languages,
-):
+): # pylint: disable=redefined-outer-name
     """
     Test Updating Primary Language
 
@@ -261,10 +227,9 @@ async def wikibase_without_language(db_session):  # pylint: disable=unused-argum
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
 async def test_update_wikibase_new_primary_language(
     wikibase_without_language,
-):
+): # pylint: disable=redefined-outer-name
     """
     Test Updating Primary Language
 

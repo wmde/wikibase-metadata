@@ -8,7 +8,6 @@ from model.enum import WikibaseCategory
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
 async def test_add_test_categories(db_session):  # pylint: disable=unused-argument
     """Add Categories to Test Data"""
 

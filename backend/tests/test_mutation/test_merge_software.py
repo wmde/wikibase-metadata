@@ -48,7 +48,6 @@ async def two_wikibase_softwares(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
-@pytest.mark.mutation
 async def test_merge_software_by_id_mutation(
     two_wikibase_softwares,
 ):  # pylint: disable=redefined-outer-name
