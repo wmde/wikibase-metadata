@@ -141,7 +141,6 @@ async def wikibase_with_libraries_observation(
         await session.flush()
         await session.refresh(obs)
 
-        sv_ids = {}
         for name, version in library_data:
             sv = WikibaseSoftwareVersionModel(
                 software=lib_models[name], version=version
@@ -150,11 +149,10 @@ async def wikibase_with_libraries_observation(
             session.add(sv)
             await session.flush()
             await session.refresh(sv)
-            sv_ids[name] = str(sv.id)
 
         wikibase_id = wikibase.id
         observation_id = str(obs.id)
-    return wikibase_id, observation_id, sv_ids
+    return wikibase_id, observation_id
 
 
 @pytest.mark.asyncio
@@ -165,7 +163,7 @@ async def test_wikibase_software_version_most_recent_observation_libraries_query
 ):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Libraries Observation Query"""
 
-    wikibase_id, obs_id, sv_ids = wikibase_with_libraries_observation
+    wikibase_id, obs_id = wikibase_with_libraries_observation
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_LIBRARIES_QUERY,
         variable_values={"wikibaseId": wikibase_id},

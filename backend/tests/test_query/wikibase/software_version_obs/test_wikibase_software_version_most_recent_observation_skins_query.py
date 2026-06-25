@@ -85,7 +85,6 @@ async def wikibase_with_skins_observation(
         await session.flush()
         await session.refresh(obs)
 
-        skin_ids = {}
         for name, version, version_date, version_hash in skins:
             sv = WikibaseSoftwareVersionModel(
                 software=skin_software[name],
@@ -97,11 +96,10 @@ async def wikibase_with_skins_observation(
             session.add(sv)
             await session.flush()
             await session.refresh(sv)
-            skin_ids[name] = str(sv.id)
 
         wikibase_id = wikibase.id
         observation_id = str(obs.id)
-    return wikibase_id, observation_id, skin_ids
+    return wikibase_id, observation_id
 
 
 @pytest.mark.asyncio
@@ -112,7 +110,7 @@ async def test_wikibase_software_version_most_recent_observation_skins_query(
 ):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Skins Observation Query"""
 
-    wikibase_id, observation_id, skin_ids = wikibase_with_skins_observation
+    wikibase_id, observation_id = wikibase_with_skins_observation
 
     result = await test_schema.execute(
         WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_SKINS_QUERY,

@@ -13,6 +13,7 @@ from fetch_data import (
 )
 from tests.utils import MockResponse, ParsedUrl
 
+
 @pytest.fixture
 async def wikibase_with_script_path_log_ood(db_session):
     """Create a non-CLOUD wikibase with script path for OOD log tests"""
@@ -31,6 +32,7 @@ async def wikibase_with_script_path_log_ood(db_session):
         await session.refresh(wikibase)
         wikibase_id = wikibase.id
     return wikibase_id
+
 
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
