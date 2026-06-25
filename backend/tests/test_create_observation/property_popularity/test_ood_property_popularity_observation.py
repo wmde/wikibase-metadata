@@ -8,7 +8,7 @@ from fetch_data import update_out_of_date_property_observations
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_update_out_of_date_property_observations_success(
-    wikibase_fixture, mocker
+    wikibase_without_type, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """Test One-Pull Per Month, Data Returned Scenario"""
 
