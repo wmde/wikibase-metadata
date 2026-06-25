@@ -83,6 +83,26 @@ async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
 
         return wikibase
 
+@pytest.fixture
+async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-name
+    """Create Wikibase Test Fixture"""
+
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Test Wikibase",
+            base_url="https://example.com",
+            sparql_endpoint_url="https://example.com/sparql",
+            script_path="/w",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        session.add(wikibase)
+        await session.flush()
+
+        return wikibase
+
 
 @pytest.fixture
 async def three_wikibases_fixture(db_session):  # pylint: disable=redefined-outer-name
@@ -333,7 +353,6 @@ async def wikibase_with_user_observation(
     db_session,
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with user observation for aggregate users tests"""
-    # async with get_async_session() as session:
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Users Test Wikibase",
