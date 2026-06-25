@@ -16,7 +16,6 @@ from tests.utils import (
     depends=[
         "add-wikibase",
         "add-wikibase-script-path",
-        "remove-wikibase-sparql-frontend-url",
         "update-wikibase-url",
         "update-wikibase-primary-language-3",
         "add-wikibase-ii",
@@ -65,8 +64,8 @@ async def test_wikibase_list_query():
         ("indexApi", "https://example.com/w/index.php"),
         ("scriptPath", "/w/"),
         ("sparqlEndpointUrl", "https://query.example.com/sparql"),
-        ("sparqlFrontendUrl", None),
-        ("sparqlUrl", None),
+        ("sparqlFrontendUrl", "https://query.example.com"),
+        ("sparqlUrl", "https://query.example.com"),
         ("specialStatisticsUrl", "https://example.com/wiki/Special:Statistics"),
         ("specialVersionUrl", "https://example.com/wiki/Special:Version"),
     ]:
