@@ -10,7 +10,6 @@ from strawberry.fastapi import GraphQLRouter
 from export_csv import export_metric_csv
 from model.strawberry import schema
 from resolvers.authentication import authenticate_token
-from schedule import scheduler
 
 
 # Ensure the scheduler shuts down properly on application exit.
@@ -19,9 +18,7 @@ from schedule import scheduler
 async def lifespan(app: FastAPI):
     """Triggers at startup, yields, resumes at shutdown"""
 
-    scheduler.start()
     yield
-    scheduler.shutdown()
 
 
 app = FastAPI(lifespan=lifespan)
