@@ -15,7 +15,9 @@ from tests.utils import MockResponse, ParsedUrl
 
 
 @pytest.fixture
-async def wikibase_with_script_path_log_ood(db_session):
+async def wikibase_with_script_path_log_ood(
+    db_session,
+):  # pylint: disable=unused-argument
     """Create a non-CLOUD wikibase with script path for OOD log tests"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(

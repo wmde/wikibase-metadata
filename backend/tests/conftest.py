@@ -83,6 +83,7 @@ async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
 
         return wikibase
 
+
 @pytest.fixture
 async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-name
     """Create Wikibase Test Fixture"""

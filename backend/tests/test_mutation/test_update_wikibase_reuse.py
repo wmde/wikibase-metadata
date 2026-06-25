@@ -87,17 +87,6 @@ async def wikibases_mixed_reuse(db_session):  # pylint: disable=unused-argument
 async def wikibase_reuse_false_fixture(db_session):  # pylint: disable=unused-argument
     """Create wikibases"""
     async with get_async_session() as session:
-        # for i in range(3):
-        #     wikibase = WikibaseModel(
-        #         wikibase_name=f"Reuse True Wikibase {i}",
-        #         base_url=f"https://reuse-true-example-{i}.com",
-        #     )
-        #     wikibase.checked = True
-        #     wikibase.reuse = True
-        #     wikibase.test = False
-        #     wikibase.wikibase_type = None
-        #     session.add(wikibase)
-
         for i in range(2):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse False Wikibase {i}",
