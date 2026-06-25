@@ -39,9 +39,7 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_complex_connectivity(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_complex_connectivity(db_session):
     """Create a wikibase with a connectivity observation with relationship counts"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
@@ -68,7 +66,7 @@ async def wikibase_with_complex_connectivity(
         await session.flush()
         await session.refresh(obs)
 
-        item_counts = [(1, 1), (2, 2)]
+        item_counts = [(1, 2), (2, 1)]
         item_rc_ids = []
         for rel_count, item_count in item_counts:
             rc = WikibaseConnectivityObservationItemRelationshipCountModel()
@@ -80,7 +78,7 @@ async def wikibase_with_complex_connectivity(
             await session.refresh(rc)
             item_rc_ids.append(str(rc.id))
 
-        object_counts = [(2, 1), (3, 2)]
+        object_counts = [(1, 2), (2, 1)]
         object_rc_ids = []
         for rel_count, object_count in object_counts:
             rc = WikibaseConnectivityObservationObjectRelationshipCountModel()
@@ -129,55 +127,14 @@ async def test_wikibase_connectivity_most_recent_observation_query(
     assert "mostRecent" in result_wikibase["connectivityObservations"]
     most_recent = result_wikibase["connectivityObservations"]["mostRecent"]
 
-    expected_relationship_item_counts = [
-        ("9", 6, 1),
-        ("10", 7, 52),
-        ("11", 8, 98),
-        ("12", 9, 50),
-        ("13", 10, 53),
-        ("14", 11, 99),
-        ("15", 12, 51),
-        ("16", 13, 51),
-        ("17", 14, 45),
-    ]
-    expected_relationship_object_counts = [
-        ("9", 1, 1),
-        ("10", 2, 1),
-        ("11", 3, 1),
-        ("12", 4, 193),
-        ("13", 5, 196),
-        ("14", 6, 98),
-        ("15", 55, 1),
-        ("16", 104, 1),
-        ("17", 154, 1),
-        ("18", 204, 1),
-        ("19", 254, 1),
-        ("20", 303, 1),
-        ("21", 353, 1),
-        ("22", 403, 1),
-        ("23", 453, 1),
-        ("24", 499, 1),
-    ]
-
-    assert_connectivity_observation(
-        most_recent,
-        "7",
-        True,
-        5627,
-        5128,
-        1853523 / 249500,
-        249500 / (500 * (500 - 1)),
-        expected_relationship_item_counts,
-        expected_relationship_object_counts,
-    )
     assert_connectivity_observation(
         most_recent,
         data["obs_id"],
         True,
         6,
-        6,
+        4,
         4 / 3,
         2 / (3 * (3 - 1)),
-        [(data["item_rc_ids"][0], 1, 1), (data["item_rc_ids"][1], 2, 2)],
-        [(data["object_rc_ids"][0], 2, 1), (data["object_rc_ids"][1], 3, 2)],
+        [(data["item_rc_ids"][0], 1, 2), (data["item_rc_ids"][1], 2, 1)],
+        [(data["object_rc_ids"][0], 1, 2), (data["object_rc_ids"][1], 2, 1)],
     )

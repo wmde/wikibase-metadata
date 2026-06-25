@@ -9,7 +9,7 @@ from tests.utils import MockResponse
 @pytest.mark.soup
 @pytest.mark.version
 async def test_update_out_of_date_software_observations_fail(
-    wikibase_fixture, mocker
+    wikibase_without_type, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Data Returned Scenario"""
 
