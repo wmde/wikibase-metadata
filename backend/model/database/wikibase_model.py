@@ -328,7 +328,7 @@ class WikibaseModel(ModelBase):
         sparql_endpoint_url: Optional[str] = None,
         sparql_frontend_url: Optional[str] = None,
         wikibase_type: Optional[WikibaseType] = WikibaseType.UNKNOWN,
-        reuse: Optional[bool] = None,
+        reuse: bool = False,
     ):
         self.wikibase_name = wikibase_name
         self.description = description
@@ -336,10 +336,9 @@ class WikibaseModel(ModelBase):
         self.country = country
         self.region = region
         self.checked = False
-        self.reuse = False
+        self.reuse = reuse
         self.test = False
         self.wikibase_type = wikibase_type
-        self.reuse = reuse
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
 
