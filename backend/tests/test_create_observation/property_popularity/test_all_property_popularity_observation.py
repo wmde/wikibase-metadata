@@ -36,6 +36,7 @@ async def three_wikibases_with_sparql(db_session):  # pylint: disable=unused-arg
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_property_popularity_observations_fail(
     three_wikibases_with_sparql, mocker
 ):

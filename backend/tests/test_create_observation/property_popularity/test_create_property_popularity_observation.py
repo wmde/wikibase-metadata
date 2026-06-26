@@ -35,6 +35,7 @@ async def wikibase_with_sparql(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_success(

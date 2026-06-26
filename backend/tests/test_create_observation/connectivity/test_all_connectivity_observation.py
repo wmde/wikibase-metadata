@@ -37,7 +37,8 @@ async def wikibase(db_session):
 
 
 @pytest.mark.asyncio
-async def test_update_all_connectivity_observations_fail(wikibase, mocker):
+@pytest.mark.mutation
+async def test_update_all_connectivity_observations_fail(wikibase, mocker): # pylint: disable=unused-argument
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs):

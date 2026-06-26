@@ -38,6 +38,7 @@ async def three_wikibases_with_article_path(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_software_version_observations_fail(
     three_wikibases_with_article_path, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name

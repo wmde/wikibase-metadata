@@ -102,6 +102,7 @@ async def wikibase_reuse_false_fixture(db_session):  # pylint: disable=unused-ar
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_set_wikibase_reuse_false(
     wikibase_reuse_true_fixture,
 ):  # pylint: disable=redefined-outer-name, unused-argument
@@ -217,6 +218,7 @@ async def wikibase_reuse_false_majority_fixture(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_set_wikibase_reuse_true(
     wikibase_reuse_false_majority_fixture,
 ):  # pylint: disable=redefined-outer-name, unused-argument

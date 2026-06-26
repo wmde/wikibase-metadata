@@ -35,6 +35,7 @@ async def wikibase_with_sparql_quantity(db_session):  # pylint: disable=unused-a
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_success(

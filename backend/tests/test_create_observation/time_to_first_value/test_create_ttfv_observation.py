@@ -15,6 +15,7 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.soup
 async def test_create_ttfv_observation_success(
     wikibase_fixture, mocker

@@ -40,6 +40,7 @@ async def wikibase_with_article_path_stats(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(

@@ -23,6 +23,7 @@ mutation MyMutation($wikibaseId: Int!, $wikibaseType: WikibaseType!) {
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_type(
     wikibase_fixture,
 ):  # pylint: disable=redefined-outer-name
@@ -60,6 +61,7 @@ async def test_update_wikibase_type(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_type_to_same(
     wikibase_fixture,
 ):  # pylint: disable=redefined-outer-name
