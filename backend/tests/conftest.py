@@ -106,29 +106,6 @@ async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-
 
 
 @pytest.fixture
-async def three_wikibases_fixture(db_session):  # pylint: disable=redefined-outer-name
-    """Create 3 test wikibases for connectivity tests"""
-
-    async with AsyncSession(bind=db_session) as session:
-        wikibase_ids = []
-        for i in range(3):
-            wikibase = WikibaseModel(
-                wikibase_name=f"Test Wikibase {i}",
-                base_url=f"https://example-{i}.com",
-                sparql_endpoint_url=f"https://example-{i}.com/sparql",
-            )
-            wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
-            session.add(wikibase)
-            await session.flush()
-            wikibase_ids.append(wikibase.id)
-
-        return wikibase_ids
-
-
-@pytest.fixture
 # pylint: disable-next=too-many-statements, too-many-locals
 async def wikibase_with_first_month_log_observations(
     db_session,
