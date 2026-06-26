@@ -37,10 +37,14 @@ async def wikibase_with_additional_languages(
         session.add(wikibase)
         await session.flush()
 
-        await add_wikibase_language(wikibase.id, "French")
-
-        for lang in ["Deutsch", "Cymru"]:
-            await add_wikibase_language(wikibase_id=wikibase.id, language=lang)
+        languages = [
+            WikibaseLanguageModel(language="French", primary=True),
+            WikibaseLanguageModel(language="Deutsch", primary=False),
+            WikibaseLanguageModel(language="Cymru", primary=False),
+        ]
+        wikibase.languages.extend(languages)
+        session.add(languages)
+        await session.flush()
         return wikibase
 
 
