@@ -32,10 +32,9 @@ from model.database.wikibase_observation.user.wikibase_user_observation_model im
     WikibaseUserObservationModel,
 )
 from model.database.wikibase_model import WikibaseModel
-from data.database_connection import async_engine, get_async_session
+from data.database_connection import async_engine
 from unittest.mock import patch
 from dotenv import load_dotenv
-from resolvers import add_wikibase_language
 
 load_dotenv()
 
