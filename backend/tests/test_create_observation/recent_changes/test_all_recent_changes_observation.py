@@ -38,6 +38,7 @@ async def three_wikibases_with_script_path(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_recent_changes_observations_fail(
     three_wikibases_with_script_path, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name

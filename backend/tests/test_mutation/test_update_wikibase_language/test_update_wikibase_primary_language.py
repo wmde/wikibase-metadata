@@ -49,6 +49,7 @@ async def wikibase_with_additional_languages(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_primary_language_to_current_additional(
     wikibase_with_additional_languages,
 ):
@@ -109,6 +110,7 @@ async def test_update_wikibase_primary_language_to_current_additional(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_primary_language_to_new(
     wikibase_with_additional_languages,
 ): # pylint: disable=redefined-outer-name
@@ -163,6 +165,7 @@ async def test_update_wikibase_primary_language_to_new(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_primary_language_to_same(
     wikibase_with_additional_languages,
 ): # pylint: disable=redefined-outer-name
@@ -231,6 +234,7 @@ async def wikibase_without_language(db_session):  # pylint: disable=unused-argum
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_new_primary_language(
     wikibase_without_language,
 ): # pylint: disable=redefined-outer-name

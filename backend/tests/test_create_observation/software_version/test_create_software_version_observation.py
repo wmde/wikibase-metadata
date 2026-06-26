@@ -39,6 +39,7 @@ async def wikibase_with_article_path(db_session):  # pylint: disable=unused-argu
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_success(
@@ -76,6 +77,7 @@ async def test_create_software_version_observation_success(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_success_ii(

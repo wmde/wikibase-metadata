@@ -39,6 +39,7 @@ async def wikibase_categories(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_add_wikibase_mutation(
     wikibase_categories,
 ):  # pylint: disable=redefined-outer-name, unused-argument

@@ -38,6 +38,7 @@ async def three_wikibases_with_script_path(db_session):
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_log_first_observations_fail(
     three_wikibases_with_script_path, mocker
 ):  # pylint: disable=redefined-outer-name, unused-argument

@@ -83,6 +83,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_add_wikibase_script_path(
     wikibase,
 ):  # pylint: disable=redefined-outer-name
@@ -141,6 +142,7 @@ async def test_add_wikibase_script_path(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_remove_wikibase_sparql_frontend_url(
     wikibase,
     db_session,
@@ -199,6 +201,7 @@ async def test_remove_wikibase_sparql_frontend_url(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_remove_wikibase_article_path(
     wikibase,
 ):  # pylint: disable=redefined-outer-name
@@ -264,6 +267,7 @@ async def test_remove_wikibase_article_path(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_url(wikibase):  # pylint: disable=redefined-outer-name
     """Update Wikibase URL"""
 
@@ -320,6 +324,7 @@ async def test_update_wikibase_url(wikibase):  # pylint: disable=redefined-outer
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_article_path_fail(
     wikibase,
 ):  # pylint: disable=redefined-outer-name
@@ -342,6 +347,7 @@ async def test_update_wikibase_article_path_fail(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_wikibase_base_url_fail(
     wikibase,
 ):  # pylint: disable=redefined-outer-name

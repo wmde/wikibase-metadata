@@ -36,6 +36,7 @@ async def ten_wikibases_with_sparql(db_session):  # pylint: disable=unused-argum
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_quantity_observations_fail(ten_wikibases_with_sparql, mocker):
     """Test Weird Error Scenario"""
 

@@ -48,6 +48,7 @@ async def two_wikibase_softwares(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_merge_software_by_id_mutation(
     two_wikibase_softwares,
 ):  # pylint: disable=redefined-outer-name
@@ -65,6 +66,7 @@ async def test_merge_software_by_id_mutation(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_merge_software_by_id_mutation_fail_same_id(
     wikibase_software,
 ):  # pylint: disable=redefined-outer-name
@@ -81,7 +83,7 @@ async def test_merge_software_by_id_mutation_fail_same_id(
     assert result.errors is not None
     assert result.errors[0].message == "Software IDs Must Be Distinct"
 
-
+@pytest.mark.mutation
 async def test_merge_software_by_id_mutation_fail_not_found(
     wikibase_software,
 ):  # pylint: disable=redefined-outer-name
@@ -117,6 +119,7 @@ async def two_software_different_types(db_session):  # pylint: disable=unused-ar
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_merge_software_by_id_mutation_fail_different_types(
     two_software_different_types,
 ):  # pylint: disable=redefined-outer-name

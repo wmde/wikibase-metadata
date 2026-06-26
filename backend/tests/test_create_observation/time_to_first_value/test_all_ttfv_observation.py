@@ -38,6 +38,7 @@ async def three_wikibases_with_script_path_ttfv(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_ttfv_observations_fail(
     three_wikibases_with_script_path_ttfv, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name

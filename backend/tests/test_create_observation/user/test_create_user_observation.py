@@ -56,6 +56,7 @@ async def test_create_user_observation_failure(wikibase, mocker):
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 @pytest.mark.user
 async def test_create_user_observation_single_pull(wikibase, mocker):
     """Test Data, Single Pull Scenario"""

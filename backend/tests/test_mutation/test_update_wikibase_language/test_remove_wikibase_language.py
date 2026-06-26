@@ -16,6 +16,7 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_remove_wikibase_language_one(
     wikibase_fixture,
 ):  # pylint: disable=redefined-outer-name
@@ -50,6 +51,7 @@ async def test_remove_wikibase_language_one(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_remove_wikibase_language_two(
     wikibase_fixture,
 ):  # pylint: disable=redefined-outer-name
@@ -104,6 +106,7 @@ async def test_remove_wikibase_language_two(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_remove_wikibase_language_three(
     wikibase_fixture,
 ):  # pylint: disable=redefined-outer-name

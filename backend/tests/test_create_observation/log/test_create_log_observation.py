@@ -40,6 +40,7 @@ async def wikibase_with_script_path_log(db_session):  # pylint: disable=unused-a
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
+@pytest.mark.mutation
 async def test_create_log_observation_first_success(
     wikibase_with_script_path_log, mocker
 ):  # pylint: disable=redefined-outer-name
@@ -134,6 +135,7 @@ async def test_create_log_observation_first_success(
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
+@pytest.mark.mutation
 async def test_create_log_observation_last_success(
     wikibase_with_script_path_log, mocker
 ):  # pylint: disable=redefined-outer-name

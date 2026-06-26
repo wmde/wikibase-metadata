@@ -50,6 +50,7 @@ async def test_create_connectivity_observation_success(wikibase_fixture, mocker,
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
+@pytest.mark.mutation
 @pytest.mark.sparql
 async def test_create_connectivity_observation_success_complex(
     wikibase_fixture, mocker

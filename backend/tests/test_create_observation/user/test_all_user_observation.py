@@ -38,6 +38,7 @@ async def three_wikibases_with_script_path_user(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
 async def test_update_all_user_observations_fail(
     three_wikibases_with_script_path_user, mocker
 ):
