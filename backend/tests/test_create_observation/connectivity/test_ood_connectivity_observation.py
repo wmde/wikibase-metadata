@@ -29,7 +29,7 @@ async def wikibase_out_of_date_connectivity(db_session):
 @pytest.mark.sparql
 async def test_update_out_of_date_connectivity_observations(
     wikibase_out_of_date_connectivity, mocker
-):
+): # pylint: disable=redefined-outer-name, unused-argument
     """Test"""
 
     mocker.patch(
