@@ -23,14 +23,14 @@ defineProps<{
 		v-if="totalPages && totalCount && totalCount > 25"
 	>
 		<v-container class="ma-0 pa-0 pagination-row-container">
-			<v-container class="pagination-item item-number-container ma-0 pa-0 shrink">
+			<v-container class="item-number-container ma-0 pa-0 shrink">
 				<span>{{ ((pageNumber - 1) * pageSize + 1).toLocaleString('en') }}</span>
 				<span>&ndash;</span>
 				<span>{{ Math.min(pageNumber * pageSize, totalCount).toLocaleString('en') }}</span>
 				of
 				{{ totalCount.toLocaleString('en') }}
 			</v-container>
-			<v-container class="pagination-item button-container ma-0 pa-0 shrink">
+			<v-container class="button-container ma-0 pa-0 shrink">
 				<v-btn
 					:icon="mdiChevronDoubleLeft"
 					:disabled="pageNumber == 1"
