@@ -4,6 +4,7 @@
 import pytest
 
 from model.database.wikibase_language_model import WikibaseLanguageModel
+from model.database.wikibase_model import WikibaseModel
 from tests.test_schema import test_schema
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
@@ -13,7 +14,6 @@ from resolvers import (
     update_wikibase_primary_language,
 )
 
-from model.database.wikibase_model import WikibaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 UPDATE_WIKIBASE_PRIMARY_LANGUAGE_MUTATION = """
@@ -24,6 +24,7 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 
 @pytest.fixture
 async def wikibase_with_additional_languages(db_session):
+    """Wikibase Fixture with additional languages"""
     async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
