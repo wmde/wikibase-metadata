@@ -70,23 +70,24 @@ The UI should now be running on http://localhost:1573
 To run all non-data tests, run the following command:
 
 ```bash
-$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data"
+$ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data"
 ```
 
 You can run just a specific test using: 
 
 ```bash
-$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query/<FILE_NAME>::<TEST_NAME>
+$ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query/<FILE_NAME>::<TEST_NAME>
 ```
 
 To check test coverage when running tests:
 
 ```bash
-$ PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
+$ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
 ```
 
 Here's a breakdown:
 
+- `TESTING=1` -- Tells [database_connection.py](../backend/data/database_connection.py) to use `NullPool` database engine, rather than pooling connections
 - `PYTHONPATH=.` -- The gods alone know why, but this is necessary for fastapi
 - `SETTINGS_FILE=test-settings.ini` -- directs the program to use test settings, which for the moment simply point it to the test database
 - `pytest` -- the base command at the root of all of this: run the tests
