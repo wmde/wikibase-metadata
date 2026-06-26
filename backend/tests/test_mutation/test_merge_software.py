@@ -83,6 +83,7 @@ async def test_merge_software_by_id_mutation_fail_same_id(
     assert result.errors is not None
     assert result.errors[0].message == "Software IDs Must Be Distinct"
 
+
 @pytest.mark.mutation
 async def test_merge_software_by_id_mutation_fail_not_found(
     wikibase_software,
