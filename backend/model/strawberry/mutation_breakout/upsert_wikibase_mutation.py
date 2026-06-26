@@ -17,7 +17,7 @@ from resolvers import (
     update_wikibase_primary_language,
     update_wikibase_reuse_flag,
     update_wikibase_type,
-    upsert_wikibase_url
+    upsert_wikibase_url,
 )
 
 
