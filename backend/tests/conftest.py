@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation.property.count_model import (
     WikibasePropertyPopularityCountModel,
 )
@@ -34,7 +35,7 @@ from model.database.wikibase_model import WikibaseModel
 from data.database_connection import async_engine, get_async_session
 from unittest.mock import patch
 from dotenv import load_dotenv
-from resolvers.update.update_wikibase_language import add_wikibase_language
+from resolvers import add_wikibase_language
 
 load_dotenv()
 
@@ -77,9 +78,17 @@ async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
         session.add(wikibase)
         await session.flush()
 
-        await add_wikibase_language(wikibase.id, "French")
-        for lang in ["Deutsch", "Cymru"]:
-            await add_wikibase_language(wikibase_id=wikibase.id, language=lang)
+        languages = [
+            WikibaseLanguageModel(language="French", primary=True),
+            WikibaseLanguageModel(language="Deutsch", primary=False),
+            WikibaseLanguageModel(language="Cymru", primary=False),
+        ]
+
+        for lang in languages:
+            lang.wikibase_id = wikibase.id
+            session.add(lang)
+        await session.flush()
+        await session.refresh(wikibase)
 
         return wikibase
 
@@ -111,7 +120,7 @@ async def wikibase_with_first_month_log_observations(
     db_session,
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with 3 first-month log observations"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
             wikibase_name="Log First Month All Observations Test Wikibase",
             base_url="https://log-first-month-all-obs-example.com",
@@ -262,7 +271,7 @@ async def wikibase_with_three_property_popularity_observations(
     db_session,
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Create a wikibase with 3 property popularity observations: empty, P1/P14, and failed"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity All Observations Test Wikibase",
             base_url="https://property-popularity-all-obs-example.com",
@@ -350,7 +359,6 @@ async def wikibase_with_user_observation(
         observation.returned_data = True
         observation.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
         observation.total_users = 2000
-        # observation.user_group_observations = 8
         session.add(observation)
         await session.flush()
         await session.refresh(observation)

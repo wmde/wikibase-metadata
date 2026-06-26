@@ -2,20 +2,19 @@
 """Test Update Primary Language"""
 
 import pytest
-import pytest_asyncio
 
+from model.database.wikibase_language_model import WikibaseLanguageModel
 from tests.test_schema import test_schema
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.utils import assert_layered_property_value, get_mock_context
-from resolvers.update.update_wikibase_language import (
-    add_wikibase_language,
+from resolvers import (
     update_wikibase_primary_language,
 )
 
-from data.database_connection import get_async_session
 from model.database.wikibase_model import WikibaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
 
 UPDATE_WIKIBASE_PRIMARY_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {
@@ -24,11 +23,8 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_additional_languages(
-    db_session,
-):  # pylint: disable=unused-argument
-    """Create a test wikibase"""
-    async with get_async_session() as session:
+async def wikibase_with_additional_languages(db_session):
+    async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://wikibase-fixture.com",
@@ -37,14 +33,13 @@ async def wikibase_with_additional_languages(
         session.add(wikibase)
         await session.flush()
 
-        languages = [
-            WikibaseLanguageModel(language="French", primary=True),
-            WikibaseLanguageModel(language="Deutsch", primary=False),
-            WikibaseLanguageModel(language="Cymru", primary=False),
-        ]
-        wikibase.languages.extend(languages)
-        session.add(languages)
+        for language, primary in [("French", True), ("Deutsch", False), ("Cymru", False)]:
+            lang = WikibaseLanguageModel(language=language, primary=primary)
+            lang.wikibase_id = wikibase.id
+            session.add(lang)
+
         await session.flush()
+        await session.refresh(wikibase)
         return wikibase
 
 
@@ -113,7 +108,7 @@ async def test_update_wikibase_primary_language_to_current_additional(
 @pytest.mark.mutation
 async def test_update_wikibase_primary_language_to_new(
     wikibase_with_additional_languages,
-): # pylint: disable=redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """
     Test Updating Primary Language
 
@@ -168,7 +163,7 @@ async def test_update_wikibase_primary_language_to_new(
 @pytest.mark.mutation
 async def test_update_wikibase_primary_language_to_same(
     wikibase_with_additional_languages,
-): # pylint: disable=redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """
     Test Updating Primary Language
 
@@ -221,7 +216,7 @@ async def test_update_wikibase_primary_language_to_same(
 @pytest.fixture
 async def wikibase_without_language(db_session):  # pylint: disable=unused-argument
     """Create a test wikibase"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://wikibase-fixture.com",
@@ -237,7 +232,7 @@ async def wikibase_without_language(db_session):  # pylint: disable=unused-argum
 @pytest.mark.mutation
 async def test_update_wikibase_new_primary_language(
     wikibase_without_language,
-): # pylint: disable=redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """
     Test Updating Primary Language
 
