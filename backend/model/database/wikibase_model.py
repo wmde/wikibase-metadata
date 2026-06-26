@@ -336,10 +336,9 @@ class WikibaseModel(ModelBase):
         self.country = country
         self.region = region
         self.checked = False
-        self.reuse = False
+        self.reuse = reuse or False
         self.test = False
         self.wikibase_type = wikibase_type
-        self.reuse = reuse
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
 
