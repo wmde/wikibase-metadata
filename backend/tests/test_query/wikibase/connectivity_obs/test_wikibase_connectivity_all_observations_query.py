@@ -12,6 +12,9 @@ from model.database import (
     WikibaseConnectivityObservationObjectRelationshipCountModel,
     WikibaseModel,
 )
+from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
+    assert_connectivity_observation,
+)
 from tests.test_query.wikibase.connectivity_obs.connectivity_fragment import (
     WIKIBASE_CONNECTIVITY_OBSERVATION_FRAGMENT,
 )

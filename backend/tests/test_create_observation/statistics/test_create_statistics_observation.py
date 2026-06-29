@@ -1,10 +1,12 @@
 """Test create_special_statistics_observation"""
 
 import os
+import time
 
 import pytest
 
 from data import get_async_session
+from fetch_data import create_special_statistics_observation
 from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context, MockResponse

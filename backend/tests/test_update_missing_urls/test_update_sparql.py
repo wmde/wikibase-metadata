@@ -12,7 +12,7 @@ from model.database import (
     WikibaseSoftwareVersionObservationModel,
 )
 from model.enum import WikibaseSoftwareType
-from resolvers import update_missing_sparql_urls
+from resolvers.update import update_missing_sparql_urls
 from tests.test_schema import test_schema
 from tests.test_update_missing_urls.constant import DATA_DIRECTORY, WIKIBASE_URLS_QUERY
 from tests.utils import MockResponse, assert_layered_property_value
