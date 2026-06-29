@@ -2,9 +2,9 @@
 
 import pytest
 
-from data.database_connection import get_async_session
-from model.database.wikibase_software.software_model import WikibaseSoftwareModel
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
+from data import get_async_session
+from model.database import WikibaseSoftwareModel
+from model.enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 

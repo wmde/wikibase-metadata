@@ -1,23 +1,20 @@
 """Test create_recent_changes"""
 
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from json import JSONDecodeError
 
 import pytest
-from requests.exceptions import ReadTimeout
+from requests import ReadTimeout
 from sqlalchemy import select
-from model.database import WikibaseRecentChangesObservationModel
-from model.database.wikibase_model import WikibaseModel
-from data.database_connection import get_async_session
+
+from data import get_async_session
+from fetch_data import create_recent_changes_observation
+from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
     create_recent_changes,
-    create_recent_changes_observation,
 )
-from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
-    WikibaseRecentChangeRecord,
-)
+from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context
 
 FETCH_RECENT_CHANGES_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchRecentChangesData(wikibaseId: $wikibaseId)

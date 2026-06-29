@@ -1,12 +1,12 @@
 """Test Query Cloud Instances"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from model.enum.wikibase_type_enum import WikibaseType
-from model.database.wikibase_model import WikibaseModel
+from model.enum import WikibaseType
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import WIKIBASE_LIST_QUERY
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture

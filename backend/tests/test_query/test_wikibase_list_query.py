@@ -1,11 +1,12 @@
 """Test Wikibase List"""
 
 import pytest
-from data.database_connection import get_async_session
-from model.enum.wikibase_type_enum import WikibaseType
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_category_model import WikibaseCategoryModel
-from model.enum.wikibase_category_enum import WikibaseCategory
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from data import get_async_session
+from model.database import WikibaseCategoryModel, WikibaseModel
+from model.enum import WikibaseCategory, WikibaseType
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import (
@@ -13,8 +14,6 @@ from tests.utils import (
     assert_page_meta,
     assert_property_value,
 )
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture

@@ -5,12 +5,13 @@ import json
 
 from freezegun import freeze_time
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+
+from data import get_async_session
 from fetch_data import (
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
 )
+from model.database import WikibaseModel
 from tests.utils import MockResponse, ParsedUrl
 
 

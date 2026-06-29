@@ -3,12 +3,10 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.enum.wikibase_type_enum import WikibaseType
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.statistics.wikibase_statistics_observation_model import (
-    WikibaseStatisticsObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseModel, WikibaseStatisticsObservationModel
+from model.enum import WikibaseType
 from tests.test_query.wikibase.statistics_obs.assert_statistics import (
     assert_edits,
     assert_files,

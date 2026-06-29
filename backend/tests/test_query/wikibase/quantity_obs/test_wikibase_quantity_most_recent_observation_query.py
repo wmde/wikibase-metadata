@@ -3,11 +3,9 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
-    WikibaseQuantityObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseModel, WikibaseQuantityObservationModel
 from tests.test_query.wikibase.quantity_obs.assert_quantity import assert_quantity
 from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
     WIKIBASE_QUANTITY_OBSERVATION_FRAGMENT,

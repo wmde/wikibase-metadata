@@ -1,18 +1,17 @@
 """Test Aggregated Software Query"""
 
 from datetime import datetime, timezone
+
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import (
+
+from data import get_async_session
+from model.database import (
+    WikibaseModel,
+    WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
-)
-from model.database.wikibase_observation.version.wikibase_version_observation_model import (
     WikibaseSoftwareVersionObservationModel,
 )
-from model.database.wikibase_software.software_model import WikibaseSoftwareModel
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
-from model.enum.wikibase_type_enum import WikibaseType
+from model.enum import WikibaseSoftwareType, WikibaseType
 from tests.test_query.aggregation.software_version.assert_software_version_aggregate import (
     assert_software_version_aggregate,
 )

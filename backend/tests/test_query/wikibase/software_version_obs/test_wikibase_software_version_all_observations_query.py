@@ -3,11 +3,9 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import (
-    WikibaseSoftwareVersionObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseModel, WikibaseSoftwareVersionObservationModel
 from tests.test_query.wikibase.software_version_obs.software_version_fragment import (
     WIKIBASE_SOFTWARE_VERSION_OBSERVATIONS_FRAGMENT,
 )

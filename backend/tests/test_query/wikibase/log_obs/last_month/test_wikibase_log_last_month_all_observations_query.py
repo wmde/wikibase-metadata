@@ -1,17 +1,17 @@
 """Test Wikibase All Log Observations Query"""
 
 from datetime import datetime, timezone
+
 from freezegun import freeze_time
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import (
+
+from data import get_async_session
+from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
-)
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
     WikibaseLogMonthObservationModel,
+    WikibaseModel,
 )
-from model.enum.wikibase_log_type_enum import WikibaseLogType
+from model.enum import WikibaseLogType
 from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,

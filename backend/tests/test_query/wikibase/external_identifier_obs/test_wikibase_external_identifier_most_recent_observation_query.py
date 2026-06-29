@@ -1,13 +1,10 @@
 """Test Wikibase Most Recent External Identifier Observation Query"""
 
-from sqlalchemy import select
 import pytest
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
-    WikibaseExternalIdentifierObservationModel,
-)
-from model.database.wikibase_model import WikibaseModel
-from data.database_connection import get_async_session
-from tests.utils.mock_request import get_mock_context
+from sqlalchemy import select
+
+from data import get_async_session
+from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
 from tests.test_query.wikibase.external_identifier_obs.assert_external_identifier import (
     assert_external_identifier,
 )
@@ -15,7 +12,7 @@ from tests.test_query.wikibase.external_identifier_obs.external_identifier_fragm
     WIKIBASE_EXTERNAL_IDENTIFIER_OBSERVATION_FRAGMENT,
 )
 from tests.test_schema import test_schema
-from tests.utils import assert_property_value
+from tests.utils import assert_property_value, get_mock_context
 
 WIKIBASE_EXTERNAL_IDENTIFIER_MOST_RECENT_OBSERVATION_QUERY = """
 query MyQuery($wikibaseId: Int!) {

@@ -1,17 +1,17 @@
 """Test Wikibase Most Recent Software Version Installed Software Observation Query"""
 
 from datetime import datetime, timezone
+
 import pytest
+
 from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.version.software_version_model import (
+from model.database import (
+    WikibaseModel,
+    WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
-)
-from model.database.wikibase_observation.version.wikibase_version_observation_model import (
     WikibaseSoftwareVersionObservationModel,
 )
-from model.database.wikibase_software.software_model import WikibaseSoftwareModel
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
+from model.enum import WikibaseSoftwareType
 from tests.test_query.wikibase.software_version_obs.assert_software_version import (
     assert_software_version,
 )

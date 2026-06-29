@@ -9,9 +9,12 @@ from fetch_data.soup_data.software import (
 )
 from model.database import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
-from tests.utils import assert_layered_property_count, assert_layered_property_value
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context
+from tests.utils import (
+    assert_layered_property_count,
+    assert_layered_property_value,
+    get_mock_context,
+)
 
 LIST_SOFTWARE_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {

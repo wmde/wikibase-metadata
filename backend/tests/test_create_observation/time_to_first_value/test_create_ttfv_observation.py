@@ -2,10 +2,11 @@
 
 import re
 import time
+
 import pytest
+
 from tests.test_schema import test_schema
-from tests.utils import MockResponse
-from tests.utils.mock_request import get_mock_context
+from tests.utils import MockResponse, get_mock_context
 
 DATA_DIRECTORY = "tests/test_create_observation/time_to_first_value/data"
 

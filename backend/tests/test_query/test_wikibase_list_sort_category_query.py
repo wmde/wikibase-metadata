@@ -1,10 +1,10 @@
 """Test Sort Wikibase List"""
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_category_model import WikibaseCategoryModel
-from model.enum.wikibase_category_enum import WikibaseCategory
+
+from data import get_async_session
+from model.database import WikibaseCategoryModel, WikibaseModel
+from model.enum import WikibaseCategory
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta

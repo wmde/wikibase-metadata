@@ -3,10 +3,10 @@
 
 import pytest
 from sqlalchemy import select
-from model.database.wikibase_category_model import WikibaseCategoryModel
+
+from data import get_async_session
+from model.database import WikibaseCategoryModel, WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
-from model.database import WikibaseModel
-from data.database_connection import get_async_session
 from tests.test_schema import test_schema
 
 ADD_WIKIBASE_QUERY = """

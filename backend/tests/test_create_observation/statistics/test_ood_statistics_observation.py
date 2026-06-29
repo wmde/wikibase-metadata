@@ -1,9 +1,10 @@
 """Test update_out_of_date_stats_observations"""
 
 import pytest
+
+from data import get_async_session
 from fetch_data import update_out_of_date_stats_observations
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+from model.database import WikibaseModel
 from tests.utils import MockResponse
 
 

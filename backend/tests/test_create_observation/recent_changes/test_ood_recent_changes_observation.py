@@ -1,13 +1,14 @@
 """Test update_out_of_date_recent_changes_observations"""
 
 from datetime import datetime, timezone
+
 import pytest
 from sqlalchemy import select
-from model.database import WikibaseRecentChangesObservationModel
-from model.database.wikibase_model import WikibaseModel
-from data.database_connection import get_async_session
+
+from data import get_async_session
 from fetch_data import update_out_of_date_recent_changes_observations
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
+from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 
 
 @pytest.fixture

@@ -1,8 +1,9 @@
 """Test update_out_of_date_connectivity_observations"""
 
 import pytest
-from model.database.wikibase_model import WikibaseModel
+
 from fetch_data import update_out_of_date_connectivity_observations
+from model.database import WikibaseModel
 
 
 @pytest.fixture

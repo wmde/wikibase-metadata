@@ -1,12 +1,13 @@
 """Test Sort Wikibase List"""
 
 import pytest
-from model.database.wikibase_model import WikibaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import WikibaseModel
 from model.enum import WikibaseType
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_page_meta
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture

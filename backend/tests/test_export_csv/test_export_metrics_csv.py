@@ -1,12 +1,14 @@
 """Test Export Metrics CSV"""
 
 import re
-import pytest
-from data.database_connection import get_async_session
-from model.enum.wikibase_type_enum import WikibaseType
-from model.database.wikibase_model import WikibaseModel
+
 from fastapi.testclient import TestClient
+import pytest
+
 from app import app
+from data import get_async_session
+from model.database import WikibaseModel
+from model.enum import WikibaseType
 
 EXPECTED_HEADER_ROW = ",".join(
     [

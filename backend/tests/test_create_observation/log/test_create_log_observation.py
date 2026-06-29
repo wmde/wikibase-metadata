@@ -6,11 +6,12 @@ import json
 from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+
+from data import get_async_session
 from fetch_data import create_log_observation
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context, MockResponse, ParsedUrl
+from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
 LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boolean!) {
   fetchLogData(wikibaseId: $wikibaseId, firstMonth: $firstMonth)

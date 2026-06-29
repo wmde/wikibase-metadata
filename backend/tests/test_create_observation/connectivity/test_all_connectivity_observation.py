@@ -1,7 +1,8 @@
 """Test Bulk Connectivity Update"""
 
 import pytest
-from model.database.wikibase_model import WikibaseModel
+
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 

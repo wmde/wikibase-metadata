@@ -1,8 +1,10 @@
 """Test Wikibase Most Recent Log Observation"""
 
 from datetime import datetime
+
 from freezegun import freeze_time
 import pytest
+
 from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,

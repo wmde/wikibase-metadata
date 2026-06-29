@@ -2,10 +2,12 @@
 
 import time
 from urllib.error import HTTPError
+
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+
+from data import get_async_session
 from fetch_data import create_quantity_observation
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 

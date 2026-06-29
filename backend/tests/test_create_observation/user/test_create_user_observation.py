@@ -2,13 +2,15 @@
 
 from math import floor
 import time
+
 import pytest
 from requests import ReadTimeout
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+
+from data import get_async_session
 from fetch_data import create_user_observation
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
-from tests.utils.mock_request import get_mock_context
+from tests.utils import get_mock_context
 
 FETCH_USER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchUserData(wikibaseId: $wikibaseId)

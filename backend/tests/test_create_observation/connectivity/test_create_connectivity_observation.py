@@ -1,7 +1,9 @@
 """Test create_connectivity_observation"""
 
 from urllib.error import HTTPError
+
 import pytest
+
 from fetch_data import create_connectivity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
