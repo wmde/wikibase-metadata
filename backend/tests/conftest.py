@@ -1,40 +1,26 @@
 """Conftest"""
 
 from datetime import datetime, timezone
+from unittest.mock import patch
 
+from dotenv import load_dotenv
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-from model.database.wikibase_language_model import WikibaseLanguageModel
-from model.database.wikibase_observation.property.count_model import (
-    WikibasePropertyPopularityCountModel,
-)
-from model.database.wikibase_observation.property.popularity_observation_model import (
-    WikibasePropertyPopularityObservationModel,
-)
-from model.database.wikibase_observation.log.wikibase_log_month_log_type_observation_model import (
+
+from data.database_connection import async_engine
+from model.database import (
+    WikibaseLanguageModel,
     WikibaseLogMonthLogTypeObservationModel,
-)
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
     WikibaseLogMonthObservationModel,
-)
-from model.database.wikibase_observation.log.wikibase_log_month_user_type_observation_model import (
     WikibaseLogMonthUserTypeObservationModel,
-)
-from model.enum.wikibase_log_type_enum import WikibaseLogType
-from model.enum.wikibase_user_type_enum import WikibaseUserType
-from model.database.wikibase_observation.user.wikibase_user_group_model import (
+    WikibaseModel,
+    WikibasePropertyPopularityCountModel,
+    WikibasePropertyPopularityObservationModel,
     WikibaseUserGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
     WikibaseUserObservationGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_model import (
     WikibaseUserObservationModel,
 )
-from model.database.wikibase_model import WikibaseModel
-from data.database_connection import async_engine
-from unittest.mock import patch
-from dotenv import load_dotenv
+from model.enum import WikibaseLogType, WikibaseUserType
 
 load_dotenv()
 

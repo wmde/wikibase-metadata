@@ -2,12 +2,12 @@
 
 import pytest
 
+from resolvers import remove_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
-from resolvers import remove_wikibase_language
 
 REMOVE_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {

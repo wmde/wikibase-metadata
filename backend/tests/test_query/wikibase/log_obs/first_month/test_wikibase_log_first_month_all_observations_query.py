@@ -1,8 +1,10 @@
 """Test Wikibase All Log Observations Query"""
 
 from datetime import datetime
+
 from freezegun import freeze_time
 import pytest
+
 from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
@@ -14,15 +16,6 @@ from tests.utils import (
     assert_property_value,
     DATETIME_FORMAT,
 )
-from datetime import timezone
-from model.database import (
-    WikibaseModel,
-    WikibaseLogMonthObservationModel,
-    WikibaseLogMonthLogTypeObservationModel,
-    WikibaseLogMonthUserTypeObservationModel,
-)
-from model.enum import WikibaseLogType, WikibaseUserType
-from data.database_connection import get_async_session
 
 WIKIBASE_LOG_ALL_OBSERVATIONS_QUERY = """
 query MyQuery($wikibaseId: Int!) {

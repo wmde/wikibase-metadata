@@ -1,10 +1,11 @@
 """Test Bulk Log Update"""
 
 import pytest
-from model.database.wikibase_model import WikibaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
-from sqlalchemy.ext.asyncio import AsyncSession
 
 ALL_LOG_DATA_MUTATION = """
 mutation MyMutation($firstMonth: Boolean!) {

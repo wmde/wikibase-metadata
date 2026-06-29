@@ -1,16 +1,13 @@
 """Test Recent Changes Observation Query"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import (
-    WikibaseRecentChangesObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
 from tests.utils import DATETIME_FORMAT, assert_layered_property_value
-from datetime import timezone
 
 WIKIBASE_QUERY = """
 query MyQuery($wikibaseId: Int!) {

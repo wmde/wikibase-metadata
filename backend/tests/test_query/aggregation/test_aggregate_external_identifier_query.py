@@ -3,12 +3,10 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.enum.wikibase_type_enum import WikibaseType
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
-    WikibaseExternalIdentifierObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
+from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
 

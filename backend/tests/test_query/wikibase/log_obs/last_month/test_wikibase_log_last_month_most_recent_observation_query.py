@@ -1,13 +1,12 @@
 """Test Wikibase Most Recent Log Observation"""
 
 from datetime import datetime, timezone
+
 from freezegun import freeze_time
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
-    WikibaseLogMonthObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseLogMonthObservationModel, WikibaseModel
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
 )

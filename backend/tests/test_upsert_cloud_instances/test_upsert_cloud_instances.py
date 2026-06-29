@@ -1,10 +1,11 @@
 """Test Upsert Cloud Instances"""
 
 import os
+
 import pytest
 from sqlalchemy import select
 
-from data.database_connection import get_async_session
+from data import get_async_session
 from fetch_data import update_cloud_instances
 from model.database import WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseType

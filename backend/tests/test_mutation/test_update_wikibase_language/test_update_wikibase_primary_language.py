@@ -2,19 +2,15 @@
 """Test Update Primary Language"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from model.database.wikibase_language_model import WikibaseLanguageModel
-from model.database.wikibase_model import WikibaseModel
-from tests.test_schema import test_schema
+from model.database import WikibaseLanguageModel, WikibaseModel
+from resolvers import update_wikibase_primary_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
+from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
-from resolvers import (
-    update_wikibase_primary_language,
-)
-
-from sqlalchemy.ext.asyncio import AsyncSession
 
 UPDATE_WIKIBASE_PRIMARY_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {

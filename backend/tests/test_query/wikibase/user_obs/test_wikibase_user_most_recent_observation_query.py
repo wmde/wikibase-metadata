@@ -3,14 +3,12 @@
 from datetime import datetime, timezone
 
 import pytest
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.user.wikibase_user_group_model import (
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import (
+    WikibaseModel,
     WikibaseUserGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
     WikibaseUserObservationGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_model import (
     WikibaseUserObservationModel,
 )
 from tests.test_query.wikibase.user_obs.assert_user import assert_user_group
@@ -19,7 +17,6 @@ from tests.test_query.wikibase.user_obs.user_fragment import (
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_property_value
-from sqlalchemy.ext.asyncio import AsyncSession
 
 WIKIBASE_USER_MOST_RECENT_OBSERVATION_QUERY = """
 query MyQuery($wikibaseId: Int!) {

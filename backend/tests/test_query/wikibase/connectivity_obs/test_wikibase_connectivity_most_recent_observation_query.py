@@ -1,18 +1,16 @@
 """Test Wikibase Most Recent Connectivity Observation"""
 
 from datetime import datetime, timezone
+
 from freezegun import freeze_time
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.connectivity.connectivity_observation_model import (
+
+from data import get_async_session
+from model.database import (
     WikibaseConnectivityObservationModel,
-)
-from model.database.wikibase_observation.connectivity.item_relationship_count_model import (
     WikibaseConnectivityObservationItemRelationshipCountModel,
-)
-from model.database.wikibase_observation.connectivity.object_relationship_count_model import (
     WikibaseConnectivityObservationObjectRelationshipCountModel,
+    WikibaseModel,
 )
 from tests.test_query.wikibase.connectivity_obs.assert_connectivity import (
     assert_connectivity_observation,

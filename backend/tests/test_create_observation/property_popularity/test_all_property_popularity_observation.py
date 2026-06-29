@@ -1,8 +1,9 @@
 """Test Bulk Property Popularity Update"""
 
 import pytest
-from model.database.wikibase_model import WikibaseModel
-from data.database_connection import get_async_session
+
+from data import get_async_session
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 

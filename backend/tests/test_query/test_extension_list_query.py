@@ -1,11 +1,12 @@
 """Test Wikibase List"""
 
 from datetime import datetime, timezone
+
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_software.software_model import WikibaseSoftwareModel
-from model.database.wikibase_software.software_tag_model import WikibaseSoftwareTagModel
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
+
+from data import get_async_session
+from model.database import WikibaseSoftwareModel, WikibaseSoftwareTagModel
+from model.enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 

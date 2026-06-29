@@ -2,15 +2,14 @@
 
 import pytest
 
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+from data import get_async_session
+from model.database import WikibaseModel
+from resolvers import add_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
-
-from resolvers import add_wikibase_language
 
 ADD_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {

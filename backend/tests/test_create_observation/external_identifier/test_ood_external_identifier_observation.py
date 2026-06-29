@@ -1,9 +1,10 @@
 """Test update_out_of_date_external_identifier_observations"""
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
+
+from data import get_async_session
 from fetch_data import update_out_of_date_external_identifier_observations
+from model.database import WikibaseModel
 
 
 @pytest.fixture

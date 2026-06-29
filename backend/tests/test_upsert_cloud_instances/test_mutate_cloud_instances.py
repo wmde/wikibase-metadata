@@ -1,19 +1,18 @@
 """Test Query Cloud Instances"""
 
 import os
-import pytest
 
+import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import WikibaseModel
+from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.test_upsert_cloud_instances.constant import (
     DATA_DIRECTORY,
     WIKIBASE_LIST_QUERY,
 )
-from tests.utils import get_mock_context
-from tests.utils.assert_property_value import assert_layered_property_count
-from tests.utils.mock_response import MockResponse
-from model.database import WikibaseModel
-from model.enum import WikibaseType
-from sqlalchemy.ext.asyncio import AsyncSession
+from tests.utils import MockResponse, assert_layered_property_count, get_mock_context
 
 UPDATE_CLOUD_INSTANCES_MUTATION = """
 mutation MyMutation {

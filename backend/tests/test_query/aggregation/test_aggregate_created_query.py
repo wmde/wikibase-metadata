@@ -3,12 +3,10 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
-    WikibaseLogMonthObservationModel,
-)
-from model.enum.wikibase_type_enum import WikibaseType
+
+from data import get_async_session
+from model.database import WikibaseLogMonthObservationModel, WikibaseModel
+from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_layered_property_value
 

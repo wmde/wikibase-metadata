@@ -3,15 +3,12 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.user.wikibase_user_group_model import (
+
+from data import get_async_session
+from model.database import (
+    WikibaseModel,
     WikibaseUserGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_group_model import (
     WikibaseUserObservationGroupModel,
-)
-from model.database.wikibase_observation.user.wikibase_user_observation_model import (
     WikibaseUserObservationModel,
 )
 from tests.test_query.wikibase.user_obs.assert_user import assert_user_group

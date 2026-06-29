@@ -1,6 +1,7 @@
 """Test update_out_of_date_time_to_first_value_observations"""
 
 import pytest
+
 from fetch_data import update_out_of_date_time_to_first_value_observations
 from tests.utils import MockResponse
 

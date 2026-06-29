@@ -3,11 +3,9 @@
 from datetime import datetime, timezone
 
 import pytest
-from data.database_connection import get_async_session
-from model.database.wikibase_model import WikibaseModel
-from model.database.wikibase_observation.statistics.wikibase_statistics_observation_model import (
-    WikibaseStatisticsObservationModel,
-)
+
+from data import get_async_session
+from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 from tests.test_query.wikibase.statistics_obs.assert_statistics import assert_statistics
 from tests.test_query.wikibase.statistics_obs.statistics_fragment import (
     WIKIBASE_STATISTICS_OBSERVATION_FRAGMENT,
