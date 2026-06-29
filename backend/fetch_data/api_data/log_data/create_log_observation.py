@@ -151,11 +151,7 @@ async def create_log_month(
         )
 
     result.human_user_count = len(
-        [
-            u
-            for u in user_counts.keys()
-            if user_type_dict.get(u) == WikibaseUserType.USER
-        ]
+        [u for u in user_counts if user_type_dict.get(u) == WikibaseUserType.USER]
     )
     result.active_human_user_count = len(
         [
@@ -200,11 +196,7 @@ def compile_log_type_record(
     )
 
     log_type_record.human_user_count = len(
-        [
-            u
-            for u in type_user_counts.keys()
-            if user_type_dict.get(u) == WikibaseUserType.USER
-        ]
+        [u for u in type_user_counts if user_type_dict.get(u) == WikibaseUserType.USER]
     )
     log_type_record.active_human_user_count = len(
         [
