@@ -1,8 +1,10 @@
 """Wikibase Filter - INPUT"""
 
 from typing import Optional
-from model.enum.wikibase_type_enum import WikibaseType
+
 import strawberry
+
+from model.enum.wikibase_type_enum import WikibaseType
 
 
 @strawberry.input

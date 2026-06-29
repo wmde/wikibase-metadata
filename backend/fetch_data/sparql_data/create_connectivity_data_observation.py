@@ -2,11 +2,12 @@
 
 import asyncio
 from json import JSONDecodeError
+from urllib.error import HTTPError, URLError
+
 import numpy
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
-from urllib.error import HTTPError, URLError
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.sparql_data.connectivity_math import (

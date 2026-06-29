@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from http.client import IncompleteRead
 from json import JSONDecodeError
+
 from requests.exceptions import (
     ChunkedEncodingError,
     ReadTimeout,
