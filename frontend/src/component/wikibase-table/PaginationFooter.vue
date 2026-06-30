@@ -73,7 +73,6 @@ defineProps<{
 <style lang="scss">
 .pagination-container {
 	background-color: white;
-	/* border-top: 1px solid grey; */
 	border-top: 1px solid oklch(87.2% 0.01 285.338);
 
 	.shrink {
