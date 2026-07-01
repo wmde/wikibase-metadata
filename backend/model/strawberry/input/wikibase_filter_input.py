@@ -4,7 +4,7 @@ from typing import Optional
 
 import strawberry
 
-from model.enum.wikibase_type_enum import WikibaseType
+from model.enum import WikibaseType
 
 
 @strawberry.input
