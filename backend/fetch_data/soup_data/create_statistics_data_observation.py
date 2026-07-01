@@ -1,12 +1,12 @@
 """Create Special:Statistics Observation"""
 
 import asyncio
-from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from typing import Optional
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from bs4 import BeautifulSoup, Tag
 import requests
+from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.utils import get_wikibase_from_database

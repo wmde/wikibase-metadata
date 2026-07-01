@@ -432,7 +432,10 @@ disable=raw-checker-failed,
         too-few-public-methods,
         import-error,
         fixme,
-        wrong-import-order
+      ;   wrong-import-order,
+        logging-fstring-interpolation,
+        logging-not-lazy,
+      ;   consider-iterating-dictionary
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

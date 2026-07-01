@@ -5,7 +5,7 @@ from typing import Optional
 import strawberry
 
 from model.database import WikibaseSoftwareModel
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
+from model.enum import WikibaseSoftwareType
 
 
 @strawberry.type(name="WikibaseSoftware")

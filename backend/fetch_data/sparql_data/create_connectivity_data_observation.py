@@ -2,11 +2,12 @@
 
 import asyncio
 from json import JSONDecodeError
+from urllib.error import HTTPError, URLError
+
 import numpy
 from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
-from urllib.error import HTTPError, URLError
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.sparql_data.connectivity_math import (
@@ -90,7 +91,7 @@ async def compile_connectivity_observation(
                 "Calculating Item Link Counts", extra={"wikibase": wikibase.id}
             )
             item_link_dict = compile_link_dict(clean_data, all_nodes)
-            item_link_counts = counts([len(a) for a in item_link_dict.values()])
+            item_link_counts = counts(len(a) for a in item_link_dict.values())
             for link_count, item_count in item_link_counts.items():
                 observation.item_relationship_count_observations.append(
                     WikibaseConnectivityObservationItemRelationshipCountModel(
@@ -102,7 +103,7 @@ async def compile_connectivity_observation(
                 "Calculating Object Link Counts", extra={"wikibase": wikibase.id}
             )
             object_link_dict = compile_link_dict(clean_data, all_nodes, reverse=True)
-            object_link_counts = counts([len(a) for a in object_link_dict.values()])
+            object_link_counts = counts(len(a) for a in object_link_dict.values())
             for link_count, object_count in object_link_counts.items():
                 observation.object_relationship_count_observations.append(
                     WikibaseConnectivityObservationObjectRelationshipCountModel(
