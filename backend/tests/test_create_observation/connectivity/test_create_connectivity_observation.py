@@ -3,7 +3,10 @@
 from urllib.error import HTTPError
 
 import pytest
+from sqlalchemy import select
 
+from data.database_connection import get_async_session
+from model.database.wikibase_observation.connectivity.connectivity_observation_model import WikibaseConnectivityObservationModel
 from fetch_data import create_connectivity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
@@ -16,31 +19,18 @@ FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-@pytest.mark.parametrize(
-    ["links"],
-    [
-        pytest.param([("Q1", "Q1")]),
-        pytest.param([("Q1", "Q2")]),
-        pytest.param(
-            [
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-            ]
-        ),
-        pytest.param([("Q1", "Q2"), ("Q2", "Q1")]),
-        pytest.param([("Q1", "Q2"), ("Q2", "Q3")]),
-    ],
-)
-async def test_create_connectivity_observation_success(wikibase_fixture, mocker, links):
+async def test_create_connectivity_observation_success(wikibase_fixture, mocker):
     """Test"""
 
-    returned_links = [
-        {"item": {"value": link[0]}, "object": {"value": link[1]}} for link in links
-    ]
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+        assert before is None
+
+    returned_links = [{"item": {"value": "Q1"}, "object": {"value": "Q1"}}]
 
     mocker.patch(
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
@@ -48,6 +38,16 @@ async def test_create_connectivity_observation_success(wikibase_fixture, mocker,
     )
     success = await create_connectivity_observation(wikibase_fixture.id)
     assert success
+
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+        assert after is not None
+        assert after.returned_data is True
+        assert after.returned_links == 1
 
 
 @pytest.mark.asyncio

@@ -82,7 +82,7 @@ $ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query
 To check test coverage when running tests:
 
 ```bash
-$ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html --order-dependencies
+$ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data" --cov=. --cov-report html:cov_html
 ```
 
 Here's a breakdown:
@@ -94,7 +94,6 @@ Here's a breakdown:
 - `-m "not data"` -- selects all tests that are not marked with `data`. There are many other markers for the tests; see [pytest.ini](../pytest.ini) for a complete list.
 - `--cov=.` -- enable coverage checking; the coverage configuration can be found at [.coveragerc](../.coveragerc)
 - `--cov-report html:cov_html` -- generates a report of coverage in HTML, which can be accessed in [the generated cov_html directory](../cov_html/index.html). Link will not work if you have not run the tests at least once.
-- `--order-dependencies` -- test dependency will be taken into account when determining running order for tests. In our case, we use the data from testing observation creation to test our query structures and aggregation math.
 
 ### Data Tests
 
