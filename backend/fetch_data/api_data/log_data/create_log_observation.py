@@ -136,7 +136,7 @@ async def create_log_month(
     )
 
     result.user_count = len(user_counts)
-    result.active_user_count = len([u for u, v in user_counts.items() if v >= 5])
+    result.active_user_count = len(u for u, v in user_counts.items() if v >= 5)
 
     user_type_dict: dict[str, WikibaseUserType] = {}
 
@@ -151,14 +151,12 @@ async def create_log_month(
         )
 
     result.human_user_count = len(
-        [u for u in user_counts if user_type_dict.get(u) == WikibaseUserType.USER]
+        u for u in user_counts if user_type_dict.get(u) == WikibaseUserType.USER
     )
     result.active_human_user_count = len(
-        [
-            u
-            for u, v in user_counts.items()
-            if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
-        ]
+        u
+        for u, v in user_counts.items()
+        if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
     )
 
     for log_type in sorted({log.log_type for log in log_list}, key=lambda x: x.value):
@@ -192,18 +190,16 @@ def compile_log_type_record(
     type_user_counts = counts(log.user for log in log_type_logs if log.user is not None)
     log_type_record.user_count = len(type_user_counts)
     log_type_record.active_user_count = len(
-        [u for u, v in type_user_counts.items() if v >= 5]
+        u for u, v in type_user_counts.items() if v >= 5
     )
 
     log_type_record.human_user_count = len(
-        [u for u in type_user_counts if user_type_dict.get(u) == WikibaseUserType.USER]
+        u for u in type_user_counts if user_type_dict.get(u) == WikibaseUserType.USER
     )
     log_type_record.active_human_user_count = len(
-        [
-            u
-            for u, v in type_user_counts.items()
-            if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
-        ]
+        u
+        for u, v in type_user_counts.items()
+        if v >= 5 and user_type_dict.get(u) == WikibaseUserType.USER
     )
 
     return log_type_record
@@ -227,6 +223,6 @@ def compile_user_type_record(
     user_counts = counts(log.user for log in user_type_logs)
     user_type_record.user_count = len(user_counts)
     user_type_record.active_user_count = len(
-        [u for u, v in user_counts.items() if v >= 5]
+        u for u, v in user_counts.items() if v >= 5
     )
     return user_type_record

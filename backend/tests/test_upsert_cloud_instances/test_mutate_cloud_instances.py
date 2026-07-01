@@ -44,11 +44,9 @@ async def test_add_cloud_instance(mocker):
     )
     assert (
         len(
-            [
-                w
-                for w in before_update_result.data["wikibaseList"]["data"]
-                if w["wikibaseType"] == "CLOUD"
-            ]
+            w
+            for w in before_update_result.data["wikibaseList"]["data"]
+            if w["wikibaseType"] == "CLOUD"
         )
         == 1
     )
@@ -69,11 +67,9 @@ async def test_add_cloud_instance(mocker):
     )
     assert (
         len(
-            [
-                w
-                for w in after_update_result.data["wikibaseList"]["data"]
-                if w["wikibaseType"] == "CLOUD"
-            ]
+            w
+            for w in after_update_result.data["wikibaseList"]["data"]
+            if w["wikibaseType"] == "CLOUD"
         )
         == 9
     )

@@ -29,20 +29,16 @@ class WikibaseLogObservationStrawberryModel:
         return cls(
             first_month=(
                 WikibaseObservationSetStrawberryModel.marshal(
-                    [
-                        WikibaseLogMonthStrawberryModel.marshal(m)
-                        for m in model.log_month_observations
-                        if m.first_month
-                    ]
+                    WikibaseLogMonthStrawberryModel.marshal(m)
+                    for m in model.log_month_observations
+                    if m.first_month
                 )
             ),
             last_month=(
                 WikibaseObservationSetStrawberryModel.marshal(
-                    [
-                        WikibaseLogMonthStrawberryModel.marshal(m)
-                        for m in model.log_month_observations
-                        if not m.first_month
-                    ]
+                    WikibaseLogMonthStrawberryModel.marshal(m)
+                    for m in model.log_month_observations
+                    if not m.first_month
                 )
             ),
         )

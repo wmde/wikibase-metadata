@@ -49,9 +49,7 @@ def join_url(*args: str) -> str:
         raise ValueError("Must Pass At Least One Arg")
 
     return "/".join(
-        [
-            stripped_arg
-            for arg in args
-            if len(stripped_arg := re.sub(r"^/?(.*?)/?$", r"\1", arg)) > 0
-        ]
+        stripped_arg
+        for arg in args
+        if len(stripped_arg := re.sub(r"^/?(.*?)/?$", r"\1", arg)) > 0
     )

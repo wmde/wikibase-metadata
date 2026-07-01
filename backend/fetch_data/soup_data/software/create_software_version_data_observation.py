@@ -129,15 +129,11 @@ async def compile_extension_versions(
     assert len(extensions_tables) >= 1, "Extension Table(s) Not Found"
 
     return unique_versions(
-        [
-            await get_software_version_from_row(
-                async_session, row, WikibaseSoftwareType.EXTENSION
-            )
-            for extensions_table in extensions_tables
-            for row in extensions_table.find_all(
-                "tr", attrs={"class": "mw-version-ext"}
-            )
-        ]
+        await get_software_version_from_row(
+            async_session, row, WikibaseSoftwareType.EXTENSION
+        )
+        for extensions_table in extensions_tables
+        for row in extensions_table.find_all("tr", attrs={"class": "mw-version-ext"})
     )
 
 
@@ -232,14 +228,12 @@ async def compile_skin_versions(
     assert installed_skin_table is not None, "Installed Skin Table Not Found"
 
     return unique_versions(
-        [
-            await get_software_version_from_row(
-                async_session, row, WikibaseSoftwareType.SKIN
-            )
-            for row in installed_skin_table.find_all(
-                "tr", attrs={"class": "mw-version-ext"}
-            )
-        ]
+        await get_software_version_from_row(
+            async_session, row, WikibaseSoftwareType.SKIN
+        )
+        for row in installed_skin_table.find_all(
+            "tr", attrs={"class": "mw-version-ext"}
+        )
     )
 
 
