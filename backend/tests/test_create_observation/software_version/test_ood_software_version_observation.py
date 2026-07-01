@@ -1,17 +1,17 @@
 """Test update_out_of_date_software_observations"""
 
 import pytest
+
 from fetch_data import update_out_of_date_software_observations
 from tests.utils import MockResponse
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-fail-ood", depends=["add-wikibase"], scope="session"
-)
 @pytest.mark.soup
 @pytest.mark.version
-async def test_update_out_of_date_software_observations_fail(mocker):
+async def test_update_out_of_date_software_observations_fail(
+    wikibase_without_type, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Data Returned Scenario"""
 
     mocker.patch(

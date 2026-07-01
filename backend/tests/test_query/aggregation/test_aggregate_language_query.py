@@ -1,6 +1,10 @@
 """Test Aggregate Users Query"""
 
 import pytest
+
+from data import get_async_session
+from model.database import WikibaseLanguageModel, WikibaseModel
+from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 
@@ -30,9 +34,10 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["update-wikibase-primary-language-3"], scope="session")
 @pytest.mark.query
-async def test_aggregate_languages_query():
+async def test_aggregate_languages_query(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(
@@ -46,7 +51,7 @@ async def test_aggregate_languages_query():
         result.data["aggregateLanguagePopularity"],
         expected_page_number=1,
         expected_page_size=10,
-        expected_total_count=6,
+        expected_total_count=3,
         expected_total_pages=1,
     )
 
@@ -57,12 +62,9 @@ async def test_aggregate_languages_query():
         expected_additional,
     ) in enumerate(
         [
-            ("Hindi", 1, 1, 0),
-            ("Albanian", 1, 0, 1),
-            ("Babylonian", 1, 0, 1),
+            ("French", 1, 1, 0),
             ("Cymru", 1, 0, 1),
             ("Deutsch", 1, 0, 1),
-            ("French", 1, 0, 1),
         ]
     ):
         assert_layered_property_value(
@@ -87,13 +89,58 @@ async def test_aggregate_languages_query():
         )
 
 
+@pytest.fixture
+async def wikibases_with_languages(db_session):  # pylint: disable=unused-argument
+    """
+    Create wikibases with languages:
+    - 1 SUITE wikibase with 7 languages (en + 6 others)
+    - 1 non-SUITE wikibase with 1 language (en)
+    Excluding SUITE drops from 7 to 1 (only 'en' remains via non-SUITE wikibase)
+    """
+    async with get_async_session() as session:
+        # SUITE wikibase with 7 languages
+        suite_wikibase = WikibaseModel(
+            wikibase_name="Languages Suite Test Wikibase",
+            base_url="https://languages-suite-example.com",
+        )
+        suite_wikibase.checked = True
+        suite_wikibase.reuse = True
+        suite_wikibase.test = False
+        suite_wikibase.wikibase_type = WikibaseType.SUITE
+        session.add(suite_wikibase)
+        await session.flush()
+        await session.refresh(suite_wikibase)
+
+        for i, lang in enumerate(["en", "de", "fr", "es", "it", "nl", "pt"]):
+            lang_model = WikibaseLanguageModel(
+                language=lang, primary=(i == 0)
+            )  # pylint: disable=superfluous-parens
+            lang_model.wikibase_id = suite_wikibase.id
+            session.add(lang_model)
+
+        # non-SUITE wikibase with just 'en'
+        other_wikibase = WikibaseModel(
+            wikibase_name="Languages Other Test Wikibase",
+            base_url="https://languages-other-example.com",
+        )
+        other_wikibase.checked = True
+        other_wikibase.reuse = True
+        other_wikibase.test = False
+        other_wikibase.wikibase_type = None
+        session.add(other_wikibase)
+        await session.flush()
+        await session.refresh(other_wikibase)
+
+        lang_model = WikibaseLanguageModel(language="en", primary=True)
+        lang_model.wikibase_id = other_wikibase.id
+        session.add(lang_model)
+
+        await session.flush()
+
+
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
@@ -108,7 +155,9 @@ async def test_aggregate_languages_query():
     ],
 )
 @pytest.mark.user
-async def test_aggregate_languages_query_filtered(exclude: list, expected_count: int):
+async def test_aggregate_languages_query_filtered(
+    wikibases_with_languages, exclude: list, expected_count: int
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Languages Query"""
 
     result = await test_schema.execute(

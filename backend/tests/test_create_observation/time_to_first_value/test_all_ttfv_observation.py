@@ -1,6 +1,9 @@
 """Test Bulk Time to First Value Update"""
 
 import pytest
+
+from data import get_async_session
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
@@ -15,19 +18,31 @@ mutation MyMutation {
 """
 
 
+@pytest.fixture
+async def three_wikibases_with_script_path_ttfv(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Create 3 test wikibases with script path for TTFV tests"""
+    async with get_async_session() as session:
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"TTFV Test Wikibase {i}",
+                base_url=f"https://ttfv-example-{i}.com",
+                script_path="/w",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="ttfv-fail-all",
-    depends=[
-        "mutate-cloud-instances",
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
 @pytest.mark.mutation
-async def test_update_all_ttfv_observations_fail(mocker):
+async def test_update_all_ttfv_observations_fail(
+    three_wikibases_with_script_path_ttfv, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:

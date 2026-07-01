@@ -2,10 +2,11 @@
 
 import re
 import time
+
 import pytest
+
 from tests.test_schema import test_schema
-from tests.utils import MockResponse
-from tests.utils.mock_request import get_mock_context
+from tests.utils import MockResponse, get_mock_context
 
 DATA_DIRECTORY = "tests/test_create_observation/time_to_first_value/data"
 
@@ -15,14 +16,11 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="ttfv-success",
-    depends=["ttfv-fail-ood"],
-    scope="session",
-)
 @pytest.mark.mutation
 @pytest.mark.soup
-async def test_create_ttfv_observation_success(mocker):
+async def test_create_ttfv_observation_success(
+    wikibase_fixture, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -87,7 +85,7 @@ async def test_create_ttfv_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_TTFV_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value=get_mock_context("test-auth-token"),
     )
 

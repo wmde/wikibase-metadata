@@ -3,9 +3,10 @@
 
 import pytest
 from sqlalchemy import select
+
+from data import get_async_session
+from model.database import WikibaseCategoryModel, WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
-from model.database import WikibaseModel
-from data.database_connection import get_async_session
 from tests.test_schema import test_schema
 
 ADD_WIKIBASE_QUERY = """
@@ -24,12 +25,24 @@ async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
         )
 
 
+@pytest.fixture
+async def wikibase_categories(db_session):  # pylint: disable=unused-argument
+    """Create wikibase categories"""
+    async with get_async_session() as async_session:
+        async_session.add(
+            WikibaseCategoryModel(
+                category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+            )
+        )
+
+        await async_session.commit()
+
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="add-wikibase", depends=["add-test-categories"], scope="session"
-)
-async def test_add_wikibase_mutation():
+async def test_add_wikibase_mutation(
+    wikibase_categories,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Add Wikibase"""
 
     result = await test_schema.execute(
@@ -46,7 +59,6 @@ async def test_add_wikibase_mutation():
                 "urls": {
                     "baseUrl": "https://example.com/",
                     "articlePath": "/wiki",
-                    # "scriptPath": "/w",  # will be set in add-wikibase-script-path test
                     "sparqlEndpointUrl": "https://query.example.com/sparql-wrong",
                     "sparqlFrontendUrl": "https://query.example.com",
                 },
@@ -74,50 +86,11 @@ async def test_add_wikibase_mutation():
     assert wikibase.url.url_type == WikibaseURLType.BASE_URL
     assert wikibase.url.url == "https://example.com"
 
-    # Set wikibase_type to None, as other tests require this database entry to be peristed
-    # without a wikibase_type
-    async with get_async_session() as session:
-        wikibase_to_update = await session.scalar(
-            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
-        )
-        wikibase_to_update.wikibase_type = None
-        await session.commit()
-
-
-@pytest.mark.asyncio
-@pytest.mark.mutation
-@pytest.mark.dependency(name="add-wikibase-ii", depends=["add-wikibase"])
-async def test_add_wikibase_ii_mutation():
-    """Test Add Another Wikibase"""
-
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Mock Wikibase II",
-                "description": "Another Mock wikibase for testing this codebase",
-                "organization": "Wikibase Mockery International",
-                "country": "Germany",
-                "region": "Europe",
-                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
-                "urls": {
-                    "baseUrl": "https://mock-wikibase.com/",
-                    "articlePath": "wiki",
-                },
-                "reuse": True,
-            }
-        },
-    )
-
-    assert result.errors is None
-    assert result.data is not None
-    assert result.data["addWikibase"]["id"] == "2"
-
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
-    db_session,
-):  # pylint: disable=unused-argument
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Can't Add Wikibase with existing base URL"""
 
     base_url = "https://example-wikibase.com"
@@ -167,7 +140,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
 
 @pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
-    db_session,
+    db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
     """Test Can't Add Wikibase with existing sqarql URL"""
 
@@ -221,7 +194,9 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
 
 
 @pytest.mark.asyncio
-async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
+async def test_normalizes_urls(
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Normalizes the base URL when adding a Wikibase"""
 
     base_url = "example-1234.com"
@@ -278,8 +253,8 @@ async def test_normalizes_urls(db_session):  # pylint: disable=unused-argument
 
 @pytest.mark.asyncio
 async def test_marks_localhost_urls_as_test(
-    db_session,
-):  # pylint: disable=unused-argument
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test marks all Wikibases with a URL containing 'localhost' as test"""
 
     result = await test_schema.execute(

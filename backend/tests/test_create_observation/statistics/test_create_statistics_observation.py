@@ -2,8 +2,12 @@
 
 import os
 import time
+
 import pytest
+
+from data import get_async_session
 from fetch_data import create_special_statistics_observation
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context, MockResponse
 
@@ -15,14 +19,35 @@ FETCH_STATISTICS_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
 
+@pytest.fixture
+async def wikibase_with_article_path_stats(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Create a wikibase with article path for statistics tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Statistics Test Wikibase",
+            base_url="https://statistics-test-example.com",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        wikibase_id = wikibase.id
+    return wikibase_id
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="statistics-success", depends=["statistics-fail-ood"], scope="session"
-)
 @pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.statistics
-async def test_create_statistics_observation_success(mocker):
+async def test_create_statistics_observation_success(
+    wikibase_with_article_path_stats, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     with open(
@@ -36,7 +61,7 @@ async def test_create_statistics_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_STATISTICS_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_article_path_stats},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -46,12 +71,11 @@ async def test_create_statistics_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="statistics-failure", depends=["statistics-success"], scope="session"
-)
 @pytest.mark.soup
 @pytest.mark.statistics
-async def test_create_statistics_observation_failure(mocker):
+async def test_create_statistics_observation_failure(
+    wikibase_with_article_path_stats, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
     time.sleep(1)
@@ -60,5 +84,7 @@ async def test_create_statistics_observation_failure(mocker):
         "fetch_data.soup_data.create_statistics_data_observation.requests.get",
         side_effect=[MockResponse("", 500)],
     )
-    success = await create_special_statistics_observation(1)
+    success = await create_special_statistics_observation(
+        wikibase_with_article_path_stats
+    )
     assert success is False

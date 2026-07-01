@@ -1,6 +1,9 @@
 """Test Bulk Statistics Update"""
 
 import pytest
+
+from data import get_async_session
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -15,19 +18,31 @@ mutation MyMutation {
 """
 
 
+@pytest.fixture
+async def three_wikibases_with_article_path_stats(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Create 3 test wikibases with article path for statistics tests"""
+    async with get_async_session() as session:
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Statistics Test Wikibase {i}",
+                base_url=f"https://statistics-example-{i}.com",
+                article_path="/wiki",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="statistics-fail-all",
-    depends=[
-        "mutate-cloud-instances",
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
 @pytest.mark.mutation
-async def test_update_all_statistics_observations_fail(mocker):
+async def test_update_all_statistics_observations_fail(
+    three_wikibases_with_article_path_stats, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs):

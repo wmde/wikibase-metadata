@@ -3,8 +3,12 @@
 import asyncio
 import time
 from urllib.error import HTTPError
+
 import pytest
+
+from data import get_async_session
 from fetch_data import create_property_popularity_observation
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -13,16 +17,32 @@ FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 }"""
 
 
+@pytest.fixture
+async def wikibase_with_sparql(db_session):  # pylint: disable=unused-argument
+    """Create a wikibase with sparql endpoint"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Property Test Wikibase",
+            base_url="https://property-test-example.com",
+            sparql_endpoint_url="https://property-test-example.com/sparql",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+        return wikibase
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="property-popularity-success",
-    depends=["property-popularity-success-ood"],
-    scope="session",
-)
 @pytest.mark.mutation
 @pytest.mark.property
 @pytest.mark.sparql
-async def test_create_property_popularity_observation_success(mocker):
+async def test_create_property_popularity_observation_success(
+    wikibase_with_sparql, mocker
+):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
     await asyncio.to_thread(time.sleep, 1)
@@ -43,7 +63,7 @@ async def test_create_property_popularity_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_PROPERTY_POPULARITY_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_sparql.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -53,14 +73,11 @@ async def test_create_property_popularity_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="property-popularity-failure",
-    depends=["property-popularity-success"],
-    scope="session",
-)
 @pytest.mark.property
 @pytest.mark.sparql
-async def test_create_property_popularity_observation_failure(mocker):
+async def test_create_property_popularity_observation_failure(
+    wikibase_with_sparql, mocker
+):
     """Test"""
 
     mocker.patch(
@@ -75,5 +92,5 @@ async def test_create_property_popularity_observation_failure(mocker):
             )
         ],
     )
-    success = await create_property_popularity_observation(1)
+    success = await create_property_popularity_observation(wikibase_with_sparql.id)
     assert success is False

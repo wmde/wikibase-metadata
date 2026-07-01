@@ -1,6 +1,12 @@
 """Test Aggregate Created Query"""
 
+from datetime import datetime, timezone
+
 import pytest
+
+from data import get_async_session
+from model.database import WikibaseLogMonthObservationModel, WikibaseModel
+from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_count, assert_layered_property_value
 
@@ -14,12 +20,43 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 """
 
 
+@pytest.fixture
+async def wikibase_with_first_month_log(db_session):  # pylint: disable=unused-argument
+    """Create a SUITE wikibase with a first-month log observation with first_log_date set"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Aggregate Created Test Wikibase",
+            base_url="https://aggregate-created-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = WikibaseType["SUITE"]
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        observation = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=True
+        )
+        observation.returned_data = True
+        observation.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        observation.first_log_date = datetime(2020, 5, 15, tzinfo=timezone.utc)
+        observation.last_log_date = datetime(2020, 6, 1, tzinfo=timezone.utc)
+        session.add(observation)
+        await session.flush()
+
+        wikibase_id = wikibase.id
+    return wikibase_id
+
+
 @pytest.mark.asyncio
 @pytest.mark.agg
-@pytest.mark.dependency(depends=["log-first-success-1"], scope="session")
 @pytest.mark.log
 @pytest.mark.query
-async def test_aggregate_created_query():
+async def test_aggregate_created_query(
+    wikibase_with_first_month_log,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Created Query"""
 
     result = await test_schema.execute(AGGREGATED_CREATED_QUERY)
@@ -27,7 +64,7 @@ async def test_aggregate_created_query():
     assert result.errors is None
     assert result.data is not None
     assert_layered_property_count(result.data, ["aggregateCreated"], 1)
-    assert_layered_property_value(result.data, ["aggregateCreated", 0, "year"], 2023)
+    assert_layered_property_value(result.data, ["aggregateCreated", 0, "year"], 2020)
     assert_layered_property_value(
         result.data, ["aggregateCreated", 0, "wikibaseCount"], 1
     )
@@ -36,10 +73,6 @@ async def test_aggregate_created_query():
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=["update-wikibase-type-other", "update-wikibase-type-suite"],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["exclude", "expected_count", "expected_wikibase_count"],
     [
@@ -55,8 +88,11 @@ async def test_aggregate_created_query():
 )
 @pytest.mark.user
 async def test_aggregate_created_query_filtered(
-    exclude: list, expected_count: int, expected_wikibase_count: int
-):
+    wikibase_with_first_month_log,
+    exclude: list,
+    expected_count: int,
+    expected_wikibase_count: int,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Created Query"""
 
     result = await test_schema.execute(

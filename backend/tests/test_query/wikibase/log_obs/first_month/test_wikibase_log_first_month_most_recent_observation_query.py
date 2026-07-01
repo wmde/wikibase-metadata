@@ -1,8 +1,10 @@
 """Test Wikibase Most Recent Log Observation"""
 
 from datetime import datetime
+
 from freezegun import freeze_time
 import pytest
+
 from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
@@ -34,32 +36,39 @@ query MyQuery($wikibaseId: Int!) {
 
 @freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["log-first-success-1"], scope="session")
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_first_month_most_recent_observation_query():
+async def test_wikibase_log_first_month_most_recent_observation_query(
+    wikibase_with_first_month_log_observations,
+):
     """Test Wikibase Most Recent Log Observation"""
 
+    data = wikibase_with_first_month_log_observations
+    wikibase_id = data["wikibase_id"]
+    obs_ids = data["obs"]
+    lt_ids = data["log_type"]
+    ut_ids = data["user_type"]
+
     result = await test_schema.execute(
-        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None
     assert result.data is not None
     assert "wikibase" in result.data
     result_wikibase = result.data["wikibase"]
-    assert_property_value(result_wikibase, "id", "1")
+    assert_property_value(result_wikibase, "id", str(wikibase_id))
     assert "logObservations" in result_wikibase
     assert "firstMonth" in result_wikibase["logObservations"]
     assert "mostRecent" in result_wikibase["logObservations"]["firstMonth"]
     most_recent = result_wikibase["logObservations"]["firstMonth"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "2")
+    assert_property_value(most_recent, "id", obs_ids[1])
     assert_property_value(
         most_recent, "observationDate", datetime(2024, 3, 1).strftime(DATETIME_FORMAT)
     )
     assert_property_value(most_recent, "returnedData", True)
-    # assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
     assert_layered_property_value(
         most_recent,
         ["firstLog", "date"],
@@ -80,7 +89,7 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
     assert_layered_property_count(most_recent, ["logTypeRecords"], 1)
     assert_month_type_record(
         most_recent["logTypeRecords"][0],
-        expected_id="2",
+        expected_id=lt_ids[1],
         expected_log_type="THANK",
         expected_first_log_date=datetime(2023, 10, 24),
         expected_last_log_date=datetime(2023, 11, 23),
@@ -102,9 +111,33 @@ async def test_wikibase_log_first_month_most_recent_observation_query():
         expected_active_user_count,
     ) in enumerate(
         [
-            ("1", "BOT", datetime(2023, 10, 26), datetime(2023, 11, 21), 10, 1, 1),
-            ("2", "MISSING", datetime(2023, 10, 25), datetime(2023, 11, 22), 10, 1, 1),
-            ("3", "USER", datetime(2023, 10, 24), datetime(2023, 11, 23), 11, 1, 1),
+            (
+                ut_ids[0],
+                "BOT",
+                datetime(2023, 10, 26),
+                datetime(2023, 11, 21),
+                10,
+                1,
+                1,
+            ),
+            (
+                ut_ids[1],
+                "MISSING",
+                datetime(2023, 10, 25),
+                datetime(2023, 11, 22),
+                10,
+                1,
+                1,
+            ),
+            (
+                ut_ids[2],
+                "USER",
+                datetime(2023, 10, 24),
+                datetime(2023, 11, 23),
+                11,
+                1,
+                1,
+            ),
         ]
     ):
         assert_month_type_record(

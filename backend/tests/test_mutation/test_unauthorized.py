@@ -15,13 +15,14 @@ mutation MyMutation($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
-async def test_wikibase_mutation_unauthorized():
+async def test_wikibase_mutation_unauthorized(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Test Query Wikibase Unauthorized"""
 
     result = await test_schema.execute(
         ADD_WIKIBASE_LANGUAGE_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value={"request": MockRequest(headers={})},
     )
 
@@ -30,7 +31,7 @@ async def test_wikibase_mutation_unauthorized():
 
     result = await test_schema.execute(
         ADD_WIKIBASE_LANGUAGE_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value={
             "request": MockRequest(headers={"authorization": "wrong-header-value"})
         },
@@ -41,7 +42,7 @@ async def test_wikibase_mutation_unauthorized():
 
     result = await test_schema.execute(
         ADD_WIKIBASE_LANGUAGE_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value={
             "request": MockRequest(
                 headers={"authorization": "bearer: wrong token with spaces"}
@@ -57,7 +58,7 @@ async def test_wikibase_mutation_unauthorized():
 
     result = await test_schema.execute(
         ADD_WIKIBASE_LANGUAGE_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value={
             "request": MockRequest(headers={"authorization": "bearer: wrong-token"})
         },

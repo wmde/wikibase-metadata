@@ -1,6 +1,12 @@
 """Test Wikibase List"""
 
 import pytest
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from data import get_async_session
+from model.database import WikibaseCategoryModel, WikibaseModel
+from model.enum import WikibaseCategory, WikibaseType
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import (
@@ -10,21 +16,101 @@ from tests.utils import (
 )
 
 
+@pytest.fixture
+async def two_wikibases_with_full_data(db_session):
+    """Create two wikibases with full data for wikibase list tests"""
+
+    async with AsyncSession(bind=db_session) as session:
+        # get or create category
+        category = await session.scalar(
+            select(WikibaseCategoryModel).where(
+                WikibaseCategoryModel.category
+                == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+            )
+        )
+        if category is None:
+            category = WikibaseCategoryModel()
+            category.category = WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+            session.add(category)
+            await session.flush()
+            await session.refresh(category)
+
+        wikibase = WikibaseModel(
+            wikibase_name="Mock Wikibase",
+            base_url="https://example.com",
+            article_path="/wiki",
+            script_path="/w/",
+            sparql_endpoint_url="https://query.example.com/sparql",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        wikibase.description = "Mock wikibase for testing this codebase"
+        wikibase.organization = "Wikibase Mockery International"
+        wikibase.country = "Germany"
+        wikibase.region = "Europe"
+        wikibase.category_id = category.id
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        wikibase.set_primary_language("Hindi")
+        wikibase.set_additional_languages(
+            ["Albanian", "Babylonian", "Cymru", "Deutsch", "French"]
+        )
+
+        wikibase2 = WikibaseModel(
+            wikibase_name="Mock Wikibase II",
+            base_url="https://example2.com",
+        )
+        wikibase2.checked = True
+        wikibase2.reuse = True
+        wikibase2.test = False
+        wikibase2.wikibase_type = None
+        session.add(wikibase2)
+        await session.flush()
+        return wikibase.id, wikibase2.id
+
+
+@pytest.fixture
+async def wikibases_all_types(db_session):  # pylint: disable=unused-argument
+    """Create 11 wikibases: 7 CLOUD, 1 OTHER, 1 SUITE, 1 TEST, 1 UNKNOWN"""
+    async with get_async_session() as session:
+        types = [
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.CLOUD,
+            WikibaseType.OTHER,
+            WikibaseType.SUITE,
+            WikibaseType.TEST,
+            None,  # UNKNOWN
+        ]
+        for i, wikibase_type in enumerate(types):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Filter Include Test Wikibase {i}",
+                base_url=f"https://filter-include-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = wikibase_type
+            session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=[
-        "add-wikibase",
-        "add-wikibase-script-path",
-        "remove-wikibase-sparql-frontend-url",
-        "update-wikibase-url",
-        "update-wikibase-primary-language-3",
-        "add-wikibase-ii",
-    ],
-    scope="session",
-)
-async def test_wikibase_list_query():
+async def test_wikibase_list_query(
+    two_wikibases_with_full_data,
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase List"""
+
+    wikibase_id_1, _ = two_wikibases_with_full_data
 
     result = await test_schema.execute(
         WIKIBASE_LIST_QUERY, variable_values={"pageNumber": 1, "pageSize": 1}
@@ -37,7 +123,7 @@ async def test_wikibase_list_query():
     assert "data" in result.data["wikibaseList"]
     assert len(result.data["wikibaseList"]["data"]) == 1
     result_datum = result.data["wikibaseList"]["data"][0]
-    assert_property_value(result_datum, "id", "1")
+    assert_property_value(result_datum, "id", str(wikibase_id_1))
     assert_property_value(result_datum, "title", "Mock Wikibase")
     assert_property_value(
         result_datum, "category", "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"
@@ -86,84 +172,6 @@ async def test_wikibase_list_query():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=[
-        "add-wikibase",
-        "add-wikibase-ii",
-        "update-missing-wikibase-script-path",
-        "update-missing-wikibase-sparql",
-    ],
-    scope="session",
-)
-async def test_wikibase_list_query_page_two():
-    """Test Wikibase List"""
-
-    result = await test_schema.execute(
-        WIKIBASE_LIST_QUERY,
-        variable_values={
-            "pageNumber": 2,
-            "pageSize": 1,
-            "wikibaseFilter": {"wikibaseType": None},
-        },
-    )
-
-    assert result.errors is None
-    assert result.data is not None
-    assert "wikibaseList" in result.data
-    assert_page_meta(result.data["wikibaseList"], 2, 1, 2, 2)
-    assert "data" in result.data["wikibaseList"]
-    assert len(result.data["wikibaseList"]["data"]) == 1
-    result_datum = result.data["wikibaseList"]["data"][0]
-    assert_property_value(result_datum, "id", "2")
-    assert_property_value(result_datum, "title", "Mock Wikibase II")
-    assert_property_value(
-        result_datum, "category", "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"
-    )
-    assert_property_value(
-        result_datum, "description", "Another Mock wikibase for testing this codebase"
-    )
-    assert_property_value(
-        result_datum, "organization", "Wikibase Mockery International"
-    )
-    assert_layered_property_value(result_datum, ["location", "country"], "Germany")
-    assert_layered_property_value(result_datum, ["location", "region"], "Europe")
-
-    assert_layered_property_value(result_datum, ["languages", "primary"], None)
-    assert_layered_property_value(result_datum, ["languages", "additional"], [])
-
-    for url_name, url in [
-        ("baseUrl", "https://mock-wikibase.com"),
-        # ("actionApi", "https://mock-wikibase.com/w/api.php"),
-        ("articlePath", "wiki"),
-        # ("indexApi", "https://mock-wikibase.com/w/index.php"),
-        ("scriptPath", "/mockwiki"),
-        ("sparqlEndpointUrl", "https://mock-wikibase.com/query/sparql"),
-        ("sparqlFrontendUrl", "https://mock-wikibase.com/query"),
-    ]:
-        assert_layered_property_value(result_datum, ["urls", url_name], url)
-
-    for obs in [
-        "connectivityObservations",
-        "externalIdentifierObservations",
-        "logObservations",
-        "propertyPopularityObservations",
-        "quantityObservations",
-        "softwareVersionObservations",
-        "userObservations",
-    ]:
-        assert obs in result_datum
-
-
-@pytest.mark.asyncio
-@pytest.mark.query
-@pytest.mark.dependency(
-    depends=[
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["exclude", "expected_total"],
     [
@@ -201,7 +209,9 @@ async def test_wikibase_list_query_page_two():
         (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 0),
     ],
 )
-async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
+async def test_wikibase_list_query_filtered_exclude(
+    wikibases_all_types, exclude, expected_total
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Filtering - Exclude Wikibase Types"""
 
     result = await test_schema.execute(
@@ -221,14 +231,6 @@ async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    depends=[
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
 @pytest.mark.parametrize(
     ["include", "expected_total"],
     [
@@ -266,7 +268,9 @@ async def test_wikibase_list_query_filtered_exclude(exclude, expected_total):
         (["CLOUD", "OTHER", "SUITE", "TEST", "UNKNOWN"], 11),
     ],
 )
-async def test_wikibase_list_query_filtered_include(include, expected_total):
+async def test_wikibase_list_query_filtered_include(
+    wikibases_all_types, include, expected_total
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Filtering - Include Wikibase Types"""
 
     result = await test_schema.execute(

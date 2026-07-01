@@ -2,6 +2,10 @@
 
 import pytest
 
+
+from data import get_async_session
+from model.database import WikibaseSoftwareModel
+from model.enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -11,17 +15,50 @@ mutation MyMutation($baseId: Int!, $additionalId: Int!) {
 }"""
 
 
+@pytest.fixture
+async def wikibase_software(db_session):  # pylint: disable=unused-argument
+    """Create two software entries with different types"""
+    async with get_async_session() as session:
+        software = WikibaseSoftwareModel(
+            software_type=WikibaseSoftwareType.EXTENSION,
+            software_name="Test Extension",
+        )
+
+        session.add(software)
+        await session.flush()
+        await session.refresh(software)
+        return software
+
+
+@pytest.fixture
+async def two_wikibase_softwares(db_session):  # pylint: disable=unused-argument
+    """Create two software entries with different types"""
+    async with get_async_session() as session:
+        software_ids = []
+        for i in range(2):
+            software = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.EXTENSION,
+                software_name=f"Test Extension {i}",
+            )
+
+            session.add(software)
+            await session.flush()
+            await session.refresh(software)
+            software_ids.append(software.id)
+        return software_ids
+
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id", depends=["add-test-software"], scope="session"
-)
-async def test_merge_software_by_id_mutation():
+async def test_merge_software_by_id_mutation(
+    two_wikibase_softwares,
+):  # pylint: disable=redefined-outer-name
     """Test Add Wikibase"""
 
+    id_1, id_2 = two_wikibase_softwares
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": 1, "additionalId": 3},
+        variable_values={"baseId": id_1, "additionalId": id_2},
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is None
@@ -31,55 +68,69 @@ async def test_merge_software_by_id_mutation():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id-fail-same-id",
-    depends=["add-test-software"],
-    scope="session",
-)
-async def test_merge_software_by_id_mutation_fail_same_id():
+async def test_merge_software_by_id_mutation_fail_same_id(
+    wikibase_software,
+):  # pylint: disable=redefined-outer-name
     """Test Merge Software by ID - Same IDs"""
 
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": 1, "additionalId": 1},
+        variable_values={
+            "baseId": wikibase_software.id,
+            "additionalId": wikibase_software.id,
+        },
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is not None
     assert result.errors[0].message == "Software IDs Must Be Distinct"
 
 
-@pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="merge-software-by-id-fail-not-found",
-    depends=["add-test-software"],
-    scope="session",
-)
-async def test_merge_software_by_id_mutation_fail_not_found():
+async def test_merge_software_by_id_mutation_fail_not_found(
+    wikibase_software,
+):  # pylint: disable=redefined-outer-name
     """Test Merge Software by ID - Not Found"""
 
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": 1, "additionalId": 1000000},
+        variable_values={"baseId": wikibase_software.id, "additionalId": 1000000},
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is not None
     assert result.errors[0].message == "1 Record Found, 2 Needed to Merge"
 
 
+@pytest.fixture
+async def two_software_different_types(db_session):  # pylint: disable=unused-argument
+    """Create two software entries with different types"""
+    async with get_async_session() as session:
+        software1 = WikibaseSoftwareModel(
+            software_type=WikibaseSoftwareType.EXTENSION,
+            software_name="Test Extension",
+        )
+        software2 = WikibaseSoftwareModel(
+            software_type=WikibaseSoftwareType.SKIN,
+            software_name="Test Skin",
+        )
+        session.add(software1)
+        session.add(software2)
+        await session.flush()
+        await session.refresh(software1)
+        await session.refresh(software2)
+        return software1.id, software2.id
+
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    depends=["software-version-success"],
-    name="merge-software-by-id-fail-different-types",
-    scope="session",
-)
-async def test_merge_software_by_id_mutation_fail_different_types():
+async def test_merge_software_by_id_mutation_fail_different_types(
+    two_software_different_types,
+):  # pylint: disable=redefined-outer-name
     """Test Add Wikibase"""
 
+    base_id, additional_id = two_software_different_types
     result = await test_schema.execute(
         MERGE_SOFTWARE_MUTATION,
-        variable_values={"baseId": 1, "additionalId": 4},
+        variable_values={"baseId": base_id, "additionalId": additional_id},
         context_value=get_mock_context("test-auth-token"),
     )
     assert result.errors is not None

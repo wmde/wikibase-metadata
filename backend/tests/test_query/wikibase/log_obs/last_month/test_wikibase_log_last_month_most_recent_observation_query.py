@@ -1,8 +1,12 @@
 """Test Wikibase Most Recent Log Observation"""
 
-from datetime import datetime
+from datetime import datetime, timezone
+
 from freezegun import freeze_time
 import pytest
+
+from data import get_async_session
+from model.database import WikibaseLogMonthObservationModel, WikibaseModel
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
 )
@@ -30,31 +34,70 @@ query MyQuery($wikibaseId: Int!) {
 """ + WIKIBASE_LOG_OBSERVATION_FRAGMENT
 
 
+@pytest.fixture
+async def wikibase_with_log_observation(db_session):  # pylint: disable=unused-argument
+    """Create a wikibase with a last-month log observation"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Log Last Month Test Wikibase",
+            base_url="https://log-last-month-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        observation = WikibaseLogMonthObservationModel(
+            wikibase_id=wikibase.id, first_month=False
+        )
+        observation.returned_data = True
+        observation.observation_date = datetime(2024, 3, 3, tzinfo=timezone.utc)
+        observation.first_log_date = None
+        observation.last_log_date = None
+        observation.log_count = 0
+        observation.user_count = 0
+        observation.active_user_count = 0
+        observation.human_user_count = 0
+        observation.active_human_user_count = 0
+        session.add(observation)
+        await session.flush()
+        await session.refresh(observation)
+
+        wikibase_id = wikibase.id
+        observation_id = str(observation.id)
+    return wikibase_id, observation_id
+
+
 @freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    depends=["log-last-success-1", "log-last-success-2"], scope="session"
-)
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_last_month_most_recent_observation_query():
+async def test_wikibase_log_last_month_most_recent_observation_query(
+    wikibase_with_log_observation,
+):
     """Test Wikibase Most Recent Log Observation"""
 
+    wikibase_id, observation_id = wikibase_with_log_observation
+
     result = await test_schema.execute(
-        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LOG_MOST_RECENT_OBSERVATION_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None
     assert result.data is not None
     assert "wikibase" in result.data
     result_wikibase = result.data["wikibase"]
-    assert_property_value(result_wikibase, "id", "1")
+    assert_property_value(result_wikibase, "id", str(wikibase_id))
     assert "logObservations" in result_wikibase
     assert "lastMonth" in result_wikibase["logObservations"]
     assert "mostRecent" in result_wikibase["logObservations"]["lastMonth"]
     most_recent = result_wikibase["logObservations"]["lastMonth"]["mostRecent"]
 
-    assert_property_value(most_recent, "id", "7")
+    assert_property_value(most_recent, "id", str(observation_id))
     assert_property_value(
         most_recent, "observationDate", datetime(2024, 3, 3).strftime(DATETIME_FORMAT)
     )

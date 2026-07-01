@@ -1,6 +1,9 @@
 """Test Bulk Recent Changes Update"""
 
 import pytest
+
+from data import get_async_session
+from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
@@ -15,19 +18,31 @@ mutation MyMutation {
 """
 
 
+@pytest.fixture
+async def three_wikibases_with_script_path(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Create 3 test wikibases with script path for recent changes tests"""
+    async with get_async_session() as session:
+        for i in range(3):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Recent Changes Test Wikibase {i}",
+                base_url=f"https://recent-changes-example-{i}.com",
+                script_path="/w",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = None
+            session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="recent-changes-fail-all",
-    depends=[
-        "mutate-cloud-instances",
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
 @pytest.mark.mutation
-async def test_update_all_recent_changes_observations_fail(mocker):
+async def test_update_all_recent_changes_observations_fail(
+    three_wikibases_with_script_path, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
@@ -35,7 +50,7 @@ async def test_update_all_recent_changes_observations_fail(mocker):
 
         query = ParsedUrl(args[0])
 
-        assert query.base_url == "https://example.com/w/api.php"
+        assert query.base_url.endswith("/w/api.php")
         assert query.params.get("action") == "query"
         assert query.params.get("format") == "json"
 

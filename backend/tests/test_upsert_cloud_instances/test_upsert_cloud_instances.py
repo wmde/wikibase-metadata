@@ -1,10 +1,11 @@
 """Test Upsert Cloud Instances"""
 
 import os
+
 import pytest
 from sqlalchemy import select
 
-from data.database_connection import get_async_session
+from data import get_async_session
 from fetch_data import update_cloud_instances
 from model.database import WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseType
@@ -12,9 +13,25 @@ from tests.test_upsert_cloud_instances.constant import DATA_DIRECTORY
 from tests.utils import MockResponse
 
 
-@pytest.mark.dependency(name="insert-cloud-instance", scope="session")
+@pytest.fixture
+async def wikibase(db_session):  # pylint: disable=unused-argument
+    """Create a test wikibase"""
+    async with get_async_session() as session:
+        wikibase_model = WikibaseModel(
+            wikibase_name="Test Wikibase",
+            base_url="https://tcdict.wikibase.cloud",
+            sparql_endpoint_url="https://query.tcdict.wikibase.cloud",
+        )
+        wikibase_model.checked = True
+        session.add(wikibase_model)
+        await session.flush()
+        return wikibase_model
+
+
 @pytest.mark.asyncio
-async def test_insert_cloud_instances(mocker):
+async def test_insert_cloud_instances(
+    db_session, mocker
+):  # pylint: disable=unused-argument
     """
     test updating the local database with a single cloud instance fetched from the API
 
@@ -70,11 +87,10 @@ async def test_insert_cloud_instances(mocker):
             assert found.reuse is False
 
 
-@pytest.mark.dependency(
-    name="update-cloud-instance", depends=["insert-cloud-instance"], scope="session"
-)
 @pytest.mark.asyncio
-async def test_update_cloud_instances(mocker):
+async def test_update_cloud_instances(
+    wikibase, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """
     test updating the local database with a single cloud instance fetched from the API
     the update of an existing entry
@@ -125,11 +141,10 @@ async def test_update_cloud_instances(mocker):
             )
 
 
-@pytest.mark.dependency(
-    name="transform-cloud-instance", depends=["update-cloud-instance"], scope="session"
-)
 @pytest.mark.asyncio
-async def test_transform_to_cloud_instance(mocker):
+async def test_transform_to_cloud_instance(
+    wikibase, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """
     test updating the local database with a single cloud instance fetched from the API
     the update of an existing entry that was not a cloud instance before

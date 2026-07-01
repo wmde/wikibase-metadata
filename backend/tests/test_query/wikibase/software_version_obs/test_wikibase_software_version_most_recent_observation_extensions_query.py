@@ -1,7 +1,17 @@
 """Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
 
-from datetime import datetime
+from datetime import datetime, timezone
+
 import pytest
+
+from data import get_async_session
+from model.database import (
+    WikibaseModel,
+    WikibaseSoftwareModel,
+    WikibaseSoftwareVersionModel,
+    WikibaseSoftwareVersionObservationModel,
+)
+from model.enum import WikibaseSoftwareType
 from tests.test_query.wikibase.software_version_obs.assert_software_version import (
     assert_software_version,
 )
@@ -31,99 +41,165 @@ query MyQuery($wikibaseId: Int!) {
 """ + WIKIBASE_SOFTWARE_VERSION_FRAGMENT
 
 
-@pytest.mark.asyncio
-@pytest.mark.dependency(depends=["software-version-success"], scope="session")
-@pytest.mark.query
-@pytest.mark.version
-async def test_wikibase_software_version_most_recent_observation_extensions_query():
-    """Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
-
-    result = await test_schema.execute(
-        WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_EXTENSIONS_QUERY,
-        variable_values={"wikibaseId": 1},
-    )
-
-    assert result.errors is None
-    assert result.data is not None
-    assert "wikibase" in result.data
-    result_wikibase = result.data["wikibase"]
-    assert_property_value(result_wikibase, "id", "1")
-    assert "softwareVersionObservations" in result_wikibase
-    assert "mostRecent" in result_wikibase["softwareVersionObservations"]
-    most_recent = result_wikibase["softwareVersionObservations"]["mostRecent"]
-
-    assert_property_value(most_recent, "id", "2")
-    assert "observationDate" in most_recent
-    assert_property_value(most_recent, "returnedData", True)
-
-    assert_layered_property_count(most_recent, ["installedExtensions"], 11)
-    for index, (
-        expected_id,
-        expected_name,
-        expected_version,
-        expected_version_date,
-        expected_version_hash,
-    ) in enumerate(
-        [
-            ("9", "Babel", "1.11.1", None, None),
+@pytest.fixture
+async def wikibase_with_extensions_observation(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Create a wikibase with software version observation containing extensions"""
+    async with get_async_session() as session:
+        extensions = [
+            ("Babel", "1.11.1", None, None),
             (
-                "16",
                 "Google Analytics Integration",
                 "3.0.1",
                 datetime(2019, 8, 6, 9, 12),
                 "6441403",
             ),
             (
-                "10",
                 "LabeledSectionTransclusion",
                 "f621799",
                 datetime(2020, 1, 29, 14, 52),
                 "f621799",
             ),
+            ("Miraheze Magic", "e742444", datetime(2024, 10, 17, 15, 21), "e742444"),
+            ("ProofreadPage", "cb0a218", datetime(2019, 9, 30, 9, 20), "cb0a218"),
+            ("Scribunto", None, None, None),
             (
-                "19",
-                "Miraheze Magic",
-                "e742444",
-                datetime(2024, 10, 17, 15, 21),
-                "e742444",
-            ),
-            ("17", "ProofreadPage", "cb0a218", datetime(2019, 9, 30, 9, 20), "cb0a218"),
-            ("11", "Scribunto", None, None, None),
-            (
-                "18",
                 "UniversalLanguageSelector",
                 "2020-01-23",
                 datetime(2020, 3, 3, 13, 38),
                 "61f1a98",
             ),
+            ("WikibaseClient", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
+            ("WikibaseLib", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
             (
-                "12",
-                "WikibaseClient",
-                "dbbcdd8",
-                datetime(2019, 12, 10, 12, 52),
-                "dbbcdd8",
-            ),
-            ("13", "WikibaseLib", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
-            (
-                "14",
                 "WikibaseRepository",
                 "dbbcdd8",
                 datetime(2019, 12, 10, 12, 52),
                 "dbbcdd8",
             ),
+            ("WikibaseView", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
+        ]
+        ext_software = {}
+        for name, _, _, _ in extensions:
+            software = WikibaseSoftwareModel(
+                software_type=WikibaseSoftwareType.EXTENSION,
+                software_name=name,
+            )
+            session.add(software)
+            await session.flush()
+            await session.refresh(software)
+            ext_software[name] = software
+
+        wikibase = WikibaseModel(
+            wikibase_name="Extensions Test Wikibase",
+            base_url="https://extensions-test-example.com",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        obs = WikibaseSoftwareVersionObservationModel()
+        obs.wikibase_id = wikibase.id
+        obs.returned_data = True
+        obs.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        session.add(obs)
+        await session.flush()
+        await session.refresh(obs)
+
+        for name, version, version_date, version_hash in extensions:
+            sv = WikibaseSoftwareVersionModel(
+                software=ext_software[name],
+                version=version,
+                version_date=version_date,
+                version_hash=version_hash,
+            )
+            sv.wikibase_software_version_observation_id = obs.id
+            session.add(sv)
+            await session.flush()
+            await session.refresh(sv)
+
+        wikibase_id = wikibase.id
+        observation_id = str(obs.id)
+    return wikibase_id, observation_id
+
+
+@pytest.mark.asyncio
+@pytest.mark.query
+@pytest.mark.version
+async def test_wikibase_software_version_most_recent_observation_extensions_query(
+    wikibase_with_extensions_observation,
+):  # pylint: disable=unused-argument, redefined-outer-name
+    """Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
+
+    wikibase_id, observation_id = wikibase_with_extensions_observation
+
+    result = await test_schema.execute(
+        WIKIBASE_SOFTWARE_VERSION_MOST_RECENT_OBSERVATION_EXTENSIONS_QUERY,
+        variable_values={"wikibaseId": wikibase_id},
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert "wikibase" in result.data
+    result_wikibase = result.data["wikibase"]
+    assert_property_value(result_wikibase, "id", str(wikibase_id))
+    assert "softwareVersionObservations" in result_wikibase
+    assert "mostRecent" in result_wikibase["softwareVersionObservations"]
+    most_recent = result_wikibase["softwareVersionObservations"]["mostRecent"]
+
+    assert_property_value(most_recent, "id", observation_id)
+    assert "observationDate" in most_recent
+    assert_property_value(most_recent, "returnedData", True)
+
+    assert_layered_property_count(most_recent, ["installedExtensions"], 11)
+    for index, (
+        name,
+        expected_version,
+        expected_version_date,
+        expected_version_hash,
+    ) in enumerate(
+        [
+            ("Babel", "1.11.1", None, None),
             (
-                "15",
-                "WikibaseView",
+                "Google Analytics Integration",
+                "3.0.1",
+                datetime(2019, 8, 6, 9, 12),
+                "6441403",
+            ),
+            (
+                "LabeledSectionTransclusion",
+                "f621799",
+                datetime(2020, 1, 29, 14, 52),
+                "f621799",
+            ),
+            ("Miraheze Magic", "e742444", datetime(2024, 10, 17, 15, 21), "e742444"),
+            ("ProofreadPage", "cb0a218", datetime(2019, 9, 30, 9, 20), "cb0a218"),
+            ("Scribunto", None, None, None),
+            (
+                "UniversalLanguageSelector",
+                "2020-01-23",
+                datetime(2020, 3, 3, 13, 38),
+                "61f1a98",
+            ),
+            ("WikibaseClient", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
+            ("WikibaseLib", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
+            (
+                "WikibaseRepository",
                 "dbbcdd8",
                 datetime(2019, 12, 10, 12, 52),
                 "dbbcdd8",
             ),
+            ("WikibaseView", "dbbcdd8", datetime(2019, 12, 10, 12, 52), "dbbcdd8"),
         ]
     ):
         assert_software_version(
             most_recent["installedExtensions"][index],
-            expected_id,
-            expected_name,
+            name,
             expected_version,
             expected_version_date,
             expected_version_hash,

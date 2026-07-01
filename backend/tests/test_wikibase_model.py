@@ -26,7 +26,9 @@ def test_setting_two_primary_languages():
 
 
 @pytest.mark.asyncio
-async def test_setting_existing_language_as_primary():
+async def test_setting_existing_language_as_primary(
+    db_session,
+):  # pylint: disable=unused-argument
     """
     test whether setting a primary language that exists
     as non primary already does not add additional language items
@@ -60,7 +62,7 @@ async def test_setting_existing_language_as_primary():
         assert found.primary_language.language == "ko"
 
 
-def test_setting_two_identical_languages():
+def test_setting_two_identical_languages(db_session):  # pylint: disable=unused-argument
     """
     test setting additional languages multiple times
     does not add identical languages
@@ -80,7 +82,9 @@ def test_setting_two_identical_languages():
 
 
 @pytest.mark.asyncio
-async def test_setting_primary_language_again_does_not_do_anything():
+async def test_setting_primary_language_again_does_not_do_anything(
+    db_session,
+):  # pylint: disable=unused-argument
     """
     the existing primary language object should be reused
     if this language is already set as primary
@@ -102,7 +106,9 @@ async def test_setting_primary_language_again_does_not_do_anything():
 
 
 @pytest.mark.asyncio
-async def test_update_existing_article_path():
+async def test_update_existing_article_path(
+    db_session,
+):  # pylint: disable=unused-argument
     """
     update article_path when it is already set
     """
@@ -127,7 +133,9 @@ async def test_update_existing_article_path():
 
 
 @pytest.mark.asyncio
-async def test_update_existing_script_path():
+async def test_update_existing_script_path(
+    db_session,
+):  # pylint: disable=unused-argument
     """
     update script_path when it is already set
     """
@@ -152,7 +160,9 @@ async def test_update_existing_script_path():
 
 
 @pytest.mark.asyncio
-async def test_update_existing_sparql_endpoint():
+async def test_update_existing_sparql_endpoint(
+    db_session,
+):  # pylint: disable=unused-argument
     """
     update sparql_endpoint when it is already set
     """
@@ -185,7 +195,9 @@ async def test_update_existing_sparql_endpoint():
 
 
 @pytest.mark.asyncio
-async def test_update_existing_sparql_frontend():
+async def test_update_existing_sparql_frontend(
+    db_session,
+):  # pylint: disable=unused-argument
     """
     update sparql_frontend when it is already set
     """

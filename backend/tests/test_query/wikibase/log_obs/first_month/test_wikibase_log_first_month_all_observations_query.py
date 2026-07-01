@@ -1,8 +1,10 @@
 """Test Wikibase All Log Observations Query"""
 
 from datetime import datetime
+
 from freezegun import freeze_time
 import pytest
+
 from tests.test_query.wikibase.log_obs.assert_log import assert_month_type_record
 from tests.test_query.wikibase.log_obs.log_fragment import (
     WIKIBASE_LOG_OBSERVATION_FRAGMENT,
@@ -34,45 +36,44 @@ query MyQuery($wikibaseId: Int!) {
 
 @freeze_time(datetime(2024, 4, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    depends=["log-first-success-ood", "log-first-success-1", "log-first-failure"],
-    scope="session",
-)
 @pytest.mark.log
 @pytest.mark.query
-async def test_wikibase_log_first_month_all_observations_query():
+async def test_wikibase_log_first_month_all_observations_query(
+    wikibase_with_first_month_log_observations,
+):
     """Test Wikibase All Log Observations Query"""
 
+    data = wikibase_with_first_month_log_observations
+    wikibase_id = data["wikibase_id"]
+    observation_ids = data["obs"]
+    log_type_ids = data["log_type"]
+    user_type_ids = data["user_type"]
+
     result = await test_schema.execute(
-        WIKIBASE_LOG_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LOG_ALL_OBSERVATIONS_QUERY, variable_values={"wikibaseId": wikibase_id}
     )
 
     assert result.errors is None
     assert result.data is not None
     assert "wikibase" in result.data
     result_wikibase = result.data["wikibase"]
-    assert_property_value(result_wikibase, "id", "1")
+    assert_property_value(result_wikibase, "id", str(wikibase_id))
     assert "logObservations" in result_wikibase
     assert "firstMonth" in result_wikibase["logObservations"]
     assert "allObservations" in result_wikibase["logObservations"]["firstMonth"]
 
-    assert (
-        len(
-            log_observation_list := result_wikibase["logObservations"]["firstMonth"][
-                "allObservations"
-            ]
-        )
-        == 3
-    )
+    log_observation_list = result_wikibase["logObservations"]["firstMonth"][
+        "allObservations"
+    ]
+    assert len(log_observation_list) == 3
 
-    assert_layered_property_value(log_observation_list, [0, "id"], "1")
+    assert_layered_property_value(log_observation_list, [0, "id"], observation_ids[0])
     assert_layered_property_value(
         log_observation_list,
         [0, "observationDate"],
         datetime(2024, 2, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [0, "returnedData"], True)
-    # assert_layered_property_value(log_observation_list, [0, "instanceAge"], 100)
     assert_layered_property_value(
         log_observation_list,
         [0, "firstLog", "date"],
@@ -95,7 +96,7 @@ async def test_wikibase_log_first_month_all_observations_query():
     assert_layered_property_count(log_observation_list, [0, "logTypeRecords"], 1)
     assert_month_type_record(
         log_observation_list[0]["logTypeRecords"][0],
-        expected_id="1",
+        expected_id=log_type_ids[0],
         expected_log_type="THANK",
         expected_first_log_date=datetime(2024, 1, 1),
         expected_last_log_date=datetime(2024, 1, 1),
@@ -105,17 +106,15 @@ async def test_wikibase_log_first_month_all_observations_query():
         expected_human_count=0,
         expected_active_human_count=0,
     )
-
     assert_layered_property_count(log_observation_list, [0, "userTypeRecords"], 0)
 
-    assert_layered_property_value(log_observation_list, [1, "id"], "2")
+    assert_layered_property_value(log_observation_list, [1, "id"], observation_ids[1])
     assert_layered_property_value(
         log_observation_list,
         [1, "observationDate"],
         datetime(2024, 3, 1).strftime(DATETIME_FORMAT),
     )
     assert_layered_property_value(log_observation_list, [1, "returnedData"], True)
-    # assert_layered_property_value(log_observation_list, [1, "instanceAge"], 100)
     assert_layered_property_value(
         log_observation_list,
         [1, "firstLog", "date"],
@@ -138,7 +137,7 @@ async def test_wikibase_log_first_month_all_observations_query():
     assert_layered_property_count(log_observation_list, [1, "logTypeRecords"], 1)
     assert_month_type_record(
         log_observation_list[1]["logTypeRecords"][0],
-        expected_id="2",
+        expected_id=log_type_ids[1],
         expected_log_type="THANK",
         expected_first_log_date=datetime(2023, 10, 24),
         expected_last_log_date=datetime(2023, 11, 23),
@@ -160,9 +159,33 @@ async def test_wikibase_log_first_month_all_observations_query():
         expected_active_user_count,
     ) in enumerate(
         [
-            ("1", "BOT", datetime(2023, 10, 26), datetime(2023, 11, 21), 10, 1, 1),
-            ("2", "MISSING", datetime(2023, 10, 25), datetime(2023, 11, 22), 10, 1, 1),
-            ("3", "USER", datetime(2023, 10, 24), datetime(2023, 11, 23), 11, 1, 1),
+            (
+                user_type_ids[0],
+                "BOT",
+                datetime(2023, 10, 26),
+                datetime(2023, 11, 21),
+                10,
+                1,
+                1,
+            ),
+            (
+                user_type_ids[1],
+                "MISSING",
+                datetime(2023, 10, 25),
+                datetime(2023, 11, 22),
+                10,
+                1,
+                1,
+            ),
+            (
+                user_type_ids[2],
+                "USER",
+                datetime(2023, 10, 24),
+                datetime(2023, 11, 23),
+                11,
+                1,
+                1,
+            ),
         ]
     ):
         assert_month_type_record(
@@ -176,7 +199,7 @@ async def test_wikibase_log_first_month_all_observations_query():
             expected_active_user_count=expected_active_user_count,
         )
 
-    assert_layered_property_value(log_observation_list, [2, "id"], "3")
+    assert_layered_property_value(log_observation_list, [2, "id"], observation_ids[2])
     assert_layered_property_value(
         log_observation_list,
         [2, "observationDate"],

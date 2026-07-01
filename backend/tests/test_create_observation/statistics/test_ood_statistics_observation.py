@@ -1,17 +1,38 @@
 """Test update_out_of_date_stats_observations"""
 
 import pytest
+
+from data import get_async_session
 from fetch_data import update_out_of_date_stats_observations
+from model.database import WikibaseModel
 from tests.utils import MockResponse
 
 
+@pytest.fixture
+async def wikibase_fixture(
+    db_session,
+):  # pylint: disable=redefined-outer-name, unused-argument
+    """Create a wikibase with article path and no software observations"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Software OOD Test Wikibase",
+            base_url="https://software-ood-example.com",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="statistics-fail-ood", depends=["add-wikibase"], scope="session"
-)
 @pytest.mark.soup
 @pytest.mark.statistics
-async def test_update_out_of_date_stats_observations_fail(mocker):
+async def test_update_out_of_date_stats_observations_fail(
+    wikibase_fixture, mocker
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Data Returned Scenario"""
 
     mocker.patch(

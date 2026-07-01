@@ -2,13 +2,17 @@
 
 import os
 import time
+
 import pytest
+
+from data import get_async_session
 from fetch_data import create_software_version_observation
-from tests.test_schema import test_schema
+from model.database import WikibaseModel
+from tests.mock_info import MockBackgroundClassList, MockInfo
 from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
 )
-from tests.mock_info import MockBackgroundClassList, MockInfo
+from tests.test_schema import test_schema
 from tests.utils import MockRequest, MockResponse
 
 FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
@@ -16,16 +20,32 @@ FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 }"""
 
 
+@pytest.fixture
+async def wikibase_with_article_path(db_session):  # pylint: disable=unused-argument
+    """Create a wikibase with article path for software version tests"""
+    async with get_async_session() as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Software Version Test Wikibase",
+            base_url="https://software-version-test-example.com",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = None
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+    return wikibase
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-success",
-    depends=["software-version-fail-ood"],
-    scope="session",
-)
 @pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_success(mocker):
+async def test_create_software_version_observation_success(
+    wikibase_with_article_path, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -46,7 +66,7 @@ async def test_create_software_version_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_SOFTWARE_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_article_path.id},
         context_value=test_context,
     )
 
@@ -58,15 +78,12 @@ async def test_create_software_version_observation_success(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-success-ii",
-    depends=["add-wikibase-ii"],
-    scope="session",
-)
 @pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_success_ii(mocker):
+async def test_create_software_version_observation_success_ii(
+    wikibase_with_article_path, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
@@ -87,7 +104,7 @@ async def test_create_software_version_observation_success_ii(mocker):
 
     result = await test_schema.execute(
         FETCH_SOFTWARE_MUTATION,
-        variable_values={"wikibaseId": 2},
+        variable_values={"wikibaseId": wikibase_with_article_path.id},
         context_value=test_context,
     )
 
@@ -99,14 +116,11 @@ async def test_create_software_version_observation_success_ii(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="software-version-failure",
-    depends=["software-version-success"],
-    scope="session",
-)
 @pytest.mark.soup
 @pytest.mark.version
-async def test_create_software_version_observation_failure(mocker):
+async def test_create_software_version_observation_failure(
+    wikibase_with_article_path, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
     time.sleep(1)
@@ -116,6 +130,8 @@ async def test_create_software_version_observation_failure(mocker):
         side_effect=[MockResponse("", 500)],
     )
     mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
-    success = await create_software_version_observation(1, mock_info)
+    success = await create_software_version_observation(
+        wikibase_with_article_path.id, mock_info
+    )
     assert success is False
     assert len(mock_info.context["background_tasks"].tasks) == 1

@@ -30,42 +30,37 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    depends=[
-        "property-popularity-success-ood",
-        "property-popularity-success",
-        "property-popularity-failure",
-    ],
-    scope="session",
-)
 @pytest.mark.property
 @pytest.mark.query
-async def test_wikibase_property_popularity_all_observations_query():
+async def test_wikibase_property_popularity_all_observations_query(
+    wikibase_with_three_property_popularity_observations,
+):
     """Test Wikibase All Property Popularity Observations Query"""
+
+    data = wikibase_with_three_property_popularity_observations
+    wikibase_id = data["wikibase_id"]
 
     result = await test_schema.execute(
         WIKIBASE_PROPERTY_POPULARITY_ALL_OBSERVATIONS_QUERY,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_id},
     )
 
     assert result.errors is None
     assert result.data is not None
     assert "wikibase" in result.data
     result_wikibase = result.data["wikibase"]
-    assert_property_value(result_wikibase, "id", "1")
+    assert_property_value(result_wikibase, "id", str(wikibase_id))
     assert "propertyPopularityObservations" in result_wikibase
 
     assert "allObservations" in result_wikibase["propertyPopularityObservations"]
-    assert (
-        len(
-            property_popularity_observation_list := result_wikibase[
-                "propertyPopularityObservations"
-            ]["allObservations"]
-        )
-        == 3
-    )
+    property_popularity_observation_list = result_wikibase[
+        "propertyPopularityObservations"
+    ]["allObservations"]
+    assert len(property_popularity_observation_list) == 3
 
-    assert_layered_property_value(property_popularity_observation_list, [0, "id"], "1")
+    assert_layered_property_value(
+        property_popularity_observation_list, [0, "id"], data["obs0_id"]
+    )
     assert "observationDate" in property_popularity_observation_list[0]
     assert_layered_property_value(
         property_popularity_observation_list, [0, "returnedData"], True
@@ -74,7 +69,9 @@ async def test_wikibase_property_popularity_all_observations_query():
         property_popularity_observation_list, [0, "propertyPopularityCounts"], 0
     )
 
-    assert_layered_property_value(property_popularity_observation_list, [1, "id"], "2")
+    assert_layered_property_value(
+        property_popularity_observation_list, [1, "id"], data["obs1_id"]
+    )
     assert "observationDate" in property_popularity_observation_list[1]
     assert_layered_property_value(
         property_popularity_observation_list, [1, "returnedData"], True
@@ -85,8 +82,8 @@ async def test_wikibase_property_popularity_all_observations_query():
 
     for index, (expected_id, expected_property_url, expected_usage_count) in enumerate(
         [
-            ("1", "P1", 12),
-            ("2", "P14", 1),
+            (data["p1_id"], "P1", 12),
+            (data["p14_id"], "P14", 1),
         ]
     ):
         assert_property_count(
@@ -96,7 +93,9 @@ async def test_wikibase_property_popularity_all_observations_query():
             expected_usage_count,
         )
 
-    assert_layered_property_value(property_popularity_observation_list, [2, "id"], "3")
+    assert_layered_property_value(
+        property_popularity_observation_list, [2, "id"], data["obs2_id"]
+    )
     assert "observationDate" in property_popularity_observation_list[2]
     assert_layered_property_value(
         property_popularity_observation_list, [2, "returnedData"], False

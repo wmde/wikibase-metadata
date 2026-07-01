@@ -1,5 +1,6 @@
 """Database Connection"""
 
+import os
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
@@ -8,11 +9,23 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 from config import database_connection_string
 
-async_engine = create_async_engine(
-    database_connection_string,
-    connect_args={"timeout": 30},
-    poolclass=NullPool,
-)
+TESTING = os.getenv("TESTING", "0") == "1"
+
+
+if TESTING:
+    async_engine = create_async_engine(
+        database_connection_string, connect_args={"timeout": 30}, poolclass=NullPool
+    )
+else:
+    async_engine = create_async_engine(
+        database_connection_string,
+        connect_args={"timeout": 30},
+        pool_size=20,
+        max_overflow=20,
+        pool_timeout=30,
+        pool_recycle=1800,
+        pool_pre_ping=True,
+    )
 
 async_session = sessionmaker(
     bind=async_engine,

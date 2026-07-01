@@ -1,17 +1,15 @@
 """Test update_out_of_date_user_observations"""
 
 import pytest
+
 from fetch_data import update_out_of_date_user_observations
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="user-empty-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
 @pytest.mark.user
-async def test_update_out_of_date_user_observations_empty(mocker):
+async def test_update_out_of_date_user_observations_empty(
+    wikibase_without_type, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test No-Data Scenario"""
 
     mocker.patch(
