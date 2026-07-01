@@ -6,7 +6,9 @@ import pytest
 from sqlalchemy import select
 
 from data.database_connection import get_async_session
-from model.database.wikibase_observation.connectivity.connectivity_observation_model import WikibaseConnectivityObservationModel
+from model.database.wikibase_observation.connectivity.connectivity_observation_model import (
+    WikibaseConnectivityObservationModel,
+)
 from fetch_data import create_connectivity_observation
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
