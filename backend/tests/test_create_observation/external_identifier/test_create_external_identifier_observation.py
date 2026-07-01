@@ -33,9 +33,8 @@ async def wikibase_with_sparql(db_session):
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
-        wikibase_id = wikibase.id
         await session.commit()
-        return wikibase_id
+        return wikibase
 
 
 @pytest.mark.asyncio
@@ -62,7 +61,7 @@ async def test_create_external_identifier_observation_success(
 
     result = await test_schema.execute(
         FETCH_EXTERNAL_IDENTIFIER_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_sparql},
+        variable_values={"wikibaseId": wikibase_with_sparql.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -79,8 +78,6 @@ async def test_create_external_identifier_observation_failure(
 ):
     """Test"""
 
-    time.sleep(1)
-
     mocker.patch(
         "fetch_data.sparql_data.create_external_identifier_data_observation.get_sparql_results",
         side_effect=[
@@ -95,5 +92,5 @@ async def test_create_external_identifier_observation_failure(
             ),
         ],
     )
-    success = await create_external_identifier_observation(wikibase_with_sparql)
+    success = await create_external_identifier_observation(wikibase_with_sparql.id)
     assert success is False

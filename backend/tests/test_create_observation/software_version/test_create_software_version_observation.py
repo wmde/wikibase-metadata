@@ -36,8 +36,7 @@ async def wikibase_with_article_path(db_session):  # pylint: disable=unused-argu
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
+    return wikibase
 
 
 @pytest.mark.asyncio
@@ -67,7 +66,7 @@ async def test_create_software_version_observation_success(
 
     result = await test_schema.execute(
         FETCH_SOFTWARE_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_article_path},
+        variable_values={"wikibaseId": wikibase_with_article_path.id},
         context_value=test_context,
     )
 
@@ -105,7 +104,7 @@ async def test_create_software_version_observation_success_ii(
 
     result = await test_schema.execute(
         FETCH_SOFTWARE_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_article_path},
+        variable_values={"wikibaseId": wikibase_with_article_path.id},
         context_value=test_context,
     )
 
@@ -132,7 +131,7 @@ async def test_create_software_version_observation_failure(
     )
     mock_info = MockInfo(context={"background_tasks": MockBackgroundClassList()})
     success = await create_software_version_observation(
-        wikibase_with_article_path, mock_info
+        wikibase_with_article_path.id, mock_info
     )
     assert success is False
     assert len(mock_info.context["background_tasks"].tasks) == 1
