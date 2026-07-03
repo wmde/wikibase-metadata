@@ -39,7 +39,7 @@ async def wikibases_with_types(db_session):
         await session.flush()
 
 
-@pytest.mark.order(0)  # TODO: Remove
+@pytest.mark.order(-1)  # TODO: Remove
 @pytest.mark.asyncio
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_asc(
@@ -78,7 +78,7 @@ async def test_wikibase_list_query_sort_type_asc(
     ]
 
 
-@pytest.mark.order(0)  # TODO: Remove
+@pytest.mark.order(-1)  # TODO: Remove
 @pytest.mark.asyncio
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_desc(
