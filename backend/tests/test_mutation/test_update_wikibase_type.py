@@ -182,16 +182,13 @@ async def test_update_wikibase_type_to_test(get_test_wikibase_id):
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"], scope="session"
-)
-async def test_update_wikibase_type_to_same(get_test_wikibase_id):
+async def test_update_wikibase_type_to_same(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Test Update to Current Value"""
 
-    wikibase_id = await get_test_wikibase_id("CLOUD")
-
     before_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert before_updating_result.errors is None
@@ -203,7 +200,7 @@ async def test_update_wikibase_type_to_same(get_test_wikibase_id):
 
     update_result = await test_schema.execute(
         UPDATE_WIKIBASE_TYPE_MUTATION,
-        variable_values={"wikibaseId": wikibase_id, "wikibaseType": "CLOUD"},
+        variable_values={"wikibaseId": wikibase_fixture.id, "wikibaseType": "CLOUD"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None
@@ -211,7 +208,7 @@ async def test_update_wikibase_type_to_same(get_test_wikibase_id):
     assert update_result.data["updateWikibaseType"] is True
 
     after_updating_result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert after_updating_result.errors is None

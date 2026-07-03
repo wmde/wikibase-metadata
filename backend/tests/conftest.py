@@ -1,10 +1,13 @@
 """Conftest"""
 
+from unittest.mock import patch
+
+from dotenv import load_dotenv
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
 from data.database_connection import async_engine
-from unittest.mock import patch
-from dotenv import load_dotenv
+from model.database import WikibaseModel
 
 load_dotenv()
 
@@ -26,3 +29,26 @@ async def db_session():
                 yield connection
 
             await transaction.rollback()
+
+
+@pytest.fixture
+async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
+    """Create Wikibase Test Fixture"""
+
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Test Wikibase",
+            base_url="https://example.com",
+            sparql_endpoint_url="https://example.com/sparql",
+            script_path="/w",
+            article_path="/wiki",
+        )
+        wikibase.checked = True
+        wikibase.reuse = True
+        wikibase.test = False
+        wikibase.wikibase_type = "CLOUD"
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+
+        return wikibase
