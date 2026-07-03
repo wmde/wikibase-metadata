@@ -39,9 +39,9 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
-            base_url="https://example.com",
-            sparql_frontend_url="https://query.example.com",
-            sparql_endpoint_url="https://query.example.com/sparql-wrong",
+            base_url="https://update-url-example.com",
+            sparql_frontend_url="https://query.update-url-example.com",
+            sparql_endpoint_url="https://query.update-url-example.com/sparql-wrong",
             article_path="/wiki",
         )
         wikibase.checked = True
@@ -68,7 +68,7 @@ async def test_add_wikibase_script_path(
     assert_layered_property_value(
         before_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         before_adding_result.data,
@@ -100,7 +100,7 @@ async def test_add_wikibase_script_path(
     assert_layered_property_value(
         after_adding_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         after_adding_result.data,
@@ -127,12 +127,12 @@ async def test_remove_wikibase_sparql_frontend_url(
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "sparqlFrontendUrl"],
-        expected_value="https://query.example.com",
+        expected_value="https://query.update-url-example.com",
     )
 
     remove_result = await test_schema.execute(
@@ -155,7 +155,7 @@ async def test_remove_wikibase_sparql_frontend_url(
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -180,7 +180,7 @@ async def test_remove_wikibase_article_path(
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -190,7 +190,7 @@ async def test_remove_wikibase_article_path(
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "urls", "specialStatisticsUrl"],
-        expected_value="https://example.com/wiki/Special:Statistics",
+        expected_value="https://update-url-example.com/wiki/Special:Statistics",
     )
 
     remove_result = await test_schema.execute(
@@ -213,7 +213,7 @@ async def test_remove_wikibase_article_path(
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -243,19 +243,19 @@ async def test_update_wikibase_url(wikibase):  # pylint: disable=redefined-outer
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         before_updating_result.data,
         ["wikibase", "urls", "sparqlEndpointUrl"],
-        expected_value="https://query.example.com/sparql-wrong",
+        expected_value="https://query.update-url-example.com/sparql-wrong",
     )
 
     update_result = await test_schema.execute(
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
             "wikibaseId": wikibase.id,
-            "url": "https://query.example.com/sparql",
+            "url": "https://query.update-url-example.com/sparql",
             "urlType": "SPARQL_ENDPOINT_URL",
         },
         context_value=get_mock_context("test-auth-token"),
@@ -275,12 +275,12 @@ async def test_update_wikibase_url(wikibase):  # pylint: disable=redefined-outer
     assert_layered_property_value(
         after_updating_result.data,
         ["wikibase", "urls", "baseUrl"],
-        expected_value="https://example.com",
+        expected_value="https://update-url-example.com",
     )
     assert_layered_property_value(
         after_updating_result.data,
         ["wikibase", "urls", "sparqlEndpointUrl"],
-        expected_value="https://query.example.com/sparql",
+        expected_value="https://query.update-url-example.com/sparql",
     )
 
 
@@ -295,7 +295,7 @@ async def test_update_wikibase_article_path_fail(
         UPSERT_WIKIBASE_URL_MUTATION,
         variable_values={
             "wikibaseId": wikibase.id,
-            "url": "https://example.com/wiki",
+            "url": "https://update-url-example.com/wiki",
             "urlType": "ARTICLE_PATH",
         },
         context_value=get_mock_context("test-auth-token"),
@@ -303,7 +303,7 @@ async def test_update_wikibase_article_path_fail(
     assert update_result.errors is not None
     assert (
         update_result.errors[0].message
-        == "WikibaseURLType.ARTICLE_PATH must not be full URL, https://example.com/wiki"
+        == "WikibaseURLType.ARTICLE_PATH must not be full URL, https://update-url-example.com/wiki"
     )
 
 
