@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from data.database_connection import async_engine
 from model.database import WikibaseModel
+from model.enum import WikibaseType
 
 load_dotenv()
 
@@ -38,15 +39,14 @@ async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
-            base_url="https://example.com",
-            sparql_endpoint_url="https://example.com/sparql",
+            base_url="https://fixture-example.com",
+            sparql_endpoint_url="https://fixture-example.com/sparql",
             script_path="/w",
             article_path="/wiki",
+            reuse=True,
+            wikibase_type=WikibaseType.CLOUD,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = "CLOUD"
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
