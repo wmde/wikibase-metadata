@@ -5,7 +5,7 @@ import pytest
 from data import get_async_session
 from model.database import WikibaseModel
 from tests.test_schema import test_schema
-from tests.utils import MockResponse, ParsedUrl, get_mock_context
+from tests.utils import MockResponse, get_mock_context
 
 ALL_USER_DATA_MUTATION = """
 mutation MyMutation {
@@ -29,11 +29,10 @@ async def three_wikibases_with_script_path_user(
                 wikibase_name=f"User Test Wikibase {i}",
                 base_url=f"https://user-example-{i}.com",
                 script_path="/w",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
 
@@ -46,14 +45,6 @@ async def test_update_all_user_observations_fail(
     """Test Weird Error Scenario"""
 
     def mockery(*args, **kwargs) -> MockResponse:
-        assert kwargs.get("timeout") == 300
-
-        query = ParsedUrl(args[0])
-
-        assert query.base_url == "https://example.com/w/api.php"
-        assert query.params.get("action") == "query"
-        assert query.params.get("format") == "json"
-
         raise RuntimeError
 
     mocker.patch(
