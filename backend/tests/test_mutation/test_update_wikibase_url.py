@@ -2,7 +2,6 @@
 """Test Update Wikibase URLs"""
 
 import pytest
-import pytest_asyncio
 
 from data import get_async_session
 from model.database import WikibaseModel
@@ -32,37 +31,6 @@ REMOVE_WIKIBASE_URL_MUTATION = """
 mutation MyMutation($urlType: WikibaseURLType!, $wikibaseId: Int!) {
   removeWikibaseUrl(urlType: $urlType, wikibaseId: $wikibaseId)
 }"""
-
-
-@pytest_asyncio.fixture(scope="function")
-def get_wikibase_id_by_base_url():
-    """Get the ID of a wikibase by its base URL"""
-
-    async def _get_id(base_url):
-        result = await test_schema.execute("""
-            query {
-              wikibaseList(pageNumber: 1, pageSize: 100) {
-                data {
-                  id
-                  urls {
-                    baseUrl
-                  }
-                }
-              }
-            }
-            """)
-        assert result.errors is None
-        assert result.data is not None
-
-        wikibases = result.data["wikibaseList"]["data"]
-
-        for wikibase in wikibases:
-            if wikibase["urls"]["baseUrl"] == base_url:
-                return int(wikibase["id"])
-
-        pytest.fail(f"No wikibase found with baseUrl: {base_url}")
-
-    return _get_id
 
 
 @pytest.fixture
