@@ -1,19 +1,50 @@
 """Test Sort Wikibase List"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import WikibaseModel
+from model.enum import WikibaseType
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_page_meta
 
 
+@pytest.fixture
+async def wikibases_with_types(db_session):
+    """Create test wikibases with various types"""
+    types = [
+        WikibaseType.CLOUD,
+        WikibaseType.CLOUD,
+        WikibaseType.CLOUD,
+        WikibaseType.CLOUD,
+        WikibaseType.CLOUD,
+        WikibaseType.CLOUD,
+        WikibaseType.CLOUD,
+        WikibaseType.OTHER,
+        WikibaseType.SUITE,
+        WikibaseType.TEST,
+        None,  # UNKNOWN
+    ]
+    async with AsyncSession(bind=db_session) as session:
+        for i, wikibase_type in enumerate(types):
+            wikibase = WikibaseModel(
+                wikibase_name=f"Type Sort Test Wikibase {i}",
+                base_url=f"https://type-sort-example-{i}.com",
+            )
+            wikibase.checked = True
+            wikibase.reuse = True
+            wikibase.test = False
+            wikibase.wikibase_type = wikibase_type
+            session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="sort-type-asc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
 @pytest.mark.query
-async def test_wikibase_list_query_sort_type_asc():
+async def test_wikibase_list_query_sort_type_asc(
+    wikibases_with_types,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Type Ascending"""
 
     result = await test_schema.execute(
@@ -48,13 +79,10 @@ async def test_wikibase_list_query_sort_type_asc():
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="sort-type-desc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
 @pytest.mark.query
-async def test_wikibase_list_query_sort_type_desc():
+async def test_wikibase_list_query_sort_type_desc(
+    wikibases_with_types,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Type Descending"""
 
     result = await test_schema.execute(
