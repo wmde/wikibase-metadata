@@ -32,13 +32,14 @@ async def wikibases_with_types(db_session):
                 wikibase_name=f"Type Sort Test Wikibase {i}",
                 base_url=f"https://type-sort-example-{i}.com",
                 reuse=True,
-                wikibase_type=wikibase_type
+                wikibase_type=wikibase_type,
             )
             wikibase.checked = True
             session.add(wikibase)
         await session.flush()
 
 
+@pytest.mark.order(0)  # TODO: Remove
 @pytest.mark.asyncio
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_asc(
@@ -77,6 +78,7 @@ async def test_wikibase_list_query_sort_type_asc(
     ]
 
 
+@pytest.mark.order(0)  # TODO: Remove
 @pytest.mark.asyncio
 @pytest.mark.query
 async def test_wikibase_list_query_sort_type_desc(
