@@ -1,9 +1,14 @@
 """Test Export Metrics CSV"""
 
 import re
-import pytest
+
 from fastapi.testclient import TestClient
+import pytest
+
 from app import app
+from data import get_async_session
+from model.database import WikibaseModel
+from model.enum import WikibaseType
 
 EXPECTED_HEADER_ROW = ",".join(
     [
@@ -71,17 +76,32 @@ EXPECTED_PATTERN_LIST = [
 ]
 
 
+@pytest.fixture
+async def wikibases(db_session):  # pylint: disable=unused-argument
+    """Create 3 wikibases for CSV export tests, committed directly (not rolled back)"""
+    wikibase_ids = []
+    async with get_async_session() as session:
+        types = [WikibaseType.CLOUD, WikibaseType.OTHER, WikibaseType.SUITE]
+        for i, wikibase_type in enumerate(types):
+            wikibase = WikibaseModel(
+                wikibase_name=f"CSV Export Test Wikibase {i}",
+                base_url=f"https://csv-export-example-{i}.com",
+                reuse=True,
+                wikibase_type=wikibase_type
+            )
+            wikibase.checked = True
+            session.add(wikibase)
+            await session.flush()
+            await session.refresh(wikibase)
+            wikibase_ids.append(wikibase.id)
+
+    return wikibase_ids
+
+
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    depends=[
-        "update-wikibase-type-other",
-        "update-wikibase-type-suite",
-        "update-wikibase-type-test",
-    ],
-    scope="session",
-)
-async def test_export_metric_csv():
+async def test_export_metric_csv(wikibases):  # pylint: disable=redefined-outer-name
     """Test Export Metric CSV"""
+    print(f"Created wikibase ids: {wikibases}")
 
     client = TestClient(app)
     result = client.get("/csv/metrics?authorization=test-auth-token")
