@@ -21,7 +21,7 @@ from model.strawberry.output import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
 )
-from resolvers import (
+from resolvers.get_aggregate import (
     get_aggregate_created,
     get_aggregate_external_identifier,
     get_aggregate_property_popularity,
@@ -31,10 +31,10 @@ from resolvers import (
     get_aggregate_users,
     get_aggregate_version,
     get_language_list,
-    get_software_list,
-    get_wikibase,
-    get_wikibase_page,
 )
+from resolvers.get_software_list import get_software_list
+from resolvers.get_wikibase import get_wikibase
+from resolvers.get_wikibase_list import get_wikibase_page
 
 
 @strawberry.type
