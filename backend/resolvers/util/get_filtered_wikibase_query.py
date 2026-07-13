@@ -4,6 +4,7 @@ import re
 from typing import Optional
 
 from sqlalchemy import Select, String, cast, or_, select
+from sqlalchemy.orm import selectinload
 
 from model.database import WikibaseModel, WikibaseCategoryModel, WikibaseURLModel
 from model.enum import WikibaseType
@@ -15,10 +16,19 @@ ONLY_ALLOWED_CHARACTERS = re.compile(r"^[a-z0-9.\-_ ]+$", re.IGNORECASE)
 
 def get_filtered_wikibase_query(
     wikibase_filter: Optional[WikibaseFilterInput] = None,
+    fields: Optional[list[str]] = None,
 ) -> Select[tuple[WikibaseModel]]:
     """Filtered list of Wikibases"""
 
     query = select(WikibaseModel).where(WikibaseModel.checked)
+
+    if fields is not None:
+        if "quantityObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.quantity_observations))
+        if "recentChangesObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.recent_changes_observations)
+            )
 
     if wikibase_filter is None:
         return query.where(WikibaseModel.reuse)

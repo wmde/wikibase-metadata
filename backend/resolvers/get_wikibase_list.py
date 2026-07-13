@@ -1,11 +1,11 @@
 """Get Wikibase List"""
 
-
 from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
+from strawberry import Info
 
 from data import get_async_session
 from model.database import WikibaseModel
@@ -24,13 +24,32 @@ async def get_wikibase_page(
     page_size: PageSizeType,
     wikibase_filter: Optional[WikibaseFilterInput],
     sort_by: Optional[WikibaseSortInput],
+    info: Info,
 ) -> Page[WikibaseStrawberryModel]:
     """Get Wikibase Page"""
 
     time_a = datetime.now()
     print(f"\tMethod Start {time_a}")
 
-    query = get_filtered_wikibase_query(wikibase_filter)
+    selections = [
+        level_3_selection.name
+        for query_selection in info.selected_fields
+        if query_selection.name == "wikibaseList"
+        for level_1_selection in query_selection.selections
+        if level_1_selection.name == "data"
+        for level_2_selection in level_1_selection.selections
+        for level_3_selection in level_2_selection.selections
+    ]
+
+    # data_selection = (
+    #     [s for s in info.selected_fields[0].selections if s.name == "data"][0]
+    #     .selections[0]
+    #     .selections
+    # )
+
+    print(f"\tFields: {selections}")
+
+    query = get_filtered_wikibase_query(wikibase_filter, fields=selections)
     query = get_sorted_wikibase_query(query, sort_by)
 
     time_b = datetime.now()
@@ -47,31 +66,34 @@ async def get_wikibase_page(
         print(f"\tTotal Count Fetched {time_c}")
         print(f"\t\tDuration {time_c - time_a}")
 
-        base_query = query.order_by(WikibaseModel.id).options(
-            selectinload(WikibaseModel.primary_language),
-            selectinload(WikibaseModel.additional_languages),
-            selectinload(WikibaseModel.url),
-            selectinload(WikibaseModel.article_path),
-            selectinload(WikibaseModel.script_path),
-            selectinload(WikibaseModel.sparql_endpoint_url),
-            selectinload(WikibaseModel.sparql_frontend_url),
-            selectinload(WikibaseModel.category),
-            selectinload(WikibaseModel.connectivity_observations),
-            selectinload(WikibaseModel.external_identifier_observations),
-            selectinload(WikibaseModel.log_month_observations),
-            selectinload(WikibaseModel.property_popularity_observations),
-            selectinload(WikibaseModel.quantity_observations),
-            selectinload(WikibaseModel.recent_changes_observations),
-            selectinload(WikibaseModel.software_version_observations),
-            selectinload(WikibaseModel.statistics_observations),
-            selectinload(WikibaseModel.time_to_first_value_observations),
-            selectinload(WikibaseModel.user_observations),
-        )
+        # base_query = query.order_by(WikibaseModel.id).options(
+        #     selectinload(WikibaseModel.primary_language),
+        #     selectinload(WikibaseModel.additional_languages),
+        #     selectinload(WikibaseModel.url),
+        #     selectinload(WikibaseModel.article_path),
+        #     selectinload(WikibaseModel.script_path),
+        #     selectinload(WikibaseModel.sparql_endpoint_url),
+        #     selectinload(WikibaseModel.sparql_frontend_url),
+        #     selectinload(WikibaseModel.category),
+        #     selectinload(WikibaseModel.connectivity_observations),
+        #     selectinload(WikibaseModel.external_identifier_observations),
+        #     selectinload(WikibaseModel.log_month_observations),
+        #     selectinload(WikibaseModel.property_popularity_observations),
+        #     selectinload(WikibaseModel.quantity_observations),
+        #     selectinload(WikibaseModel.recent_changes_observations),
+        #     selectinload(WikibaseModel.software_version_observations),
+        #     selectinload(WikibaseModel.statistics_observations),
+        #     selectinload(WikibaseModel.time_to_first_value_observations),
+        #     selectinload(WikibaseModel.user_observations),
+        # )
 
         if page_size == -1:
-            paginated_query = base_query
+            paginated_query = query  # base_query
         else:
-            paginated_query = base_query.offset((page_number - 1) * page_size).limit(
+            # paginated_query = base_query.offset((page_number - 1) * page_size).limit(
+            #     page_size
+            # )
+            paginated_query = query.offset((page_number - 1) * page_size).limit(
                 page_size
             )
 
