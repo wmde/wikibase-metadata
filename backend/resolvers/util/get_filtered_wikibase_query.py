@@ -25,8 +25,8 @@ def get_filtered_wikibase_query(
     query = select(WikibaseModel).where(WikibaseModel.checked)
 
     if fields is not None:
-        if "category" in fields:
-            query = query.options(selectinload(WikibaseModel.category))
+        # if "category" in fields: # APPARENTLY NOT NEEDED
+        #     query = query.options(selectinload(WikibaseModel.category))
         if "connectivityObservations" in fields:
             query = query.options(selectinload(WikibaseModel.connectivity_observations))
         if "externalIdentifierObservations" in fields:
