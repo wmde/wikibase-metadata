@@ -63,6 +63,7 @@ class Query:
             page_size=page_size,
             wikibase_filter=wikibase_filter,
             sort_by=sort_by,
+            info=info,
         )
 
     @strawberry.field(description="List of Extensions")
