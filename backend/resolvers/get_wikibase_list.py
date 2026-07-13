@@ -1,11 +1,13 @@
 """Get Wikibase List"""
 
+
+from datetime import datetime
 from typing import Optional
+
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
 from data import get_async_session
-
 from model.database import WikibaseModel
 from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
 from model.strawberry.output import (
@@ -25,14 +27,25 @@ async def get_wikibase_page(
 ) -> Page[WikibaseStrawberryModel]:
     """Get Wikibase Page"""
 
+    time_a = datetime.now()
+    print(f"\tMethod Start {time_a}")
+
     query = get_filtered_wikibase_query(wikibase_filter)
     query = get_sorted_wikibase_query(query, sort_by)
+
+    time_b = datetime.now()
+    print(f"\tQuery Computed {time_b}")
+    print(f"\t\tDuration {time_b - time_a}")
 
     async with get_async_session() as async_session:
         total_count = await async_session.scalar(
             # pylint: disable-next=not-callable
             select(func.count()).select_from(query.subquery())
         )
+
+        time_c = datetime.now()
+        print(f"\tTotal Count Fetched {time_c}")
+        print(f"\t\tDuration {time_c - time_a}")
 
         base_query = query.order_by(WikibaseModel.id).options(
             selectinload(WikibaseModel.primary_language),
@@ -62,11 +75,25 @@ async def get_wikibase_page(
                 page_size
             )
 
+        time_d = datetime.now()
+        print(f"\tQuery Paginated {time_d}")
+        print(f"\t\tDuration {time_d - time_a}")
+
         results = (await async_session.scalars(paginated_query)).all()
 
-        return Page.marshal(
+        time_e = datetime.now()
+        print(f"\tPage Data Fetched {time_e}")
+        print(f"\t\tDuration {time_e - time_a}")
+
+        result = Page.marshal(
             page_number,
             page_size,
             total_count,
             [WikibaseStrawberryModel.marshal(c) for c in results],
         )
+
+        time_f = datetime.now()
+        print(f"\tResults Marshalled {time_f}")
+        print(f"\t\tDuration {time_f - time_a}")
+
+        return result
