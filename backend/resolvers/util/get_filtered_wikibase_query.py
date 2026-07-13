@@ -23,12 +23,53 @@ def get_filtered_wikibase_query(
     query = select(WikibaseModel).where(WikibaseModel.checked)
 
     if fields is not None:
+        # if "category" in fields: # APPARENTLY NOT NEEDED
+        #     query = query.options(selectinload(WikibaseModel.category))
+        if "connectivityObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.connectivity_observations))
+        if "externalIdentifierObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.external_identifier_observations)
+            )
+        # if "languages" in fields:
+        #     query = query.options(
+        #         selectinload(WikibaseModel.primary_language),
+        #         selectinload(WikibaseModel.additional_languages),
+        #     )
+        if "logObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.log_month_observations))
+        if "propertyPopularityObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.property_popularity_observations)
+            )
         if "quantityObservations" in fields:
             query = query.options(selectinload(WikibaseModel.quantity_observations))
         if "recentChangesObservations" in fields:
             query = query.options(
                 selectinload(WikibaseModel.recent_changes_observations)
             )
+        if "softwareVersionObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.software_version_observations)
+            )
+        if "statisticsObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.software_version_observations)
+            )
+        if "timeToFirstValueObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.time_to_first_value_observations)
+            )
+        # if "urls" in fields:
+        #     query = query.options(
+        #         selectinload(WikibaseModel.url),
+        #         selectinload(WikibaseModel.article_path),
+        #         selectinload(WikibaseModel.script_path),
+        #         selectinload(WikibaseModel.sparql_endpoint_url),
+        #         selectinload(WikibaseModel.sparql_frontend_url),
+        #     )
+        if "userObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.user_observations))
 
     if wikibase_filter is None:
         return query.where(WikibaseModel.reuse)

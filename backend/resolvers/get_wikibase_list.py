@@ -4,11 +4,9 @@ from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import func, select
-from sqlalchemy.orm import selectinload
 from strawberry import Info
 
 from data import get_async_session
-from model.database import WikibaseModel
 from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
 from model.strawberry.output import (
     Page,
@@ -40,12 +38,6 @@ async def get_wikibase_page(
         for level_2_selection in level_1_selection.selections
         for level_3_selection in level_2_selection.selections
     ]
-
-    # data_selection = (
-    #     [s for s in info.selected_fields[0].selections if s.name == "data"][0]
-    #     .selections[0]
-    #     .selections
-    # )
 
     print(f"\tFields: {selections}")
 
