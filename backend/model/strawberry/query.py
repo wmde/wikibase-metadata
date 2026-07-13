@@ -1,5 +1,6 @@
 """Query"""
 
+from datetime import datetime
 from typing import Optional
 import strawberry
 
@@ -58,12 +59,21 @@ class Query:
     ) -> Page[WikibaseStrawberryModel]:
         """List of Wikibases"""
 
-        return await get_wikibase_page(
+        start = datetime.now()
+        print(f"{start} wikibaseList started")
+
+        result = await get_wikibase_page(
             page_number=page_number,
             page_size=page_size,
             wikibase_filter=wikibase_filter,
             sort_by=sort_by,
         )
+
+        end = datetime.now()
+        print(f"{end} wikibaseList finished")
+        print(f"\tduration: {(end - start)}")
+
+        return result
 
     @strawberry.field(description="List of Extensions")
     async def extension_list(
@@ -159,7 +169,16 @@ class Query:
     ) -> WikibaseQuantityAggregateStrawberryModel:
         """Aggregated Quantity"""
 
-        return await get_aggregate_quantity(wikibase_filter)
+        start = datetime.now()
+        print(f"{start} aggregateQuantity started")
+
+        result = await get_aggregate_quantity(wikibase_filter)
+
+        end = datetime.now()
+        print(f"{end} aggregateQuantity finished")
+        print(f"\tduration: {(end - start)}")
+
+        return result
 
     @strawberry.field(description="Aggregated Recent Changes")
     async def aggregate_recent_changes(
@@ -167,7 +186,16 @@ class Query:
     ) -> WikibaseRecentChangesAggregateStrawberryModel:
         """Aggregated Recent Changes"""
 
-        return await get_aggregate_recent_changes(wikibase_filter)
+        start = datetime.now()
+        print(f"{start} aggregateRecentChanges started")
+
+        result = await get_aggregate_recent_changes(wikibase_filter)
+
+        end = datetime.now()
+        print(f"{end} aggregateRecentChanges finished")
+        print(f"\tduration: {(end - start)}")
+
+        return result
 
     @strawberry.field(description="Aggregated Skin Popularity")
     async def aggregate_skin_popularity(
