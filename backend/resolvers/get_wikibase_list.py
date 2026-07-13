@@ -5,6 +5,7 @@ from typing import Optional
 
 from sqlalchemy import func, select
 from strawberry import Info
+from strawberry.types.nodes import FragmentSpread, SelectedField
 
 from data import get_async_session
 from model.strawberry.input import WikibaseFilterInput, WikibaseSortInput
@@ -29,19 +30,9 @@ async def get_wikibase_page(
     time_a = datetime.now()
     print(f"\tMethod Start {time_a}")
 
-    selections = [
-        level_3_selection.name
-        for query_selection in info.selected_fields
-        if query_selection.name == "wikibaseList"
-        for level_1_selection in query_selection.selections
-        if level_1_selection.name == "data"
-        for level_2_selection in level_1_selection.selections
-        for level_3_selection in level_2_selection.selections
-    ]
-
-    print(f"\tFields: {selections}")
-
-    query = get_filtered_wikibase_query(wikibase_filter, fields=selections)
+    query = get_filtered_wikibase_query(
+        wikibase_filter, fields=compile_selected_fields(info)
+    )
     query = get_sorted_wikibase_query(query, sort_by)
 
     time_b = datetime.now()
@@ -87,3 +78,28 @@ async def get_wikibase_page(
         print(f"\t\tDuration {time_f - time_a}")
 
         return result
+
+
+def compile_selected_fields(info: Info) -> list[str]:
+    """Get Selected Subfields Within Wikibase"""
+
+    data_field_selections = [
+        data_field_selection
+        for query_selection in info.selected_fields
+        if query_selection.name == "wikibaseList"
+        for data_selection in query_selection.selections
+        if data_selection.name == "data"
+        for data_field_selection in data_selection.selections
+    ]
+
+    results = []
+    for selection in data_field_selections:
+        if isinstance(selection, SelectedField):
+            results.append(selection.name)
+        elif isinstance(selection, FragmentSpread):
+            results.extend([s.name for s in selection.selections])
+        else:
+            raise NotImplementedError(selection)
+
+    print(f"\tFields: {results}")
+    return results
