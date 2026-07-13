@@ -1,3 +1,5 @@
+# pylint: disable=too-many-branches
+
 """Get Filtered Wikibase Query"""
 
 import re
