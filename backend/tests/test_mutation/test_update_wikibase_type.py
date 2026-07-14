@@ -103,7 +103,7 @@ async def test_update_wikibase_type_to_other(get_test_wikibase_id):
     depends=["mutate-cloud-instances"],
     scope="session",
 )
-async def test_update_wikibase_type_to_suite(get_test_wikibase_id):
+async def test_update_wikibase_type_to_suite():
     """Test Update to Suite"""
 
     # wikibase_id = await get_test_wikibase_id("UNKNOWN")
