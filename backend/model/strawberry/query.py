@@ -45,8 +45,6 @@ class Query:
     async def wikibase(self, wikibase_id: int) -> WikibaseStrawberryModel:
         """Wikibase Instance"""
 
-        print("")
-
         return await get_wikibase(wikibase_id)
 
     @strawberry.field(description="List of Wikibases")
