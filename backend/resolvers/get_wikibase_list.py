@@ -1,6 +1,5 @@
 """Get Wikibase List"""
 
-from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import func, select
