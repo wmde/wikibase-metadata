@@ -106,7 +106,8 @@ async def test_update_wikibase_type_to_other(get_test_wikibase_id):
 async def test_update_wikibase_type_to_suite(get_test_wikibase_id):
     """Test Update to Suite"""
 
-    wikibase_id = await get_test_wikibase_id("UNKNOWN")
+    # wikibase_id = await get_test_wikibase_id("UNKNOWN")
+    wikibase_id = 1
 
     before_updating_result = await test_schema.execute(
         WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_id}
