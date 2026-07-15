@@ -75,5 +75,4 @@ def compile_selected_fields(info: Info) -> list[str]:
         else:
             raise NotImplementedError(selection)
 
-    print(f"\tFields: {results}")
     return results
