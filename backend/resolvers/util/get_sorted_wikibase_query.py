@@ -55,7 +55,7 @@ def get_sorted_wikibase_query(
     """Sorted list of Wikibases"""
 
     if sort_by is None:
-        return query
+        return query.order_by(WikibaseModel.id)
 
     match sort_by.column:
         case SortColumn.CATEGORY:

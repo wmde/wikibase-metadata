@@ -120,7 +120,7 @@ async def test_update_wikibase_type_to_suite(get_test_wikibase_id):
 
     update_result = await test_schema.execute(
         UPDATE_WIKIBASE_TYPE_MUTATION,
-        variable_values={"wikibaseId": 1, "wikibaseType": "SUITE"},
+        variable_values={"wikibaseId": wikibase_id, "wikibaseType": "SUITE"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None

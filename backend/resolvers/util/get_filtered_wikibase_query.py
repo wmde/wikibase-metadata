@@ -1,9 +1,12 @@
+# pylint: disable=too-many-branches
+
 """Get Filtered Wikibase Query"""
 
 import re
 from typing import Optional
 
 from sqlalchemy import Select, String, cast, or_, select
+from sqlalchemy.orm import selectinload
 
 from model.database import WikibaseModel, WikibaseCategoryModel, WikibaseURLModel
 from model.enum import WikibaseType
@@ -15,10 +18,45 @@ ONLY_ALLOWED_CHARACTERS = re.compile(r"^[a-z0-9.\-_ ]+$", re.IGNORECASE)
 
 def get_filtered_wikibase_query(
     wikibase_filter: Optional[WikibaseFilterInput] = None,
+    fields: Optional[list[str]] = None,
 ) -> Select[tuple[WikibaseModel]]:
     """Filtered list of Wikibases"""
 
     query = select(WikibaseModel).where(WikibaseModel.checked)
+
+    if fields is not None:
+        if "connectivityObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.connectivity_observations))
+        if "externalIdentifierObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.external_identifier_observations)
+            )
+        if "logObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.log_month_observations))
+        if "propertyPopularityObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.property_popularity_observations)
+            )
+        if "quantityObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.quantity_observations))
+        if "recentChangesObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.recent_changes_observations)
+            )
+        if "softwareVersionObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.software_version_observations)
+            )
+        if "statisticsObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.software_version_observations)
+            )
+        if "timeToFirstValueObservations" in fields:
+            query = query.options(
+                selectinload(WikibaseModel.time_to_first_value_observations)
+            )
+        if "userObservations" in fields:
+            query = query.options(selectinload(WikibaseModel.user_observations))
 
     if wikibase_filter is None:
         return query.where(WikibaseModel.reuse)
