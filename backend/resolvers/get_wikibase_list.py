@@ -71,7 +71,7 @@ def compile_selected_fields(info: Info) -> list[str]:
         if isinstance(selection, SelectedField):
             results.append(selection.name)
         elif isinstance(selection, FragmentSpread):
-            results.extend([s.name for s in selection.selections])
+            results.extend(s.name for s in selection.selections)
         else:
             raise NotImplementedError(selection)
 
