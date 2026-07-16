@@ -25,10 +25,12 @@
 		"@apollo/client": "^3.14.0",
 		"@mdi/js": "^7.4.47",
 		"@vue/apollo-composable": "^4.2.2",
+		"chart.js": "^4.5.1",
 		"graphql": "^16.11.0",
 		"pinia": "^3.0.3",
 		"serve": "^14.2.5",
 		"vue": "^3.5.22",
+		"vue-chartjs": "^5.3.4",
 		"vue-matomo": "^4.2.0",
 		"vuetify": "^3.10.5"
 	},
