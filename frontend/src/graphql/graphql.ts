@@ -1366,6 +1366,7 @@ export type AllTtfvWikibasesQuery = {
 export type WbttfvFragment = {
 	__typename?: 'Wikibase'
 	id: string
+	title: string
 	wikibaseType: WikibaseType
 	timeToFirstValueObservations: {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
@@ -1593,6 +1594,7 @@ export const WbttfvFragmentDoc = {
 				kind: 'SelectionSet',
 				selections: [
 					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
 					{
 						kind: 'Field',
@@ -2052,6 +2054,7 @@ export const AllTtfvWikibasesDocument = {
 				kind: 'SelectionSet',
 				selections: [
 					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
 					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
 					{
 						kind: 'Field',

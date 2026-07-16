@@ -1436,6 +1436,7 @@ export type AllTtfvWikibasesQuery = {
 		data: Array<{
 			__typename?: 'Wikibase'
 			id: string
+			title: string
 			wikibaseType: WikibaseType
 			timeToFirstValueObservations: {
 				__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
@@ -1458,6 +1459,7 @@ export type AllTtfvWikibasesQuery = {
 export type WbttfvFragment = {
 	__typename?: 'Wikibase'
 	id: string
+	title: string
 	wikibaseType: WikibaseType
 	timeToFirstValueObservations: {
 		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'

@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import MultiQGraph from '@/component/graph/MultiQGraph.vue'
 import { useWikiTTFVStore } from '@/stores/wikibase-ttfv-store'
+import randomColor from '@/util/random-color'
 import stringDate from '@/util/string-date'
 import { computed, onBeforeMount } from 'vue'
 
 const store = useWikiTTFVStore()
 const data = computed(() => store.wikibases.data)
+const randomColorList = computed(() =>
+	(store.wikibases.data ?? []).reduce(
+		(prev, wiki): Record<string, string> => ({ ...prev, [wiki.id]: randomColor() }),
+		{}
+	)
+)
 
 onBeforeMount(() => store.fetchWikibases())
 </script>
@@ -16,7 +23,10 @@ onBeforeMount(() => store.fetchWikibases())
 			v-if="data"
 			:datasets="
 				data.map((wikibase) => ({
-					label: wikibase.id,
+					label: wikibase.title,
+					tension: 0.3,
+					backgroundColor: randomColorList[wikibase.id],
+					borderColor: randomColorList[wikibase.id],
 					data: [
 						wikibase.timeToFirstValueObservations.mostRecent?.initiationDate
 							? {

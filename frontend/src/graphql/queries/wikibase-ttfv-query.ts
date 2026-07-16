@@ -11,6 +11,7 @@ const allTTFVWikibasesQuery = gql`
 
 	fragment WBTTFV on Wikibase {
 		id
+		title
 		wikibaseType
 		timeToFirstValueObservations {
 			mostRecent {
