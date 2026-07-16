@@ -1,3 +1,4 @@
+import TTFVGraphContainer from '@/component/TTFVGraphContainer.vue'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import { ref, type Component } from 'vue'
 
@@ -7,7 +8,8 @@ type Route = {
 }
 
 const routes: Record<string, Route> = {
-	'/': { component: WikibaseTableContainer, name: 'Wikibase Table' }
+	'/': { component: WikibaseTableContainer, name: 'Wikibase Table' },
+	'/ttfv': { component: TTFVGraphContainer, name: 'Time to First Value' }
 }
 
 export const currentPath = ref(window.location.hash.slice(1))
