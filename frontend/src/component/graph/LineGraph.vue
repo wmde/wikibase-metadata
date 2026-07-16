@@ -15,7 +15,10 @@ import { Line as LineChart } from 'vue-chartjs'
 
 ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
-const { datasets } = defineProps<{ datasets: ChartDataset<'line', (number | Point | null)[]>[] }>()
+const { datasets } = defineProps<{
+	datasets: ChartDataset<'line', (number | Point | null)[]>[]
+	title: string
+}>()
 
 const colors = [
 	'#73f8a0',
@@ -42,6 +45,7 @@ const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
 </script>
 
 <template>
+	<v-container>{{ title }}</v-container>
 	<LineChart
 		:data="chartData"
 		:options="{
