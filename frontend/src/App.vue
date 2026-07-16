@@ -1,13 +1,19 @@
 <script setup lang="ts">
+import AppFooter from '@/component/AppFooter.vue'
 import AppHeader from '@/component/AppHeader.vue'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
-import AppFooter from '@/component/AppFooter.vue'
+import routes, { currentPath } from '@/routes'
+import { computed } from 'vue'
+
+const currentView = computed(
+	() => routes[currentPath.value || '/']?.component || WikibaseTableContainer
+)
 </script>
 
 <template>
-	<v-container class="pa-0 ma-0 suite-scraper-app">
+	<v-container class="pa-0 suite-scraper-app">
 		<AppHeader />
-		<WikibaseTableContainer />
+		<component :is="currentView" />
 		<AppFooter />
 	</v-container>
 </template>

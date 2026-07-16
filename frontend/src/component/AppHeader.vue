@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import img from '@/media/icon/wikibase_symbol_RGB.png'
+import img from '@/media/icon/wikibase_symbol_RGB_cropped.png'
+import routes, { currentPath } from '@/routes'
 import { mdiThemeLightDark } from '@mdi/js'
 import { useTheme } from 'vuetify'
 
@@ -36,6 +37,18 @@ const theme = useTheme()
 					Give Feedback
 				</v-btn>
 			</v-container>
+		</v-container>
+		<v-container v-if="Object.keys(routes).length > 1" class="link-container">
+			<template v-for="route in Object.keys(routes)" :key="route">
+				<v-btn
+					v-if="routes[route]"
+					:variant="currentPath == route ? 'outlined' : 'tonal'"
+					density="compact"
+					:href="`#${route}`"
+				>
+					{{ routes[route].name }}
+				</v-btn>
+			</template>
 		</v-container>
 	</v-container>
 </template>
@@ -93,6 +106,11 @@ const theme = useTheme()
 	.subtitle {
 		font-size: 16px;
 		font-family: Roboto;
+	}
+	.link-container {
+		display: flex;
+		flex-flow: row wrap;
+		gap: 6px;
 	}
 }
 </style>
