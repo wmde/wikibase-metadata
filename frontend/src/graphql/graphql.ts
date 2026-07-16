@@ -1349,6 +1349,40 @@ export type WbFragment = {
 	}
 } & { ' $fragmentName'?: 'WbFragment' }
 
+export type AllTtfvWikibasesQueryVariables = Exact<{
+	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}>
+
+export type AllTtfvWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		data: Array<
+			{ __typename?: 'Wikibase' } & { ' $fragmentRefs'?: { WbttfvFragment: WbttfvFragment } }
+		>
+	}
+}
+
+export type WbttfvFragment = {
+	__typename?: 'Wikibase'
+	id: string
+	wikibaseType: WikibaseType
+	timeToFirstValueObservations: {
+		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseTimeToFirstValueObservation'
+			id: string
+			initiationDate?: Date | null
+			itemDates: Array<{
+				__typename?: 'WikibaseItemDate'
+				id: string
+				q: number
+				creationDate: Date
+			}>
+		} | null
+	}
+} & { ' $fragmentName'?: 'WbttfvFragment' }
+
 export const SingleWikibaseFragmentDoc = {
 	kind: 'Document',
 	definitions: [
@@ -1548,6 +1582,55 @@ export const WbFragmentDoc = {
 		}
 	]
 } as unknown as DocumentNode<WbFragment, unknown>
+export const WbttfvFragmentDoc = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBTTFV' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'timeToFirstValueObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<WbttfvFragment, unknown>
 export const SingleWikibaseDocument = {
 	kind: 'Document',
 	definitions: [
@@ -1905,3 +1988,105 @@ export const PageWikibasesDocument = {
 		}
 	]
 } as unknown as DocumentNode<PageWikibasesQuery, PageWikibasesQueryVariables>
+export const AllTtfvWikibasesDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'AllTTFVWikibases' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseFilterInput' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'wikibaseList' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageNumber' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageSize' },
+								value: { kind: 'IntValue', value: '-1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'data' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'WBTTFV' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBTTFV' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'timeToFirstValueObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<AllTtfvWikibasesQuery, AllTtfvWikibasesQueryVariables>

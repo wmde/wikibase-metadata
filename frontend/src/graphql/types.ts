@@ -1424,3 +1424,53 @@ export type WbFragment = {
 		} | null
 	}
 }
+
+export type AllTtfvWikibasesQueryVariables = Exact<{
+	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}>
+
+export type AllTtfvWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		data: Array<{
+			__typename?: 'Wikibase'
+			id: string
+			wikibaseType: WikibaseType
+			timeToFirstValueObservations: {
+				__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
+				mostRecent?: {
+					__typename?: 'WikibaseTimeToFirstValueObservation'
+					id: string
+					initiationDate?: Date | null
+					itemDates: Array<{
+						__typename?: 'WikibaseItemDate'
+						id: string
+						q: number
+						creationDate: Date
+					}>
+				} | null
+			}
+		}>
+	}
+}
+
+export type WbttfvFragment = {
+	__typename?: 'Wikibase'
+	id: string
+	wikibaseType: WikibaseType
+	timeToFirstValueObservations: {
+		__typename?: 'WikibaseTimeToFirstValueObservationWikibaseObservationSet'
+		mostRecent?: {
+			__typename?: 'WikibaseTimeToFirstValueObservation'
+			id: string
+			initiationDate?: Date | null
+			itemDates: Array<{
+				__typename?: 'WikibaseItemDate'
+				id: string
+				q: number
+				creationDate: Date
+			}>
+		} | null
+	}
+}
