@@ -31,7 +31,12 @@ const { load, onResult, loading, error } = useLazyQuery<
 
 export const useWikiTTFVStore = defineStore('wiki-ttfv-list', (): WikibaseTTFVStoreType => {
 	const data = ref<WbttfvFragment[] | undefined>()
-	onResult((result) => (data.value = result.data.wikibaseList.data))
+	onResult(
+		(result) =>
+			(data.value = result.data.wikibaseList.data.filter(
+				(w) => w.timeToFirstValueObservations.mostRecent != null
+			))
+	)
 
 	const wikibases = computed<QueryResult<WbttfvFragment[] | undefined>>(() => ({
 		data: data.value,
