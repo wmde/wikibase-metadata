@@ -1425,6 +1425,56 @@ export type WbFragment = {
 	}
 }
 
+export type AllQuantityWikibasesQueryVariables = Exact<{
+	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}>
+
+export type AllQuantityWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		data: Array<{
+			__typename?: 'Wikibase'
+			id: string
+			title: string
+			wikibaseType: WikibaseType
+			quantityObservations: {
+				__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+				allObservations: Array<{
+					__typename?: 'WikibaseQuantityObservation'
+					id: string
+					observationDate: Date
+					returnedData: boolean
+					totalItems?: number | null
+					totalLexemes?: number | null
+					totalProperties?: number | null
+					totalTriples?: number | null
+				}>
+			}
+		}>
+	}
+}
+
+export type WbQuantityFragment = {
+	__typename?: 'Wikibase'
+	id: string
+	title: string
+	wikibaseType: WikibaseType
+	quantityObservations: {
+		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+		allObservations: Array<{
+			__typename?: 'WikibaseQuantityObservation'
+			id: string
+			observationDate: Date
+			returnedData: boolean
+			totalItems?: number | null
+			totalLexemes?: number | null
+			totalProperties?: number | null
+			totalTriples?: number | null
+		}>
+	}
+}
+
 export type AllTtfvWikibasesQueryVariables = Exact<{
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 }>

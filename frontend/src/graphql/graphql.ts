@@ -1349,6 +1349,42 @@ export type WbFragment = {
 	}
 } & { ' $fragmentName'?: 'WbFragment' }
 
+export type AllQuantityWikibasesQueryVariables = Exact<{
+	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
+}>
+
+export type AllQuantityWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		data: Array<
+			{ __typename?: 'Wikibase' } & {
+				' $fragmentRefs'?: { WbQuantityFragment: WbQuantityFragment }
+			}
+		>
+	}
+}
+
+export type WbQuantityFragment = {
+	__typename?: 'Wikibase'
+	id: string
+	title: string
+	wikibaseType: WikibaseType
+	quantityObservations: {
+		__typename?: 'WikibaseQuantityObservationWikibaseObservationSet'
+		allObservations: Array<{
+			__typename?: 'WikibaseQuantityObservation'
+			id: string
+			observationDate: Date
+			returnedData: boolean
+			totalItems?: number | null
+			totalLexemes?: number | null
+			totalProperties?: number | null
+			totalTriples?: number | null
+		}>
+	}
+} & { ' $fragmentName'?: 'WbQuantityFragment' }
+
 export type AllTtfvWikibasesQueryVariables = Exact<{
 	wikibaseFilter?: InputMaybe<WikibaseFilterInput>
 }>
@@ -1583,6 +1619,49 @@ export const WbFragmentDoc = {
 		}
 	]
 } as unknown as DocumentNode<WbFragment, unknown>
+export const WbQuantityFragmentDoc = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBQuantity' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'quantityObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'allObservations' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'returnedData' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalProperties' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<WbQuantityFragment, unknown>
 export const WbttfvFragmentDoc = {
 	kind: 'Document',
 	definitions: [
@@ -1990,6 +2069,102 @@ export const PageWikibasesDocument = {
 		}
 	]
 } as unknown as DocumentNode<PageWikibasesQuery, PageWikibasesQueryVariables>
+export const AllQuantityWikibasesDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'AllQuantityWikibases' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'WikibaseFilterInput' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'wikibaseList' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageNumber' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageSize' },
+								value: { kind: 'IntValue', value: '-1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'data' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'WBQuantity' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBQuantity' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'wikibaseType' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'quantityObservations' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'allObservations' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'observationDate' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'returnedData' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalItems' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalLexemes' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalProperties' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<AllQuantityWikibasesQuery, AllQuantityWikibasesQueryVariables>
 export const AllTtfvWikibasesDocument = {
 	kind: 'Document',
 	definitions: [

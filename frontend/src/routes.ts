@@ -1,3 +1,4 @@
+import QuantityGraphContainer from '@/component/QuantityGraphContainer.vue'
 import TTFVGraphContainer from '@/component/TTFVGraphContainer.vue'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import { ref, type Component } from 'vue'
@@ -9,6 +10,7 @@ type Route = {
 
 const routes: Record<string, Route> = {
 	'/': { component: WikibaseTableContainer, name: 'Wikibase Table' },
+	'/quantity': { component: QuantityGraphContainer, name: 'Quantity' },
 	'/ttfv': { component: TTFVGraphContainer, name: 'Time to First Value' }
 }
 
