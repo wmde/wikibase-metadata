@@ -17,7 +17,7 @@ import { Line as LineChart } from 'vue-chartjs'
 ChartJS.register(LinearScale, LogarithmicScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 const { datasets } = defineProps<{
-	datasets: ChartDataset<'line', (number | Point | null)[]>[]
+	datasets: ChartDataset<'line', Point[]>[]
 	title: string
 }>()
 
@@ -34,14 +34,16 @@ const colors = [
 	'#f258fe'
 ]
 
-const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
-	datasets: datasets.map((d, idx) => ({
-		...d,
-		backgroundColor: colors[idx % colors.length],
-		borderColor: colors[idx % colors.length],
-		// yAxisID: `y${idx}`
-		yAxisID: 'y'
-	}))
+const chartData: ChartData<'line', Point[], unknown> = {
+	datasets: datasets
+		.filter((d) => d.data.some((v) => v.y != null && v.y > 0))
+		.map((d, idx) => ({
+			...d,
+			backgroundColor: colors[idx % colors.length],
+			borderColor: colors[idx % colors.length],
+			// yAxisID: `y${idx}`
+			yAxisID: 'y'
+		}))
 }
 </script>
 
