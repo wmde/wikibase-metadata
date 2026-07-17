@@ -4,6 +4,7 @@ import {
 	Legend,
 	LinearScale,
 	LineElement,
+	LogarithmicScale,
 	PointElement,
 	Title,
 	Tooltip,
@@ -13,7 +14,7 @@ import {
 } from 'chart.js'
 import { Line as LineChart } from 'vue-chartjs'
 
-ChartJS.register(LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+ChartJS.register(LinearScale, LogarithmicScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 const { datasets } = defineProps<{
 	datasets: ChartDataset<'line', (number | Point | null)[]>[]
@@ -64,7 +65,7 @@ const chartData: ChartData<'line', (number | Point | null)[], unknown> = {
 					max: new Date().getTime()
 				},
 				y: {
-					type: 'linear'
+					type: 'logarithmic'
 				}
 				// ...Object.fromEntries(
 				// 	datasets.map((d, idx) => [

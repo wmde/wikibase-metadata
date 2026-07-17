@@ -1,26 +1,13 @@
 <script setup lang="ts">
 import LineGraph from '@/component/graph/LineGraph.vue'
 import { useWikiQuantityStore } from '@/stores/wikibase-quantity-store.ts'
+import sortByX from '@/util/sort-by-x'
 import stringDate from '@/util/string-date'
-import type { Point } from 'chart.js'
+import onlyUnique from '@/util/unique-points'
 import { computed, onBeforeMount } from 'vue'
 
 const store = useWikiQuantityStore()
 const data = computed(() => store.wikibases.data)
-
-
-const sortByX = (a: Point, b: Point) =>
-	a.x == null && b.x == null
-		? 0
-		: a.x == null
-			? -1
-			: b.x == null
-				? 1
-				: a.x > b.x
-					? 1
-					: a.x < b.x
-						? -1
-						: 0
 
 onBeforeMount(() => store.fetchWikibases())
 </script>
@@ -41,6 +28,7 @@ onBeforeMount(() => store.fetchWikibases())
 								: null
 						)
 						.filter((p) => p != null)
+						.filter(onlyUnique)
 						.sort(sortByX)
 				}))
 			"
@@ -59,6 +47,7 @@ onBeforeMount(() => store.fetchWikibases())
 								: null
 						)
 						.filter((p) => p != null)
+						.filter(onlyUnique)
 						.sort(sortByX)
 				}))
 			"
@@ -77,6 +66,7 @@ onBeforeMount(() => store.fetchWikibases())
 								: null
 						)
 						.filter((p) => p != null)
+						.filter(onlyUnique)
 						.sort(sortByX)
 				}))
 			"
@@ -95,6 +85,7 @@ onBeforeMount(() => store.fetchWikibases())
 								: null
 						)
 						.filter((p) => p != null)
+						.filter(onlyUnique)
 						.sort(sortByX)
 				}))
 			"
