@@ -155,9 +155,7 @@ async def test_create_log_observation_first_success(
         )
         assert after is not None
         assert after.first_month is True
-        assert after.first_log_date == datetime(
-            2023, 10, 24, 0, 0, tzinfo=timezone.utc
-        )
+        assert after.first_log_date == datetime(2023, 10, 24, 0, 0, tzinfo=timezone.utc)
         assert after.last_log_date == datetime(2023, 11, 22, 23, 0, tzinfo=timezone.utc)
         assert after.last_log_user_type == WikibaseUserType.USER
         assert after.log_count == 31
