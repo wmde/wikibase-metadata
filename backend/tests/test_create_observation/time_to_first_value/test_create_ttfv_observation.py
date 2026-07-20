@@ -1,10 +1,16 @@
 """Test create_software_version_observation"""
 
+from datetime import datetime, timezone
 import re
 import time
 
 import pytest
+from sqlalchemy import select
 
+from data.database_connection import get_async_session
+from model.database.wikibase_observation.time_to_first_value.ttfv_observation_model import (
+    WikibaseTimeToFirstValueObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, get_mock_context
 
@@ -24,6 +30,15 @@ async def test_create_ttfv_observation_success(
     """Test Data Returned Scenario"""
 
     time.sleep(1)
+
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibaseTimeToFirstValueObservationModel).where(
+                WikibaseTimeToFirstValueObservationModel.wikibase_id
+                == wikibase_fixture.id
+            )
+        )
+        assert before is None
 
     # pylint: disable-next=unused-argument,too-many-return-statements
     def mockery(*args, **kwargs):
@@ -92,3 +107,15 @@ async def test_create_ttfv_observation_success(
     assert result.errors is None
     assert result.data is not None
     assert result.data["fetchTimeToFirstValueData"]
+
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibaseTimeToFirstValueObservationModel).where(
+                WikibaseTimeToFirstValueObservationModel.wikibase_id
+                == wikibase_fixture.id
+            )
+        )
+        assert after.initiation_date == datetime(
+            2012, 10, 26, 18, 5, 9, tzinfo=timezone.utc
+        )
+        assert len(after.item_date_models) == 4

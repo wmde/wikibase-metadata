@@ -1,12 +1,17 @@
 """Test create_log_observation"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 
 from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
+from sqlalchemy import select
 
+from model.enum.wikibase_user_type_enum import WikibaseUserType
+from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
+    WikibaseLogMonthObservationModel,
+)
 from data import get_async_session
 from fetch_data import create_log_observation
 from model.database import WikibaseModel
@@ -34,8 +39,7 @@ async def wikibase_with_script_path_log(db_session):  # pylint: disable=unused-a
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
+    return wikibase
 
 
 @freeze_time(datetime(2024, 3, 1))
@@ -50,6 +54,16 @@ async def test_create_log_observation_first_success(
 
     log_month_id 1, first month, users, 'thanks/thank'
     """
+
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path_log.id
+            )
+        )
+        assert before is None
+
     mock_logs: list[dict] = []
     for i in range(70):
         mock_logs.append(
@@ -123,7 +137,7 @@ async def test_create_log_observation_first_success(
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
         variable_values={
-            "wikibaseId": wikibase_with_script_path_log,
+            "wikibaseId": wikibase_with_script_path_log.id,
             "firstMonth": True,
         },
         context_value=get_mock_context("test-auth-token"),
@@ -131,6 +145,27 @@ async def test_create_log_observation_first_success(
     assert result.errors is None
     assert result.data is not None
     assert result.data["fetchLogData"]
+
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path_log.id
+            )
+        )
+        assert after is not None
+        assert after.first_month is True
+        assert after.first_log_date == datetime(
+            2023, 10, 23, 22, 0, tzinfo=timezone.utc
+        )
+        assert after.last_log_date == datetime(2023, 11, 22, 23, 0, tzinfo=timezone.utc)
+        assert after.last_log_user_type == WikibaseUserType.USER
+        assert after.log_count == 31
+        assert after.user_count == 3
+        assert after.active_user_count == 3
+        assert after.human_user_count == 1
+        assert after.active_human_user_count == 1
+        assert len(after.log_type_records) == 1
 
 
 @freeze_time(datetime(2024, 3, 1))
@@ -197,7 +232,7 @@ async def test_create_log_observation_last_success(
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
         variable_values={
-            "wikibaseId": wikibase_with_script_path_log,
+            "wikibaseId": wikibase_with_script_path_log.id,
             "firstMonth": False,
         },
         context_value=get_mock_context("test-auth-token"),
@@ -220,14 +255,33 @@ async def test_create_log_first_observation_error(
     log_month_id 3, first month, fail
     """
 
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path_log.id
+            )
+        )
+        assert before is None
+
     mocker.patch(
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
     success = await create_log_observation(
-        wikibase_with_script_path_log, first_month=True
+        wikibase_with_script_path_log.id, first_month=True
     )
     assert success is False
+
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path_log.id
+            )
+        )
+        assert after is not None
+        assert after.returned_data is False
 
 
 @freeze_time(datetime(2024, 3, 2))
@@ -246,7 +300,7 @@ async def test_create_log_last_observation_error(
         side_effect=[ReadTimeout()],
     )
     success = await create_log_observation(
-        wikibase_with_script_path_log, first_month=False
+        wikibase_with_script_path_log.id, first_month=False
     )
     assert success is False
 

@@ -6,6 +6,7 @@ from json import JSONDecodeError
 import pytest
 from requests import ReadTimeout
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from fetch_data import create_recent_changes_observation
@@ -14,6 +15,9 @@ from fetch_data.api_data.recent_changes_data.create_recent_changes_observation i
     create_recent_changes,
 )
 from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
+from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
+    WikibaseExternalIdentifierObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -143,7 +147,7 @@ async def test_create_recent_changes_counts():
 @pytest.fixture
 async def wikibase_with_script_path_rc(db_session):  # pylint: disable=unused-argument
     """Create a wikibase with script path for recent changes observation tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Recent Changes Exception Test Wikibase",
             base_url="https://recent-changes-exception-example.com",
@@ -156,8 +160,8 @@ async def wikibase_with_script_path_rc(db_session):  # pylint: disable=unused-ar
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
+        # wikibase_id = wikibase.id
+    return wikibase
 
 
 @pytest.mark.asyncio
@@ -171,7 +175,7 @@ async def test_create_recent_changes_observation_exception_timeout(
     )
 
     success = await create_recent_changes_observation(
-        wikibase_id=wikibase_with_script_path_rc
+        wikibase_id=wikibase_with_script_path_rc.id
     )
     assert not success
 
@@ -180,7 +184,7 @@ async def test_create_recent_changes_observation_exception_timeout(
             select(WikibaseRecentChangesObservationModel)
             .where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc
+                == wikibase_with_script_path_rc.id
             )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
@@ -204,7 +208,7 @@ async def test_create_recent_changes_observation_exception_decode(
     )
 
     success = await create_recent_changes_observation(
-        wikibase_id=wikibase_with_script_path_rc
+        wikibase_id=wikibase_with_script_path_rc.id
     )
     assert not success
 
@@ -213,7 +217,7 @@ async def test_create_recent_changes_observation_exception_decode(
             select(WikibaseRecentChangesObservationModel)
             .where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc
+                == wikibase_with_script_path_rc.id
             )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
@@ -231,6 +235,16 @@ async def test_create_recent_changes_observation_fail(
     mocker, wikibase_with_script_path_rc
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
+
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibaseRecentChangesObservationModel).where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path_rc.id
+            )
+        )
+        assert before is None
+
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         side_effect=ReadTimeout,
@@ -238,7 +252,7 @@ async def test_create_recent_changes_observation_fail(
 
     result = await test_schema.execute(
         FETCH_RECENT_CHANGES_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_script_path_rc},
+        variable_values={"wikibaseId": wikibase_with_script_path_rc.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -251,7 +265,7 @@ async def test_create_recent_changes_observation_fail(
             select(WikibaseRecentChangesObservationModel)
             .where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc
+                == wikibase_with_script_path_rc.id
             )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )

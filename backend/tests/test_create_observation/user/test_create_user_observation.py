@@ -5,10 +5,14 @@ import time
 
 import pytest
 from requests import ReadTimeout
+from sqlalchemy import select
 
 from data import get_async_session
 from fetch_data import create_user_observation
 from model.database import WikibaseModel
+from model.database.wikibase_observation.user.wikibase_user_observation_model import (
+    WikibaseUserObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -38,8 +42,7 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
+    return wikibase
 
 
 @pytest.mark.asyncio
@@ -53,7 +56,7 @@ async def test_create_user_observation_failure(wikibase, mocker):
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_user_observation(wikibase)
+    success = await create_user_observation(wikibase.id)
     assert success is False
 
 
@@ -85,7 +88,7 @@ async def test_create_user_observation_single_pull(wikibase, mocker):
 
     result = await test_schema.execute(
         FETCH_USER_MUTATION,
-        variable_values={"wikibaseId": wikibase},
+        variable_values={"wikibaseId": wikibase.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -100,6 +103,14 @@ async def test_create_user_observation_multiple_pull(wikibase, mocker):
     """Test Data, Multiple Pull Scenario"""
 
     time.sleep(1)
+
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibaseUserObservationModel).where(
+                WikibaseUserObservationModel.wikibase_id == wikibase.id
+            )
+        )
+        assert before is None
 
     users = []
     for i in range(2000):
@@ -126,5 +137,14 @@ async def test_create_user_observation_multiple_pull(wikibase, mocker):
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=user_chunks,
     )
-    success = await create_user_observation(wikibase)
+    success = await create_user_observation(wikibase.id)
     assert success
+
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibaseUserObservationModel).where(
+                WikibaseUserObservationModel.wikibase_id == wikibase.id
+            )
+        )
+        assert after.total_users == 2000
+        assert len(after.user_group_observations) == 8

@@ -5,10 +5,14 @@ import time
 from urllib.error import HTTPError
 
 import pytest
+from sqlalchemy import select
 
 from data import get_async_session
 from fetch_data import create_property_popularity_observation
 from model.database import WikibaseModel
+from model.database.wikibase_observation.property.popularity_observation_model import (
+    WikibasePropertyPopularityObservationModel,
+)
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -47,6 +51,15 @@ async def test_create_property_popularity_observation_success(
 
     await asyncio.to_thread(time.sleep, 1)
 
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibasePropertyPopularityObservationModel).where(
+                WikibasePropertyPopularityObservationModel.wikibase_id
+                == wikibase_with_sparql.id
+            )
+        )
+        assert before is None
+
     mocker.patch(
         "fetch_data.sparql_data.create_property_popularity_data_observation.get_sparql_results",
         side_effect=[
@@ -71,6 +84,15 @@ async def test_create_property_popularity_observation_success(
     assert result.data is not None
     assert result.data["fetchPropertyPopularityData"]
 
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibasePropertyPopularityObservationModel).where(
+                WikibasePropertyPopularityObservationModel.wikibase_id
+                == wikibase_with_sparql.id
+            )
+        )
+        assert len(after.property_count_observations) == 2
+
 
 @pytest.mark.asyncio
 @pytest.mark.property
@@ -79,6 +101,15 @@ async def test_create_property_popularity_observation_failure(
     wikibase_with_sparql, mocker
 ):
     """Test"""
+
+    async with get_async_session() as session:
+        before = await session.scalar(
+            select(WikibasePropertyPopularityObservationModel).where(
+                WikibasePropertyPopularityObservationModel.wikibase_id
+                == wikibase_with_sparql.id
+            )
+        )
+        assert before is None
 
     mocker.patch(
         "fetch_data.sparql_data.create_property_popularity_data_observation.get_sparql_results",
@@ -94,3 +125,12 @@ async def test_create_property_popularity_observation_failure(
     )
     success = await create_property_popularity_observation(wikibase_with_sparql.id)
     assert success is False
+
+    async with get_async_session() as session:
+        after = await session.scalar(
+            select(WikibasePropertyPopularityObservationModel).where(
+                WikibasePropertyPopularityObservationModel.wikibase_id
+                == wikibase_with_sparql.id
+            )
+        )
+        assert after.returned_data == False
