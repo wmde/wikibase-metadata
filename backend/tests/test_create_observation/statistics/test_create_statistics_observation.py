@@ -133,4 +133,4 @@ async def test_create_statistics_observation_failure(
                 == wikibase_with_article_path_stats.id
             )
         )
-        assert after.returned_data == False
+        assert after.returned_data is False

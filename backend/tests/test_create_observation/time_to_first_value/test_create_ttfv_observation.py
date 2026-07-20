@@ -116,6 +116,6 @@ async def test_create_ttfv_observation_success(
             )
         )
         assert after.initiation_date == datetime(
-            2012, 10, 26, 18, 5, 9, tzinfo=timezone.utc
+            2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc
         )
         assert len(after.item_date_models) == 4

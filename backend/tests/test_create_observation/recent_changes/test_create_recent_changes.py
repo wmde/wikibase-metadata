@@ -15,9 +15,6 @@ from fetch_data.api_data.recent_changes_data.create_recent_changes_observation i
     create_recent_changes,
 )
 from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
-    WikibaseExternalIdentifierObservationModel,
-)
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 

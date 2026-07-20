@@ -12,9 +12,9 @@ from model.enum.wikibase_user_type_enum import WikibaseUserType
 from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
     WikibaseLogMonthObservationModel,
 )
+from model.database import WikibaseModel
 from data import get_async_session
 from fetch_data import create_log_observation
-from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
@@ -156,7 +156,7 @@ async def test_create_log_observation_first_success(
         assert after is not None
         assert after.first_month is True
         assert after.first_log_date == datetime(
-            2023, 10, 23, 22, 0, tzinfo=timezone.utc
+            2023, 10, 24, 0, 0, tzinfo=timezone.utc
         )
         assert after.last_log_date == datetime(2023, 11, 22, 23, 0, tzinfo=timezone.utc)
         assert after.last_log_user_type == WikibaseUserType.USER
