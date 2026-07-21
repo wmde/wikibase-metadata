@@ -20,7 +20,7 @@ from model.database import (
     WikibaseUserObservationGroupModel,
     WikibaseUserObservationModel,
 )
-from model.enum import WikibaseLogType, WikibaseUserType
+from model.enum import WikibaseLogType, WikibaseUserType, WikibaseType
 
 load_dotenv()
 
@@ -59,7 +59,7 @@ async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
         wikibase.checked = True
         wikibase.reuse = True
         wikibase.test = False
-        wikibase.wikibase_type = "CLOUD"
+        wikibase.wikibase_type = WikibaseType.CLOUD
         session.add(wikibase)
         await session.flush()
 
