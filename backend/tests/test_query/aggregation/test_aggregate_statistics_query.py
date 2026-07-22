@@ -44,8 +44,8 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argument
-    """Create a wikibase with a statistics observation"""
+async def wikibases_with_statistics(db_session):  # pylint: disable=unused-argument
+    """Create a wikibase and a wikibase suite with statistics observations"""
     async with get_async_session() as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Statistics Test Wikibase",
@@ -54,7 +54,7 @@ async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argume
         wikibase.checked = True
         wikibase.reuse = True
         wikibase.test = False
-        wikibase.wikibase_type = None
+        wikibase.wikibase_type = WikibaseType.OTHER
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -74,15 +74,46 @@ async def wikibase_with_statistics(db_session):  # pylint: disable=unused-argume
         session.add(obs)
         await session.flush()
 
+        wikibase_suite = WikibaseModel(
+            wikibase_name="Aggregate Statistics Filtered Test Wikibase",
+            base_url="https://aggregate-statistics-filtered-example.com",
+        )
+        wikibase_suite.checked = True
+        wikibase_suite.reuse = True
+        wikibase_suite.test = False
+        wikibase_suite.wikibase_type = WikibaseType.SUITE
+        session.add(wikibase_suite)
+        await session.flush()
+        await session.refresh(wikibase_suite)
+
+        suite_obs = WikibaseStatisticsObservationModel()
+        suite_obs.wikibase_id = wikibase_suite.id
+        suite_obs.returned_data = True
+        suite_obs.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
+        suite_obs.total_pages = 100
+        suite_obs.content_pages = 50
+        suite_obs.total_files = 5
+        suite_obs.total_edits = 200
+        suite_obs.content_page_word_count_total = 1000
+        suite_obs.total_users = 20
+        suite_obs.active_users = 2
+        suite_obs.total_admin = 1
+        session.add(suite_obs)
+        await session.flush()
+
+        return obs, suite_obs
+
 
 @pytest.mark.asyncio
 @pytest.mark.agg
 @pytest.mark.statistics
 @pytest.mark.query
 async def test_aggregate_statistics_query(
-    wikibase_with_statistics,
+    wikibases_with_statistics,
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Statistics Query"""
+
+    obs, suite_obs = wikibases_with_statistics
 
     result = await test_schema.execute(AGGREGATED_STATISTICS_QUERY)
 
@@ -90,46 +121,43 @@ async def test_aggregate_statistics_query(
     assert result.data is not None
 
     assert_layered_property_value(
-        result.data, ["aggregateStatistics", "wikibaseCount"], 1
+        result.data, ["aggregateStatistics", "wikibaseCount"], 2
     )
-    assert_edits(result.data["aggregateStatistics"], 36150323, 36150323 / 12655622)
-    assert_files(result.data["aggregateStatistics"], 30)
+
+    expected_total_edits = obs.total_edits + suite_obs.total_edits
+    expected_average_edits = expected_total_edits / (
+        obs.total_pages + suite_obs.total_pages
+    )
+    assert_edits(
+        result.data["aggregateStatistics"], expected_total_edits, expected_average_edits
+    )
+    assert_files(
+        result.data["aggregateStatistics"], obs.total_files + suite_obs.total_files
+    )
+
+    expected_content_pages = obs.content_pages + suite_obs.content_pages
+    expected_word_count_total = (
+        obs.content_page_word_count_total + suite_obs.content_page_word_count_total
+    )
+    expected_word_count_avg = expected_word_count_total / expected_content_pages
+    expected_total_pages = obs.total_pages + suite_obs.total_pages
     assert_pages(
-        result.data["aggregateStatistics"], 851723, 27750 / 851723, 27750, 12655622
+        result.data["aggregateStatistics"],
+        expected_content_pages,
+        expected_word_count_avg,
+        expected_word_count_total,
+        expected_total_pages,
     )
-    assert_users(result.data["aggregateStatistics"], 5, 17, 465)
 
-
-@pytest.fixture
-async def wikibase_with_statistics_suite(db_session):  # pylint: disable=unused-argument
-    """Create a SUITE wikibase with a statistics observation for filtered tests"""
-    async with get_async_session() as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Aggregate Statistics Filtered Test Wikibase",
-            base_url="https://aggregate-statistics-filtered-example.com",
-        )
-        wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-
-        obs = WikibaseStatisticsObservationModel()
-        obs.wikibase_id = wikibase.id
-        obs.returned_data = True
-        obs.observation_date = datetime(2024, 3, 1, tzinfo=timezone.utc)
-        obs.total_pages = 100
-        obs.content_pages = 50
-        obs.total_files = 5
-        obs.total_edits = 200
-        obs.content_page_word_count_total = 1000
-        obs.total_users = 20
-        obs.active_users = 2
-        obs.total_admin = 1
-        session.add(obs)
-        await session.flush()
+    expected_users = obs.active_users + suite_obs.active_users
+    expected_total_admin = obs.total_admin + suite_obs.total_admin
+    expected_total_users = obs.total_users + suite_obs.total_users
+    assert_users(
+        result.data["aggregateStatistics"],
+        expected_users,
+        expected_total_admin,
+        expected_total_users,
+    )
 
 
 @pytest.mark.asyncio
@@ -138,19 +166,19 @@ async def wikibase_with_statistics_suite(db_session):  # pylint: disable=unused-
 @pytest.mark.parametrize(
     ["exclude", "expected_count"],
     [
-        ([], 1),
-        (["CLOUD"], 1),
+        ([], 2),
+        (["CLOUD"], 2),
         (["OTHER"], 1),
-        (["SUITE"], 0),
+        (["SUITE"], 1),
         (["CLOUD", "OTHER"], 1),
-        (["CLOUD", "SUITE"], 0),
+        (["CLOUD", "SUITE"], 1),
         (["OTHER", "SUITE"], 0),
         (["CLOUD", "OTHER", "SUITE"], 0),
     ],
 )
 @pytest.mark.user
 async def test_aggregate_statistics_query_filtered(
-    wikibase_with_statistics_suite, exclude: list, expected_count: int
+    wikibases_with_statistics, exclude: list, expected_count: int
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Aggregate Statistics Query"""
 
