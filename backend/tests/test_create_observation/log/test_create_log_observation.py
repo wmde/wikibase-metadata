@@ -7,7 +7,7 @@ from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from fetch_data import create_log_observation
