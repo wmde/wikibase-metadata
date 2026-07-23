@@ -111,7 +111,7 @@ jobs:
 
       - name: Run tests (except data)
         working-directory: ./backend
-        run: pytest -m "not data" --cov=. --order-dependencies
+        run: pytest -m "not data" --cov=.
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
