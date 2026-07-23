@@ -4,9 +4,9 @@ import re
 
 from fastapi.testclient import TestClient
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import app
-from data import get_async_session
 from model.database import WikibaseModel
 from model.enum import WikibaseType
 
@@ -77,10 +77,10 @@ EXPECTED_PATTERN_LIST = [
 
 
 @pytest.fixture
-async def wikibases(db_session):  # pylint: disable=unused-argument
+async def wikibases(db_session):
     """Create 3 wikibases for CSV export tests, committed directly (not rolled back)"""
     wikibase_ids = []
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         types = [WikibaseType.CLOUD, WikibaseType.OTHER, WikibaseType.SUITE]
         for i, wikibase_type in enumerate(types):
             wikibase = WikibaseModel(

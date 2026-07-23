@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data.database_connection import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareModel,
@@ -42,11 +42,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_software_observation(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_software_observation(db_session):
     """Create a wikibase with software version observation containing 5 software entries"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         software_data = [
             ("ICU", "60.2", None, None),
             ("Lua", "5.1.5", None, None),

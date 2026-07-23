@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 from tests.test_query.wikibase.quantity_obs.assert_quantity import assert_quantity
 from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
@@ -62,11 +62,9 @@ async def test_fixture(
 
 
 @pytest.fixture
-async def wikibase_with_quantity_observation(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_quantity_observation(db_session):
     """Create a wikibase with two quantity observations"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Quantity All Observations Test Wikibase",
             base_url="https://quantity-all-obs-example.com",

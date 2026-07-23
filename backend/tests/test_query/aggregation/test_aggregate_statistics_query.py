@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 from model.enum import WikibaseType
 from tests.test_query.wikibase.statistics_obs.assert_statistics import (
@@ -44,9 +44,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibases_with_statistics(db_session):  # pylint: disable=unused-argument
+async def wikibases_with_statistics(db_session):
     """Create a wikibase and a wikibase suite with statistics observations"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Statistics Test Wikibase",
             base_url="https://aggregate-statistics-example.com",
@@ -108,7 +108,7 @@ async def wikibases_with_statistics(db_session):  # pylint: disable=unused-argum
 @pytest.mark.query
 async def test_aggregate_statistics_query(
     wikibases_with_statistics,
-):  # pylint: disable=redefined-outer-name, unused-argument
+):  # pylint: disable=redefined-outer-name
     """Test Aggregate Statistics Query"""
 
     obs, suite_obs = wikibases_with_statistics

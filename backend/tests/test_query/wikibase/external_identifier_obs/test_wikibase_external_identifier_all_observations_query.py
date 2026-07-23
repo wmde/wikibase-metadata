@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
 from tests.test_query.wikibase.external_identifier_obs.assert_external_identifier import (
     assert_external_identifier,
@@ -31,11 +31,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_two_ei_observations(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_two_ei_observations(db_session):
     """Create a wikibase with two external identifier observations"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="EI All Observations Test Wikibase",
             base_url="https://ei-all-obs-example.com",

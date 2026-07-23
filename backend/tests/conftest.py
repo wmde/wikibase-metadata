@@ -101,7 +101,7 @@ async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-
 # pylint: disable-next=too-many-statements, too-many-locals
 async def wikibase_with_first_month_log_observations(
     db_session,
-):  # pylint: disable=redefined-outer-name, unused-argument
+):  # pylint: disable=redefined-outer-name
     """Create a wikibase with 3 first-month log observations"""
     async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
@@ -251,7 +251,7 @@ async def wikibase_with_first_month_log_observations(
 @pytest.fixture
 async def wikibase_with_three_property_popularity_observations(
     db_session,
-):  # pylint: disable=redefined-outer-name, unused-argument
+):  # pylint: disable=redefined-outer-name
     """Create a wikibase with 3 property popularity observations: empty, P1/P14, and failed"""
     async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
@@ -319,7 +319,7 @@ async def wikibase_with_three_property_popularity_observations(
 @pytest.fixture
 async def wikibase_with_user_observation(
     db_session,
-):  # pylint: disable=redefined-outer-name, unused-argument
+):  # pylint: disable=redefined-outer-name
     """Create a wikibase with user observation for aggregate users tests"""
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(

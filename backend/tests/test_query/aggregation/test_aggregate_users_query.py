@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseUserGroupModel,
@@ -27,9 +27,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_user_observation(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_user_observation(db_session):
     """Create a wikibase with user observation for aggregate users tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Users Test Wikibase",
             base_url="https://aggregate-users-example.com",
@@ -89,11 +89,9 @@ async def test_aggregate_users_query(
 
 
 @pytest.fixture
-async def wikibase_with_user_observation_suite(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_user_observation_suite(db_session):
     """Create a SUITE wikibase with a user observation and admin group"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Users Filtered Test Wikibase",
             base_url="https://aggregate-users-filtered-example.com",

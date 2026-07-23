@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareModel,
@@ -37,9 +37,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def wikibase_with_three_extensions(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_three_extensions(db_session):
     """Create a wikibase with 3 extension software versions"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Extensions Test Wikibase",
             base_url="https://aggregate-extensions-example.com",
@@ -76,11 +76,9 @@ async def wikibase_with_three_extensions(db_session):  # pylint: disable=unused-
 
 
 @pytest.fixture
-async def wikibases_with_extensions_for_filter(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibases_with_extensions_for_filter(db_session):
     """11 extensions on UNKNOWN wikibase, 1 on SUITE for filtered aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         # UNKNOWN wikibase with 11 extensions
         wikibase_unknown = WikibaseModel(
             wikibase_name="Aggregate Extensions Unknown Wikibase",

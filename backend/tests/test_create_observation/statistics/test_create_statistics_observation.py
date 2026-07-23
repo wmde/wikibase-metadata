@@ -5,6 +5,7 @@ import time
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from fetch_data import create_special_statistics_observation
@@ -21,11 +22,9 @@ DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
 
 @pytest.fixture
-async def wikibase_with_article_path_stats(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_article_path_stats(db_session):
     """Create a wikibase with article path for statistics tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Statistics Test Wikibase",
             base_url="https://statistics-test-example.com",

@@ -2,6 +2,7 @@
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
@@ -34,11 +35,9 @@ FETCH_EXTERNAL_IDENTIFIER_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_ei_observation(
-    db_session, mocker
-):  # pylint: disable=unused-argument
+async def wikibase_with_ei_observation(db_session, mocker):
     """Create a wikibase with an EI observation via mutation"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="EI Most Recent Test Wikibase",
             base_url="https://ei-most-recent-example.com",

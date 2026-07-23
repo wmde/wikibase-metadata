@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareModel,
@@ -40,11 +40,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def wikibase_with_three_named_skins(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_three_named_skins(db_session):
     """Create a wikibase with 3 specific skin software versions"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         skin_data = [
             ("MonoBook", None),
             ("Timeless", "0.8.9"),
@@ -130,9 +128,9 @@ async def test_aggregate_skins_query_page_one(
 
 
 @pytest.fixture
-async def wikibase_with_three_skins(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_three_skins(db_session):
     """Create a SUITE wikibase with 3 distinct skin software versions"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         skin_names = ["SkinA", "SkinB", "SkinC"]
         skins = {}
         for name in skin_names:

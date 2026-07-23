@@ -6,6 +6,7 @@ import time
 import pytest
 from requests import ReadTimeout
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from fetch_data import create_user_observation
@@ -24,9 +25,9 @@ TEST_USER_GROUPS_IMPLICIT = {"*", "user", "autoconfirmed"}
 
 
 @pytest.fixture
-async def wikibase(db_session):  # pylint: disable=unused-argument
+async def wikibase(db_session):
     """Create a wikibase with script path for user observation tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="User Test Wikibase",
             base_url="https://user-test-example.com",

@@ -5,6 +5,7 @@ from urllib.error import HTTPError
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from data import get_async_session
 from fetch_data import create_quantity_observation
@@ -18,9 +19,9 @@ FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_sparql_quantity(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_sparql_quantity(db_session):
     """Create a wikibase with sparql endpoint for quantity tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Quantity Test Wikibase",
             base_url="https://quantity-test-example.com",

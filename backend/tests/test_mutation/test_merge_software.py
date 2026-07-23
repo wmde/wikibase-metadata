@@ -1,9 +1,8 @@
 """Test Merge Software"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-
-from data import get_async_session
 from model.database import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
@@ -16,9 +15,9 @@ mutation MyMutation($baseId: Int!, $additionalId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_software(db_session):  # pylint: disable=unused-argument
+async def wikibase_software(db_session):
     """Create two software entries with different types"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         software = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="Test Extension",
@@ -31,9 +30,9 @@ async def wikibase_software(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.fixture
-async def two_wikibase_softwares(db_session):  # pylint: disable=unused-argument
+async def two_wikibase_softwares(db_session):
     """Create two software entries with different types"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         software_ids = []
         for i in range(2):
             software = WikibaseSoftwareModel(
@@ -101,9 +100,9 @@ async def test_merge_software_by_id_mutation_fail_not_found(
 
 
 @pytest.fixture
-async def two_software_different_types(db_session):  # pylint: disable=unused-argument
+async def two_software_different_types(db_session):
     """Create two software entries with different types"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         software1 = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="Test Extension",

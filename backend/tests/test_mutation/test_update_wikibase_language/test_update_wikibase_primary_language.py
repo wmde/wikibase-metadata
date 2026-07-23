@@ -215,7 +215,7 @@ async def test_update_wikibase_primary_language_to_same(
 
 
 @pytest.fixture
-async def wikibase_without_language(db_session):  # pylint: disable=unused-argument
+async def wikibase_without_language(db_session):
     """Create a test wikibase"""
     async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(

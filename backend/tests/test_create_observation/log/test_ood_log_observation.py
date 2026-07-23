@@ -5,8 +5,8 @@ import json
 
 from freezegun import freeze_time
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import (
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
@@ -16,11 +16,9 @@ from tests.utils import MockResponse, ParsedUrl
 
 
 @pytest.fixture
-async def wikibase_with_script_path_log_ood(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_script_path_log_ood(db_session):
     """Create a non-CLOUD wikibase with script path for OOD log tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Log OOD Test Wikibase",
             base_url="https://example.com",

@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy import select
 
 from data import get_async_session
-from model.database import WikibaseModel, WikibaseLanguageModel, WikibaseURLModel
+from model.database import WikibaseLanguageModel, WikibaseModel, WikibaseURLModel
 
 
 def test_setting_two_primary_languages():

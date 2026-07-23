@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareModel,
@@ -19,9 +19,9 @@ from tests.utils import MockResponse, assert_layered_property_value
 
 
 @pytest.fixture
-async def wikibase_with_manifest(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_manifest(db_session):
     """Create a wikibase with WikibaseManifest software version observation"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         manifest_software = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="WikibaseManifest",

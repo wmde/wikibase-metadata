@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareModel,
@@ -40,11 +40,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def five_wikibases_with_software_versions(
-    db_session,
-):  # pylint: disable=unused-argument
+async def five_wikibases_with_software_versions(db_session):
     """Create 5 software entries; 4 reachable via UNKNOWN type, 1 only via SUITE"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         software_names = [
             "SoftwareA",
             "SoftwareB",

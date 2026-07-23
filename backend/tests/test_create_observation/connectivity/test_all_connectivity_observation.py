@@ -1,6 +1,7 @@
 """Test Bulk Connectivity Update"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from model.database import WikibaseModel
 from tests.test_schema import test_schema
@@ -20,7 +21,6 @@ mutation MyMutation {
 @pytest.fixture
 async def wikibase(db_session):
     """Create 3 test wikibases for connectivity tests"""
-    from sqlalchemy.ext.asyncio import AsyncSession
 
     async with AsyncSession(bind=db_session) as session:
         for i in range(3):

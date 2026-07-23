@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 
 from freezegun import freeze_time
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseConnectivityObservationModel,
     WikibaseConnectivityObservationItemRelationshipCountModel,
@@ -37,11 +37,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_complex_connectivity(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_complex_connectivity(db_session):
     """Create a wikibase with a connectivity observation with relationship counts"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Connectivity Most Recent Test Wikibase",
             base_url="https://connectivity-most-recent-example.com",

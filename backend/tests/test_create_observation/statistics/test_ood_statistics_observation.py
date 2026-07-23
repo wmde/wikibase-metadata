@@ -1,19 +1,17 @@
 """Test update_out_of_date_stats_observations"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import update_out_of_date_stats_observations
 from model.database import WikibaseModel
 from tests.utils import MockResponse
 
 
 @pytest.fixture
-async def wikibase_fixture(
-    db_session,
-):  # pylint: disable=redefined-outer-name, unused-argument
+async def wikibase_with_article_path(db_session):
     """Create a wikibase with article path and no software observations"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Software OOD Test Wikibase",
             base_url="https://software-ood-example.com",
@@ -30,7 +28,7 @@ async def wikibase_fixture(
 @pytest.mark.soup
 @pytest.mark.statistics
 async def test_update_out_of_date_stats_observations_fail(
-    wikibase_fixture, mocker
+    wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Data Returned Scenario"""
 

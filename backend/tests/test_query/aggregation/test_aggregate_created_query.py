@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseLogMonthObservationModel, WikibaseModel
 from model.enum import WikibaseType
 from tests.test_schema import test_schema
@@ -21,9 +21,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_first_month_log(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_first_month_log(db_session):
     """Create a SUITE wikibase with a first-month log observation with first_log_date set"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Created Test Wikibase",
             base_url="https://aggregate-created-example.com",

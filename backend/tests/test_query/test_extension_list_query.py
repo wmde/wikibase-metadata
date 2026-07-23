@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseSoftwareModel, WikibaseSoftwareTagModel
 from model.enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
@@ -39,9 +39,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 
 @pytest.fixture
-async def extension_software_data(db_session):  # pylint: disable=unused-argument
+async def extension_software_data(db_session):
     """Create a small set of extensions for list query tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         extensions = [
             {
                 "name": "TestExtensionA",
@@ -138,7 +138,7 @@ async def test_extension_list_query_parameterized(
     expected_mediawiki_bundled,
     expected_wbs_bundled,
     expected_tags,
-):  # pylint: disable=unused-argument, redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """Test Extension List"""
 
     result = await test_schema.execute(

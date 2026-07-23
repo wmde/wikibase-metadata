@@ -1,8 +1,8 @@
 """Test Update Wikibase Language"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel
 from resolvers import add_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
@@ -18,11 +18,9 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_without_primary_language(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_without_primary_language(db_session):
     """Create a test wikibase"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://wikibase-fixture.com",
@@ -35,11 +33,9 @@ async def wikibase_without_primary_language(
 
 
 @pytest.fixture
-async def wikibase_without_additional_languages(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_without_additional_languages(db_session):
     """Create a test wikibase"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://wikibase-fixture.com",

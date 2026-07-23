@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseUserGroupModel,
@@ -39,11 +39,9 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.fixture
 # pylint: disable-next=too-many-statements, too-many-locals
-async def wikibase_with_two_user_observations(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_two_user_observations(db_session):
     """Create a wikibase with two user observations, one with user groups"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="User All Observations Test Wikibase",
             base_url="https://user-all-obs-example.com",

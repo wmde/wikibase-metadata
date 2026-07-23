@@ -6,6 +6,7 @@ from urllib.error import HTTPError
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from data import get_async_session
 from fetch_data import create_property_popularity_observation
@@ -19,9 +20,9 @@ FETCH_PROPERTY_POPULARITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_sparql(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_sparql(db_session):
     """Create a wikibase with sparql endpoint"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Property Test Wikibase",
             base_url="https://property-test-example.com",

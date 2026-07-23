@@ -4,6 +4,7 @@ import os
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from fetch_data import update_cloud_instances
@@ -14,9 +15,9 @@ from tests.utils import MockResponse
 
 
 @pytest.fixture
-async def wikibase(db_session):  # pylint: disable=unused-argument
+async def wikibase(db_session):
     """Create a test wikibase"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase_model = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://tcdict.wikibase.cloud",

@@ -142,7 +142,7 @@ async def test_create_recent_changes_counts():
 
 
 @pytest.fixture
-async def wikibase_with_script_path_rc(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_script_path_rc(db_session):
     """Create a wikibase with script path for recent changes observation tests"""
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(

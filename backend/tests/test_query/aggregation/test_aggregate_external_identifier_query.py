@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
 from model.enum import WikibaseType
 from tests.test_schema import test_schema
@@ -24,11 +24,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_ei_observation_agg(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_ei_observation_agg(db_session):
     """Create a wikibase with an EI observation for aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate EI Test Wikibase",
             base_url="https://aggregate-ei-example.com",
@@ -88,11 +86,9 @@ async def test_aggregate_external_identifier_query(
 
 
 @pytest.fixture
-async def wikibase_with_ei_observation_suite(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_ei_observation_suite(db_session):
     """Create a SUITE wikibase with an EI observation for filtered aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate EI Filtered Test Wikibase",
             base_url="https://aggregate-ei-filtered-example.com",

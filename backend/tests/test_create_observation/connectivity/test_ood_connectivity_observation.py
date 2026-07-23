@@ -1,6 +1,7 @@
 """Test update_out_of_date_connectivity_observations"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from fetch_data import update_out_of_date_connectivity_observations
 from model.database import WikibaseModel
@@ -9,7 +10,6 @@ from model.database import WikibaseModel
 @pytest.fixture
 async def wikibase_out_of_date_connectivity(db_session):
     """Create 1 wikibase with no connectivity observations (out of date)"""
-    from sqlalchemy.ext.asyncio import AsyncSession
 
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(

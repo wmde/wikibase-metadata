@@ -1,8 +1,8 @@
 """Test Merge Software"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
 from tests.test_schema import test_schema
@@ -15,9 +15,9 @@ mutation MyMutation($extensionId: Int!, $bundled: Boolean) {
 
 
 @pytest.fixture
-async def extension_software(db_session):  # pylint: disable=unused-argument
+async def extension_software(db_session):
     """Create a test extension"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         software = WikibaseSoftwareModel(
             software_type=WikibaseSoftwareType.EXTENSION,
             software_name="Test Extension",

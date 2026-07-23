@@ -3,16 +3,14 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
-    WikibaseLogMonthLogTypeObservationModel,
-    WikibaseLogMonthObservationModel,
     WikibaseModel,
     WikibasePropertyPopularityCountModel,
     WikibasePropertyPopularityObservationModel,
 )
-from model.enum import WikibaseLogType, WikibaseType
+from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import (
     assert_layered_property_count,
@@ -45,11 +43,9 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 
 
 @pytest.fixture
-async def wikibase_with_property_popularity(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_property_popularity(db_session):
     """Create a wikibase with property popularity observation: P1=12, P14=1"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity Test Wikibase",
             base_url="https://property-popularity-example.com",
@@ -138,11 +134,9 @@ async def test_aggregate_property_popularity_query(
 
 
 @pytest.fixture
-async def wikibase_with_property_popularity_suite(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_property_popularity_suite(db_session):
     """Create a SUITE wikibase with 2 distinct properties for filtered aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity Filtered Test Wikibase",
             base_url="https://property-popularity-filtered-example.com",

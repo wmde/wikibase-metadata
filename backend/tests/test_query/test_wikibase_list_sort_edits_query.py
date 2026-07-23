@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
@@ -12,11 +12,9 @@ from tests.utils import assert_layered_property_value, assert_page_meta
 
 
 @pytest.fixture
-async def eleven_wikibases_with_one_recent_changes(
-    db_session,
-):  # pylint: disable=unused-argument
+async def eleven_wikibases_with_one_recent_changes(db_session):
     """Create 11 wikibases - 10 with no observations, 1 with recent changes"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         for i in range(11):
             wikibase = WikibaseModel(
                 wikibase_name=f"Edits Sort Test Wikibase {i}",

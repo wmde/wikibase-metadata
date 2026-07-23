@@ -2,8 +2,8 @@
 """Test Update Wikibase Reuse Flag"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
@@ -40,9 +40,9 @@ mutation MyMutation($wikibaseId: Int!, $reuse: Boolean!) {
 
 
 @pytest.fixture
-async def wikibase(db_session):  # pylint: disable=unused-argument
+async def wikibase(db_session):
     """Create a test wikibase"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://example.com",
@@ -55,9 +55,9 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.fixture
-async def wikibases_mixed_reuse(db_session):  # pylint: disable=unused-argument
+async def wikibases_mixed_reuse(db_session):
     """Create wikibases with mixed reuse flags - 3 reuse=True, 2 reuse=False"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         for i in range(3):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse True Wikibase {i}",
@@ -82,9 +82,9 @@ async def wikibases_mixed_reuse(db_session):  # pylint: disable=unused-argument
 
 
 @pytest.fixture
-async def wikibase_reuse_false_fixture(db_session):  # pylint: disable=unused-argument
+async def wikibase_reuse_false_fixture(db_session):
     """Create wikibases"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         for i in range(2):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse False Wikibase {i}",
@@ -157,9 +157,9 @@ async def test_set_wikibase_reuse_false(
 
 
 @pytest.fixture
-async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-argument
+async def wikibase_reuse_true_fixture(db_session):
     """Create 2 reuse=True and 1 reuse=False wikibase"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         for i in range(2):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse True Wikibase {i}",
@@ -183,11 +183,9 @@ async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-arg
 
 
 @pytest.fixture
-async def wikibase_reuse_false_majority_fixture(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_reuse_false_majority_fixture(db_session):
     """Create 1 reuse=True and 2 reuse=False wikibases"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Reuse True Wikibase",
             base_url="https://reuse-true-single-example.com",

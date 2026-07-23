@@ -1,6 +1,7 @@
 """Test update_out_of_date_external_identifier_observations"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from data import get_async_session
 from fetch_data import update_out_of_date_external_identifier_observations
@@ -10,7 +11,7 @@ from model.database import WikibaseModel
 @pytest.fixture
 async def wikibase_with_sparql_ei_ood(db_session):
     """Create a wikibase with sparql endpoint for OOD EI tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="EI OOD Test Wikibase",
             base_url="https://ei-ood-example.com",

@@ -1,6 +1,7 @@
 """Test Bulk Property Popularity Update"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from data import get_async_session
 from model.database import WikibaseModel
@@ -19,9 +20,9 @@ mutation MyMutation {
 
 
 @pytest.fixture
-async def three_wikibases_with_sparql(db_session):  # pylint: disable=unused-argument
+async def three_wikibases_with_sparql(db_session):
     """Create 3 test wikibases with sparql endpoint for property popularity tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         for i in range(3):
             wikibase = WikibaseModel(
                 wikibase_name=f"Property Test Wikibase {i}",

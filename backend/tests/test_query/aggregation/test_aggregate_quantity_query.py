@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 from model.enum import WikibaseType
 from tests.test_schema import test_schema
@@ -24,11 +24,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_quantity_observation(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_quantity_observation(db_session):
     """Create a wikibase with a quantity observation for aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Quantity Test Wikibase",
             base_url="https://aggregate-quantity-example.com",
@@ -78,9 +76,9 @@ async def test_aggregate_quantity_query(
 
 
 @pytest.fixture
-async def wikibase_with_quantity_suite(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_quantity_suite(db_session):
     """Create a SUITE wikibase with a quantity observation for filtered aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Quantity Filtered Test Wikibase",
             base_url="https://aggregate-quantity-filtered-example.com",

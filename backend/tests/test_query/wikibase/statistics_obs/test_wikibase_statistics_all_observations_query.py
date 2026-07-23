@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseStatisticsObservationModel
 from tests.test_query.wikibase.statistics_obs.assert_statistics import assert_statistics
 from tests.test_query.wikibase.statistics_obs.statistics_fragment import (
@@ -29,11 +29,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_three_statistics_observations(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_three_statistics_observations(db_session):
     """Create a wikibase with 3 statistics observations: failed, success, failed"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Statistics All Observations Test Wikibase",
             base_url="https://statistics-all-obs-example.com",

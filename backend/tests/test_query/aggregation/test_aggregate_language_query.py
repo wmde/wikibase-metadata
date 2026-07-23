@@ -1,8 +1,8 @@
 """Test Aggregate Users Query"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseLanguageModel, WikibaseModel
 from model.enum import WikibaseType
 from tests.test_schema import test_schema
@@ -90,14 +90,14 @@ async def test_aggregate_languages_query(
 
 
 @pytest.fixture
-async def wikibases_with_languages(db_session):  # pylint: disable=unused-argument
+async def wikibases_with_languages(db_session):
     """
     Create wikibases with languages:
     - 1 SUITE wikibase with 7 languages (en + 6 others)
     - 1 non-SUITE wikibase with 1 language (en)
     Excluding SUITE drops from 7 to 1 (only 'en' remains via non-SUITE wikibase)
     """
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         # SUITE wikibase with 7 languages
         suite_wikibase = WikibaseModel(
             wikibase_name="Languages Suite Test Wikibase",

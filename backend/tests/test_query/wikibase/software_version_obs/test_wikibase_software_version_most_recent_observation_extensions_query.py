@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseSoftwareModel,
@@ -42,11 +42,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_extensions_observation(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_extensions_observation(db_session):
     """Create a wikibase with software version observation containing extensions"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         extensions = [
             ("Babel", "1.11.1", None, None),
             (
@@ -132,7 +130,7 @@ async def wikibase_with_extensions_observation(
 @pytest.mark.version
 async def test_wikibase_software_version_most_recent_observation_extensions_query(
     wikibase_with_extensions_observation,
-):  # pylint: disable=unused-argument, redefined-outer-name
+):  # pylint: disable=redefined-outer-name
     """Test Wikibase Most Recent Software Version Installed Extensions Observation Query"""
 
     wikibase_id, observation_id = wikibase_with_extensions_observation

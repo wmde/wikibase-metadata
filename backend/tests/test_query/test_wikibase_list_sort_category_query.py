@@ -1,8 +1,8 @@
 """Test Sort Wikibase List"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel
 from model.enum import WikibaseCategory
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
@@ -11,11 +11,9 @@ from tests.utils import assert_layered_property_value, assert_page_meta
 
 
 @pytest.fixture
-async def eleven_wikibases_with_categories(
-    db_session,
-):  # pylint: disable=unused-argument
+async def eleven_wikibases_with_categories(db_session):
     """Create 11 wikibases - 9 with no category, 2 with EXPERIMENTAL_AND_PROTOTYPE_PROJECTS"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         category = WikibaseCategoryModel()
         category.category = WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
         session.add(category)

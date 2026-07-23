@@ -3,6 +3,7 @@
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from data import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel
@@ -26,9 +27,9 @@ async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
 
 
 @pytest.fixture
-async def wikibase_categories(db_session):  # pylint: disable=unused-argument
+async def wikibase_categories(db_session):
     """Create wikibase categories"""
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         async_session.add(
             WikibaseCategoryModel(
                 category=WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS

@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
 from tests.utils import DATETIME_FORMAT, assert_layered_property_value
@@ -34,11 +34,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_recent_changes_observation(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_recent_changes_observation(db_session):
     """Create a wikibase with a recent changes observation"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Recent Changes Test Wikibase",
             base_url="https://recent-changes-query-example.com",

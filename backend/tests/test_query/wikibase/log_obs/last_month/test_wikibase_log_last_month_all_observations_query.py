@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 
 from freezegun import freeze_time
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseLogMonthLogTypeObservationModel,
     WikibaseLogMonthObservationModel,
@@ -44,7 +44,7 @@ query MyQuery($wikibaseId: Int!) {
 @pytest.fixture
 async def wikibase_with_four_log_observations(db_session):
     """Create a wikibase with 4 last-month log observations"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Log All Observations Test Wikibase",
             base_url="https://log-all-obs-example.com",

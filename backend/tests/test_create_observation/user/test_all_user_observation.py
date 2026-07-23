@@ -1,8 +1,8 @@
 """Test Bulk User Data Update"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
@@ -19,11 +19,9 @@ mutation MyMutation {
 
 
 @pytest.fixture
-async def three_wikibases_with_script_path_user(
-    db_session,
-):  # pylint: disable=unused-argument
+async def three_wikibases_with_script_path_user(db_session):
     """Create 3 test wikibases with script path for user observation tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         for i in range(3):
             wikibase = WikibaseModel(
                 wikibase_name=f"User Test Wikibase {i}",

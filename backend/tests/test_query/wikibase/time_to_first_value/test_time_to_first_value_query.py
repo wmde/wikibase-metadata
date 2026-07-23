@@ -3,8 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import (
     WikibaseModel,
     WikibaseItemDateModel,
@@ -41,9 +41,9 @@ query MyQuery($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def wikibase_with_ttfv_observation(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_ttfv_observation(db_session):
     """Create a wikibase with a time to first value observation"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="TTFV Query Test Wikibase",
             base_url="https://ttfv-query-example.com",

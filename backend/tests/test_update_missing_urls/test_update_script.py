@@ -1,8 +1,8 @@
 """Test Update Missing Script Paths"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel
 from resolvers.update import update_missing_script_paths
 from tests.test_schema import test_schema
@@ -11,9 +11,9 @@ from tests.utils import MockResponse, assert_layered_property_value
 
 
 @pytest.fixture
-async def wikibase(db_session):  # pylint: disable=unused-argument
+async def wikibase(db_session):
     """Create a wikibase with article path for software version tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         test_wikibase = WikibaseModel(
             wikibase_name="Software Version Test Wikibase",
             base_url="https://example.com",

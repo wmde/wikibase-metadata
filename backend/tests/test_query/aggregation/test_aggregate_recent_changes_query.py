@@ -3,9 +3,8 @@
 from datetime import datetime, timezone
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-
-from data import get_async_session
 from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
 from model.enum import WikibaseType
 from tests.test_schema import test_schema
@@ -27,9 +26,9 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 
 @pytest.fixture
-async def wikibase_with_recent_changes(db_session):  # pylint: disable=unused-argument
+async def wikibase_with_recent_changes(db_session):
     """Create a wikibase with a recent changes observation for aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Recent Changes Test Wikibase",
             base_url="https://aggregate-recent-changes-example.com",
@@ -58,11 +57,9 @@ async def wikibase_with_recent_changes(db_session):  # pylint: disable=unused-ar
 
 
 @pytest.fixture
-async def wikibase_with_recent_changes_suite(
-    db_session,
-):  # pylint: disable=unused-argument
+async def wikibase_with_recent_changes_suite(db_session):
     """Create a SUITE wikibase with a recent changes observation for filtered tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Recent Changes Filtered Test Wikibase",
             base_url="https://aggregate-recent-changes-filtered-example.com",

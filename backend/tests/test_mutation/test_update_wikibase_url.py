@@ -3,8 +3,8 @@
 
 import pytest
 import pytest_asyncio
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
@@ -66,9 +66,9 @@ def get_wikibase_id_by_base_url():
 
 
 @pytest.fixture
-async def wikibase(db_session):  # pylint: disable=unused-argument
+async def wikibase(db_session):
     """Create a test wikibase without a script path"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Test Wikibase",
             base_url="https://example.com",

@@ -4,7 +4,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
@@ -72,9 +71,9 @@ async def two_wikibases_with_full_data(db_session):
 
 
 @pytest.fixture
-async def wikibases_all_types(db_session):  # pylint: disable=unused-argument
+async def wikibases_all_types(db_session):
     """Create 11 wikibases: 7 CLOUD, 1 OTHER, 1 SUITE, 1 TEST, 1 UNKNOWN"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         types = [
             WikibaseType.CLOUD,
             WikibaseType.CLOUD,
