@@ -21,11 +21,10 @@ async def eleven_wikibases_with_one_quantity(
             wikibase = WikibaseModel(
                 wikibase_name=f"Triples Sort Test Wikibase {i}",
                 base_url=f"https://triples-sort-example-{i}.com",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
             await session.flush()
             await session.refresh(wikibase)

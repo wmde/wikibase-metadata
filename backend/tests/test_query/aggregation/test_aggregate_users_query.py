@@ -34,11 +34,10 @@ async def wikibase_with_user_observation(db_session):  # pylint: disable=unused-
             wikibase_name="Aggregate Users Test Wikibase",
             base_url="https://aggregate-users-example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -98,11 +97,10 @@ async def wikibase_with_user_observation_suite(
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Users Filtered Test Wikibase",
             base_url="https://aggregate-users-filtered-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

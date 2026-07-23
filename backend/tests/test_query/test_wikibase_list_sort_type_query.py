@@ -31,11 +31,10 @@ async def wikibases_with_types(db_session):
             wikibase = WikibaseModel(
                 wikibase_name=f"Type Sort Test Wikibase {i}",
                 base_url=f"https://type-sort-example-{i}.com",
+                reuse=True,
+                wikibase_type=wikibase_type,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = wikibase_type
             session.add(wikibase)
         await session.flush()
 

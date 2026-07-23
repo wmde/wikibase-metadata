@@ -46,11 +46,10 @@ async def wikibase_with_connectivity_observations(
         wikibase = WikibaseModel(
             wikibase_name="Connectivity All Observations Test Wikibase",
             base_url="https://connectivity-all-obs-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

@@ -27,11 +27,10 @@ async def eleven_wikibases_with_categories(
             wikibase = WikibaseModel(
                 wikibase_name=f"Category Sort Test Wikibase {i}",
                 base_url=f"https://category-sort-example-{i}.com",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             wikibase.category_id = category_id if i >= 9 else None
             session.add(wikibase)
         await session.flush()

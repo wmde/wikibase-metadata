@@ -15,11 +15,10 @@ async def wikibase_with_sparql_ei_ood(db_session):
             wikibase_name="EI OOD Test Wikibase",
             base_url="https://ei-ood-example.com",
             sparql_endpoint_url="https://ei-ood-example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
 

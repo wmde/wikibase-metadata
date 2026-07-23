@@ -53,11 +53,10 @@ async def wikibase_with_property_popularity(
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity Test Wikibase",
             base_url="https://property-popularity-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -147,11 +146,10 @@ async def wikibase_with_property_popularity_suite(
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity Filtered Test Wikibase",
             base_url="https://property-popularity-filtered-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

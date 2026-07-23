@@ -25,11 +25,10 @@ async def wikibase_with_script_path_log_ood(
             wikibase_name="Log OOD Test Wikibase",
             base_url="https://example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

@@ -50,11 +50,10 @@ async def wikibases_with_statistics(db_session):  # pylint: disable=unused-argum
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Statistics Test Wikibase",
             base_url="https://aggregate-statistics-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.OTHER,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.OTHER
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -77,11 +76,10 @@ async def wikibases_with_statistics(db_session):  # pylint: disable=unused-argum
         wikibase_suite = WikibaseModel(
             wikibase_name="Aggregate Statistics Filtered Test Wikibase",
             base_url="https://aggregate-statistics-filtered-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase_suite.checked = True
-        wikibase_suite.reuse = True
-        wikibase_suite.test = False
-        wikibase_suite.wikibase_type = WikibaseType.SUITE
         session.add(wikibase_suite)
         await session.flush()
         await session.refresh(wikibase_suite)

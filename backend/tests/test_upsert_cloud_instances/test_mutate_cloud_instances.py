@@ -37,10 +37,9 @@ async def wikibase_list(db_session):
                 wikibase_name=wb["wikibase_name"],
                 wikibase_type=wb["type"],
                 base_url=f"https://example-{i}.com",
+                reuse=True,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
             session.add(wikibase)
 
         await session.flush()

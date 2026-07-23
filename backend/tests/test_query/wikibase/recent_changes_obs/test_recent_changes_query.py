@@ -42,11 +42,10 @@ async def wikibase_with_recent_changes_observation(
         wikibase = WikibaseModel(
             wikibase_name="Recent Changes Test Wikibase",
             base_url="https://recent-changes-query-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

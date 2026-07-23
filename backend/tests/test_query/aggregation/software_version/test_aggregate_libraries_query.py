@@ -43,11 +43,10 @@ async def wikibase_with_three_libraries(db_session):  # pylint: disable=unused-a
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Libraries Test Wikibase",
             base_url="https://aggregate-libraries-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -89,11 +88,10 @@ async def wikibases_with_libraries_for_filter(
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Libraries Suite Wikibase",
             base_url="https://aggregate-libraries-suite-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

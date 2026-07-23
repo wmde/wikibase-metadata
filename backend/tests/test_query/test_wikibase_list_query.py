@@ -41,15 +41,14 @@ async def two_wikibases_with_full_data(db_session):
             article_path="/wiki",
             script_path="/w/",
             sparql_endpoint_url="https://query.example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
+            description="Mock wikibase for testing this codebase",
+            organization="Wikibase Mockery International",
+            country="Germany",
+            region="Europe",
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
-        wikibase.description = "Mock wikibase for testing this codebase"
-        wikibase.organization = "Wikibase Mockery International"
-        wikibase.country = "Germany"
-        wikibase.region = "Europe"
         wikibase.category_id = category.id
         session.add(wikibase)
         await session.flush()
@@ -63,11 +62,10 @@ async def two_wikibases_with_full_data(db_session):
         wikibase2 = WikibaseModel(
             wikibase_name="Mock Wikibase II",
             base_url="https://example2.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase2.checked = True
-        wikibase2.reuse = True
-        wikibase2.test = False
-        wikibase2.wikibase_type = None
         session.add(wikibase2)
         await session.flush()
         return wikibase.id, wikibase2.id
@@ -94,11 +92,10 @@ async def wikibases_all_types(db_session):  # pylint: disable=unused-argument
             wikibase = WikibaseModel(
                 wikibase_name=f"Filter Include Test Wikibase {i}",
                 base_url=f"https://filter-include-example-{i}.com",
+                reuse=True,
+                wikibase_type=wikibase_type,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = wikibase_type
             session.add(wikibase)
         await session.flush()
 

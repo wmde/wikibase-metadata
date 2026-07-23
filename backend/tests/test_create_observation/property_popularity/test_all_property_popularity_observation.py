@@ -27,11 +27,10 @@ async def three_wikibases_with_sparql(db_session):  # pylint: disable=unused-arg
                 wikibase_name=f"Property Test Wikibase {i}",
                 base_url=f"https://property-example-{i}.com",
                 sparql_endpoint_url=f"https://property-example-{i}.com/sparql",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
 

@@ -8,10 +8,7 @@ from sqlalchemy import select
 
 from data import get_async_session
 from fetch_data import create_software_version_observation
-from model.database import WikibaseModel
-from model.database.wikibase_observation.version.wikibase_version_observation_model import (
-    WikibaseSoftwareVersionObservationModel,
-)
+from model.database import WikibaseModel, WikibaseSoftwareVersionObservationModel
 from tests.mock_info import MockBackgroundClassList, MockInfo
 from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
@@ -32,11 +29,10 @@ async def wikibase_with_article_path(db_session):  # pylint: disable=unused-argu
             wikibase_name="Software Version Test Wikibase",
             base_url="https://software-version-test-example.com",
             article_path="/wiki",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

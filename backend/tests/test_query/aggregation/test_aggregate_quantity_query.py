@@ -32,11 +32,10 @@ async def wikibase_with_quantity_observation(
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Quantity Test Wikibase",
             base_url="https://aggregate-quantity-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -85,11 +84,10 @@ async def wikibase_with_quantity_suite(db_session):  # pylint: disable=unused-ar
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Quantity Filtered Test Wikibase",
             base_url="https://aggregate-quantity-filtered-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

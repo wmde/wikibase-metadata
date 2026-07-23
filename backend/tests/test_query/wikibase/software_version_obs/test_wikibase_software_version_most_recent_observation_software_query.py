@@ -69,11 +69,10 @@ async def wikibase_with_software_observation(
         wikibase = WikibaseModel(
             wikibase_name="Software Version Software Test Wikibase",
             base_url="https://software-version-software-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

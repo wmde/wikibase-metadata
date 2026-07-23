@@ -47,11 +47,10 @@ async def wikibase_with_ttfv_observation(db_session):  # pylint: disable=unused-
         wikibase = WikibaseModel(
             wikibase_name="TTFV Query Test Wikibase",
             base_url="https://ttfv-query-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

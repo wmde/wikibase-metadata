@@ -18,10 +18,9 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
             wikibase_name="Software Version Test Wikibase",
             base_url="https://example.com",
             article_path="/wiki",
+            reuse=True,
         )
         test_wikibase.checked = True
-        test_wikibase.reuse = True
-        test_wikibase.test = False
         session.add(test_wikibase)
         await session.flush()
         await session.refresh(test_wikibase)

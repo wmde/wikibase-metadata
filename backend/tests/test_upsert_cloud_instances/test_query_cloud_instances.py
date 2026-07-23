@@ -18,11 +18,10 @@ async def wikibase_fixture(db_session):
             wikibase_name="Test Wikibase",
             base_url="https://tcdict.wikibase.cloud",
             sparql_endpoint_url="https://tcdict.wikibase.cloud/sparql",
+            reuse=True,
+            wikibase_type=WikibaseType.CLOUD,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType["CLOUD"]
         session.add(wikibase)
         await session.flush()
         print("asdf")

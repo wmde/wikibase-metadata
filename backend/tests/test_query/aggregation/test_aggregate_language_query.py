@@ -102,11 +102,10 @@ async def wikibases_with_languages(db_session):  # pylint: disable=unused-argume
         suite_wikibase = WikibaseModel(
             wikibase_name="Languages Suite Test Wikibase",
             base_url="https://languages-suite-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         suite_wikibase.checked = True
-        suite_wikibase.reuse = True
-        suite_wikibase.test = False
-        suite_wikibase.wikibase_type = WikibaseType.SUITE
         session.add(suite_wikibase)
         await session.flush()
         await session.refresh(suite_wikibase)
@@ -122,11 +121,10 @@ async def wikibases_with_languages(db_session):  # pylint: disable=unused-argume
         other_wikibase = WikibaseModel(
             wikibase_name="Languages Other Test Wikibase",
             base_url="https://languages-other-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         other_wikibase.checked = True
-        other_wikibase.reuse = True
-        other_wikibase.test = False
-        other_wikibase.wikibase_type = None
         session.add(other_wikibase)
         await session.flush()
         await session.refresh(other_wikibase)

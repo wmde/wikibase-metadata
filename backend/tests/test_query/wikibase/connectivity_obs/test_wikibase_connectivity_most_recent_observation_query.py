@@ -46,11 +46,10 @@ async def wikibase_with_complex_connectivity(
             wikibase_name="Connectivity Most Recent Test Wikibase",
             base_url="https://connectivity-most-recent-example.com",
             sparql_endpoint_url="https://connectivity-most-recent-example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

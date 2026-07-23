@@ -149,11 +149,10 @@ async def wikibase_with_script_path_rc(db_session):  # pylint: disable=unused-ar
             wikibase_name="Recent Changes Exception Test Wikibase",
             base_url="https://recent-changes-exception-example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

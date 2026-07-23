@@ -86,11 +86,10 @@ async def wikibases(db_session):  # pylint: disable=unused-argument
             wikibase = WikibaseModel(
                 wikibase_name=f"CSV Export Test Wikibase {i}",
                 base_url=f"https://csv-export-example-{i}.com",
+                reuse=True,
+                wikibase_type=wikibase_type,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = wikibase_type
             session.add(wikibase)
             await session.flush()
             await session.refresh(wikibase)

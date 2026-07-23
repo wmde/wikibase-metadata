@@ -29,11 +29,10 @@ async def three_wikibases_with_script_path_user(
                 wikibase_name=f"User Test Wikibase {i}",
                 base_url=f"https://user-example-{i}.com",
                 script_path="/w",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
 

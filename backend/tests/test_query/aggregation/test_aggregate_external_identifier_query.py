@@ -32,11 +32,10 @@ async def wikibase_with_ei_observation_agg(
         wikibase = WikibaseModel(
             wikibase_name="Aggregate EI Test Wikibase",
             base_url="https://aggregate-ei-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -97,11 +96,10 @@ async def wikibase_with_ei_observation_suite(
         wikibase = WikibaseModel(
             wikibase_name="Aggregate EI Filtered Test Wikibase",
             base_url="https://aggregate-ei-filtered-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

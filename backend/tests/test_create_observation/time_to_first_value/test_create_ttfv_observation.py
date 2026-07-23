@@ -8,9 +8,7 @@ import pytest
 from sqlalchemy import select
 
 from data.database_connection import get_async_session
-from model.database.wikibase_observation.time_to_first_value.ttfv_observation_model import (
-    WikibaseTimeToFirstValueObservationModel,
-)
+from model.database import WikibaseTimeToFirstValueObservationModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, get_mock_context
 

@@ -9,10 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
 from fetch_data import create_external_identifier_observation
-from model.database import WikibaseModel
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
-    WikibaseExternalIdentifierObservationModel,
-)
+from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -30,11 +27,10 @@ async def wikibase_with_sparql(db_session):
             wikibase_name="EI Test Wikibase",
             base_url="https://example.com",
             sparql_endpoint_url="https://query.example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

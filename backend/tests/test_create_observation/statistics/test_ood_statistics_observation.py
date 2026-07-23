@@ -18,11 +18,10 @@ async def wikibase_fixture(
             wikibase_name="Software OOD Test Wikibase",
             base_url="https://software-ood-example.com",
             article_path="/wiki",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
 

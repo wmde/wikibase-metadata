@@ -64,11 +64,10 @@ async def wikibase_with_three_named_skins(
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Skins Page One Test Wikibase",
             base_url="https://aggregate-skins-page-one-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -149,11 +148,10 @@ async def wikibase_with_three_skins(db_session):  # pylint: disable=unused-argum
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Skins Test Wikibase",
             base_url="https://aggregate-skins-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.SUITE
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

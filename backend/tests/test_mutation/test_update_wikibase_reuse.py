@@ -62,22 +62,20 @@ async def wikibases_mixed_reuse(db_session):  # pylint: disable=unused-argument
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse True Wikibase {i}",
                 base_url=f"https://reuse-true-example-{i}.com",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
 
         for i in range(2):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse False Wikibase {i}",
                 base_url=f"https://reuse-false-example-{i}.com",
+                reuse=False,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = False
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
 
         await session.flush()
@@ -91,11 +89,10 @@ async def wikibase_reuse_false_fixture(db_session):  # pylint: disable=unused-ar
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse False Wikibase {i}",
                 base_url=f"https://reuse-false-example-{i}.com",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = False
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
 
         await session.flush()
@@ -167,21 +164,19 @@ async def wikibase_reuse_true_fixture(db_session):  # pylint: disable=unused-arg
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse True Wikibase {i}",
                 base_url=f"https://reuse-true-example-{i}.com",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
 
         wikibase = WikibaseModel(
             wikibase_name="Reuse False Wikibase",
             base_url="https://reuse-false-example.com",
+            reuse=False,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = False
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
 
         await session.flush()
@@ -196,22 +191,20 @@ async def wikibase_reuse_false_majority_fixture(
         wikibase = WikibaseModel(
             wikibase_name="Reuse True Wikibase",
             base_url="https://reuse-true-single-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
 
         for i in range(2):
             wikibase = WikibaseModel(
                 wikibase_name=f"Reuse False Wikibase {i}",
                 base_url=f"https://reuse-false-majority-example-{i}.com",
+                reuse=False,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = False
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
 
         await session.flush()

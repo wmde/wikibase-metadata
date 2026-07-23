@@ -16,11 +16,10 @@ async def wikibase_out_of_date_connectivity(db_session):
             wikibase_name="Out of Date Connectivity Wikibase",
             base_url="https://out-of-date-connectivity-example.com",
             sparql_endpoint_url="https://out-of-date-connectivity-example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
 

@@ -55,11 +55,10 @@ async def wikibase_fixture(db_session):  # pylint: disable=redefined-outer-name
             sparql_endpoint_url="https://example.com/sparql",
             script_path="/w",
             article_path="/wiki",
+            reuse=True,
+            wikibase_type=WikibaseType.CLOUD,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.CLOUD
         session.add(wikibase)
         await session.flush()
 
@@ -89,10 +88,9 @@ async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-
             sparql_endpoint_url="https://example.com/sparql",
             script_path="/w",
             article_path="/wiki",
+            reuse=True,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
         session.add(wikibase)
         await session.flush()
 
@@ -109,11 +107,10 @@ async def wikibase_with_first_month_log_observations(
         wikibase = WikibaseModel(
             wikibase_name="Log First Month All Observations Test Wikibase",
             base_url="https://log-first-month-all-obs-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -260,11 +257,10 @@ async def wikibase_with_three_property_popularity_observations(
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity All Observations Test Wikibase",
             base_url="https://property-popularity-all-obs-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -330,11 +326,10 @@ async def wikibase_with_user_observation(
             wikibase_name="Aggregate Users Test Wikibase",
             base_url="https://aggregate-users-example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

@@ -34,11 +34,10 @@ async def wikibase_with_manifest(db_session):  # pylint: disable=unused-argument
             wikibase_name="Manifest Test Wikibase",
             base_url="https://mock-wikibase.com",
             script_path="/mockwiki",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

@@ -29,11 +29,10 @@ async def three_wikibases_with_article_path(
                 wikibase_name=f"Software Version Test Wikibase {i}",
                 base_url=f"https://software-version-example-{i}.com",
                 article_path="/wiki",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
 

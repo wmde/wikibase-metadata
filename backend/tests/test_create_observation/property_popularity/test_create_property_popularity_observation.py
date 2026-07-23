@@ -9,10 +9,7 @@ from sqlalchemy import select
 
 from data import get_async_session
 from fetch_data import create_property_popularity_observation
-from model.database import WikibaseModel
-from model.database.wikibase_observation.property.popularity_observation_model import (
-    WikibasePropertyPopularityObservationModel,
-)
+from model.database import WikibaseModel, WikibasePropertyPopularityObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -29,11 +26,10 @@ async def wikibase_with_sparql(db_session):  # pylint: disable=unused-argument
             wikibase_name="Property Test Wikibase",
             base_url="https://property-test-example.com",
             sparql_endpoint_url="https://property-test-example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

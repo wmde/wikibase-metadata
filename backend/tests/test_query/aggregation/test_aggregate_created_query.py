@@ -27,11 +27,10 @@ async def wikibase_with_first_month_log(db_session):  # pylint: disable=unused-a
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Created Test Wikibase",
             base_url="https://aggregate-created-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = WikibaseType["SUITE"]
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

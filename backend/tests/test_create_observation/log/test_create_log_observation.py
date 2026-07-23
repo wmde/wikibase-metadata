@@ -8,13 +8,10 @@ import pytest
 from requests import ReadTimeout
 from sqlalchemy import select
 
-from model.enum.wikibase_user_type_enum import WikibaseUserType
-from model.database.wikibase_observation.log.wikibase_log_month_observation_model import (
-    WikibaseLogMonthObservationModel,
-)
-from model.database import WikibaseModel
 from data import get_async_session
 from fetch_data import create_log_observation
+from model.database import WikibaseLogMonthObservationModel, WikibaseModel
+from model.enum import WikibaseUserType
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
@@ -31,11 +28,10 @@ async def wikibase_with_script_path_log(db_session):  # pylint: disable=unused-a
             wikibase_name="Log Error Test Wikibase",
             base_url="https://example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -311,11 +307,10 @@ async def wikibase_with_script_path(db_session):  # pylint: disable=unused-argum
             wikibase_name="Log Test Wikibase",
             base_url="https://example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

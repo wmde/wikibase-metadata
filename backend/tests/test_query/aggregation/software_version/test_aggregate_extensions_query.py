@@ -43,11 +43,10 @@ async def wikibase_with_three_extensions(db_session):  # pylint: disable=unused-
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Extensions Test Wikibase",
             base_url="https://aggregate-extensions-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -86,11 +85,10 @@ async def wikibases_with_extensions_for_filter(
         wikibase_unknown = WikibaseModel(
             wikibase_name="Aggregate Extensions Unknown Wikibase",
             base_url="https://aggregate-extensions-unknown-example.com",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase_unknown.checked = True
-        wikibase_unknown.reuse = True
-        wikibase_unknown.test = False
-        wikibase_unknown.wikibase_type = None
         session.add(wikibase_unknown)
         await session.flush()
         await session.refresh(wikibase_unknown)
@@ -120,11 +118,10 @@ async def wikibases_with_extensions_for_filter(
         wikibase_suite = WikibaseModel(
             wikibase_name="Aggregate Extensions Suite Wikibase",
             base_url="https://aggregate-extensions-suite-example.com",
+            reuse=True,
+            wikibase_type=WikibaseType.SUITE,
         )
         wikibase_suite.checked = True
-        wikibase_suite.reuse = True
-        wikibase_suite.test = False
-        wikibase_suite.wikibase_type = WikibaseType.SUITE
         session.add(wikibase_suite)
         await session.flush()
         await session.refresh(wikibase_suite)

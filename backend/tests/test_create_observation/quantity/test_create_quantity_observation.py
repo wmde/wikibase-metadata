@@ -8,10 +8,7 @@ from sqlalchemy import select
 
 from data import get_async_session
 from fetch_data import create_quantity_observation
-from model.database import WikibaseModel
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
-    WikibaseQuantityObservationModel,
-)
+from model.database import WikibaseModel, WikibaseQuantityObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -28,11 +25,10 @@ async def wikibase_with_sparql_quantity(db_session):  # pylint: disable=unused-a
             wikibase_name="Quantity Test Wikibase",
             base_url="https://quantity-test-example.com",
             sparql_endpoint_url="https://quantity-test-example.com/sparql",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

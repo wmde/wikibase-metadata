@@ -29,11 +29,10 @@ async def three_wikibases_with_script_path_ttfv(
                 wikibase_name=f"TTFV Test Wikibase {i}",
                 base_url=f"https://ttfv-example-{i}.com",
                 script_path="/w",
+                reuse=True,
+                wikibase_type=None,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = None
             session.add(wikibase)
         await session.flush()
 

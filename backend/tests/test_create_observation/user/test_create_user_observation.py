@@ -9,10 +9,7 @@ from sqlalchemy import select
 
 from data import get_async_session
 from fetch_data import create_user_observation
-from model.database import WikibaseModel
-from model.database.wikibase_observation.user.wikibase_user_observation_model import (
-    WikibaseUserObservationModel,
-)
+from model.database import WikibaseModel, WikibaseUserObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -34,11 +31,10 @@ async def wikibase(db_session):  # pylint: disable=unused-argument
             wikibase_name="User Test Wikibase",
             base_url="https://user-test-example.com",
             script_path="/w",
+            reuse=True,
+            wikibase_type=None,
         )
         wikibase.checked = True
-        wikibase.reuse = True
-        wikibase.test = False
-        wikibase.wikibase_type = None
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)

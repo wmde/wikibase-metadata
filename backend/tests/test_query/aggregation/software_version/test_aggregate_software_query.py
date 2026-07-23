@@ -77,11 +77,10 @@ async def five_wikibases_with_software_versions(
             wikibase = WikibaseModel(
                 wikibase_name=f"Aggregate Software Test Wikibase {i}",
                 base_url=f"https://aggregate-software-example-{i}.com",
+                reuse=True,
+                wikibase_type=wikibase_type,
             )
             wikibase.checked = True
-            wikibase.reuse = True
-            wikibase.test = False
-            wikibase.wikibase_type = wikibase_type
             session.add(wikibase)
             await session.flush()
             await session.refresh(wikibase)
