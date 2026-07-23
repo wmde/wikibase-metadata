@@ -8,7 +8,6 @@ from requests import ReadTimeout
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_recent_changes_observation
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
@@ -162,7 +161,7 @@ async def wikibase_with_script_path_rc(db_session):
 
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_exception_timeout(
-    mocker, wikibase_with_script_path_rc
+    db_session, mocker, wikibase_with_script_path_rc
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
@@ -175,7 +174,7 @@ async def test_create_recent_changes_observation_exception_timeout(
     )
     assert not success
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
             .where(
@@ -195,7 +194,7 @@ async def test_create_recent_changes_observation_exception_timeout(
 
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_exception_decode(
-    mocker, wikibase_with_script_path_rc
+    db_session, mocker, wikibase_with_script_path_rc
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
@@ -208,7 +207,7 @@ async def test_create_recent_changes_observation_exception_decode(
     )
     assert not success
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
             .where(
@@ -228,11 +227,11 @@ async def test_create_recent_changes_observation_exception_decode(
 
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_fail(
-    mocker, wikibase_with_script_path_rc
+    db_session, mocker, wikibase_with_script_path_rc
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseRecentChangesObservationModel).where(
                 WikibaseRecentChangesObservationModel.wikibase_id
@@ -256,7 +255,7 @@ async def test_create_recent_changes_observation_fail(
     assert result.data is not None
     assert result.data["fetchRecentChangesData"] is False
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
             .where(

@@ -9,7 +9,6 @@ from requests import ReadTimeout
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_log_observation
 from model.database import WikibaseLogMonthObservationModel, WikibaseModel
 from model.enum import WikibaseUserType
@@ -44,7 +43,7 @@ async def wikibase_with_script_path_log(db_session):
 @pytest.mark.log
 @pytest.mark.mutation
 async def test_create_log_observation_first_success(
-    wikibase_with_script_path_log, mocker
+    db_session, wikibase_with_script_path_log, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -52,7 +51,7 @@ async def test_create_log_observation_first_success(
     log_month_id 1, first month, users, 'thanks/thank'
     """
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
@@ -143,7 +142,7 @@ async def test_create_log_observation_first_success(
     assert result.data is not None
     assert result.data["fetchLogData"]
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
@@ -242,7 +241,7 @@ async def test_create_log_observation_last_success(
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_first_observation_error(
-    wikibase_with_script_path_log, mocker
+    db_session, wikibase_with_script_path_log, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
@@ -250,7 +249,7 @@ async def test_create_log_first_observation_error(
     log_month_id 3, first month, fail
     """
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
@@ -268,7 +267,7 @@ async def test_create_log_first_observation_error(
     )
     assert success is False
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id

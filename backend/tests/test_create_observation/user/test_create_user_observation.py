@@ -8,7 +8,6 @@ from requests import ReadTimeout
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_user_observation
 from model.database import WikibaseModel, WikibaseUserObservationModel
 from tests.test_schema import test_schema
@@ -96,12 +95,12 @@ async def test_create_user_observation_single_pull(wikibase, mocker):
 
 @pytest.mark.asyncio
 @pytest.mark.user
-async def test_create_user_observation_multiple_pull(wikibase, mocker):
+async def test_create_user_observation_multiple_pull(wikibase, mocker, db_session):
     """Test Data, Multiple Pull Scenario"""
 
     time.sleep(1)
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseUserObservationModel).where(
                 WikibaseUserObservationModel.wikibase_id == wikibase.id
@@ -137,7 +136,7 @@ async def test_create_user_observation_multiple_pull(wikibase, mocker):
     success = await create_user_observation(wikibase.id)
     assert success
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseUserObservationModel).where(
                 WikibaseUserObservationModel.wikibase_id == wikibase.id

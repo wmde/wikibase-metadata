@@ -1,13 +1,11 @@
 """Test create_external_identifier_observation"""
 
-import time
 from urllib.error import HTTPError
 
 import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data.database_connection import get_async_session
 from fetch_data import create_external_identifier_observation
 from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
 from tests.test_schema import test_schema
@@ -41,11 +39,11 @@ async def wikibase_with_sparql(db_session):
 @pytest.mark.ei
 @pytest.mark.sparql
 async def test_create_external_identifier_observation_success(
-    wikibase_with_sparql, mocker
+    db_session, wikibase_with_sparql, mocker
 ):
     """Test"""
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseExternalIdentifierObservationModel).where(
                 WikibaseExternalIdentifierObservationModel.wikibase_id
@@ -78,7 +76,7 @@ async def test_create_external_identifier_observation_success(
     assert result.data is not None
     assert result.data["fetchExternalIdentifierData"]
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseExternalIdentifierObservationModel).where(
                 WikibaseExternalIdentifierObservationModel.wikibase_id
@@ -95,11 +93,11 @@ async def test_create_external_identifier_observation_success(
 @pytest.mark.ei
 @pytest.mark.sparql
 async def test_create_external_identifier_observation_failure(
-    wikibase_with_sparql, mocker
+    db_session, wikibase_with_sparql, mocker
 ):
     """Test"""
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseExternalIdentifierObservationModel).where(
                 WikibaseExternalIdentifierObservationModel.wikibase_id
@@ -125,7 +123,7 @@ async def test_create_external_identifier_observation_failure(
     success = await create_external_identifier_observation(wikibase_with_sparql.id)
     assert success is False
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseExternalIdentifierObservationModel).where(
                 WikibaseExternalIdentifierObservationModel.wikibase_id

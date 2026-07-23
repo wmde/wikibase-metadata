@@ -42,13 +42,13 @@ async def wikibase_with_sparql(db_session):
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_success(
-    wikibase_with_sparql, mocker
+    db_session, wikibase_with_sparql, mocker
 ):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
     await asyncio.to_thread(time.sleep, 1)
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibasePropertyPopularityObservationModel).where(
                 WikibasePropertyPopularityObservationModel.wikibase_id
@@ -81,7 +81,7 @@ async def test_create_property_popularity_observation_success(
     assert result.data is not None
     assert result.data["fetchPropertyPopularityData"]
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibasePropertyPopularityObservationModel).where(
                 WikibasePropertyPopularityObservationModel.wikibase_id
@@ -95,11 +95,11 @@ async def test_create_property_popularity_observation_success(
 @pytest.mark.property
 @pytest.mark.sparql
 async def test_create_property_popularity_observation_failure(
-    wikibase_with_sparql, mocker
+    db_session, wikibase_with_sparql, mocker
 ):
     """Test"""
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibasePropertyPopularityObservationModel).where(
                 WikibasePropertyPopularityObservationModel.wikibase_id
@@ -123,7 +123,7 @@ async def test_create_property_popularity_observation_failure(
     success = await create_property_popularity_observation(wikibase_with_sparql.id)
     assert success is False
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibasePropertyPopularityObservationModel).where(
                 WikibasePropertyPopularityObservationModel.wikibase_id

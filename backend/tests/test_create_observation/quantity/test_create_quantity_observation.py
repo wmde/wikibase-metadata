@@ -41,11 +41,11 @@ async def wikibase_with_sparql_quantity(db_session):
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_success(
-    wikibase_with_sparql_quantity, mocker
+    db_session, wikibase_with_sparql_quantity, mocker
 ):
     """Test"""
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseQuantityObservationModel).where(
                 WikibaseQuantityObservationModel.wikibase_id
@@ -74,7 +74,7 @@ async def test_create_quantity_observation_success(
     assert result.data is not None
     assert result.data["fetchQuantityData"]
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseQuantityObservationModel).where(
                 WikibaseQuantityObservationModel.wikibase_id
@@ -91,13 +91,13 @@ async def test_create_quantity_observation_success(
 @pytest.mark.quantity
 @pytest.mark.sparql
 async def test_create_quantity_observation_failure(
-    wikibase_with_sparql_quantity, mocker
+    db_session, wikibase_with_sparql_quantity, mocker
 ):
     """Test"""
 
     time.sleep(1)
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseQuantityObservationModel).where(
                 WikibaseQuantityObservationModel.wikibase_id
@@ -123,7 +123,7 @@ async def test_create_quantity_observation_failure(
     success = await create_quantity_observation(wikibase_with_sparql_quantity.id)
     assert success is False
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseQuantityObservationModel).where(
                 WikibaseQuantityObservationModel.wikibase_id

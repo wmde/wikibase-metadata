@@ -6,7 +6,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import update_out_of_date_recent_changes_observations
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
@@ -33,7 +32,7 @@ async def wikibase_with_script_path_recent_changes(db_session):
 
 @pytest.mark.asyncio
 async def test_update_out_of_date_recent_changes_observations_success(
-    wikibase_with_script_path_recent_changes, mocker
+    db_session, wikibase_with_script_path_recent_changes, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test success scenario"""
 
@@ -143,7 +142,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
     assert result.success == 1
     assert result.total == 1
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
             .where(

@@ -5,7 +5,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseCategoryModel, WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
 from tests.test_schema import test_schema
@@ -16,14 +15,6 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
     id
   }
 }"""
-
-
-async def get_wikibase_by_id(wikibase_id: int) -> WikibaseModel:
-    """Get Wikibase from Database by ID"""
-    async with get_async_session() as session:
-        return await session.scalar(
-            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
-        )
 
 
 @pytest.fixture
@@ -42,7 +33,7 @@ async def wikibase_categories(db_session):
 @pytest.mark.asyncio
 @pytest.mark.mutation
 async def test_add_wikibase_mutation(
-    wikibase_categories,
+    db_session, wikibase_categories
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Add Wikibase"""
 
@@ -72,20 +63,23 @@ async def test_add_wikibase_mutation(
     assert result.data is not None
 
     wikibase_id = int(result.data["addWikibase"]["id"])
-    wikibase = await get_wikibase_by_id(wikibase_id)
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = await session.scalar(
+            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+        )
 
-    assert wikibase.wikibase_name == "Mock Wikibase"
-    assert wikibase.wikibase_type == WikibaseType.SUITE
-    assert wikibase.description == "Mock wikibase for testing this codebase"
-    assert wikibase.organization == "Wikibase Mockery International"
-    assert wikibase.country == "Germany"
-    assert wikibase.region == "Europe"
-    assert (
-        wikibase.category.category
-        == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
-    )
-    assert wikibase.url.url_type == WikibaseURLType.BASE_URL
-    assert wikibase.url.url == "https://example.com"
+        assert wikibase.wikibase_name == "Mock Wikibase"
+        assert wikibase.wikibase_type == WikibaseType.SUITE
+        assert wikibase.description == "Mock wikibase for testing this codebase"
+        assert wikibase.organization == "Wikibase Mockery International"
+        assert wikibase.country == "Germany"
+        assert wikibase.region == "Europe"
+        assert (
+            wikibase.category.category
+            == WikibaseCategory.EXPERIMENTAL_AND_PROTOTYPE_PROJECTS
+        )
+        assert wikibase.url.url_type == WikibaseURLType.BASE_URL
+        assert wikibase.url.url == "https://example.com"
 
 
 @pytest.mark.asyncio
@@ -279,7 +273,7 @@ async def test_marks_localhost_urls_as_test(
     assert result.errors is None
     wikibase_id = int(result.data["addWikibase"]["id"])
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         db_result = await session.execute(
             select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
         )

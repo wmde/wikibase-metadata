@@ -1,8 +1,8 @@
 """Test Merge Software"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data.soup_data.software import (
     get_or_create_software_model,
     fetch_or_create_tags,
@@ -35,7 +35,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-async def test_add_software(db_session):  # pylint: disable=unused-argument
+async def test_add_software(db_session):
     """Test Add Software"""
 
     before_result = await test_schema.execute(
@@ -49,7 +49,7 @@ async def test_add_software(db_session):  # pylint: disable=unused-argument
         before_result.data, ["extensionList", "meta", "totalCount"], 0
     )
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
 
         first = await get_or_create_software_model(
             async_session,

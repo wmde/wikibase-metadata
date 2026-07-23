@@ -6,7 +6,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import update_cloud_instances
 from model.database import WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseType
@@ -30,9 +29,7 @@ async def wikibase(db_session):
 
 
 @pytest.mark.asyncio
-async def test_insert_cloud_instances(
-    db_session, mocker
-):  # pylint: disable=unused-argument
+async def test_insert_cloud_instances(db_session, mocker):
     """
     test updating the local database with a single cloud instance fetched from the API
 
@@ -49,7 +46,7 @@ async def test_insert_cloud_instances(
         )
 
         # check the wikibase instance is NOT in the database
-        async with get_async_session() as async_session:
+        async with AsyncSession(bind=db_session) as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
@@ -63,7 +60,7 @@ async def test_insert_cloud_instances(
         await update_cloud_instances()
 
         # check the wikibase instance is in the database
-        async with get_async_session() as async_session:
+        async with AsyncSession(bind=db_session) as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
@@ -90,7 +87,7 @@ async def test_insert_cloud_instances(
 
 @pytest.mark.asyncio
 async def test_update_cloud_instances(
-    wikibase, mocker
+    db_session, wikibase, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """
     test updating the local database with a single cloud instance fetched from the API
@@ -106,7 +103,7 @@ async def test_update_cloud_instances(
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
 
-        async with get_async_session() as async_session:
+        async with AsyncSession(bind=db_session) as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
@@ -118,7 +115,7 @@ async def test_update_cloud_instances(
 
         await update_cloud_instances()
 
-        async with get_async_session() as async_session:
+        async with AsyncSession(bind=db_session) as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
@@ -144,7 +141,7 @@ async def test_update_cloud_instances(
 
 @pytest.mark.asyncio
 async def test_transform_to_cloud_instance(
-    wikibase, mocker
+    db_session, wikibase, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """
     test updating the local database with a single cloud instance fetched from the API
@@ -160,7 +157,7 @@ async def test_transform_to_cloud_instance(
             side_effect=[MockResponse("", 200, instances_json.read())],
         )
 
-        async with get_async_session() as async_session:
+        async with AsyncSession(bind=db_session) as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)
@@ -176,7 +173,7 @@ async def test_transform_to_cloud_instance(
         # breakpoint()
         await update_cloud_instances()
 
-        async with get_async_session() as async_session:
+        async with AsyncSession(bind=db_session) as async_session:
             search = "%tcdict.wikibase.cloud%"
             stmt = (
                 select(WikibaseModel)

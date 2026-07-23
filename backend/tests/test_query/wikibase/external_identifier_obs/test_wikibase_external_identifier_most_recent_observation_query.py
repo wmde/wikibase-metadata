@@ -4,7 +4,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseExternalIdentifierObservationModel, WikibaseModel
 from tests.test_query.wikibase.external_identifier_obs.assert_external_identifier import (
     assert_external_identifier,
@@ -67,7 +66,7 @@ async def wikibase_with_ei_observation(db_session, mocker):
         context_value=get_mock_context("test-auth-token"),
     )
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         obs = await session.scalar(
             select(WikibaseExternalIdentifierObservationModel)
             .where(

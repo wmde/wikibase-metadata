@@ -2,8 +2,8 @@
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseLanguageModel, WikibaseModel, WikibaseURLModel
 
 
@@ -27,15 +27,13 @@ def test_setting_two_primary_languages():
 
 
 @pytest.mark.asyncio
-async def test_setting_existing_language_as_primary(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_setting_existing_language_as_primary(db_session):
     """
     test whether setting a primary language that exists
     as non primary already does not add additional language items
     """
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",
@@ -83,15 +81,13 @@ def test_setting_two_identical_languages(db_session):  # pylint: disable=unused-
 
 
 @pytest.mark.asyncio
-async def test_setting_primary_language_again_does_not_do_anything(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_setting_primary_language_again_does_not_do_anything(db_session):
     """
     the existing primary language object should be reused
     if this language is already set as primary
     """
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",
@@ -107,14 +103,12 @@ async def test_setting_primary_language_again_does_not_do_anything(
 
 
 @pytest.mark.asyncio
-async def test_update_existing_article_path(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_update_existing_article_path(db_session):
     """
     update article_path when it is already set
     """
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",
@@ -134,14 +128,12 @@ async def test_update_existing_article_path(
 
 
 @pytest.mark.asyncio
-async def test_update_existing_script_path(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_update_existing_script_path(db_session):
     """
     update script_path when it is already set
     """
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",
@@ -161,14 +153,12 @@ async def test_update_existing_script_path(
 
 
 @pytest.mark.asyncio
-async def test_update_existing_sparql_endpoint(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_update_existing_sparql_endpoint(db_session):
     """
     update sparql_endpoint when it is already set
     """
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",
@@ -196,14 +186,12 @@ async def test_update_existing_sparql_endpoint(
 
 
 @pytest.mark.asyncio
-async def test_update_existing_sparql_frontend(
-    db_session,
-):  # pylint: disable=unused-argument
+async def test_update_existing_sparql_frontend(db_session):
     """
     update sparql_frontend when it is already set
     """
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
             wikibase_name="Some Wikibase",
             base_url="https://unique.wikibase.example",

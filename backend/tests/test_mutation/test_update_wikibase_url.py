@@ -144,8 +144,7 @@ async def test_add_wikibase_script_path(
 @pytest.mark.asyncio
 @pytest.mark.mutation
 async def test_remove_wikibase_sparql_frontend_url(
-    wikibase,
-    db_session,
+    wikibase, db_session
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """Remove Wikibase URL"""
 

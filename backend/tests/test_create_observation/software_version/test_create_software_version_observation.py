@@ -7,7 +7,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_software_version_observation
 from model.database import WikibaseModel, WikibaseSoftwareVersionObservationModel
 from tests.mock_info import MockBackgroundClassList, MockInfo
@@ -45,13 +44,13 @@ async def wikibase_with_article_path(db_session):
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_success(
-    wikibase_with_article_path, mocker
+    db_session, wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseSoftwareVersionObservationModel).where(
                 WikibaseSoftwareVersionObservationModel.wikibase_id
@@ -86,7 +85,7 @@ async def test_create_software_version_observation_success(
 
     assert len(test_context["background_tasks"].tasks) == 1
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseSoftwareVersionObservationModel).where(
                 WikibaseSoftwareVersionObservationModel.wikibase_id
@@ -139,13 +138,13 @@ async def test_create_software_version_observation_success_ii(
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_failure(
-    wikibase_with_article_path, mocker
+    db_session, wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
     time.sleep(1)
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseSoftwareVersionObservationModel).where(
                 WikibaseSoftwareVersionObservationModel.wikibase_id
@@ -165,7 +164,7 @@ async def test_create_software_version_observation_failure(
     assert success is False
     assert len(mock_info.context["background_tasks"].tasks) == 1
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseSoftwareVersionObservationModel).where(
                 WikibaseSoftwareVersionObservationModel.wikibase_id

@@ -344,17 +344,14 @@ async def wikibase_with_user_observation(
         await session.refresh(observation)
 
         sysop_group = WikibaseUserGroupModel(
-            group_name="sysop",
-            wikibase_default_group=True,
+            group_name="sysop", wikibase_default_group=True
         )
         session.add(sysop_group)
         await session.flush()
         await session.refresh(sysop_group)
 
         group_obs = WikibaseUserObservationGroupModel(
-            user_group=sysop_group,
-            user_count=715,
-            group_implicit=False,
+            user_group=sysop_group, user_count=715, group_implicit=False
         )
         group_obs.wikibase_user_observation = observation
         session.add(group_obs)

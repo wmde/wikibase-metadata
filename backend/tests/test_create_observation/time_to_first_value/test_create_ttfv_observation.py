@@ -6,8 +6,8 @@ import time
 
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data.database_connection import get_async_session
 from model.database import WikibaseTimeToFirstValueObservationModel
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, get_mock_context
@@ -23,13 +23,13 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 @pytest.mark.mutation
 @pytest.mark.soup
 async def test_create_ttfv_observation_success(
-    wikibase_fixture, mocker
+    db_session, wikibase_fixture, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseTimeToFirstValueObservationModel).where(
                 WikibaseTimeToFirstValueObservationModel.wikibase_id
@@ -38,7 +38,7 @@ async def test_create_ttfv_observation_success(
         )
         assert before is None
 
-    # pylint: disable-next=unused-argument,too-many-return-statements
+    # pylint: disable-next=too-many-return-statements
     def mockery(*args, **kwargs):
         assert kwargs.get("timeout") == 300
         query = args[0]
@@ -106,7 +106,7 @@ async def test_create_ttfv_observation_success(
     assert result.data is not None
     assert result.data["fetchTimeToFirstValueData"]
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseTimeToFirstValueObservationModel).where(
                 WikibaseTimeToFirstValueObservationModel.wikibase_id
