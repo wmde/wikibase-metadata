@@ -24,9 +24,6 @@ async def wikibase_fixture(db_session):
         wikibase.checked = True
         session.add(wikibase)
         await session.flush()
-        print("asdf")
-        print(wikibase)
-        print(wikibase.id)
         return wikibase
 
 

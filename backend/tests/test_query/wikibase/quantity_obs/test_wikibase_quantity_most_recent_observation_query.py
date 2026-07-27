@@ -34,35 +34,9 @@ FETCH_QUANTITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.fixture
-async def test_fixture(
-    db_session, mocker, wikibase_fixture
+async def wikibase_with_quantity_observation(
+    db_session,
 ):  # pylint: disable=unused-argument
-    """Create Wikibase Test Fixture"""
-
-    mocker.patch(
-        "fetch_data.sparql_data.create_quantity_data_observation.get_sparql_results",
-        side_effect=[
-            {"results": {"bindings": [{"count": {"value": 1}}]}},  # Properties
-            {"results": {"bindings": [{"count": {"value": 2}}]}},  # Items
-            {"results": {"bindings": [{"count": {"value": 4}}]}},  # Lexemes
-            {"results": {"bindings": [{"count": {"value": 8}}]}},  # Triples
-        ],
-    )
-
-    result = await test_schema.execute(
-        FETCH_QUANTITY_MUTATION,
-        variable_values={"wikibaseId": wikibase_fixture.id},
-        context_value=get_mock_context("test-auth-token"),
-    )
-
-    print("asdf")
-    print(result)
-
-    return wikibase_fixture
-
-
-@pytest.fixture
-async def wikibase_with_quantity_observation(db_session):
     """Create a wikibase with two quantity observations"""
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(

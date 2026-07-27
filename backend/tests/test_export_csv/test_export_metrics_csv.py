@@ -101,7 +101,6 @@ async def wikibases(db_session):
 @pytest.mark.asyncio
 async def test_export_metric_csv(wikibases):  # pylint: disable=redefined-outer-name
     """Test Export Metric CSV"""
-    print(f"Created wikibase ids: {wikibases}")
 
     client = TestClient(app)
     result = client.get("/csv/metrics?authorization=test-auth-token")
