@@ -328,8 +328,6 @@ async def test_create_log_last_observation_no_last_month(
 
     log_month_id 5, last month, success, no data"""
 
-    print("asdf")
-    print(wikibase_with_script_path)
     mock_logs: list[dict] = []
     for i in range(70):
         mock_logs.append(
