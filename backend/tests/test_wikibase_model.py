@@ -1,9 +1,10 @@
 """Test Data Expectations with Great Expectations"""
 
 import pytest
-from model.database import WikibaseModel, WikibaseLanguageModel, WikibaseURLModel
 from sqlalchemy import select
+
 from data import get_async_session
+from model.database import WikibaseModel, WikibaseLanguageModel, WikibaseURLModel
 
 
 def test_setting_two_primary_languages():

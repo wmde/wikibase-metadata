@@ -1,7 +1,8 @@
 """Create Quantity Data Observation"""
 
-from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib.error import HTTPError, URLError
+
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
 

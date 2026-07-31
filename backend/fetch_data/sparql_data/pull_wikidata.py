@@ -5,12 +5,12 @@ from datetime import datetime
 from json import JSONDecodeError
 import os
 import sys
+from urllib.error import HTTPError
+
 from SPARQLWrapper import QueryResult, SPARQLWrapper, JSON
 from SPARQLWrapper.SPARQLExceptions import SPARQLWrapperException
 
 from logger.get_logger import logger
-
-from urllib.error import HTTPError
 
 
 async def get_sparql_results(

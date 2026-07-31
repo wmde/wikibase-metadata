@@ -1,9 +1,10 @@
 """Create External Identifier Data Observation"""
 
-from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from urllib.error import HTTPError, URLError
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
+
+from requests.exceptions import ReadTimeout, SSLError, TooManyRedirects
 from SPARQLWrapper.SPARQLExceptions import EndPointInternalError, EndPointNotFound
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
 
 from data import get_async_session
 from fetch_data.sparql_data.pull_wikidata import (

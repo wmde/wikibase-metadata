@@ -1,11 +1,11 @@
 """Test pull_wikidata"""
 
 from json import JSONDecodeError
+from urllib.error import HTTPError
+
 import pytest
 
 from fetch_data.sparql_data.pull_wikidata import get_sparql_results
-
-from urllib.error import HTTPError
 
 
 class MockQueryResult:
