@@ -28,7 +28,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 @pytest.fixture
 async def wikibases_with_recent_changes(db_session):  # pylint: disable=unused-argument
     """Create a wikibase and wikibase suite with a recent changes observations for aggregate tests"""
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Recent Changes Test Wikibase",
             base_url="https://aggregate-recent-changes-example.com",

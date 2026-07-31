@@ -50,7 +50,7 @@ async def wikibases_with_property_popularity(
     OTHER: P1=12, P14=1
     SUITE: P99=5, P100=3
     """
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Property Popularity Test Wikibase",
             base_url="https://property-popularity-example.com",
