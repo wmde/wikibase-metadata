@@ -61,8 +61,9 @@ async def wikibases_with_recent_changes(db_session):  # pylint: disable=unused-a
             reuse=True,
             wikibase_type=WikibaseType.SUITE,
         )
-        wikibase.checked = True
-        session.add(wikibase)
+        wikibase_suite.checked = True
+        wikibase_suite.test = False
+        session.add(wikibase_suite)
         await session.flush()
         await session.refresh(wikibase_suite)
 
