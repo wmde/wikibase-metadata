@@ -1,10 +1,12 @@
 """Conftest"""
 
+from unittest.mock import patch
+
+from dotenv import load_dotenv
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
 from data.database_connection import async_engine
-from unittest.mock import patch
-from dotenv import load_dotenv
 
 load_dotenv()
 

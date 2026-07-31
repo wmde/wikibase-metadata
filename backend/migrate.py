@@ -144,14 +144,12 @@ async def main():
             await session.execute(
                 insert(WikibaseUserGroupModel)
                 .values(
-                    [
-                        {
-                            "id": u.id,
-                            "group_name": u.group_name,
-                            "default": u.wikibase_default_group,
-                        }
-                        for u in user_group_data
-                    ]
+                    {
+                        "id": u.id,
+                        "group_name": u.group_name,
+                        "default": u.wikibase_default_group,
+                    }
+                    for u in user_group_data
                 )
                 .on_conflict_do_nothing()
             )
