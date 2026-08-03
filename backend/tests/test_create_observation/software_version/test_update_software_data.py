@@ -4,6 +4,7 @@ from datetime import datetime
 
 from freezegun import freeze_time
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
@@ -12,7 +13,6 @@ from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
 )
 from tests.utils import MockResponse
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture
@@ -48,7 +48,7 @@ async def unfetched_extensions(db_session):  # pylint: disable=unused-argument
 @pytest.mark.version
 async def test_update_software_data(
     mocker, unfetched_extensions
-):  # pylint: disable=unused-argument
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Update Software Data"""
 
     # pylint: disable-next=unused-argument,too-many-return-statements,too-many-branches

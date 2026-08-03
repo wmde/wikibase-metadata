@@ -110,7 +110,7 @@ async def test_export_metric_csv(
     content = result.content.decode("utf-8")
 
     lines = content.splitlines()
-    # assert len(lines) >= 2
+    assert len(lines) == 1
     assert lines[0] == EXPECTED_HEADER_ROW
 
     for line in lines[1:]:
