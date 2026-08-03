@@ -299,29 +299,11 @@ async def test_create_log_last_observation_error(
     assert success is False
 
 
-@pytest.fixture
-async def wikibase_with_script_path(db_session):
-    """Create a wikibase with script path for log observation tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Log Test Wikibase",
-            base_url="https://example.com",
-            script_path="/w",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        return wikibase
-
-
 @freeze_time(datetime(2024, 3, 3))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(
-    wikibase_with_script_path, mocker
+    wikibase_with_script_path_log, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, No Data In Range Returned Scenario
@@ -375,6 +357,6 @@ async def test_create_log_last_observation_no_last_month(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
     success = await create_log_observation(
-        wikibase_with_script_path.id, first_month=False
+        wikibase_with_script_path_log.id, first_month=False
     )
     assert success
