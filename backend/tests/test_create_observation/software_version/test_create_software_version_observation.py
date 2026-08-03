@@ -165,10 +165,10 @@ async def test_create_software_version_observation_failure(
     assert len(mock_info.context["background_tasks"].tasks) == 1
 
     async with AsyncSession(bind=db_session) as session:
-        before = await session.scalar(
+        after = await session.scalar(
             select(WikibaseSoftwareVersionObservationModel).where(
                 WikibaseSoftwareVersionObservationModel.wikibase_id
                 == wikibase_with_article_path.id
             )
         )
-        assert before.returned_data is False
+        assert after.returned_data is False
