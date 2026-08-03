@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fetch_data import create_software_version_observation
-from model.database import WikibaseModel, WikibaseSoftwareVersionObservationModel
+from model.database import WikibaseSoftwareVersionObservationModel
 from tests.mock_info import MockBackgroundClassList, MockInfo
 from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
@@ -19,24 +19,6 @@ from tests.utils import MockRequest, MockResponse
 FETCH_SOFTWARE_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchVersionData(wikibaseId: $wikibaseId)
 }"""
-
-
-@pytest.fixture
-async def wikibase_with_article_path(db_session):
-    """Create a wikibase with article path for software version tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Software Version Test Wikibase",
-            base_url="https://software-version-test-example.com",
-            article_path="/wiki",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-    return wikibase
 
 
 @pytest.mark.asyncio

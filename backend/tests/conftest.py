@@ -98,6 +98,42 @@ async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-
 
 
 @pytest.fixture
+async def wikibase_with_script_path(db_session):
+    """Create a wikibase with script path"""
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Log Error Test Wikibase",
+            base_url="https://example.com",
+            script_path="/w",
+            reuse=True,
+            wikibase_type=None,
+        )
+        wikibase.checked = True
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+    return wikibase
+
+
+@pytest.fixture
+async def wikibase_with_article_path(db_session):
+    """Create a wikibase with article path for software version tests"""
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = WikibaseModel(
+            wikibase_name="Software Version Test Wikibase",
+            base_url="https://software-version-test-example.com",
+            article_path="/wiki",
+            reuse=True,
+            wikibase_type=None,
+        )
+        wikibase.checked = True
+        session.add(wikibase)
+        await session.flush()
+        await session.refresh(wikibase)
+    return wikibase
+
+
+@pytest.fixture
 # pylint: disable-next=too-many-statements, too-many-locals
 async def wikibase_with_first_month_log_observations(
     db_session,

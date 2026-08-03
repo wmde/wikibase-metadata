@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fetch_data import create_special_statistics_observation
-from model.database import WikibaseModel, WikibaseStatisticsObservationModel
+from model.database import WikibaseStatisticsObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context, MockResponse
 
@@ -20,30 +20,12 @@ FETCH_STATISTICS_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 DATA_DIRECTORY = "tests/test_create_observation/statistics/data"
 
 
-@pytest.fixture
-async def wikibase_with_article_path_stats(db_session):
-    """Create a wikibase with article path for statistics tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Statistics Test Wikibase",
-            base_url="https://statistics-test-example.com",
-            article_path="/wiki",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-    return wikibase
-
-
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_success(
-    db_session, wikibase_with_article_path_stats, mocker
+    db_session, wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
@@ -51,7 +33,7 @@ async def test_create_statistics_observation_success(
         before = await session.scalar(
             select(WikibaseStatisticsObservationModel).where(
                 WikibaseStatisticsObservationModel.wikibase_id
-                == wikibase_with_article_path_stats.id
+                == wikibase_with_article_path.id
             )
         )
         assert before is None
@@ -67,7 +49,7 @@ async def test_create_statistics_observation_success(
 
     result = await test_schema.execute(
         FETCH_STATISTICS_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_article_path_stats.id},
+        variable_values={"wikibaseId": wikibase_with_article_path.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -79,7 +61,7 @@ async def test_create_statistics_observation_success(
         after = await session.scalar(
             select(WikibaseStatisticsObservationModel).where(
                 WikibaseStatisticsObservationModel.wikibase_id
-                == wikibase_with_article_path_stats.id
+                == wikibase_with_article_path.id
             )
         )
         assert after.total_pages == 12655622
@@ -96,7 +78,7 @@ async def test_create_statistics_observation_success(
 @pytest.mark.soup
 @pytest.mark.statistics
 async def test_create_statistics_observation_failure(
-    wikibase_with_article_path_stats, mocker, db_session
+    wikibase_with_article_path, mocker, db_session
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
@@ -106,7 +88,7 @@ async def test_create_statistics_observation_failure(
         before = await session.scalar(
             select(WikibaseStatisticsObservationModel).where(
                 WikibaseStatisticsObservationModel.wikibase_id
-                == wikibase_with_article_path_stats.id
+                == wikibase_with_article_path.id
             )
         )
         assert before is None
@@ -115,16 +97,14 @@ async def test_create_statistics_observation_failure(
         "fetch_data.soup_data.create_statistics_data_observation.requests.get",
         side_effect=[MockResponse("", 500)],
     )
-    success = await create_special_statistics_observation(
-        wikibase_with_article_path_stats.id
-    )
+    success = await create_special_statistics_observation(wikibase_with_article_path.id)
     assert success is False
 
     async with AsyncSession(bind=db_session) as session:
         after = await session.scalar(
             select(WikibaseStatisticsObservationModel).where(
                 WikibaseStatisticsObservationModel.wikibase_id
-                == wikibase_with_article_path_stats.id
+                == wikibase_with_article_path.id
             )
         )
         assert after.returned_data is False

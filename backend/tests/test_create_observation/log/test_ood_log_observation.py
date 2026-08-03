@@ -5,40 +5,19 @@ import json
 
 from freezegun import freeze_time
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from fetch_data import (
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
 )
-from model.database import WikibaseModel
 from tests.utils import MockResponse, ParsedUrl
-
-
-@pytest.fixture
-async def wikibase_with_script_path_log_ood(db_session):
-    """Create a non-CLOUD wikibase with script path for OOD log tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Log OOD Test Wikibase",
-            base_url="https://example.com",
-            script_path="/w",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        wikibase_id = wikibase.id
-    return wikibase_id
 
 
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_update_out_of_date_log_first_observations_success(
-    wikibase_with_script_path_log_ood, mocker
+    wikibase_with_script_path, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Empty Scenario"""
 
@@ -103,7 +82,7 @@ async def test_update_out_of_date_log_first_observations_success(
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_update_out_of_date_log_last_observations_success(
-    wikibase_with_script_path_log_ood, mocker
+    wikibase_with_script_path, mocker
 ):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Empty Scenario"""
 

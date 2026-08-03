@@ -13,7 +13,7 @@ from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
     create_recent_changes,
 )
-from model.database import WikibaseModel, WikibaseRecentChangesObservationModel
+from model.database import WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -140,28 +140,9 @@ async def test_create_recent_changes_counts():
     assert result.last_change_date == datetime(2024, 3, 6, 0, 0, 0, tzinfo=UTC)
 
 
-@pytest.fixture
-async def wikibase_with_script_path_rc(db_session):
-    """Create a wikibase with script path for recent changes observation tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Recent Changes Exception Test Wikibase",
-            base_url="https://recent-changes-exception-example.com",
-            script_path="/w",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-        # wikibase_id = wikibase.id
-    return wikibase
-
-
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_exception_timeout(
-    db_session, mocker, wikibase_with_script_path_rc
+    db_session, mocker, wikibase_with_script_path
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
@@ -170,7 +151,7 @@ async def test_create_recent_changes_observation_exception_timeout(
     )
 
     success = await create_recent_changes_observation(
-        wikibase_id=wikibase_with_script_path_rc.id
+        wikibase_id=wikibase_with_script_path.id
     )
     assert not success
 
@@ -179,7 +160,7 @@ async def test_create_recent_changes_observation_exception_timeout(
             select(WikibaseRecentChangesObservationModel)
             .where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc.id
+                == wikibase_with_script_path.id
             )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
@@ -194,7 +175,7 @@ async def test_create_recent_changes_observation_exception_timeout(
 
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_exception_decode(
-    db_session, mocker, wikibase_with_script_path_rc
+    db_session, mocker, wikibase_with_script_path
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
@@ -203,7 +184,7 @@ async def test_create_recent_changes_observation_exception_decode(
     )
 
     success = await create_recent_changes_observation(
-        wikibase_id=wikibase_with_script_path_rc.id
+        wikibase_id=wikibase_with_script_path.id
     )
     assert not success
 
@@ -212,7 +193,7 @@ async def test_create_recent_changes_observation_exception_decode(
             select(WikibaseRecentChangesObservationModel)
             .where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc.id
+                == wikibase_with_script_path.id
             )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
@@ -227,7 +208,7 @@ async def test_create_recent_changes_observation_exception_decode(
 
 @pytest.mark.asyncio
 async def test_create_recent_changes_observation_fail(
-    db_session, mocker, wikibase_with_script_path_rc
+    db_session, mocker, wikibase_with_script_path
 ):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
 
@@ -235,7 +216,7 @@ async def test_create_recent_changes_observation_fail(
         before = await session.scalar(
             select(WikibaseRecentChangesObservationModel).where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc.id
+                == wikibase_with_script_path.id
             )
         )
         assert before is None
@@ -247,7 +228,7 @@ async def test_create_recent_changes_observation_fail(
 
     result = await test_schema.execute(
         FETCH_RECENT_CHANGES_MUTATION,
-        variable_values={"wikibaseId": wikibase_with_script_path_rc.id},
+        variable_values={"wikibaseId": wikibase_with_script_path.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -260,7 +241,7 @@ async def test_create_recent_changes_observation_fail(
             select(WikibaseRecentChangesObservationModel)
             .where(
                 WikibaseRecentChangesObservationModel.wikibase_id
-                == wikibase_with_script_path_rc.id
+                == wikibase_with_script_path.id
             )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )

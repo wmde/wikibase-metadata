@@ -47,25 +47,6 @@ async def three_wikibases_with_article_path(db_session):
         return [w.id for w in wikibases]
 
 
-@pytest.fixture
-async def single_wikibase_with_article_path(db_session):
-    """Create a single test wikibase with article path for software version tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Software Version Single Test Wikibase",
-            base_url="https://software-version-single-example.com",
-            article_path="/wiki",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-
-        return wikibase.id
-
-
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.soup
@@ -101,11 +82,11 @@ async def test_update_all_software_version_observations_fail(
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_success(
-    single_wikibase_with_article_path, mocker
+    wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-    wikibase_id = single_wikibase_with_article_path
+    wikibase_id = wikibase_with_article_path.id
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Version.html"), "rb"
@@ -127,11 +108,11 @@ async def test_create_software_version_observation_success(
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_success_ii(
-    single_wikibase_with_article_path, mocker
+    wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario, second fixture (different Special:Version markup)"""
 
-    wikibase_id = single_wikibase_with_article_path
+    wikibase_id = wikibase_with_article_path.id
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Version_ii.html"), "rb"
@@ -152,11 +133,11 @@ async def test_create_software_version_observation_success_ii(
 @pytest.mark.soup
 @pytest.mark.version
 async def test_create_software_version_observation_failure(
-    single_wikibase_with_article_path, mocker
+    wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario - genuine HTTPError via HTTP 500"""
 
-    wikibase_id = single_wikibase_with_article_path
+    wikibase_id = wikibase_with_article_path.id
 
     mocker.patch(
         "fetch_data.soup_data.software.create_software_version_data_observation.requests.get",

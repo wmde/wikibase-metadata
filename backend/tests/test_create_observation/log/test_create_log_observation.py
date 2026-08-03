@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fetch_data import create_log_observation
-from model.database import WikibaseLogMonthObservationModel, WikibaseModel
+from model.database import WikibaseLogMonthObservationModel
 from model.enum import WikibaseUserType
 from tests.test_schema import test_schema
 from tests.utils import MockResponse, ParsedUrl, get_mock_context
@@ -20,30 +20,12 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
 }"""
 
 
-@pytest.fixture
-async def wikibase_with_script_path_log(db_session):
-    """Create a wikibase with script path for log observation tests"""
-    async with AsyncSession(bind=db_session) as session:
-        wikibase = WikibaseModel(
-            wikibase_name="Log Error Test Wikibase",
-            base_url="https://example.com",
-            script_path="/w",
-            reuse=True,
-            wikibase_type=None,
-        )
-        wikibase.checked = True
-        session.add(wikibase)
-        await session.flush()
-        await session.refresh(wikibase)
-    return wikibase
-
-
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.mutation
 async def test_create_log_observation_first_success(
-    db_session, wikibase_with_script_path_log, mocker
+    db_session, wikibase_with_script_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -55,7 +37,7 @@ async def test_create_log_observation_first_success(
         before = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
-                == wikibase_with_script_path_log.id
+                == wikibase_with_script_path.id
             )
         )
         assert before is None
@@ -133,7 +115,7 @@ async def test_create_log_observation_first_success(
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
         variable_values={
-            "wikibaseId": wikibase_with_script_path_log.id,
+            "wikibaseId": wikibase_with_script_path.id,
             "firstMonth": True,
         },
         context_value=get_mock_context("test-auth-token"),
@@ -146,7 +128,7 @@ async def test_create_log_observation_first_success(
         after = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
-                == wikibase_with_script_path_log.id
+                == wikibase_with_script_path.id
             )
         )
         assert after is not None
@@ -167,7 +149,7 @@ async def test_create_log_observation_first_success(
 @pytest.mark.log
 @pytest.mark.mutation
 async def test_create_log_observation_last_success(
-    wikibase_with_script_path_log, mocker
+    wikibase_with_script_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
@@ -226,7 +208,7 @@ async def test_create_log_observation_last_success(
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
         variable_values={
-            "wikibaseId": wikibase_with_script_path_log.id,
+            "wikibaseId": wikibase_with_script_path.id,
             "firstMonth": False,
         },
         context_value=get_mock_context("test-auth-token"),
@@ -241,7 +223,7 @@ async def test_create_log_observation_last_success(
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_first_observation_error(
-    db_session, wikibase_with_script_path_log, mocker
+    db_session, wikibase_with_script_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
@@ -253,7 +235,7 @@ async def test_create_log_first_observation_error(
         before = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
-                == wikibase_with_script_path_log.id
+                == wikibase_with_script_path.id
             )
         )
         assert before is None
@@ -263,7 +245,7 @@ async def test_create_log_first_observation_error(
         side_effect=[ReadTimeout()],
     )
     success = await create_log_observation(
-        wikibase_with_script_path_log.id, first_month=True
+        wikibase_with_script_path.id, first_month=True
     )
     assert success is False
 
@@ -271,7 +253,7 @@ async def test_create_log_first_observation_error(
         after = await session.scalar(
             select(WikibaseLogMonthObservationModel).where(
                 WikibaseLogMonthObservationModel.wikibase_id
-                == wikibase_with_script_path_log.id
+                == wikibase_with_script_path.id
             )
         )
         assert after is not None
@@ -282,7 +264,7 @@ async def test_create_log_first_observation_error(
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_last_observation_error(
-    wikibase_with_script_path_log, mocker
+    wikibase_with_script_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
@@ -294,7 +276,7 @@ async def test_create_log_last_observation_error(
         side_effect=[ReadTimeout()],
     )
     success = await create_log_observation(
-        wikibase_with_script_path_log.id, first_month=False
+        wikibase_with_script_path.id, first_month=False
     )
     assert success is False
 
@@ -303,7 +285,7 @@ async def test_create_log_last_observation_error(
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(
-    wikibase_with_script_path_log, mocker
+    wikibase_with_script_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, No Data In Range Returned Scenario
@@ -357,6 +339,6 @@ async def test_create_log_last_observation_no_last_month(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
     success = await create_log_observation(
-        wikibase_with_script_path_log.id, first_month=False
+        wikibase_with_script_path.id, first_month=False
     )
     assert success
