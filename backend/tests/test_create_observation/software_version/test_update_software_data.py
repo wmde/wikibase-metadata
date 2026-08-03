@@ -6,8 +6,8 @@ from freezegun import freeze_time
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
-from model.database.wikibase_software.software_model import WikibaseSoftwareModel
+from model.database import WikibaseSoftwareModel
+from model.enum import WikibaseSoftwareType
 from fetch_data import get_update_extension_query, update_software_data
 from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
