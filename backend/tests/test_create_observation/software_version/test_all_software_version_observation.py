@@ -3,7 +3,6 @@
 import os
 
 import pytest
-from requests.exceptions import HTTPError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fetch_data import create_software_version_observation

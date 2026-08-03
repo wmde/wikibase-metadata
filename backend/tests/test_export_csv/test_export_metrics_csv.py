@@ -99,7 +99,9 @@ async def wikibases(db_session):
 
 
 @pytest.mark.asyncio
-async def test_export_metric_csv(wikibases):  # pylint: disable=redefined-outer-name
+async def test_export_metric_csv(
+    wikibases,
+):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Export Metric CSV"""
 
     client = TestClient(app)

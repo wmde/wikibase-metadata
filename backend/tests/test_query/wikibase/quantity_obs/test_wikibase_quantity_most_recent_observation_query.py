@@ -12,7 +12,6 @@ from tests.test_query.wikibase.quantity_obs.quantity_fragment import (
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_property_value
-from tests.utils import get_mock_context
 
 WIKIBASE_QUANTITY_MOST_RECENT_OBSERVATION_QUERY = """
 query MyQuery($wikibaseId: Int!) {

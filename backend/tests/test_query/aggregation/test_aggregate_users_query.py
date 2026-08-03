@@ -14,7 +14,6 @@ from model.database import (
 from model.enum import WikibaseType
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value
-from sqlalchemy.ext.asyncio import AsyncSession
 
 AGGREGATED_USERS_QUERY = """
 query MyQuery($wikibaseFilter: WikibaseFilterInput) {

@@ -27,7 +27,7 @@ query MyQuery($wikibaseFilter: WikibaseFilterInput) {
 
 @pytest.fixture
 async def wikibases_with_recent_changes(db_session):  # pylint: disable=unused-argument
-    """Create a wikibase and wikibase suite with a recent changes observations for aggregate tests"""
+    """Create 2 wikibases with recent change observations for aggregate tests"""
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
             wikibase_name="Aggregate Recent Changes Test Wikibase",
@@ -100,11 +100,11 @@ async def test_aggregate_recent_changes_query(
     assert result.errors is None
     assert result.data is not None
 
-    expectedHumanChangeCount = obs.human_change_count + suite_obs.human_change_count
+    expected_human_change_count = obs.human_change_count + suite_obs.human_change_count
     assert_layered_property_value(
         result.data,
         ["aggregateRecentChanges", "humanChangeCount"],
-        expectedHumanChangeCount,
+        expected_human_change_count,
     )
 
     expected_human_change_user_count = (

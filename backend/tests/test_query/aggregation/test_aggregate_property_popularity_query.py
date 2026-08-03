@@ -45,7 +45,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 @pytest.fixture
 async def wikibases_with_property_popularity(
     db_session,
-):  # pylint: disable=unused-argument
+):  # pylint: disable=unused-argument, too-many-statements
     """Create two wikibases with distinct property popularity observations:
     OTHER: P1=12, P14=1
     SUITE: P99=5, P100=3
@@ -55,12 +55,10 @@ async def wikibases_with_property_popularity(
             wikibase_name="Property Popularity Test Wikibase",
             base_url="https://property-popularity-example.com",
             reuse=True,
-            wikibase_type=None,
+            wikibase_type=WikibaseType.OTHER,
         )
         wikibase.checked = True
-        wikibase.reuse = True
         wikibase.test = False
-        wikibase.wikibase_type = WikibaseType.OTHER
         session.add(wikibase)
         await session.flush()
         await session.refresh(wikibase)
@@ -92,11 +90,11 @@ async def wikibases_with_property_popularity(
         wikibase_suite = WikibaseModel(
             wikibase_name="Property Popularity Filtered Test Wikibase",
             base_url="https://property-popularity-filtered-example.com",
+            wikibase_type=WikibaseType.SUITE,
+            reuse=True,
         )
         wikibase_suite.checked = True
-        wikibase_suite.reuse = True
         wikibase_suite.test = False
-        wikibase_suite.wikibase_type = WikibaseType.SUITE
         session.add(wikibase_suite)
         await session.flush()
         await session.refresh(wikibase_suite)
