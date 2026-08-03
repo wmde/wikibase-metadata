@@ -110,7 +110,6 @@ async def test_set_wikibase_reuse_false(
     )
     assert before_adding_result.errors is None
     assert before_adding_result.data is not None
-    print(before_adding_result.data["filtered"])
     assert_layered_property_value(
         before_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=2
     )
