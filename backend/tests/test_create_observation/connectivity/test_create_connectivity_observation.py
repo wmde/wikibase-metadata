@@ -1,8 +1,14 @@
 """Test create_connectivity_observation"""
 
 from urllib.error import HTTPError
+
 import pytest
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from data import get_async_session
 from fetch_data import create_connectivity_observation
+from model.database import WikibaseConnectivityObservationModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
@@ -14,88 +20,57 @@ FETCH_CONNECTIVITY_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 @pytest.mark.asyncio
 @pytest.mark.connectivity
 @pytest.mark.sparql
-@pytest.mark.parametrize(
-    ["links"],
-    [
-        pytest.param(
-            [("Q1", "Q1")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-1",
-                depends=["connectivity-success-ood"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [("Q1", "Q2")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-2",
-                depends=["connectivity-success-simple-1"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-                ("Q1", "Q2"),
-            ],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-3",
-                depends=["connectivity-success-simple-2"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [("Q1", "Q2"), ("Q2", "Q1")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-4",
-                depends=["connectivity-success-simple-3"],
-                scope="session",
-            ),
-        ),
-        pytest.param(
-            [("Q1", "Q2"), ("Q2", "Q3")],
-            marks=pytest.mark.dependency(
-                name="connectivity-success-simple-5",
-                depends=["connectivity-success-simple-4"],
-                scope="session",
-            ),
-        ),
-    ],
-)
 async def test_create_connectivity_observation_success(
-    mocker, links: list[tuple[str, str]]
+    db_session, wikibase_fixture, mocker
 ):
     """Test"""
 
-    returned_links = []
-    for link in links:
-        returned_links.append(
-            {"item": {"value": link[0]}, "object": {"value": link[1]}}
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
         )
+        assert before is None
+
+    returned_links = [{"item": {"value": "Q1"}, "object": {"value": "Q1"}}]
 
     mocker.patch(
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
         side_effect=[{"results": {"bindings": returned_links}}],
     )
-    success = await create_connectivity_observation(1)
+    success = await create_connectivity_observation(wikibase_fixture.id)
     assert success
+
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+        assert after is not None
+        assert after.returned_data is True
+        assert after.returned_links == 1
+        assert after.connectivity is None
+        assert after.average_connected_distance is None
 
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(
-    name="connectivity-success-complex",
-    depends=["connectivity-success-simple-5"],
-    scope="session",
-)
 @pytest.mark.mutation
 @pytest.mark.sparql
-async def test_create_connectivity_observation_success_complex(mocker):
+async def test_create_connectivity_observation_success_complex(
+    db_session, wikibase_fixture, mocker
+):
     """Test"""
+
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+        assert before is None
 
     returned_links = []
     for i in range(500):
@@ -119,7 +94,7 @@ async def test_create_connectivity_observation_success_complex(mocker):
 
     result = await test_schema.execute(
         FETCH_CONNECTIVITY_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -127,17 +102,35 @@ async def test_create_connectivity_observation_success_complex(mocker):
     assert result.data is not None
     assert result.data["fetchConnectivityData"]
 
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+
+        assert after is not None
+        assert after.connectivity == 1.0
+        assert after.average_connected_distance == 7.4289498997995995
+        assert len(after.item_relationship_count_observations) == 9
+        assert len(after.object_relationship_count_observations) == 16
+
 
 @pytest.mark.asyncio
 @pytest.mark.connectivity
-@pytest.mark.dependency(
-    name="connectivity-failure",
-    depends=["connectivity-success-complex"],
-    scope="session",
-)
 @pytest.mark.sparql
-async def test_create_connectivity_observation_failure(mocker):
+async def test_create_connectivity_observation_failure(
+    db_session, wikibase_fixture, mocker
+):
     """Test"""
+
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+        assert before is None
 
     mocker.patch(
         "fetch_data.sparql_data.create_connectivity_data_observation.get_sparql_results",
@@ -151,5 +144,14 @@ async def test_create_connectivity_observation_failure(mocker):
             )
         ],
     )
-    success = await create_connectivity_observation(1)
+    success = await create_connectivity_observation(wikibase_fixture.id)
     assert success is False
+
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseConnectivityObservationModel).where(
+                WikibaseConnectivityObservationModel.wikibase_id == wikibase_fixture.id
+            )
+        )
+        assert after is not None
+        assert after.returned_data is False

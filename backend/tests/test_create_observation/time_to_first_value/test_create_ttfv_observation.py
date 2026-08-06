@@ -1,11 +1,16 @@
 """Test create_software_version_observation"""
 
+from datetime import datetime, timezone
 import re
 import time
+
 import pytest
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import WikibaseTimeToFirstValueObservationModel
 from tests.test_schema import test_schema
-from tests.utils import MockResponse
-from tests.utils.mock_request import get_mock_context
+from tests.utils import MockResponse, get_mock_context
 
 DATA_DIRECTORY = "tests/test_create_observation/time_to_first_value/data"
 
@@ -15,19 +20,25 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="ttfv-success",
-    depends=["ttfv-fail-ood"],
-    scope="session",
-)
 @pytest.mark.mutation
 @pytest.mark.soup
-async def test_create_ttfv_observation_success(mocker):
+async def test_create_ttfv_observation_success(
+    db_session, wikibase_fixture, mocker
+):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
     time.sleep(1)
 
-    # pylint: disable-next=unused-argument,too-many-return-statements
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseTimeToFirstValueObservationModel).where(
+                WikibaseTimeToFirstValueObservationModel.wikibase_id
+                == wikibase_fixture.id
+            )
+        )
+        assert before is None
+
+    # pylint: disable-next=too-many-return-statements
     def mockery(*args, **kwargs):
         assert kwargs.get("timeout") == 300
         query = args[0]
@@ -87,10 +98,22 @@ async def test_create_ttfv_observation_success(mocker):
 
     result = await test_schema.execute(
         FETCH_TTFV_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_fixture.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
     assert result.errors is None
     assert result.data is not None
     assert result.data["fetchTimeToFirstValueData"]
+
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseTimeToFirstValueObservationModel).where(
+                WikibaseTimeToFirstValueObservationModel.wikibase_id
+                == wikibase_fixture.id
+            )
+        )
+        assert after.initiation_date == datetime(
+            2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc
+        )
+        assert len(after.item_date_models) == 4

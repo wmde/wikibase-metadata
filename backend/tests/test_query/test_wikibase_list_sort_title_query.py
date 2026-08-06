@@ -1,19 +1,48 @@
 """Test Sort Wikibase List"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from model.database import WikibaseModel
 from tests.test_query.wikibase_list_query import WIKIBASE_LIST_QUERY
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, assert_page_meta
 
 
+@pytest.fixture
+async def eleven_wikibases_sorted_titles(db_session):
+    """Create 11 wikibases with specific names for title sort tests"""
+    names = [
+        "biodiversity citizen science",
+        "Doelgericht Digitaal Transformeren",
+        "geokb",
+        "Internet Domains",
+        "LexBib",
+        "MetaBase",
+        "Mock Wikibase",
+        "Mock Wikibase II",
+        "Social Contagion",
+        "Teochew Dictionary",
+        "wikifcd",
+    ]
+    async with AsyncSession(bind=db_session) as session:
+        for i, name in enumerate(names):
+            wikibase = WikibaseModel(
+                wikibase_name=name,
+                base_url=f"https://title-sort-example-{i}.com",
+                reuse=True,
+                wikibase_type=None,
+            )
+            wikibase.checked = True
+            session.add(wikibase)
+        await session.flush()
+
+
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    name="sort-title-asc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
-async def test_wikibase_list_query_sort_title_asc():
+async def test_wikibase_list_query_sort_title_asc(
+    eleven_wikibases_sorted_titles,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Title Ascending"""
 
     result = await test_schema.execute(
@@ -85,12 +114,9 @@ async def test_wikibase_list_query_sort_title_asc():
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(
-    name="sort-title-desc",
-    depends=["mutate-cloud-instances", "cloud-wikibase-set-reuse-true"],
-    scope="session",
-)
-async def test_wikibase_list_query_sort_title_desc():
+async def test_wikibase_list_query_sort_title_desc(
+    eleven_wikibases_sorted_titles,
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Sort Title Descending"""
 
     result = await test_schema.execute(

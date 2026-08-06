@@ -111,8 +111,9 @@ jobs:
 
       - name: Run tests (except data)
         working-directory: ./backend
-        run: pytest -m "not data" --cov=. --order-dependencies
+        run: pytest -m "not data" --cov=.
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
           DATABASE_URL: postgresql+asyncpg://postgres:postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/db_test
+          TESTING: 1

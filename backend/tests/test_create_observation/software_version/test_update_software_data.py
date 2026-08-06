@@ -4,7 +4,10 @@ from datetime import datetime
 
 from freezegun import freeze_time
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from model.database import WikibaseSoftwareModel
+from model.enum import WikibaseSoftwareType
 from fetch_data import get_update_extension_query, update_software_data
 from tests.test_create_observation.software_version.test_constants import (
     DATA_DIRECTORY,
@@ -12,15 +15,40 @@ from tests.test_create_observation.software_version.test_constants import (
 from tests.utils import MockResponse
 
 
+@pytest.fixture
+async def unfetched_extensions(db_session):  # pylint: disable=unused-argument
+    """Create WikibaseSoftwareModel rows for extensions needing a data fetch"""
+    async with AsyncSession(bind=db_session) as session:
+        extension_names = [
+            "Babel",
+            "Google Analytics Integration",
+            "LabeledSectionTransclusion",
+            "MirahezeMagic",
+            "ProofreadPage",
+            "Scribunto",
+            "UniversalLanguageSelector",
+            "WikibaseClient",
+            "WikibaseLib",
+            "WikibaseManifest",
+            "WikibaseRepository",
+            "WikibaseView",
+        ]
+        for name in extension_names:
+            session.add(
+                WikibaseSoftwareModel(
+                    software_type=WikibaseSoftwareType.EXTENSION,
+                    software_name=name,
+                )
+            )
+        await session.flush()
+
+
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="update-software-data",
-    depends=["software-version-success", "merge-software-by-id"],
-    scope="session",
-)
 @pytest.mark.version
-async def test_update_software_data(mocker):
+async def test_update_software_data(
+    mocker, unfetched_extensions
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Update Software Data"""
 
     # pylint: disable-next=unused-argument,too-many-return-statements,too-many-branches

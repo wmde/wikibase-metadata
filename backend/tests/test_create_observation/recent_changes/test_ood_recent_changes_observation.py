@@ -1,22 +1,20 @@
 """Test update_out_of_date_recent_changes_observations"""
 
 from datetime import datetime, timezone
+
 import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data.database_connection import get_async_session
 from fetch_data import update_out_of_date_recent_changes_observations
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from model.database import WikibaseRecentChangesObservationModel
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="recent-changes-success-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
-async def test_update_out_of_date_recent_changes_observations_success(mocker):
+async def test_update_out_of_date_recent_changes_observations_success(
+    db_session, wikibase_with_script_path, mocker
+):  # pylint: disable=redefined-outer-name
     """Test success scenario"""
 
     mock_changes_human = [
@@ -125,10 +123,13 @@ async def test_update_out_of_date_recent_changes_observations_success(mocker):
     assert result.success == 1
     assert result.total == 1
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
             .order_by(WikibaseRecentChangesObservationModel.observation_date.desc())
         )
         observation = (await async_session.scalars(query)).first()
