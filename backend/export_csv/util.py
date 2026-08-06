@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi.responses import Response
 import pandas
 from sqlalchemy import Connection, Select
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from data.database_connection import async_engine
 
@@ -13,9 +14,14 @@ def _read_sql_query(con: Connection, stmt: Select, index_col: Optional[str] = No
 
 
 async def read_sql_query(
-    stmt: Select, index_col: Optional[str] = None
+    stmt: Select,
+    index_col: Optional[str] = None,
+    connection: Optional[AsyncConnection] = None,
 ) -> pandas.DataFrame:
     """Read SQL to DataFrame"""
+
+    if connection is not None:
+        return await connection.run_sync(_read_sql_query, stmt, index_col=index_col)
 
     async with async_engine.begin() as conn:
         df = await conn.run_sync(_read_sql_query, stmt, index_col=index_col)
@@ -26,10 +32,11 @@ async def export_csv(
     query: Select,
     export_filename: str,
     index_col: Optional[str] = None,
+    connection: Optional[AsyncConnection] = None,
 ):
     """Export CSV"""
 
-    df = await read_sql_query(query, index_col=index_col)
+    df = await read_sql_query(query, index_col=index_col, connection=connection)
     if index_col == "wikibase_id":
         assert len(set(df.index)) == len(df), "Returned Multiple Rows per Wikibase"
 

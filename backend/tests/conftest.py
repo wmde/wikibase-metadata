@@ -98,7 +98,7 @@ async def wikibase_without_type(db_session):  # pylint: disable=redefined-outer-
 
 
 @pytest.fixture
-async def wikibase_with_script_path(db_session):
+async def wikibase_with_script_path(db_session):  # pylint: disable=redefined-outer-name
     """Create a wikibase with script path"""
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(
@@ -116,7 +116,9 @@ async def wikibase_with_script_path(db_session):
 
 
 @pytest.fixture
-async def wikibase_with_article_path(db_session):
+async def wikibase_with_article_path(
+    db_session,
+):  # pylint: disable=redefined-outer-name
     """Create a wikibase with article path for software version tests"""
     async with AsyncSession(bind=db_session) as session:
         wikibase = WikibaseModel(

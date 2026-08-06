@@ -1,7 +1,10 @@
 """Metrics CSV"""
 
+from typing import Optional
+
 from fastapi.responses import StreamingResponse
 from sqlalchemy import Select, and_, case, func, or_, select
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from export_csv.util import export_csv
 from model.database import (
@@ -17,7 +20,9 @@ from model.database import (
 from model.enum import WikibaseType, WikibaseURLType
 
 
-async def export_metric_csv() -> StreamingResponse:
+async def export_metric_csv(
+    connection: Optional[AsyncConnection] = None,
+) -> StreamingResponse:
     """CSV with Requested Metrics"""
 
     query = get_metrics_query()
@@ -26,6 +31,7 @@ async def export_metric_csv() -> StreamingResponse:
         query=query,
         export_filename="metrics",
         index_col="wikibase_id",
+        connection=connection,
     )
 
 
