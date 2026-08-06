@@ -1,17 +1,20 @@
 """Test Merge Software"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data.soup_data.software import (
     get_or_create_software_model,
     fetch_or_create_tags,
 )
 from model.database import WikibaseSoftwareModel
 from model.enum import WikibaseSoftwareType
-from tests.utils import assert_layered_property_count, assert_layered_property_value
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context
+from tests.utils import (
+    assert_layered_property_count,
+    assert_layered_property_value,
+    get_mock_context,
+)
 
 LIST_SOFTWARE_QUERY = """
 query MyQuery($pageNumber: Int!, $pageSize: Int!) {
@@ -32,8 +35,7 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="add-test-software")
-async def test_add_software():
+async def test_add_software(db_session):
     """Test Add Software"""
 
     before_result = await test_schema.execute(
@@ -47,7 +49,7 @@ async def test_add_software():
         before_result.data, ["extensionList", "meta", "totalCount"], 0
     )
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
 
         first = await get_or_create_software_model(
             async_session,
@@ -90,9 +92,6 @@ async def test_add_software():
     assert_layered_property_count(after_result.data, ["extensionList", "data"], 3)
 
     assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 0, "id"], "2"
-    )
-    assert_layered_property_value(
         after_result.data, ["extensionList", "data", 0, "softwareType"], "EXTENSION"
     )
     assert_layered_property_value(
@@ -105,9 +104,6 @@ async def test_add_software():
         after_result.data, ["extensionList", "data", 0, "tags"], []
     )
 
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 1, "id"], "1"
-    )
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 1, "softwareType"], "EXTENSION"
     )
@@ -125,9 +121,6 @@ async def test_add_software():
         after_result.data, ["extensionList", "data", 1, "tags"], ["Magic"]
     )
 
-    assert_layered_property_value(
-        after_result.data, ["extensionList", "data", 2, "id"], "3"
-    )
     assert_layered_property_value(
         after_result.data, ["extensionList", "data", 2, "softwareType"], "EXTENSION"
     )

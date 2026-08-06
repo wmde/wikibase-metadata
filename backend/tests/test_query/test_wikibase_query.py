@@ -15,12 +15,11 @@ query MyQuery($wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.query
-@pytest.mark.dependency(depends=["add-wikibase"], scope="session")
-async def test_wikibase_query_authorized():
+async def test_wikibase_query_authorized(wikibase_fixture):
     """Test Query Wikibase Authorized"""
 
     result = await test_schema.execute(
-        WIKIBASE_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
 
     assert result.errors is None

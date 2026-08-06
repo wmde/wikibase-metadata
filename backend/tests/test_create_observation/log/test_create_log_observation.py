@@ -1,14 +1,19 @@
 """Test create_log_observation"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 
 from freezegun import freeze_time
 import pytest
 from requests import ReadTimeout
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from fetch_data import create_log_observation
+from model.database import WikibaseLogMonthObservationModel
+from model.enum import WikibaseUserType
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context, MockResponse, ParsedUrl
+from tests.utils import MockResponse, ParsedUrl, get_mock_context
 
 LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boolean!) {
   fetchLogData(wikibaseId: $wikibaseId, firstMonth: $firstMonth)
@@ -17,17 +22,25 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
 
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-success-1", depends=["log-first-success-ood"], scope="session"
-)
 @pytest.mark.log
 @pytest.mark.mutation
-async def test_create_log_observation_first_success(mocker):
+async def test_create_log_observation_first_success(
+    db_session, wikibase_with_script_path, mocker
+):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
 
     log_month_id 1, first month, users, 'thanks/thank'
     """
+
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert before is None
 
     mock_logs: list[dict] = []
     for i in range(70):
@@ -101,23 +114,43 @@ async def test_create_log_observation_first_success(mocker):
 
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
-        variable_values={"wikibaseId": 1, "firstMonth": True},
+        variable_values={
+            "wikibaseId": wikibase_with_script_path.id,
+            "firstMonth": True,
+        },
         context_value=get_mock_context("test-auth-token"),
     )
-
     assert result.errors is None
     assert result.data is not None
     assert result.data["fetchLogData"]
 
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert after is not None
+        assert after.first_month is True
+        assert after.first_log_date == datetime(2023, 10, 24, 0, 0, tzinfo=timezone.utc)
+        assert after.last_log_date == datetime(2023, 11, 23, 0, 0, tzinfo=timezone.utc)
+        assert after.last_log_user_type == WikibaseUserType.USER
+        assert after.log_count == 31
+        assert after.user_count == 3
+        assert after.active_user_count == 3
+        assert after.human_user_count == 1
+        assert after.active_human_user_count == 1
+        assert len(after.log_type_records) == 1
+
 
 @freeze_time(datetime(2024, 3, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-1", depends=["log-last-success-ood"], scope="session"
-)
 @pytest.mark.log
 @pytest.mark.mutation
-async def test_create_log_observation_last_success(mocker):
+async def test_create_log_observation_last_success(
+    wikibase_with_script_path, mocker
+):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Data Returned Scenario
 
@@ -174,7 +207,10 @@ async def test_create_log_observation_last_success(mocker):
 
     result = await test_schema.execute(
         LOG_DATA_MUTATION,
-        variable_values={"wikibaseId": 1, "firstMonth": False},
+        variable_values={
+            "wikibaseId": wikibase_with_script_path.id,
+            "firstMonth": False,
+        },
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -185,32 +221,51 @@ async def test_create_log_observation_last_success(mocker):
 
 @freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-failure", depends=["log-first-success-1"], scope="session"
-)
 @pytest.mark.log
-async def test_create_log_first_observation_error(mocker):
+async def test_create_log_first_observation_error(
+    db_session, wikibase_with_script_path, mocker
+):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
 
     log_month_id 3, first month, fail
     """
 
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert before is None
+
     mocker.patch(
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_log_observation(1, first_month=True)
+    success = await create_log_observation(
+        wikibase_with_script_path.id, first_month=True
+    )
     assert success is False
+
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseLogMonthObservationModel).where(
+                WikibaseLogMonthObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert after is not None
+        assert after.returned_data is False
 
 
 @freeze_time(datetime(2024, 3, 2))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-failure", depends=["log-last-success-1"], scope="session"
-)
 @pytest.mark.log
-async def test_create_log_last_observation_error(mocker):
+async def test_create_log_last_observation_error(
+    wikibase_with_script_path, mocker
+):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, Error Returned Scenario
 
@@ -220,24 +275,18 @@ async def test_create_log_last_observation_error(mocker):
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=[ReadTimeout()],
     )
-    success = await create_log_observation(1, first_month=False)
+    success = await create_log_observation(
+        wikibase_with_script_path.id, first_month=False
+    )
     assert success is False
 
 
 @freeze_time(datetime(2024, 3, 3))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-2",
-    depends=[
-        "log-first-success-1",
-        "log-last-success-1",
-        "log-first-failure",
-        "log-last-failure",
-    ],
-    scope="session",
-)
 @pytest.mark.log
-async def test_create_log_last_observation_no_last_month(mocker):
+async def test_create_log_last_observation_no_last_month(
+    wikibase_with_script_path, mocker
+):  # pylint: disable=redefined-outer-name
     """
     Test One-Pull Per Month, No Data In Range Returned Scenario
 
@@ -289,5 +338,7 @@ async def test_create_log_last_observation_no_last_month(mocker):
     mocker.patch(
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
-    success = await create_log_observation(1, first_month=False)
+    success = await create_log_observation(
+        wikibase_with_script_path.id, first_month=False
+    )
     assert success

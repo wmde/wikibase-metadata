@@ -1,19 +1,18 @@
 """Add Categories to Test Data"""
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from model.database import WikibaseCategoryModel
 from model.enum import WikibaseCategory
 
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(name="add-test-categories")
-async def test_add_test_categories():
+async def test_add_test_categories(db_session):
     """Add Categories to Test Data"""
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         async_session.add(
             WikibaseCategoryModel(
                 id=1, category=WikibaseCategory.CULTURAL_AND_HISTORICAL

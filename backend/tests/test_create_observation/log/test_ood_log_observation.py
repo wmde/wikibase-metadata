@@ -5,6 +5,7 @@ import json
 
 from freezegun import freeze_time
 import pytest
+
 from fetch_data import (
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
@@ -14,13 +15,10 @@ from tests.utils import MockResponse, ParsedUrl
 
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-first-success-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
 @pytest.mark.log
-async def test_update_out_of_date_log_first_observations_success(mocker):
+async def test_update_out_of_date_log_first_observations_success(
+    wikibase_with_script_path, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [
@@ -82,13 +80,10 @@ async def test_update_out_of_date_log_first_observations_success(mocker):
 
 @freeze_time(datetime(2024, 2, 1))
 @pytest.mark.asyncio
-@pytest.mark.dependency(
-    name="log-last-success-ood",
-    depends=["add-wikibase", "add-wikibase-script-path"],
-    scope="session",
-)
 @pytest.mark.log
-async def test_update_out_of_date_log_last_observations_success(mocker):
+async def test_update_out_of_date_log_last_observations_success(
+    wikibase_with_script_path, mocker
+):  # pylint: disable=unused-argument, redefined-outer-name
     """Test Empty Scenario"""
 
     mock_logs: list[dict] = [
@@ -137,6 +132,7 @@ async def test_update_out_of_date_log_last_observations_success(mocker):
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
     )
     result = await update_out_of_date_log_last_observations()
+
     assert result.failure == 0
     assert result.success == 1
     assert result.total == 1

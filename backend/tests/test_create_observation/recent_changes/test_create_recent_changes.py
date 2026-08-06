@@ -1,19 +1,17 @@
 """Test create_recent_changes"""
 
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from json import JSONDecodeError
 
 import pytest
-from requests.exceptions import ReadTimeout
+from requests import ReadTimeout
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data.database_connection import get_async_session
+from fetch_data import create_recent_changes_observation
+from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
     create_recent_changes,
-    create_recent_changes_observation,
-)
-from fetch_data.api_data.recent_changes_data.wikibase_recent_change_record import (
-    WikibaseRecentChangeRecord,
 )
 from model.database import WikibaseRecentChangesObservationModel
 from tests.test_schema import test_schema
@@ -143,26 +141,31 @@ async def test_create_recent_changes_counts():
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
-async def test_create_recent_changes_observation_exception_timeout(mocker):
+async def test_create_recent_changes_observation_exception_timeout(
+    db_session, mocker, wikibase_with_script_path
+):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         side_effect=ReadTimeout,
     )
 
-    success = await create_recent_changes_observation(wikibase_id=1)
+    success = await create_recent_changes_observation(
+        wikibase_id=wikibase_with_script_path.id
+    )
     assert not success
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
-        assert observation.id == 2
         assert not observation.returned_data
         assert observation.human_change_count is None
         assert observation.human_change_user_count is None
@@ -171,26 +174,31 @@ async def test_create_recent_changes_observation_exception_timeout(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
-async def test_create_recent_changes_observation_exception_decode(mocker):
+async def test_create_recent_changes_observation_exception_decode(
+    db_session, mocker, wikibase_with_script_path
+):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         side_effect=JSONDecodeError("Fail", "{]}", 1),
     )
 
-    success = await create_recent_changes_observation(wikibase_id=1)
+    success = await create_recent_changes_observation(
+        wikibase_id=wikibase_with_script_path.id
+    )
     assert not success
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
-        assert observation.id == 3
         assert not observation.returned_data
         assert observation.human_change_count is None
         assert observation.human_change_user_count is None
@@ -199,9 +207,20 @@ async def test_create_recent_changes_observation_exception_decode(mocker):
 
 
 @pytest.mark.asyncio
-@pytest.mark.dependency(depends=["recent-changes-success-ood"], scope="session")
-async def test_create_recent_changes_observation_fail(mocker):
+async def test_create_recent_changes_observation_fail(
+    db_session, mocker, wikibase_with_script_path
+):  # pylint: disable=redefined-outer-name
     """Test exception handling in create_recent_changes_observation"""
+
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseRecentChangesObservationModel).where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert before is None
+
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
         side_effect=ReadTimeout,
@@ -209,7 +228,7 @@ async def test_create_recent_changes_observation_fail(mocker):
 
     result = await test_schema.execute(
         FETCH_RECENT_CHANGES_MUTATION,
-        variable_values={"wikibaseId": 1},
+        variable_values={"wikibaseId": wikibase_with_script_path.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -217,15 +236,17 @@ async def test_create_recent_changes_observation_fail(mocker):
     assert result.data is not None
     assert result.data["fetchRecentChangesData"] is False
 
-    async with get_async_session() as async_session:
+    async with AsyncSession(bind=db_session) as async_session:
         query = (
             select(WikibaseRecentChangesObservationModel)
-            .where(WikibaseRecentChangesObservationModel.wikibase_id == 1)
+            .where(
+                WikibaseRecentChangesObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
             .order_by(WikibaseRecentChangesObservationModel.id.desc())
         )
         observation = (await async_session.scalars(query)).first()
         assert observation is not None
-        assert observation.id == 4
         assert not observation.returned_data
         assert observation.human_change_count is None
         assert observation.human_change_user_count is None

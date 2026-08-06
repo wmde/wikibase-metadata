@@ -2,12 +2,12 @@
 
 import pytest
 
+from resolvers import remove_wikibase_language
 from tests.test_mutation.test_update_wikibase_language.query import (
     WIKIBASE_LANGUAGES_QUERY,
 )
 from tests.test_schema import test_schema
 from tests.utils import assert_layered_property_value, get_mock_context
-from resolvers import remove_wikibase_language
 
 REMOVE_WIKIBASE_LANGUAGE_MUTATION = """
 mutation MyMutation($language: String!, $wikibaseId: Int!) {
@@ -17,21 +17,20 @@ mutation MyMutation($language: String!, $wikibaseId: Int!) {
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="remove-wikibase-language-1",
-    depends=["add-wikibase-language-1"],
-    scope="session",
-)
-async def test_remove_wikibase_language_one():
+async def test_remove_wikibase_language_one(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Remove Wikibase Language - Primary"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="1"
+        before_removing_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_fixture.id),
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -41,7 +40,7 @@ async def test_remove_wikibase_language_one():
 
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_LANGUAGE_MUTATION,
-        variable_values={"wikibaseId": 1, "language": "French"},
+        variable_values={"wikibaseId": wikibase_fixture.id, "language": "French"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert remove_result.errors is not None
@@ -53,21 +52,20 @@ async def test_remove_wikibase_language_one():
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="remove-wikibase-language-2",
-    depends=["add-wikibase-language-2"],
-    scope="session",
-)
-async def test_remove_wikibase_language_two():
-    """Remove Wikibase Language"""
+async def test_remove_wikibase_language_two(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
+    """Remove Wikibase Language - Additional"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="1"
+        before_removing_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_fixture.id),
     )
     assert_layered_property_value(
         before_removing_result.data,
@@ -77,19 +75,23 @@ async def test_remove_wikibase_language_two():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch", "English"],
+        expected_value=["Cymru", "Deutsch"],
     )
 
-    remove_result = await remove_wikibase_language(wikibase_id=1, language="English")
+    remove_result = await remove_wikibase_language(
+        wikibase_id=wikibase_fixture.id, language="Cymru"
+    )
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value="1"
+        after_removing_result.data,
+        ["wikibase", "id"],
+        expected_value=str(wikibase_fixture.id),
     )
     assert_layered_property_value(
         after_removing_result.data,
@@ -99,29 +101,23 @@ async def test_remove_wikibase_language_two():
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch"],
+        expected_value=["Deutsch"],
     )
 
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
-@pytest.mark.dependency(
-    name="remove-wikibase-language-3",
-    depends=["remove-wikibase-language-2"],
-    scope="session",
-)
-async def test_remove_wikibase_language_three():
+async def test_remove_wikibase_language_three(
+    wikibase_fixture,
+):  # pylint: disable=redefined-outer-name
     """Remove Wikibase Language - Does Not Exist in List"""
 
     before_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
     assert before_removing_result.errors is None
     assert before_removing_result.data is not None
     assert_layered_property_value(
-        before_removing_result.data, ["wikibase", "id"], expected_value="1"
-    )
-    assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "languages", "primary"],
         expected_value="French",
@@ -129,21 +125,20 @@ async def test_remove_wikibase_language_three():
     assert_layered_property_value(
         before_removing_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch"],
+        expected_value=["Cymru", "Deutsch"],
     )
 
-    remove_result = await remove_wikibase_language(wikibase_id=1, language="Greek")
+    remove_result = await remove_wikibase_language(
+        wikibase_id=wikibase_fixture.id, language="Greek"
+    )
     assert remove_result
 
     after_removing_result = await test_schema.execute(
-        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": 1}
+        WIKIBASE_LANGUAGES_QUERY, variable_values={"wikibaseId": wikibase_fixture.id}
     )
     assert after_removing_result.errors is None
     assert after_removing_result.data is not None
     assert_layered_property_value(
-        after_removing_result.data, ["wikibase", "id"], expected_value="1"
-    )
-    assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "languages", "primary"],
         expected_value="French",
@@ -151,5 +146,5 @@ async def test_remove_wikibase_language_three():
     assert_layered_property_value(
         after_removing_result.data,
         ["wikibase", "languages", "additional"],
-        expected_value=["Albanian", "Babylonian", "Cymru", "Deutsch"],
+        expected_value=["Cymru", "Deutsch"],
     )
