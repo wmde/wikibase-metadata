@@ -2,6 +2,8 @@
 
 from datetime import datetime, timezone
 import re
+from sqlalchemy.ext.asyncio import AsyncSession
+import pytest
 
 from export_csv.metric import export_metric_csv
 from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
@@ -20,13 +22,9 @@ from model.database.wikibase_observation.version.wikibase_version_observation_mo
     WikibaseSoftwareVersionObservationModel,
 )
 from model.database.wikibase_software.software_model import WikibaseSoftwareModel
-from model.enum.wikibase_software_type_enum import WikibaseSoftwareType
-import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
+from model.enum import WikibaseType, WikibaseSoftwareType
 
-from app import app
 from model.database import WikibaseModel
-from model.enum import WikibaseType
 
 EXPECTED_HEADER_ROW = ",".join(
     [
@@ -95,7 +93,7 @@ EXPECTED_PATTERN_LIST = [
 
 
 @pytest.fixture
-async def wikibases(db_session):
+async def wikibases(db_session):  # pylint: disable=too-many-locals, too-many-statements
     """Create 3 wikibases for CSV export tests"""
     wikibase_ids = []
     async with AsyncSession(bind=db_session) as session:
