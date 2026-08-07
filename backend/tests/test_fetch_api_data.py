@@ -5,10 +5,9 @@ from typing import List
 
 import pytest
 import requests
+
+from fetch_data.utils import fetch_api_data, APIError
 from tests.utils import MockResponse
-
-
-from fetch_data.utils.fetch_data_from_api import fetch_api_data, APIError
 
 
 @pytest.mark.asyncio

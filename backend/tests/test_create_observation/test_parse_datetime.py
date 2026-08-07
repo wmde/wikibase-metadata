@@ -2,7 +2,9 @@
 
 from datetime import datetime
 from typing import Optional
+
 import pytest
+
 from fetch_data.utils import parse_datetime
 
 

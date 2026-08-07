@@ -1,6 +1,7 @@
 """Test Wikibase Most Recent Property Popularity Observation Query"""
 
 import pytest
+
 from tests.test_query.wikibase.property_popularity_obs.assert_property_popularity import (
     assert_property_count,
 )
