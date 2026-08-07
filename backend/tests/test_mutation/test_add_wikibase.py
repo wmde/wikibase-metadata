@@ -59,7 +59,6 @@ async def test_add_wikibase_mutation(
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
 
     wikibase_id = int(result.data["addWikibase"]["id"])
@@ -83,10 +82,10 @@ async def test_add_wikibase_mutation(
 
 
 @pytest.mark.asyncio
-async def test_does_not_allow_multiple_wikibases_with_same_base_url(
-    db_session, wikibase_categories
-):  # pylint: disable=unused-argument, redefined-outer-name
-    """Test Can't Add Wikibase with existing base URL"""
+async def test_updates_wikibase_if_base_url_already_exists(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Test Updates existing Wikibase if base URL already exists"""
 
     base_url = "https://example-wikibase.com"
 
@@ -94,7 +93,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Wikibase Add",
+                "wikibaseName": "Example Wikibase 1",
                 "description": "",
                 "organization": "",
                 "country": "",
@@ -108,14 +107,15 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert result.errors is None
     assert result.data is not None
+
+    wikibase_id = result.data["addWikibase"]["id"]
 
     result = await test_schema.execute(
         ADD_WIKIBASE_QUERY,
         variable_values={
             "wikibaseInput": {
-                "wikibaseName": "Wikibase Add 2",
+                "wikibaseName": "Example Wikibase 2",
                 "description": "",
                 "organization": "",
                 "country": "",
@@ -129,8 +129,12 @@ async def test_does_not_allow_multiple_wikibases_with_same_base_url(
         },
     )
 
-    assert len(result.errors) == 1
-    assert result.errors[0].message == f"URL {base_url} already exists"
+    async with get_async_session() as session:
+        db_result = await session.execute(
+            select(WikibaseModel).where(WikibaseModel.id == int(wikibase_id))
+        )
+        wikibase = db_result.scalar_one()
+        assert wikibase.wikibase_name == "Example Wikibase 2"
 
 
 @pytest.mark.asyncio
@@ -217,6 +221,8 @@ async def test_normalizes_urls(
     assert result.errors is None
     assert result.data is not None
 
+    wikibase_id = result.data["addWikibase"]["id"]
+
     url_variations = [
         f"https://{base_url}",
         f"http://{base_url}/",
@@ -274,6 +280,43 @@ async def test_marks_localhost_urls_as_test(
     wikibase_id = int(result.data["addWikibase"]["id"])
 
     async with AsyncSession(bind=db_session) as session:
+        db_result = await session.execute(
+            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+        )
+        wikibase = db_result.scalar_one()
+        assert wikibase.test is True
+        assert wikibase_id == result.data['addWikibase']['id']
+        assert wikibase_id == result.data["addWikibase"]["id"]
+
+
+@pytest.mark.asyncio
+async def test_marks_localhost_urls_as_test(
+    db_session,
+):  # pylint: disable=unused-argument
+    """Test marks all Wikibases with a URL containing 'localhost' as test"""
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Localhost Wikibase",
+                "description": "Mock wikibase for testing this codebase",
+                "organization": "Wikibase Mockery International",
+                "country": "Germany",
+                "region": "Europe",
+                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                "urls": {
+                    "baseUrl": "http://localhost:8000",
+                    "articlePath": "/wiki",
+                },
+            }
+        },
+    )
+
+    assert result.errors is None
+    wikibase_id = int(result.data["addWikibase"]["id"])
+
+    async with get_async_session() as session:
         db_result = await session.execute(
             select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
         )
