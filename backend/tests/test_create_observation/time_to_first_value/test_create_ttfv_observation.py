@@ -27,7 +27,6 @@ async def test_create_ttfv_observation_success(
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseTimeToFirstValueObservationModel).where(

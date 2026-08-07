@@ -46,7 +46,6 @@ async def wikibase(db_session):
 async def test_create_user_observation_failure(wikibase, mocker):
     """Test Error Scenario"""
 
-
     mocker.patch(
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
         side_effect=[ReadTimeout()],
@@ -60,7 +59,6 @@ async def test_create_user_observation_failure(wikibase, mocker):
 @pytest.mark.user
 async def test_create_user_observation_single_pull(wikibase, mocker):
     """Test Data, Single Pull Scenario"""
-
 
     users = []
     for i in range(20):
@@ -95,7 +93,6 @@ async def test_create_user_observation_single_pull(wikibase, mocker):
 @pytest.mark.user
 async def test_create_user_observation_multiple_pull(wikibase, mocker, db_session):
     """Test Data, Multiple Pull Scenario"""
-
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(

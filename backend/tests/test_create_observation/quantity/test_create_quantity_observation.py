@@ -95,7 +95,6 @@ async def test_create_quantity_observation_failure(
 ):
     """Test"""
 
-
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseQuantityObservationModel).where(

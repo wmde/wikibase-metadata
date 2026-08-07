@@ -30,7 +30,6 @@ async def test_create_software_version_observation_success(
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseSoftwareVersionObservationModel).where(
@@ -86,7 +85,6 @@ async def test_create_software_version_observation_success_ii(
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Version_ii.html"), "rb"
     ) as version_html:
@@ -121,7 +119,6 @@ async def test_create_software_version_observation_failure(
     db_session, wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
-
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
