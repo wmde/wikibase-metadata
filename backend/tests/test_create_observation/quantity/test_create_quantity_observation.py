@@ -1,13 +1,11 @@
 """Test create_quantity_observation"""
 
-import time
 from urllib.error import HTTPError
 
 import pytest
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_quantity_observation
 from model.database import WikibaseModel, WikibaseQuantityObservationModel
 from tests.test_schema import test_schema

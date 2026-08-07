@@ -1,7 +1,6 @@
 """Test create_special_statistics_observation"""
 
 import os
-import time
 
 import pytest
 from sqlalchemy import select

@@ -1,7 +1,6 @@
 """Test create_user_observation"""
 
 from math import floor
-import time
 
 import pytest
 from requests import ReadTimeout

@@ -2,7 +2,6 @@
 
 from datetime import datetime, timezone
 import re
-import time
 
 import pytest
 from sqlalchemy import select
