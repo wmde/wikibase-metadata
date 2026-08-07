@@ -46,7 +46,6 @@ async def test_create_property_popularity_observation_success(
 ):
     """Test One-Pull Per Month, Data Returned Scenario"""
 
-    await asyncio.to_thread(time.sleep, 1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(

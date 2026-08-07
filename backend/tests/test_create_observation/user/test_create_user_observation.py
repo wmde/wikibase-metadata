@@ -46,7 +46,6 @@ async def wikibase(db_session):
 async def test_create_user_observation_failure(wikibase, mocker):
     """Test Error Scenario"""
 
-    time.sleep(1)
 
     mocker.patch(
         "fetch_data.api_data.user_data.fetch_all_user_data.fetch_api_data",
@@ -62,7 +61,6 @@ async def test_create_user_observation_failure(wikibase, mocker):
 async def test_create_user_observation_single_pull(wikibase, mocker):
     """Test Data, Single Pull Scenario"""
 
-    time.sleep(1)
 
     users = []
     for i in range(20):
@@ -98,7 +96,6 @@ async def test_create_user_observation_single_pull(wikibase, mocker):
 async def test_create_user_observation_multiple_pull(wikibase, mocker, db_session):
     """Test Data, Multiple Pull Scenario"""
 
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(

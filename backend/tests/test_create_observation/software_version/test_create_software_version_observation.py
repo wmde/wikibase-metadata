@@ -30,7 +30,6 @@ async def test_create_software_version_observation_success(
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
@@ -87,7 +86,6 @@ async def test_create_software_version_observation_success_ii(
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-    time.sleep(1)
 
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Version_ii.html"), "rb"
@@ -124,7 +122,6 @@ async def test_create_software_version_observation_failure(
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(

@@ -82,7 +82,6 @@ async def test_create_statistics_observation_failure(
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
 
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(

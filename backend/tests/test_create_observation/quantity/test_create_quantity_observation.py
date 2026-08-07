@@ -95,7 +95,6 @@ async def test_create_quantity_observation_failure(
 ):
     """Test"""
 
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
