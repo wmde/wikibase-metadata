@@ -1,7 +1,7 @@
 """Test Bulk Connectivity Update"""
 
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from model.database import WikibaseModel
 from tests.test_schema import test_schema

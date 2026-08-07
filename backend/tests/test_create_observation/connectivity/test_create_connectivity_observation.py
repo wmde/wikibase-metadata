@@ -6,7 +6,6 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_connectivity_observation
 from model.database import WikibaseConnectivityObservationModel
 from tests.test_schema import test_schema

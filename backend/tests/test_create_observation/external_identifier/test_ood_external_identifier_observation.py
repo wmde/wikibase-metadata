@@ -1,9 +1,8 @@
 """Test update_out_of_date_external_identifier_observations"""
 
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import update_out_of_date_external_identifier_observations
 from model.database import WikibaseModel
 
