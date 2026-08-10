@@ -8,9 +8,7 @@ from fetch_data import update_cloud_instances
 from model.enum import WikibaseType, WikibaseURLType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
-from resolvers.add import add_wikibase
-from resolvers.authentication import authenticate
-from resolvers.update import (
+from resolvers import (
     add_wikibase_language,
     remove_wikibase_language,
     remove_wikibase_url,

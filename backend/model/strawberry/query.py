@@ -21,7 +21,7 @@ from model.strawberry.output import (
     WikibaseUserAggregateStrawberryModel,
     WikibaseYearCreatedAggregateStrawberryModel,
 )
-from resolvers.get_aggregate import (
+from resolvers import (
     get_aggregate_created,
     get_aggregate_external_identifier,
     get_aggregate_property_popularity,
