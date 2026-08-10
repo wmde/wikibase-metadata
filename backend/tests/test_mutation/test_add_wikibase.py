@@ -83,7 +83,7 @@ async def test_add_wikibase_mutation(
 
 @pytest.mark.asyncio
 async def test_updates_wikibase_if_base_url_already_exists(
-    db_session,
+    db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
     """Test Updates existing Wikibase if base URL already exists"""
 
@@ -129,7 +129,7 @@ async def test_updates_wikibase_if_base_url_already_exists(
         },
     )
 
-    async with get_async_session() as session:
+    async with AsyncSession(bind=db_session) as session:
         db_result = await session.execute(
             select(WikibaseModel).where(WikibaseModel.id == int(wikibase_id))
         )
@@ -196,7 +196,7 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
 async def test_normalizes_urls(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument, redefined-outer-name
-    """Test Normalizes the base URL when adding a Wikibase"""
+    """Test Normalizes the base URL when adding a Wikibase, updating in place on collision"""
 
     base_url = "example-1234.com"
 
@@ -248,8 +248,10 @@ async def test_normalizes_urls(
             },
         )
 
-        assert len(result.errors) == 1
-        assert result.errors[0].message == f"URL https://{base_url} already exists"
+        assert result.errors is None
+        assert result.data is not None
+
+        assert result.data["addWikibase"]["id"] == wikibase_id
 
 
 @pytest.mark.asyncio
@@ -285,40 +287,4 @@ async def test_marks_localhost_urls_as_test(
         )
         wikibase = db_result.scalar_one()
         assert wikibase.test is True
-        assert wikibase_id == result.data['addWikibase']['id']
-        assert wikibase_id == result.data["addWikibase"]["id"]
-
-
-@pytest.mark.asyncio
-async def test_marks_localhost_urls_as_test(
-    db_session,
-):  # pylint: disable=unused-argument
-    """Test marks all Wikibases with a URL containing 'localhost' as test"""
-
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Localhost Wikibase",
-                "description": "Mock wikibase for testing this codebase",
-                "organization": "Wikibase Mockery International",
-                "country": "Germany",
-                "region": "Europe",
-                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
-                "urls": {
-                    "baseUrl": "http://localhost:8000",
-                    "articlePath": "/wiki",
-                },
-            }
-        },
-    )
-
-    assert result.errors is None
-    wikibase_id = int(result.data["addWikibase"]["id"])
-
-    async with get_async_session() as session:
-        db_result = await session.execute(
-            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
-        )
-        wikibase = db_result.scalar_one()
-        assert wikibase.test is True
+        assert wikibase_id == int(result.data["addWikibase"]["id"])
