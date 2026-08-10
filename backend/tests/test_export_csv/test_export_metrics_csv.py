@@ -2,26 +2,19 @@
 
 from datetime import datetime, timezone
 import re
-from sqlalchemy.ext.asyncio import AsyncSession
+
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from export_csv.metric import export_metric_csv
-from model.database.wikibase_observation.external_identifier.wikibase_ei_obs_model import (
+from model.database import (
     WikibaseExternalIdentifierObservationModel,
-)
-from model.database.wikibase_observation.quantity.wikibase_quantity_observation_model import (
     WikibaseQuantityObservationModel,
-)
-from model.database.wikibase_observation.recent_changes.recent_changes_observation_model import (
     WikibaseRecentChangesObservationModel,
-)
-from model.database.wikibase_observation.version.software_version_model import (
+    WikibaseSoftwareModel,
     WikibaseSoftwareVersionModel,
-)
-from model.database.wikibase_observation.version.wikibase_version_observation_model import (
     WikibaseSoftwareVersionObservationModel,
 )
-from model.database.wikibase_software.software_model import WikibaseSoftwareModel
 from model.enum import WikibaseType, WikibaseSoftwareType
 
 from model.database import WikibaseModel

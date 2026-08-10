@@ -1,7 +1,6 @@
 """Test create_special_statistics_observation"""
 
 import os
-import time
 
 import pytest
 from sqlalchemy import select
@@ -81,8 +80,6 @@ async def test_create_statistics_observation_failure(
     wikibase_with_article_path, mocker, db_session
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
-
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
