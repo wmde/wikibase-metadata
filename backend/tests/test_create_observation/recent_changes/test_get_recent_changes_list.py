@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, UTC
 
 from freezegun import freeze_time
 import pytest
+
 from fetch_data.api_data.recent_changes_data import get_recent_changes_list
 
 

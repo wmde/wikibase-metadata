@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from freezegun import freeze_time
 import pytest
+
 from fetch_data.api_data.log_data.fetch_log_data import get_month_log_list
 
 

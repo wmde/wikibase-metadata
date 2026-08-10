@@ -1,7 +1,6 @@
 """Test create_software_version_observation"""
 
 import os
-import time
 
 import pytest
 from sqlalchemy import select
@@ -29,8 +28,6 @@ async def test_create_software_version_observation_success(
     db_session, wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
-
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
@@ -87,8 +84,6 @@ async def test_create_software_version_observation_success_ii(
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
 
-    time.sleep(1)
-
     with open(
         os.path.join(DATA_DIRECTORY, "Special_Version_ii.html"), "rb"
     ) as version_html:
@@ -123,8 +118,6 @@ async def test_create_software_version_observation_failure(
     db_session, wikibase_with_article_path, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Failure Scenario"""
-
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
