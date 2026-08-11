@@ -9,7 +9,9 @@ from model.enum import WikibaseType, WikibaseURLType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
 from resolvers import (
+    add_wikibase,
     add_wikibase_language,
+    authenticate,
     remove_wikibase_language,
     remove_wikibase_url,
     update_wikibase_primary_language,
