@@ -72,8 +72,7 @@ services:
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
     volumes:
-      - ./logs/:/app/logs/:z
-      - ./data/wikibase-data.latest.db:/app/data/wikibase-data.latest.db:z
+      - ./logs/scheduler/:/app/logs/:z
     depends_on:
       - backend
     restart: unless-stopped
