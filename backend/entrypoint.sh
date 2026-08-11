@@ -1,5 +1,4 @@
 #!/bin/bash
-set e
 
 alembic upgrade head && \
 PYTHONPATH=. pytest -m data -p no:cacheprovider && \
