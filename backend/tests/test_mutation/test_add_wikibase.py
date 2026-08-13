@@ -83,6 +83,43 @@ async def test_add_wikibase_mutation(
 
 
 @pytest.mark.asyncio
+@pytest.mark.mutation
+async def test_add_wikibase_mutation_bad_type(
+    db_session, wikibase_categories
+):  # pylint: disable=redefined-outer-name, unused-argument
+    """
+    Test Add Wikibase with extra quotes in type
+
+    Because apparently this a thing
+    """
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Mock Badly-Formatted Wikibase",
+                "wikibaseType": '"SUITE"',
+                "urls": {"baseUrl": "https://test-suite-error-example.com/"},
+            }
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    wikibase_id = int(result.data["addWikibase"]["id"])
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = await session.scalar(
+            select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+        )
+
+        assert wikibase.wikibase_name == "Mock Badly-Formatted Wikibase"
+        assert wikibase.wikibase_type == WikibaseType.SUITE
+        assert wikibase.url.url_type == WikibaseURLType.BASE_URL
+        assert wikibase.url.url == "https://test-suite-error-example.com"
+
+
+@pytest.mark.asyncio
 async def test_does_not_allow_multiple_wikibases_with_same_base_url(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument, redefined-outer-name
