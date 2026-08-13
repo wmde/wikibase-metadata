@@ -1,6 +1,6 @@
 """Wikibase - INPUT"""
 
-from typing import Optional
+from typing import Optional, Union
 import strawberry
 
 from model.enum import WikibaseCategory, WikibaseType
@@ -29,4 +29,4 @@ class WikibaseInput:
 
     urls: WikibaseURLSetInput
 
-    wikibase_type: Optional[WikibaseType] = None
+    wikibase_type: Optional[Union[WikibaseType, str]] = None
