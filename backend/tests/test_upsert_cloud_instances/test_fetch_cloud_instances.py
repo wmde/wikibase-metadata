@@ -1,6 +1,7 @@
 """Test Fetch Cloud Instances"""
 
 import os
+
 import pytest
 
 from fetch_data import fetch_cloud_instances

@@ -1,14 +1,11 @@
 """Test create_property_popularity_observation"""
 
-import asyncio
-import time
 from urllib.error import HTTPError
 
 import pytest
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from data import get_async_session
 from fetch_data import create_property_popularity_observation
 from model.database import WikibaseModel, WikibasePropertyPopularityObservationModel
 from tests.test_schema import test_schema
@@ -45,8 +42,6 @@ async def test_create_property_popularity_observation_success(
     db_session, wikibase_with_sparql, mocker
 ):
     """Test One-Pull Per Month, Data Returned Scenario"""
-
-    await asyncio.to_thread(time.sleep, 1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(

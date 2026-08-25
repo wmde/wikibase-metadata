@@ -2,7 +2,6 @@
 
 from datetime import datetime, timezone
 import re
-import time
 
 import pytest
 from sqlalchemy import select
@@ -26,8 +25,6 @@ async def test_create_ttfv_observation_success(
     db_session, wikibase_fixture, mocker
 ):  # pylint: disable=redefined-outer-name
     """Test Data Returned Scenario"""
-
-    time.sleep(1)
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
