@@ -4,6 +4,11 @@ import { debounce } from '@/util/debounce'
 import { mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
 
+defineProps<{
+	menuValue: 'instances' | 'items'
+	setMenuValue: (v: 'instances' | 'items') => void
+}>()
+
 const store = useWikiStore()
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
@@ -34,8 +39,6 @@ const displayRuleResults = computed(() =>
 )
 
 const focused = ref(false)
-
-const menuValue = ref<'instances' | 'items'>('instances')
 </script>
 
 <template>
@@ -51,7 +54,7 @@ const menuValue = ref<'instances' | 'items'>('instances')
 					<v-list-item
 						key="instances"
 						value="instances"
-						v-on:click="() => (menuValue = 'instances')"
+						v-on:click="() => setMenuValue('instances')"
 						:disabled="menuValue == 'instances'"
 					>
 						<v-list-item-title>Instances</v-list-item-title>
@@ -59,7 +62,7 @@ const menuValue = ref<'instances' | 'items'>('instances')
 					<v-list-item
 						key="items"
 						value="items"
-						v-on:click="() => (menuValue = 'items')"
+						v-on:click="() => setMenuValue('items')"
 						:disabled="menuValue == 'items'"
 					>
 						<v-list-item-title>Items</v-list-item-title>
