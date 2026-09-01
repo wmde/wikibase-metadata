@@ -2,10 +2,10 @@
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import WikibaseTotalContainer from '@/component/wikibase-table/WikibaseTotalContainer.vue'
-import { useWikiStore } from '@/stores/wikibase-page-store'
+import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed, onBeforeMount, ref } from 'vue'
 
-const store = useWikiStore()
+const store = useWikiPageStore()
 const showCount = computed(() => store.wikibasePage.data?.data.length)
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 

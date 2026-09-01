@@ -48,7 +48,7 @@ const { load, onResult, loading, error } = useLazyQuery<
 	PageWikibasesQueryVariables
 >(pageWikibasesQuery)
 
-export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType => {
+export const useWikiPageStore = defineStore('wiki-page', (): WikibasePageStoreType => {
 	const data = ref<WikibasePageData | undefined>()
 	onResult(
 		(result) =>

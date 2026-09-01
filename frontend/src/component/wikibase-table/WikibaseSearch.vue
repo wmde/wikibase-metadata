@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useWikiStore } from '@/stores/wikibase-page-store'
+import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
@@ -9,7 +9,7 @@ defineProps<{
 	setMenuValue: (v: 'instances' | 'items') => void
 }>()
 
-const store = useWikiStore()
+const store = useWikiPageStore()
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 
