@@ -44,7 +44,7 @@ describe('AppHeader', async () => {
 		expect(feedbackButton.attributes()).toHaveProperty('target', '_blank')
 	})
 
-	it.skip('changes theme on button push', async () => {
+	it.todo('changes theme on button push', async () => {
 		const wrapper = mount(AppHeader, { global: { plugins: [vuetify] } })
 
 		const headerContainer = wrapper.find('div.header')
