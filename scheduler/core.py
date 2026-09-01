@@ -29,6 +29,7 @@ from resolvers.update import (
     update_missing_sparql_urls,
 )
 
+
 def create_scheduler() -> AsyncIOScheduler:
     """Create a scheduler"""
 
@@ -40,11 +41,7 @@ def create_scheduler() -> AsyncIOScheduler:
         "misfire_grace_time": 3600,
     }
 
-    scheduler.add_job(
-        update_software_data,
-        IntervalTrigger(hours=2),
-        **job_defaults
-    )
+    scheduler.add_job(update_software_data, IntervalTrigger(hours=2), **job_defaults)
 
     scheduler.add_job(
         update_out_of_date_cloud_instances,
@@ -80,7 +77,7 @@ def create_scheduler() -> AsyncIOScheduler:
             hour=0,
         ),
         **job_defaults,
-)
+    )
 
     scheduler.add_job(
         update_out_of_date_log_first_observations,
@@ -98,7 +95,7 @@ def create_scheduler() -> AsyncIOScheduler:
             hour=2,
         ),
         **job_defaults,
-)
+    )
 
     scheduler.add_job(
         update_out_of_date_recent_changes_observations,
@@ -107,7 +104,7 @@ def create_scheduler() -> AsyncIOScheduler:
             hour=3,
         ),
         **job_defaults,
-)
+    )
 
     scheduler.add_job(
         update_out_of_date_property_observations,
@@ -174,6 +171,7 @@ def create_scheduler() -> AsyncIOScheduler:
 
     return scheduler
 
+
 async def health_handler(_reader, writer, scheduler: AsyncIOScheduler):
     """Check the health of the scheduler"""
 
@@ -198,6 +196,7 @@ async def health_handler(_reader, writer, scheduler: AsyncIOScheduler):
     await writer.drain()
     writer.close()
 
+
 async def start_health_server(scheduler: AsyncIOScheduler):
     """Starts an HTTP server to check health of scheduler"""
 
@@ -207,6 +206,7 @@ async def start_health_server(scheduler: AsyncIOScheduler):
     server = await asyncio.start_server(handler, "0.0.0.0", 8081)
     logger.info("Health endpoint listening on :8081")
     return server
+
 
 async def run_scheduler():
     """Run the scheduler and health server"""
