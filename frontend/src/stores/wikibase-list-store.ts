@@ -1,10 +1,5 @@
 import listWikibasesQuery from '@/graphql/queries/wikibase-list-query'
-import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
-import type {
-	ListWikibasesQuery,
-	ListWikibasesQueryVariables,
-	WbItemFragment
-} from '@/graphql/types'
+import type { ListWikibasesQuery, WbItemFragment } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
@@ -13,10 +8,7 @@ import { computed, ref, type Ref } from 'vue'
 
 provideApolloClient(apolloClient)
 
-type WikibaseListData = {
-	meta: { totalCount: number }
-	data: WbItemFragment[]
-}
+type WikibaseListData = { meta: { totalCount: number }; data: WbItemFragment[] }
 
 export type WikibaseListStoreType = {
 	fetchWikibaseList: () => void
@@ -24,10 +16,7 @@ export type WikibaseListStoreType = {
 		QueryResult<WikibaseListData | undefined> | Ref<QueryResult<WikibaseListData | undefined>>
 }
 
-const { load, onResult, loading, error } = useLazyQuery<
-	ListWikibasesQuery,
-	ListWikibasesQueryVariables
->(listWikibasesQuery)
+const { load, onResult, loading, error } = useLazyQuery<ListWikibasesQuery>(listWikibasesQuery)
 
 export const useWikiListStore = defineStore('wiki-list', (): WikibaseListStoreType => {
 	const data = ref<WikibaseListData | undefined>()
@@ -39,7 +28,7 @@ export const useWikiListStore = defineStore('wiki-list', (): WikibaseListStoreTy
 		errorState: error.value ? true : false
 	}))
 
-	const fetchWikibaseList = () => load(pageWikibasesQuery)
+	const fetchWikibaseList = () => load(listWikibasesQuery)
 
 	return { fetchWikibaseList, wikibaseList }
 })

@@ -1357,6 +1357,21 @@ export type SingleWikibaseFragment = {
 	}
 }
 
+export type ListWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type ListWikibasesQuery = {
+	wikibaseList: {
+		meta: { totalCount: number }
+		data: Array<{ id: string; title: string; urls: { baseUrl: string; scriptPath: string | null } }>
+	}
+}
+
+export type WbItemFragment = {
+	id: string
+	title: string
+	urls: { baseUrl: string; scriptPath: string | null }
+}
+
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']

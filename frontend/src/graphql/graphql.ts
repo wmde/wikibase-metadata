@@ -1304,6 +1304,21 @@ export type SingleWikibaseFragment = {
 	}
 } & { ' $fragmentName'?: 'SingleWikibaseFragment' }
 
+export type ListWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type ListWikibasesQuery = {
+	wikibaseList: {
+		meta: { totalCount: number }
+		data: Array<{ ' $fragmentRefs'?: { WbItemFragment: WbItemFragment } }>
+	}
+}
+
+export type WbItemFragment = {
+	id: string
+	title: string
+	urls: { baseUrl: string; scriptPath: string | null }
+} & { ' $fragmentName'?: 'WbItemFragment' }
+
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
@@ -1467,6 +1482,34 @@ export const SingleWikibaseFragmentDoc = {
 													selections: [
 														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+export const WbItemFragmentDoc = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBItem' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'urls' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } }
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<WbItemFragment, unknown>
 														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
 													]
 												}
@@ -1690,6 +1733,83 @@ export const SingleWikibaseDocument = {
 								{
 									kind: 'Field',
 									name: { kind: 'Name', value: 'mostRecent' },
+export const ListWikibasesDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'ListWikibases' },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'wikibaseList' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageNumber' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageSize' },
+								value: { kind: 'IntValue', value: '-1' }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'meta' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalCount' } }]
+									}
+								},
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'data' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'WBItem' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBItem' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'urls' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } }
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<ListWikibasesQuery, ListWikibasesQueryVariables>
 									selectionSet: {
 										kind: 'SelectionSet',
 										selections: [
