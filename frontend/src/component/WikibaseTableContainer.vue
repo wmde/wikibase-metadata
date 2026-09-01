@@ -27,7 +27,7 @@ onBeforeMount(() => store.fetchWikibasePage())
 				Showing {{ showCount.toLocaleString('en') }} of
 				{{ totalCount.toLocaleString('en') }} instances
 			</v-container>
-			<WikibaseTable />
+			<wikibase-table />
 		</template>
 	</v-container>
 </template>
