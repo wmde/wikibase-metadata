@@ -6,7 +6,7 @@ defineProps<{ wiki: WbItemFragment }>()
 </script>
 
 <template>
-	<div>
+	<div class="wikibase-item">
 		<h4>({{ wiki.id }}) {{ wiki.title }}</h4>
 		<p>
 			<a :href="getActionApiUrl(wiki.urls.baseUrl, wiki.urls.scriptPath) ?? undefined">

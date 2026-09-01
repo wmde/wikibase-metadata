@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import WikibaseItem from '@/component/wikibase-item-list/WikibaseItem.vue'
 import { type WbItemFragment } from '@/graphql/types'
 import { useWikiListStore } from '@/stores/wikibase-list-store'
 import { computed, onBeforeMount } from 'vue'
@@ -16,10 +17,16 @@ onBeforeMount(() => store.fetchWikibaseList())
 <template>
 	<template v-if="loading">Loading</template>
 	<template v-if="wikibases?.length">
-		<div>
+		<div class="wikibase-item-list-container">
 			<wikibase-item v-for="wiki in wikibases" :key="wiki.id" :wiki="wiki" />
 		</div>
 	</template>
 </template>
 
-<style lang="css"></style>
+<style lang="scss">
+.wikibase-item-list-container {
+	.wikibase-item {
+		margin: 8px auto;
+	}
+}
+</style>
