@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vue'
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import WikibaseTotalContainer from '@/component/wikibase-table/WikibaseTotalContainer.vue'
@@ -28,6 +29,9 @@ onBeforeMount(() => store.fetchWikibasePage())
 				{{ totalCount.toLocaleString('en') }} instances
 			</v-container>
 			<wikibase-table />
+		</template>
+		<template v-else>
+			<wikibase-item-list />
 		</template>
 	</v-container>
 </template>
