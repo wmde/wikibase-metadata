@@ -1,6 +1,0 @@
-postgres-database
-.git
-node_modules
-__pycache__
-*.pyc
-.env
