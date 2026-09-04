@@ -56,14 +56,32 @@ watch(searchValueRef, getData)
 
 <template>
 	<div class="wikibase-item">
-		<h4>({{ wiki.id }}) {{ wiki.title }}</h4>
-		<p>
-			<a :href="actionApiUrl ?? undefined">Action API</a>
-		</p>
-		<p>Searching: {{ searchValue }}</p>
-		<p>Loading: {{ loading }}</p>
-		<p>Result: {{ data }}</p>
+		<div class="header-container">
+			<div class="wiki-title">{{ wiki.title }}</div>
+			<div class="status">
+				<template v-if="loading">Loading</template>
+				<template v-else-if="status">
+					<template v-if="status.code == 200">
+						<div v-if="!data?.search.length" class="no-results">No Results</div>
+					</template>
+					<template v-else>
+						<div class="error">{{ status.code }}: {{ status.text }}</div>
+					</template>
+				</template>
+			</div>
+		</div>
+		<div v-if="data && data.search.length > 0" class="results-container">
+			<div v-for="datum in data.search" :key="datum.id" class="result">
+				<div class="item-label-container">
+					<div class="item-label">
+						<a :href="datum.url">{{ datum.label }}</a>
+					</div>
+					<div class="item-id">{{ datum.id }}</div>
+				</div>
+				<div class="description">{{ datum.description }}</div>
+			</div>
+		</div>
 	</div>
 </template>
 
-<style lang="css"></style>
+<style lang="scss"></style>
