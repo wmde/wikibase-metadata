@@ -1,6 +1,6 @@
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import vuetify from '@/plugin/vuetify'
-import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
+import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -16,8 +16,8 @@ function sleep(milliseconds: number) {
 const mockSearchWikibaseText = vi.fn().mockName('searchWikibaseText')
 
 vi.mock('@/stores/wikibase-page-store', () => ({
-	useWikiStore: (): WikibasePageStoreType => ({
-		...mockWikiStore,
+	useWikiPageStore: (): WikibasePageStoreType => ({
+		...mockWikiPageStore,
 		searchWikibaseText: mockSearchWikibaseText
 	})
 }))

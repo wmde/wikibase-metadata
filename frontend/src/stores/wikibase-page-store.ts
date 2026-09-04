@@ -31,8 +31,7 @@ type WikibasePageData = {
 export type WikibasePageStoreType = {
 	fetchWikibasePage: () => void
 	wikibasePage:
-		| QueryResult<WikibasePageData | undefined>
-		| Ref<QueryResult<WikibasePageData | undefined>>
+		QueryResult<WikibasePageData | undefined> | Ref<QueryResult<WikibasePageData | undefined>>
 	pageNumber: number | Ref<number>
 	setPageNumber: (i: number) => void
 	pageSize: number | Ref<number>
@@ -49,7 +48,7 @@ const { load, onResult, loading, error } = useLazyQuery<
 	PageWikibasesQueryVariables
 >(pageWikibasesQuery)
 
-export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType => {
+export const useWikiPageStore = defineStore('wiki-page', (): WikibasePageStoreType => {
 	const data = ref<WikibasePageData | undefined>()
 	onResult(
 		(result) =>
