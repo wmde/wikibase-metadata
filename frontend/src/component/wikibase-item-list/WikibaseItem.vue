@@ -71,17 +71,72 @@ watch(searchValueRef, getData)
 			</div>
 		</div>
 		<div v-if="data && data.search.length > 0" class="results-container">
-			<div v-for="datum in data.search" :key="datum.id" class="result">
+			<div v-for="datum in data.search" :key="datum.id" class="result px-6 py-2">
 				<div class="item-label-container">
 					<div class="item-label">
 						<a :href="datum.url">{{ datum.label }}</a>
 					</div>
 					<div class="item-id">{{ datum.id }}</div>
 				</div>
-				<div class="description">{{ datum.description }}</div>
+				<div v-if="datum.description" class="description">{{ datum.description }}</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.wikibase-item {
+	.header-container {
+		padding: 0.75rem;
+
+		.wiki-title {
+			font-family: Montserrat;
+			font-weight: 700;
+			font-size: 15px;
+			color: rgb(0, 0, 0);
+			//   flex-shrink: 0;
+		}
+	}
+
+	.results-container {
+		.result {
+			display: flex;
+			flex-flow: column nowrap;
+			gap: 10px;
+			border-top: 1px solid rgb(243, 244, 246);
+
+			.item-label-container {
+				display: flex;
+				flex-flow: row wrap;
+				gap: 8px;
+
+				.item-label {
+					font-family: Roboto;
+					font-size: 15px;
+					font-weight: 700;
+					color: rgb(54, 40, 245);
+					a {
+						text-decoration: none;
+					}
+				}
+
+				.item-id {
+					font-family: monospace;
+					font-size: 12px;
+					color: rgb(156, 163, 175);
+				}
+			}
+
+			.description {
+				font-family: Roboto;
+				font-size: 14px;
+				color: rgb(113, 113, 130);
+				margin: 1px 0px 0px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		}
+	}
+}
+</style>
