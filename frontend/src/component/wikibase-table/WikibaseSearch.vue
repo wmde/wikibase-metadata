@@ -44,34 +44,31 @@ const focused = ref(false)
 <template>
 	<v-container class="search-container ma-0 mb-6 pa-0">
 		<v-container :class="`ma-0 pa-0 pl-3 search-text ${focused ? 'search-text-focused' : ''}`">
-			<div class="menu-container">
-				<v-menu open-on-hover>
-					<template v-slot:activator="{ props }">
-						<v-btn color="primary" v-bind="props">
-							{{ menuValue == 'instances' ? 'Instances' : 'Items' }}
-						</v-btn>
-					</template>
-					<v-list>
-						<v-list-item
-							key="instances"
-							value="instances"
-							v-on:click="() => setMenuValue('instances')"
-							:disabled="menuValue == 'instances'"
-						>
-							<v-list-item-title>Instances</v-list-item-title>
-						</v-list-item>
-						<v-list-item
-							key="items"
-							value="items"
-							v-on:click="() => setMenuValue('items')"
-							:disabled="menuValue == 'items'"
-						>
-							<v-list-item-title>Items</v-list-item-title>
-						</v-list-item>
-					</v-list>
-				</v-menu>
-				<div class="chevron"></div>
-			</div>
+			<v-menu open-on-hover>
+				<template v-slot:activator="{ props }">
+					<v-btn color="primary" v-bind="props">
+						{{ menuValue == 'instances' ? 'Instances' : 'Items' }}
+					</v-btn>
+				</template>
+				<v-list>
+					<v-list-item
+						key="instances"
+						value="instances"
+						v-on:click="() => setMenuValue('instances')"
+						:disabled="menuValue == 'instances'"
+					>
+						<v-list-item-title>Instances</v-list-item-title>
+					</v-list-item>
+					<v-list-item
+						key="items"
+						value="items"
+						v-on:click="() => setMenuValue('items')"
+						:disabled="menuValue == 'items'"
+					>
+						<v-list-item-title>Items</v-list-item-title>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 			<v-text-field
 				class="ma-0 pa-0"
 				variant="plain"
@@ -102,24 +99,6 @@ const focused = ref(false)
 
 	display: flex;
 	align-items: center;
-
-	.menu-container {
-		display: flex;
-		gap: 0;
-		flex-flow: row nowrap;
-		.v-btn {
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
-		}
-
-		.chevron {
-			width: 0;
-			height: 0;
-			border-top: 18px solid transparent;
-			border-bottom: 18px solid transparent;
-			border-left: 18px solid black;
-		}
-	}
 
 	div.v-input__details {
 		display: none;
