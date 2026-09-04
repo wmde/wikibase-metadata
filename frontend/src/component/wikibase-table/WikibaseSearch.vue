@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { mdiCheck, mdiChevronDown, mdiMagnify } from '@mdi/js'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const { menuValue } = defineProps<{
 	menuValue: 'instances' | 'items'
@@ -27,24 +28,6 @@ const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => ALLOWED_CHARACTERS.test(value) || 'Disallowed Characters'
 ]
-type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
-const displayRules = computed((): ((value: string) => RuleResult)[] => [
-	(value: string) =>
-		menuValue != 'instances' ||
-		ALLOWED_CHARACTERS.test(value) || { prepend: 'Disallowed Characters' },
-	(value: string) =>
-		menuValue != 'instances' ||
-		value.length == 0 ||
-		store.wikibasePage.loading ||
-		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0) || {
-			prepend: 'No results for ',
-			includeValue: true,
-			append: ' — try a different keyword or category'
-		}
-])
-const displayRuleResults = computed(() =>
-	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
-)
 
 const focused = ref(false)
 </script>
@@ -98,13 +81,7 @@ const focused = ref(false)
 				@update:focused="(v: boolean) => (focused = v)"
 			/>
 		</v-container>
-		<v-label class="search-error">
-			<div v-for="(result, idx) in displayRuleResults" :key="idx">
-				<span v-if="result.prepend" class="prepend">{{ result.prepend }}</span>
-				<span v-if="result.includeValue" class="search-value">"{{ searchValue }}"</span>
-				<span v-if="result.append" class="append">{{ result.append }}</span>
-			</div>
-		</v-label>
+		<wikibase-search-valid :menu-value="menuValue" :search-value="searchValue" />
 	</v-container>
 </template>
 
@@ -120,6 +97,8 @@ const focused = ref(false)
 
 	.dropdown {
 		text-transform: none;
+		font-family: Roboto;
+		font-size: 14px;
 		color: rgb(54, 40, 245);
 		background: rgba(54, 40, 245, 0.06);
 		.v-icon {
@@ -150,19 +129,6 @@ const focused = ref(false)
 	}
 	label.v-field-label--floating {
 		color: #444;
-	}
-}
-.search-error {
-	font-family: Roboto;
-	font-size: 14px;
-	color: rgb(107, 114, 128);
-	margin-top: 8px;
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: start;
-	span.search-value {
-		color: black;
-		font-weight: bolder;
 	}
 }
 
