@@ -4,7 +4,7 @@ import { debounce } from '@/util/debounce'
 import { mdiCheck, mdiChevronDown, mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
 
-defineProps<{
+const { menuValue } = defineProps<{
 	menuValue: 'instances' | 'items'
 	setMenuValue: (v: 'instances' | 'items') => void
 }>()
@@ -12,8 +12,16 @@ defineProps<{
 const store = useWikiPageStore()
 
 const searchValue = ref('')
-const [debouncedSearch] = debounce((v: string | undefined) => store.searchWikibaseText(v), 300)
-watch(searchValue, () => debouncedSearch(searchValue.value ? searchValue.value : undefined))
+const [debouncedSearchInstances] = debounce(
+	(v: string | undefined) => store.searchWikibaseText(v),
+	300
+)
+watch(
+	searchValue,
+	() =>
+		menuValue == 'instances' &&
+		debouncedSearchInstances(searchValue.value ? searchValue.value : undefined)
+)
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 const rules: ((value: string) => true | string)[] = [
@@ -21,17 +29,18 @@ const rules: ((value: string) => true | string)[] = [
 ]
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
 const displayRules = computed((): ((value: string) => RuleResult)[] => [
-	(value: string) => ALLOWED_CHARACTERS.test(value) || { prepend: 'Disallowed Characters' },
 	(value: string) =>
+		menuValue != 'instances' ||
+		ALLOWED_CHARACTERS.test(value) || { prepend: 'Disallowed Characters' },
+	(value: string) =>
+		menuValue != 'instances' ||
 		value.length == 0 ||
 		store.wikibasePage.loading ||
-		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0)
-			? true
-			: {
-					prepend: 'No results for ',
-					includeValue: true,
-					append: ' — try a different keyword or category'
-				}
+		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0) || {
+			prepend: 'No results for ',
+			includeValue: true,
+			append: ' — try a different keyword or category'
+		}
 ])
 const displayRuleResults = computed(() =>
 	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
@@ -79,7 +88,11 @@ const focused = ref(false)
 				variant="plain"
 				:prepend-icon="mdiMagnify"
 				v-model="searchValue"
-				label="Search Wikibase instances..."
+				:label="
+					menuValue == 'instances'
+						? 'Search Wikibase instances...'
+						: 'Search for items across all Wikibase instances...'
+				"
 				:rules="rules"
 				:focused="focused"
 				@update:focused="(v: boolean) => (focused = v)"
