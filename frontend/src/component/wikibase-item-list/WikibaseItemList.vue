@@ -4,6 +4,8 @@ import { type WbItemFragment } from '@/graphql/types'
 import { useWikiListStore } from '@/stores/wikibase-list-store'
 import { computed, onBeforeMount } from 'vue'
 
+defineProps<{ searchValue: string }>()
+
 const store = useWikiListStore()
 
 const loading = computed(() => store.wikibaseList.loading)
@@ -18,7 +20,12 @@ onBeforeMount(() => store.fetchWikibaseList())
 	<template v-if="loading">Loading</template>
 	<template v-if="wikibases?.length">
 		<div class="wikibase-item-list-container">
-			<wikibase-item v-for="wiki in wikibases" :key="wiki.id" :wiki="wiki" />
+			<wikibase-item
+				v-for="wiki in wikibases"
+				:key="wiki.id"
+				:search-value="searchValue"
+				:wiki="wiki"
+			/>
 		</div>
 	</template>
 </template>
