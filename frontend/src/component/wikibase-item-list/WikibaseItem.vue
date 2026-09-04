@@ -7,7 +7,8 @@ const { searchValue, wiki } = defineProps<{ searchValue: string; wiki: WbItemFra
 
 const actionApiUrl = computed(() => getActionApiUrl(wiki.urls.baseUrl, wiki.urls.scriptPath))
 
-const data = ref()
+const data = ref<SearchResult>()
+const status = ref<{ code: number; text: string }>()
 const loading = ref(false)
 const getData = async () => {
 	if (actionApiUrl.value && searchValue) {
@@ -17,9 +18,34 @@ const getData = async () => {
 		)
 		loading.value = true
 		const response = await fetch(request)
-		data.value = await response.json()
+		status.value = { code: response.status, text: response.statusText }
+		if (status.value.code == 200) {
+			data.value = (await response.json()) as SearchResult
+		}
 		loading.value = false
 	}
+}
+
+type SearchResult = {
+	searchInfo: {
+		search: string
+	}
+	search: {
+		id: string
+		title: string
+		pageid: number
+		repository: string
+		url: string
+		concepturi: string
+		label: string
+		description: string
+		match: {
+			type: string
+			language: string
+			text: string
+		}
+	}[]
+	success: number
 }
 
 // You cannot directly watch the prop for changes
