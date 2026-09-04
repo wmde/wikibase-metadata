@@ -53,7 +53,7 @@ onBeforeMount(() => store.fetchWikibasePage())
 			<wikibase-table />
 		</template>
 		<template v-if="menuValue == 'items'">
-			<wikibase-item-list />
+			<wikibase-item-list :search-value="debouncedSearchValue" />
 		</template>
 	</v-container>
 </template>
