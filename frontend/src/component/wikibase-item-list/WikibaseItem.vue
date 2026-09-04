@@ -11,10 +11,12 @@ const data = ref()
 const loading = ref(false)
 const getData = async () => {
 	if (actionApiUrl.value && searchValue) {
-		loading.value = true
-		const response = await fetch(
-			`${actionApiUrl.value}?action=wbsearchentities&search=${searchValue}&language=en&format=json`
+		const request = new Request(
+			`${actionApiUrl.value}?action=wbsearchentities&search=${searchValue}&language=en&format=json`,
+			{ headers: [] }
 		)
+		loading.value = true
+		const response = await fetch(request)
 		data.value = await response.json()
 		loading.value = false
 	}
