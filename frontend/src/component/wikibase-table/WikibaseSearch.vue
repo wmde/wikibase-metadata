@@ -1,28 +1,16 @@
 <script setup lang="ts">
 import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
-import { useWikiPageStore } from '@/stores/wikibase-page-store'
-import { debounce } from '@/util/debounce'
 import { mdiCheck, mdiChevronDown, mdiMagnify } from '@mdi/js'
 import { ref, watch } from 'vue'
 
-const { menuValue } = defineProps<{
+const { menuValue, setSearchValue } = defineProps<{
 	menuValue: 'instances' | 'items'
 	setMenuValue: (v: 'instances' | 'items') => void
+	setSearchValue: (s: string) => void
 }>()
 
-const store = useWikiPageStore()
-
 const searchValue = ref('')
-const [debouncedSearchInstances] = debounce(
-	(v: string | undefined) => store.searchWikibaseText(v),
-	300
-)
-watch(
-	searchValue,
-	() =>
-		menuValue == 'instances' &&
-		debouncedSearchInstances(searchValue.value ? searchValue.value : undefined)
-)
+watch(searchValue, () => setSearchValue(searchValue.value))
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 const rules: ((value: string) => true | string)[] = [
