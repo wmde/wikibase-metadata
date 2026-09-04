@@ -1482,6 +1482,21 @@ export const SingleWikibaseFragmentDoc = {
 													selections: [
 														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
 														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<SingleWikibaseFragment, unknown>
 export const WbItemFragmentDoc = {
 	kind: 'Document',
 	definitions: [
@@ -1510,21 +1525,6 @@ export const WbItemFragmentDoc = {
 		}
 	]
 } as unknown as DocumentNode<WbItemFragment, unknown>
-														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
-													]
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				]
-			}
-		}
-	]
-} as unknown as DocumentNode<SingleWikibaseFragment, unknown>
 export const WbFragmentDoc = {
 	kind: 'Document',
 	definitions: [
@@ -1733,6 +1733,34 @@ export const SingleWikibaseDocument = {
 								{
 									kind: 'Field',
 									name: { kind: 'Name', value: 'mostRecent' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'itemDates' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<SingleWikibaseQuery, SingleWikibaseQueryVariables>
 export const ListWikibasesDocument = {
 	kind: 'Document',
 	definitions: [
@@ -1756,6 +1784,29 @@ export const ListWikibasesDocument = {
 								kind: 'Argument',
 								name: { kind: 'Name', value: 'pageSize' },
 								value: { kind: 'IntValue', value: '-1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'wikibaseType' },
+											value: {
+												kind: 'ObjectValue',
+												fields: [
+													{
+														kind: 'ObjectField',
+														name: { kind: 'Name', value: 'include' },
+														value: { kind: 'EnumValue', value: 'SUITE' }
+													}
+												]
+											}
+										}
+									]
+								}
 							}
 						],
 						selectionSet: {
@@ -1810,34 +1861,6 @@ export const ListWikibasesDocument = {
 		}
 	]
 } as unknown as DocumentNode<ListWikibasesQuery, ListWikibasesQueryVariables>
-									selectionSet: {
-										kind: 'SelectionSet',
-										selections: [
-											{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
-											{ kind: 'Field', name: { kind: 'Name', value: 'initiationDate' } },
-											{
-												kind: 'Field',
-												name: { kind: 'Name', value: 'itemDates' },
-												selectionSet: {
-													kind: 'SelectionSet',
-													selections: [
-														{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'q' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'creationDate' } }
-													]
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				]
-			}
-		}
-	]
-} as unknown as DocumentNode<SingleWikibaseQuery, SingleWikibaseQueryVariables>
 export const PageWikibasesDocument = {
 	kind: 'Document',
 	definitions: [
