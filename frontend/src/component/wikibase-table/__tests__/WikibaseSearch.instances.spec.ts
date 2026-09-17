@@ -29,7 +29,7 @@ describe('WikibaseSearch', async () => {
 		vi.resetAllMocks()
 	})
 
-	it('renders  properly', async () => {
+	it('renders properly', async () => {
 		const wrapper = mount(WikibaseSearch, {
 			global: { plugins: [vuetify] },
 			props: { menuValue: 'instances', setMenuValue: mockSetMenuValue }
