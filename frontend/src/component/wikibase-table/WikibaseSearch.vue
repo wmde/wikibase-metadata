@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
-import { mdiCheck, mdiChevronDown, mdiMagnify } from '@mdi/js'
+import { mdiChevronDown, mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
 
 defineProps<{
@@ -55,24 +56,7 @@ const focused = ref(false)
 						{{ menuValue == 'instances' ? 'Instances' : 'Items' }}
 					</v-btn>
 				</template>
-				<v-list>
-					<v-list-item
-						key="instances"
-						value="instances"
-						v-on:click="() => setMenuValue('instances')"
-						:append-icon="menuValue == 'instances' ? mdiCheck : undefined"
-					>
-						<v-list-item-title>Instances</v-list-item-title>
-					</v-list-item>
-					<v-list-item
-						key="items"
-						value="items"
-						v-on:click="() => setMenuValue('items')"
-						:append-icon="menuValue == 'items' ? mdiCheck : undefined"
-					>
-						<v-list-item-title>Items</v-list-item-title>
-					</v-list-item>
-				</v-list>
+				<search-menu :menu-value="menuValue" :set-menu-value="setMenuValue" />
 			</v-menu>
 			<v-text-field
 				class="ma-0 ml-3 pa-0"
