@@ -14,6 +14,7 @@ function sleep(milliseconds: number) {
 }
 
 const mockSearchWikibaseText = vi.fn().mockName('searchWikibaseText')
+const mockSetMenuValue = vi.fn().mockName('setMenuValue')
 
 vi.mock('@/stores/wikibase-page-store', () => ({
 	useWikiPageStore: (): WikibasePageStoreType => ({
@@ -29,13 +30,20 @@ describe('WikibaseSearch', async () => {
 	})
 
 	it('renders  properly', async () => {
-		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+		const wrapper = mount(WikibaseSearch, {
+			global: { plugins: [vuetify] },
+			props: { menuValue: 'instances', setMenuValue: mockSetMenuValue }
+		})
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
+
+		const menuButton = searchContainer.find('.v-btn')
+		expect(menuButton.exists()).toEqual(true)
+		expect(menuButton.text()).toEqual('Instances')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
@@ -57,13 +65,20 @@ describe('WikibaseSearch', async () => {
 	it('triggers searchWikibaseText', async () => {
 		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(0)
 
-		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+		const wrapper = mount(WikibaseSearch, {
+			global: { plugins: [vuetify] },
+			props: { menuValue: 'instances', setMenuValue: mockSetMenuValue }
+		})
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
+
+		const menuButton = searchContainer.find('.v-btn')
+		expect(menuButton.exists()).toEqual(true)
+		expect(menuButton.text()).toEqual('Instances')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
@@ -86,13 +101,20 @@ describe('WikibaseSearch', async () => {
 	it('searches undefined if empty', async () => {
 		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(0)
 
-		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+		const wrapper = mount(WikibaseSearch, {
+			global: { plugins: [vuetify] },
+			props: { menuValue: 'instances', setMenuValue: mockSetMenuValue }
+		})
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
+
+		const menuButton = searchContainer.find('.v-btn')
+		expect(menuButton.exists()).toEqual(true)
+		expect(menuButton.text()).toEqual('Instances')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
@@ -124,13 +146,20 @@ describe('WikibaseSearch', async () => {
 	})
 
 	it('raises error on non-allowed characters', async () => {
-		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+		const wrapper = mount(WikibaseSearch, {
+			global: { plugins: [vuetify] },
+			props: { menuValue: 'instances', setMenuValue: mockSetMenuValue }
+		})
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
+
+		const menuButton = searchContainer.find('.v-btn')
+		expect(menuButton.exists()).toEqual(true)
+		expect(menuButton.text()).toEqual('Instances')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
@@ -151,13 +180,20 @@ describe('WikibaseSearch', async () => {
 	})
 
 	it('raises error on no results returned', async () => {
-		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
+		const wrapper = mount(WikibaseSearch, {
+			global: { plugins: [vuetify] },
+			props: { menuValue: 'instances', setMenuValue: mockSetMenuValue }
+		})
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
 
 		const searchContainer = container.find('.search-text')
 		expect(searchContainer.exists()).toEqual(true)
+
+		const menuButton = searchContainer.find('.v-btn')
+		expect(menuButton.exists()).toEqual(true)
+		expect(menuButton.text()).toEqual('Instances')
 
 		const textField = searchContainer.find('.v-text-field')
 		expect(textField.exists()).toEqual(true)
