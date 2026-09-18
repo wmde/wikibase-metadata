@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import WikibaseTotalBox from '@/component/wikibase-table/WikibaseTotalBox.vue'
-import { useWikiStore } from '@/stores/wikibase-page-store'
+import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
-const store = useWikiStore()
+const store = useWikiPageStore()
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 const totalEdits = computed(() => store.wikibasePage.data?.meta.totalEdits)
 const totalTriples = computed(() => store.wikibasePage.data?.meta.totalTriples)

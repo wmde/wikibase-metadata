@@ -2,7 +2,7 @@ import { SortColumn, SortDirection } from '@/graphql/types'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { vi } from 'vitest'
 
-const mockWikiStore: WikibasePageStoreType = {
+const mockWikiPageStore: WikibasePageStoreType = {
 	fetchWikibasePage: vi.fn().mockName('fetchWikibasePage'),
 	wikibasePage: { data: undefined, errorState: false, loading: false },
 	pageNumber: 1,
@@ -16,4 +16,4 @@ const mockWikiStore: WikibasePageStoreType = {
 	searchWikibaseText: vi.fn().mockName('searchWikibaseText')
 }
 
-export default mockWikiStore
+export default mockWikiPageStore

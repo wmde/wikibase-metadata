@@ -2,7 +2,7 @@
 import PaginationFooter from '@/component/wikibase-table/PaginationFooter.vue'
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
 import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
-import { useWikiStore } from '@/stores/wikibase-page-store'
+import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { mdiSwapVertical } from '@mdi/js'
 import { computed } from 'vue'
 import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sort.mjs'
@@ -18,7 +18,7 @@ const headers: TableHeader[] = [
 	{ title: '', sortable: false }
 ]
 
-const store = useWikiStore()
+const store = useWikiPageStore()
 
 const loading = computed(() => store.wikibasePage.loading)
 const pageNumber = computed(() => store.pageNumber)
