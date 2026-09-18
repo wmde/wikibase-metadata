@@ -8,6 +8,7 @@ describe('WikibaseItem', async () => {
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
+				searchValue: '',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -33,6 +34,7 @@ describe('WikibaseItem', async () => {
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
+				searchValue: '',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
