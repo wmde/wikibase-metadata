@@ -8,19 +8,12 @@ import WikibaseTitle from '@/component/wikibase-table/wikibase-detail-card/Wikib
 import WikibaseCategoryChip from '@/component/wikibase-table/WikibaseCategoryChip.vue'
 import WikibaseTypeChip from '@/component/wikibase-table/WikibaseTypeChip.vue'
 import type { SingleWikibaseFragment } from '@/graphql/types'
-import { useTheme } from 'vuetify'
 
 defineProps<{ wikibase: SingleWikibaseFragment | undefined; loading: boolean }>()
-
-const theme = useTheme()
 </script>
 
 <template>
-	<v-card
-		variant="outlined"
-		class="wikibase-detail-card ma-0 pa-6"
-		:style="{ backgroundColor: theme.current.value.colors.background }"
-	>
+	<v-card variant="outlined" class="wikibase-detail-card ma-0 pa-6">
 		<CardLoader v-if="loading" />
 		<template v-else-if="wikibase">
 			<v-container class="ma-0 pa-0 pb-8 card-header">
@@ -46,6 +39,7 @@ const theme = useTheme()
 	width: 600px;
 	border-color: rgba(255, 255, 255, 0.12);
 	border-radius: 0.625rem !important;
+	background-color: white;
 }
 .tag-container {
 	display: flex;
