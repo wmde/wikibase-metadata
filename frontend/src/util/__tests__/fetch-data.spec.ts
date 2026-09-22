@@ -30,6 +30,7 @@ describe('DataFetcher', async () => {
 		mockFetch.mockResolvedValueOnce({
 			ok: true,
 			status: 200,
+			statusText: 'ok',
 			json: mockJson
 		})
 
@@ -41,7 +42,7 @@ describe('DataFetcher', async () => {
 		expect(mockFetch).toHaveBeenCalledTimes(1)
 		expect(mockJson).toHaveBeenCalledTimes(1)
 
-		expect(fetcher.status.value).toEqual({ code: 200, text: undefined })
+		expect(fetcher.status.value).toEqual({ code: 200, text: 'ok' })
 		expect(fetcher.data.value).toEqual({ search: [], searchInfo: 'asdf', success: 0 })
 	})
 
