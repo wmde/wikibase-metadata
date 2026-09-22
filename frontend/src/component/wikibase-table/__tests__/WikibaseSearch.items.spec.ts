@@ -38,5 +38,4 @@ describe('WikibaseSearch', async () => {
 		expect(menuButton.exists()).toEqual(true)
 		expect(menuButton.text()).toEqual('Items')
 	})
-
 })
