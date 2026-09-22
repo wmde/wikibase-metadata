@@ -90,4 +90,21 @@ describe('DataFetcher', async () => {
 		expect(mockFetch).toHaveBeenCalledTimes(0)
 		expect(mockJson).toHaveBeenCalledTimes(0)
 	})
+
+	it('returns error on an error', async () => {
+		const fetcher = new DataFetcher('https://www.asdf.test/api.php')
+
+		mockFetch.mockThrowOnce(new Error('Failed Fetch'))
+
+		expect(mockFetch).toHaveBeenCalledTimes(0)
+		expect(mockJson).toHaveBeenCalledTimes(0)
+
+		await fetcher.getData('data')
+
+		expect(mockFetch).toHaveBeenCalledTimes(1)
+		expect(mockJson).toHaveBeenCalledTimes(0)
+
+		expect(fetcher.status.value).toEqual({ code: 500, text: 'Error: Failed Fetch' })
+		expect(fetcher.data.value).toEqual(undefined)
+	})
 })
