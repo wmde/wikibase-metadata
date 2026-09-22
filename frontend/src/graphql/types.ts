@@ -7,8 +7,7 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 	[_ in K]?: never
 }
 export type Incremental<T> =
-	| T
-	| { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
+	T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
 	ID: { input: string; output: string }
@@ -1356,6 +1355,21 @@ export type SingleWikibaseFragment = {
 			}>
 		} | null
 	}
+}
+
+export type ListWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type ListWikibasesQuery = {
+	wikibaseList: {
+		meta: { totalCount: number }
+		data: Array<{ id: string; title: string; urls: { baseUrl: string; scriptPath: string | null } }>
+	}
+}
+
+export type WbItemFragment = {
+	id: string
+	title: string
+	urls: { baseUrl: string; scriptPath: string | null }
 }
 
 export type PageWikibasesQueryVariables = Exact<{

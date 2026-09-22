@@ -1,5 +1,4 @@
-import { WikibaseType } from '@/graphql/types'
-import { useWikiPageStore } from '@/stores/wikibase-page-store'
+import { useWikiListStore } from '@/stores/wikibase-list-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -19,20 +18,15 @@ vi.mock('@vue/apollo-composable', () => ({
 	})
 }))
 
-describe('useWikiPageStore', async () => {
+describe('useWikiListStore', async () => {
 	beforeEach(() => {
 		vi.resetAllMocks()
 		setActivePinia(createPinia())
 	})
 
 	it('reflects query failure', async () => {
-		const store = useWikiPageStore()
+		const store = useWikiListStore()
 
-		expect(store.pageNumber).toEqual(1)
-		expect(store.pageSize).toEqual(25)
-		expect(store.wikibaseFilter).toEqual({
-			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
-		})
-		expect(store.wikibasePage).toEqual({ data: undefined, errorState: true, loading: false })
+		expect(store.wikibaseList).toEqual({ data: undefined, errorState: true, loading: false })
 	})
 })

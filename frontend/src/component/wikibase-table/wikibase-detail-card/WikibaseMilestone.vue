@@ -17,7 +17,7 @@ defineProps<{ label: string; entities: number; entityDate: Date }>()
 	</v-container>
 </template>
 
-<style lang="css">
+<style lang="scss">
 .milestone {
 	display: flex;
 	flex-flow: row nowrap;
@@ -27,22 +27,25 @@ defineProps<{ label: string; entities: number; entityDate: Date }>()
 	background-color: oklch(98.5% 0.002 247.839);
 	border: 1px solid oklch(92.8% 0.006 264.531);
 	border-radius: 0.25rem;
-}
-.milestone-q {
-	font-family: Roboto;
-	font-size: 16px;
-	color: rgb(0, 0, 0);
-	font-weight: 500;
-}
-.milestone-count {
-	font-family: Roboto;
-	font-size: 14px;
-	color: rgb(102, 102, 102);
-}
-.milestone-date {
-	font-family: Roboto;
-	font-size: 16px;
-	color: rgb(0, 0, 0);
-	text-align: right;
+
+	.milestone-q {
+		font-family: Roboto;
+		font-size: 16px;
+		color: rgb(0, 0, 0);
+		font-weight: 500;
+	}
+
+	.milestone-count {
+		font-family: Roboto;
+		font-size: 14px;
+		color: rgb(102, 102, 102);
+	}
+
+	.milestone-date {
+		font-family: Roboto;
+		font-size: 16px;
+		color: rgb(0, 0, 0);
+		text-align: right;
+	}
 }
 </style>

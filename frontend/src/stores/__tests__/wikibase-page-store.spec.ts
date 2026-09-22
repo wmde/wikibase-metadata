@@ -1,5 +1,5 @@
 import { SortColumn, SortDirection, WikibaseType, type PageWikibasesQuery } from '@/graphql/types'
-import { useWikiStore } from '@/stores/wikibase-page-store'
+import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
@@ -20,7 +20,7 @@ vi.mock('@vue/apollo-composable', () => ({
 	})
 }))
 
-describe('useWikiStore', async () => {
+describe('useWikiPageStore', async () => {
 	beforeEach(() => {
 		vi.resetAllMocks()
 		setActivePinia(createPinia())
@@ -33,7 +33,7 @@ describe('useWikiStore', async () => {
 			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
+		const store = useWikiPageStore()
 
 		expect(store.pageNumber).toEqual(1)
 		expect(store.pageSize).toEqual(25)
@@ -54,7 +54,7 @@ describe('useWikiStore', async () => {
 			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
+		const store = useWikiPageStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 		store.fetchWikibasePage()
@@ -68,7 +68,7 @@ describe('useWikiStore', async () => {
 			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
+		const store = useWikiPageStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
@@ -84,7 +84,7 @@ describe('useWikiStore', async () => {
 			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
+		const store = useWikiPageStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
@@ -100,7 +100,7 @@ describe('useWikiStore', async () => {
 			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
+		const store = useWikiPageStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
@@ -116,7 +116,7 @@ describe('useWikiStore', async () => {
 			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
+		const store = useWikiPageStore()
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 

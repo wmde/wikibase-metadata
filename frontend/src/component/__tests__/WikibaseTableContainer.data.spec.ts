@@ -1,7 +1,7 @@
 import { ResizeObserverMock } from '@/__tests__/global-mocks'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import vuetify from '@/plugin/vuetify'
-import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
+import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -15,11 +15,11 @@ const { mockFetchWikibasePage } = vi.hoisted(() => ({
 }))
 
 vi.mock('@/stores/wikibase-page-store', () => ({
-	useWikiStore: (): WikibasePageStoreType => ({
-		...mockWikiStore,
+	useWikiPageStore: (): WikibasePageStoreType => ({
+		...mockWikiPageStore,
 		fetchWikibasePage: mockFetchWikibasePage,
 		wikibasePage: {
-			...mockWikiStore.wikibasePage,
+			...mockWikiPageStore.wikibasePage,
 			data: {
 				data: testWikibases.slice(2),
 				meta: {
