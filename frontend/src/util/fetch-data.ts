@@ -43,12 +43,17 @@ class DataFetcher {
 			)
 			this.loading.value = true
 
-			const response = await fetch(request)
-			this.status.value = { code: response.status, text: response.statusText }
-			if (this.status.value.code == 200) {
-				this.data.value = (await response.json()) as SearchResult
+			try {
+				const response = await fetch(request)
+				this.status.value = { code: response.status, text: response.statusText }
+				if (this.status.value.code == 200) {
+					this.data.value = (await response.json()) as SearchResult
+				}
+			} catch (error: unknown) {
+				this.status.value = { code: 500, text: `${error}` }
+			} finally {
+				this.loading.value = false
 			}
-			this.loading.value = false
 		}
 	}
 }
