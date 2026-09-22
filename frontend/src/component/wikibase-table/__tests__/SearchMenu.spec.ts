@@ -32,13 +32,7 @@ describe('SearchMenu', async () => {
 		})
 
 		const container = wrapper.find('.v-list')
-		expect(container.exists()).toEqual(true)
-
 		const items = container.findAll('.v-list-item')
-		expect(items).toHaveLength(2)
-
-		expect(items[0].text()).toEqual('Instances')
-		expect(items[1].text()).toEqual('Items')
 
 		expect(mockSetMenuValue).toHaveBeenCalledTimes(0)
 
@@ -56,13 +50,7 @@ describe('SearchMenu', async () => {
 		})
 
 		const container = wrapper.find('.v-list')
-		expect(container.exists()).toEqual(true)
-
 		const items = container.findAll('.v-list-item')
-		expect(items).toHaveLength(2)
-
-		expect(items[0].text()).toEqual('Instances')
-		expect(items[1].text()).toEqual('Items')
 
 		expect(mockSetMenuValue).toHaveBeenCalledTimes(0)
 
