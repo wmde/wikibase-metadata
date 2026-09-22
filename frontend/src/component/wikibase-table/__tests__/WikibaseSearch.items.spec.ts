@@ -39,20 +39,4 @@ describe('WikibaseSearch', async () => {
 		expect(menuButton.text()).toEqual('Items')
 	})
 
-	it('renders menu properly', async () => {
-		const wrapper = mount(WikibaseSearch, {
-			global: { plugins: [vuetify] },
-			props: { menuValue: 'items', setMenuValue: mockSetMenuValue }
-		})
-
-		const container = wrapper.find('.search-container')
-		expect(container.exists()).toEqual(true)
-
-		const searchContainer = container.find('.search-text')
-		expect(searchContainer.exists()).toEqual(true)
-
-		const menuButton = searchContainer.find('.v-btn')
-		expect(menuButton.exists()).toEqual(true)
-		expect(menuButton.text()).toEqual('Items')
-	})
 })
