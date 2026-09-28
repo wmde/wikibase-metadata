@@ -38,8 +38,8 @@ class DataFetcher {
 	async getData(searchValue: string): Promise<void> {
 		if (this.actionApiUrl && searchValue) {
 			const request = new Request(
-				`${this.actionApiUrl}?action=wbsearchentities&search=${searchValue}&language=en&format=json`,
-				{ headers: [] }
+				`${this.actionApiUrl}?action=wbsearchentities&search=${searchValue}&language=en&format=json&origin=*`,
+				{ method: 'GET' }
 			)
 			this.loading.value = true
 
