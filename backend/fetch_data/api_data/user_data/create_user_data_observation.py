@@ -48,6 +48,9 @@ async def create_user_observation(wikibase_id: int) -> bool:
 
     observation = WikibaseUserObservationModel()
 
+    site_group_counts = {}
+    site_implicit_user_groups = set()
+
     try:
         logger.debug(
             "User: Attempting to Fetch Data",
@@ -99,9 +102,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
             )
         ).all()
 
-        groups_by_name = {
-            group.group_name: group for group in existing_groups
-        }
+        groups_by_name = {group.group_name: group for group in existing_groups}
 
         if observation.returned_data:
             for group, count in site_group_counts.items():
@@ -110,9 +111,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
                 if user_group is None:
                     user_group = WikibaseUserGroupModel(
                         group_name=group,
-                        wikibase_default_group=(
-                            group in WIKIBASE_DEFAULT_USER_GROUPS
-                        ),
+                        wikibase_default_group=(group in WIKIBASE_DEFAULT_USER_GROUPS),
                     )
 
                 observation.user_group_observations.append(
