@@ -33,7 +33,7 @@ from model.database import (
 
 
 async def create_user_observation(wikibase_id: int) -> bool:
-    """Create User Data Observation."""
+    """Create User Data Observation"""
 
     logger.debug("User: Attempting Observation", extra={"wikibase": wikibase_id})
 
