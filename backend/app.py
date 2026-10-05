@@ -1,6 +1,5 @@
 """Main Application"""
 
-from contextlib import asynccontextmanager
 from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,21 +9,8 @@ from strawberry.fastapi import GraphQLRouter
 from export_csv import export_metric_csv
 from model.strawberry import schema
 from resolvers.authentication import authenticate_token
-from schedule import scheduler
 
-
-# Ensure the scheduler shuts down properly on application exit.
-@asynccontextmanager
-# pylint: disable-next=redefined-outer-name,unused-argument
-async def lifespan(app: FastAPI):
-    """Triggers at startup, yields, resumes at shutdown"""
-
-    scheduler.start()
-    yield
-    scheduler.shutdown()
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 
 origins = ["http://localhost", "http://0.0.0.0", "http://127.0.0.1"]
