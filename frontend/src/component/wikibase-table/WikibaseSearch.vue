@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
+import { useMenuStore } from '@/stores/menu-store'
 import { mdiChevronDown, mdiMagnify } from '@mdi/js'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
-const { menuValue, setSearchValue } = defineProps<{
-	menuValue: 'instances' | 'items'
-	setMenuValue: (v: 'instances' | 'items') => void
-	setSearchValue: (s: string) => void
-}>()
+const { setSearchValue } = defineProps<{ setSearchValue: (s: string) => void }>()
+
+const menuStore = useMenuStore()
+const menuValue = computed(() => menuStore.value)
 
 const searchValue = ref('')
 watch(searchValue, () => setSearchValue(searchValue.value))
@@ -36,7 +36,7 @@ const focused = ref(false)
 						{{ menuValue == 'instances' ? 'Instances' : 'Items' }}
 					</v-btn>
 				</template>
-				<search-menu :menu-value="menuValue" :set-menu-value="setMenuValue" />
+				<search-menu />
 			</v-menu>
 			<v-text-field
 				class="ma-0 ml-3 pa-0"
@@ -53,7 +53,7 @@ const focused = ref(false)
 				@update:focused="(v: boolean) => (focused = v)"
 			/>
 		</v-container>
-		<wikibase-search-valid :menu-value="menuValue" :search-value="searchValue" />
+		<wikibase-search-valid :search-value="searchValue" />
 	</v-container>
 </template>
 
