@@ -70,6 +70,9 @@ describe('WikibaseItem', async () => {
 	})
 
 	it('renders properly with no searchValue', async () => {
+		mockDataValue.mockReturnValueOnce(null)
+		mockLoadingValue.mockReturnValueOnce(false)
+
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
@@ -98,6 +101,7 @@ describe('WikibaseItem', async () => {
 	})
 
 	it('renders properly with loading', async () => {
+		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(true)
 
 		const wrapper = mount(WikibaseItem, {
@@ -167,6 +171,7 @@ describe('WikibaseItem', async () => {
 			]
 		}
 		mockDataValue.mockReturnValueOnce(data)
+		mockLoadingValue.mockReturnValueOnce(false)
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
@@ -232,5 +237,25 @@ describe('WikibaseItem', async () => {
 
 		const descriptionTwo = resultTwo.find('div.description')
 		expect(descriptionTwo.text()).toEqual('Something that is returned by a search')
+	})
+
+	it('renders properly with search value and no data, loading', async () => {
+		mockDataValue.mockReturnValueOnce(null)
+		mockLoadingValue.mockReturnValueOnce(false)
+
+		const wrapper = mount(WikibaseItem, {
+			global: { plugins: [vuetify] },
+			props: {
+				searchValue: 'search',
+				wiki: {
+					id: '-1',
+					title: "Ahistorical Salutation Department of Figaro's",
+					urls: { baseUrl: 'https://asdf.test', scriptPath: 'script' }
+				}
+			}
+		})
+
+		const wiki = wrapper.find('div.wikibase-item')
+		expect(wiki.exists()).toEqual(false)
 	})
 })
