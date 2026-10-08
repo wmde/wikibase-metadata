@@ -35,10 +35,7 @@ describe('WikibaseItem', async () => {
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
-					urls: {
-						baseUrl: 'https://asdf.test',
-						scriptPath: 'script'
-					}
+					urls: { baseUrl: 'https://asdf.test', scriptPath: 'script' }
 				}
 			}
 		})
@@ -57,10 +54,7 @@ describe('WikibaseItem', async () => {
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
-					urls: {
-						baseUrl: 'https://asdf.test',
-						scriptPath: null
-					}
+					urls: { baseUrl: 'https://asdf.test', scriptPath: null }
 				}
 			}
 		})
@@ -77,10 +71,7 @@ describe('WikibaseItem', async () => {
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
-					urls: {
-						baseUrl: 'https://asdf.test',
-						scriptPath: 'script'
-					}
+					urls: { baseUrl: 'https://asdf.test', scriptPath: 'script' }
 				}
 			}
 		})
@@ -94,5 +85,9 @@ describe('WikibaseItem', async () => {
 		const title = headerContainer.find('div.wiki-title')
 		expect(title.exists()).toEqual(true)
 		expect(title.text()).toEqual("Ahistorical Salutation Department of Figaro's")
+
+		const status = headerContainer.find('div.status')
+		expect(status.exists()).toEqual(true)
+		expect(status.text()).not.toEqual('Loading')
 	})
 })
