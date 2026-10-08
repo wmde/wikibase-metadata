@@ -19,33 +19,35 @@ watch(searchValueRef, () => fetcher.getData(searchValueRef.value))
 </script>
 
 <template>
-	<div class="wikibase-item">
-		<div class="header-container">
-			<div class="wiki-title">{{ wiki.title }}</div>
-			<div class="status">
-				<template v-if="loading">Loading</template>
-				<template v-else-if="status">
-					<template v-if="status.code == 200">
-						<div v-if="!data?.search.length" class="no-results">No Results</div>
+	<template v-if="loading || (data && data.search.length > 0) || !searchValue">
+		<div class="wikibase-item">
+			<div class="header-container">
+				<div class="wiki-title">{{ wiki.title }}</div>
+				<div class="status">
+					<template v-if="loading">Loading</template>
+					<template v-else-if="status">
+						<template v-if="status.code == 200">
+							<div v-if="!data?.search.length" class="no-results">No Results</div>
+						</template>
+						<template v-else>
+							<div class="error">{{ status.code }}: {{ status.text }}</div>
+						</template>
 					</template>
-					<template v-else>
-						<div class="error">{{ status.code }}: {{ status.text }}</div>
-					</template>
-				</template>
-			</div>
-		</div>
-		<div v-if="data && data.search.length > 0" class="results-container">
-			<div v-for="datum in data.search" :key="datum.id" class="result px-6 py-2">
-				<div class="item-label-container">
-					<div class="item-label">
-						<a :href="datum.url">{{ datum.label }}</a>
-					</div>
-					<div class="item-id">{{ datum.id }}</div>
 				</div>
-				<div v-if="datum.description" class="description">{{ datum.description }}</div>
+			</div>
+			<div v-if="data && data.search.length > 0" class="results-container">
+				<div v-for="datum in data.search" :key="datum.id" class="result px-6 py-2">
+					<div class="item-label-container">
+						<div class="item-label">
+							<a :href="datum.url">{{ datum.label }}</a>
+						</div>
+						<div class="item-id">{{ datum.id }}</div>
+					</div>
+					<div v-if="datum.description" class="description">{{ datum.description }}</div>
+				</div>
 			</div>
 		</div>
-	</div>
+	</template>
 </template>
 
 <style lang="scss">
