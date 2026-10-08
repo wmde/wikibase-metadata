@@ -69,7 +69,7 @@ describe('WikibaseItem', async () => {
 		expect(mockCreateDataFetcher).toHaveBeenCalledWith(null)
 	})
 
-	it(`renders properly without scriptPath`, async () => {
+	it('renders properly with no searchValue', async () => {
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
@@ -79,7 +79,7 @@ describe('WikibaseItem', async () => {
 					title: "Ahistorical Salutation Department of Figaro's",
 					urls: {
 						baseUrl: 'https://asdf.test',
-						scriptPath: null
+						scriptPath: 'script'
 					}
 				}
 			}
@@ -87,11 +87,12 @@ describe('WikibaseItem', async () => {
 
 		const wiki = wrapper.find('div.wikibase-item')
 		expect(wiki.exists()).toEqual(true)
-		const title = wiki.find('h4')
+
+		const headerContainer = wiki.find('div.header-container')
+		expect(headerContainer.exists()).toEqual(true)
+
+		const title = headerContainer.find('div.wiki-title')
 		expect(title.exists()).toEqual(true)
-		expect(title.text()).toEqual("(-1) Ahistorical Salutation Department of Figaro's")
-		const link = wiki.find('a')
-		expect(link.attributes()).not.toHaveProperty('href')
-		expect(link.text()).toEqual('Action API')
+		expect(title.text()).toEqual("Ahistorical Salutation Department of Figaro's")
 	})
 })

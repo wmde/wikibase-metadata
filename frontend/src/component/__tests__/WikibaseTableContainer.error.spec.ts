@@ -26,7 +26,6 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 }))
 
 describe('WikibaseTableContainer', async () => {
-	
 	it('renders error properly', async () => {
 		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
 
