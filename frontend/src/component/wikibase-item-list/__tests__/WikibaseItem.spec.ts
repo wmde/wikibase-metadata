@@ -1,30 +1,30 @@
 import WikibaseItem from '@/component/wikibase-item-list/WikibaseItem.vue'
 import vuetify from '@/plugin/vuetify'
-import type { SearchResult } from '@/util/fetch-data'
+import type { SearchResult, SearchStatus } from '@/util/fetch-data'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref, type Ref } from 'vue'
 
-const { mockCreateDataFetcher, mockDataValue, mockLoadingValue, MockDataFetcher } = vi.hoisted(
-	() => ({
+const { mockCreateDataFetcher, mockDataValue, mockLoadingValue, mockStatusValue, MockDataFetcher } =
+	vi.hoisted(() => ({
 		mockCreateDataFetcher: vi.fn().mockName('DataFetcher'),
 		mockDataValue: vi.fn().mockName(''),
 		mockLoadingValue: vi.fn().mockName(''),
+		mockStatusValue: vi.fn().mockName(''),
 		MockDataFetcher: vi.fn(
 			class {
 				data: Ref<SearchResult | undefined>
 				loading: Ref<boolean>
-				status
+				status: Ref<SearchStatus | undefined>
 				constructor(actionApiUrl: string | null) {
 					mockCreateDataFetcher(actionApiUrl)
 					this.data = ref(mockDataValue())
 					this.loading = ref(mockLoadingValue())
-					this.status = { value: null }
+					this.status = ref(mockStatusValue())
 				}
 			}
 		)
-	})
-)
+	}))
 
 vi.mock('@/util/fetch-data', () => ({ default: MockDataFetcher }))
 
@@ -72,6 +72,7 @@ describe('WikibaseItem', async () => {
 	it('renders properly with no searchValue', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(false)
+		mockStatusValue.mockReturnValueOnce(null)
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
@@ -103,6 +104,7 @@ describe('WikibaseItem', async () => {
 	it('renders properly with loading', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(true)
+		mockStatusValue.mockReturnValueOnce(null)
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
@@ -129,6 +131,38 @@ describe('WikibaseItem', async () => {
 		const status = headerContainer.find('div.status')
 		expect(status.exists()).toEqual(true)
 		expect(status.text()).toEqual('Loading')
+	})
+
+	it('renders properly with error', async () => {
+		mockDataValue.mockReturnValueOnce(null)
+		mockLoadingValue.mockReturnValueOnce(false)
+		mockStatusValue.mockReturnValueOnce({ code: 501, text: 'Failed' })
+
+		const wrapper = mount(WikibaseItem, {
+			global: { plugins: [vuetify] },
+			props: {
+				searchValue: '',
+				wiki: {
+					id: '-1',
+					title: "Ahistorical Salutation Department of Figaro's",
+					urls: { baseUrl: 'https://asdf.test', scriptPath: 'script' }
+				}
+			}
+		})
+
+		const wiki = wrapper.find('div.wikibase-item')
+		expect(wiki.exists()).toEqual(true)
+
+		const headerContainer = wiki.find('div.header-container')
+		expect(headerContainer.exists()).toEqual(true)
+
+		const title = headerContainer.find('div.wiki-title')
+		expect(title.exists()).toEqual(true)
+		expect(title.text()).toEqual("Ahistorical Salutation Department of Figaro's")
+
+		const status = headerContainer.find('div.status')
+		expect(status.exists()).toEqual(true)
+		expect(status.text()).toEqual('501: Failed')
 	})
 
 	it('renders properly with data', async () => {
@@ -172,6 +206,7 @@ describe('WikibaseItem', async () => {
 		}
 		mockDataValue.mockReturnValueOnce(data)
 		mockLoadingValue.mockReturnValueOnce(false)
+		mockStatusValue.mockReturnValueOnce(null)
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },

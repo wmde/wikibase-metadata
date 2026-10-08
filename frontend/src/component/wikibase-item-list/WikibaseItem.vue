@@ -25,13 +25,8 @@ watch(searchValueRef, () => fetcher.getData(searchValueRef.value))
 				<div class="wiki-title">{{ wiki.title }}</div>
 				<div class="status">
 					<template v-if="loading">Loading</template>
-					<template v-else-if="status">
-						<template v-if="status.code == 200">
-							<div v-if="!data?.search.length" class="no-results">No Results</div>
-						</template>
-						<template v-else>
-							<div class="error">{{ status.code }}: {{ status.text }}</div>
-						</template>
+					<template v-else-if="status && status.code != 200">
+						<div class="error">{{ status.code }}: {{ status.text }}</div>
 					</template>
 				</div>
 			</div>

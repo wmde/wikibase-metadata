@@ -21,12 +21,13 @@ export type SearchResult = {
 	}[]
 	success: number
 }
+export type SearchStatus = { code: number; text: string }
 
 class DataFetcher {
 	data: Ref<SearchResult | undefined>
 	actionApiUrl: string | null
 	loading: Ref<boolean>
-	status: Ref<{ code: number; text: string } | undefined>
+	status: Ref<SearchStatus | undefined>
 
 	constructor(actionApiUrl: string | null) {
 		this.actionApiUrl = actionApiUrl
