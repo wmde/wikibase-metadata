@@ -39,7 +39,7 @@ watch(searchValueRef, () => fetcher.getData(searchValueRef.value))
 				<div v-for="datum in data.search" :key="datum.id" class="result px-6 py-2">
 					<div class="item-label-container">
 						<div class="item-label">
-							<a :href="datum.url">{{ datum.label }}</a>
+							<a :href="datum.url" target="_blank">{{ datum.label }}</a>
 						</div>
 						<div class="item-id">{{ datum.id }}</div>
 					</div>
