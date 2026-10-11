@@ -1,7 +1,8 @@
 """Main Application"""
 
+import os
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from strawberry.fastapi import GraphQLRouter
@@ -46,3 +47,18 @@ async def metric_csv(authorization: Optional[str] = None):
         return PlainTextResponse("Authorization Failed", 403)
 
     return await export_metric_csv()
+
+
+@app.post("/internal/update-missing-script-paths")
+async def update_missing_script_paths_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    # This has to imported here to avoid circular imports error on app startup
+    from resolvers.update import update_missing_script_paths
+
+    count = await update_missing_script_paths()
+
+    return {"updated": count}
