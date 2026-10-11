@@ -1,3 +1,4 @@
+import { getUrlParamValue, updateUrlParamValue } from '@/util/use-url'
 import { defineStore } from 'pinia'
 import { ref, watch, type Ref } from 'vue'
 
@@ -8,22 +9,12 @@ export type MenuStoreType = {
 	setValue: (v: MenuOption) => void
 }
 
-const getUrlValue = (): MenuOption => {
-	const queryString = window.location.search
-	const urlParams = new URLSearchParams(queryString)
-	return urlParams.get('menu') as MenuOption
-}
-
-const updateUrlValue = (v: MenuOption) => {
-	const searchURL = new URL(window.location.toString())
-	searchURL.searchParams.set('menu', v)
-	window.history.pushState({}, '', searchURL)
-}
+const PARAM_NAME = 'menu'
 
 export const useMenuStore = defineStore('menu', (): MenuStoreType => {
-	const value = ref<MenuOption>(getUrlValue() ?? 'instances')
+	const value = ref<MenuOption>(getUrlParamValue(PARAM_NAME) ?? 'instances')
 	const setValue = (v: MenuOption) => (value.value = v)
-	watch(value, () => updateUrlValue(value.value))
+	watch(value, () => updateUrlParamValue(PARAM_NAME, value.value))
 
 	return { value, setValue }
 })
