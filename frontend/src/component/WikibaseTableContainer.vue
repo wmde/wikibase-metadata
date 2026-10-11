@@ -7,7 +7,7 @@ import { useMenuStore } from '@/stores/menu-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { getUrlParamValue, updateUrlParamValue } from '@/util/use-url'
-import { computed, onBeforeMount, ref, watch } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 
 const store = useWikiPageStore()
 const showCount = computed(() => store.wikibasePage.data?.data.length)
@@ -18,7 +18,7 @@ const error = computed(() => store.wikibasePage.errorState)
 const menuStore = useMenuStore()
 const menuValue = computed(() => menuStore.value)
 
-const searchValue = ref<string>(getUrlParamValue('search') ?? '')
+const searchValue = ref<string>('')
 const setSearchValue = (s: string) => (searchValue.value = s)
 const [debouncedSearchInstances] = debounce(
 	(v: string | undefined) => store.searchWikibaseText(v),
@@ -37,6 +37,7 @@ watch(searchValue, () => {
 })
 
 onBeforeMount(() => store.fetchWikibasePage())
+onMounted(() => (searchValue.value = getUrlParamValue('search') ?? ''))
 </script>
 
 <template>
