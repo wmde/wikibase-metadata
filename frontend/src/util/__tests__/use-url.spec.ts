@@ -84,10 +84,6 @@ describe('updateUrlParamValue', () => {
 		updateUrlParamValue('value', '')
 
 		expect(mockPushHistory).toHaveBeenCalledTimes(1)
-		expect(mockPushHistory).toHaveBeenCalledWith(
-			{},
-			'',
-			new URL('https://example.test/')
-		)
+		expect(mockPushHistory).toHaveBeenCalledWith({}, '', new URL('https://example.test/'))
 	})
 })
