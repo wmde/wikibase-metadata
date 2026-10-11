@@ -56,9 +56,261 @@ async def update_missing_script_paths_endpoint(
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
-    # This has to imported here to avoid circular imports error on app startup
+    # These have to imported here to avoid circular imports error on app startup
     from resolvers.update import update_missing_script_paths
 
-    count = await update_missing_script_paths()
+    result = await update_missing_script_paths()
 
-    return {"updated": count}
+    return {
+            "success": result.success,
+            "failure": result.failure,
+            "total": result.total,
+        }
+
+@app.post("/internal/update_software_data")
+async def update_software_data_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from resolvers.update import update_software_data
+
+    result = await update_software_data()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+@app.post("/internal/update_out_of_date_cloud_instances")
+async def update_out_of_date_cloud_instances_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from resolvers.update import update_out_of_date_cloud_instances
+
+    result = await update_out_of_date_cloud_instances()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+@app.post("/internal/update_missing_sparql_urls")
+async def update_missing_sparql_urls_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from resolvers.update import update_missing_sparql_urls
+
+    result = await update_missing_sparql_urls()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+@app.post("/internal/update_out_of_date_connectivity_observations")
+async def update_out_of_date_connectivity_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_connectivity_observations
+
+    result = await update_out_of_date_connectivity_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_log_first_observations")
+async def update_out_of_date_log_first_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_log_first_observations
+
+    result = await update_out_of_date_log_first_observations()
+    
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_log_last_observations")
+async def update_out_of_date_log_last_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_log_last_observations
+
+    result = await update_out_of_date_log_last_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_recent_changes_observations")
+async def update_out_of_date_recent_changes_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_recent_changes_observations
+
+    result = await update_out_of_date_recent_changes_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_property_observations")
+async def update_out_of_date_property_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_property_observations
+
+    result = await update_out_of_date_property_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_quantity_observations")
+async def update_out_of_date_quantity_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_quantity_observations
+
+    result = await update_out_of_date_quantity_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_software_observations")
+async def update_out_of_date_software_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_software_observations
+
+    result = await update_out_of_date_software_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_stats_observations")
+async def update_out_of_date_stats_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_stats_observations
+
+    result = await update_out_of_date_stats_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_time_to_first_value_observations")
+async def update_out_of_date_time_to_first_value_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_time_to_first_value_observations
+
+    result = await update_out_of_date_time_to_first_value_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_user_observations")
+async def update_out_of_date_user_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_user_observations
+
+    result = await update_out_of_date_user_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
+
+@app.post("/internal/update_out_of_date_external_identifier_observations")
+async def update_out_of_date_external_identifier_observations_endpoint(
+    x_scheduler_token: str = Header(),
+):
+    if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    from fetch_data import update_out_of_date_external_identifier_observations
+
+    result = await update_out_of_date_external_identifier_observations()
+
+    return {
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
