@@ -4,8 +4,12 @@ export function getUrlParamValue<T>(paramName: string): T {
 	return urlParams.get(paramName) as T
 }
 
-export function updateUrlParamValue(paramName: string, v: string) {
+export function updateUrlParamValue(paramName: string, v: string | null | undefined) {
 	const searchURL = new URL(window.location.toString())
-	searchURL.searchParams.set(paramName, v)
+	if (v) {
+		searchURL.searchParams.set(paramName, v)
+	} else {
+		searchURL.searchParams.delete(paramName)
+	}
 	window.history.pushState({}, '', searchURL)
 }
