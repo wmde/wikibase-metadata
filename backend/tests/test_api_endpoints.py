@@ -92,9 +92,7 @@ def test_observation_update_endpoint(endpoint, function_name, monkeypatch):
     "endpoint",
     [endpoint for endpoint, _ in OBSERVATION_ENDPOINTS],
 )
-def test_observation_update_endpoint_rejects_invalid_token(
-    endpoint, monkeypatch
-):
+def test_observation_update_endpoint_rejects_invalid_token(endpoint, monkeypatch):
     """Test observation update endpoints reject invalid scheduler tokens."""
     monkeypatch.setenv("SCHEDULER_TOKEN", "correct-token")
 

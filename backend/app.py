@@ -1,5 +1,6 @@
 """Main Application"""
 
+# pylint: disable=import-outside-toplevel
 import os
 from typing import Optional
 from fastapi import FastAPI, Header, HTTPException
@@ -53,6 +54,7 @@ async def metric_csv(authorization: Optional[str] = None):
 async def update_missing_script_paths_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Missing Script Paths"""
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -62,15 +64,17 @@ async def update_missing_script_paths_endpoint(
     result = await update_missing_script_paths()
 
     return {
-            "success": result.success,
-            "failure": result.failure,
-            "total": result.total,
-        }
+        "success": result.success,
+        "failure": result.failure,
+        "total": result.total,
+    }
+
 
 @app.post("/internal/update_software_data")
 async def update_software_data_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Software Data"""
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -84,10 +88,13 @@ async def update_software_data_endpoint(
         "total": result.total,
     }
 
+
 @app.post("/internal/update_out_of_date_cloud_instances")
 async def update_out_of_date_cloud_instances_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Cloud Instances"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -101,10 +108,13 @@ async def update_out_of_date_cloud_instances_endpoint(
         "total": result.total,
     }
 
+
 @app.post("/internal/update_missing_sparql_urls")
 async def update_missing_sparql_urls_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Missing SparQL URLs"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -118,10 +128,13 @@ async def update_missing_sparql_urls_endpoint(
         "total": result.total,
     }
 
+
 @app.post("/internal/update_out_of_date_connectivity_observations")
 async def update_out_of_date_connectivity_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Connectivity Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -140,13 +153,15 @@ async def update_out_of_date_connectivity_observations_endpoint(
 async def update_out_of_date_log_first_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Log First Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
     from fetch_data import update_out_of_date_log_first_observations
 
     result = await update_out_of_date_log_first_observations()
-    
+
     return {
         "success": result.success,
         "failure": result.failure,
@@ -158,6 +173,8 @@ async def update_out_of_date_log_first_observations_endpoint(
 async def update_out_of_date_log_last_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Log Last Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -176,6 +193,8 @@ async def update_out_of_date_log_last_observations_endpoint(
 async def update_out_of_date_recent_changes_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Recent Changes Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -194,6 +213,8 @@ async def update_out_of_date_recent_changes_observations_endpoint(
 async def update_out_of_date_property_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Property Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -212,6 +233,8 @@ async def update_out_of_date_property_observations_endpoint(
 async def update_out_of_date_quantity_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Quantity Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -230,6 +253,8 @@ async def update_out_of_date_quantity_observations_endpoint(
 async def update_out_of_date_software_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Software Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -248,6 +273,8 @@ async def update_out_of_date_software_observations_endpoint(
 async def update_out_of_date_stats_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Stats Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -266,6 +293,8 @@ async def update_out_of_date_stats_observations_endpoint(
 async def update_out_of_date_time_to_first_value_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date Time to First Value Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -284,6 +313,8 @@ async def update_out_of_date_time_to_first_value_observations_endpoint(
 async def update_out_of_date_user_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date User Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
@@ -302,6 +333,8 @@ async def update_out_of_date_user_observations_endpoint(
 async def update_out_of_date_external_identifier_observations_endpoint(
     x_scheduler_token: str = Header(),
 ):
+    """Scheduler - Update Out of Date External Identifier Observations"""
+
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
 
