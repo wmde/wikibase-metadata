@@ -8,11 +8,12 @@ import { computed, ref, watch } from 'vue'
 
 const { setSearchValue } = defineProps<{ setSearchValue: (s: string) => void }>()
 
-const menuStore = useMenuStore()
-const menuValue = computed(() => menuStore.value)
-
 const searchValue = ref<string>(getUrlParamValue('search') ?? '')
 watch(searchValue, () => setSearchValue(searchValue.value))
+
+const menuStore = useMenuStore()
+const menuValue = computed(() => menuStore.value)
+watch(menuValue, () => (searchValue.value = ''))
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 const rules: ((value: string) => true | string)[] = [
