@@ -1,9 +1,7 @@
 import { getUrlParamValue, updateUrlParamValue } from '@/util/use-url'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 describe('getUrlParamValue', () => {
-	beforeEach(() => vi.unstubAllGlobals())
-
 	it('returns null when param not set', () => {
 		const result = getUrlParamValue('NOT_SET')
 		expect(result).toEqual(null)
@@ -20,8 +18,6 @@ describe('getUrlParamValue', () => {
 })
 
 describe('updateUrlParamValue', () => {
-	beforeEach(() => vi.unstubAllGlobals())
-
 	it('set value', () => {
 		const mockPushHistory = vi.fn()
 		Object.defineProperty(window, 'location', {
