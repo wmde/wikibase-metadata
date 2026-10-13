@@ -4,6 +4,7 @@ import { mdiThemeLightDark } from '@mdi/js'
 import { useTheme } from 'vuetify'
 
 const theme = useTheme()
+const toggleTheme = () => theme.toggle()
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const theme = useTheme()
 				<v-btn
 					v-if="false"
 					class="theme-switch"
-					v-on:click="theme.toggle()"
+					v-on:click="toggleTheme"
 					density="comfortable"
 					:icon="mdiThemeLightDark"
 				/>

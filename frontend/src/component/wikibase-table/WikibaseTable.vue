@@ -33,6 +33,8 @@ const totalPages = computed(() => store.wikibasePage.data?.meta.totalPages)
 const wikibases = computed<WbFragment[] | undefined>(() =>
 	store.wikibasePage.loading ? undefined : store.wikibasePage.data?.data
 )
+const getDirection = (order: boolean | 'desc' | 'asc' | undefined): SortDirection =>
+	order == 'asc' ? SortDirection.Asc : SortDirection.Desc
 </script>
 
 <template>
@@ -52,10 +54,7 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 			(sortBy: SortItem[]) =>
 				store.setSort(
 					sortBy[0]
-						? {
-								column: sortBy[0].key as SortColumn,
-								dir: sortBy[0].order == 'asc' ? SortDirection.Asc : SortDirection.Desc
-							}
+						? { column: sortBy[0].key as SortColumn, dir: getDirection(sortBy[0].order) }
 						: undefined
 				)
 		"
