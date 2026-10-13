@@ -40,7 +40,6 @@ export type WikibasePageStoreType = {
 	sortBy: WikibaseSortInput | undefined | Ref<WikibaseSortInput | undefined>
 	setSort: (sortBy: WikibaseSortInput | undefined) => void
 	wikibaseFilter: WikibaseFilterInput | Ref<WikibaseFilterInput>
-	includeWikibaseTypes: (t: WikibaseType[]) => void
 	searchWikibaseText: (s: string | undefined) => void
 }
 
@@ -86,8 +85,6 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	const wikibaseFilter = ref<WikibaseFilterInput>({
 		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
 	})
-	const includeWikibaseTypes = (t: WikibaseType[]) =>
-		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
 	const searchWikibaseText = (s: string | undefined) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, searchText: s })
 	watch(wikibaseFilter, () => setPageNumber(1))
@@ -114,7 +111,6 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 		sortBy,
 		setSort,
 		wikibaseFilter,
-		includeWikibaseTypes,
 		searchWikibaseText
 	}
 })
