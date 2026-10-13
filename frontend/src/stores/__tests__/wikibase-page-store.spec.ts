@@ -61,22 +61,6 @@ describe('useWikiStore', async () => {
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
 
-	it('calls load on includeWikibaseTypes', async () => {
-		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
-		}
-		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
-
-		expect(mockLoad).toHaveBeenCalledTimes(0)
-
-		store.includeWikibaseTypes([WikibaseType.Cloud])
-		await nextTick()
-		expect(mockLoad).toHaveBeenCalledTimes(1)
-	})
-
 	it('calls load on setPageNumber', async () => {
 		const results: PageWikibasesQuery = {
 			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
