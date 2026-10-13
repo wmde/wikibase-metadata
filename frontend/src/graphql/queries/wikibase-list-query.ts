@@ -5,7 +5,7 @@ const listWikibasesQuery = gql`
 		wikibaseList(
 			pageNumber: 1
 			pageSize: -1
-			wikibaseFilter: { wikibaseType: { include: SUITE } }
+			wikibaseFilter: { wikibaseType: { include: [SUITE, CLOUD, UNKNOWN] } }
 		) {
 			meta {
 				totalCount
