@@ -12,23 +12,22 @@ const listStore = useWikiListStore()
 const listCount = computed(() => listStore.wikibaseList.data?.meta.totalCount)
 
 const pageStore = useWikiPageStore()
-const totalCount = computed(() => pageStore.wikibasePage.data?.meta.totalCount)
+const pageTotalCount = computed(() => pageStore.wikibasePage.data?.meta.totalCount)
 const totalEdits = computed(() => pageStore.wikibasePage.data?.meta.totalEdits)
 const totalTriples = computed(() => pageStore.wikibasePage.data?.meta.totalTriples)
+
+const totalCount = computed(() =>
+	menuValue.value == 'instances' ? pageTotalCount.value : listCount.value
+)
 </script>
 
 <template>
 	<v-container class="wikibase-total-container pa-0 ma-0 mb-8">
-		<template v-if="menuValue == 'instances'">
-			<wikibase-total-box v-if="totalCount" :value="totalCount" label="Total Instances" />
-		</template>
-		<template v-else>
-			<wikibase-total-box
-				v-if="listCount"
-				:value="listCount"
-				label="Instances (curated from 1,500+ Wikibases)"
-			/>
-		</template>
+		<wikibase-total-box
+			v-if="totalCount"
+			:value="totalCount"
+			label="Instances (curated from 1,500+ Wikibases)"
+		/>
 		<wikibase-total-box v-if="totalTriples" :value="totalTriples" label="Total Triples" />
 		<wikibase-total-box v-if="totalEdits" :value="totalEdits" label="Edits (30 days)" />
 	</v-container>
