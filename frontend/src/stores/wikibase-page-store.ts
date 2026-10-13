@@ -30,7 +30,8 @@ type WikibasePageData = {
 export type WikibasePageStoreType = {
 	fetchWikibasePage: () => void
 	wikibasePage:
-		QueryResult<WikibasePageData | undefined> | Ref<QueryResult<WikibasePageData | undefined>>
+		| QueryResult<WikibasePageData | undefined>
+		| Ref<QueryResult<WikibasePageData | undefined>>
 	pageNumber: number | Ref<number>
 	setPageNumber: (i: number) => void
 	pageSize: number | Ref<number>
