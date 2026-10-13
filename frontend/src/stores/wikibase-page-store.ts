@@ -2,7 +2,6 @@ import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
 import {
 	SortColumn,
 	SortDirection,
-	WikibaseType,
 	type PageWikibasesQuery,
 	type PageWikibasesQueryVariables,
 	type WbFragment,
@@ -82,9 +81,7 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	const setSort = (val: WikibaseSortInput | undefined) => (sortBy.value = val)
 	watch(sortBy, () => setPageNumber(1))
 
-	const wikibaseFilter = ref<WikibaseFilterInput>({
-		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
-	})
+	const wikibaseFilter = ref<WikibaseFilterInput>({})
 	const searchWikibaseText = (s: string | undefined) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, searchText: s })
 	watch(wikibaseFilter, () => setPageNumber(1))
