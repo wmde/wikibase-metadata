@@ -61,7 +61,6 @@ services:
     command: python -m scheduler.run_scheduler
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN}
-      DATABASE_URL: postgresql+asyncpg://user:app@database:5432/db
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
       SCHEDULER_TOKEN: ${SCHEDULER_TOKEN}
