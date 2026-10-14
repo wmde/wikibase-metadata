@@ -1,7 +1,7 @@
 """Add Wikibase"""
 
 from typing import Optional
-from sqlalchemy import delete, func, or_, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
