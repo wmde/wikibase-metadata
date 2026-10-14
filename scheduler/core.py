@@ -20,9 +20,10 @@ from .jobs import (
     run_update_out_of_date_stats_observations,
     run_update_out_of_date_time_to_first_value_observations,
     run_update_out_of_date_user_observations,
-    run_update_out_of_date_external_identifier_observations
+    run_update_out_of_date_external_identifier_observations,
 )
 from logger import logger
+
 
 def create_scheduler() -> AsyncIOScheduler:
     """Create a scheduler"""
@@ -54,10 +55,7 @@ def create_scheduler() -> AsyncIOScheduler:
 
     scheduler.add_job(
         run_update_missing_script_paths,
-        CronTrigger(
-            day_of_week=6, 
-            hour=22
-        ),
+        CronTrigger(day_of_week=6, hour=22),
         id="update_missing_script_paths",
         **job_defaults,
     )
@@ -80,7 +78,7 @@ def create_scheduler() -> AsyncIOScheduler:
         ),
         id="update_out_of_date_connectivity_observations",
         **job_defaults,
-)
+    )
 
     scheduler.add_job(
         run_update_out_of_date_log_first_observations,
@@ -100,7 +98,7 @@ def create_scheduler() -> AsyncIOScheduler:
         ),
         id="update_out_of_date_log_last_observations",
         **job_defaults,
-)
+    )
 
     scheduler.add_job(
         run_update_out_of_date_recent_changes_observations,
@@ -110,7 +108,7 @@ def create_scheduler() -> AsyncIOScheduler:
         ),
         id="update_out_of_date_recent_changes_observations",
         **job_defaults,
-)
+    )
 
     scheduler.add_job(
         run_update_out_of_date_property_observations,
@@ -184,6 +182,7 @@ def create_scheduler() -> AsyncIOScheduler:
 
     return scheduler
 
+
 async def health_handler(_reader, writer, scheduler: AsyncIOScheduler):
     """Check the health of the scheduler"""
 
@@ -208,6 +207,7 @@ async def health_handler(_reader, writer, scheduler: AsyncIOScheduler):
     await writer.drain()
     writer.close()
 
+
 async def start_health_server(scheduler: AsyncIOScheduler):
     """Starts an HTTP server to check health of scheduler"""
 
@@ -217,6 +217,7 @@ async def start_health_server(scheduler: AsyncIOScheduler):
     server = await asyncio.start_server(handler, "0.0.0.0", 8081)
     logger.info("Health endpoint listening on :8081")
     return server
+
 
 async def run_scheduler():
     """Run the scheduler and health server"""
