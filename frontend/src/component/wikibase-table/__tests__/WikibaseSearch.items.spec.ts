@@ -1,10 +1,15 @@
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import vuetify from '@/plugin/vuetify'
+import mockMenuStore from '@/stores/__tests__/mock-menu-store'
+import type { MenuStoreType } from '@/stores/menu-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const mockSetMenuValue = vi.fn().mockName('setMenuValue')
+vi.mock('@/stores/menu-store', () => ({
+	useMenuStore: (): MenuStoreType => ({ ...mockMenuStore, value: 'items' })
+}))
+
 const mockSetSearchValue = vi.fn().mockName('setSearchValue')
 
 describe('WikibaseSearch', async () => {
@@ -16,11 +21,7 @@ describe('WikibaseSearch', async () => {
 	it('renders properly', async () => {
 		const wrapper = mount(WikibaseSearch, {
 			global: { plugins: [vuetify] },
-			props: {
-				menuValue: 'items',
-				setMenuValue: mockSetMenuValue,
-				setSearchValue: mockSetSearchValue
-			}
+			props: { setSearchValue: mockSetSearchValue }
 		})
 
 		const container = wrapper.find('.search-container')

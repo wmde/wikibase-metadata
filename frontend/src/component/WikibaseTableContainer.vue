@@ -3,9 +3,11 @@ import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vu
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import WikibaseTotalContainer from '@/component/wikibase-table/WikibaseTotalContainer.vue'
+import { useMenuStore } from '@/stores/menu-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
-import { computed, onBeforeMount, ref, watch } from 'vue'
+import { getUrlParamValue, updateUrlParamValue } from '@/util/use-url'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 
 const store = useWikiPageStore()
 const showCount = computed(() => store.wikibasePage.data?.data.length)
@@ -13,10 +15,10 @@ const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 
 const error = computed(() => store.wikibasePage.errorState)
 
-const menuValue = ref<'instances' | 'items'>('instances')
-const setMenuValue = (v: 'instances' | 'items') => (menuValue.value = v)
+const menuStore = useMenuStore()
+const menuValue = computed(() => menuStore.value)
 
-const searchValue = ref('')
+const searchValue = ref<string>('')
 const setSearchValue = (s: string) => (searchValue.value = s)
 const [debouncedSearchInstances] = debounce(
 	(v: string | undefined) => store.searchWikibaseText(v),
@@ -25,6 +27,7 @@ const [debouncedSearchInstances] = debounce(
 const debouncedSearchValue = ref(searchValue.value)
 const [setDebouncedSearchValue] = debounce((s: string) => (debouncedSearchValue.value = s), 1000)
 watch(searchValue, () => {
+	updateUrlParamValue('search', searchValue.value)
 	if (menuValue.value == 'instances') {
 		debouncedSearchInstances(searchValue.value ? searchValue.value : undefined)
 	}
@@ -34,17 +37,14 @@ watch(searchValue, () => {
 })
 
 onBeforeMount(() => store.fetchWikibasePage())
+onMounted(() => (searchValue.value = getUrlParamValue('search') ?? ''))
 </script>
 
 <template>
 	<v-container class="wikibase-table-container my-0 px-6 py-8">
 		<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 		<wikibase-total-container />
-		<wikibase-search
-			:menu-value="menuValue"
-			:set-menu-value="setMenuValue"
-			:set-search-value="setSearchValue"
-		/>
+		<wikibase-search :set-search-value="setSearchValue" />
 		<template v-if="menuValue == 'instances'">
 			<v-container v-if="totalCount && showCount" class="show-count mb-6 pa-0">
 				Showing {{ showCount.toLocaleString('en') }} of

@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { useMenuStore } from '@/stores/menu-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
-const { menuValue, searchValue } = defineProps<{
-	menuValue: 'instances' | 'items'
-	searchValue: string
-}>()
+const { searchValue } = defineProps<{ searchValue: string }>()
+
+const menuStore = useMenuStore()
+const menuValue = computed(() => menuStore.value)
 
 const store = useWikiPageStore()
 
@@ -13,10 +14,10 @@ const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
 const displayRules = computed((): ((value: string) => RuleResult)[] => [
 	(value: string) =>
-		menuValue != 'instances' ||
+		menuValue.value != 'instances' ||
 		ALLOWED_CHARACTERS.test(value) || { prepend: 'Disallowed Characters' },
 	(value: string) =>
-		menuValue != 'instances' ||
+		menuValue.value != 'instances' ||
 		value.length == 0 ||
 		store.wikibasePage.loading ||
 		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0) || {

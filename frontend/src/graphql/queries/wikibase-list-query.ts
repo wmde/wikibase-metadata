@@ -2,11 +2,7 @@ import gql from 'graphql-tag'
 
 const listWikibasesQuery = gql`
 	query ListWikibases {
-		wikibaseList(
-			pageNumber: 1
-			pageSize: -1
-			wikibaseFilter: { wikibaseType: { include: SUITE } }
-		) {
+		wikibaseList(pageNumber: 1, pageSize: -1) {
 			meta {
 				totalCount
 			}
