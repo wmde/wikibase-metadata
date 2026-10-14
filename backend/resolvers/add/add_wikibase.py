@@ -1,7 +1,7 @@
 """Add Wikibase"""
 
 from typing import Optional
-from sqlalchemy import func, or_, select
+from sqlalchemy import delete, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
@@ -29,23 +29,27 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             WikibaseURLType.SPARQL_FRONTEND_URL,
         )
 
-        existing = await async_session.scalar(
-            select(WikibaseModel)
-            .join(
-                WikibaseURLModel,
-                WikibaseURLModel.wikibase_id == WikibaseModel.id,
-            )
-            .where(
-                or_(
-                    WikibaseURLModel.url == clean_base_url,
-                    WikibaseURLModel.url == clean_sparql_endpoint,
-                    WikibaseURLModel.url == clean_sparql_frontend,
+        existing = (
+            await async_session.scalars(
+                select(WikibaseModel)
+                .join(
+                    WikibaseURLModel,
+                    WikibaseURLModel.wikibase_id == WikibaseModel.id,
+                )
+                .where(
+                    or_(
+                        WikibaseURLModel.url == clean_base_url,
+                        WikibaseURLModel.url == clean_sparql_endpoint,
+                        WikibaseURLModel.url == clean_sparql_frontend,
+                    )
                 )
             )
-        )
+        ).unique().all()
 
-        if existing is not None:
-            return await update_wikibase(async_session, existing.id, wikibase_input)
+        for wikibase in existing:
+            await async_session.delete(wikibase)
+
+        await async_session.flush()
 
         assert (
             await async_session.scalar(
