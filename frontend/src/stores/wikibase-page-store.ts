@@ -2,7 +2,6 @@ import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
 import {
 	SortColumn,
 	SortDirection,
-	WikibaseType,
 	type PageWikibasesQuery,
 	type PageWikibasesQueryVariables,
 	type WbFragment,
@@ -40,7 +39,6 @@ export type WikibasePageStoreType = {
 	sortBy: WikibaseSortInput | undefined | Ref<WikibaseSortInput | undefined>
 	setSort: (sortBy: WikibaseSortInput | undefined) => void
 	wikibaseFilter: WikibaseFilterInput | Ref<WikibaseFilterInput>
-	includeWikibaseTypes: (t: WikibaseType[]) => void
 	searchWikibaseText: (s: string | undefined) => void
 }
 
@@ -83,11 +81,7 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	const setSort = (val: WikibaseSortInput | undefined) => (sortBy.value = val)
 	watch(sortBy, () => setPageNumber(1))
 
-	const wikibaseFilter = ref<WikibaseFilterInput>({
-		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
-	})
-	const includeWikibaseTypes = (t: WikibaseType[]) =>
-		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
+	const wikibaseFilter = ref<WikibaseFilterInput>({})
 	const searchWikibaseText = (s: string | undefined) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, searchText: s })
 	watch(wikibaseFilter, () => setPageNumber(1))
@@ -114,7 +108,6 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 		sortBy,
 		setSort,
 		wikibaseFilter,
-		includeWikibaseTypes,
 		searchWikibaseText
 	}
 })

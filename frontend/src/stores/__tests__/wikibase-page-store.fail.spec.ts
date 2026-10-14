@@ -1,4 +1,3 @@
-import { WikibaseType } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -30,9 +29,7 @@ describe('useWikiStore', async () => {
 
 		expect(store.pageNumber).toEqual(1)
 		expect(store.pageSize).toEqual(25)
-		expect(store.wikibaseFilter).toEqual({
-			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
-		})
+		expect(store.wikibaseFilter).toEqual({})
 		expect(store.wikibasePage).toEqual({ data: undefined, errorState: true, loading: false })
 	})
 })

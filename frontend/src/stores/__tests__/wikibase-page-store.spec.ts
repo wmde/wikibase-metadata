@@ -1,4 +1,4 @@
-import { SortColumn, SortDirection, WikibaseType, type PageWikibasesQuery } from '@/graphql/types'
+import { SortColumn, SortDirection, type PageWikibasesQuery } from '@/graphql/types'
 import { useWikiStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -37,9 +37,7 @@ describe('useWikiStore', async () => {
 
 		expect(store.pageNumber).toEqual(1)
 		expect(store.pageSize).toEqual(25)
-		expect(store.wikibaseFilter).toEqual({
-			wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
-		})
+		expect(store.wikibaseFilter).toEqual({})
 		expect(store.wikibasePage).toEqual({
 			data: { data: [], meta: { totalCount: 0, totalPages: 0, totalEdits: 0, totalTriples: 0 } },
 			errorState: false,
@@ -58,22 +56,6 @@ describe('useWikiStore', async () => {
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 		store.fetchWikibasePage()
-		expect(mockLoad).toHaveBeenCalledTimes(1)
-	})
-
-	it('calls load on includeWikibaseTypes', async () => {
-		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
-		}
-		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
-		const store = useWikiStore()
-
-		expect(mockLoad).toHaveBeenCalledTimes(0)
-
-		store.includeWikibaseTypes([WikibaseType.Cloud])
-		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
 
