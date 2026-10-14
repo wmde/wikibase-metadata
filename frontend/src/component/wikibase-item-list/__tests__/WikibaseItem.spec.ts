@@ -274,7 +274,7 @@ describe('WikibaseItem', async () => {
 		expect(descriptionTwo.text()).toEqual('Something that is returned by a search')
 	})
 
-	it('renders properly with search value and no data, loading', async () => {
+	it('renders nothing with no data, when search value is set and loading is false', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(false)
 
