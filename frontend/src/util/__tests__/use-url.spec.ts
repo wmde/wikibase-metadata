@@ -7,7 +7,7 @@ describe('getUrlParamValue', () => {
 		expect(result).toEqual(null)
 	})
 
-	it('returns data when param not set', () => {
+	it('returns data when param is set', () => {
 		Object.defineProperty(window, 'location', {
 			value: { search: '?value=datum' },
 			writable: true
@@ -64,7 +64,7 @@ describe('updateUrlParamValue', () => {
 		)
 	})
 
-	it('delets value', () => {
+	it('deletes value', () => {
 		const mockPushHistory = vi.fn()
 		Object.defineProperty(window, 'location', {
 			value: 'https://example.test/?value=datum',

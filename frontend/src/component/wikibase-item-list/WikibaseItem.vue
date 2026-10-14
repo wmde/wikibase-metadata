@@ -55,7 +55,6 @@ watch(searchValueRef, () => fetcher.getData(searchValueRef.value))
 			font-weight: 700;
 			font-size: 15px;
 			color: rgb(0, 0, 0);
-			//   flex-shrink: 0;
 		}
 	}
 
