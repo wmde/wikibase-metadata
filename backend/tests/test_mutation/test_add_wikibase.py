@@ -138,10 +138,10 @@ async def test_updates_wikibase_if_base_url_already_exists(
 
 
 @pytest.mark.asyncio
-async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
+async def test_updates_wikibase_if_sparql_urls_already_exists(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
-    """Test Can't Add Wikibase with existing sqarql URL"""
+    """Test Updates the existing Wikibase if it has the same SparQL URL"""
 
     url_types = ["sparqlEndpointUrl", "sparqlFrontendUrl"]
 
@@ -160,14 +160,13 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
                     "urls": {
                         "baseUrl": f"https://example{i}.com",
                         f"{url_type}": f"{url}",
-                        "articlePath": "wiki",
                     },
                 }
             },
         )
 
         assert result.errors is None
-        assert result.data is not None
+        wikibase_id = result.data["addWikibase"]["id"]
 
         result = await test_schema.execute(
             ADD_WIKIBASE_QUERY,
@@ -182,14 +181,17 @@ async def test_does_not_allow_multiple_wikibases_with_same_sparql_url(
                     "urls": {
                         "baseUrl": f"https://example2{i}.com",
                         f"{url_type}": f"{url}",
-                        "articlePath": "wiki",
                     },
                 }
             },
         )
 
-        assert len(result.errors) == 1
-        assert result.errors[0].message == f"URL {url} already exists"
+        async with AsyncSession(bind=db_session) as session:
+            db_result = await session.execute(
+                select(WikibaseModel).where(WikibaseModel.id == int(wikibase_id))
+            )
+            wikibase = db_result.scalar_one()
+            assert wikibase.wikibase_name == f"Wikibase {i} B"
 
 
 @pytest.mark.asyncio

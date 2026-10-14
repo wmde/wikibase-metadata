@@ -1,7 +1,7 @@
 """Add Wikibase"""
 
 from typing import Optional
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
@@ -20,10 +20,28 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         clean_base_url = clean_up_url(
             wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
         )
+        clean_sparql_endpoint = clean_up_url(
+            wikibase_input.urls.sparql_endpoint_url,
+            WikibaseURLType.SPARQL_ENDPOINT_URL,
+        )
+        clean_sparql_frontend = clean_up_url(
+            wikibase_input.urls.sparql_frontend_url,
+            WikibaseURLType.SPARQL_FRONTEND_URL,
+        )
+
         existing = await async_session.scalar(
             select(WikibaseModel)
-            .join(WikibaseModel.url)
-            .where(WikibaseURLModel.url == clean_base_url)
+            .join(
+                WikibaseURLModel,
+                WikibaseURLModel.wikibase_id == WikibaseModel.id,
+            )
+            .where(
+                or_(
+                    WikibaseURLModel.url == clean_base_url,
+                    WikibaseURLModel.url == clean_sparql_endpoint,
+                    WikibaseURLModel.url == clean_sparql_frontend,
+                )
+            )
         )
 
         if existing is not None:
@@ -40,17 +58,6 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             f"Wikibase with name {wikibase_input.wikibase_name.strip()} already exists"
         )
 
-        await assert_new_url(
-            async_session,
-            wikibase_input.urls.sparql_endpoint_url,
-            WikibaseURLType.SPARQL_ENDPOINT_URL,
-        )
-        await assert_new_url(
-            async_session,
-            wikibase_input.urls.sparql_frontend_url,
-            WikibaseURLType.SPARQL_FRONTEND_URL,
-        )
-
         model = WikibaseModel(
             wikibase_name=wikibase_input.wikibase_name,
             description=wikibase_input.description,
@@ -63,31 +70,23 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
                 clean_up_url(
                     wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH
                 )
-                if wikibase_input.urls.article_path is not None
-                else None
             ),
             script_path=(
                 clean_up_url(
                     wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH
                 )
-                if wikibase_input.urls.script_path is not None
-                else None
             ),
             sparql_endpoint_url=(
                 clean_up_url(
                     wikibase_input.urls.sparql_endpoint_url,
                     WikibaseURLType.SPARQL_ENDPOINT_URL,
                 )
-                if wikibase_input.urls.sparql_endpoint_url is not None
-                else None
             ),
             sparql_frontend_url=(
                 clean_up_url(
                     wikibase_input.urls.sparql_frontend_url,
                     WikibaseURLType.SPARQL_FRONTEND_URL,
                 )
-                if wikibase_input.urls.sparql_frontend_url is not None
-                else None
             ),
         )
         model.checked = True
