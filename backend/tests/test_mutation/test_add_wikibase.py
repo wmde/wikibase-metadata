@@ -188,18 +188,23 @@ async def test_recreates_wikibase_if_sparql_url_already_exists(
             assert new_wikibase.wikibase_name == f"Wikibase {i} B"
 
             matching_wikibases = (
-                await session.scalars(
-                    select(WikibaseModel)
-                    .join(
-                        WikibaseURLModel,
-                        WikibaseURLModel.wikibase_id == WikibaseModel.id,
+                (
+                    await session.scalars(
+                        select(WikibaseModel)
+                        .join(
+                            WikibaseURLModel,
+                            WikibaseURLModel.wikibase_id == WikibaseModel.id,
+                        )
+                        .where(WikibaseURLModel.url == url)
                     )
-                    .where(WikibaseURLModel.url == url)
                 )
-            ).unique().all()
+                .unique()
+                .all()
+            )
 
             assert len(matching_wikibases) == 1
             assert matching_wikibases[0].id == new_id
+
 
 @pytest.mark.asyncio
 async def test_deletes_all_wikibases_with_matching_urls(
@@ -267,9 +272,7 @@ async def test_deletes_all_wikibases_with_matching_urls(
         assert wikibase_c is not None
         assert wikibase_c.wikibase_name == "Wikibase C"
 
-        remaining_wikibases = (
-            await session.scalars(select(WikibaseModel))
-        ).all()
+        remaining_wikibases = (await session.scalars(select(WikibaseModel))).all()
 
         assert len(remaining_wikibases) == 1
         assert remaining_wikibases[0].id == wikibase_c_id
@@ -341,15 +344,19 @@ async def test_normalizes_urls(
             assert await session.get(WikibaseModel, previous_id) is None
 
             matching_wikibases = (
-                await session.scalars(
-                    select(WikibaseModel)
-                    .join(
-                        WikibaseURLModel,
-                        WikibaseURLModel.wikibase_id == WikibaseModel.id,
+                (
+                    await session.scalars(
+                        select(WikibaseModel)
+                        .join(
+                            WikibaseURLModel,
+                            WikibaseURLModel.wikibase_id == WikibaseModel.id,
+                        )
+                        .where(WikibaseURLModel.url == f"https://{base_url}")
                     )
-                    .where(WikibaseURLModel.url == f"https://{base_url}")
                 )
-            ).unique().all()
+                .unique()
+                .all()
+            )
 
             assert len(matching_wikibases) == 1
             assert matching_wikibases[0].id == new_id

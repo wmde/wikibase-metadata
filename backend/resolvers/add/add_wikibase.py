@@ -30,21 +30,25 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
 
         existing = (
-            await async_session.scalars(
-                select(WikibaseModel)
-                .join(
-                    WikibaseURLModel,
-                    WikibaseURLModel.wikibase_id == WikibaseModel.id,
-                )
-                .where(
-                    or_(
-                        WikibaseURLModel.url == clean_base_url,
-                        WikibaseURLModel.url == clean_sparql_endpoint,
-                        WikibaseURLModel.url == clean_sparql_frontend,
+            (
+                await async_session.scalars(
+                    select(WikibaseModel)
+                    .join(
+                        WikibaseURLModel,
+                        WikibaseURLModel.wikibase_id == WikibaseModel.id,
+                    )
+                    .where(
+                        or_(
+                            WikibaseURLModel.url == clean_base_url,
+                            WikibaseURLModel.url == clean_sparql_endpoint,
+                            WikibaseURLModel.url == clean_sparql_frontend,
+                        )
                     )
                 )
             )
-        ).unique().all()
+            .unique()
+            .all()
+        )
 
         for wikibase in existing:
             await async_session.delete(wikibase)
