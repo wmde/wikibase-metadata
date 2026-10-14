@@ -22,6 +22,7 @@ from .jobs import (
     run_update_out_of_date_user_observations,
     run_update_out_of_date_external_identifier_observations
 )
+from logger import logger
 
 def create_scheduler() -> AsyncIOScheduler:
     """Create a scheduler"""
@@ -214,20 +215,16 @@ async def start_health_server(scheduler: AsyncIOScheduler):
         await health_handler(reader, writer, scheduler)
 
     server = await asyncio.start_server(handler, "0.0.0.0", 8081)
-    # logger.info("Health endpoint listening on :8081")
+    logger.info("Health endpoint listening on :8081")
     return server
 
 async def run_scheduler():
     """Run the scheduler and health server"""
 
-    # if not enable_scheduler:
-    #     logger.info("Scheduler disabled via config")
-    #     return
-
     scheduler = create_scheduler()
     scheduler.start()
 
-    # logger.info("Scheduler started successfully")
+    logger.info("Scheduler started successfully")
 
     server = await start_health_server(scheduler)
 
@@ -235,5 +232,5 @@ async def run_scheduler():
         try:
             await server.serve_forever()
         except (KeyboardInterrupt, SystemExit):
-            # logger.info("Shutting down scheduler...")
+            logger.info("Shutting down scheduler...")
             scheduler.shutdown()
