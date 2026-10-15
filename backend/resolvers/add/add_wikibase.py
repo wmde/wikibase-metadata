@@ -13,7 +13,7 @@ from resolvers.util.clean_wikibase_url import clean_up_url
 
 
 async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel:
-    """Add Wikibase"""
+    """Add Wikibase, or update it if one with a matching URL already exists"""
 
     async with get_async_session() as async_session:
 
@@ -29,7 +29,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             WikibaseURLType.SPARQL_FRONTEND_URL,
         )
 
-        existing = (
+        existing = list(
             (
                 await async_session.scalars(
                     select(WikibaseModel)
@@ -50,10 +50,38 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             .all()
         )
 
-        for wikibase in existing:
-            await async_session.delete(wikibase)
+        if len(existing) > 0:
+            base_url_owner_ids = set(
+                await async_session.scalars(
+                    select(WikibaseURLModel.wikibase_id).where(
+                        WikibaseURLModel.url == clean_base_url
+                    )
+                )
+            )
 
-        await async_session.flush()
+            if len(existing) == 1:
+                keep = existing[0]
+            else:
+                keepers = [w for w in existing if w.id in base_url_owner_ids]
+                assert len(keepers) == 1, (
+                    "Multiple existing Wikibases match the given URLs, "
+                    "but none (or more than one) matches the base URL"
+                )
+                keep = keepers[0]
+
+                for wikibase in existing:
+                    if wikibase.id != keep.id:
+                        await async_session.delete(wikibase)
+
+                await async_session.flush()
+
+            updated_wikibase = await update_wikibase(
+                async_session, keep.id, wikibase_input
+            )
+
+            await async_session.commit()
+
+            return updated_wikibase
 
         assert (
             await async_session.scalar(

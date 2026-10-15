@@ -2,7 +2,7 @@
 """Test Add Wikibase"""
 
 import pytest
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
@@ -15,6 +15,15 @@ mutation MyMutation($wikibaseInput: WikibaseInput!) {
     id
   }
 }"""
+
+
+async def execute_add_wikibase(name: str, urls: dict):
+    """Run the addWikibase mutation with a name and URLs"""
+
+    return await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={"wikibaseInput": {"wikibaseName": name, "urls": urls}},
+    )
 
 
 @pytest.fixture
@@ -82,24 +91,15 @@ async def test_add_wikibase_mutation(
 
 
 @pytest.mark.asyncio
-async def test_recreates_wikibase_if_base_url_already_exists(
+async def test_updates_wikibase_if_base_url_already_exists(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
-    """Test recreates Wikibase if base URL already exists"""
+    """Test updates the existing Wikibase if the base URL already exists"""
 
     base_url = "https://example-wikibase.com"
 
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Example Wikibase 1",
-                "urls": {
-                    "baseUrl": base_url,
-                    "articlePath": "wiki",
-                },
-            }
-        },
+    result = await execute_add_wikibase(
+        "Example Wikibase 1", {"baseUrl": base_url, "articlePath": "wiki"}
     )
 
     assert result.errors is None
@@ -110,6 +110,7 @@ async def test_recreates_wikibase_if_base_url_already_exists(
         variable_values={
             "wikibaseInput": {
                 "wikibaseName": "Example Wikibase 2",
+                "description": "Updated description",
                 "urls": {
                     "baseUrl": base_url,
                     "articlePath": "wiki",
@@ -121,71 +122,54 @@ async def test_recreates_wikibase_if_base_url_already_exists(
     assert result.errors is None
     assert result.data is not None
 
-    new_id = int(result.data["addWikibase"]["id"])
-    assert new_id != original_id
+    assert int(result.data["addWikibase"]["id"]) == original_id
 
     async with AsyncSession(bind=db_session) as session:
-        old_wikibase = await session.get(WikibaseModel, original_id)
-        new_wikibase = await session.get(WikibaseModel, new_id)
+        wikibases = (await session.scalars(select(WikibaseModel))).all()
+        assert len(wikibases) == 1
 
-        assert old_wikibase is None
-        assert new_wikibase is not None
-        assert new_wikibase.wikibase_name == "Example Wikibase 2"
+        wikibase = await session.get(WikibaseModel, original_id)
+        assert wikibase is not None
+        assert wikibase.wikibase_name == "Example Wikibase 2"
+        assert wikibase.description == "Updated description"
+        assert wikibase.url.url == base_url
 
 
 @pytest.mark.asyncio
-async def test_recreates_wikibase_if_sparql_url_already_exists(
+async def test_updates_wikibase_if_sparql_url_already_exists(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
-    """Test recreates Wikibase if a SPARQL URL already exists"""
+    """Test updates the existing Wikibase if only a SPARQL URL matches"""
 
     url_types = ["sparqlEndpointUrl", "sparqlFrontendUrl"]
 
     for i, url_type in enumerate(url_types):
         url = f"https://example.com/sparql{i}"
+        old_base_url = f"https://example{i}.com"
+        new_base_url = f"https://example2{i}.com"
 
-        result = await test_schema.execute(
-            ADD_WIKIBASE_QUERY,
-            variable_values={
-                "wikibaseInput": {
-                    "wikibaseName": f"Wikibase {i} A",
-                    "urls": {
-                        "baseUrl": f"https://example{i}.com",
-                        url_type: url,
-                    },
-                }
-            },
+        result = await execute_add_wikibase(
+            f"Wikibase {i} A", {"baseUrl": old_base_url, url_type: url}
         )
 
         assert result.errors is None
         original_id = int(result.data["addWikibase"]["id"])
 
-        result = await test_schema.execute(
-            ADD_WIKIBASE_QUERY,
-            variable_values={
-                "wikibaseInput": {
-                    "wikibaseName": f"Wikibase {i} B",
-                    "urls": {
-                        "baseUrl": f"https://example2{i}.com",
-                        url_type: url,
-                    },
-                }
-            },
+        result = await execute_add_wikibase(
+            f"Wikibase {i} B", {"baseUrl": new_base_url, url_type: url}
         )
 
         assert result.errors is None
         assert result.data is not None
 
-        new_id = int(result.data["addWikibase"]["id"])
-        assert new_id != original_id
+        assert int(result.data["addWikibase"]["id"]) == original_id
 
         async with AsyncSession(bind=db_session) as session:
-            old_wikibase = await session.get(WikibaseModel, original_id)
-            new_wikibase = await session.get(WikibaseModel, new_id)
+            wikibase = await session.get(WikibaseModel, original_id)
 
-            assert old_wikibase is None
-            assert new_wikibase is not None
-            assert new_wikibase.wikibase_name == f"Wikibase {i} B"
+            assert wikibase is not None
+            assert wikibase.wikibase_name == f"Wikibase {i} B"
+            assert wikibase.url.url == new_base_url
 
             matching_wikibases = (
                 (
@@ -203,86 +187,126 @@ async def test_recreates_wikibase_if_sparql_url_already_exists(
             )
 
             assert len(matching_wikibases) == 1
-            assert matching_wikibases[0].id == new_id
+            assert matching_wikibases[0].id == original_id
+
+            old_base_url_count = await session.scalar(
+                # pylint: disable-next=not-callable
+                select(func.count()).where(WikibaseURLModel.url == old_base_url)
+            )
+            assert old_base_url_count == 0
 
 
 @pytest.mark.asyncio
-async def test_deletes_all_wikibases_with_matching_urls(
+async def test_keeps_base_url_match_and_deletes_sparql_match(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument
-    """Test deletes all Wikibases with matching URLs before creating a new one"""
+    """Test that if 2 different Wikibases match on base URL and SPARQL URL, the Wikibase
+    matching the base URL is updated and the SPARQL-matching Wikibase is deleted.
+    """
 
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Wikibase A",
-                "urls": {
-                    "baseUrl": "https://base-1.com",
-                    "sparqlEndpointUrl": "http://sparql-1.com",
-                },
-            }
-        },
+    result = await execute_add_wikibase(
+        "Wikibase A",
+        {"baseUrl": "https://base-a.com", "sparqlEndpointUrl": "https://sparql-a.com"},
     )
 
     assert result.errors is None
     wikibase_a_id = int(result.data["addWikibase"]["id"])
 
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Wikibase B",
-                "urls": {
-                    "baseUrl": "https://base-2.com",
-                    "sparqlEndpointUrl": "http://sparql-2.com",
-                },
-            }
-        },
+    result = await execute_add_wikibase(
+        "Wikibase B",
+        {"baseUrl": "https://base-b.com", "sparqlEndpointUrl": "https://sparql-b.com"},
     )
 
     assert result.errors is None
     wikibase_b_id = int(result.data["addWikibase"]["id"])
 
-    result = await test_schema.execute(
-        ADD_WIKIBASE_QUERY,
-        variable_values={
-            "wikibaseInput": {
-                "wikibaseName": "Wikibase C",
-                "urls": {
-                    "baseUrl": "https://base-1.com",
-                    "sparqlEndpointUrl": "http://sparql-2.com",
-                },
-            }
-        },
+    result = await execute_add_wikibase(
+        "Wikibase C",
+        {"baseUrl": "https://base-a.com", "sparqlEndpointUrl": "https://sparql-b.com"},
     )
 
     assert result.errors is None
     assert result.data is not None
 
-    wikibase_c_id = int(result.data["addWikibase"]["id"])
-
-    assert wikibase_c_id not in (wikibase_a_id, wikibase_b_id)
+    # A is kept (and updated), B is deleted, no new Wikibase is created
+    assert int(result.data["addWikibase"]["id"]) == wikibase_a_id
 
     async with AsyncSession(bind=db_session) as session:
-        assert await session.get(WikibaseModel, wikibase_a_id) is None
         assert await session.get(WikibaseModel, wikibase_b_id) is None
 
-        wikibase_c = await session.get(WikibaseModel, wikibase_c_id)
-        assert wikibase_c is not None
-        assert wikibase_c.wikibase_name == "Wikibase C"
+        wikibase_a = await session.get(WikibaseModel, wikibase_a_id)
+        assert wikibase_a is not None
+        assert wikibase_a.wikibase_name == "Wikibase C"
+        assert wikibase_a.url.url == "https://base-a.com"
 
         remaining_wikibases = (await session.scalars(select(WikibaseModel))).all()
-
         assert len(remaining_wikibases) == 1
-        assert remaining_wikibases[0].id == wikibase_c_id
+        assert remaining_wikibases[0].id == wikibase_a_id
+
+        # the SPARQL URL formerly owned by B now belongs to A
+        sparql_url = await session.scalar(
+            select(WikibaseURLModel).where(
+                WikibaseURLModel.url == "https://sparql-b.com"
+            )
+        )
+        assert sparql_url is not None
+        assert sparql_url.wikibase_id == wikibase_a_id
+
+        old_sparql_count = await session.scalar(
+            # pylint: disable-next=not-callable
+            select(func.count()).where(WikibaseURLModel.url == "https://sparql-a.com")
+        )
+        assert old_sparql_count == 0
+
+
+@pytest.mark.asyncio
+async def test_errors_when_multiple_matches_but_none_share_base_url(
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument
+    """Test errors and changes nothing if matches exist but none owns the base URL"""
+
+    result = await execute_add_wikibase(
+        "Wikibase A",
+        {"baseUrl": "https://base-a.com", "sparqlEndpointUrl": "https://sparql-a.com"},
+    )
+    assert result.errors is None
+    wikibase_a_id = int(result.data["addWikibase"]["id"])
+
+    result = await execute_add_wikibase(
+        "Wikibase B",
+        {
+            "baseUrl": "https://base-b.com",
+            "sparqlFrontendUrl": "https://frontend-b.com",
+        },
+    )
+    assert result.errors is None
+    wikibase_b_id = int(result.data["addWikibase"]["id"])
+
+    # new base URL, but the SPARQL URLs match A and B respectively
+    result = await execute_add_wikibase(
+        "Wikibase C",
+        {
+            "baseUrl": "https://base-c.com",
+            "sparqlEndpointUrl": "https://sparql-a.com",
+            "sparqlFrontendUrl": "https://frontend-b.com",
+        },
+    )
+
+    assert result.errors is not None
+
+    async with AsyncSession(bind=db_session) as session:
+        assert await session.get(WikibaseModel, wikibase_a_id) is not None
+        assert await session.get(WikibaseModel, wikibase_b_id) is not None
+
+        remaining_wikibases = (await session.scalars(select(WikibaseModel))).all()
+        assert len(remaining_wikibases) == 2
 
 
 @pytest.mark.asyncio
 async def test_normalizes_urls(
     db_session, wikibase_categories
 ):  # pylint: disable=unused-argument, redefined-outer-name
-    """Test normalizes URLs and recreates Wikibases on collision"""
+    """Test normalizes URLs and updates the same Wikibase on collision"""
 
     base_url = "example-1234.com"
 
@@ -307,7 +331,7 @@ async def test_normalizes_urls(
     assert result.errors is None
     assert result.data is not None
 
-    previous_id = int(result.data["addWikibase"]["id"])
+    original_id = int(result.data["addWikibase"]["id"])
 
     url_variations = [
         f"https://{base_url}",
@@ -337,11 +361,12 @@ async def test_normalizes_urls(
         assert result.errors is None
         assert result.data is not None
 
-        new_id = int(result.data["addWikibase"]["id"])
-        assert new_id != previous_id
+        assert int(result.data["addWikibase"]["id"]) == original_id
 
         async with AsyncSession(bind=db_session) as session:
-            assert await session.get(WikibaseModel, previous_id) is None
+            wikibase = await session.get(WikibaseModel, original_id)
+            assert wikibase is not None
+            assert wikibase.wikibase_name == f"Wikibase {i}"
 
             matching_wikibases = (
                 (
@@ -359,9 +384,7 @@ async def test_normalizes_urls(
             )
 
             assert len(matching_wikibases) == 1
-            assert matching_wikibases[0].id == new_id
-
-        previous_id = new_id
+            assert matching_wikibases[0].id == original_id
 
 
 @pytest.mark.asyncio
