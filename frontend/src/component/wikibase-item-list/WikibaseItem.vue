@@ -8,7 +8,9 @@ import { computed, watch } from 'vue'
 const { wiki } = defineProps<{ wiki: WbItemFragment }>()
 
 const searchStore = useSearchStore()
-const searchValue = computed(() => searchStore.debouncedSearchValue)
+const searchValue = computed(() =>
+	searchStore.menuValue == 'items' ? searchStore.debouncedSearchValue : undefined
+)
 
 const fetcher = new DataFetcher(getActionApiUrl(wiki.urls.baseUrl, wiki.urls.scriptPath))
 
@@ -16,7 +18,7 @@ const data = computed(() => fetcher.data.value)
 const status = computed(() => fetcher.status.value)
 const loading = computed(() => fetcher.loading.value)
 
-watch(searchValue, () => fetcher.getData(searchValue.value))
+watch(searchValue, () => searchValue.value && fetcher.getData(searchValue.value))
 </script>
 
 <template>
