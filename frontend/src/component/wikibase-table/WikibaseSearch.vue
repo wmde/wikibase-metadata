@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
-import { useMenuStore } from '@/stores/menu-store'
+import { useMenuStore } from '@/stores/search-store'
 import { getUrlParamValue } from '@/util/use-url'
 import { mdiChevronDown, mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
@@ -12,7 +12,7 @@ const searchValue = ref<string>(getUrlParamValue('search') ?? '')
 watch(searchValue, () => setSearchValue(searchValue.value))
 
 const menuStore = useMenuStore()
-const menuValue = computed(() => menuStore.value)
+const menuValue = computed(() => menuStore.menuValue)
 watch(menuValue, () => (searchValue.value = ''))
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
