@@ -1,6 +1,8 @@
 import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vue'
 import vuetify from '@/plugin/vuetify'
+import mockSearchStore from '@/stores/__tests__/mock-search-store'
 import mockWikiListStore from '@/stores/__tests__/mock-wikibase-list-store'
+import type { SearchStoreType } from '@/stores/search-store'
 import type { WikibaseListStoreType } from '@/stores/wikibase-list-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
@@ -28,6 +30,7 @@ vi.mock('@/stores/wikibase-list-store', () => ({
 		}
 	})
 }))
+vi.mock('@/stores/search-store', () => ({ useSearchStore: (): SearchStoreType => mockSearchStore }))
 
 describe('WikibaseItemList', async () => {
 	it(`renders data properly`, async () => {

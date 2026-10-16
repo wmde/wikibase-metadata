@@ -1,5 +1,7 @@
 import WikibaseItem from '@/component/wikibase-item-list/WikibaseItem.vue'
 import vuetify from '@/plugin/vuetify'
+import mockSearchStore from '@/stores/__tests__/mock-search-store'
+import type { SearchStoreType } from '@/stores/search-store'
 import type { SearchResult, SearchStatus } from '@/util/fetch-data'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -25,19 +27,25 @@ const { mockCreateDataFetcher, mockDataValue, mockLoadingValue, mockStatusValue,
 			}
 		)
 	}))
-
 vi.mock('@/util/fetch-data', () => ({ default: MockDataFetcher }))
+
+const { mockSearchValue } = vi.hoisted(() => ({
+	mockSearchValue: vi.fn().mockName('searchValue')
+}))
+vi.mock('@/stores/search-store', () => ({
+	useSearchStore: (): SearchStoreType => ({ ...mockSearchStore, searchValue: mockSearchValue() })
+}))
 
 describe('WikibaseItem', async () => {
 	beforeEach(() => vi.resetAllMocks())
 
 	it('creates DataFetcher with scriptPath', async () => {
+		mockSearchValue.mockReturnValueOnce('')
 		expect(mockCreateDataFetcher).toHaveBeenCalledTimes(0)
 
 		mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: '',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -51,12 +59,12 @@ describe('WikibaseItem', async () => {
 	})
 
 	it('creates DataFetcher without scriptPath', async () => {
+		mockSearchValue.mockReturnValueOnce('')
 		expect(mockCreateDataFetcher).toHaveBeenCalledTimes(0)
 
 		mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: '',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -73,11 +81,11 @@ describe('WikibaseItem', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(false)
 		mockStatusValue.mockReturnValueOnce(null)
+		mockSearchValue.mockReturnValueOnce('')
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: '',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -105,11 +113,11 @@ describe('WikibaseItem', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(true)
 		mockStatusValue.mockReturnValueOnce(null)
+		mockSearchValue.mockReturnValueOnce('search')
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: 'search',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -137,11 +145,11 @@ describe('WikibaseItem', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(false)
 		mockStatusValue.mockReturnValueOnce({ code: 501, text: 'Failed' })
+		mockSearchValue.mockReturnValueOnce('')
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: '',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -207,11 +215,11 @@ describe('WikibaseItem', async () => {
 		mockDataValue.mockReturnValueOnce(data)
 		mockLoadingValue.mockReturnValueOnce(false)
 		mockStatusValue.mockReturnValueOnce(null)
+		mockSearchValue.mockReturnValueOnce('search')
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: 'search',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
@@ -277,11 +285,11 @@ describe('WikibaseItem', async () => {
 	it('renders nothing with no data, when search value is set and loading is false', async () => {
 		mockDataValue.mockReturnValueOnce(null)
 		mockLoadingValue.mockReturnValueOnce(false)
+		mockSearchValue.mockReturnValueOnce('search')
 
 		const wrapper = mount(WikibaseItem, {
 			global: { plugins: [vuetify] },
 			props: {
-				searchValue: 'search',
 				wiki: {
 					id: '-1',
 					title: "Ahistorical Salutation Department of Figaro's",
