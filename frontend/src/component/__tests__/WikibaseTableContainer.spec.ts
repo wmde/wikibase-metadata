@@ -15,7 +15,8 @@ vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 const { mockMenuValue } = vi.hoisted(() => ({ mockMenuValue: vi.fn().mockName('') }))
 
 vi.mock('@/stores/search-store', () => ({
-	useSearchStore: (): SearchStoreType => ({ ...mockSearchStore, menuValue: mockMenuValue() })
+	useSearchStore: (): SearchStoreType => ({ ...mockSearchStore, menuValue: mockMenuValue() }),
+	SEARCH_PARAM_NAME: 'search'
 }))
 vi.mock('@/stores/wikibase-list-store', () => ({
 	useWikiListStore: (): WikibaseListStoreType => ({
