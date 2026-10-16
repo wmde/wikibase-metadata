@@ -12,7 +12,10 @@ import { describe, expect, it, vi } from 'vitest'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
-vi.mock('@/stores/search-store', () => ({ useSearchStore: (): SearchStoreType => mockSearchStore }))
+vi.mock('@/stores/search-store', () => ({
+	useSearchStore: (): SearchStoreType => mockSearchStore,
+	SEARCH_PARAM_NAME: 'search'
+}))
 vi.mock('@/stores/wikibase-list-store', () => ({
 	useWikiListStore: (): WikibaseListStoreType => mockWikiListStore
 }))
