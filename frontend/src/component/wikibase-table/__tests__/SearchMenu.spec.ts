@@ -1,15 +1,17 @@
 import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import vuetify from '@/plugin/vuetify'
-import mockMenuStore from '@/stores/__tests__/mock-menu-store'
-import type { MenuStoreType } from '@/stores/menu-store'
+import mockSearchStore from '@/stores/__tests__/mock-search-store'
+import type { SearchStoreType } from '@/stores/search-store'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
-const { mockSetMenuValue } = vi.hoisted(() => ({ mockSetMenuValue: vi.fn().mockName('setValue') }))
+const { mockSetMenuValue } = vi.hoisted(() => ({
+	mockSetMenuValue: vi.fn().mockName('setMenuValue')
+}))
 
-vi.mock('@/stores/menu-store', () => ({
-	useMenuStore: (): MenuStoreType => ({ ...mockMenuStore, setValue: mockSetMenuValue })
+vi.mock('@/stores/search-store', () => ({
+	useSearchStore: (): SearchStoreType => ({ ...mockSearchStore, setMenuValue: mockSetMenuValue })
 }))
 
 describe('SearchMenu', async () => {

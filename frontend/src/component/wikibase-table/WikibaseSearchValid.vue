@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useMenuStore } from '@/stores/search-store'
+import { useSearchStore } from '@/stores/search-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
 const { searchValue } = defineProps<{ searchValue: string }>()
 
-const menuStore = useMenuStore()
+const menuStore = useSearchStore()
 const menuValue = computed(() => menuStore.menuValue)
 
 const store = useWikiPageStore()

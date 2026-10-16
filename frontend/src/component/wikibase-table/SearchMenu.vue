@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useMenuStore } from '@/stores/search-store'
+import { useSearchStore } from '@/stores/search-store'
 import { mdiCheck } from '@mdi/js'
 import { computed } from 'vue'
 
-const menuStore = useMenuStore()
+const menuStore = useSearchStore()
 const menuValue = computed(() => menuStore.menuValue)
 </script>
 

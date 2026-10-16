@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
-import { useMenuStore } from '@/stores/search-store'
+import { useSearchStore } from '@/stores/search-store'
 import { getUrlParamValue } from '@/util/use-url'
 import { mdiChevronDown, mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
@@ -11,7 +11,7 @@ const { setSearchValue } = defineProps<{ setSearchValue: (s: string) => void }>(
 const searchValue = ref<string>(getUrlParamValue('search') ?? '')
 watch(searchValue, () => setSearchValue(searchValue.value))
 
-const menuStore = useMenuStore()
+const menuStore = useSearchStore()
 const menuValue = computed(() => menuStore.menuValue)
 watch(menuValue, () => (searchValue.value = ''))
 

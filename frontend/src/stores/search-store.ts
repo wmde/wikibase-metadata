@@ -11,7 +11,7 @@ export type SearchStoreType = {
 
 const MENU_PARAM_NAME = 'menu'
 
-export const useMenuStore = defineStore('search', (): SearchStoreType => {
+export const useSearchStore = defineStore('search', (): SearchStoreType => {
 	const menuValue = ref<MenuOption>(getUrlParamValue(MENU_PARAM_NAME) ?? 'instances')
 	const setMenuValue = (v: MenuOption) => (menuValue.value = v)
 	watch(menuValue, () => updateUrlParamValue(MENU_PARAM_NAME, menuValue.value))

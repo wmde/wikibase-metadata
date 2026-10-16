@@ -3,7 +3,7 @@ import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vu
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import WikibaseTotalContainer from '@/component/wikibase-table/WikibaseTotalContainer.vue'
-import { useMenuStore } from '@/stores/search-store'
+import { useSearchStore } from '@/stores/search-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { debounce } from '@/util/debounce'
 import { getUrlParamValue, updateUrlParamValue } from '@/util/use-url'
@@ -15,7 +15,7 @@ const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 
 const error = computed(() => store.wikibasePage.errorState)
 
-const menuStore = useMenuStore()
+const menuStore = useSearchStore()
 const menuValue = computed(() => menuStore.menuValue)
 
 const searchValue = ref<string>('')
