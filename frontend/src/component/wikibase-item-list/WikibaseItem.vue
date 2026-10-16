@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import type { WbItemFragment } from '@/graphql/types'
+import { useSearchStore } from '@/stores/search-store'
 import DataFetcher from '@/util/fetch-data'
 import getActionApiUrl from '@/util/getActionApiUrl'
 import { computed, watch } from 'vue'
 
-const { searchValue, wiki } = defineProps<{ searchValue: string; wiki: WbItemFragment }>()
+const { wiki } = defineProps<{ wiki: WbItemFragment }>()
+
+const searchStore = useSearchStore()
+const searchValue = computed(() =>
+	searchStore.menuValue == 'items' ? searchStore.debouncedSearchValue : undefined
+)
 
 const fetcher = new DataFetcher(getActionApiUrl(wiki.urls.baseUrl, wiki.urls.scriptPath))
 
@@ -12,10 +18,7 @@ const data = computed(() => fetcher.data.value)
 const status = computed(() => fetcher.status.value)
 const loading = computed(() => fetcher.loading.value)
 
-// You cannot directly watch the prop for changes
-// But you can watch, essentially, a reference to the value of the prop
-const searchValueRef = computed(() => searchValue)
-watch(searchValueRef, () => fetcher.getData(searchValueRef.value))
+watch(searchValue, () => searchValue.value && fetcher.getData(searchValue.value))
 </script>
 
 <template>

@@ -1,30 +1,38 @@
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import vuetify from '@/plugin/vuetify'
-import mockMenuStore from '@/stores/__tests__/mock-menu-store'
-import type { MenuStoreType } from '@/stores/menu-store'
+import mockSearchStore from '@/stores/__tests__/mock-search-store'
+import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
+import type { SearchStoreType } from '@/stores/search-store'
+import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
-vi.mock('@/stores/menu-store', () => ({
-	useMenuStore: (): MenuStoreType => ({ ...mockMenuStore, value: 'instances' })
+const { mockSearchValue, mockSetSearchValue } = vi.hoisted(() => ({
+	mockSearchValue: vi.fn().mockName('searchValue'),
+	mockSetSearchValue: vi.fn().mockName('setSearchValue')
+}))
+vi.mock('@/stores/search-store', () => ({
+	useSearchStore: (): SearchStoreType => ({
+		...mockSearchStore,
+		menuValue: 'instances',
+		searchValue: mockSearchValue(),
+		setSearchValue: mockSetSearchValue
+	})
+}))
+vi.mock('@/stores/wikibase-page-store', () => ({
+	useWikiPageStore: (): WikibasePageStoreType => mockWikiPageStore
 }))
 
 const mockSearchWikibaseText = vi.fn().mockName('searchWikibaseText')
-const mockSetSearchValue = vi.fn().mockName('setSearchValue')
 
 describe('WikibaseSearch', async () => {
-	beforeEach(() => {
-		setActivePinia(createPinia())
-		vi.resetAllMocks()
-	})
+	beforeEach(() => vi.resetAllMocks())
 
 	it('renders properly', async () => {
-		const wrapper = mount(WikibaseSearch, {
-			global: { plugins: [vuetify] },
-			props: { setSearchValue: mockSetSearchValue }
-		})
+		mockSearchValue.mockReturnValueOnce('')
+
+		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
@@ -54,12 +62,10 @@ describe('WikibaseSearch', async () => {
 	})
 
 	it('triggers searchWikibaseText', async () => {
+		mockSearchValue.mockReturnValueOnce('')
 		expect(mockSearchWikibaseText).toHaveBeenCalledTimes(0)
 
-		const wrapper = mount(WikibaseSearch, {
-			global: { plugins: [vuetify] },
-			props: { setSearchValue: mockSetSearchValue }
-		})
+		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
@@ -90,10 +96,7 @@ describe('WikibaseSearch', async () => {
 	})
 
 	it('raises error on non-allowed characters', async () => {
-		const wrapper = mount(WikibaseSearch, {
-			global: { plugins: [vuetify] },
-			props: { setSearchValue: mockSetSearchValue }
-		})
+		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)
@@ -124,10 +127,7 @@ describe('WikibaseSearch', async () => {
 	})
 
 	it('raises error on no results returned', async () => {
-		const wrapper = mount(WikibaseSearch, {
-			global: { plugins: [vuetify] },
-			props: { setSearchValue: mockSetSearchValue }
-		})
+		const wrapper = mount(WikibaseSearch, { global: { plugins: [vuetify] } })
 
 		const container = wrapper.find('.search-container')
 		expect(container.exists()).toEqual(true)

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import WikibaseTotalBox from '@/component/wikibase-table/WikibaseTotalBox.vue'
-import { useMenuStore } from '@/stores/menu-store'
+import { useSearchStore } from '@/stores/search-store'
 import { useWikiListStore } from '@/stores/wikibase-list-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
-const menuStore = useMenuStore()
-const menuValue = computed(() => menuStore.value)
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
 
 const listStore = useWikiListStore()
 const listCount = computed(() => listStore.wikibaseList.data?.meta.totalCount)
