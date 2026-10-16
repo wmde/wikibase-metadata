@@ -5,8 +5,8 @@ import { useWikiListStore } from '@/stores/wikibase-list-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
-const menuStore = useSearchStore()
-const menuValue = computed(() => menuStore.menuValue)
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
 
 const listStore = useWikiListStore()
 const listCount = computed(() => listStore.wikibaseList.data?.meta.totalCount)

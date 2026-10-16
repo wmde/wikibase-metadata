@@ -3,8 +3,8 @@ import { useSearchStore } from '@/stores/search-store'
 import { mdiCheck } from '@mdi/js'
 import { computed } from 'vue'
 
-const menuStore = useSearchStore()
-const menuValue = computed(() => menuStore.menuValue)
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
 </script>
 
 <template>
@@ -12,7 +12,7 @@ const menuValue = computed(() => menuStore.menuValue)
 		<v-list-item
 			key="instances"
 			value="instances"
-			v-on:click="() => menuStore.setMenuValue('instances')"
+			v-on:click="() => searchStore.setMenuValue('instances')"
 			:append-icon="menuValue == 'instances' ? mdiCheck : undefined"
 		>
 			<v-list-item-title>Instances</v-list-item-title>
@@ -20,7 +20,7 @@ const menuValue = computed(() => menuStore.menuValue)
 		<v-list-item
 			key="items"
 			value="items"
-			v-on:click="() => menuStore.setMenuValue('items')"
+			v-on:click="() => searchStore.setMenuValue('items')"
 			:append-icon="menuValue == 'items' ? mdiCheck : undefined"
 		>
 			<v-list-item-title>Items</v-list-item-title>

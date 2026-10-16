@@ -3,10 +3,9 @@ import { useSearchStore } from '@/stores/search-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
-const { searchValue } = defineProps<{ searchValue: string }>()
-
-const menuStore = useSearchStore()
-const menuValue = computed(() => menuStore.menuValue)
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
+const searchValue = computed(() => searchStore.searchValue)
 
 const store = useWikiPageStore()
 
@@ -27,7 +26,7 @@ const displayRules = computed((): ((value: string) => RuleResult)[] => [
 		}
 ])
 const displayRuleResults = computed(() =>
-	displayRules.value.map((rule) => rule(searchValue)).filter((result) => result != true)
+	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
 )
 </script>
 

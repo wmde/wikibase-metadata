@@ -3,11 +3,10 @@ import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vu
 import WikibaseSearch from '@/component/wikibase-table/WikibaseSearch.vue'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import WikibaseTotalContainer from '@/component/wikibase-table/WikibaseTotalContainer.vue'
-import { useSearchStore } from '@/stores/search-store'
+import { SEARCH_PARAM_NAME, useSearchStore } from '@/stores/search-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
-import { debounce } from '@/util/debounce'
-import { getUrlParamValue, updateUrlParamValue } from '@/util/use-url'
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { getUrlParamValue } from '@/util/use-url'
+import { computed, onBeforeMount, onMounted } from 'vue'
 
 const store = useWikiPageStore()
 const showCount = computed(() => store.wikibasePage.data?.data.length)
@@ -15,36 +14,18 @@ const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
 
 const error = computed(() => store.wikibasePage.errorState)
 
-const menuStore = useSearchStore()
-const menuValue = computed(() => menuStore.menuValue)
-
-const searchValue = ref<string>('')
-const setSearchValue = (s: string) => (searchValue.value = s)
-const [debouncedSearchInstances] = debounce(
-	(v: string | undefined) => store.searchWikibaseText(v),
-	300
-)
-const debouncedSearchValue = ref(searchValue.value)
-const [setDebouncedSearchValue] = debounce((s: string) => (debouncedSearchValue.value = s), 1000)
-watch(searchValue, () => {
-	updateUrlParamValue('search', searchValue.value)
-	if (menuValue.value == 'instances') {
-		debouncedSearchInstances(searchValue.value ? searchValue.value : undefined)
-	}
-	if (menuValue.value == 'items') {
-		setDebouncedSearchValue(searchValue.value)
-	}
-})
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
 
 onBeforeMount(() => store.fetchWikibasePage())
-onMounted(() => (searchValue.value = getUrlParamValue('search') ?? ''))
+onMounted(() => searchStore.setSearchValue(getUrlParamValue(SEARCH_PARAM_NAME) ?? ''))
 </script>
 
 <template>
 	<v-container class="wikibase-table-container my-0 px-6 py-8">
 		<v-alert v-if="error" type="error" variant="tonal" title="Error">Error fetching data</v-alert>
 		<wikibase-total-container />
-		<wikibase-search :set-search-value="setSearchValue" />
+		<wikibase-search />
 		<template v-if="menuValue == 'instances'">
 			<v-container v-if="totalCount && showCount" class="show-count mb-6 pa-0">
 				Showing {{ showCount.toLocaleString('en') }} of
@@ -53,7 +34,7 @@ onMounted(() => (searchValue.value = getUrlParamValue('search') ?? ''))
 			<wikibase-table />
 		</template>
 		<template v-if="menuValue == 'items'">
-			<wikibase-item-list :search-value="debouncedSearchValue" />
+			<wikibase-item-list />
 		</template>
 	</v-container>
 </template>
