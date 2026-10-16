@@ -32,7 +32,9 @@ export const useSearchStore = defineStore('search', (): SearchStoreType => {
 		menuValue.value == 'instances' ? 300 : 1000
 	)
 	watch(searchValue, () => setDebouncedSearchValue(searchValue.value))
-	watch(debouncedSearchValue, () => updateUrlParamValue(SEARCH_PARAM_NAME, debouncedSearchValue.value))
+	watch(debouncedSearchValue, () =>
+		updateUrlParamValue(SEARCH_PARAM_NAME, debouncedSearchValue.value)
+	)
 
 	return { menuValue, setMenuValue, searchValue, setSearchValue, debouncedSearchValue }
 })
