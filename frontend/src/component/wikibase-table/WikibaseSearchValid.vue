@@ -7,7 +7,7 @@ const searchStore = useSearchStore()
 const menuValue = computed(() => searchStore.menuValue)
 const searchValue = computed(() => searchStore.searchValue)
 
-const store = useWikiPageStore()
+const wikiPageStore = useWikiPageStore()
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
@@ -18,8 +18,8 @@ const displayRules = computed((): ((value: string) => RuleResult)[] => [
 	(value: string) =>
 		menuValue.value != 'instances' ||
 		value.length == 0 ||
-		store.wikibasePage.loading ||
-		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0) || {
+		wikiPageStore.wikibasePage.loading ||
+		(wikiPageStore.wikibasePage.data && wikiPageStore.wikibasePage.data.meta.totalCount > 0) || {
 			prepend: 'No results for ',
 			includeValue: true,
 			append: ' — try a different keyword or category'
