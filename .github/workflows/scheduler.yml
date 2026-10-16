@@ -6,7 +6,7 @@ on:
       - "frontend/**"
       - "backend/**"
       - ".github/workflows/frontend.yml"
-      - ".github/workflows/scheduler.yml"
+      - ".github/workflows/backend.yml"
 
 jobs:
   format-check-scheduler:
