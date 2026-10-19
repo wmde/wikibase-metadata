@@ -8,8 +8,7 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 	[_ in K]?: never
 }
 export type Incremental<T> =
-	| T
-	| { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
+	T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
 	ID: { input: string; output: string }
@@ -1305,6 +1304,21 @@ export type SingleWikibaseFragment = {
 	}
 } & { ' $fragmentName'?: 'SingleWikibaseFragment' }
 
+export type ListWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type ListWikibasesQuery = {
+	wikibaseList: {
+		meta: { totalCount: number }
+		data: Array<{ ' $fragmentRefs'?: { WbItemFragment: WbItemFragment } }>
+	}
+}
+
+export type WbItemFragment = {
+	id: string
+	title: string
+	urls: { baseUrl: string; scriptPath: string | null }
+} & { ' $fragmentName'?: 'WbItemFragment' }
+
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
@@ -1483,6 +1497,34 @@ export const SingleWikibaseFragmentDoc = {
 		}
 	]
 } as unknown as DocumentNode<SingleWikibaseFragment, unknown>
+export const WbItemFragmentDoc = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBItem' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'urls' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } }
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<WbItemFragment, unknown>
 export const WbFragmentDoc = {
 	kind: 'Document',
 	definitions: [
@@ -1719,6 +1761,106 @@ export const SingleWikibaseDocument = {
 		}
 	]
 } as unknown as DocumentNode<SingleWikibaseQuery, SingleWikibaseQueryVariables>
+export const ListWikibasesDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'ListWikibases' },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'wikibaseList' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageNumber' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageSize' },
+								value: { kind: 'IntValue', value: '-1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'wikibaseFilter' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'wikibaseType' },
+											value: {
+												kind: 'ObjectValue',
+												fields: [
+													{
+														kind: 'ObjectField',
+														name: { kind: 'Name', value: 'include' },
+														value: { kind: 'EnumValue', value: 'SUITE' }
+													}
+												]
+											}
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'meta' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalCount' } }]
+									}
+								},
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'data' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'WBItem' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			kind: 'FragmentDefinition',
+			name: { kind: 'Name', value: 'WBItem' },
+			typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Wikibase' } },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{ kind: 'Field', name: { kind: 'Name', value: 'id' } },
+					{ kind: 'Field', name: { kind: 'Name', value: 'title' } },
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'urls' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'baseUrl' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'scriptPath' } }
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<ListWikibasesQuery, ListWikibasesQueryVariables>
 export const PageWikibasesDocument = {
 	kind: 'Document',
 	definitions: [

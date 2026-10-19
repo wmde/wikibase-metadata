@@ -1,71 +1,84 @@
 <script setup lang="ts">
-import { useWikiStore } from '@/stores/wikibase-page-store'
-import { debounce } from '@/util/debounce'
-import { mdiMagnify } from '@mdi/js'
+import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
+import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
+import { useMenuStore } from '@/stores/menu-store'
+import { getUrlParamValue } from '@/util/use-url'
+import { mdiChevronDown, mdiMagnify } from '@mdi/js'
 import { computed, ref, watch } from 'vue'
 
-const store = useWikiStore()
+const { setSearchValue } = defineProps<{ setSearchValue: (s: string) => void }>()
+
+const searchValue = ref<string>(getUrlParamValue('search') ?? '')
+watch(searchValue, () => setSearchValue(searchValue.value))
+
+const menuStore = useMenuStore()
+const menuValue = computed(() => menuStore.value)
+watch(menuValue, () => (searchValue.value = ''))
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
-
-const searchValue = ref('')
-const [debouncedSearch] = debounce((v: string | undefined) => store.searchWikibaseText(v), 300)
-watch(searchValue, () => debouncedSearch(searchValue.value ? searchValue.value : undefined))
-
 const rules: ((value: string) => true | string)[] = [
 	(value: string) => ALLOWED_CHARACTERS.test(value) || 'Disallowed Characters'
 ]
-type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
-const displayRules = computed((): ((value: string) => RuleResult)[] => [
-	(value: string) => ALLOWED_CHARACTERS.test(value) || { prepend: 'Disallowed Characters' },
-	(value: string) =>
-		value.length == 0 ||
-		store.wikibasePage.loading ||
-		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0)
-			? true
-			: {
-					prepend: 'No results for ',
-					includeValue: true,
-					append: ' — try a different keyword or category'
-				}
-])
-const displayRuleResults = computed(() =>
-	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
-)
 
 const focused = ref(false)
 </script>
 
 <template>
 	<v-container class="search-container ma-0 mb-6 pa-0">
-		<v-container :class="`ma-0 pa-0 pl-3 search-text ${focused ? 'search-text-focused' : ''}`">
+		<v-container :class="`ma-0 pa-0  search-text ${focused ? 'search-text-focused' : ''}`">
+			<v-menu open-on-hover>
+				<template v-slot:activator="{ props }">
+					<v-btn
+						variant="tonal"
+						class="ma-0 dropdown"
+						v-bind="props"
+						:append-icon="mdiChevronDown"
+						:style="{ height: '48px' }"
+					>
+						{{ menuValue == 'instances' ? 'Instances' : 'Items' }}
+					</v-btn>
+				</template>
+				<search-menu />
+			</v-menu>
 			<v-text-field
-				class="ma-0 pa-0"
+				class="ma-0 ml-3 pa-0"
 				variant="plain"
 				:prepend-icon="mdiMagnify"
 				v-model="searchValue"
-				label="Search Wikibase instances..."
+				:label="
+					menuValue == 'instances'
+						? 'Search Wikibase instances...'
+						: 'Search for items across all Wikibase instances...'
+				"
 				:rules="rules"
 				:focused="focused"
 				@update:focused="(v: boolean) => (focused = v)"
 			/>
 		</v-container>
-		<v-label class="search-error">
-			<div v-for="(result, idx) in displayRuleResults" :key="idx">
-				<span v-if="result.prepend" class="prepend">{{ result.prepend }}</span>
-				<span v-if="result.includeValue" class="search-value">"{{ searchValue }}"</span>
-				<span v-if="result.append" class="append">{{ result.append }}</span>
-			</div>
-		</v-label>
+		<wikibase-search-valid :search-value="searchValue" />
 	</v-container>
 </template>
 
 <style lang="scss">
 .search-text {
 	border: 1px solid oklch(87.2% 0.01 285.338);
-	border-radius: calc(0.625rem - 2px);
+	border-radius: 4px;
 	background: white;
 	font-family: Roboto;
+
+	display: flex;
+	align-items: center;
+
+	.dropdown {
+		text-transform: none;
+		font-family: Roboto;
+		font-size: 14px;
+		color: rgb(54, 40, 245);
+		background: rgba(54, 40, 245, 0.06);
+		.v-icon {
+			color: #717182;
+		}
+	}
 
 	div.v-input__details {
 		display: none;
@@ -83,26 +96,13 @@ const focused = ref(false)
 	}
 
 	input {
-		margin: 0 0 4px;
+		margin: 0;
 		padding: 0;
 		font-size: 16px;
 		color: rgb(0, 0, 0);
 	}
 	label.v-field-label--floating {
 		color: #444;
-	}
-}
-.search-error {
-	font-family: Roboto;
-	font-size: 14px;
-	color: rgb(107, 114, 128);
-	margin-top: 8px;
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: start;
-	span.search-value {
-		color: black;
-		font-weight: bolder;
 	}
 }
 
