@@ -21,6 +21,9 @@ def normalize_url(url: str) -> str:
 def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
     """Clean URL"""
 
+    if not url:
+        return None
+
     stripped_url = url.strip()
 
     if url_type in [
