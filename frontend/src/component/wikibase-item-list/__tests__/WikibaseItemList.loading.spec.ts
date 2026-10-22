@@ -1,9 +1,9 @@
+import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vue'
 import vuetify from '@/plugin/vuetify'
 import mockWikiListStore from '@/stores/__tests__/mock-wikibase-list-store'
 import type { WikibaseListStoreType } from '@/stores/wikibase-list-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import WikibaseItemList from '../WikibaseItemList.vue'
 
 vi.mock('@/stores/wikibase-list-store', () => ({
 	useWikiListStore: (): WikibaseListStoreType => ({
