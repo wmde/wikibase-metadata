@@ -1,10 +1,10 @@
 import { ResizeObserverMock } from '@/__tests__/global-mocks'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import vuetify from '@/plugin/vuetify'
-import mockMenuStore from '@/stores/__tests__/mock-menu-store'
+import mockSearchStore from '@/stores/__tests__/mock-search-store'
 import mockWikiListStore from '@/stores/__tests__/mock-wikibase-list-store'
 import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
-import type { MenuStoreType } from '@/stores/menu-store'
+import type { SearchStoreType } from '@/stores/search-store'
 import type { WikibaseListStoreType } from '@/stores/wikibase-list-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
@@ -14,8 +14,9 @@ vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
 const { mockMenuValue } = vi.hoisted(() => ({ mockMenuValue: vi.fn().mockName('') }))
 
-vi.mock('@/stores/menu-store', () => ({
-	useMenuStore: (): MenuStoreType => ({ ...mockMenuStore, value: mockMenuValue() })
+vi.mock('@/stores/search-store', () => ({
+	useSearchStore: (): SearchStoreType => ({ ...mockSearchStore, menuValue: mockMenuValue() }),
+	SEARCH_PARAM_NAME: 'search'
 }))
 vi.mock('@/stores/wikibase-list-store', () => ({
 	useWikiListStore: (): WikibaseListStoreType => ({

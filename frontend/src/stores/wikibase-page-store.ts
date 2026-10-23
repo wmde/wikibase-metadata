@@ -10,6 +10,7 @@ import {
 } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
+import { useSearchStore } from '@/stores/search-store'
 import computeTotalEdits from '@/util/compute-total-edits'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { defineStore } from 'pinia'
@@ -84,6 +85,12 @@ export const useWikiPageStore = defineStore('wiki-page', (): WikibasePageStoreTy
 	const searchWikibaseText = (s: string | undefined) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, searchText: s })
 	watch(wikibaseFilter, () => setPageNumber(1))
+
+	const searchStore = useSearchStore()
+	const searchValue = computed(() =>
+		searchStore.menuValue == 'instances' ? searchStore.debouncedSearchValue : undefined
+	)
+	watch(searchValue, () => searchWikibaseText(searchValue.value))
 
 	const fetchWikibasePage = () =>
 		load(pageWikibasesQuery, {

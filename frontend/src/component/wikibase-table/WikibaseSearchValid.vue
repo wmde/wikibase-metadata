@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useMenuStore } from '@/stores/menu-store'
+import { useSearchStore } from '@/stores/search-store'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { computed } from 'vue'
 
-const { searchValue } = defineProps<{ searchValue: string }>()
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
+const searchValue = computed(() => searchStore.searchValue)
 
-const menuStore = useMenuStore()
-const menuValue = computed(() => menuStore.value)
-
-const store = useWikiPageStore()
+const wikiPageStore = useWikiPageStore()
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 type RuleResult = true | { prepend?: string; includeValue?: boolean; append?: string }
@@ -19,15 +18,15 @@ const displayRules = computed((): ((value: string) => RuleResult)[] => [
 	(value: string) =>
 		menuValue.value != 'instances' ||
 		value.length == 0 ||
-		store.wikibasePage.loading ||
-		(store.wikibasePage.data && store.wikibasePage.data.meta.totalCount > 0) || {
+		wikiPageStore.wikibasePage.loading ||
+		(wikiPageStore.wikibasePage.data && wikiPageStore.wikibasePage.data.meta.totalCount > 0) || {
 			prepend: 'No results for ',
 			includeValue: true,
 			append: ' — try a different keyword or category'
 		}
 ])
 const displayRuleResults = computed(() =>
-	displayRules.value.map((rule) => rule(searchValue)).filter((result) => result != true)
+	displayRules.value.map((rule) => rule(searchValue.value)).filter((result) => result != true)
 )
 </script>
 
