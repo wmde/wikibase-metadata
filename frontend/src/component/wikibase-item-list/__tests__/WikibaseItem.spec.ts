@@ -206,7 +206,7 @@ describe('WikibaseItem', async () => {
 					url: 'https://asdf.text/w/Q12',
 					concepturi: 'https://asdf.text/w/Q12',
 					label: 'Search Result',
-					description: 'Something that is returned by a search',
+					description: '',
 					match: {
 						type: 'item',
 						language: 'en',
@@ -282,7 +282,7 @@ describe('WikibaseItem', async () => {
 		expect(idContainerTwo.text()).toEqual('12')
 
 		const descriptionTwo = resultTwo.find('div.description')
-		expect(descriptionTwo.text()).toEqual('Something that is returned by a search')
+		expect(descriptionTwo.exists()).toEqual(false)
 	})
 
 	it.todo(
