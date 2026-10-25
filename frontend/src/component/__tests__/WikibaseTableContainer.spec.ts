@@ -8,11 +8,14 @@ import type { SearchStoreType } from '@/stores/search-store'
 import type { WikibaseListStoreType } from '@/stores/wikibase-list-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
-const { mockMenuValue } = vi.hoisted(() => ({ mockMenuValue: vi.fn().mockName('') }))
+const { mockErrorState, mockMenuValue } = vi.hoisted(() => ({
+	mockMenuValue: vi.fn().mockName(''),
+	mockErrorState: vi.fn().mockName('')
+}))
 
 vi.mock('@/stores/search-store', () => ({
 	useSearchStore: (): SearchStoreType => ({ ...mockSearchStore, menuValue: mockMenuValue() }),
@@ -38,11 +41,19 @@ vi.mock('@/stores/wikibase-list-store', () => ({
 	})
 }))
 vi.mock('@/stores/wikibase-page-store', () => ({
-	useWikiPageStore: (): WikibasePageStoreType => mockWikiPageStore
+	useWikiPageStore: (): WikibasePageStoreType => ({
+		...mockWikiPageStore,
+		wikibasePage: { ...mockWikiPageStore.wikibasePage, errorState: mockErrorState() }
+	})
 }))
 
 describe('WikibaseTableContainer', async () => {
+	beforeEach(() => {
+		vi.resetAllMocks()
+	})
+
 	it('renders instances properly', async () => {
+		mockErrorState.mockReturnValueOnce(false)
 		mockMenuValue.mockReturnValueOnce('instances')
 
 		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
@@ -67,6 +78,7 @@ describe('WikibaseTableContainer', async () => {
 	})
 
 	it('renders items properly', async () => {
+		mockErrorState.mockReturnValueOnce(false)
 		mockMenuValue.mockReturnValueOnce('items')
 
 		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
@@ -88,5 +100,21 @@ describe('WikibaseTableContainer', async () => {
 
 		const itemContainer = tableContainer.find('div.wikibase-item-list-container')
 		expect(itemContainer.exists()).toEqual(true)
+	})
+
+	it('renders error properly', async () => {
+		mockErrorState.mockReturnValueOnce(true)
+
+		const wrapper = mount(WikibaseTableContainer, { global: { plugins: [vuetify] } })
+
+		const alert = wrapper.find('div.v-alert')
+		expect(alert.exists()).toEqual(true)
+		expect(alert.classes()).toContain('text-error')
+
+		const alertTitle = alert.find('div.v-alert-title')
+		expect(alertTitle.exists()).toEqual(true)
+		expect(alertTitle.text()).toEqual('Error')
+
+		expect(alert.text()).toContain('Error fetching data')
 	})
 })
