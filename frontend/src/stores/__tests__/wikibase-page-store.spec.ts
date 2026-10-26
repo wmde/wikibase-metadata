@@ -28,9 +28,7 @@ describe('useWikiPageStore', async () => {
 
 	it('reflects query results', async () => {
 		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiPageStore()
@@ -39,7 +37,7 @@ describe('useWikiPageStore', async () => {
 		expect(store.pageSize).toEqual(25)
 		expect(store.wikibaseFilter).toEqual({})
 		expect(store.wikibasePage).toEqual({
-			data: { data: [], meta: { totalCount: 0, totalPages: 0, totalEdits: 0, totalTriples: 0 } },
+			data: { data: [], meta: { totalCount: 0, totalPages: 0 } },
 			errorState: false,
 			loading: false
 		})
@@ -47,9 +45,7 @@ describe('useWikiPageStore', async () => {
 
 	it('calls load on fetchWikibasePage', async () => {
 		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiPageStore()
@@ -61,9 +57,7 @@ describe('useWikiPageStore', async () => {
 
 	it('calls load on setPageNumber', async () => {
 		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiPageStore()
@@ -77,9 +71,7 @@ describe('useWikiPageStore', async () => {
 
 	it('calls load on searchWikibaseText', async () => {
 		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiPageStore()
@@ -93,9 +85,7 @@ describe('useWikiPageStore', async () => {
 
 	it('calls load on setPageSize', async () => {
 		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiPageStore()
@@ -109,9 +99,7 @@ describe('useWikiPageStore', async () => {
 
 	it('calls load on setSort', async () => {
 		const results: PageWikibasesQuery = {
-			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] },
-			aggregateQuantity: { totalTriples: 0 },
-			aggregateRecentChanges: { botChangeCount: 0, humanChangeCount: 0 }
+			wikibaseList: { meta: { totalCount: 0, totalPages: 0 }, data: [] }
 		}
 		mockOnResult.mockImplementationOnce((fn) => fn({ data: results }))
 		const store = useWikiPageStore()
