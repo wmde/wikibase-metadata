@@ -1,24 +1,14 @@
 <script setup lang="ts">
 import WikibaseTotalBox from '@/component/wikibase-table/WikibaseTotalBox.vue'
-import { useMenuStore } from '@/stores/menu-store'
-import { useWikiListStore } from '@/stores/wikibase-list-store'
-import { useWikiPageStore } from '@/stores/wikibase-page-store'
-import { computed } from 'vue'
+import { useWikiTotalStore } from '@/stores/wikibase-total-store'
+import { computed, onBeforeMount } from 'vue'
 
-const menuStore = useMenuStore()
-const menuValue = computed(() => menuStore.value)
+const totalStore = useWikiTotalStore()
+const totalCount = computed(() => totalStore.wikibaseTotal.data?.totalCount)
+const totalEdits = computed(() => totalStore.wikibaseTotal.data?.totalEdits)
+const totalTriples = computed(() => totalStore.wikibaseTotal.data?.totalTriples)
 
-const listStore = useWikiListStore()
-const listCount = computed(() => listStore.wikibaseList.data?.meta.totalCount)
-
-const pageStore = useWikiPageStore()
-const pageTotalCount = computed(() => pageStore.wikibasePage.data?.meta.totalCount)
-const totalEdits = computed(() => pageStore.wikibasePage.data?.meta.totalEdits)
-const totalTriples = computed(() => pageStore.wikibasePage.data?.meta.totalTriples)
-
-const totalCount = computed(() =>
-	menuValue.value == 'instances' ? pageTotalCount.value : listCount.value
-)
+onBeforeMount(() => totalStore.fetchWikibaseTotal())
 </script>
 
 <template>

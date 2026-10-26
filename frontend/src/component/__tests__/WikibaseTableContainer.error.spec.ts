@@ -4,9 +4,11 @@ import vuetify from '@/plugin/vuetify'
 import mockMenuStore from '@/stores/__tests__/mock-menu-store'
 import mockWikiListStore from '@/stores/__tests__/mock-wikibase-list-store'
 import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
+import mockWikiTotalStore from '@/stores/__tests__/mock-wikibase-total-store'
 import type { MenuStoreType } from '@/stores/menu-store'
 import type { WikibaseListStoreType } from '@/stores/wikibase-list-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
+import type { WikibaseTotalStoreType } from '@/stores/wikibase-total-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -23,6 +25,9 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 		...mockWikiPageStore,
 		wikibasePage: { ...mockWikiPageStore.wikibasePage, errorState: true }
 	})
+}))
+vi.mock('@/stores/wikibase-total-store', () => ({
+	useWikiTotalStore: (): WikibaseTotalStoreType => mockWikiTotalStore
 }))
 
 describe('WikibaseTableContainer', async () => {
