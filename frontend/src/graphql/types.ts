@@ -1438,3 +1438,19 @@ export type WbFragment = {
 		} | null
 	}
 }
+
+export type TotalWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type TotalWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		meta: { __typename?: 'PageMetadata'; totalCount: number }
+	}
+	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
+	aggregateRecentChanges: {
+		__typename?: 'WikibaseRecentChangesAggregate'
+		botChangeCount: number
+		humanChangeCount: number
+	}
+}
