@@ -3,15 +3,18 @@ import testWikibases from '@/component/wikibase-table/__tests__/test-wikibases'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import vuetify from '@/plugin/vuetify'
 import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
+import mockWikiTotalStore from '@/stores/__tests__/mock-wikibase-total-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
+import type { WikibaseTotalStoreType } from '@/stores/wikibase-total-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
-const { mockFetchWikibasePage } = vi.hoisted(() => ({
-	mockFetchWikibasePage: vi.fn().mockName('fetchWikibasePage')
+const { mockFetchWikibasePage, mockFetchWikibaseTotal } = vi.hoisted(() => ({
+	mockFetchWikibasePage: vi.fn().mockName('fetchWikibasePage'),
+	mockFetchWikibaseTotal: vi.fn().mockName('fetchWikibaseTotal')
 }))
 
 vi.mock('@/stores/wikibase-page-store', () => ({
@@ -22,20 +25,29 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 			...mockWikiPageStore.wikibasePage,
 			data: {
 				data: testWikibases.slice(2),
-				meta: {
-					totalCount: testWikibases.length,
-					totalPages: Math.ceil(testWikibases.length / 3),
-					totalEdits: testWikibases
-						.map((w) => w.recentChangesObservations.mostRecent)
-						.reduce(
-							(sum: number, current) =>
-								sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
-							0
-						),
-					totalTriples: testWikibases
-						.map((w) => w.quantityObservations.mostRecent)
-						.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
-				}
+				meta: { totalCount: testWikibases.length, totalPages: Math.ceil(testWikibases.length / 3) }
+			}
+		}
+	})
+}))
+vi.mock('@/stores/wikibase-total-store', () => ({
+	useWikiTotalStore: (): WikibaseTotalStoreType => ({
+		...mockWikiTotalStore,
+		fetchWikibaseTotal: mockFetchWikibaseTotal,
+		wikibaseTotal: {
+			...mockWikiTotalStore.wikibaseTotal,
+			data: {
+				totalCount: testWikibases.length,
+				totalEdits: testWikibases
+					.map((w) => w.recentChangesObservations.mostRecent)
+					.reduce(
+						(sum: number, current) =>
+							sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
+						0
+					),
+				totalTriples: testWikibases
+					.map((w) => w.quantityObservations.mostRecent)
+					.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
 			}
 		}
 	})

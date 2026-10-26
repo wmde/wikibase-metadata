@@ -1409,12 +1409,6 @@ export type PageWikibasesQuery = {
 			}
 		}>
 	}
-	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
-	aggregateRecentChanges: {
-		__typename?: 'WikibaseRecentChangesAggregate'
-		botChangeCount: number
-		humanChangeCount: number
-	}
 }
 
 export type WbFragment = {
@@ -1436,5 +1430,21 @@ export type WbFragment = {
 			botChangeCount?: number | null
 			humanChangeCount?: number | null
 		} | null
+	}
+}
+
+export type TotalWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type TotalWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		meta: { __typename?: 'PageMetadata'; totalCount: number }
+	}
+	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
+	aggregateRecentChanges: {
+		__typename?: 'WikibaseRecentChangesAggregate'
+		botChangeCount: number
+		humanChangeCount: number
 	}
 }

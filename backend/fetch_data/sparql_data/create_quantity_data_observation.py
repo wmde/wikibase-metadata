@@ -34,30 +34,44 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
             join_quantity_observations=True,
             require_sparql_endpoint=True,
         )
+        sparql_endpoint_url = wikibase.sparql_endpoint_url.url
 
-        observation = await compile_quantity_observation(wikibase)
+    observation = await compile_quantity_observation(
+        wikibase_id=wikibase_id,
+        sparql_endpoint_url=sparql_endpoint_url,
+    )
+
+    async with get_async_session() as async_session:
+        wikibase = await get_wikibase_from_database(
+            async_session=async_session,
+            wikibase_id=wikibase_id,
+            join_quantity_observations=True,
+            require_sparql_endpoint=True,
+        )
 
         wikibase.quantity_observations.append(observation)
 
         await async_session.commit()
 
-        logger.debug(
-            "Quantity: Observation returned data: " + str(observation.returned_data),
-            extra={"wikibase": wikibase_id},
-        )
-        return observation.returned_data
+    logger.debug(
+        "Quantity: Observation returned data: " + str(observation.returned_data),
+        extra={"wikibase": wikibase_id},
+    )
+
+    return observation.returned_data
 
 
 async def compile_quantity_observation(
-    wikibase: WikibaseModel,
+    wikibase_id: int,
+    sparql_endpoint_url: str,
 ) -> WikibaseQuantityObservationModel:
     """Compile Quantity Observation"""
 
     observation = WikibaseQuantityObservationModel()
     try:
-        logger.info("Fetching Property Count", extra={"wikibase": wikibase.id})
+        logger.info("Fetching Property Count", extra={"wikibase": wikibase_id})
         property_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
+            sparql_endpoint_url,
             COUNT_PROPERTIES_QUERY,
             "COUNT_PROPERTIES_QUERY",
         )
@@ -65,9 +79,9 @@ async def compile_quantity_observation(
             property_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        logger.info("Fetching Item Count", extra={"wikibase": wikibase.id})
+        logger.info("Fetching Item Count", extra={"wikibase": wikibase_id})
         item_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
+            sparql_endpoint_url,
             COUNT_ITEMS_QUERY,
             "COUNT_ITEMS_QUERY",
         )
@@ -75,9 +89,9 @@ async def compile_quantity_observation(
             item_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        logger.info("Fetching Lexeme Count", extra={"wikibase": wikibase.id})
+        logger.info("Fetching Lexeme Count", extra={"wikibase": wikibase_id})
         lexeme_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
+            sparql_endpoint_url,
             COUNT_LEXEMES_QUERY,
             "COUNT_LEXEMES_QUERY",
         )
@@ -85,9 +99,9 @@ async def compile_quantity_observation(
             lexeme_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        logger.info("Fetching Triple Count", extra={"wikibase": wikibase.id})
+        logger.info("Fetching Triple Count", extra={"wikibase": wikibase_id})
         triple_count_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
+            sparql_endpoint_url,
             COUNT_TRIPLES_QUERY,
             "COUNT_TRIPLES_QUERY",
         )
@@ -107,14 +121,12 @@ async def compile_quantity_observation(
         TimeoutError,
         TooManyRedirects,
     ):
-        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase.id})
+        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase_id})
         observation.returned_data = False
     except (EndPointInternalError, HTTPError, SPARQLResponseMalformed, URLError):
         logger.warning(
             "QuantityDataError",
-            # exc_info=True,
-            # stack_info=True,
-            extra={"wikibase": wikibase.id},
+            extra={"wikibase": wikibase_id},
         )
         observation.returned_data = False
 

@@ -11,7 +11,6 @@ import {
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
 import { useSearchStore } from '@/stores/search-store'
-import computeTotalEdits from '@/util/compute-total-edits'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { defineStore } from 'pinia'
 import { computed, ref, watch, type Ref } from 'vue'
@@ -19,12 +18,7 @@ import { computed, ref, watch, type Ref } from 'vue'
 provideApolloClient(apolloClient)
 
 type WikibasePageData = {
-	meta: {
-		totalCount: number
-		totalPages: number
-		totalEdits: number | undefined
-		totalTriples: number
-	}
+	meta: { totalCount: number; totalPages: number }
 	data: WbFragment[]
 }
 
@@ -49,17 +43,7 @@ const { load, onResult, loading, error } = useLazyQuery<
 
 export const useWikiPageStore = defineStore('wiki-page', (): WikibasePageStoreType => {
 	const data = ref<WikibasePageData | undefined>()
-	onResult(
-		(result) =>
-			(data.value = {
-				...result.data.wikibaseList,
-				meta: {
-					...result.data.wikibaseList.meta,
-					totalEdits: computeTotalEdits(result.data.aggregateRecentChanges),
-					totalTriples: result.data.aggregateQuantity.totalTriples
-				}
-			})
-	)
+	onResult((result) => (data.value = result.data.wikibaseList))
 
 	const wikibasePage = computed<QueryResult<WikibasePageData | undefined>>(() => ({
 		data: data.value,

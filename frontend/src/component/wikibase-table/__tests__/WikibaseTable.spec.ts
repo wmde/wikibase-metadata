@@ -20,20 +20,7 @@ vi.mock('@/stores/wikibase-page-store', () => ({
 		wikibasePage: {
 			...mockWikiPageStore.wikibasePage,
 			data: {
-				meta: {
-					totalCount: testWikibases.length,
-					totalPages: 1,
-					totalEdits: testWikibases
-						.map((w) => w.recentChangesObservations.mostRecent)
-						.reduce(
-							(sum: number, current) =>
-								sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
-							0
-						),
-					totalTriples: testWikibases
-						.map((w) => w.quantityObservations.mostRecent)
-						.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
-				},
+				meta: { totalCount: testWikibases.length, totalPages: 1 },
 				data: testWikibases.sort(
 					(a, b) =>
 						(b.quantityObservations.mostRecent?.totalTriples ?? 0) -

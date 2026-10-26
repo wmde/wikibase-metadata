@@ -1333,12 +1333,6 @@ export type PageWikibasesQuery = {
 		meta: { __typename?: 'PageMetadata'; totalCount: number; totalPages: number }
 		data: Array<{ __typename?: 'Wikibase' } & { ' $fragmentRefs'?: { WbFragment: WbFragment } }>
 	}
-	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
-	aggregateRecentChanges: {
-		__typename?: 'WikibaseRecentChangesAggregate'
-		botChangeCount: number
-		humanChangeCount: number
-	}
 }
 
 export type WbFragment = {
@@ -1362,6 +1356,14 @@ export type WbFragment = {
 		} | null
 	}
 } & { ' $fragmentName'?: 'WbFragment' }
+
+export type TotalWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type TotalWikibasesQuery = {
+	wikibaseList: { meta: { totalCount: number } }
+	aggregateQuantity: { totalTriples: number }
+	aggregateRecentChanges: { botChangeCount: number; humanChangeCount: number }
+}
 
 export const SingleWikibaseFragmentDoc = {
 	kind: 'Document',
@@ -1948,39 +1950,6 @@ export const PageWikibasesDocument = {
 								}
 							]
 						}
-					},
-					{
-						kind: 'Field',
-						name: { kind: 'Name', value: 'aggregateQuantity' },
-						arguments: [
-							{
-								kind: 'Argument',
-								name: { kind: 'Name', value: 'wikibaseFilter' },
-								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
-							}
-						],
-						selectionSet: {
-							kind: 'SelectionSet',
-							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
-						}
-					},
-					{
-						kind: 'Field',
-						name: { kind: 'Name', value: 'aggregateRecentChanges' },
-						arguments: [
-							{
-								kind: 'Argument',
-								name: { kind: 'Name', value: 'wikibaseFilter' },
-								value: { kind: 'Variable', name: { kind: 'Name', value: 'wikibaseFilter' } }
-							}
-						],
-						selectionSet: {
-							kind: 'SelectionSet',
-							selections: [
-								{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
-								{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
-							]
-						}
 					}
 				]
 			}
@@ -2047,3 +2016,66 @@ export const PageWikibasesDocument = {
 		}
 	]
 } as unknown as DocumentNode<PageWikibasesQuery, PageWikibasesQueryVariables>
+export const TotalWikibasesDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'TotalWikibases' },
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'wikibaseList' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageNumber' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'pageSize' },
+								value: { kind: 'IntValue', value: '0' }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'meta' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalCount' } }]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'aggregateQuantity' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [{ kind: 'Field', name: { kind: 'Name', value: 'totalTriples' } }]
+						}
+					},
+					{
+						kind: 'Field',
+						name: { kind: 'Name', value: 'aggregateRecentChanges' },
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{ kind: 'Field', name: { kind: 'Name', value: 'botChangeCount' } },
+								{ kind: 'Field', name: { kind: 'Name', value: 'humanChangeCount' } }
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<TotalWikibasesQuery, TotalWikibasesQueryVariables>
