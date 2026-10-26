@@ -284,27 +284,4 @@ describe('WikibaseItem', async () => {
 		const descriptionTwo = resultTwo.find('div.description')
 		expect(descriptionTwo.exists()).toEqual(false)
 	})
-
-	it.todo(
-		'renders nothing with no data, when search value is set and loading is false',
-		async () => {
-			mockDataValue.mockReturnValueOnce(null)
-			mockLoadingValue.mockReturnValueOnce(false)
-			mockSearchValue.mockReturnValueOnce('search')
-
-			const wrapper = mount(WikibaseItem, {
-				global: { plugins: [vuetify] },
-				props: {
-					wiki: {
-						id: '-1',
-						title: "Ahistorical Salutation Department of Figaro's",
-						urls: { baseUrl: 'https://asdf.test', scriptPath: 'script' }
-					}
-				}
-			})
-
-			const wiki = wrapper.find('div.wikibase-item')
-			expect(wiki.exists()).toEqual(false)
-		}
-	)
 })
