@@ -1409,12 +1409,6 @@ export type PageWikibasesQuery = {
 			}
 		}>
 	}
-	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
-	aggregateRecentChanges: {
-		__typename?: 'WikibaseRecentChangesAggregate'
-		botChangeCount: number
-		humanChangeCount: number
-	}
 }
 
 export type WbFragment = {
