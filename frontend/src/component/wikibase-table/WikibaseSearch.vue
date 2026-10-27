@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
-import { useMenuStore } from '@/stores/menu-store'
-import { getUrlParamValue } from '@/util/use-url'
+import { useSearchStore } from '@/stores/search-store'
 import { mdiChevronDown, mdiMagnify } from '@mdi/js'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
-const { setSearchValue } = defineProps<{ setSearchValue: (s: string) => void }>()
-
-const searchValue = ref<string>(getUrlParamValue('search') ?? '')
-watch(searchValue, () => setSearchValue(searchValue.value))
-
-const menuStore = useMenuStore()
-const menuValue = computed(() => menuStore.value)
-watch(menuValue, () => (searchValue.value = ''))
+const searchStore = useSearchStore()
+const menuValue = computed(() => searchStore.menuValue)
+const searchValue = computed(() => searchStore.searchValue)
 
 const ALLOWED_CHARACTERS = /^[A-Za-z0-9\-_ .]*$/
 const rules: ((value: string) => true | string)[] = [
@@ -45,6 +39,7 @@ const focused = ref(false)
 				variant="plain"
 				:prepend-icon="mdiMagnify"
 				v-model="searchValue"
+				@update:model-value="searchStore.setSearchValue"
 				:label="
 					menuValue == 'instances'
 						? 'Search Wikibase instances...'
@@ -55,7 +50,7 @@ const focused = ref(false)
 				@update:focused="(v: boolean) => (focused = v)"
 			/>
 		</v-container>
-		<wikibase-search-valid :search-value="searchValue" />
+		<wikibase-search-valid />
 	</v-container>
 </template>
 

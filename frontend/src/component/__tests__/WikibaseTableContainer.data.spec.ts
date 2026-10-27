@@ -1,4 +1,5 @@
 import { ResizeObserverMock } from '@/__tests__/global-mocks'
+import testWikibases from '@/component/wikibase-table/__tests__/test-wikibases'
 import WikibaseTableContainer from '@/component/WikibaseTableContainer.vue'
 import vuetify from '@/plugin/vuetify'
 import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
@@ -8,7 +9,6 @@ import type { WikibaseTotalStoreType } from '@/stores/wikibase-total-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import testWikibases from '../wikibase-table/__tests__/test-wikibases'
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 

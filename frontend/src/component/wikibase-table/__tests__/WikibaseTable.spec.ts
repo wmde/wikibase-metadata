@@ -103,14 +103,6 @@ describe('WikibaseTable', async () => {
 		).toEqual(['–', '–', '–', 'An Example for the Purposes of Testing', '–'])
 	})
 
-	it.todo('triggers change page', async () => {
-		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
-	})
-
-	it.todo('triggers change page size', async () => {
-		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
-	})
-
 	it('triggers sort', async () => {
 		const wrapper = mount(WikibaseTable, { global: { plugins: [vuetify] } })
 

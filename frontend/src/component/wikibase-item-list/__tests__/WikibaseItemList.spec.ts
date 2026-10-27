@@ -1,12 +1,15 @@
 import WikibaseItemList from '@/component/wikibase-item-list/WikibaseItemList.vue'
 import vuetify from '@/plugin/vuetify'
+import mockSearchStore from '@/stores/__tests__/mock-search-store'
 import mockWikiListStore from '@/stores/__tests__/mock-wikibase-list-store'
+import type { SearchStoreType } from '@/stores/search-store'
 import type { WikibaseListStoreType } from '@/stores/wikibase-list-store'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { mockFetchWikibaseList } = vi.hoisted(() => ({
-	mockFetchWikibaseList: vi.fn().mockName('fetchWikibaseList')
+const { mockFetchWikibaseList, mockLoading } = vi.hoisted(() => ({
+	mockFetchWikibaseList: vi.fn().mockName('fetchWikibaseList'),
+	mockLoading: vi.fn()
 }))
 
 vi.mock('@/stores/wikibase-list-store', () => ({
@@ -24,13 +27,19 @@ vi.mock('@/stores/wikibase-list-store', () => ({
 						title: `Wikibase ${idx}`,
 						urls: { baseUrl: `https://test-wiki-${idx}.test`, scriptPath: 's' }
 					}))
-			}
+			},
+			loading: mockLoading()
 		}
 	})
 }))
+vi.mock('@/stores/search-store', () => ({ useSearchStore: (): SearchStoreType => mockSearchStore }))
 
 describe('WikibaseItemList', async () => {
+	beforeEach(() => vi.resetAllMocks())
+
 	it(`renders data properly`, async () => {
+		mockLoading.mockReturnValueOnce(false)
+
 		const wrapper = mount(WikibaseItemList, { global: { plugins: [vuetify] } })
 
 		const container = wrapper.find('div.wikibase-item-list-container')
@@ -38,5 +47,13 @@ describe('WikibaseItemList', async () => {
 		expect(container.findAll('div.wikibase-item')).toHaveLength(5)
 
 		expect(mockFetchWikibaseList).toHaveBeenCalledTimes(1)
+	})
+
+	it(`renders loading properly`, async () => {
+		mockLoading.mockReturnValueOnce(true)
+
+		const wrapper = mount(WikibaseItemList, { global: { plugins: [vuetify] } })
+
+		expect(wrapper.text()).toEqual('Loading')
 	})
 })
