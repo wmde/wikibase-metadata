@@ -109,7 +109,8 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         await async_session.commit()
 
         return returning
-    
+
+
 async def assert_new_url(
     async_session: AsyncSession, input_url: Optional[str], url_type: WikibaseURLType
 ):
@@ -123,6 +124,7 @@ async def assert_new_url(
                 select(func.count()).where(WikibaseURLModel.url == clean_url)
             )
         ) == 0, f"URL {clean_url} already exists"
+
 
 async def detach_sparql_urls(
     async_session: AsyncSession,

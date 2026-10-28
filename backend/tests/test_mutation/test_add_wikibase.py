@@ -134,6 +134,7 @@ async def test_updates_wikibase_if_base_url_already_exists(
         assert wikibase.description == "Updated description"
         assert wikibase.url.url == base_url
 
+
 @pytest.mark.asyncio
 async def test_creates_new_wikibase_and_moves_sparql_url_if_sparql_url_already_exists(
     db_session, wikibase_categories
@@ -310,6 +311,7 @@ async def test_creates_new_wikibase_when_sparql_urls_match_different_wikibases(
             ).all()
             assert len(rows) == 1
             assert rows[0].wikibase_id == wikibase_c_id
+
 
 @pytest.mark.asyncio
 async def test_normalizes_urls(
