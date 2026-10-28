@@ -1,3 +1,5 @@
+"""Run the scheduler"""
+
 import asyncio
 from functools import partial
 

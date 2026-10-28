@@ -4,7 +4,7 @@ import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
-
+from logger import logger
 from .jobs import (
     run_update_software_data,
     run_update_out_of_date_cloud_instances,
@@ -22,7 +22,6 @@ from .jobs import (
     run_update_out_of_date_user_observations,
     run_update_out_of_date_external_identifier_observations,
 )
-from logger import logger
 
 
 def create_scheduler() -> AsyncIOScheduler:
