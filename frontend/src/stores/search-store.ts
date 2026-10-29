@@ -12,6 +12,7 @@ export type SearchStoreType = {
 	searchValue: string | Ref<string>
 	setSearchValue: (s: string) => void
 	debouncedSearchValue: string | Ref<string>
+	overrideDebounce: (s: string) => void
 }
 
 const MENU_PARAM_NAME = 'menu'
@@ -27,6 +28,7 @@ export const useSearchStore = defineStore('search', (): SearchStoreType => {
 	watch(menuValue, () => setSearchValue(''))
 
 	const debouncedSearchValue = ref<string>(searchValue.value)
+	const overrideDebounce = (s: string) => (debouncedSearchValue.value = s)
 	const [setDebouncedSearchValue] = debounce(
 		(s: string) => (debouncedSearchValue.value = s),
 		menuValue.value == 'instances' ? 300 : 1000
@@ -36,5 +38,12 @@ export const useSearchStore = defineStore('search', (): SearchStoreType => {
 		updateUrlParamValue(SEARCH_PARAM_NAME, debouncedSearchValue.value)
 	)
 
-	return { menuValue, setMenuValue, searchValue, setSearchValue, debouncedSearchValue }
+	return {
+		menuValue,
+		setMenuValue,
+		searchValue,
+		setSearchValue,
+		debouncedSearchValue,
+		overrideDebounce
+	}
 })

@@ -3,7 +3,7 @@ import SearchMenu from '@/component/wikibase-table/SearchMenu.vue'
 import WikibaseSearchValid from '@/component/wikibase-table/WikibaseSearchValid.vue'
 import { useSearchStore } from '@/stores/search-store'
 import { mdiChevronDown, mdiMagnify } from '@mdi/js'
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const searchStore = useSearchStore()
 const menuValue = computed(() => searchStore.menuValue)
@@ -15,6 +15,15 @@ const rules: ((value: string) => true | string)[] = [
 ]
 
 const focused = ref(false)
+
+const keyUpHandler = (ev: KeyboardEvent) => {
+	if (focused.value && searchValue.value && ev.key == 'Enter') {
+		searchStore.overrideDebounce(searchValue.value)
+	}
+}
+
+onMounted(() => window.addEventListener('keyup', keyUpHandler))
+onUnmounted(() => window.removeEventListener('keyup', keyUpHandler))
 </script>
 
 <template>
