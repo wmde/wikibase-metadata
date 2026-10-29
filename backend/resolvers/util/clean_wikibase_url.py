@@ -4,6 +4,7 @@ import re
 
 from urllib.parse import urlparse
 from model.enum import WikibaseURLType
+from typing import Optional
 
 FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=/]+", re.IGNORECASE)
 
@@ -18,7 +19,7 @@ def normalize_url(url: str) -> str:
     return f"https://{host}{path}"
 
 
-def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
+def clean_up_url(url: Optional[str], url_type: WikibaseURLType) -> Optional[str]:
     """Clean URL"""
 
     if not url:
