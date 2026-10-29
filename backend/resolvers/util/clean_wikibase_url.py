@@ -2,9 +2,9 @@
 
 import re
 
+from typing import Optional
 from urllib.parse import urlparse
 from model.enum import WikibaseURLType
-from typing import Optional
 
 FULL_URL_PATTERN = re.compile(r"https?://[a-z0-9\-_.\?=/]+", re.IGNORECASE)
 
