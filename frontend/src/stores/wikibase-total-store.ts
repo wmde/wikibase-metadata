@@ -1,4 +1,3 @@
-import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
 import totalWikibasesQuery from '@/graphql/queries/wikibase-total-query'
 import type { TotalWikibasesQuery, TotalWikibasesQueryVariables } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
@@ -44,7 +43,7 @@ export const useWikiTotalStore = defineStore('wiki-total', (): WikibaseTotalStor
 		errorState: error.value ? true : false
 	}))
 
-	const fetchWikibaseTotal = () => load(pageWikibasesQuery)
+	const fetchWikibaseTotal = () => load(totalWikibasesQuery)
 
 	return { fetchWikibaseTotal, wikibaseTotal }
 })

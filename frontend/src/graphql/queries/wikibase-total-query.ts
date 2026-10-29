@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 const totalWikibasesQuery = gql`
 	query TotalWikibases {
-		wikibaseList(pageNumber: 1, pageSize: 0) {
+		wikibaseList(pageNumber: 1, pageSize: -1) {
 			meta {
 				totalCount
 			}
