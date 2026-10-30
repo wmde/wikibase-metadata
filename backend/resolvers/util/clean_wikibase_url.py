@@ -2,6 +2,7 @@
 
 import re
 
+from typing import Optional
 from urllib.parse import urlparse
 from model.enum import WikibaseURLType
 
@@ -18,8 +19,11 @@ def normalize_url(url: str) -> str:
     return f"https://{host}{path}"
 
 
-def clean_up_url(url: str, url_type: WikibaseURLType) -> str:
+def clean_up_url(url: Optional[str], url_type: WikibaseURLType) -> Optional[str]:
     """Clean URL"""
+
+    if not url:
+        return None
 
     stripped_url = url.strip()
 

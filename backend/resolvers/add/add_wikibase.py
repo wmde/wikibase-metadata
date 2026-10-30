@@ -13,21 +13,42 @@ from resolvers.util.clean_wikibase_url import clean_up_url
 
 
 async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel:
-    """Add Wikibase"""
+    """Add Wikibase, or update it if one with a matching base URL already exists.
+    SPARQL URLs already used by another Wikibase are moved to this one."""
 
     async with get_async_session() as async_session:
 
         clean_base_url = clean_up_url(
             wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
         )
-        existing = await async_session.scalar(
-            select(WikibaseModel)
-            .join(WikibaseModel.url)
-            .where(WikibaseURLModel.url == clean_base_url)
+        clean_sparql_endpoint = clean_up_url(
+            wikibase_input.urls.sparql_endpoint_url,
+            WikibaseURLType.SPARQL_ENDPOINT_URL,
+        )
+        clean_sparql_frontend = clean_up_url(
+            wikibase_input.urls.sparql_frontend_url,
+            WikibaseURLType.SPARQL_FRONTEND_URL,
         )
 
-        if existing is not None:
-            return await update_wikibase(async_session, existing.id, wikibase_input)
+        # Only the base URL decides whether this Wikibase already exists
+        existing_id = await async_session.scalar(
+            select(WikibaseURLModel.wikibase_id).where(
+                WikibaseURLModel.url == clean_base_url
+            )
+        )
+
+        await detach_sparql_urls(
+            async_session,
+            [u for u in (clean_sparql_endpoint, clean_sparql_frontend) if u],
+            keep_wikibase_id=existing_id,
+        )
+
+        if existing_id is not None:
+            updated_wikibase = await update_wikibase(
+                async_session, existing_id, wikibase_input
+            )
+            await async_session.commit()
+            return updated_wikibase
 
         assert (
             await async_session.scalar(
@@ -38,17 +59,6 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             )
         ) == 0, (
             f"Wikibase with name {wikibase_input.wikibase_name.strip()} already exists"
-        )
-
-        await assert_new_url(
-            async_session,
-            wikibase_input.urls.sparql_endpoint_url,
-            WikibaseURLType.SPARQL_ENDPOINT_URL,
-        )
-        await assert_new_url(
-            async_session,
-            wikibase_input.urls.sparql_frontend_url,
-            WikibaseURLType.SPARQL_FRONTEND_URL,
         )
 
         model = WikibaseModel(
@@ -63,32 +73,14 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
                 clean_up_url(
                     wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH
                 )
-                if wikibase_input.urls.article_path is not None
-                else None
             ),
             script_path=(
                 clean_up_url(
                     wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH
                 )
-                if wikibase_input.urls.script_path is not None
-                else None
             ),
-            sparql_endpoint_url=(
-                clean_up_url(
-                    wikibase_input.urls.sparql_endpoint_url,
-                    WikibaseURLType.SPARQL_ENDPOINT_URL,
-                )
-                if wikibase_input.urls.sparql_endpoint_url is not None
-                else None
-            ),
-            sparql_frontend_url=(
-                clean_up_url(
-                    wikibase_input.urls.sparql_frontend_url,
-                    WikibaseURLType.SPARQL_FRONTEND_URL,
-                )
-                if wikibase_input.urls.sparql_frontend_url is not None
-                else None
-            ),
+            sparql_endpoint_url=clean_sparql_endpoint,
+            sparql_frontend_url=clean_sparql_frontend,
         )
         model.checked = True
         model.category = (
@@ -132,6 +124,34 @@ async def assert_new_url(
                 select(func.count()).where(WikibaseURLModel.url == clean_url)
             )
         ) == 0, f"URL {clean_url} already exists"
+
+
+async def detach_sparql_urls(
+    async_session: AsyncSession,
+    sparql_urls: list[str],
+    keep_wikibase_id: Optional[int],
+):
+    """Remove the given SPARQL URLs from whichever Wikibase currently owns them"""
+
+    if not sparql_urls:
+        return
+
+    query = select(WikibaseURLModel).where(
+        WikibaseURLModel.url.in_(sparql_urls),
+        WikibaseURLModel.url_type.in_(
+            [
+                WikibaseURLType.SPARQL_ENDPOINT_URL,
+                WikibaseURLType.SPARQL_FRONTEND_URL,
+            ]
+        ),
+    )
+    if keep_wikibase_id is not None:
+        query = query.where(WikibaseURLModel.wikibase_id != keep_wikibase_id)
+
+    for url_row in (await async_session.scalars(query)).all():
+        await async_session.delete(url_row)
+
+    await async_session.flush()
 
 
 async def update_wikibase(
