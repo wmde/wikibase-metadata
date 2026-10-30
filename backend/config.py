@@ -24,7 +24,6 @@ old_database_connection_string = (
     else None
 )
 
-enable_scheduler = config.getboolean("scheduler", "enable", fallback=True)
 
 log_directory = os.path.expandvars(
     config.get("logging", "log_directory", fallback="logs")

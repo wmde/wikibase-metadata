@@ -21,7 +21,8 @@ services:
   backend:
     image: wikibase-metadata-backend
     build: 
-      context: ./backend
+      context: .
+      dockerfile: backend/Dockerfile
     group_add:
       - ${TEAM_GID}
     expose:
@@ -35,6 +36,8 @@ services:
       DATABASE_URL_SYNC: postgresql://user:app@database:5432/db
       LOG_LEVEL: ${LOG_LEVEL}
       SETTINGS_FILE: ${SETTINGS_FILE}
+      LOG_DIRECTORY: ${LOG_DIRECTORY}
+      SCHEDULER_TOKEN: ${SCHEDULER_TOKEN}
     restart: unless-stopped
     depends_on:
       database:
@@ -51,6 +54,20 @@ services:
       - 3000
     environment:
       VITE_BACKEND_URL: http://backend:8000/graphql
+    restart: unless-stopped
+
+  scheduler:
+    image: wikibase-metadata-backend
+    command: python -m scheduler.run_scheduler
+    environment:
+      AUTH_TOKEN: ${AUTH_TOKEN}
+      LOG_LEVEL: ${LOG_LEVEL}
+      SETTINGS_FILE: ${SETTINGS_FILE}
+      SCHEDULER_TOKEN: ${SCHEDULER_TOKEN}
+    volumes:
+      - ./logs/scheduler/:/app/logs/:z
+    depends_on:
+      - backend
     restart: unless-stopped
 
   nginx:
