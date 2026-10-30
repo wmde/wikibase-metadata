@@ -1,0 +1,32 @@
+"""Parse Config"""
+
+import configparser
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+config = configparser.ConfigParser()
+config.read(os.environ.get("SETTINGS_FILE", "settings.ini"))
+
+auth_token = os.path.expandvars(config.get("auth", "auth_token"))
+assert auth_token is not None, "No Authentication Token Found"
+
+database_connection_string = os.path.expandvars(
+    config.get("database", "database_connection_string")
+)
+_old_database_connection_string_var = config.get(
+    "database", "old_database_connection_string", fallback=None
+)
+old_database_connection_string = (
+    os.path.expandvars(_old_database_connection_string_var)
+    if _old_database_connection_string_var is not None
+    else None
+)
+
+
+log_directory = os.path.expandvars(
+    config.get("logging", "log_directory", fallback="logs")
+)
+
+log_level = os.path.expandvars(config.get("logging", "log_level", fallback="INFO"))
