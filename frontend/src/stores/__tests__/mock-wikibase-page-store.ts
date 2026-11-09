@@ -1,4 +1,3 @@
-import { SortColumn, SortDirection } from '@/graphql/types'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { vi } from 'vitest'
 
@@ -9,7 +8,7 @@ const mockWikiPageStore: WikibasePageStoreType = {
 	setPageNumber: vi.fn().mockName('setPageNumber'),
 	pageSize: 1,
 	setPageSize: vi.fn().mockName('setPageSize'),
-	sortBy: { column: SortColumn.Triples, dir: SortDirection.Desc },
+	sortBy: { column: 'TRIPLES', dir: 'DESC' },
 	setSort: vi.fn().mockName('sortByColumn'),
 	wikibaseFilter: {},
 	searchWikibaseText: vi.fn().mockName('searchWikibaseText')

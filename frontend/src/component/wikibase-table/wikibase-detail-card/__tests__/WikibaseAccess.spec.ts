@@ -1,5 +1,4 @@
 import WikibaseAccess from '@/component/wikibase-table/wikibase-detail-card/WikibaseAccess.vue'
-import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -15,18 +14,18 @@ describe('WikibaseAccess', async () => {
 				wikibase: {
 					id: '1',
 					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
+					category: 'FICTIONAL_AND_CREATIVE_WORKS',
 					description: 'A test description',
 					urls: {
 						baseUrl: baseUrl,
 						sparqlFrontendUrl: 'https://query.test-wikibase-001.test',
 						scriptPath: scriptPath
 					},
-					externalIdentifierObservations: {},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Cloud
+					externalIdentifierObservations: { mostRecent: null },
+					quantityObservations: { mostRecent: null },
+					recentChangesObservations: { mostRecent: null },
+					timeToFirstValueObservations: { mostRecent: null },
+					wikibaseType: 'CLOUD'
 				}
 			}
 		})
@@ -73,17 +72,18 @@ describe('WikibaseAccess', async () => {
 				wikibase: {
 					id: '1',
 					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
+					category: 'FICTIONAL_AND_CREATIVE_WORKS',
 					description: 'A test description',
 					urls: {
 						baseUrl: 'https://test-wikibase-001.test',
+						scriptPath: null,
 						sparqlFrontendUrl: 'https://query.test-wikibase-001.test'
 					},
-					externalIdentifierObservations: {},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Cloud
+					externalIdentifierObservations: { mostRecent: null },
+					quantityObservations: { mostRecent: null },
+					recentChangesObservations: { mostRecent: null },
+					timeToFirstValueObservations: { mostRecent: null },
+					wikibaseType: 'CLOUD'
 				}
 			}
 		})

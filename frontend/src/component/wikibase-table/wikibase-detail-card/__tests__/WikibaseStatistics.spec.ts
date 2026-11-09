@@ -1,5 +1,4 @@
 import WikibaseStatistics from '@/component/wikibase-table/wikibase-detail-card/WikibaseStatistics.vue'
-import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -12,10 +11,11 @@ describe('WikibaseStatistics', async () => {
 				wikibase: {
 					id: '1',
 					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
+					category: 'FICTIONAL_AND_CREATIVE_WORKS',
 					description: 'A test description',
 					urls: {
 						baseUrl: 'https://test-wikibase-001.test',
+						scriptPath: null,
 						sparqlFrontendUrl: 'https://test-wikibase-001.test/query'
 					},
 					externalIdentifierObservations: {
@@ -46,7 +46,7 @@ describe('WikibaseStatistics', async () => {
 					timeToFirstValueObservations: {
 						mostRecent: { id: '-1', initiationDate: new Date('1.1.1970 00:00:00'), itemDates: [] }
 					},
-					wikibaseType: WikibaseType.Cloud
+					wikibaseType: 'CLOUD'
 				}
 			}
 		})

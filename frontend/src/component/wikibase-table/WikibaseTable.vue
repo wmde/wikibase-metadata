@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PaginationFooter from '@/component/wikibase-table/PaginationFooter.vue'
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
-import { SortColumn, SortDirection, type WbFragment } from '@/graphql/types'
+import type { SortColumn, SortDirection, WbFragment } from '@/graphql/types'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { mdiSwapVertical } from '@mdi/js'
 import { computed } from 'vue'
@@ -10,10 +10,10 @@ import type { SortItem } from 'vuetify/lib/components/VDataTable/composables/sor
 type TableHeader = { title: string; value?: SortColumn; sortable: boolean }
 
 const headers: TableHeader[] = [
-	{ title: 'Title', value: SortColumn.Title, sortable: true },
-	{ title: 'Triples', value: SortColumn.Triples, sortable: true },
-	{ title: 'Edits', value: SortColumn.Edits, sortable: true },
-	{ title: 'Category', value: SortColumn.Category, sortable: true },
+	{ title: 'Title', value: 'TITLE', sortable: true },
+	{ title: 'Triples', value: 'TRIPLES', sortable: true },
+	{ title: 'Edits', value: 'EDITS', sortable: true },
+	{ title: 'Category', value: 'CATEGORY', sortable: true },
 	{ title: 'Description', sortable: false },
 	{ title: '', sortable: false }
 ]
@@ -25,7 +25,7 @@ const pageNumber = computed(() => store.pageNumber)
 const pageSize = computed(() => store.pageSize)
 const sortBy = computed<SortItem[]>((): SortItem[] =>
 	store.sortBy
-		? [{ key: store.sortBy.column, order: store.sortBy.dir == SortDirection.Asc ? 'asc' : 'desc' }]
+		? [{ key: store.sortBy.column, order: store.sortBy.dir == 'ASC' ? 'asc' : 'desc' }]
 		: []
 )
 const totalCount = computed(() => store.wikibasePage.data?.meta.totalCount)
@@ -34,7 +34,7 @@ const wikibases = computed<WbFragment[] | undefined>(() =>
 	store.wikibasePage.loading ? undefined : store.wikibasePage.data?.data
 )
 const getDirection = (order: boolean | 'desc' | 'asc' | undefined): SortDirection =>
-	order == 'asc' ? SortDirection.Asc : SortDirection.Desc
+	order == 'asc' ? 'ASC' : 'DESC'
 </script>
 
 <template>

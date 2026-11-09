@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WikibaseType } from '@/graphql/types'
+import type { WikibaseType } from '@/graphql/types'
 import typeTitle from '@/util/type-title'
 
 defineProps<{ wikibaseType: WikibaseType | null | undefined }>()

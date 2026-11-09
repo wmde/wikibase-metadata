@@ -1,5 +1,4 @@
 import WikibaseTableRow from '@/component/wikibase-table/WikibaseTableRow.vue'
-import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import mockSingleWikiStore from '@/stores/__tests__/mock-wikibase-store'
 import { mount } from '@vue/test-utils'
@@ -18,10 +17,12 @@ describe('WikibaseTableRow', async () => {
 				wikibase: {
 					id: '297',
 					title: 'Test Wikibase',
+					category: null,
+					description: null,
 					urls: { baseUrl: 'wikibase.test' },
-					quantityObservations: {},
-					recentChangesObservations: {},
-					wikibaseType: WikibaseType.Unknown
+					quantityObservations: { mostRecent: null },
+					recentChangesObservations: { mostRecent: null },
+					wikibaseType: 'UNKNOWN'
 				},
 				index: 2
 			}
@@ -49,10 +50,10 @@ describe('WikibaseTableRow', async () => {
 			props: {
 				wikibase: {
 					id: '82',
-					wikibaseType: WikibaseType.Cloud,
+					wikibaseType: 'CLOUD',
 					title: 'Test Cloud Wikibase',
 					description: 'BEHOLD! A test Wikibase!',
-					category: WikibaseCategory.ExperimentalAndPrototypeProjects,
+					category: 'EXPERIMENTAL_AND_PROTOTYPE_PROJECTS',
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: { mostRecent: { totalTriples: 1 } },
 					recentChangesObservations: { mostRecent: { botChangeCount: 2, humanChangeCount: 3 } }
@@ -83,8 +84,10 @@ describe('WikibaseTableRow', async () => {
 			props: {
 				wikibase: {
 					id: '82',
-					wikibaseType: WikibaseType.Cloud,
+					wikibaseType: 'CLOUD',
 					title: 'Test Cloud Wikibase',
+					category: null,
+					description: null,
 					urls: { baseUrl: 'wikibase.test' },
 					quantityObservations: { mostRecent: { totalTriples: 1 } },
 					recentChangesObservations: { mostRecent: { botChangeCount: 2, humanChangeCount: 3 } }

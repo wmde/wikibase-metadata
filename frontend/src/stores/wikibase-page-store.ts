@@ -1,12 +1,10 @@
 import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
-import {
-	SortColumn,
-	SortDirection,
-	type PageWikibasesQuery,
-	type PageWikibasesQueryVariables,
-	type WbFragment,
-	type WikibaseFilterInput,
-	type WikibaseSortInput
+import type {
+	PageWikibasesQuery,
+	PageWikibasesQueryVariables,
+	WbFragment,
+	WikibaseFilterInput,
+	WikibaseSortInput
 } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
@@ -58,10 +56,7 @@ export const useWikiPageStore = defineStore('wiki-page', (): WikibasePageStoreTy
 	const setPageSize = (i: number) => (pageSize.value = i)
 	watch(pageSize, () => setPageNumber(1))
 
-	const sortBy = ref<WikibaseSortInput | undefined>({
-		column: SortColumn.Triples,
-		dir: SortDirection.Desc
-	})
+	const sortBy = ref<WikibaseSortInput | undefined>({ column: 'TRIPLES', dir: 'DESC' })
 	const setSort = (val: WikibaseSortInput | undefined) => (sortBy.value = val)
 	watch(sortBy, () => setPageNumber(1))
 

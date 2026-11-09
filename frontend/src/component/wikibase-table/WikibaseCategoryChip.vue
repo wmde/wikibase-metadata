@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { WikibaseCategory } from '@/graphql/types'
+import type { WikibaseCategory } from '@/graphql/types'
 import { mdiTagOutline } from '@mdi/js'
 
 defineProps<{ category: WikibaseCategory | null | undefined; icon?: boolean }>()
 
 const categoryTitle = (cat: WikibaseCategory | null | undefined): string => {
 	switch (cat) {
-		case WikibaseCategory.CulturalAndHistorical:
+		case 'CULTURAL_AND_HISTORICAL':
 			return 'Cultural & Historical'
-		case WikibaseCategory.DigitalCollectionsAndArchives:
+		case 'DIGITAL_COLLECTIONS_AND_ARCHIVES':
 			return 'Digital Collections & Archives'
-		case WikibaseCategory.EducationalAndReferenceCollections:
+		case 'EDUCATIONAL_AND_REFERENCE_COLLECTIONS':
 			return 'Educational & Reference Collections'
-		case WikibaseCategory.ExperimentalAndPrototypeProjects:
+		case 'EXPERIMENTAL_AND_PROTOTYPE_PROJECTS':
 			return 'Experimental & Prototype Projects'
-		case WikibaseCategory.FictionalAndCreativeWorks:
+		case 'FICTIONAL_AND_CREATIVE_WORKS':
 			return 'Fictional & Creative Works'
-		case WikibaseCategory.LegalAndPolitical:
+		case 'LEGAL_AND_POLITICAL':
 			return 'Legal & Political'
-		case WikibaseCategory.LinguisticAndLiterary:
+		case 'LINGUISTIC_AND_LITERARY':
 			return 'Linguistic & Literary'
-		case WikibaseCategory.MathematicsAndScience:
+		case 'MATHEMATICS_AND_SCIENCE':
 			return 'Mathematics & Science'
-		case WikibaseCategory.SemanticAndProsopographicData:
+		case 'SEMANTIC_AND_PROSOPOGRAPHIC_DATA':
 			return 'Semantic & Prosopographic Data'
-		case WikibaseCategory.SocialAndAdvocacy:
+		case 'SOCIAL_AND_ADVOCACY':
 			return 'Social & Advocacy'
-		case WikibaseCategory.TechnologyAndOpenSource:
+		case 'TECHNOLOGY_AND_OPEN_SOURCE':
 			return 'Technology & Open Source'
 		default:
 			return '–'
