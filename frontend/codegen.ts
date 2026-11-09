@@ -2,7 +2,6 @@ import { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
 	schema: 'https://wikibase-metadata.wmcloud.org/graphql',
-	documents: ['../frontend/src/graphql/queries/*.ts'],
 	generates: {
 		'./src/graphql/': {
 			preset: 'client',
@@ -11,7 +10,10 @@ const config: CodegenConfig = {
 		},
 		'./src/graphql/types.ts': {
 			config: { useTypeImports: true, scalars: { Union: 'number', DateTime: 'Date' } },
-			plugins: ['typescript', 'typescript-operations']
+			documents: ['../frontend/src/graphql/queries/*.ts'],
+			// plugins: ['typescript', 'typescript-operations'],
+			plugins: ['typescript-operations'],
+			presetConfig: { gqlTagName: 'gql' }
 		}
 	}
 }
