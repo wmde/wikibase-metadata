@@ -11,9 +11,7 @@ const config: CodegenConfig = {
 		'./src/graphql/types.ts': {
 			config: { useTypeImports: true, scalars: { Union: 'number', DateTime: 'Date' } },
 			documents: ['../frontend/src/graphql/queries/*.ts'],
-			// plugins: ['typescript', 'typescript-operations'],
-			plugins: ['typescript-operations'],
-			presetConfig: { gqlTagName: 'gql' }
+			plugins: ['typescript-operations']
 		}
 	}
 }
