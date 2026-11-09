@@ -2,7 +2,7 @@ import { ResizeObserverMock } from '@/__tests__/global-mocks'
 import testWikibases from '@/component/wikibase-table/__tests__/test-wikibases'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import vuetify from '@/plugin/vuetify'
-import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
+import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -14,26 +14,13 @@ vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 const mockSetSort = vi.fn().mockName('sortByColumn')
 
 vi.mock('@/stores/wikibase-page-store', () => ({
-	useWikiStore: (): WikibasePageStoreType => ({
-		...mockWikiStore,
+	useWikiPageStore: (): WikibasePageStoreType => ({
+		...mockWikiPageStore,
 		setSort: mockSetSort,
 		wikibasePage: {
-			...mockWikiStore.wikibasePage,
+			...mockWikiPageStore.wikibasePage,
 			data: {
-				meta: {
-					totalCount: testWikibases.length,
-					totalPages: 1,
-					totalEdits: testWikibases
-						.map((w) => w.recentChangesObservations.mostRecent)
-						.reduce(
-							(sum: number, current) =>
-								sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
-							0
-						),
-					totalTriples: testWikibases
-						.map((w) => w.quantityObservations.mostRecent)
-						.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
-				},
+				meta: { totalCount: testWikibases.length, totalPages: 1 },
 				data: testWikibases.sort(
 					(a, b) =>
 						(b.quantityObservations.mostRecent?.totalTriples ?? 0) -
@@ -114,14 +101,6 @@ describe('WikibaseTable', async () => {
 				.findAll('tr')
 				.map((tr) => tr.findAll('td')[4]?.text())
 		).toEqual(['–', '–', '–', 'An Example for the Purposes of Testing', '–'])
-	})
-
-	it.todo('triggers change page', async () => {
-		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
-	})
-
-	it.todo('triggers change page size', async () => {
-		// const wrapper = mount(WikibaseTable, {			global: { plugins: [vuetify] }		})
 	})
 
 	it('triggers sort', async () => {

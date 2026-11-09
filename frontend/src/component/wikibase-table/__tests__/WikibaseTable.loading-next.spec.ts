@@ -2,7 +2,7 @@ import { ResizeObserverMock } from '@/__tests__/global-mocks'
 import testWikibases from '@/component/wikibase-table/__tests__/test-wikibases'
 import WikibaseTable from '@/component/wikibase-table/WikibaseTable.vue'
 import vuetify from '@/plugin/vuetify'
-import mockWikiStore from '@/stores/__tests__/mock-wikibase-page-store'
+import mockWikiPageStore from '@/stores/__tests__/mock-wikibase-page-store'
 import type { WikibasePageStoreType } from '@/stores/wikibase-page-store'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
@@ -10,27 +10,14 @@ import { describe, expect, it, vi } from 'vitest'
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 
 vi.mock('@/stores/wikibase-page-store', () => ({
-	useWikiStore: (): WikibasePageStoreType => ({
-		...mockWikiStore,
+	useWikiPageStore: (): WikibasePageStoreType => ({
+		...mockWikiPageStore,
 		wikibasePage: {
-			...mockWikiStore.wikibasePage,
+			...mockWikiPageStore.wikibasePage,
 			loading: true,
 			data: {
 				data: testWikibases,
-				meta: {
-					totalCount: testWikibases.length,
-					totalPages: 1,
-					totalEdits: testWikibases
-						.map((w) => w.recentChangesObservations.mostRecent)
-						.reduce(
-							(sum: number, current) =>
-								sum + (current?.botChangeCount ?? 0) + (current?.humanChangeCount ?? 0),
-							0
-						),
-					totalTriples: testWikibases
-						.map((w) => w.quantityObservations.mostRecent)
-						.reduce((sum: number, current) => sum + (current?.totalTriples ?? 0), 0)
-				}
+				meta: { totalCount: testWikibases.length, totalPages: 1 }
 			}
 		}
 	})

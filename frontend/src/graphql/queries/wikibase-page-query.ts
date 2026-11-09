@@ -21,13 +21,6 @@ const pageWikibasesQuery = gql`
 				...WB
 			}
 		}
-		aggregateQuantity(wikibaseFilter: $wikibaseFilter) {
-			totalTriples
-		}
-		aggregateRecentChanges(wikibaseFilter: $wikibaseFilter) {
-			botChangeCount
-			humanChangeCount
-		}
 	}
 
 	fragment WB on Wikibase {

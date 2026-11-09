@@ -2,7 +2,6 @@ import pageWikibasesQuery from '@/graphql/queries/wikibase-page-query'
 import {
 	SortColumn,
 	SortDirection,
-	WikibaseType,
 	type PageWikibasesQuery,
 	type PageWikibasesQueryVariables,
 	type WbFragment,
@@ -11,7 +10,7 @@ import {
 } from '@/graphql/types'
 import { apolloClient } from '@/stores/client'
 import type { QueryResult } from '@/stores/query-result'
-import computeTotalEdits from '@/util/compute-total-edits'
+import { useSearchStore } from '@/stores/search-store'
 import { provideApolloClient, useLazyQuery } from '@vue/apollo-composable'
 import { defineStore } from 'pinia'
 import { computed, ref, watch, type Ref } from 'vue'
@@ -19,12 +18,7 @@ import { computed, ref, watch, type Ref } from 'vue'
 provideApolloClient(apolloClient)
 
 type WikibasePageData = {
-	meta: {
-		totalCount: number
-		totalPages: number
-		totalEdits: number | undefined
-		totalTriples: number
-	}
+	meta: { totalCount: number; totalPages: number }
 	data: WbFragment[]
 }
 
@@ -39,7 +33,6 @@ export type WikibasePageStoreType = {
 	sortBy: WikibaseSortInput | undefined | Ref<WikibaseSortInput | undefined>
 	setSort: (sortBy: WikibaseSortInput | undefined) => void
 	wikibaseFilter: WikibaseFilterInput | Ref<WikibaseFilterInput>
-	includeWikibaseTypes: (t: WikibaseType[]) => void
 	searchWikibaseText: (s: string | undefined) => void
 }
 
@@ -48,19 +41,9 @@ const { load, onResult, loading, error } = useLazyQuery<
 	PageWikibasesQueryVariables
 >(pageWikibasesQuery)
 
-export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType => {
+export const useWikiPageStore = defineStore('wiki-page', (): WikibasePageStoreType => {
 	const data = ref<WikibasePageData | undefined>()
-	onResult(
-		(result) =>
-			(data.value = {
-				...result.data.wikibaseList,
-				meta: {
-					...result.data.wikibaseList.meta,
-					totalEdits: computeTotalEdits(result.data.aggregateRecentChanges),
-					totalTriples: result.data.aggregateQuantity.totalTriples
-				}
-			})
-	)
+	onResult((result) => (data.value = result.data.wikibaseList))
 
 	const wikibasePage = computed<QueryResult<WikibasePageData | undefined>>(() => ({
 		data: data.value,
@@ -82,14 +65,16 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 	const setSort = (val: WikibaseSortInput | undefined) => (sortBy.value = val)
 	watch(sortBy, () => setPageNumber(1))
 
-	const wikibaseFilter = ref<WikibaseFilterInput>({
-		wikibaseType: { include: [WikibaseType.Cloud, WikibaseType.Suite, WikibaseType.Unknown] }
-	})
-	const includeWikibaseTypes = (t: WikibaseType[]) =>
-		(wikibaseFilter.value = { ...wikibaseFilter.value, wikibaseType: { include: t } })
+	const wikibaseFilter = ref<WikibaseFilterInput>({})
 	const searchWikibaseText = (s: string | undefined) =>
 		(wikibaseFilter.value = { ...wikibaseFilter.value, searchText: s })
 	watch(wikibaseFilter, () => setPageNumber(1))
+
+	const searchStore = useSearchStore()
+	const searchValue = computed(() =>
+		searchStore.menuValue == 'instances' ? searchStore.debouncedSearchValue : undefined
+	)
+	watch(searchValue, () => searchWikibaseText(searchValue.value))
 
 	const fetchWikibasePage = () =>
 		load(pageWikibasesQuery, {
@@ -113,7 +98,6 @@ export const useWikiStore = defineStore('wiki-list', (): WikibasePageStoreType =
 		sortBy,
 		setSort,
 		wikibaseFilter,
-		includeWikibaseTypes,
 		searchWikibaseText
 	}
 })

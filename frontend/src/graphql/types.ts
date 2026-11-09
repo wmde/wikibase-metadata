@@ -1357,6 +1357,21 @@ export type SingleWikibaseFragment = {
 	}
 }
 
+export type ListWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type ListWikibasesQuery = {
+	wikibaseList: {
+		meta: { totalCount: number }
+		data: Array<{ id: string; title: string; urls: { baseUrl: string; scriptPath: string | null } }>
+	}
+}
+
+export type WbItemFragment = {
+	id: string
+	title: string
+	urls: { baseUrl: string; scriptPath: string | null }
+}
+
 export type PageWikibasesQueryVariables = Exact<{
 	pageNumber: Scalars['Int']['input']
 	pageSize: Scalars['Int']['input']
@@ -1394,12 +1409,6 @@ export type PageWikibasesQuery = {
 			}
 		}>
 	}
-	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
-	aggregateRecentChanges: {
-		__typename?: 'WikibaseRecentChangesAggregate'
-		botChangeCount: number
-		humanChangeCount: number
-	}
 }
 
 export type WbFragment = {
@@ -1421,5 +1430,21 @@ export type WbFragment = {
 			botChangeCount?: number | null
 			humanChangeCount?: number | null
 		} | null
+	}
+}
+
+export type TotalWikibasesQueryVariables = Exact<{ [key: string]: never }>
+
+export type TotalWikibasesQuery = {
+	__typename?: 'Query'
+	wikibaseList: {
+		__typename?: 'WikibasePage'
+		meta: { __typename?: 'PageMetadata'; totalCount: number }
+	}
+	aggregateQuantity: { __typename?: 'WikibaseQuantityAggregate'; totalTriples: number }
+	aggregateRecentChanges: {
+		__typename?: 'WikibaseRecentChangesAggregate'
+		botChangeCount: number
+		humanChangeCount: number
 	}
 }

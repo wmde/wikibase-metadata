@@ -29,6 +29,4 @@ describe('WikibaseHistory', async () => {
 		expect(historyContainer.classes()).toContain('v-expansion-panels')
 		expect(historyContainer.text()).toEqual('Edit History')
 	})
-
-	it.todo('renders internal data properly - requires clicking to open expansion panel')
 })
