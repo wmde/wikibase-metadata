@@ -47,6 +47,9 @@ onMounted(() => searchStore.setSearchValue(getUrlParamValue(SEARCH_PARAM_NAME) ?
 }
 
 @media (width >= 1145px) {
+	.v-container {
+		max-width: 1400px;
+	}
 	.v-table {
 		max-width: 1400px;
 	}
