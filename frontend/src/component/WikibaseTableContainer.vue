@@ -45,4 +45,10 @@ onMounted(() => searchStore.setSearchValue(getUrlParamValue(SEARCH_PARAM_NAME) ?
 	font-size: 16px;
 	color: #000;
 }
+
+@media (width >= 1145px) {
+	.v-table {
+		max-width: 1400px;
+	}
+}
 </style>
