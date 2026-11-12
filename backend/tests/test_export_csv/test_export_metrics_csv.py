@@ -24,7 +24,7 @@ EXPECTED_HEADER_ROW = ",".join(
         "wikibase_id",
         "wikibase_type",
         "reuse",
-        "date_added"
+        "date_added",
         "base_url",
         "quantity_observation_date",
         "total_items",
