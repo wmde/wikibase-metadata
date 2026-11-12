@@ -1,7 +1,18 @@
 """Wikibase Table"""
 
 from typing import Optional
-from sqlalchemy import Boolean, Enum, ForeignKey, Integer, String, and_, not_
+from datetime import datetime
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    and_,
+    func,
+    not_,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from model.database.base import ModelBase
@@ -311,6 +322,14 @@ class WikibaseModel(ModelBase):
         "WikibaseUserObservationModel", back_populates="wikibase", lazy="select"
     )
     """User Observations"""
+
+    date_added: Mapped[datetime] = mapped_column(
+        "date_added",
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+    )
+    """Date added (UTC)"""
 
     # pylint: disable-next=too-many-arguments,too-many-positional-arguments
     def __init__(

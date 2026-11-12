@@ -4,6 +4,8 @@
 import pytest
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from freezegun import freeze_time
+from datetime import datetime, timezone
 
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
@@ -39,6 +41,7 @@ async def wikibase_categories(db_session):
         await async_session.commit()
 
 
+@freeze_time("2026-01-01 12:00:00", tz_offset=0)
 @pytest.mark.asyncio
 @pytest.mark.mutation
 async def test_add_wikibase_mutation(
@@ -88,6 +91,7 @@ async def test_add_wikibase_mutation(
         )
         assert wikibase.url.url_type == WikibaseURLType.BASE_URL
         assert wikibase.url.url == "https://example.com"
+        assert wikibase.date_added == datetime(2026, 1, 1, 12, 0, tzinfo=timezone.utc)
 
 
 @pytest.mark.asyncio
