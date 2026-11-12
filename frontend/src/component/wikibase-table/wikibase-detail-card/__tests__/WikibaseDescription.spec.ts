@@ -1,5 +1,4 @@
 import WikibaseDescription from '@/component/wikibase-table/wikibase-detail-card/WikibaseDescription.vue'
-import { WikibaseCategory, WikibaseType } from '@/graphql/types'
 import vuetify from '@/plugin/vuetify'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -12,14 +11,18 @@ describe('WikibaseDescription', async () => {
 				wikibase: {
 					id: '1',
 					title: 'Test Wikibase',
-					category: WikibaseCategory.FictionalAndCreativeWorks,
+					category: 'FICTIONAL_AND_CREATIVE_WORKS',
 					description: 'A test description',
-					urls: { baseUrl: 'https://test-wikibase-001.test' },
-					externalIdentifierObservations: {},
-					quantityObservations: {},
-					recentChangesObservations: {},
-					timeToFirstValueObservations: {},
-					wikibaseType: WikibaseType.Cloud
+					urls: {
+						baseUrl: 'https://test-wikibase-001.test',
+						scriptPath: null,
+						sparqlFrontendUrl: null
+					},
+					externalIdentifierObservations: { mostRecent: null },
+					quantityObservations: { mostRecent: null },
+					recentChangesObservations: { mostRecent: null },
+					timeToFirstValueObservations: { mostRecent: null },
+					wikibaseType: 'CLOUD'
 				}
 			}
 		})

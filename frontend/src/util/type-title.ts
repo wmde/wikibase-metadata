@@ -1,14 +1,14 @@
-import { WikibaseType } from '@/graphql/types'
+import type { WikibaseType } from '@/graphql/types'
 
 const typeTitle = (t: WikibaseType | null | undefined): string => {
 	switch (t) {
-		case WikibaseType.Cloud:
+		case 'CLOUD':
 			return 'Wikibase Cloud'
-		case WikibaseType.Other:
+		case 'OTHER':
 			return 'Other'
-		case WikibaseType.Suite:
+		case 'SUITE':
 			return 'Self-Hosted'
-		case WikibaseType.Test:
+		case 'TEST':
 			return 'Test'
 		default:
 			return 'Unknown'

@@ -1,4 +1,3 @@
-import { WikibaseType } from '@/graphql/types'
 import { useSingleWikiStore } from '@/stores/wikibase-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -19,7 +18,7 @@ vi.mock('@vue/apollo-composable', () => ({
 					id: '1',
 					title: 'Test Wikibase',
 					description: 'Test Description',
-					wikibaseType: WikibaseType.Test,
+					wikibaseType: 'TEST',
 					urls: { baseUrl: 'wikibase.test', sparqlFrontendUrl: 'query.wikibase.test/frontend' },
 					quantityObservations: {
 						mostRecent: {

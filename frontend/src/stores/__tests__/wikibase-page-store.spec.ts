@@ -1,4 +1,4 @@
-import { SortColumn, SortDirection, type PageWikibasesQuery } from '@/graphql/types'
+import type { PageWikibasesQuery } from '@/graphql/types'
 import { useWikiPageStore } from '@/stores/wikibase-page-store'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -106,7 +106,7 @@ describe('useWikiPageStore', async () => {
 
 		expect(mockLoad).toHaveBeenCalledTimes(0)
 
-		store.setSort({ column: SortColumn.Category, dir: SortDirection.Asc })
+		store.setSort({ column: 'CATEGORY', dir: 'ASC' })
 		await nextTick()
 		expect(mockLoad).toHaveBeenCalledTimes(1)
 	})
