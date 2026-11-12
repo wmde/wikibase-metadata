@@ -210,6 +210,7 @@ def get_metrics_query() -> Select:
             filtered_wikibase_subquery.c.id.label("wikibase_id"),
             filtered_wikibase_subquery.c.wb_type.label("wikibase_type"),
             filtered_wikibase_subquery.c.reuse,
+            filtered_wikibase_subquery.c.date_added.label("date_added"),
             WikibaseURLModel.url.label("base_url"),
             most_recent_successful_quantity_obs.c.date.label(
                 "quantity_observation_date"
