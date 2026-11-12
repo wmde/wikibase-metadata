@@ -1,11 +1,11 @@
 # pylint: disable=redefined-outer-name
 """Test Add Wikibase"""
 
+from datetime import datetime, timezone
 import pytest
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from freezegun import freeze_time
-from datetime import datetime, timezone
 
 from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseCategory, WikibaseType, WikibaseURLType
