@@ -1,6 +1,7 @@
 # pylint: disable=redefined-outer-name
 """Test Add Wikibase"""
 
+from datetime import timezone
 import pytest
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -88,6 +89,8 @@ async def test_add_wikibase_mutation(
         )
         assert wikibase.url.url_type == WikibaseURLType.BASE_URL
         assert wikibase.url.url == "https://example.com"
+        assert wikibase.date_added is not None
+        assert wikibase.date_added.tzinfo == timezone.utc
 
 
 @pytest.mark.asyncio
