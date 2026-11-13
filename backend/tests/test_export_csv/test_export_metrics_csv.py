@@ -55,9 +55,12 @@ EXPECTED_PATTERN_LIST = [
     re.compile(r"\d+"),
     re.compile(r"(WikibaseType\.(CLOUD|OTHER|SUITE)|)"),
     re.compile(r"(True|False|)"),
+    # date_added
+    re.compile(r"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+\+00:00"),
+    # base_url
     re.compile(r"https?://[a-z0-9\-_.\?=/]+"),
     # Quantity
-    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d.\d+\+00:00|)"),
+    re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+\+00:00|)"),
     re.compile(r"(\d+\.0|)"),
     re.compile(r"(\d+\.0|)"),
     re.compile(r"(\d+\.0|)"),
