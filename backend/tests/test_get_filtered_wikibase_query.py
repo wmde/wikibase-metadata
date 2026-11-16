@@ -19,7 +19,7 @@ def test_get_default_query():
     query = get_filtered_wikibase_query(wikibase_filter=None)
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse"""
     )
@@ -34,7 +34,7 @@ def test_get_query_ignore_reuse_false():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse"""
     )
@@ -49,7 +49,7 @@ def test_get_query_ignore_reuse_true():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid"""
     )
@@ -64,7 +64,7 @@ def test_get_query_search_text_empty():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse"""
     )
@@ -79,7 +79,7 @@ def test_get_query_search_text_filled():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse AND (lower(wikibase.wikibase_name) LIKE lower(:wikibase_name_1) OR (EXISTS (SELECT 1 
 FROM wikibase_url 
@@ -111,7 +111,7 @@ def test_get_query_type_unfilled():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse"""
     )
@@ -128,7 +128,7 @@ def test_get_query_type_empty():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse"""
     )
@@ -147,7 +147,7 @@ def test_get_query_type_exclude():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse AND (wikibase.wb_type IS NULL OR (wikibase.wb_type NOT IN (__[POSTCOMPILE_wb_type_1])))"""
     )
@@ -166,7 +166,7 @@ def test_get_query_type_include():
     )
     assert (
         str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse 
+        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.reuse, wikibase.date_added 
 FROM wikibase 
 WHERE wikibase.valid AND wikibase.reuse AND wikibase.wb_type IN (__[POSTCOMPILE_wb_type_1])"""
     )
