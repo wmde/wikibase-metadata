@@ -1,87 +1,39 @@
 """Fetch Revisions Data"""
 
-from datetime import datetime
-from typing import Iterable, Optional
-from requests.exceptions import HTTPError
-
-from fetch_data.utils import APIError, dict_to_url, fetch_api_data
-from logger import logger
-from model.database import WikibaseModel
+from fetch_data.api_data.time_to_first_value.wikibse_revision_model import (
+    WikibaseRevisionRecord,
+)
+from fetch_data.utils import dict_to_url, fetch_api_data
 
 
-async def get_q_creation_date(
-    wikibase: WikibaseModel, item_number: int
-) -> Optional[datetime]:
-    """Get Q# Creation Date"""
+async def get_all_revision_logs(
+    api_url: str, namespace_id: int
+) -> list[WikibaseRevisionRecord]:
+    data: list = []
 
-    try:
-        rev_result = await fetch_api_data(
-            wikibase.action_api_url()
-            + get_revision_param_string(titles=[f"Q{item_number}"], prop=["timestamp"])
-        )
-        return parse_revision_timestamp(rev_result)
-    except (APIError, HTTPError):
-        return None
-
-
-async def get_item_q_creation_date(
-    wikibase: WikibaseModel, item_number: int
-) -> Optional[datetime]:
-    """Get Item:Q# Creation Date"""
-
-    try:
-        rev_result = await fetch_api_data(
-            wikibase.action_api_url()
-            + get_revision_param_string(
-                titles=[f"Item:Q{item_number}"], prop=["timestamp"]
-            )
-        )
-        return parse_revision_timestamp(rev_result)
-    except (APIError, HTTPError):
-        return None
-
-
-def get_revision_param_string(
-    titles: list[str],
-    limit: int = 1,
-    oldest: bool = True,
-    prop: Optional[list[str]] = None,
-) -> str:
-    """Revision URL Parameters"""
-
-    if len(titles) == 0:
-        raise ValueError("Must Supply a Title")
-
-    parameters: dict = {
+    parameters = {
         "action": "query",
         "format": "json",
-        "prop": "revisions",
-        "titles": "|".join(titles),
-        "rvdir": "newer" if oldest else "older",
-        # "formatversion": 2,
-        "rvlimit": limit,
+        "list": "allrevisions",
+        "arvnamespace": namespace_id,
+        "arvdir": "newer",
+        "lelimit": 500,
+        "arvprop": "ids|title|timestamp",
     }
-    if prop is not None:
-        parameters["rvprop"] = "|".join(prop)
-    return dict_to_url(parameters)
 
+    data: list[WikibaseRevisionRecord] = []
 
-def parse_revision_timestamp(revision_result: dict) -> Optional[datetime]:
-    """Parse Timestamp from Revision"""
+    should_query = True
+    while should_query:
+        query_data = await fetch_api_data(api_url + dict_to_url(parameters))
 
-    try:
-        rev_page_id_list: Iterable[str] = revision_result["query"]["pages"].keys()
-        assert len(rev_page_id_list) > 0
-        for page_id in rev_page_id_list:
-            if "revisions" in revision_result["query"]["pages"][page_id]:
-                item_creation_date = datetime.strptime(
-                    revision_result["query"]["pages"][page_id]["revisions"][0][
-                        "timestamp"
-                    ],
-                    "%Y-%m-%dT%H:%M:%SZ",
-                )
-                return item_creation_date
-    except KeyError as exc:
-        logger.debug(revision_result)
-        raise exc
-    return None
+        for record in query_data["query"]["allrevisions"]:
+            data.append(WikibaseRevisionRecord(record))
+
+        should_query = (
+            "continue" in query_data and "arvcontinue" in query_data["continue"]
+        )
+        if should_query:
+            parameters["arvcontinue"] = query_data["continue"]["arvcontinue"]
+
+    return data
