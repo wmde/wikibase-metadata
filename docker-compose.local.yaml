@@ -1,0 +1,13 @@
+services:
+  nginx:
+    volumes:
+      - ./nginx.local.conf:/etc/nginx/nginx.conf:ro
+
+  frontend:
+    build:
+      args:
+        VITE_BACKEND_URL: /graphql
+
+  database:
+    ports:
+      - "127.0.0.1:5432:5432"

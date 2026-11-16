@@ -8,6 +8,22 @@
 - Docker
 - npm
 
+### Docker 
+
+The whole project can be run locally with Docker Compose by using 
+
+```bash
+make up 
+```
+
+The UI will now be viewable at http://localhost
+
+To stop the service, use: 
+
+```bash
+make down
+```
+
 ### Backend
 
 Inside the `backend` directory:

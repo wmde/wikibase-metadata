@@ -8,8 +8,10 @@ WORKDIR /app
 # Install Python deps first for caching
 COPY backend/requirements.txt ./requirements.txt
 COPY backend/requirements-dev.txt ./requirements-dev.txt
+COPY scheduler/requirements.txt ./scheduler-requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir -r requirements-dev.txt
+RUN pip install --no-cache-dir -r scheduler-requirements.txt
 
 # Copy backend + app code (use .dockerignore to keep this lean)
 COPY backend/ .
