@@ -43,8 +43,8 @@ const toggleTheme = () => theme.toggle()
 
 <style lang="scss">
 .header-container {
-	max-width: 100%;
-	width: 100%;
+	max-width: 100% !important;
+	width: 100% !important;
 	outline-color: oklch(0.708 0 0);
 	background-color: white;
 	border-bottom: 1px solid oklch(92.8% 0.006 264.531);
