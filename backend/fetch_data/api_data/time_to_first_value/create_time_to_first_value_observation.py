@@ -43,40 +43,40 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
         try:
             logger.debug("Fetching Creation Date", extra={"wikibase": wikibase.id})
-
             observation.initiation_date = await get_oldest_log_date(wikibase)
+
+            logger.debug("Fetching Namespace", extra={"wikibase": wikibase.id})
             namespace_id = await get_item_namespace(wikibase)
 
             logger.debug(f"Fetching Creation Logs", extra={"wikibase": wikibase.id})
             all_creation_logs = await get_all_creation_logs(
                 api_url=wikibase.action_api_url(), namespace_id=namespace_id
             )
+
             logger.debug(f"Fetching Revisions", extra={"wikibase": wikibase.id})
             all_revision_logs = await get_all_revision_logs(
-                wikibase, namespace_id=namespace_id
+                api_url=wikibase.action_api_url(), namespace_id=namespace_id
             )
 
             found = set()
             for creation in all_creation_logs:
                 if (q_match := ITEM_TITLE_REGEX.match(creation.title)) is not None:
                     found.add(creation.title)
-                    observation.item_date_models.append(
-                        WikibaseItemDateModel(
-                            item_number=int(q_match.group(1)),
-                            creation_date=creation.log_date,
-                        )
+                    addition = WikibaseItemDateModel(
+                        item_number=int(q_match.group(1)),
+                        creation_date=creation.log_date,
                     )
+                    observation.item_date_models.append(addition)
             for revision in all_revision_logs:
                 if (
                     q_match := ITEM_TITLE_REGEX.match(revision.title)
                 ) is not None and revision.title not in found:
                     found.add(revision.title)
-                    observation.item_date_models.append(
-                        WikibaseItemDateModel(
-                            item_number=int(q_match.group(1)),
-                            creation_date=revision.log_date,
-                        )
+                    addition = WikibaseItemDateModel(
+                        item_number=int(q_match.group(1)),
+                        creation_date=revision.log_date,
                     )
+                    observation.item_date_models.append(addition)
 
             observation.returned_data = True
         except (
