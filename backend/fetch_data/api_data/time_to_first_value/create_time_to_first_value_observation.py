@@ -23,7 +23,7 @@ from model.database import (
     WikibaseTimeToFirstValueObservationModel,
 )
 
-ITEM_TITLE_REGEX = re.compile(r"Item:Q(10*)")
+ITEM_TITLE_REGEX = re.compile(r"^Item:Q(10*)$")
 
 
 async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
