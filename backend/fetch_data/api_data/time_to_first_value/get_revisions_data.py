@@ -17,7 +17,7 @@ async def get_all_revision_logs(
         "list": "allrevisions",
         "arvnamespace": namespace_id,
         "arvdir": "newer",
-        "lelimit": 500,
+        "arvlimit": "max",
         "arvprop": "ids|title|timestamp",
     }
 

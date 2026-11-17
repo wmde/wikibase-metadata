@@ -18,7 +18,7 @@ async def get_all_creation_logs(
         "letype": "create",
         "lenamespace": namespace_id,
         "ledir": "newer",
-        "lelimit": 500,
+        "lelimit": "max",
         "leprop": "ids|title|timestamp",
     }
 
