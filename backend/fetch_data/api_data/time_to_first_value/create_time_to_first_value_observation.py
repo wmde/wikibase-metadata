@@ -15,6 +15,9 @@ from fetch_data.api_data.time_to_first_value.get_oldest_log import get_oldest_lo
 from fetch_data.api_data.time_to_first_value.get_revisions_data import (
     get_all_revision_logs,
 )
+from fetch_data.api_data.time_to_first_value.wikibase_creation_log_model import (
+    WikibaseCreationLogRecord,
+)
 from fetch_data.utils import get_wikibase_from_database, APIError
 from logger import logger
 from model.database import (
@@ -50,13 +53,16 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
                 api_url=wikibase.action_api_url()
             )
 
-            logger.debug("Fetching Namespace", extra={"wikibase": wikibase.id})
-            namespace_id = await get_item_namespace(wikibase)
+            all_revision_logs = []
 
-            logger.debug(f"Fetching Revisions", extra={"wikibase": wikibase.id})
-            all_revision_logs = await get_all_revision_logs(
-                api_url=wikibase.action_api_url(), namespace_id=namespace_id
-            )
+            if missing_values(all_creation_logs):
+                logger.debug("Fetching Namespace", extra={"wikibase": wikibase.id})
+                namespace_id = await get_item_namespace(wikibase)
+
+                logger.debug(f"Fetching Revisions", extra={"wikibase": wikibase.id})
+                all_revision_logs = await get_all_revision_logs(
+                    api_url=wikibase.action_api_url(), namespace_id=namespace_id
+                )
 
             found = set()
             for creation in all_creation_logs:
@@ -110,3 +116,15 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             extra={"wikibase": wikibase_id},
         )
         return observation.returned_data
+
+
+def missing_values(creation_logs: list[WikibaseCreationLogRecord]) -> bool:
+    if len(creation_logs) < 4:
+        return True
+
+    for i in range(len(creation_logs)):
+        if creation_logs[i].title != f"Item:Q{pow(10, i)}":
+            print(creation_logs)
+            return True
+
+    return False
