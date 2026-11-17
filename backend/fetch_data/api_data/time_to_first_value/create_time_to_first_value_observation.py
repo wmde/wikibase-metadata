@@ -45,13 +45,13 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             logger.debug("Fetching Creation Date", extra={"wikibase": wikibase.id})
             observation.initiation_date = await get_oldest_log_date(wikibase)
 
-            logger.debug("Fetching Namespace", extra={"wikibase": wikibase.id})
-            namespace_id = await get_item_namespace(wikibase)
-
             logger.debug(f"Fetching Creation Logs", extra={"wikibase": wikibase.id})
             all_creation_logs = await get_all_creation_logs(
-                api_url=wikibase.action_api_url(), namespace_id=namespace_id
+                api_url=wikibase.action_api_url()
             )
+
+            logger.debug("Fetching Namespace", extra={"wikibase": wikibase.id})
+            namespace_id = await get_item_namespace(wikibase)
 
             logger.debug(f"Fetching Revisions", extra={"wikibase": wikibase.id})
             all_revision_logs = await get_all_revision_logs(
