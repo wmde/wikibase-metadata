@@ -1,5 +1,9 @@
-import pytest
+"""
+Testing services for updating Wikibases
+"""
+
 from unittest.mock import AsyncMock
+import pytest
 
 from service.wikibase_service import delete_wikibase_observations
 from model.database.wikibase_observation import (
