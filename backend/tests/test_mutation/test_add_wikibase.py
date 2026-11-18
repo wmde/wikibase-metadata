@@ -433,6 +433,7 @@ async def test_marks_localhost_urls_as_test(
         assert wikibase.test is True
         assert wikibase_id == int(result.data["addWikibase"]["id"])
 
+
 @pytest.mark.asyncio
 @pytest.mark.mutation
 async def test_add_wikibase_opted_out_stores_only_necessary_data(

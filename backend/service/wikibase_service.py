@@ -35,6 +35,4 @@ async def delete_wikibase_observations(
     ]
 
     for model in observation_models:
-        await session.execute(
-            delete(model).where(model.wikibase_id == wikibase_id)
-        )
+        await session.execute(delete(model).where(model.wikibase_id == wikibase_id))
