@@ -19,8 +19,8 @@ async def get_item_namespace(wikibase: WikibaseModel) -> int:
         )
     )
     namespaces: dict[int, dict[str, str | int]] = namespace_data["query"]["namespaces"]
-    for id, namespace in namespaces.items():
+    for namespace_id, namespace in namespaces.items():
         if "canonical" in namespace and namespace["canonical"] == "Item":
-            return id
+            return namespace_id
 
     raise ValueError("No Item Namespace Found")
