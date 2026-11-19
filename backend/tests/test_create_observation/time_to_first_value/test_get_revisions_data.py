@@ -55,11 +55,3 @@ async def test_get_revisions_data_full_data(wikibase_with_script_path, mocker):
     assert results[0].id == 5
     assert results[0].title == "Item:Q1"
     assert results[0].log_date == datetime(2026, 11, 19, 0, 0, 1)
-
-
-@pytest.mark.asyncio
-async def test_get_revisions_data_no_data(
-    db_session, wikibase_with_script_path, mocker
-):
-    """Test revisions data returns no data"""
-    raise NotImplementedError()
