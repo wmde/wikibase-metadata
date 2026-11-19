@@ -1,6 +1,6 @@
 """Test fetch creation data"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 
 import pytest
@@ -51,15 +51,15 @@ async def test_get_creation_data_full_data(wikibase_with_script_path, mocker):
 
     assert results[0].id == 250
     assert results[0].title == "Item:Q50"
-    assert results[0].log_date == datetime(2026, 11, 19, 0, 0, 50)
+    assert results[0].log_date == datetime(2026, 11, 19, 0, 0, 50, tzinfo=timezone.utc)
 
     assert results[1].id == 5
     assert results[1].title == "Item:Q1"
-    assert results[1].log_date == datetime(2026, 11, 19, 0, 0, 0)
+    assert results[1].log_date == datetime(2026, 11, 19, 0, 0, 0, tzinfo=timezone.utc)
 
     assert results[2].id == 50
     assert results[2].title == "Item:Q10"
-    assert results[2].log_date == datetime(2026, 11, 19, 0, 0, 10)
+    assert results[2].log_date == datetime(2026, 11, 19, 0, 0, 10, tzinfo=timezone.utc)
 
 
 @pytest.mark.asyncio
