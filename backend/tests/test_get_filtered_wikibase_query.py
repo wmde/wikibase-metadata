@@ -1,4 +1,4 @@
-# pylint: disable=line-too-long,trailing-whitespace
+# pylint: disable=line-too-long
 
 """Test get_filtered_wikibase_query"""
 
@@ -17,12 +17,11 @@ def test_get_default_query():
     """Test with no filter"""
 
     query = get_filtered_wikibase_query(wikibase_filter=None)
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added 
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -32,12 +31,11 @@ def test_get_query_ignore_reuse_false():
     query = get_filtered_wikibase_query(
         wikibase_filter=WikibaseFilterInput(ignore_reuse=False)
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added 
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -47,12 +45,11 @@ def test_get_query_ignore_reuse_true():
     query = get_filtered_wikibase_query(
         wikibase_filter=WikibaseFilterInput(ignore_reuse=True)
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -62,12 +59,11 @@ def test_get_query_search_text_empty():
     query = get_filtered_wikibase_query(
         wikibase_filter=WikibaseFilterInput(search_text="")
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added 
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -77,16 +73,15 @@ def test_get_query_search_text_filled():
     query = get_filtered_wikibase_query(
         wikibase_filter=WikibaseFilterInput(search_text="asdf")
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added 
-FROM wikibase 
-WHERE wikibase.valid AND wikibase.reuse AND (lower(wikibase.wikibase_name) LIKE lower(:wikibase_name_1) OR (EXISTS (SELECT 1 
-FROM wikibase_url 
-WHERE wikibase.id = wikibase_url.wikibase_id AND wikibase_url.url_type = :url_type_1 AND lower(wikibase_url.url) LIKE lower(:url_1))) OR (EXISTS (SELECT 1 
-FROM wikibase_category 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
+WHERE wikibase.valid AND wikibase.reuse AND (lower(wikibase.wikibase_name) LIKE lower(:wikibase_name_1) OR (EXISTS (SELECT 1
+FROM wikibase_url
+WHERE wikibase.id = wikibase_url.wikibase_id AND wikibase_url.url_type = :url_type_1 AND lower(wikibase_url.url) LIKE lower(:url_1))) OR (EXISTS (SELECT 1
+FROM wikibase_category
 WHERE wikibase_category.id = wikibase.wikibase_category_id AND CAST(wikibase_category.category AS VARCHAR) LIKE :param_1)))"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -109,12 +104,11 @@ def test_get_query_type_unfilled():
     query = get_filtered_wikibase_query(
         wikibase_filter=WikibaseFilterInput(wikibase_type=WikibaseTypeInput())
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added 
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -126,12 +120,11 @@ def test_get_query_type_empty():
             wikibase_type=WikibaseTypeInput(exclude=[], include=[])
         )
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added 
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -145,12 +138,11 @@ def test_get_query_type_exclude():
             )
         )
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
-FROM wikibase 
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse AND (wikibase.wb_type IS NULL OR (wikibase.wb_type NOT IN (__[POSTCOMPILE_wb_type_1])))"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
 
 
 @pytest.mark.query
@@ -164,7 +156,6 @@ def test_get_query_type_include():
             )
         )
     )
-
     expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
 FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse AND wikibase.wb_type IN (__[POSTCOMPILE_wb_type_1])"""
