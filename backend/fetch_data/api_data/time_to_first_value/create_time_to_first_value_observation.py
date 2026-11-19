@@ -26,7 +26,7 @@ from model.database import (
     WikibaseTimeToFirstValueObservationModel,
 )
 
-ITEM_TITLE_REGEX = re.compile(r"^Item:Q(10*)$")
+ITEM_TITLE_REGEX = re.compile(r"^Item:Q(50|10*)$")
 
 
 async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
@@ -119,10 +119,13 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
 
 def missing_values(creation_logs: list[WikibaseCreationLogRecord]) -> bool:
-    if len(creation_logs) < 4:
+    if len(creation_logs) < 5:
         return True
 
-    for i in range(len(creation_logs)):
+    if creation_logs[0].title != "Item:Q50":
+        return True
+
+    for i in range(1, len(creation_logs)):
         if creation_logs[i].title != f"Item:Q{pow(10, i)}":
             print(creation_logs)
             return True
