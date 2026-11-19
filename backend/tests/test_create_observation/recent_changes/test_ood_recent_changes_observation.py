@@ -6,7 +6,10 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from fetch_data import update_out_of_date_recent_changes_observations
+from fetch_data import (
+    WIKIBASE_API_TIMESTAMP_FORMAT,
+    update_out_of_date_recent_changes_observations,
+)
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from model.database import WikibaseRecentChangesObservationModel
 
@@ -22,7 +25,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 1,
                 "user": "UserA",
@@ -32,7 +35,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 2, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 2,
                 "user": "UserB",
@@ -42,7 +45,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 3, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 1,
                 "user": "UserA",
@@ -52,7 +55,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 4, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": "127.0.0.1",
                 "userid": 0,
@@ -63,7 +66,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 5, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 3,
                 "userhidden": "",
@@ -74,7 +77,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
                 {
                     "type": "edit",
                     "timestamp": datetime(2024, 3, 1, 13, 0, 0).strftime(
-                        "%Y-%m-%dT%H:%M:%SZ"
+                        WIKIBASE_API_TIMESTAMP_FORMAT
                     ),
                     "userid": 5,
                     "user": "UserBusy",
@@ -89,7 +92,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 1001,
                 "user": "BOT_USER_1",
@@ -100,7 +103,7 @@ async def test_update_out_of_date_recent_changes_observations_success(
                 {
                     "type": "edit",
                     "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
-                        "%Y-%m-%dT%H:%M:%SZ"
+                        WIKIBASE_API_TIMESTAMP_FORMAT
                     ),
                     "userid": 1005,
                     "user": "BOT_USER_BUSY",

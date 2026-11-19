@@ -1,0 +1,17 @@
+{
+	"batchcomplete": "",
+	"continue": {},
+	"limits": { "allrevisions": 12 },
+	"query": {
+		"allrevisions": [
+			{
+				"pageid": 17,
+				"revisions": [
+					{ "revid": 18, "parentid": 0, "timestamp": "2026-11-19T00:00:13Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q13"
+			}
+		]
+	}
+}
