@@ -15,7 +15,7 @@ from tests.utils import MockResponse
 
 CREATION_LOG_API_URL = re.compile(
     # pylint: disable-next=line-too-long
-    r"https://example\.com/w/api\.php\?action=query&format=json&list=logevents&letype=create&ledir=newer&lelimit=max&leprop=ids\|title\|timestamp&letitle=Item:(Q\d+)"
+    r"^https://example\.com/w/api\.php\?action=query&format=json&list=logevents&letype=create&ledir=newer&lelimit=max&leprop=ids\|title\|timestamp&letitle=Item:(Q\d+)$"
 )
 
 

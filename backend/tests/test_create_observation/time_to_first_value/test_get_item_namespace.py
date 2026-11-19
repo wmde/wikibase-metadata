@@ -13,7 +13,7 @@ from tests.test_create_observation.time_to_first_value.test_create_ttfv_observat
 from tests.utils import MockResponse
 
 NAMESPACE_API_URL = re.compile(
-    r"https://example\.com/w/api\.php\?action=query&meta=siteinfo&siprop=namespaces&format=json"
+    r"^https://example\.com/w/api\.php\?action=query&meta=siteinfo&siprop=namespaces&format=json$"
 )
 
 
