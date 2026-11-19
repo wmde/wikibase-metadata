@@ -15,8 +15,7 @@ def missing_values(creation_logs: list[WikibaseCreationLogRecord]) -> bool:
         return True
 
     for i in range(1, len(creation_logs)):
-        if creation_logs[i].title != f"Item:Q{pow(10, i)}":
-            print(creation_logs)
+        if creation_logs[i].title != f"Item:Q{pow(10, i-1)}":
             return True
 
     return False
