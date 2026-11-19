@@ -12,7 +12,6 @@ CREATE_ITEM_PARAMETERS = {
     "format": "json",
     "list": "logevents",
     "letype": "create",
-    # "lenamespace": namespace_id,
     "ledir": "newer",
     "lelimit": "max",
     "leprop": "ids|title|timestamp",
