@@ -2,9 +2,11 @@
 
 from datetime import datetime
 
+from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
+
 
 class WikibaseCreationLogRecord:
-    """Wikibase creation Log Record"""
+    """Wikibase Creation Log Record"""
 
     id: int
     title: str
@@ -13,7 +15,9 @@ class WikibaseCreationLogRecord:
     def __init__(self, record: dict):
         self.id = record["logid"]
         self.title = record["title"]
-        self.log_date = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+        self.log_date = datetime.strptime(
+            record["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT
+        )
 
     def __str__(self) -> str:
         return (

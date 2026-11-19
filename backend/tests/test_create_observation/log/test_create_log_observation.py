@@ -9,7 +9,7 @@ from requests import ReadTimeout
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from fetch_data import create_log_observation
+from fetch_data import WIKIBASE_API_TIMESTAMP_FORMAT, create_log_observation
 from model.database import WikibaseLogMonthObservationModel
 from model.enum import WikibaseUserType
 from tests.test_schema import test_schema
@@ -48,7 +48,7 @@ async def test_create_log_observation_first_success(
             {
                 "logid": i + 1,
                 "timestamp": (datetime(2024, 1, 1) - timedelta(hours=i * 24)).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": (
                     "User:A" if i % 3 == 0 else "User:B" if i % 2 == 0 else "User:C"
@@ -162,7 +162,7 @@ async def test_create_log_observation_last_success(
             {
                 "logid": i + 1,
                 "timestamp": (datetime(2024, 3, 1) - timedelta(hours=i * 24)).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": None,
                 "type": "thanks",
@@ -298,7 +298,7 @@ async def test_create_log_last_observation_no_last_month(
             {
                 "logid": i + 1,
                 "timestamp": (datetime(2024, 1, 1) - timedelta(hours=i * 24)).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": (
                     "User:A" if i % 3 == 0 else "User:B" if i % 2 == 0 else "User:C"
