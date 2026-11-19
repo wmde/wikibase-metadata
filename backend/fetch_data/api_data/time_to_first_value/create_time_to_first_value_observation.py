@@ -15,9 +15,7 @@ from fetch_data.api_data.time_to_first_value.get_oldest_log import get_oldest_lo
 from fetch_data.api_data.time_to_first_value.get_revisions_data import (
     get_all_revision_logs,
 )
-from fetch_data.api_data.time_to_first_value.wikibase_creation_log_model import (
-    WikibaseCreationLogRecord,
-)
+from fetch_data.api_data.time_to_first_value.missing_values import missing_values
 from fetch_data.utils import get_wikibase_from_database, APIError
 from logger import logger
 from model.database import (
@@ -120,20 +118,3 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             extra={"wikibase": wikibase_id},
         )
         return observation.returned_data
-
-
-def missing_values(creation_logs: list[WikibaseCreationLogRecord]) -> bool:
-    """Missing Values?"""
-
-    if len(creation_logs) < 5:
-        return True
-
-    if creation_logs[0].title != "Item:Q50":
-        return True
-
-    for i in range(1, len(creation_logs)):
-        if creation_logs[i].title != f"Item:Q{pow(10, i)}":
-            print(creation_logs)
-            return True
-
-    return False
