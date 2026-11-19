@@ -1,15 +1,20 @@
-"""Test create_software_version_observation"""
+"""Test create_ttfv_observation"""
 
 from datetime import datetime, timezone
-import re
 
 import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from fetch_data.api_data.time_to_first_value.wikibase_creation_log_model import (
+    WikibaseCreationLogRecord,
+)
+from fetch_data.api_data.time_to_first_value.wikibse_revision_model import (
+    WikibaseRevisionRecord,
+)
 from model.database import WikibaseTimeToFirstValueObservationModel
 from tests.test_schema import test_schema
-from tests.utils import MockResponse, get_mock_context
+from tests.utils import get_mock_context
 
 DATA_DIRECTORY = "tests/test_create_observation/time_to_first_value/data"
 
@@ -33,62 +38,56 @@ async def test_create_ttfv_observation_success(db_session, wikibase_fixture, moc
         )
         assert before is None
 
-    # pylint: disable-next=too-many-return-statements
-    def mockery(*args, **kwargs):
-        assert kwargs.get("timeout") == 300
-        query = args[0]
-        if (
-            query
-            # pylint: disable-next=line-too-long
-            == "https://example.com/w/api.php?action=query&format=json&list=logevents&formatversion=2&ledir=newer&lelimit=1&leprop=timestamp"
-        ):
-            with open(f"{DATA_DIRECTORY}/creation.json", mode="rb") as data:
-                return MockResponse(query, 200, data.read())
-        if (
-            query_match := re.match(
-                # pylint: disable-next=line-too-long
-                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
-                query,
-            )
-            or re.match(
-                # pylint: disable-next=line-too-long
-                r"https://example\.com/w/api\.php\?action=query&format=json&prop=revisions&titles=Item:(Q\d+)&rvdir=newer&rvlimit=1&rvprop=timestamp",
-                query,
-            )
-        ) is not None:
-            try:
-                with open(
-                    f"{DATA_DIRECTORY}/{query_match.group(1)}.json", mode="rb"
-                ) as data:
-                    return MockResponse(query, 200, data.read())
-            # pylint: disable-next=bare-except
-            except:
-                return MockResponse(query, 404)
-        if (
-            query_match := re.match(
-                # pylint: disable-next=line-too-long
-                r"https://example\.com/w/api\.php\?action=query&format=json&prop=deletedrevisions&titles=(Q\d+)&drvdir=newer&drvlimit=1&drvprop=timestamp",
-                query,
-            )
-            or re.match(
-                # pylint: disable-next=line-too-long
-                r"https://example\.com/w/api\.php\?action=query&format=json&prop=deletedrevisions&titles=Item:(Q\d+)&drvdir=newer&drvlimit=1&drvprop=timestamp",
-                query,
-            )
-        ) is not None:
-            try:
-                with open(
-                    f"{DATA_DIRECTORY}/{query_match.group(1)}_del.json", mode="rb"
-                ) as data:
-                    return MockResponse(query, 200, data.read())
-            # pylint: disable-next=bare-except
-            except:
-                return MockResponse(query, 404)
-
-        raise NotImplementedError(query)
+    mocker.patch(
+        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_all_creation_logs",
+        return_value=[
+            WikibaseCreationLogRecord(
+                {"logid": 250, "title": "Item:Q50", "timestamp": "2026-11-19T00:00:50Z"}
+            ),
+            WikibaseCreationLogRecord(
+                {"logid": 5, "title": "Item:Q1", "timestamp": "2026-11-19T00:00:00Z"}
+            ),
+            WikibaseCreationLogRecord(
+                {"logid": 50, "title": "Item:Q10", "timestamp": "2026-11-19T00:00:10Z"}
+            ),
+        ],
+    )
 
     mocker.patch(
-        "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mockery
+        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_item_namespace",
+        return_value="120",
+    )
+
+    mocker.patch(
+        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_all_revision_logs",
+        return_value=[
+            WikibaseRevisionRecord(
+                {
+                    "pageid": 5,
+                    "revisions": [{"timestamp": "2026-11-19T00:00:01Z"}],
+                    "title": "Item:Q1",
+                }
+            ),
+            WikibaseRevisionRecord(
+                {
+                    "pageid": 6,
+                    "revisions": [{"timestamp": "2026-11-19T00:00:02Z"}],
+                    "title": "Item:Q2",
+                }
+            ),
+            WikibaseRevisionRecord(
+                {
+                    "pageid": 105,
+                    "revisions": [{"timestamp": "2026-11-19T00:01:40Z"}],
+                    "title": "Item:Q100",
+                }
+            ),
+        ],
+    )
+
+    mocker.patch(
+        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_oldest_log_date",
+        return_value=datetime(2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc),
     )
 
     result = await test_schema.execute(
