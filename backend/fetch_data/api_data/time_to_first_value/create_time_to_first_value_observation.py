@@ -84,6 +84,10 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
                     )
                     observation.item_date_models.append(addition)
 
+            observation.item_date_models = sorted(
+                observation.item_date_models, key=lambda x: x.item_number
+            )
+
             observation.returned_data = True
         except (
             ConnectTimeoutError,
