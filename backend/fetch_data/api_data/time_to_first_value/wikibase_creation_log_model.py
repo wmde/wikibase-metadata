@@ -1,6 +1,6 @@
 """Wikibase Creation Log Record"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
 
@@ -17,7 +17,7 @@ class WikibaseCreationLogRecord:
         self.title = record["title"]
         self.log_date = datetime.strptime(
             record["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT
-        )
+        ).replace(tzinfo=timezone.utc)
 
     def __str__(self) -> str:
         return (

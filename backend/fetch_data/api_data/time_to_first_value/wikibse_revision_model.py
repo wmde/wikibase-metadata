@@ -1,6 +1,6 @@
 """Wikibase Revision Record"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
 
@@ -16,7 +16,9 @@ class WikibaseRevisionRecord:
         self.id = record["pageid"]
         self.title = record["title"]
         self.log_date = min(
-            datetime.strptime(r["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT)
+            datetime.strptime(r["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT).replace(
+                tzinfo=timezone.utc
+            )
             for r in record["revisions"]
         )
 
