@@ -43,9 +43,7 @@ async def test_get_creation_data_full_data(wikibase_fixture, mocker):
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
     )
 
-    api_url = wikibase_fixture.action_api_url()
-
-    results = await get_all_creation_logs(api_url=api_url)
+    results = await get_all_creation_logs(api_url=wikibase_fixture.action_api_url())
 
     assert len(results) == 3
 
@@ -79,8 +77,6 @@ async def test_get_creation_data_no_data(wikibase_fixture, mocker):
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
     )
 
-    api_url = wikibase_fixture.action_api_url()
-
-    results = await get_all_creation_logs(api_url=api_url)
+    results = await get_all_creation_logs(api_url=wikibase_fixture.action_api_url())
 
     assert len(results) == 0

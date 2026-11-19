@@ -1,14 +1,13 @@
 """Get Item Namespace"""
 
 from fetch_data.utils import dict_to_url, fetch_api_data
-from model.database import WikibaseModel
 
 
-async def get_item_namespace(wikibase: WikibaseModel) -> int:
+async def get_item_namespace(api_url: str) -> int:
     """Check Namespace for Items"""
 
     namespace_data: dict = await fetch_api_data(
-        wikibase.action_api_url()
+        api_url
         + dict_to_url(
             {
                 "action": "query",

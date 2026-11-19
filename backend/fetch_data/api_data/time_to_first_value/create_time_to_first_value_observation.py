@@ -49,19 +49,17 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             observation.initiation_date = await get_oldest_log_date(wikibase)
 
             logger.debug("Fetching Creation Logs", extra={"wikibase": wikibase.id})
-            all_creation_logs = await get_all_creation_logs(
-                api_url=wikibase.action_api_url()
-            )
+            all_creation_logs = await get_all_creation_logs(wikibase.action_api_url())
 
             all_revision_logs = []
 
             if missing_values(all_creation_logs):
                 logger.debug("Fetching Namespace", extra={"wikibase": wikibase.id})
-                namespace_id = await get_item_namespace(wikibase)
+                namespace_id = await get_item_namespace(wikibase.action_api_url())
 
                 logger.debug("Fetching Revisions", extra={"wikibase": wikibase.id})
                 all_revision_logs = await get_all_revision_logs(
-                    api_url=wikibase.action_api_url(), namespace_id=namespace_id
+                    wikibase.action_api_url(), namespace_id=namespace_id
                 )
 
             found = set()
