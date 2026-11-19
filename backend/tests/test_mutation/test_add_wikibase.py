@@ -125,6 +125,7 @@ async def test_updates_wikibase_if_base_url_already_exists(
                     "baseUrl": base_url,
                     "articlePath": "wiki",
                 },
+                "optIn": True,
             }
         },
     )
@@ -376,7 +377,7 @@ async def test_normalizes_urls(
                         "baseUrl": url,
                         "articlePath": "wiki",
                     },
-                    "optIn": True
+                    "optIn": True,
                 }
             },
         )
@@ -430,6 +431,7 @@ async def test_marks_localhost_urls_as_test(
                     "baseUrl": "http://localhost:8000",
                     "articlePath": "/wiki",
                 },
+                "optIn": True,
             }
         },
     )
