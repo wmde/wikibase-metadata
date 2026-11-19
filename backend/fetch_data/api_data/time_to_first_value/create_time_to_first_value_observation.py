@@ -46,7 +46,9 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
         try:
             logger.debug("Fetching Creation Date", extra={"wikibase": wikibase.id})
-            observation.initiation_date = await get_oldest_log_date(wikibase)
+            observation.initiation_date = await get_oldest_log_date(
+                wikibase.action_api_url()
+            )
 
             logger.debug("Fetching Creation Logs", extra={"wikibase": wikibase.id})
             all_creation_logs = await get_all_creation_logs(wikibase.action_api_url())
