@@ -16,6 +16,6 @@
 				"defaultcontentmodel": "wikibase-property",
 				"*": "Property"
 			}
-        }
-    }
+		}
+	}
 }

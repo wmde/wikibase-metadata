@@ -9,6 +9,6 @@
 				"defaultcontentmodel": "wikibase-property",
 				"*": "Property"
 			}
-        }
-    }
+		}
+	}
 }
