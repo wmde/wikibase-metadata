@@ -123,6 +123,8 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
 
 
 def missing_values(creation_logs: list[WikibaseCreationLogRecord]) -> bool:
+    """Missing Values?"""
+
     if len(creation_logs) < 5:
         return True
 

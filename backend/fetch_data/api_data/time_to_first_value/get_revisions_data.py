@@ -9,6 +9,8 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 async def get_all_revision_logs(
     api_url: str, namespace_id: int
 ) -> list[WikibaseRevisionRecord]:
+    """Fetch All Revisions"""
+
     data: list = []
 
     parameters = {
