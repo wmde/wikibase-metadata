@@ -1,6 +1,6 @@
 """Oldest Log"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
 from fetch_data.api_data.log_data.fetch_log_data import get_log_param_string
@@ -15,4 +15,4 @@ async def get_oldest_log_date(api_url: str) -> datetime:
     )
     return datetime.strptime(
         oldest_log["query"]["logevents"][0]["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT
-    )
+    ).replace(tzinfo=timezone.utc)

@@ -1,6 +1,6 @@
 """Test fetch oldest log"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 
 import pytest
@@ -37,4 +37,4 @@ async def test_get_oldest_log_full_data(wikibase_with_script_path, mocker):
     result = await get_oldest_log_date(
         api_url=wikibase_with_script_path.action_api_url()
     )
-    assert result == datetime(2026, 11, 19, 0, 0, 0)
+    assert result == datetime(2026, 11, 19, 0, 0, 0, tzinfo=timezone.utc)
