@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fetch_data.api_data.time_to_first_value.wikibase_creation_log_model import (
     WikibaseCreationLogRecord,
 )
-from fetch_data.api_data.time_to_first_value.wikibse_revision_model import (
+from fetch_data.api_data.time_to_first_value.wikibase_revision_model import (
     WikibaseRevisionRecord,
 )
 from model.database import WikibaseTimeToFirstValueObservationModel

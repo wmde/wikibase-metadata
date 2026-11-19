@@ -1,6 +1,6 @@
 """Fetch Revisions Data"""
 
-from fetch_data.api_data.time_to_first_value.wikibse_revision_model import (
+from fetch_data.api_data.time_to_first_value.wikibase_revision_model import (
     WikibaseRevisionRecord,
 )
 from fetch_data.utils import dict_to_url, fetch_api_data
