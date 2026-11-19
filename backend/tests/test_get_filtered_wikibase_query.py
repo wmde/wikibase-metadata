@@ -164,9 +164,9 @@ def test_get_query_type_include():
             )
         )
     )
-    assert (
-        str(query)
-        == """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
-FROM wikibase 
+
+    expected_query = """SELECT wikibase.id, wikibase.wikibase_name, wikibase.organization, wikibase.description, wikibase.country, wikibase.region, wikibase.wikibase_category_id, wikibase.wb_type, wikibase.valid, wikibase.test, wikibase.opt_in, wikibase.reuse, wikibase.date_added
+FROM wikibase
 WHERE wikibase.valid AND wikibase.reuse AND wikibase.wb_type IN (__[POSTCOMPILE_wb_type_1])"""
-    )
+
+    assert " ".join(str(query).split()) == " ".join(expected_query.split())
