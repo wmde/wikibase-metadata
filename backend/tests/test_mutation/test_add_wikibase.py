@@ -23,7 +23,13 @@ async def execute_add_wikibase(name: str, urls: dict):
 
     return await test_schema.execute(
         ADD_WIKIBASE_QUERY,
-        variable_values={"wikibaseInput": {"wikibaseName": name, "urls": urls}},
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": name,
+                "urls": urls,
+                "optIn": True,
+            }
+        },
     )
 
 
@@ -64,6 +70,7 @@ async def test_add_wikibase_mutation(
                     "sparqlEndpointUrl": "https://query.example.com/sparql-wrong",
                     "sparqlFrontendUrl": "https://query.example.com",
                 },
+                "optIn": True,
                 "reuse": True,
             }
         },
@@ -338,6 +345,7 @@ async def test_normalizes_urls(
                     "baseUrl": f"http://{base_url}",
                     "articlePath": "/wiki",
                 },
+                "optIn": True,
             }
         },
     )
@@ -368,6 +376,7 @@ async def test_normalizes_urls(
                         "baseUrl": url,
                         "articlePath": "wiki",
                     },
+                    "optIn": True
                 }
             },
         )
