@@ -23,15 +23,14 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
     SPARQL URLs already used by another Wikibase are moved to this one."""
 
     async with get_async_session() as async_session:
-
-        opted_out = wikibase_input.opt_in is False
-
         clean_base_url = clean_up_url(
             wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
         )
 
         clean_sparql_endpoint = None
         clean_sparql_frontend = None
+
+        opted_out = wikibase_input.opt_in is False
 
         if not opted_out:
             clean_sparql_endpoint = clean_up_url(

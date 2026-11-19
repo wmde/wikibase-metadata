@@ -87,7 +87,9 @@ class WikibaseModel(ModelBase):
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
     """Test Wikibase?"""
 
-    opt_in: Mapped[Optional[bool]] = mapped_column("opt_in", Boolean, nullable=False, default=False)
+    opt_in: Mapped[bool] = mapped_column(
+        "opt_in", Boolean, nullable=False, default=False
+    )
     """Opt in to share information with Explorer. If false then only the URL gets stored"""
 
     reuse: Mapped[Optional[bool]] = mapped_column("reuse", Boolean, nullable=True)
