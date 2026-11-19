@@ -20,7 +20,7 @@ CREATION_LOG_API_URL = re.compile(
 
 
 @pytest.mark.asyncio
-async def test_get_creation_data_full_data(wikibase_fixture, mocker):
+async def test_get_creation_data_full_data(wikibase_with_script_path, mocker):
     """Test creation data returns full data"""
 
     def mock_get(*args, **kwargs):
@@ -43,7 +43,9 @@ async def test_get_creation_data_full_data(wikibase_fixture, mocker):
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
     )
 
-    results = await get_all_creation_logs(api_url=wikibase_fixture.action_api_url())
+    results = await get_all_creation_logs(
+        api_url=wikibase_with_script_path.action_api_url()
+    )
 
     assert len(results) == 3
 
@@ -61,7 +63,7 @@ async def test_get_creation_data_full_data(wikibase_fixture, mocker):
 
 
 @pytest.mark.asyncio
-async def test_get_creation_data_no_data(wikibase_fixture, mocker):
+async def test_get_creation_data_no_data(wikibase_with_script_path, mocker):
     """Test creation data returns no data"""
 
     def mock_get(*args, **kwargs):
@@ -77,6 +79,8 @@ async def test_get_creation_data_no_data(wikibase_fixture, mocker):
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
     )
 
-    results = await get_all_creation_logs(api_url=wikibase_fixture.action_api_url())
+    results = await get_all_creation_logs(
+        api_url=wikibase_with_script_path.action_api_url()
+    )
 
     assert len(results) == 0

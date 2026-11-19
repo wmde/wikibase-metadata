@@ -18,7 +18,7 @@ NAMESPACE_API_URL = re.compile(
 
 
 @pytest.mark.asyncio
-async def test_get_item_namespace_full_data(wikibase_fixture, mocker):
+async def test_get_item_namespace_full_data(wikibase_with_script_path, mocker):
     """Test item namespace returns full data"""
 
     def mock_get(*args, **kwargs):
@@ -34,12 +34,14 @@ async def test_get_item_namespace_full_data(wikibase_fixture, mocker):
         "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
     )
 
-    result = await get_item_namespace(api_url=wikibase_fixture.action_api_url())
+    result = await get_item_namespace(
+        api_url=wikibase_with_script_path.action_api_url()
+    )
     assert result == "120"
 
 
 @pytest.mark.asyncio
-async def test_get_item_namespace_no_data(wikibase_fixture, mocker):
+async def test_get_item_namespace_no_data(wikibase_with_script_path, mocker):
     """Test item namespace returns no data"""
 
     def mock_get(*args, **kwargs):
@@ -56,5 +58,5 @@ async def test_get_item_namespace_no_data(wikibase_fixture, mocker):
     )
 
     with pytest.raises(ValueError) as excinfo:
-        await get_item_namespace(api_url=wikibase_fixture.action_api_url())
+        await get_item_namespace(api_url=wikibase_with_script_path.action_api_url())
     assert "No Item Namespace Found" == str(excinfo.value)
