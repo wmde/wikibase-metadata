@@ -39,6 +39,7 @@ async def test_create_ttfv_observation_success(db_session, wikibase_fixture, moc
         assert before is None
 
     mocker.patch(
+        # pylint: disable-next=line-too-long
         "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_all_creation_logs",
         return_value=[
             WikibaseCreationLogRecord(
@@ -54,11 +55,13 @@ async def test_create_ttfv_observation_success(db_session, wikibase_fixture, moc
     )
 
     mocker.patch(
+        # pylint: disable-next=line-too-long
         "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_item_namespace",
         return_value="120",
     )
 
     mocker.patch(
+        # pylint: disable-next=line-too-long
         "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_all_revision_logs",
         return_value=[
             WikibaseRevisionRecord(
@@ -86,6 +89,7 @@ async def test_create_ttfv_observation_success(db_session, wikibase_fixture, moc
     )
 
     mocker.patch(
+        # pylint: disable-next=line-too-long
         "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_oldest_log_date",
         return_value=datetime(2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc),
     )
