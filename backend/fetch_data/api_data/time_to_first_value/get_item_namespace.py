@@ -3,7 +3,7 @@
 from fetch_data.utils import dict_to_url, fetch_api_data
 
 
-async def get_item_namespace(api_url: str) -> int:
+async def get_item_namespace(api_url: str) -> int | str:
     """Check Namespace for Items"""
 
     namespace_data: dict = await fetch_api_data(
