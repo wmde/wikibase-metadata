@@ -1,0 +1,105 @@
+{
+	"batchcomplete": "",
+	"continue": { "arvcontinue": "20261119000013|17", "continue": "-||" },
+	"limits": { "allrevisions": 12 },
+	"query": {
+		"allrevisions": [
+			{
+				"pageid": 5,
+				"revisions": [
+					{ "revid": 6, "parentid": 0, "timestamp": "2026-11-19T00:00:01Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q1"
+			},
+			{
+				"pageid": 6,
+				"revisions": [
+					{ "revid": 7, "parentid": 0, "timestamp": "2026-11-19T00:00:02Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q2"
+			},
+			{
+				"pageid": 7,
+				"revisions": [
+					{ "revid": 8, "parentid": 0, "timestamp": "2026-11-19T00:00:03Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q3"
+			},
+			{
+				"pageid": 8,
+				"revisions": [
+					{ "revid": 9, "parentid": 0, "timestamp": "2026-11-19T00:00:04Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q4"
+			},
+			{
+				"pageid": 9,
+				"revisions": [
+					{ "revid": 10, "parentid": 0, "timestamp": "2026-11-19T00:00:05Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q5"
+			},
+			{
+				"pageid": 10,
+				"revisions": [
+					{ "revid": 11, "parentid": 0, "timestamp": "2026-11-19T00:00:06Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q6"
+			},
+			{
+				"pageid": 11,
+				"revisions": [
+					{ "revid": 12, "parentid": 0, "timestamp": "2026-11-19T00:00:07Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q7"
+			},
+			{
+				"pageid": 12,
+				"revisions": [
+					{ "revid": 13, "parentid": 0, "timestamp": "2026-11-19T00:00:08Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q8"
+			},
+			{
+				"pageid": 13,
+				"revisions": [
+					{ "revid": 14, "parentid": 0, "timestamp": "2026-11-19T00:00:09Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q9"
+			},
+			{
+				"pageid": 14,
+				"revisions": [
+					{ "revid": 15, "parentid": 0, "timestamp": "2026-11-19T00:00:10Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q10"
+			},
+			{
+				"pageid": 15,
+				"revisions": [
+					{ "revid": 16, "parentid": 0, "timestamp": "2026-11-19T00:00:11Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q11"
+			},
+			{
+				"pageid": 16,
+				"revisions": [
+					{ "revid": 17, "parentid": 0, "timestamp": "2026-11-19T00:00:12Z" }
+				],
+				"ns": 120,
+				"title": "Item:Q12"
+			}
+		]
+	}
+}
