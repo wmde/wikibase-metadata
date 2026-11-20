@@ -1,6 +1,6 @@
 """Create Time to First Value Observation"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from requests.exceptions import HTTPError, ReadTimeout, SSLError, TooManyRedirects
 from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NameResolutionError
@@ -47,7 +47,7 @@ async def create_time_to_first_value_observation(wikibase_id: int) -> bool:
             )
             observation.initiation_date = datetime.strptime(
                 oldest_log["query"]["logevents"][0]["timestamp"], "%Y-%m-%dT%H:%M:%SZ"
-            )
+            ).replace(tzinfo=timezone.utc)
 
             returned = True
             for exponent in range(0, 10):

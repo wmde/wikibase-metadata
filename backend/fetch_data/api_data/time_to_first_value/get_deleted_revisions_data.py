@@ -1,6 +1,6 @@
 """Get Deleted Revisions Data"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Iterable, Optional
 from requests.exceptions import HTTPError
 
@@ -79,7 +79,7 @@ def parse_del_rev_timestamp(del_rev_result: dict) -> Optional[datetime]:
                         "timestamp"
                     ],
                     "%Y-%m-%dT%H:%M:%SZ",
-                )
+                ).replace(tzinfo=timezone.utc)
                 return item_creation_date
     except KeyError as exc:
         logger.debug(del_rev_result)

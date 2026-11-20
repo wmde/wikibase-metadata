@@ -1,6 +1,6 @@
 """Wikibase Log Record"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from logger import logger
@@ -21,7 +21,9 @@ class WikibaseLogRecord:
 
     def __init__(self, record: dict):
         self.id = record["logid"]
-        self.log_date = datetime.strptime(record["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+        self.log_date = datetime.strptime(
+            record["timestamp"], "%Y-%m-%dT%H:%M:%SZ"
+        ).replace(tzinfo=timezone.utc)
         self.user = record["user"] if "user" in record else None
         try:
             self.log_type = compile_log_type(record)

@@ -1,6 +1,6 @@
 """Fetch Revisions Data"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Iterable, Optional
 from requests.exceptions import HTTPError
 
@@ -79,7 +79,7 @@ def parse_revision_timestamp(revision_result: dict) -> Optional[datetime]:
                         "timestamp"
                     ],
                     "%Y-%m-%dT%H:%M:%SZ",
-                )
+                ).replace(tzinfo=timezone.utc)
                 return item_creation_date
     except KeyError as exc:
         logger.debug(revision_result)
