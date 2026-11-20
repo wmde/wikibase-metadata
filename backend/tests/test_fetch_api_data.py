@@ -55,10 +55,7 @@ async def test_fetch_api_data_retries_then_succeeds(monkeypatch):
     monkeypatch.setattr(asyncio, "sleep", fake_sleep)
 
     data = await fetch_api_data(
-        "http://example.com/api",
-        initial_wait=0.01,
-        max_retries=4,
-        multiplier=2.0,
+        "http://example.com/api", initial_wait=0.01, max_retries=4, multiplier=2.0
     )
 
     assert data == {"ok": True, "value": 42}
@@ -85,10 +82,7 @@ async def test_fetch_api_data_all_retries_fail(monkeypatch):
 
     with pytest.raises(requests.RequestException):
         await fetch_api_data(
-            "http://example.com/api",
-            initial_wait=0.01,
-            max_retries=2,
-            multiplier=2.0,
+            "http://example.com/api", initial_wait=0.01, max_retries=2, multiplier=2.0
         )
 
     # Slept once per failed retry attempt (not after the final attempt)
@@ -134,10 +128,7 @@ async def test_fetch_api_data_api_error_json_retries_then_raises(monkeypatch):
 
     with pytest.raises(APIError):
         await fetch_api_data(
-            "http://example.com/api",
-            initial_wait=0.01,
-            max_retries=3,
-            multiplier=2.0,
+            "http://example.com/api", initial_wait=0.01, max_retries=3, multiplier=2.0
         )
 
     # Should retry up to max_retries times -> 3 sleeps

@@ -23,8 +23,7 @@ async def wikibase_with_additional_languages(db_session):
     """Wikibase Fixture with additional languages"""
     async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
-            wikibase_name="Test Wikibase",
-            base_url="https://wikibase-fixture.com",
+            wikibase_name="Test Wikibase", base_url="https://wikibase-fixture.com"
         )
         wikibase.checked = True
         session.add(wikibase)
@@ -219,8 +218,7 @@ async def wikibase_without_language(db_session):
     """Create a test wikibase"""
     async with AsyncSession(bind=db_session, expire_on_commit=False) as session:
         wikibase = WikibaseModel(
-            wikibase_name="Test Wikibase",
-            base_url="https://wikibase-fixture.com",
+            wikibase_name="Test Wikibase", base_url="https://wikibase-fixture.com"
         )
         wikibase.checked = True
         session.add(wikibase)

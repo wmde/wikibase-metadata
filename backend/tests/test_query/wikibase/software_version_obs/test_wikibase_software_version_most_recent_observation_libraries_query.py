@@ -110,8 +110,7 @@ async def wikibase_with_libraries_observation(db_session):
         lib_models = {}
         for name, _ in library_data:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.LIBRARY,
-                software_name=name,
+                software_type=WikibaseSoftwareType.LIBRARY, software_name=name
             )
             session.add(software)
             await session.flush()

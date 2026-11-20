@@ -137,10 +137,7 @@ async def test_remove_wikibase_sparql_frontend_url(
 
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_URL_MUTATION,
-        variable_values={
-            "wikibaseId": wikibase.id,
-            "urlType": "SPARQL_FRONTEND_URL",
-        },
+        variable_values={"wikibaseId": wikibase.id, "urlType": "SPARQL_FRONTEND_URL"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert remove_result.errors is None
@@ -198,10 +195,7 @@ async def test_remove_wikibase_article_path(
 
     remove_result = await test_schema.execute(
         REMOVE_WIKIBASE_URL_MUTATION,
-        variable_values={
-            "wikibaseId": wikibase.id,
-            "urlType": "ARTICLE_PATH",
-        },
+        variable_values={"wikibaseId": wikibase.id, "urlType": "ARTICLE_PATH"},
         context_value=get_mock_context("test-auth-token"),
     )
     assert remove_result.errors is None

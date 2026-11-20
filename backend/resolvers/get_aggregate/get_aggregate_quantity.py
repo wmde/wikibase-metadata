@@ -58,9 +58,7 @@ def get_total_quantity_query(
             onclause=WikibaseQuantityObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )
-        .where(
-            WikibaseQuantityObservationModel.returned_data,
-        )
+        .where(WikibaseQuantityObservationModel.returned_data)
         .subquery()
     )
     query = select(

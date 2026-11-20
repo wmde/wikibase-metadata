@@ -67,9 +67,7 @@ async def compile_connectivity_observation(
     try:
         logger.info("Fetching Item Links", extra={"wikibase": wikibase.id})
         item_link_results = await get_sparql_results(
-            wikibase.sparql_endpoint_url.url,
-            ITEM_LINKS_QUERY,
-            "ITEM_LINKS_QUERY",
+            wikibase.sparql_endpoint_url.url, ITEM_LINKS_QUERY, "ITEM_LINKS_QUERY"
         )
 
         clean_data = clean_item_link_data(item_link_results)

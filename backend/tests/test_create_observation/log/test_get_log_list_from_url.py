@@ -6,9 +6,7 @@ from typing import Optional
 from freezegun import freeze_time
 import pytest
 from fetch_data.api_data.log_data.fetch_log_data import get_log_list_from_url
-from tests.test_create_observation.log.assert_log_record import (
-    assert_log_record,
-)
+from tests.test_create_observation.log.assert_log_record import assert_log_record
 
 
 @pytest.mark.asyncio

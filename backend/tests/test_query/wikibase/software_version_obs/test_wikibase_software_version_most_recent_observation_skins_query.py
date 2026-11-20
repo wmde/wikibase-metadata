@@ -54,8 +54,7 @@ async def wikibase_with_skins_observation(db_session):
         skin_software = {}
         for name, _, _, _ in skins:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.SKIN,
-                software_name=name,
+                software_type=WikibaseSoftwareType.SKIN, software_name=name
             )
             session.add(software)
             await session.flush()

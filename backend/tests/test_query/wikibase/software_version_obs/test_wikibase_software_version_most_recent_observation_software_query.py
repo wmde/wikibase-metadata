@@ -56,8 +56,7 @@ async def wikibase_with_software_observation(db_session):
         software_models = {}
         for name, _, _, _ in software_data:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.SOFTWARE,
-                software_name=name,
+                software_type=WikibaseSoftwareType.SOFTWARE, software_name=name
             )
             session.add(software)
             await session.flush()

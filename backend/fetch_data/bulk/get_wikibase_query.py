@@ -1,10 +1,7 @@
 """Get Wikibase Queries"""
 
 from sqlalchemy import Select, and_, or_, select
-from model.database import (
-    WikibaseModel,
-    WikibaseURLModel,
-)
+from model.database import WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseType
 
 

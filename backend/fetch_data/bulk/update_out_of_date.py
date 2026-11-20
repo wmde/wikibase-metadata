@@ -115,8 +115,4 @@ async def update_out_of_date_cloud_instances():
         await update_cloud_instances()
     # pylint: disable-next=bare-except
     except:
-        logger.error(
-            "CloudInstancesError",
-            exc_info=True,
-            stack_info=True,
-        )
+        logger.error("CloudInstancesError", exc_info=True, stack_info=True)

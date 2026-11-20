@@ -9,9 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fetch_data import create_software_version_observation
 from model.database import WikibaseSoftwareVersionObservationModel
 from tests.mock_info import MockBackgroundClassList, MockInfo
-from tests.test_create_observation.software_version.test_constants import (
-    DATA_DIRECTORY,
-)
+from tests.test_create_observation.software_version.test_constants import DATA_DIRECTORY
 from tests.test_schema import test_schema
 from tests.utils import MockRequest, MockResponse
 

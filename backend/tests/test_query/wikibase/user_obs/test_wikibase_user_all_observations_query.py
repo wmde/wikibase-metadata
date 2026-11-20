@@ -158,12 +158,7 @@ async def test_wikibase_user_all_observations_query(
         expected_wikibase_default,
         expected_group_implicit,
         expected_user_count,
-    ) in enumerate(
-        [
-            ("*", True, True, 20),
-            ("sysop", True, False, 5),
-        ]
-    ):
+    ) in enumerate([("*", True, True, 20), ("sysop", True, False, 5)]):
         assert_user_group(
             user_observation_list[1]["userGroups"][index],
             expected_group_name,

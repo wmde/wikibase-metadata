@@ -112,12 +112,7 @@ async def test_wikibase_quantity_all_observations_query(
         expected_lexemes,
         expected_properties,
         expected_triples,
-    ) in enumerate(
-        [
-            (obs1_id, True, 2, 4, 1, 8),
-            (obs2_id, False, 2, None, 1, None),
-        ]
-    ):
+    ) in enumerate([(obs1_id, True, 2, 4, 1, 8), (obs2_id, False, 2, None, 1, None)]):
         assert_quantity(
             quantity_observation_list[index],
             expected_id,

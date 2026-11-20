@@ -22,12 +22,10 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
         )
         clean_sparql_endpoint = clean_up_url(
-            wikibase_input.urls.sparql_endpoint_url,
-            WikibaseURLType.SPARQL_ENDPOINT_URL,
+            wikibase_input.urls.sparql_endpoint_url, WikibaseURLType.SPARQL_ENDPOINT_URL
         )
         clean_sparql_frontend = clean_up_url(
-            wikibase_input.urls.sparql_frontend_url,
-            WikibaseURLType.SPARQL_FRONTEND_URL,
+            wikibase_input.urls.sparql_frontend_url, WikibaseURLType.SPARQL_FRONTEND_URL
         )
 
         # Only the base URL decides whether this Wikibase already exists
@@ -127,9 +125,7 @@ async def assert_new_url(
 
 
 async def detach_sparql_urls(
-    async_session: AsyncSession,
-    sparql_urls: list[str],
-    keep_wikibase_id: Optional[int],
+    async_session: AsyncSession, sparql_urls: list[str], keep_wikibase_id: Optional[int]
 ):
     """Remove the given SPARQL URLs from whichever Wikibase currently owns them"""
 
@@ -139,10 +135,7 @@ async def detach_sparql_urls(
     query = select(WikibaseURLModel).where(
         WikibaseURLModel.url.in_(sparql_urls),
         WikibaseURLModel.url_type.in_(
-            [
-                WikibaseURLType.SPARQL_ENDPOINT_URL,
-                WikibaseURLType.SPARQL_FRONTEND_URL,
-            ]
+            [WikibaseURLType.SPARQL_ENDPOINT_URL, WikibaseURLType.SPARQL_FRONTEND_URL]
         ),
     )
     if keep_wikibase_id is not None:

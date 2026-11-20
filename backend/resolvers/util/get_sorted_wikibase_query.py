@@ -71,8 +71,7 @@ def get_sorted_wikibase_query(
                     RC_RANK,
                     isouter=True,
                     onclause=and_(
-                        WikibaseModel.id == RC_RANK.c.wikibase_id,
-                        RC_RANK.c.rank == 1,
+                        WikibaseModel.id == RC_RANK.c.wikibase_id, RC_RANK.c.rank == 1
                     ),
                 )
                 .join(

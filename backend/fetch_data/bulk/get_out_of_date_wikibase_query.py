@@ -181,7 +181,7 @@ def get_wikibase_with_out_of_date_property_popularity_obs_query() -> (
                         ),
                     ),
                 )
-            ),
+            )
         )
     )
 
@@ -270,7 +270,7 @@ def get_wikibase_with_out_of_date_software_obs_query() -> Select[tuple[WikibaseM
                         ),
                     ),
                 )
-            ),
+            )
         )
     )
 

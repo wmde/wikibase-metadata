@@ -62,9 +62,7 @@ def get_total_external_identifier_query(
             onclause=WikibaseExternalIdentifierObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )
-        .where(
-            WikibaseExternalIdentifierObservationModel.returned_data,
-        )
+        .where(WikibaseExternalIdentifierObservationModel.returned_data)
         .subquery()
     )
     query = select(

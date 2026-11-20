@@ -14,8 +14,7 @@ def test_setting_two_primary_languages():
     """
 
     wikibase = WikibaseModel(
-        wikibase_name="Some Wikibase",
-        base_url="https://wikibase.example",
+        wikibase_name="Some Wikibase", base_url="https://wikibase.example"
     )
     wikibase.set_primary_language("ko")
     wikibase.set_primary_language("ja")
@@ -35,8 +34,7 @@ async def test_setting_existing_language_as_primary(db_session):
 
     async with AsyncSession(bind=db_session) as async_session:
         wikibase = WikibaseModel(
-            wikibase_name="Some Wikibase",
-            base_url="https://unique.wikibase.example",
+            wikibase_name="Some Wikibase", base_url="https://unique.wikibase.example"
         )
         async_session.add(wikibase)
 

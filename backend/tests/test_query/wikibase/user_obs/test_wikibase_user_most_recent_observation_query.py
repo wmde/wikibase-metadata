@@ -71,17 +71,14 @@ async def wikibase_with_user_observation(db_session):
 
         for group_name, wikibase_default, implicit, user_count in groups_data:
             group = WikibaseUserGroupModel(
-                group_name=group_name,
-                wikibase_default_group=wikibase_default,
+                group_name=group_name, wikibase_default_group=wikibase_default
             )
             session.add(group)
             await session.flush()
             await session.refresh(group)
 
             group_obs = WikibaseUserObservationGroupModel(
-                user_group=group,
-                user_count=user_count,
-                group_implicit=implicit,
+                user_group=group, user_count=user_count, group_implicit=implicit
             )
             group_obs.wikibase_user_observation_id = observation.id
             session.add(group_obs)

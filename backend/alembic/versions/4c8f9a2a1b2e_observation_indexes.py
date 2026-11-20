@@ -32,10 +32,7 @@ def upgrade() -> None:
 
     for t in tables:
         op.create_index(
-            f"ix_{t}_wikibase_id_date",
-            t,
-            ["wikibase_id", "date"],
-            unique=False,
+            f"ix_{t}_wikibase_id_date", t, ["wikibase_id", "date"], unique=False
         )
 
 

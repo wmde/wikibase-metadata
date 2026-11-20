@@ -115,10 +115,7 @@ async def test_wikibase_external_identifier_all_observations_query(
         expected_url_properties,
         expected_url_statements,
     ) in enumerate(
-        [
-            (obs1_id, True, 16, 32, 64, 128),
-            (obs2_id, False, 1, 2, None, None),
-        ]
+        [(obs1_id, True, 16, 32, 64, 128), (obs2_id, False, 1, 2, None, None)]
     ):
         assert_external_identifier(
             external_identifier_observation_list[index],

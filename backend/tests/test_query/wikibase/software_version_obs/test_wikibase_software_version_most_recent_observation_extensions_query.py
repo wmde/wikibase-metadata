@@ -81,8 +81,7 @@ async def wikibase_with_extensions_observation(db_session):
         ext_software = {}
         for name, _, _, _ in extensions:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.EXTENSION,
-                software_name=name,
+                software_type=WikibaseSoftwareType.EXTENSION, software_name=name
             )
             session.add(software)
             await session.flush()

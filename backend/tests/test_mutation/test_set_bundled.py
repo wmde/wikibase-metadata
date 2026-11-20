@@ -19,8 +19,7 @@ async def extension_software(db_session):
     """Create a test extension"""
     async with AsyncSession(bind=db_session) as session:
         software = WikibaseSoftwareModel(
-            software_type=WikibaseSoftwareType.EXTENSION,
-            software_name="Test Extension",
+            software_type=WikibaseSoftwareType.EXTENSION, software_name="Test Extension"
         )
         session.add(software)
         await session.flush()
