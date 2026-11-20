@@ -87,6 +87,11 @@ class WikibaseModel(ModelBase):
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
     """Test Wikibase?"""
 
+    opt_in: Mapped[bool] = mapped_column(
+        "opt_in", Boolean, nullable=False, default=False
+    )
+    """Opt in to share information with Explorer. If false then only the URL gets stored"""
+
     reuse: Mapped[Optional[bool]] = mapped_column("reuse", Boolean, nullable=True)
     """Display Wikibase"""
 
@@ -459,3 +464,21 @@ class WikibaseModel(ModelBase):
             self.sparql_frontend_url = WikibaseURLModel(
                 url=sparql_frontend_url, url_type=WikibaseURLType.SPARQL_FRONTEND_URL
             )
+
+    def clear_metadata(self):
+        """Clear metadata when a Wikibase opts out."""
+
+        self.wikibase_name = self.url.url
+        self.organization = None
+        self.description = None
+        self.country = None
+        self.region = None
+        self.reuse = False
+        self.wikibase_type = None
+
+        self.languages.clear()
+
+        self.article_path = None
+        self.script_path = None
+        self.sparql_endpoint_url = None
+        self.sparql_frontend_url = None

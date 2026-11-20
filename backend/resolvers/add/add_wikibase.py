@@ -1,15 +1,21 @@
 """Add Wikibase"""
 
 from typing import Optional
+
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
-from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
+from model.database import (
+    WikibaseCategoryModel,
+    WikibaseModel,
+    WikibaseURLModel,
+)
 from model.enum import WikibaseURLType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
 from resolvers.util.clean_wikibase_url import clean_up_url
+from service.wikibase_service import delete_wikibase_observations
 
 
 async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel:
@@ -17,18 +23,24 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
     SPARQL URLs already used by another Wikibase are moved to this one."""
 
     async with get_async_session() as async_session:
-
         clean_base_url = clean_up_url(
             wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
         )
-        clean_sparql_endpoint = clean_up_url(
-            wikibase_input.urls.sparql_endpoint_url,
-            WikibaseURLType.SPARQL_ENDPOINT_URL,
-        )
-        clean_sparql_frontend = clean_up_url(
-            wikibase_input.urls.sparql_frontend_url,
-            WikibaseURLType.SPARQL_FRONTEND_URL,
-        )
+
+        clean_sparql_endpoint = None
+        clean_sparql_frontend = None
+
+        opted_out = wikibase_input.opt_in is False
+
+        if not opted_out:
+            clean_sparql_endpoint = clean_up_url(
+                wikibase_input.urls.sparql_endpoint_url,
+                WikibaseURLType.SPARQL_ENDPOINT_URL,
+            )
+            clean_sparql_frontend = clean_up_url(
+                wikibase_input.urls.sparql_frontend_url,
+                WikibaseURLType.SPARQL_FRONTEND_URL,
+            )
 
         # Only the base URL decides whether this Wikibase already exists
         existing_id = await async_session.scalar(
@@ -37,11 +49,12 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             )
         )
 
-        await detach_sparql_urls(
-            async_session,
-            [u for u in (clean_sparql_endpoint, clean_sparql_frontend) if u],
-            keep_wikibase_id=existing_id,
-        )
+        if not opted_out:
+            await detach_sparql_urls(
+                async_session,
+                [u for u in (clean_sparql_endpoint, clean_sparql_frontend) if u],
+                keep_wikibase_id=existing_id,
+            )
 
         if existing_id is not None:
             updated_wikibase = await update_wikibase(
@@ -50,39 +63,48 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             await async_session.commit()
             return updated_wikibase
 
+        stored_name = clean_base_url if opted_out else wikibase_input.wikibase_name
+
         assert (
             await async_session.scalar(
                 # pylint: disable-next=not-callable
                 select(func.count()).where(
-                    WikibaseModel.wikibase_name == wikibase_input.wikibase_name.strip()
+                    WikibaseModel.wikibase_name == stored_name.strip()
                 )
             )
-        ) == 0, (
-            f"Wikibase with name {wikibase_input.wikibase_name.strip()} already exists"
-        )
+        ) == 0, f"Wikibase with name {stored_name.strip()} already exists"
 
         model = WikibaseModel(
-            wikibase_name=wikibase_input.wikibase_name,
-            description=wikibase_input.description,
-            organization=wikibase_input.organization,
-            country=wikibase_input.country,
-            region=wikibase_input.region,
-            wikibase_type=wikibase_input.wikibase_type,
+            wikibase_name=stored_name,
+            description=None if opted_out else wikibase_input.description,
+            organization=None if opted_out else wikibase_input.organization,
+            country=None if opted_out else wikibase_input.country,
+            region=None if opted_out else wikibase_input.region,
+            wikibase_type=(None if opted_out else wikibase_input.wikibase_type),
             base_url=clean_base_url,
             article_path=(
                 clean_up_url(
-                    wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH
+                    wikibase_input.urls.article_path,
+                    WikibaseURLType.ARTICLE_PATH,
                 )
+                if not opted_out and wikibase_input.urls.article_path
+                else None
             ),
             script_path=(
                 clean_up_url(
-                    wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH
+                    wikibase_input.urls.script_path,
+                    WikibaseURLType.SCRIPT_PATH,
                 )
+                if not opted_out and wikibase_input.urls.script_path
+                else None
             ),
             sparql_endpoint_url=clean_sparql_endpoint,
             sparql_frontend_url=clean_sparql_frontend,
         )
-        model.checked = True
+
+        model.opt_in = wikibase_input.opt_in
+        model.checked = not opted_out
+
         model.category = (
             (
                 await async_session.scalars(
@@ -91,13 +113,18 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
                     )
                 )
             ).one()
-            if wikibase_input.category is not None
+            if not opted_out and wikibase_input.category is not None
             else None
         )
+
         model.test = (
-            wikibase_input.test or "localhost" in wikibase_input.urls.base_url.lower()
+            False
+            if opted_out
+            else wikibase_input.test
+            or "localhost" in wikibase_input.urls.base_url.lower()
         )
-        model.reuse = wikibase_input.reuse or False
+
+        model.reuse = False if opted_out else wikibase_input.reuse or False
 
         async_session.add(model)
 
@@ -112,7 +139,9 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
 
 async def assert_new_url(
-    async_session: AsyncSession, input_url: Optional[str], url_type: WikibaseURLType
+    async_session: AsyncSession,
+    input_url: Optional[str],
+    url_type: WikibaseURLType,
 ):
     """Assert URL Not in Database"""
 
@@ -145,6 +174,7 @@ async def detach_sparql_urls(
             ]
         ),
     )
+
     if keep_wikibase_id is not None:
         query = query.where(WikibaseURLModel.wikibase_id != keep_wikibase_id)
 
@@ -155,7 +185,9 @@ async def detach_sparql_urls(
 
 
 async def update_wikibase(
-    async_session: AsyncSession, wikibase_id: int, wikibase_input: WikibaseInput
+    async_session: AsyncSession,
+    wikibase_id: int,
+    wikibase_input: WikibaseInput,
 ) -> WikibaseStrawberryModel:
     """Update Existing Wikibase"""
 
@@ -167,6 +199,19 @@ async def update_wikibase(
         wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
     )
 
+    model.opt_in = wikibase_input.opt_in
+    model.url.url = clean_base_url
+
+    if wikibase_input.opt_in is False:
+        model.wikibase_name = clean_base_url
+
+        await clear_optional_wikibase_data(async_session, model)
+
+        await async_session.flush()
+        await async_session.refresh(model)
+
+        return WikibaseStrawberryModel.marshal(model)
+
     model.wikibase_name = wikibase_input.wikibase_name
     model.description = wikibase_input.description
     model.organization = wikibase_input.organization
@@ -174,18 +219,22 @@ async def update_wikibase(
     model.region = wikibase_input.region
     model.wikibase_type = wikibase_input.wikibase_type
 
-    model.url.url = clean_base_url
-
     if wikibase_input.urls.article_path is not None:
         model.set_article_path(
-            clean_up_url(wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH)
+            clean_up_url(
+                wikibase_input.urls.article_path,
+                WikibaseURLType.ARTICLE_PATH,
+            )
         )
     else:
         model.article_path = None
 
     if wikibase_input.urls.script_path is not None:
         model.set_script_path(
-            clean_up_url(wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH)
+            clean_up_url(
+                wikibase_input.urls.script_path,
+                WikibaseURLType.SCRIPT_PATH,
+            )
         )
     else:
         model.script_path = None
@@ -221,12 +270,40 @@ async def update_wikibase(
         if wikibase_input.category is not None
         else None
     )
+
     model.test = (
         wikibase_input.test or "localhost" in wikibase_input.urls.base_url.lower()
     )
+
     model.reuse = wikibase_input.reuse or False
 
     await async_session.flush()
     await async_session.refresh(model)
 
     return WikibaseStrawberryModel.marshal(model)
+
+
+async def clear_optional_wikibase_data(
+    async_session: AsyncSession, model: WikibaseModel
+):
+    """Remove optional data from a Wikibase that has opted out."""
+
+    model.description = None
+    model.organization = None
+    model.country = None
+    model.region = None
+    model.wikibase_type = None
+    model.category = None
+
+    model.article_path = None
+    model.script_path = None
+    model.sparql_endpoint_url = None
+    model.sparql_frontend_url = None
+
+    model.languages = []
+
+    model.reuse = False
+    model.checked = False
+    model.test = False
+
+    await delete_wikibase_observations(async_session, model.id)
