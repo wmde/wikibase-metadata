@@ -26,5 +26,5 @@ from resolvers.update import (
     update_wikibase_reuse_flag,
     update_wikibase_type,
     upsert_wikibase_url,
-    update_wikibase_opt_in
+    update_wikibase_opt_in,
 )

@@ -353,6 +353,7 @@ class WikibaseModel(ModelBase):
         sparql_frontend_url: Optional[str] = None,
         wikibase_type: Optional[WikibaseType] = WikibaseType.UNKNOWN,
         reuse: bool = False,
+        opt_in: bool = False,
     ):
         self.wikibase_name = wikibase_name
         self.description = description
@@ -363,6 +364,7 @@ class WikibaseModel(ModelBase):
         self.reuse = reuse
         self.test = False
         self.wikibase_type = wikibase_type
+        self.opt_in = opt_in
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
 

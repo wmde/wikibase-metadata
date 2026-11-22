@@ -8,7 +8,6 @@ from model.database import WikibaseModel
 from tests.test_schema import test_schema
 from tests.utils import get_mock_context
 
-
 UPDATE_WIKIBASE_OPT_IN_MUTATION = """
 mutation MyMutation($wikibaseId: Int!, $optIn: Boolean!) {
     updateWikibaseOptIn(wikibaseId: $wikibaseId, optIn: $optIn)
@@ -27,7 +26,6 @@ async def wikibase(db_session):
             sparql_endpoint_url="https://query.example.com/sparql",
             article_path="/wiki",
             opt_in=True,
-            checked=True,
         )
         session.add(wikibase)
         await session.flush()
