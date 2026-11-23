@@ -336,7 +336,7 @@ class WikibaseModel(ModelBase):
     )
     """Date added (UTC)"""
 
-    # pylint: disable-next=too-many-arguments,too-many-positional-arguments
+    # pylint: disable-next=too-many-arguments,too-many-positional-arguments, too-many-locals
     def __init__(
         self,
         wikibase_name: str,
