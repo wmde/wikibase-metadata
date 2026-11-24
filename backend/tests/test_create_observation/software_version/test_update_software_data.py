@@ -1,6 +1,6 @@
 """Test Extension Data"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from freezegun import freeze_time
 import pytest
@@ -40,7 +40,7 @@ async def unfetched_extensions(db_session):  # pylint: disable=unused-argument
         await session.flush()
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.version
 async def test_update_software_data(
