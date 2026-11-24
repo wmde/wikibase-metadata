@@ -63,9 +63,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             await async_session.commit()
             return updated_wikibase
 
-        stored_name = (
-            wikibase_input.wikibase_name if opted_in else clean_base_url
-        )
+        stored_name = wikibase_input.wikibase_name if opted_in else clean_base_url
 
         assert (
             await async_session.scalar(
@@ -120,8 +118,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
 
         model.test = (
-            wikibase_input.test
-            or "localhost" in wikibase_input.urls.base_url.lower()
+            wikibase_input.test or "localhost" in wikibase_input.urls.base_url.lower()
             if opted_in
             else False
         )
