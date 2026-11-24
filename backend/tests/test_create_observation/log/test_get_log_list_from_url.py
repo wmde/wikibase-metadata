@@ -1,6 +1,6 @@
 """Test get_log_list_from_url"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from freezegun import freeze_time
@@ -21,7 +21,7 @@ async def test_get_log_list_from_url_empty(mocker):
     assert await get_log_list_from_url("example.com") == []
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_log_list_from_url_single(mocker):
@@ -46,11 +46,16 @@ async def test_get_log_list_from_url_single(mocker):
     results = await get_log_list_from_url("example.com")
     assert len(results) == 1
     assert_log_record(
-        results[0], 1, datetime(2024, 1, 1, 12, 4, 15), 59, None, "PROPERTY_CREATE"
+        results[0],
+        1,
+        datetime(2024, 1, 1, 12, 4, 15, tzinfo=timezone.utc),
+        59,
+        None,
+        "PROPERTY_CREATE",
     )
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_log_list_from_url_several(mocker):
@@ -82,10 +87,44 @@ async def test_get_log_list_from_url_several(mocker):
     )
     results = await get_log_list_from_url("example.com")
     assert len(results) == 7
-    assert_log_record(results[0], 1, datetime(2024, 1, 1), 60, "User:A", "TAG_CREATE")
-    assert_log_record(results[1], 2, datetime(2024, 1, 8), 53, None, "THANK")
-    assert_log_record(results[2], 3, datetime(2024, 1, 15), 46, "User:B", "UNAPPROVE")
-    assert_log_record(results[3], 4, datetime(2024, 1, 22), 39, "User:C", "TAG_CREATE")
-    assert_log_record(results[4], 5, datetime(2024, 1, 29), 32, "User:A", "THANK")
-    assert_log_record(results[5], 6, datetime(2024, 2, 5), 25, None, "UNAPPROVE")
-    assert_log_record(results[6], 7, datetime(2024, 2, 12), 18, "User:B", "TAG_CREATE")
+    assert_log_record(
+        results[0],
+        1,
+        datetime(2024, 1, 1, tzinfo=timezone.utc),
+        60,
+        "User:A",
+        "TAG_CREATE",
+    )
+    assert_log_record(
+        results[1], 2, datetime(2024, 1, 8, tzinfo=timezone.utc), 53, None, "THANK"
+    )
+    assert_log_record(
+        results[2],
+        3,
+        datetime(2024, 1, 15, tzinfo=timezone.utc),
+        46,
+        "User:B",
+        "UNAPPROVE",
+    )
+    assert_log_record(
+        results[3],
+        4,
+        datetime(2024, 1, 22, tzinfo=timezone.utc),
+        39,
+        "User:C",
+        "TAG_CREATE",
+    )
+    assert_log_record(
+        results[4], 5, datetime(2024, 1, 29, tzinfo=timezone.utc), 32, "User:A", "THANK"
+    )
+    assert_log_record(
+        results[5], 6, datetime(2024, 2, 5, tzinfo=timezone.utc), 25, None, "UNAPPROVE"
+    )
+    assert_log_record(
+        results[6],
+        7,
+        datetime(2024, 2, 12, tzinfo=timezone.utc),
+        18,
+        "User:B",
+        "TAG_CREATE",
+    )

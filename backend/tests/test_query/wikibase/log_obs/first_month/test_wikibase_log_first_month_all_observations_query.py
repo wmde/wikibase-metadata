@@ -1,6 +1,6 @@
 """Test Wikibase All Log Observations Query"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from freezegun import freeze_time
 import pytest
@@ -34,7 +34,7 @@ query MyQuery($wikibaseId: Int!) {
 """ + WIKIBASE_LOG_OBSERVATION_FRAGMENT
 
 
-@freeze_time(datetime(2024, 4, 1))
+@freeze_time(datetime(2024, 4, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.query

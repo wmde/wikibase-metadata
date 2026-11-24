@@ -1,7 +1,7 @@
 """Create Log Observation"""
 
 from collections.abc import Iterable
-from datetime import datetime
+from datetime import datetime, timezone
 from http.client import IncompleteRead
 from json import JSONDecodeError
 
@@ -113,7 +113,7 @@ async def get_log_list_comparison_date(
         )[0]
         return oldest_log.log_date
 
-    return datetime.today()
+    return datetime.now(timezone.utc)
 
 
 async def create_log_month(

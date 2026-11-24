@@ -1,6 +1,6 @@
 """Test update_out_of_date_log_last_observations"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 from freezegun import freeze_time
@@ -13,7 +13,7 @@ from fetch_data import (
 from tests.utils import MockResponse, ParsedUrl
 
 
-@freeze_time(datetime(2024, 2, 1))
+@freeze_time(datetime(2024, 2, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_update_out_of_date_log_first_observations_success(
@@ -78,7 +78,7 @@ async def test_update_out_of_date_log_first_observations_success(
     assert result.total == 1
 
 
-@freeze_time(datetime(2024, 2, 1))
+@freeze_time(datetime(2024, 2, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_update_out_of_date_log_last_observations_success(

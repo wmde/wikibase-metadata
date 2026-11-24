@@ -17,7 +17,7 @@ class WikibaseLogRecord:
 
     def age(self) -> int:
         """Age in Days"""
-        return (datetime.today() - self.log_date).days
+        return (datetime.now(timezone.utc) - self.log_date).days
 
     def __init__(self, record: dict):
         self.id = record["logid"]
