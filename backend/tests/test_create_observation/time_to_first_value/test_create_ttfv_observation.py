@@ -1,20 +1,15 @@
 """Test create_ttfv_observation"""
 
 from datetime import datetime, timezone
+import re
 
 import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from fetch_data.api_data.time_to_first_value.wikibase_creation_log_model import (
-    WikibaseCreationLogRecord,
-)
-from fetch_data.api_data.time_to_first_value.wikibase_revision_model import (
-    WikibaseRevisionRecord,
-)
 from model.database import WikibaseTimeToFirstValueObservationModel
 from tests.test_schema import test_schema
-from tests.utils import get_mock_context
+from tests.utils import MockResponse, get_mock_context
 
 DATA_DIRECTORY = "tests/test_create_observation/time_to_first_value/data"
 
@@ -22,81 +17,66 @@ FETCH_TTFV_MUTATION = """mutation MyMutation($wikibaseId: Int!) {
   fetchTimeToFirstValueData(wikibaseId: $wikibaseId)
 }"""
 
+ALL_REVISION_API_URL = re.compile(
+    # pylint: disable-next=line-too-long
+    r"^https://example\.com/w/api\.php\?action=query&format=json&list=allrevisions&arvnamespace=(\d+)&arvdir=newer&arvlimit=max&arvprop=ids\|title\|timestamp(|&arvcontinue=\d+\|\d+)$"
+)
+CREATION_LOG_API_URL = re.compile(
+    # pylint: disable-next=line-too-long
+    r"^https://example\.com/w/api\.php\?action=query&format=json&list=logevents&letype=create&ledir=newer&lelimit=max&leprop=ids\|title\|timestamp&letitle=Item:(Q\d+)$"
+)
+NAMESPACE_API_URL = re.compile(
+    r"^https://example\.com/w/api\.php\?action=query&meta=siteinfo&siprop=namespaces&format=json$"
+)
+OLDEST_LOG_API_URL = re.compile(
+    # pylint: disable-next=line-too-long
+    r"^https://example\.com/w/api\.php\?action=query&format=json&list=logevents&formatversion=2&ledir=newer&lelimit=1&leprop=timestamp$"
+)
+
 
 @pytest.mark.asyncio
 @pytest.mark.mutation
 @pytest.mark.soup
-async def test_create_ttfv_observation_success(db_session, wikibase_fixture, mocker):
+async def test_create_ttfv_observation_success(
+    db_session, wikibase_with_script_path, mocker
+):
     """Test Data Returned Scenario"""
 
     async with AsyncSession(bind=db_session) as session:
         before = await session.scalar(
             select(WikibaseTimeToFirstValueObservationModel).where(
                 WikibaseTimeToFirstValueObservationModel.wikibase_id
-                == wikibase_fixture.id
+                == wikibase_with_script_path.id
             )
         )
         assert before is None
 
-    mocker.patch(
-        # pylint: disable-next=line-too-long
-        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_all_creation_logs",
-        return_value=[
-            WikibaseCreationLogRecord(
-                {"logid": 250, "title": "Item:Q50", "timestamp": "2026-11-19T00:00:50Z"}
-            ),
-            WikibaseCreationLogRecord(
-                {"logid": 5, "title": "Item:Q1", "timestamp": "2026-11-19T00:00:00Z"}
-            ),
-            WikibaseCreationLogRecord(
-                {"logid": 50, "title": "Item:Q10", "timestamp": "2026-11-19T00:00:10Z"}
-            ),
-        ],
-    )
+    def mock_get(*args, **kwargs):
+        assert kwargs.get("timeout") == 300
+        query = args[0]
+        if (creation_log_match := CREATION_LOG_API_URL.match(query)) is not None:
+            try:
+                with open(
+                    f"{DATA_DIRECTORY}/creation/{creation_log_match.group(1)}.json",
+                    mode="rb",
+                ) as data:
+                    return MockResponse(query, 200, data.read())
+            except FileNotFoundError:
+                with open(f"{DATA_DIRECTORY}/creation/empty.json", mode="rb") as data:
+                    return MockResponse(query, 200, data.read())
+        if (OLDEST_LOG_API_URL.match(query)) is not None:
+            with open(f"{DATA_DIRECTORY}/oldest_log/success.json", mode="rb") as data:
+                return MockResponse(query, 200, data.read())
+
+        raise NotImplementedError(query)
 
     mocker.patch(
-        # pylint: disable-next=line-too-long
-        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_item_namespace",
-        return_value="120",
-    )
-
-    mocker.patch(
-        # pylint: disable-next=line-too-long
-        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_all_revision_logs",
-        return_value=[
-            WikibaseRevisionRecord(
-                {
-                    "pageid": 5,
-                    "revisions": [{"timestamp": "2026-11-19T00:00:01Z"}],
-                    "title": "Item:Q1",
-                }
-            ),
-            WikibaseRevisionRecord(
-                {
-                    "pageid": 6,
-                    "revisions": [{"timestamp": "2026-11-19T00:00:02Z"}],
-                    "title": "Item:Q2",
-                }
-            ),
-            WikibaseRevisionRecord(
-                {
-                    "pageid": 105,
-                    "revisions": [{"timestamp": "2026-11-19T00:01:40Z"}],
-                    "title": "Item:Q100",
-                }
-            ),
-        ],
-    )
-
-    mocker.patch(
-        # pylint: disable-next=line-too-long
-        "fetch_data.api_data.time_to_first_value.create_time_to_first_value_observation.get_oldest_log_date",
-        return_value=datetime(2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc),
+        "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
     )
 
     result = await test_schema.execute(
         FETCH_TTFV_MUTATION,
-        variable_values={"wikibaseId": wikibase_fixture.id},
+        variable_values={"wikibaseId": wikibase_with_script_path.id},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -108,10 +88,88 @@ async def test_create_ttfv_observation_success(db_session, wikibase_fixture, moc
         after = await session.scalar(
             select(WikibaseTimeToFirstValueObservationModel).where(
                 WikibaseTimeToFirstValueObservationModel.wikibase_id
-                == wikibase_fixture.id
+                == wikibase_with_script_path.id
             )
         )
         assert after.initiation_date == datetime(
-            2012, 10, 26, 20, 5, 9, tzinfo=timezone.utc
+            2026, 11, 19, 0, 0, 0, tzinfo=timezone.utc
+        )
+        assert len(after.item_date_models) == 5
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.soup
+async def test_create_ttfv_observation_success_missing_values(
+    db_session, wikibase_with_script_path, mocker
+):
+    """Test Data Returned Scenario"""
+
+    async with AsyncSession(bind=db_session) as session:
+        before = await session.scalar(
+            select(WikibaseTimeToFirstValueObservationModel).where(
+                WikibaseTimeToFirstValueObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert before is None
+
+    def mock_get(*args, **kwargs):
+        assert kwargs.get("timeout") == 300
+        query = args[0]
+        if (all_revision_match := ALL_REVISION_API_URL.match(query)) is not None:
+            assert all_revision_match.group(1) == "120"
+            if all_revision_match.group(2) == "":
+                with open(f"{DATA_DIRECTORY}/revision/page_1.json", mode="rb") as data:
+                    return MockResponse(query, 200, data.read())
+            else:
+                with open(
+                    f"{DATA_DIRECTORY}/revision/page_2_100.json", mode="rb"
+                ) as data:
+                    return MockResponse(query, 200, data.read())
+        if (creation_log_match := CREATION_LOG_API_URL.match(query)) is not None:
+            try:
+                if creation_log_match.group(1) not in ["Q50", "Q1", "Q10"]:
+                    raise FileNotFoundError()
+                with open(
+                    f"{DATA_DIRECTORY}/creation/{creation_log_match.group(1)}.json",
+                    mode="rb",
+                ) as data:
+                    return MockResponse(query, 200, data.read())
+            except FileNotFoundError:
+                with open(f"{DATA_DIRECTORY}/creation/empty.json", mode="rb") as data:
+                    return MockResponse(query, 200, data.read())
+        if (NAMESPACE_API_URL.match(query)) is not None:
+            with open(f"{DATA_DIRECTORY}/namespace/success.json", mode="rb") as data:
+                return MockResponse(query, 200, data.read())
+        if (OLDEST_LOG_API_URL.match(query)) is not None:
+            with open(f"{DATA_DIRECTORY}/oldest_log/success.json", mode="rb") as data:
+                return MockResponse(query, 200, data.read())
+
+        raise NotImplementedError(query)
+
+    mocker.patch(
+        "fetch_data.utils.fetch_data_from_api.requests.get", side_effect=mock_get
+    )
+
+    result = await test_schema.execute(
+        FETCH_TTFV_MUTATION,
+        variable_values={"wikibaseId": wikibase_with_script_path.id},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchTimeToFirstValueData"]
+
+    async with AsyncSession(bind=db_session) as session:
+        after = await session.scalar(
+            select(WikibaseTimeToFirstValueObservationModel).where(
+                WikibaseTimeToFirstValueObservationModel.wikibase_id
+                == wikibase_with_script_path.id
+            )
+        )
+        assert after.initiation_date == datetime(
+            2026, 11, 19, 0, 0, 0, tzinfo=timezone.utc
         )
         assert len(after.item_date_models) == 4

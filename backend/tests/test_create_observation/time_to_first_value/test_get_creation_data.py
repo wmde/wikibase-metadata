@@ -1,7 +1,6 @@
 """Test fetch creation data"""
 
 from datetime import datetime, timezone
-import re
 
 import pytest
 
@@ -9,14 +8,10 @@ from fetch_data.api_data.time_to_first_value.get_creation_data import (
     get_all_creation_logs,
 )
 from tests.test_create_observation.time_to_first_value.test_create_ttfv_observation import (
+    CREATION_LOG_API_URL,
     DATA_DIRECTORY,
 )
 from tests.utils import MockResponse
-
-CREATION_LOG_API_URL = re.compile(
-    # pylint: disable-next=line-too-long
-    r"^https://example\.com/w/api\.php\?action=query&format=json&list=logevents&letype=create&ledir=newer&lelimit=max&leprop=ids\|title\|timestamp&letitle=Item:(Q\d+)$"
-)
 
 
 @pytest.mark.asyncio
@@ -47,7 +42,7 @@ async def test_get_creation_data_full_data(wikibase_with_script_path, mocker):
         api_url=wikibase_with_script_path.action_api_url()
     )
 
-    assert len(results) == 3
+    assert len(results) == 5
 
     assert results[0].id == 250
     assert results[0].title == "Item:Q50"
@@ -60,6 +55,14 @@ async def test_get_creation_data_full_data(wikibase_with_script_path, mocker):
     assert results[2].id == 50
     assert results[2].title == "Item:Q10"
     assert results[2].log_date == datetime(2026, 11, 19, 0, 0, 10, tzinfo=timezone.utc)
+
+    assert results[3].id == 500
+    assert results[3].title == "Item:Q100"
+    assert results[3].log_date == datetime(2026, 11, 19, 0, 1, 40, tzinfo=timezone.utc)
+
+    assert results[4].id == 5000
+    assert results[4].title == "Item:Q1000"
+    assert results[4].log_date == datetime(2026, 11, 19, 0, 16, 40, tzinfo=timezone.utc)
 
 
 @pytest.mark.asyncio

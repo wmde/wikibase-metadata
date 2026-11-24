@@ -1,7 +1,6 @@
 """Test fetch revision data"""
 
 from datetime import datetime, timezone
-import re
 
 import pytest
 
@@ -9,14 +8,10 @@ from fetch_data.api_data.time_to_first_value.get_revisions_data import (
     get_all_revision_logs,
 )
 from tests.test_create_observation.time_to_first_value.test_create_ttfv_observation import (
+    ALL_REVISION_API_URL,
     DATA_DIRECTORY,
 )
 from tests.utils import MockResponse
-
-ALL_REVISION_API_URL = re.compile(
-    # pylint: disable-next=line-too-long
-    r"^https://example\.com/w/api\.php\?action=query&format=json&list=allrevisions&arvnamespace=(\d+)&arvdir=newer&arvlimit=max&arvprop=ids\|title\|timestamp(|&arvcontinue=\d+\|\d+)$"
-)
 
 
 @pytest.mark.asyncio

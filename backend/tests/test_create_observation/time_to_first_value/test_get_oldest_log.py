@@ -1,20 +1,15 @@
 """Test fetch oldest log"""
 
 from datetime import datetime, timezone
-import re
 
 import pytest
 
 from fetch_data.api_data.time_to_first_value.get_oldest_log import get_oldest_log_date
 from tests.test_create_observation.time_to_first_value.test_create_ttfv_observation import (
     DATA_DIRECTORY,
+    OLDEST_LOG_API_URL,
 )
 from tests.utils import MockResponse
-
-OLDEST_LOG_API_URL = re.compile(
-    # pylint: disable-next=line-too-long
-    r"^https://example\.com/w/api\.php\?action=query&format=json&list=logevents&formatversion=2&ledir=newer&lelimit=1&leprop=timestamp$"
-)
 
 
 @pytest.mark.asyncio

@@ -1,7 +1,5 @@
 """Test fetch namespace data"""
 
-import re
-
 import pytest
 
 from fetch_data.api_data.time_to_first_value.get_item_namespace import (
@@ -9,12 +7,9 @@ from fetch_data.api_data.time_to_first_value.get_item_namespace import (
 )
 from tests.test_create_observation.time_to_first_value.test_create_ttfv_observation import (
     DATA_DIRECTORY,
+    NAMESPACE_API_URL,
 )
 from tests.utils import MockResponse
-
-NAMESPACE_API_URL = re.compile(
-    r"^https://example\.com/w/api\.php\?action=query&meta=siteinfo&siprop=namespaces&format=json$"
-)
 
 
 @pytest.mark.asyncio
