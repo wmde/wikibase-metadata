@@ -27,12 +27,12 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             wikibase_input.urls.base_url, WikibaseURLType.BASE_URL
         )
 
+        opted_in = wikibase_input.opt_in is True
+
         clean_sparql_endpoint = None
         clean_sparql_frontend = None
 
-        opted_out = wikibase_input.opt_in is False
-
-        if not opted_out:
+        if opted_in:
             clean_sparql_endpoint = clean_up_url(
                 wikibase_input.urls.sparql_endpoint_url,
                 WikibaseURLType.SPARQL_ENDPOINT_URL,
@@ -49,7 +49,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             )
         )
 
-        if not opted_out:
+        if opted_in:
             await detach_sparql_urls(
                 async_session,
                 [u for u in (clean_sparql_endpoint, clean_sparql_frontend) if u],
@@ -63,7 +63,9 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             await async_session.commit()
             return updated_wikibase
 
-        stored_name = clean_base_url if opted_out else wikibase_input.wikibase_name
+        stored_name = (
+            wikibase_input.wikibase_name if opted_in else clean_base_url
+        )
 
         assert (
             await async_session.scalar(
@@ -76,18 +78,18 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
         model = WikibaseModel(
             wikibase_name=stored_name,
-            description=None if opted_out else wikibase_input.description,
-            organization=None if opted_out else wikibase_input.organization,
-            country=None if opted_out else wikibase_input.country,
-            region=None if opted_out else wikibase_input.region,
-            wikibase_type=(None if opted_out else wikibase_input.wikibase_type),
+            description=wikibase_input.description if opted_in else None,
+            organization=wikibase_input.organization if opted_in else None,
+            country=wikibase_input.country if opted_in else None,
+            region=wikibase_input.region if opted_in else None,
+            wikibase_type=wikibase_input.wikibase_type if opted_in else None,
             base_url=clean_base_url,
             article_path=(
                 clean_up_url(
                     wikibase_input.urls.article_path,
                     WikibaseURLType.ARTICLE_PATH,
                 )
-                if not opted_out and wikibase_input.urls.article_path
+                if opted_in and wikibase_input.urls.article_path
                 else None
             ),
             script_path=(
@@ -95,7 +97,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
                     wikibase_input.urls.script_path,
                     WikibaseURLType.SCRIPT_PATH,
                 )
-                if not opted_out and wikibase_input.urls.script_path
+                if opted_in and wikibase_input.urls.script_path
                 else None
             ),
             sparql_endpoint_url=clean_sparql_endpoint,
@@ -103,7 +105,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
         )
 
         model.opt_in = wikibase_input.opt_in
-        model.checked = not opted_out
+        model.checked = opted_in
 
         model.category = (
             (
@@ -113,18 +115,18 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
                     )
                 )
             ).one()
-            if not opted_out and wikibase_input.category is not None
+            if opted_in and wikibase_input.category is not None
             else None
         )
 
         model.test = (
-            False
-            if opted_out
-            else wikibase_input.test
+            wikibase_input.test
             or "localhost" in wikibase_input.urls.base_url.lower()
+            if opted_in
+            else False
         )
 
-        model.reuse = False if opted_out else wikibase_input.reuse or False
+        model.reuse = (wikibase_input.reuse or False) if opted_in else False
 
         async_session.add(model)
 
