@@ -3,8 +3,10 @@ name: Backend Lint & Test
 on:
   pull_request:
     paths-ignore:
+      - "docs/**"
       - "frontend/**"
       - "scheduler/**"
+      - ".github/workflows/docs.yml"
       - ".github/workflows/frontend.yml"
       - ".github/workflows/scheduler.yml"
 
