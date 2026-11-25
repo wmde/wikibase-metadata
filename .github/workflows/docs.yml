@@ -26,4 +26,4 @@ jobs:
       - name: npm check format
         working-directory: ./docs
         run: |
-          npx prettier --check ./ "!*.json"
+          npx prettier --check ./ "!package*.json"
