@@ -113,7 +113,7 @@ jobs:
 
       - name: Run tests (except data)
         working-directory: ./backend
-        run: pytest -m "not data" --cov=.
+        run: pytest -m "not data" --cov --cov-fail-under 95
         env:
           PYTHONPATH: .
           SETTINGS_FILE: test-settings.ini
