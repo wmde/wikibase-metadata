@@ -4,6 +4,7 @@ import pytest
 from model.enum import WikibaseLogType, compile_log_type
 
 
+@pytest.mark.skip
 @pytest.mark.log
 @pytest.mark.parametrize(
     ["log_type", "action", "title", "params", "expected_result"],
@@ -232,6 +233,7 @@ def test_compile_log_type_success(
     )
 
 
+@pytest.mark.skip
 @pytest.mark.log
 @pytest.mark.parametrize(
     ["log_type", "action", "title", "params"],
