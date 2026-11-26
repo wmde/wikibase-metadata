@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, UTC
 from freezegun import freeze_time
 import pytest
 
+from fetch_data import WIKIBASE_API_TIMESTAMP_FORMAT
 from fetch_data.api_data.recent_changes_data import get_recent_changes_list
 
 
@@ -22,7 +23,7 @@ async def test_get_recent_changes_list_one_pull(mocker):
                 "title": f"Page {i}",
                 "comment": "comment",
                 "timestamp": (datetime(2024, 3, 1) - timedelta(hours=i * 24)).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": "User:A",
                 "userid": 1,
@@ -62,7 +63,7 @@ async def test_get_recent_changes_list_multiple_pulls(mocker):
                 "title": f"Page {i}",
                 "comment": "comment",
                 "timestamp": (datetime(2024, 3, 1) - timedelta(hours=i * 12)).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": "User:A",
                 "userid": 1,

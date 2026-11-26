@@ -10,7 +10,7 @@ from tests.utils import MockResponse
 @pytest.mark.soup
 async def test_update_out_of_date_time_to_first_value_observations_fail(
     wikibase_without_type, mocker
-):  # pylint: disable=unused-argument, redefined-outer-name
+):  # pylint: disable=unused-argument
     """Test Error Returned Scenario"""
 
     mocker.patch(

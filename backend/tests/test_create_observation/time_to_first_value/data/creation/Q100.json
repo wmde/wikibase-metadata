@@ -1,0 +1,16 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"logevents": [
+			{
+				"logid": 500,
+				"ns": 120,
+				"title": "Item:Q100",
+				"pageid": 600,
+				"logpage": 700,
+				"revid": 800,
+				"timestamp": "2026-11-19T00:01:40Z"
+			}
+		]
+	}
+}

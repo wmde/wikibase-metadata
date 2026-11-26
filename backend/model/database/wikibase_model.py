@@ -327,6 +327,7 @@ class WikibaseModel(ModelBase):
         "date_added",
         DateTime(timezone=True),
         nullable=False,
+        # pylint: disable-next=not-callable
         server_default=func.now(),
     )
     """Date added (UTC)"""
