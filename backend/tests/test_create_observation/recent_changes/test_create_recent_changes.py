@@ -8,7 +8,7 @@ from requests import ReadTimeout
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from fetch_data import create_recent_changes_observation
+from fetch_data import WIKIBASE_API_TIMESTAMP_FORMAT, create_recent_changes_observation
 from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
 from fetch_data.api_data.recent_changes_data.create_recent_changes_observation import (
     create_recent_changes,
@@ -45,7 +45,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 1, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 1,
                 "user": "UserA",
@@ -55,7 +55,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 2, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 2,
                 "user": "UserB",
@@ -65,7 +65,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 3, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 1,
                 "user": "UserA",
@@ -75,7 +75,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 4, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": "127.0.0.1",
                 "userid": 0,
@@ -86,7 +86,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 5, 12, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 3,
                 "userhidden": "",
@@ -99,7 +99,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 3, 0, 4, 5).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": "BOT_USER_1",
                 "userid": 1001,
@@ -109,7 +109,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 5, 15, 2, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "userid": 1001,
                 "user": "BOT_USER_1",
@@ -119,7 +119,7 @@ async def test_create_recent_changes_counts():
             {
                 "type": "edit",
                 "timestamp": datetime(2024, 3, 6, 0, 0, 0).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 # intentianally same as the human user above
                 "userid": 1,

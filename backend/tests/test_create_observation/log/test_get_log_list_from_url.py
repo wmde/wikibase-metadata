@@ -5,6 +5,8 @@ from typing import Optional
 
 from freezegun import freeze_time
 import pytest
+
+from fetch_data import WIKIBASE_API_TIMESTAMP_FORMAT
 from fetch_data.api_data.log_data.fetch_log_data import get_log_list_from_url
 from tests.test_create_observation.log.assert_log_record import assert_log_record
 
@@ -74,7 +76,7 @@ async def test_get_log_list_from_url_several(mocker):
             {
                 "logid": i + 1,
                 "timestamp": (datetime(2024, 1, 1) + timedelta(days=i * 7)).strftime(
-                    "%Y-%m-%dT%H:%M:%SZ"
+                    WIKIBASE_API_TIMESTAMP_FORMAT
                 ),
                 "user": mock_users[i % len(mock_users)],
                 "type": mock_log_types[i % len(mock_log_types)][0],

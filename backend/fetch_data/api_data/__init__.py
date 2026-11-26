@@ -1,5 +1,6 @@
 """Data from api.php"""
 
+from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
 from fetch_data.api_data.log_data import create_log_observation
 from fetch_data.api_data.recent_changes_data import create_recent_changes_observation
 from fetch_data.api_data.time_to_first_value import (

@@ -3,6 +3,7 @@
 from datetime import datetime, timezone
 from typing import Optional
 
+from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
 from logger import logger
 from model.enum import WikibaseLogType, compile_log_type
 
@@ -22,7 +23,7 @@ class WikibaseLogRecord:
     def __init__(self, record: dict):
         self.id = record["logid"]
         self.log_date = datetime.strptime(
-            record["timestamp"], "%Y-%m-%dT%H:%M:%SZ"
+            record["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT
         ).replace(tzinfo=timezone.utc)
         self.user = record["user"] if "user" in record else None
         try:

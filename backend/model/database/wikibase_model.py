@@ -324,7 +324,11 @@ class WikibaseModel(ModelBase):
     """User Observations"""
 
     date_added: Mapped[datetime] = mapped_column(
-        "date_added", DateTime(timezone=True), nullable=False, server_default=func.now()
+        "date_added",
+        DateTime(timezone=True),
+        nullable=False,
+        # pylint: disable-next=not-callable
+        server_default=func.now(),
     )
     """Date added (UTC)"""
 

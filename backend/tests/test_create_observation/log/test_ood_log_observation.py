@@ -7,6 +7,7 @@ from freezegun import freeze_time
 import pytest
 
 from fetch_data import (
+    WIKIBASE_API_TIMESTAMP_FORMAT,
     update_out_of_date_log_first_observations,
     update_out_of_date_log_last_observations,
 )
@@ -24,7 +25,7 @@ async def test_update_out_of_date_log_first_observations_success(
     mock_logs: list[dict] = [
         {
             "logid": 1,
-            "timestamp": datetime(2024, 1, 1).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "timestamp": datetime(2024, 1, 1).strftime(WIKIBASE_API_TIMESTAMP_FORMAT),
             "user": None,
             "type": "thanks",
             "action": "thank",
@@ -89,7 +90,7 @@ async def test_update_out_of_date_log_last_observations_success(
     mock_logs: list[dict] = [
         {
             "logid": 1,
-            "timestamp": datetime(2024, 2, 1).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "timestamp": datetime(2024, 2, 1).strftime(WIKIBASE_API_TIMESTAMP_FORMAT),
             "user": None,
             "type": "thanks",
             "action": "thank",

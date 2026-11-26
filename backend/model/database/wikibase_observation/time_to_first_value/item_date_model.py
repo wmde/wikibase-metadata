@@ -38,3 +38,14 @@ class WikibaseItemDateModel(ModelBase):
     creation_date: Mapped[datetime] = mapped_column(
         "creation_date", DateTime(timezone=True), nullable=False
     )
+
+    def __str__(self):
+        return (
+            "WikibaseItemDateModel("
+            f"id={self.id}"
+            ", "
+            f"item_number={self.item_number}"
+            ", "
+            f"creation_date={self.creation_date}"
+            ")"
+        )
