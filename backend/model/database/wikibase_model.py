@@ -19,6 +19,7 @@ from model.database.base import ModelBase
 from model.database.wikibase_category_model import WikibaseCategoryModel
 from model.database.wikibase_language_model import WikibaseLanguageModel
 from model.database.wikibase_observation import (
+    WikibaseAPIQuantityObservationModel,
     WikibaseConnectivityObservationModel,
     WikibaseExternalIdentifierObservationModel,
     WikibaseLogMonthObservationModel,
@@ -246,6 +247,15 @@ class WikibaseModel(ModelBase):
     """SPARQL Frontend"""
 
     # OBSERVATIONS
+    api_quantity_observations: Mapped[list[WikibaseAPIQuantityObservationModel]] = (
+        relationship(
+            "WikibaseAPIQuantityObservationModel",
+            back_populates="wikibase",
+            lazy="select",
+        )
+    )
+    """API Quantity Observations"""
+
     connectivity_observations: Mapped[list[WikibaseConnectivityObservationModel]] = (
         relationship(
             "WikibaseConnectivityObservationModel",
