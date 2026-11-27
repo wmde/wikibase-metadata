@@ -1,3 +1,5 @@
+"""Test create API-based quantity observation"""
+
 import re
 
 import pytest
@@ -12,6 +14,7 @@ from tests.utils import MockResponse, get_mock_context
 DATA_DIRECTORY = "tests/test_create_observation/api_quantity/data"
 
 ALL_PAGES_API_URL = re.compile(
+    # pylint: disable-next=line-too-long
     r"^https://example\.com/w/api\.php\?action=query&list=allpages&apnamespace=(\d+)&aplimit=max&format=json(|&apcontinue=Q\d+)$"
 )
 NAMESPACE_API_URL = re.compile(
@@ -142,8 +145,8 @@ async def test_create_api_quantity_observation_only_items(
         )
         assert after is not None
         assert after.total_items == 10
-        assert after.total_lexemes == None
-        assert after.total_properties == None
+        assert after.total_lexemes is None
+        assert after.total_properties is None
 
 
 @pytest.mark.asyncio
@@ -198,9 +201,9 @@ async def test_create_api_quantity_observation_only_lexemes(
             )
         )
         assert after is not None
-        assert after.total_items == None
+        assert after.total_items is None
         assert after.total_lexemes == 7
-        assert after.total_properties == None
+        assert after.total_properties is None
 
 
 @pytest.mark.asyncio
@@ -259,8 +262,8 @@ async def test_create_api_quantity_observation_only_properties(
             )
         )
         assert after is not None
-        assert after.total_items == None
-        assert after.total_lexemes == None
+        assert after.total_items is None
+        assert after.total_lexemes is None
         assert after.total_properties == 5
 
 
