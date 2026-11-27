@@ -4,6 +4,7 @@ import strawberry
 from strawberry import Info
 
 from fetch_data import (
+    create_api_quantity_observation,
     create_connectivity_observation,
     create_external_identifier_observation,
     create_log_observation,
@@ -32,6 +33,15 @@ from resolvers import authenticate
 @strawberry.type
 class ObservationMutation:
     """Observation-Related Mutations"""
+
+    @strawberry.mutation(
+        description="Fetch API-Based Quantity Data from Specified Wikibase Instance"
+    )
+    async def fetch_api_quantity_data(self, info: Info, wikibase_id: int) -> bool:
+        """Fetch API-Based Quantity Data from Specified Wikibase Instance"""
+
+        authenticate(info)
+        return await create_api_quantity_observation(wikibase_id)
 
     @strawberry.mutation(
         description="Fetch Connectivity Data from Specified Wikibase Instance"
