@@ -17,6 +17,7 @@ from model.strawberry.output.observation.property_popularity import (
     WikibasePropertyPopularityObservationStrawberryModel,
 )
 from model.strawberry.output.observation.quantity import (
+    WikibaseAPIQuantityObservationStrawberryModel,
     WikibaseQuantityAggregateStrawberryModel,
     WikibaseQuantityObservationStrawberryModel,
 )
