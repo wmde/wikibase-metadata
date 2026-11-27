@@ -1,0 +1,9 @@
+{
+	"query": {
+		"allpages": [
+			{ "pageid": 12, "ns": 120, "title": "Item:Q11" },
+			{ "pageid": 13, "ns": 120, "title": "Item:Q12" },
+			{ "pageid": 14, "ns": 120, "title": "Item:Q13" }
+		]
+	}
+}
