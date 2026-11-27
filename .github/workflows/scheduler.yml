@@ -3,10 +3,12 @@ name: Scheduler Lint & Test
 on:
   pull_request:
     paths-ignore:
-      - "frontend/**"
       - "backend/**"
-      - ".github/workflows/frontend.yml"
+      - "docs/**"
+      - "frontend/**"
       - ".github/workflows/backend.yml"
+      - ".github/workflows/docs.yml"
+      - ".github/workflows/frontend.yml"
 
 jobs:
   format-check-scheduler:

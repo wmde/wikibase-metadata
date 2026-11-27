@@ -4,8 +4,10 @@ on:
   pull_request:
     paths-ignore:
       - "backend/**"
+      - "docs/**"
       - "scheduler/**"
       - ".github/workflows/backend.yml"
+      - ".github/workflows/docs.yml"
       - ".github/workflows/scheduler.yml"
 
 jobs:
