@@ -32,6 +32,7 @@ from resolvers import authenticate
 
 @strawberry.type
 class ObservationMutation:
+    # pylint: disable=too-many-public-methods
     """Observation-Related Mutations"""
 
     @strawberry.mutation(
