@@ -24,11 +24,7 @@ async def execute_add_wikibase(name: str, urls: dict):
     return await test_schema.execute(
         ADD_WIKIBASE_QUERY,
         variable_values={
-            "wikibaseInput": {
-                "wikibaseName": name,
-                "urls": urls,
-                "optIn": True,
-            }
+            "wikibaseInput": {"wikibaseName": name, "urls": urls, "optIn": True}
         },
     )
 

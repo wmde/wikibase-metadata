@@ -20,12 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade():
     op.add_column(
         "wikibase",
-        sa.Column(
-            "opt_in",
-            sa.Boolean(),
-            nullable=False,
-            server_default=sa.false(),
-        ),
+        sa.Column("opt_in", sa.Boolean(), nullable=False, server_default=sa.false()),
     )
 
 
