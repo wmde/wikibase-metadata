@@ -61,8 +61,7 @@ async def wikibase_with_three_extensions(db_session):
 
         for name in ["ExtensionA", "ExtensionB", "ExtensionC"]:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.EXTENSION,
-                software_name=name,
+                software_type=WikibaseSoftwareType.EXTENSION, software_name=name
             )
             session.add(software)
             await session.flush()

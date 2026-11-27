@@ -24,16 +24,10 @@ async def test_get_revisions_data_full_data(wikibase_with_script_path, mocker):
         if (all_revision_match := ALL_REVISION_API_URL.match(query)) is not None:
             assert all_revision_match.group(1) == "120"
             if all_revision_match.group(2) == "":
-                with open(
-                    f"{DATA_DIRECTORY}/revision/page_1.json",
-                    mode="rb",
-                ) as data:
+                with open(f"{DATA_DIRECTORY}/revision/page_1.json", mode="rb") as data:
                     return MockResponse(query, 200, data.read())
             else:
-                with open(
-                    f"{DATA_DIRECTORY}/revision/page_2.json",
-                    mode="rb",
-                ) as data:
+                with open(f"{DATA_DIRECTORY}/revision/page_2.json", mode="rb") as data:
                     return MockResponse(query, 200, data.read())
 
         raise NotImplementedError(query)

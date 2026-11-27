@@ -66,9 +66,7 @@ def get_total_statistics_query(
             onclause=WikibaseStatisticsObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )
-        .where(
-            WikibaseStatisticsObservationModel.returned_data,
-        )
+        .where(WikibaseStatisticsObservationModel.returned_data)
         .subquery()
     )
     query = select(

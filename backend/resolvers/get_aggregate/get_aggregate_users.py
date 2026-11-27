@@ -119,9 +119,7 @@ def get_total_user_query(
             onclause=WikibaseUserObservationModel.wikibase_id
             == filtered_wikibase_subquery.c.id,
         )
-        .where(
-            WikibaseUserObservationModel.returned_data,
-        )
+        .where(WikibaseUserObservationModel.returned_data)
         .subquery()
     )
     query = select(

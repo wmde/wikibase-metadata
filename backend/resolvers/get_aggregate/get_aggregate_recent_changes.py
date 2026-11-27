@@ -6,9 +6,7 @@ from sqlalchemy import Select, and_, select, func
 from data import get_async_session
 from model.database import WikibaseRecentChangesObservationModel
 from model.strawberry.input import WikibaseFilterInput
-from model.strawberry.output import (
-    WikibaseRecentChangesAggregateStrawberryModel,
-)
+from model.strawberry.output import WikibaseRecentChangesAggregateStrawberryModel
 from resolvers.util import get_filtered_wikibase_query
 
 
@@ -64,9 +62,7 @@ def get_total_recent_changes_query(
             onclause=WikibaseRecentChangesObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )
-        .where(
-            WikibaseRecentChangesObservationModel.returned_data,
-        )
+        .where(WikibaseRecentChangesObservationModel.returned_data)
         .subquery()
     )
     query = select(

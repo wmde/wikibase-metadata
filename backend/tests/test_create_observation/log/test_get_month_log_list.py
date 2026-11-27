@@ -1,6 +1,6 @@
 """Test get_month_log_list_from_url"""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from freezegun import freeze_time
 import pytest
@@ -9,7 +9,7 @@ from fetch_data import WIKIBASE_API_TIMESTAMP_FORMAT
 from fetch_data.api_data.log_data.fetch_log_data import get_month_log_list
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_one_pull(mocker):
@@ -40,18 +40,18 @@ async def test_get_month_log_list_from_url_one_pull(mocker):
             {"query": {"logevents": mock_logs[50:]}},
         ],
     )
-    results = await get_month_log_list("example.com", datetime.now())
+    results = await get_month_log_list("example.com", datetime.now(timezone.utc))
     assert len(results) == 31
 
     newest_log = max(results, key=lambda x: x.log_date)
-    assert newest_log.log_date == datetime(2024, 3, 1)
+    assert newest_log.log_date == datetime(2024, 3, 1, tzinfo=timezone.utc)
     assert newest_log.age() == 0
     oldest_log = min(results, key=lambda x: x.log_date)
-    assert oldest_log.log_date == datetime(2024, 1, 31)
+    assert oldest_log.log_date == datetime(2024, 1, 31, tzinfo=timezone.utc)
     assert oldest_log.age() == 30
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_two_pulls(mocker):
@@ -82,18 +82,18 @@ async def test_get_month_log_list_from_url_two_pulls(mocker):
             {"query": {"logevents": mock_logs[50:]}},
         ],
     )
-    results = await get_month_log_list("example.com", datetime.now())
+    results = await get_month_log_list("example.com", datetime.now(timezone.utc))
     assert len(results) == 62
 
     newest_log = max(results, key=lambda x: x.log_date)
-    assert newest_log.log_date == datetime(2024, 3, 1)
+    assert newest_log.log_date == datetime(2024, 3, 1, tzinfo=timezone.utc)
     assert newest_log.age() == 0
     oldest_log = min(results, key=lambda x: x.log_date)
-    assert oldest_log.log_date == datetime(2024, 1, 30, 12)
+    assert oldest_log.log_date == datetime(2024, 1, 30, 12, tzinfo=timezone.utc)
     assert oldest_log.age() == 30
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_more_pulls(mocker):
@@ -130,18 +130,18 @@ async def test_get_month_log_list_from_url_more_pulls(mocker):
         "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
         side_effect=mock_side_effects,
     )
-    results = await get_month_log_list("example.com", datetime.now())
+    results = await get_month_log_list("example.com", datetime.now(timezone.utc))
     assert len(results) == 2626
 
     newest_log = max(results, key=lambda x: x.log_date)
-    assert newest_log.log_date == datetime(2024, 3, 1)
+    assert newest_log.log_date == datetime(2024, 3, 1, tzinfo=timezone.utc)
     assert newest_log.age() == 0
     oldest_log = min(results, key=lambda x: x.log_date)
-    assert oldest_log.log_date == datetime(2024, 1, 30, 0, 15)
+    assert oldest_log.log_date == datetime(2024, 1, 30, 0, 15, tzinfo=timezone.utc)
     assert oldest_log.age() == 30
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_get_month_log_list_from_url_oldest_one_pull(mocker):
@@ -172,12 +172,14 @@ async def test_get_month_log_list_from_url_oldest_one_pull(mocker):
             {"query": {"logevents": mock_logs[50:]}},
         ],
     )
-    results = await get_month_log_list("example.com", datetime(2020, 3, 1), oldest=True)
+    results = await get_month_log_list(
+        "example.com", datetime(2020, 3, 1, tzinfo=timezone.utc), oldest=True
+    )
     assert len(results) == 31
 
     newest_log = max(results, key=lambda x: x.log_date)
-    assert newest_log.log_date == datetime(2020, 3, 31)
+    assert newest_log.log_date == datetime(2020, 3, 31, tzinfo=timezone.utc)
     assert newest_log.age() == 1431
     oldest_log = min(results, key=lambda x: x.log_date)
-    assert oldest_log.log_date == datetime(2020, 3, 1)
+    assert oldest_log.log_date == datetime(2020, 3, 1, tzinfo=timezone.utc)
     assert oldest_log.age() == 1461

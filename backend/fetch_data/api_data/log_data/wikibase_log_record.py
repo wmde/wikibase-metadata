@@ -1,6 +1,6 @@
 """Wikibase Log Record"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from fetch_data.api_data.constant import WIKIBASE_API_TIMESTAMP_FORMAT
@@ -18,13 +18,13 @@ class WikibaseLogRecord:
 
     def age(self) -> int:
         """Age in Days"""
-        return (datetime.today() - self.log_date).days
+        return (datetime.now(timezone.utc) - self.log_date).days
 
     def __init__(self, record: dict):
         self.id = record["logid"]
         self.log_date = datetime.strptime(
             record["timestamp"], WIKIBASE_API_TIMESTAMP_FORMAT
-        )
+        ).replace(tzinfo=timezone.utc)
         self.user = record["user"] if "user" in record else None
         try:
             self.log_type = compile_log_type(record)

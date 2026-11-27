@@ -51,8 +51,7 @@ async def wikibase_with_manifest(db_session):
         await session.refresh(obs)
 
         version = WikibaseSoftwareVersionModel(
-            software=manifest_software,
-            version="0.0.1",
+            software=manifest_software, version="0.0.1"
         )
         version.wikibase_software_version_observation_id = obs.id
         session.add(version)

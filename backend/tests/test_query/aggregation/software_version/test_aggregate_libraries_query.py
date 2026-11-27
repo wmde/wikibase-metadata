@@ -65,8 +65,7 @@ async def wikibase_with_three_libraries(db_session):
             ("lib/c", "3.0.0"),
         ]:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.LIBRARY,
-                software_name=name,
+                software_type=WikibaseSoftwareType.LIBRARY, software_name=name
             )
             session.add(software)
             await session.flush()

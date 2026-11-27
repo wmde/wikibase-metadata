@@ -163,7 +163,7 @@ async def wikibase_with_four_log_observations(db_session):
     }
 
 
-@freeze_time(datetime(2024, 4, 1))
+@freeze_time(datetime(2024, 4, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.query

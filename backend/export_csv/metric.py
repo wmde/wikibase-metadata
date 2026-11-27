@@ -53,7 +53,7 @@ def get_metrics_query() -> Select:
                     and_(
                         # WikibaseModel.wikibase_type != WikibaseType.CLOUD,
                         WikibaseModel.wikibase_type
-                        != WikibaseType.TEST,
+                        != WikibaseType.TEST
                     ),
                 ),
             )

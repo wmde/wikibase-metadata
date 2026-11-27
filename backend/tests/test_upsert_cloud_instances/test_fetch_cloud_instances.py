@@ -21,8 +21,7 @@ async def test_fetch_cloud_instances(mocker):
     ) as instances_json:
 
         mocker.patch(
-            "requests.get",
-            side_effect=[MockResponse("", 200, instances_json.read())],
+            "requests.get", side_effect=[MockResponse("", 200, instances_json.read())]
         )
 
         instances = await fetch_cloud_instances()
@@ -69,8 +68,7 @@ async def test_fetch_cloud_instances_broken_response(mocker):
     ) as instances_json:
 
         mocker.patch(
-            "requests.get",
-            side_effect=[MockResponse("", 200, instances_json.read())],
+            "requests.get", side_effect=[MockResponse("", 200, instances_json.read())]
         )
 
         instances = await fetch_cloud_instances()

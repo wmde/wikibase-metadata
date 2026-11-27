@@ -41,8 +41,7 @@ async def test_insert_cloud_instances(db_session, mocker):
     ) as instances_json:
 
         mocker.patch(
-            "requests.get",
-            side_effect=[MockResponse("", 200, instances_json.read())],
+            "requests.get", side_effect=[MockResponse("", 200, instances_json.read())]
         )
 
         # check the wikibase instance is NOT in the database
@@ -99,8 +98,7 @@ async def test_update_cloud_instances(
     ) as instances_json:
 
         mocker.patch(
-            "requests.get",
-            side_effect=[MockResponse("", 200, instances_json.read())],
+            "requests.get", side_effect=[MockResponse("", 200, instances_json.read())]
         )
 
         async with AsyncSession(bind=db_session) as async_session:
@@ -153,8 +151,7 @@ async def test_transform_to_cloud_instance(
     ) as instances_json:
 
         mocker.patch(
-            "requests.get",
-            side_effect=[MockResponse("", 200, instances_json.read())],
+            "requests.get", side_effect=[MockResponse("", 200, instances_json.read())]
         )
 
         async with AsyncSession(bind=db_session) as async_session:

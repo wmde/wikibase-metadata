@@ -1,6 +1,6 @@
 """Test get_recent_changes_list"""
 
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta, UTC, timezone
 
 from freezegun import freeze_time
 import pytest
@@ -9,7 +9,7 @@ from fetch_data import WIKIBASE_API_TIMESTAMP_FORMAT
 from fetch_data.api_data.recent_changes_data import get_recent_changes_list
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 async def test_get_recent_changes_list_one_pull(mocker):
     """Test One-Pull Scenario"""
@@ -49,7 +49,7 @@ async def test_get_recent_changes_list_one_pull(mocker):
     assert oldest_change.timestamp == datetime(2024, 1, 31, tzinfo=UTC)
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 async def test_get_recent_changes_list_multiple_pulls(mocker):
     """Test Multiple-Pull Scenario"""
@@ -94,10 +94,7 @@ async def test_get_recent_changes_list_empty_response(mocker):
 
     mocker.patch(
         "fetch_data.api_data.recent_changes_data.fetch_recent_changes_data.fetch_api_data",
-        return_value={
-            "batchcomplete": "",
-            "query": {"recentchanges": []},
-        },
+        return_value={"batchcomplete": "", "query": {"recentchanges": []}},
     )
 
     results = await get_recent_changes_list("example.com")

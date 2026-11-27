@@ -20,7 +20,7 @@ LOG_DATA_MUTATION = """mutation MyMutation($wikibaseId: Int!, $firstMonth: Boole
 }"""
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.mutation
@@ -144,7 +144,7 @@ async def test_create_log_observation_first_success(
         assert len(after.log_type_records) == 1
 
 
-@freeze_time(datetime(2024, 3, 1))
+@freeze_time(datetime(2024, 3, 1, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 @pytest.mark.mutation
@@ -219,7 +219,7 @@ async def test_create_log_observation_last_success(
     assert result.data["fetchLogData"]
 
 
-@freeze_time(datetime(2024, 3, 2))
+@freeze_time(datetime(2024, 3, 2, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_first_observation_error(
@@ -260,7 +260,7 @@ async def test_create_log_first_observation_error(
         assert after.returned_data is False
 
 
-@freeze_time(datetime(2024, 3, 2))
+@freeze_time(datetime(2024, 3, 2, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_last_observation_error(
@@ -281,7 +281,7 @@ async def test_create_log_last_observation_error(
     assert success is False
 
 
-@freeze_time(datetime(2024, 3, 3))
+@freeze_time(datetime(2024, 3, 3, tzinfo=timezone.utc))
 @pytest.mark.asyncio
 @pytest.mark.log
 async def test_create_log_last_observation_no_last_month(

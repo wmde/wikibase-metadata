@@ -95,9 +95,7 @@ def get_query(
             onclause=WikibaseSoftwareVersionObservationModel.wikibase_id
             == filtered_subquery.c.id,
         )
-        .where(
-            WikibaseSoftwareVersionObservationModel.returned_data,
-        )
+        .where(WikibaseSoftwareVersionObservationModel.returned_data)
         .subquery()
     )
 

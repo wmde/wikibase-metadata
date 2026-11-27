@@ -58,8 +58,7 @@ async def test_update_all_user_observations_fail(
     )
 
     result = await test_schema.execute(
-        ALL_USER_DATA_MUTATION,
-        context_value=get_mock_context("test-auth-token"),
+        ALL_USER_DATA_MUTATION, context_value=get_mock_context("test-auth-token")
     )
     assert result.errors is None
     assert result.data is not None

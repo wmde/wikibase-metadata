@@ -24,11 +24,7 @@ async def execute_add_wikibase(name: str, urls: dict):
     return await test_schema.execute(
         ADD_WIKIBASE_QUERY,
         variable_values={
-            "wikibaseInput": {
-                "wikibaseName": name,
-                "urls": urls,
-                "optIn": True,
-            }
+            "wikibaseInput": {"wikibaseName": name, "urls": urls, "optIn": True}
         },
     )
 
@@ -121,10 +117,7 @@ async def test_updates_wikibase_if_base_url_already_exists(
             "wikibaseInput": {
                 "wikibaseName": "Example Wikibase 2",
                 "description": "Updated description",
-                "urls": {
-                    "baseUrl": base_url,
-                    "articlePath": "wiki",
-                },
+                "urls": {"baseUrl": base_url, "articlePath": "wiki"},
                 "optIn": True,
             }
         },
@@ -342,10 +335,7 @@ async def test_normalizes_urls(
                 "country": "Germany",
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
-                "urls": {
-                    "baseUrl": f"http://{base_url}",
-                    "articlePath": "/wiki",
-                },
+                "urls": {"baseUrl": f"http://{base_url}", "articlePath": "/wiki"},
                 "optIn": True,
             }
         },
@@ -373,10 +363,7 @@ async def test_normalizes_urls(
                     "country": "",
                     "region": "",
                     "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
-                    "urls": {
-                        "baseUrl": url,
-                        "articlePath": "wiki",
-                    },
+                    "urls": {"baseUrl": url, "articlePath": "wiki"},
                     "optIn": True,
                 }
             },
@@ -427,10 +414,7 @@ async def test_marks_localhost_urls_as_test(
                 "country": "Germany",
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
-                "urls": {
-                    "baseUrl": "http://localhost:8000",
-                    "articlePath": "/wiki",
-                },
+                "urls": {"baseUrl": "http://localhost:8000", "articlePath": "/wiki"},
                 "optIn": True,
             }
         },

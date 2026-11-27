@@ -20,20 +20,12 @@ from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
             False,
         ),
         (
-            {
-                "type": "edit",
-                "timestamp": "2024-01-01T00:00:00Z",
-                "user": "TestUser",
-            },
+            {"type": "edit", "timestamp": "2024-01-01T00:00:00Z", "user": "TestUser"},
             "TestUser",
             False,
         ),
         (
-            {
-                "type": "edit",
-                "timestamp": "2024-01-01T00:00:00Z",
-                "userid": 123,
-            },
+            {"type": "edit", "timestamp": "2024-01-01T00:00:00Z", "userid": 123},
             "__generated_user_string__user:123",
             False,
         ),
@@ -58,10 +50,7 @@ from fetch_data.api_data.recent_changes_data import WikibaseRecentChangeRecord
             False,
         ),
         (
-            {
-                "type": "edit",
-                "timestamp": "2024-01-01T00:00:00Z",
-            },
+            {"type": "edit", "timestamp": "2024-01-01T00:00:00Z"},
             "__unknown_user__",
             False,
         ),

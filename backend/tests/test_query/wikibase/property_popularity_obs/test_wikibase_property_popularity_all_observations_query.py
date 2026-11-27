@@ -82,10 +82,7 @@ async def test_wikibase_property_popularity_all_observations_query(
     )
 
     for index, (expected_id, expected_property_url, expected_usage_count) in enumerate(
-        [
-            (data["p1_id"], "P1", 12),
-            (data["p14_id"], "P14", 1),
-        ]
+        [(data["p1_id"], "P1", 12), (data["p14_id"], "P14", 1)]
     ):
         assert_property_count(
             property_popularity_observation_list[1]["propertyPopularityCounts"][index],

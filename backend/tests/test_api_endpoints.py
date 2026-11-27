@@ -58,48 +58,31 @@ OBSERVATION_ENDPOINTS = [
 ]
 
 
-@pytest.mark.parametrize(
-    ("endpoint", "function_name"),
-    OBSERVATION_ENDPOINTS,
-)
+@pytest.mark.parametrize(("endpoint", "function_name"), OBSERVATION_ENDPOINTS)
 def test_observation_update_endpoint(endpoint, function_name, monkeypatch):
     """Test an observation update endpoint returns its task result."""
     monkeypatch.setenv("SCHEDULER_TOKEN", "test-token")
 
     result = SimpleNamespace(success=3, failure=1, total=4)
 
-    with patch(
-        f"fetch_data.{function_name}",
-        new_callable=AsyncMock,
-    ) as mock_update:
+    with patch(f"fetch_data.{function_name}", new_callable=AsyncMock) as mock_update:
         mock_update.return_value = result
 
-        response = client.post(
-            endpoint,
-            headers={"X-Scheduler-Token": "test-token"},
-        )
+        response = client.post(endpoint, headers={"X-Scheduler-Token": "test-token"})
 
     assert response.status_code == 200
-    assert response.json() == {
-        "success": 3,
-        "failure": 1,
-        "total": 4,
-    }
+    assert response.json() == {"success": 3, "failure": 1, "total": 4}
     mock_update.assert_awaited_once()
 
 
 @pytest.mark.parametrize(
-    "endpoint",
-    [endpoint for endpoint, _ in OBSERVATION_ENDPOINTS],
+    "endpoint", [endpoint for endpoint, _ in OBSERVATION_ENDPOINTS]
 )
 def test_observation_update_endpoint_rejects_invalid_token(endpoint, monkeypatch):
     """Test observation update endpoints reject invalid scheduler tokens."""
     monkeypatch.setenv("SCHEDULER_TOKEN", "correct-token")
 
-    response = client.post(
-        endpoint,
-        headers={"X-Scheduler-Token": "invalid-token"},
-    )
+    response = client.post(endpoint, headers={"X-Scheduler-Token": "invalid-token"})
 
     assert response.status_code == 403
     assert response.json() == {"detail": "Forbidden"}

@@ -455,8 +455,7 @@ class WikibaseModel(ModelBase):
             self.sparql_endpoint_url.url = sparql_endpoint_url
         else:
             self.sparql_endpoint_url = WikibaseURLModel(
-                url=sparql_endpoint_url,
-                url_type=WikibaseURLType.SPARQL_ENDPOINT_URL,
+                url=sparql_endpoint_url, url_type=WikibaseURLType.SPARQL_ENDPOINT_URL
             )
 
     def set_sparql_frontend_url(self, sparql_frontend_url: str):

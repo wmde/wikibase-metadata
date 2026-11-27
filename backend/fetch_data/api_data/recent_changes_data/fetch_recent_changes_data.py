@@ -10,9 +10,7 @@ from fetch_data.utils import dict_to_url, fetch_api_data
 
 
 def get_recent_changes_param_string(
-    limit: Optional[int] = None,
-    continue_from: Optional[str] = None,
-    bots: bool = False,
+    limit: Optional[int] = None, continue_from: Optional[str] = None, bots: bool = False
 ) -> str:
     """Recent Changes Page URL Parameters"""
     parameters: dict = {

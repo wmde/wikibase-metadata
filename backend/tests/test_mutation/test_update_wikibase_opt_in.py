@@ -40,10 +40,7 @@ async def test_update_wikibase_opt_in(wikibase, db_session):
     # Opt out
     opt_out_result = await test_schema.execute(
         UPDATE_WIKIBASE_OPT_IN_MUTATION,
-        variable_values={
-            "wikibaseId": wikibase.id,
-            "optIn": False,
-        },
+        variable_values={"wikibaseId": wikibase.id, "optIn": False},
         context_value=get_mock_context("test-auth-token"),
     )
 
@@ -63,10 +60,7 @@ async def test_update_wikibase_opt_in(wikibase, db_session):
     # Opt back in
     opt_in_result = await test_schema.execute(
         UPDATE_WIKIBASE_OPT_IN_MUTATION,
-        variable_values={
-            "wikibaseId": wikibase.id,
-            "optIn": True,
-        },
+        variable_values={"wikibaseId": wikibase.id, "optIn": True},
         context_value=get_mock_context("test-auth-token"),
     )
 

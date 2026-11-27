@@ -60,13 +60,7 @@ async def test_aggregate_languages_query(
         expected_total,
         expected_primary,
         expected_additional,
-    ) in enumerate(
-        [
-            ("French", 1, 1, 0),
-            ("Cymru", 1, 0, 1),
-            ("Deutsch", 1, 0, 1),
-        ]
-    ):
+    ) in enumerate([("French", 1, 1, 0), ("Cymru", 1, 0, 1), ("Deutsch", 1, 0, 1)]):
         assert_layered_property_value(
             result.data,
             ["aggregateLanguagePopularity", "data", i, "language"],

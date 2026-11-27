@@ -56,10 +56,7 @@ async def test_wikibase_property_popularity_most_recent_observation_query(
     assert_layered_property_count(most_recent, ["propertyPopularityCounts"], 2)
 
     for index, (expected_id, expected_property_url, expected_usage_count) in enumerate(
-        [
-            (data["p1_id"], "P1", 12),
-            (data["p14_id"], "P14", 1),
-        ]
+        [(data["p1_id"], "P1", 12), (data["p14_id"], "P14", 1)]
     ):
         assert_property_count(
             most_recent["propertyPopularityCounts"][index],

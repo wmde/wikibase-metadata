@@ -15,10 +15,7 @@ from model.database.wikibase_observation import (
 )
 
 
-async def delete_wikibase_observations(
-    session: AsyncSession,
-    wikibase_id: int,
-):
+async def delete_wikibase_observations(session: AsyncSession, wikibase_id: int):
     """Delete all observations for a Wikibase."""
 
     observation_models = [

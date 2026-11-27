@@ -43,16 +43,11 @@ query MyQuery($pageNumber: Int!, $pageSize: Int!, $wikibaseFilter: WikibaseFilte
 async def wikibase_with_three_named_skins(db_session):
     """Create a wikibase with 3 specific skin software versions"""
     async with AsyncSession(bind=db_session) as session:
-        skin_data = [
-            ("MonoBook", None),
-            ("Timeless", "0.8.9"),
-            ("Vector", None),
-        ]
+        skin_data = [("MonoBook", None), ("Timeless", "0.8.9"), ("Vector", None)]
         skins = {}
         for name, _ in skin_data:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.SKIN,
-                software_name=name,
+                software_type=WikibaseSoftwareType.SKIN, software_name=name
             )
             session.add(software)
             await session.flush()
@@ -135,8 +130,7 @@ async def wikibase_with_three_skins(db_session):
         skins = {}
         for name in skin_names:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.SKIN,
-                software_name=name,
+                software_type=WikibaseSoftwareType.SKIN, software_name=name
             )
             session.add(software)
             await session.flush()

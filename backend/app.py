@@ -51,9 +51,7 @@ async def metric_csv(authorization: Optional[str] = None):
 
 
 @app.post("/internal/update-missing-script-paths")
-async def update_missing_script_paths_endpoint(
-    x_scheduler_token: str = Header(),
-):
+async def update_missing_script_paths_endpoint(x_scheduler_token: str = Header()):
     """Scheduler - Update Missing Script Paths"""
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
@@ -63,17 +61,11 @@ async def update_missing_script_paths_endpoint(
 
     result = await update_missing_script_paths()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_software_data")
-async def update_software_data_endpoint(
-    x_scheduler_token: str = Header(),
-):
+async def update_software_data_endpoint(x_scheduler_token: str = Header()):
     """Scheduler - Update Software Data"""
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
         raise HTTPException(status_code=403, detail="Forbidden")
@@ -82,11 +74,7 @@ async def update_software_data_endpoint(
 
     result = await update_software_data()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_cloud_instances")
@@ -102,17 +90,11 @@ async def update_out_of_date_cloud_instances_endpoint(
 
     result = await update_out_of_date_cloud_instances()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_missing_sparql_urls")
-async def update_missing_sparql_urls_endpoint(
-    x_scheduler_token: str = Header(),
-):
+async def update_missing_sparql_urls_endpoint(x_scheduler_token: str = Header()):
     """Scheduler - Update Missing SparQL URLs"""
 
     if x_scheduler_token != os.environ["SCHEDULER_TOKEN"]:
@@ -122,11 +104,7 @@ async def update_missing_sparql_urls_endpoint(
 
     result = await update_missing_sparql_urls()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_connectivity_observations")
@@ -142,11 +120,7 @@ async def update_out_of_date_connectivity_observations_endpoint(
 
     result = await update_out_of_date_connectivity_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_log_first_observations")
@@ -162,11 +136,7 @@ async def update_out_of_date_log_first_observations_endpoint(
 
     result = await update_out_of_date_log_first_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_log_last_observations")
@@ -182,11 +152,7 @@ async def update_out_of_date_log_last_observations_endpoint(
 
     result = await update_out_of_date_log_last_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_recent_changes_observations")
@@ -202,11 +168,7 @@ async def update_out_of_date_recent_changes_observations_endpoint(
 
     result = await update_out_of_date_recent_changes_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_property_observations")
@@ -222,11 +184,7 @@ async def update_out_of_date_property_observations_endpoint(
 
     result = await update_out_of_date_property_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_quantity_observations")
@@ -242,11 +200,7 @@ async def update_out_of_date_quantity_observations_endpoint(
 
     result = await update_out_of_date_quantity_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_software_observations")
@@ -262,11 +216,7 @@ async def update_out_of_date_software_observations_endpoint(
 
     result = await update_out_of_date_software_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_stats_observations")
@@ -282,11 +232,7 @@ async def update_out_of_date_stats_observations_endpoint(
 
     result = await update_out_of_date_stats_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_time_to_first_value_observations")
@@ -302,11 +248,7 @@ async def update_out_of_date_time_to_first_value_observations_endpoint(
 
     result = await update_out_of_date_time_to_first_value_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_user_observations")
@@ -322,11 +264,7 @@ async def update_out_of_date_user_observations_endpoint(
 
     result = await update_out_of_date_user_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}
 
 
 @app.post("/internal/update_out_of_date_external_identifier_observations")
@@ -342,8 +280,4 @@ async def update_out_of_date_external_identifier_observations_endpoint(
 
     result = await update_out_of_date_external_identifier_observations()
 
-    return {
-        "success": result.success,
-        "failure": result.failure,
-        "total": result.total,
-    }
+    return {"success": result.success, "failure": result.failure, "total": result.total}

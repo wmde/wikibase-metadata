@@ -19,8 +19,7 @@ async def wikibase_software(db_session):
     """Create two software entries with different types"""
     async with AsyncSession(bind=db_session) as session:
         software = WikibaseSoftwareModel(
-            software_type=WikibaseSoftwareType.EXTENSION,
-            software_name="Test Extension",
+            software_type=WikibaseSoftwareType.EXTENSION, software_name="Test Extension"
         )
 
         session.add(software)
@@ -104,12 +103,10 @@ async def two_software_different_types(db_session):
     """Create two software entries with different types"""
     async with AsyncSession(bind=db_session) as session:
         software1 = WikibaseSoftwareModel(
-            software_type=WikibaseSoftwareType.EXTENSION,
-            software_name="Test Extension",
+            software_type=WikibaseSoftwareType.EXTENSION, software_name="Test Extension"
         )
         software2 = WikibaseSoftwareModel(
-            software_type=WikibaseSoftwareType.SKIN,
-            software_name="Test Skin",
+            software_type=WikibaseSoftwareType.SKIN, software_name="Test Skin"
         )
         session.add(software1)
         session.add(software2)

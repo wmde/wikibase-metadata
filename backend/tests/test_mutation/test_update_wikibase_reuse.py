@@ -126,10 +126,7 @@ async def test_set_wikibase_reuse_false(
 
     update_result = await test_schema.execute(
         UPDATE_WIKIBASE_REUSE_MUTATION,
-        variable_values={
-            "wikibaseId": affecting_id,
-            "reuse": False,
-        },
+        variable_values={"wikibaseId": affecting_id, "reuse": False},
         context_value=get_mock_context("test-auth-token"),
     )
     assert update_result.errors is None
@@ -312,7 +309,5 @@ async def test_set_cloud_wikibase_reuse_true(
         after_adding_result.data, ["filtered", "meta", "totalCount"], expected_value=5
     )
     assert_layered_property_value(
-        after_adding_result.data,
-        ["unfiltered", "meta", "totalCount"],
-        expected_value=5,
+        after_adding_result.data, ["unfiltered", "meta", "totalCount"], expected_value=5
     )

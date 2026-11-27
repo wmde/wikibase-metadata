@@ -116,7 +116,7 @@ def upgrade() -> None:
             sa.select(software_id_subq.c.software_id)
             .where(
                 WikibaseSoftwareVersionModel.id
-                == software_id_subq.c.software_version_id,
+                == software_id_subq.c.software_version_id
             )
             .scalar_subquery()
         )

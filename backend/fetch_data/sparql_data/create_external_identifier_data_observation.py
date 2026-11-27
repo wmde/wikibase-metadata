@@ -86,10 +86,7 @@ async def compile_external_identifier_observation(
             ]["value"]
         )
 
-        logger.info(
-            "Fetching URL Properties Count",
-            extra={"wikibase": wikibase.id},
-        )
+        logger.info("Fetching URL Properties Count", extra={"wikibase": wikibase.id})
         url_properties_count_results = await get_sparql_results(
             wikibase.sparql_endpoint_url.url,
             COUNT_URL_PROPERTIES_QUERY,
@@ -99,10 +96,7 @@ async def compile_external_identifier_observation(
             url_properties_count_results["results"]["bindings"][0]["count"]["value"]
         )
 
-        logger.info(
-            "Fetching URL Statements Count",
-            extra={"wikibase": wikibase.id},
-        )
+        logger.info("Fetching URL Statements Count", extra={"wikibase": wikibase.id})
         url_statements_count_results = await get_sparql_results(
             wikibase.sparql_endpoint_url.url,
             COUNT_URL_STATEMENTS_QUERY,

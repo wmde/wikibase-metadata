@@ -53,8 +53,7 @@ async def five_wikibases_with_software_versions(db_session):
         software_entries = {}
         for name in software_names:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.SOFTWARE,
-                software_name=name,
+                software_type=WikibaseSoftwareType.SOFTWARE, software_name=name
             )
             session.add(software)
             await session.flush()
@@ -146,14 +145,7 @@ async def test_aggregate_software_query(
                 None,
                 None,
             ),
-            (
-                "SoftwareE",
-                1,
-                "5.4",
-                (5, 4, None),
-                datetime(2022, 12, 13, 5, 50),
-                None,
-            ),
+            ("SoftwareE", 1, "5.4", (5, 4, None), datetime(2022, 12, 13, 5, 50), None),
         ]
     ):
 

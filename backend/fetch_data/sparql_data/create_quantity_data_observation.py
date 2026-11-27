@@ -37,8 +37,7 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
         sparql_endpoint_url = wikibase.sparql_endpoint_url.url
 
     observation = await compile_quantity_observation(
-        wikibase_id=wikibase_id,
-        sparql_endpoint_url=sparql_endpoint_url,
+        wikibase_id=wikibase_id, sparql_endpoint_url=sparql_endpoint_url
     )
 
     async with get_async_session() as async_session:
@@ -62,8 +61,7 @@ async def create_quantity_observation(wikibase_id: int) -> bool:
 
 
 async def compile_quantity_observation(
-    wikibase_id: int,
-    sparql_endpoint_url: str,
+    wikibase_id: int, sparql_endpoint_url: str
 ) -> WikibaseQuantityObservationModel:
     """Compile Quantity Observation"""
 
@@ -71,9 +69,7 @@ async def compile_quantity_observation(
     try:
         logger.info("Fetching Property Count", extra={"wikibase": wikibase_id})
         property_count_results = await get_sparql_results(
-            sparql_endpoint_url,
-            COUNT_PROPERTIES_QUERY,
-            "COUNT_PROPERTIES_QUERY",
+            sparql_endpoint_url, COUNT_PROPERTIES_QUERY, "COUNT_PROPERTIES_QUERY"
         )
         observation.total_properties = int(
             property_count_results["results"]["bindings"][0]["count"]["value"]
@@ -81,9 +77,7 @@ async def compile_quantity_observation(
 
         logger.info("Fetching Item Count", extra={"wikibase": wikibase_id})
         item_count_results = await get_sparql_results(
-            sparql_endpoint_url,
-            COUNT_ITEMS_QUERY,
-            "COUNT_ITEMS_QUERY",
+            sparql_endpoint_url, COUNT_ITEMS_QUERY, "COUNT_ITEMS_QUERY"
         )
         observation.total_items = int(
             item_count_results["results"]["bindings"][0]["count"]["value"]
@@ -91,9 +85,7 @@ async def compile_quantity_observation(
 
         logger.info("Fetching Lexeme Count", extra={"wikibase": wikibase_id})
         lexeme_count_results = await get_sparql_results(
-            sparql_endpoint_url,
-            COUNT_LEXEMES_QUERY,
-            "COUNT_LEXEMES_QUERY",
+            sparql_endpoint_url, COUNT_LEXEMES_QUERY, "COUNT_LEXEMES_QUERY"
         )
         observation.total_lexemes = int(
             lexeme_count_results["results"]["bindings"][0]["count"]["value"]
@@ -101,9 +93,7 @@ async def compile_quantity_observation(
 
         logger.info("Fetching Triple Count", extra={"wikibase": wikibase_id})
         triple_count_results = await get_sparql_results(
-            sparql_endpoint_url,
-            COUNT_TRIPLES_QUERY,
-            "COUNT_TRIPLES_QUERY",
+            sparql_endpoint_url, COUNT_TRIPLES_QUERY, "COUNT_TRIPLES_QUERY"
         )
         observation.total_triples = int(
             triple_count_results["results"]["bindings"][0]["count"]["value"]
@@ -124,10 +114,7 @@ async def compile_quantity_observation(
         logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase_id})
         observation.returned_data = False
     except (EndPointInternalError, HTTPError, SPARQLResponseMalformed, URLError):
-        logger.warning(
-            "QuantityDataError",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.warning("QuantityDataError", extra={"wikibase": wikibase_id})
         observation.returned_data = False
 
     return observation

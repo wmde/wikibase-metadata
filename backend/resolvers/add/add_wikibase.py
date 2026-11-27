@@ -6,11 +6,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from data.database_connection import get_async_session
-from model.database import (
-    WikibaseCategoryModel,
-    WikibaseModel,
-    WikibaseURLModel,
-)
+from model.database import WikibaseCategoryModel, WikibaseModel, WikibaseURLModel
 from model.enum import WikibaseURLType
 from model.strawberry.input import WikibaseInput
 from model.strawberry.output import WikibaseStrawberryModel
@@ -84,16 +80,14 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
             base_url=clean_base_url,
             article_path=(
                 clean_up_url(
-                    wikibase_input.urls.article_path,
-                    WikibaseURLType.ARTICLE_PATH,
+                    wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH
                 )
                 if opted_in and wikibase_input.urls.article_path
                 else None
             ),
             script_path=(
                 clean_up_url(
-                    wikibase_input.urls.script_path,
-                    WikibaseURLType.SCRIPT_PATH,
+                    wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH
                 )
                 if opted_in and wikibase_input.urls.script_path
                 else None
@@ -138,9 +132,7 @@ async def add_wikibase(wikibase_input: WikibaseInput) -> WikibaseStrawberryModel
 
 
 async def assert_new_url(
-    async_session: AsyncSession,
-    input_url: Optional[str],
-    url_type: WikibaseURLType,
+    async_session: AsyncSession, input_url: Optional[str], url_type: WikibaseURLType
 ):
     """Assert URL Not in Database"""
 
@@ -155,9 +147,7 @@ async def assert_new_url(
 
 
 async def detach_sparql_urls(
-    async_session: AsyncSession,
-    sparql_urls: list[str],
-    keep_wikibase_id: Optional[int],
+    async_session: AsyncSession, sparql_urls: list[str], keep_wikibase_id: Optional[int]
 ):
     """Remove the given SPARQL URLs from whichever Wikibase currently owns them"""
 
@@ -167,10 +157,7 @@ async def detach_sparql_urls(
     query = select(WikibaseURLModel).where(
         WikibaseURLModel.url.in_(sparql_urls),
         WikibaseURLModel.url_type.in_(
-            [
-                WikibaseURLType.SPARQL_ENDPOINT_URL,
-                WikibaseURLType.SPARQL_FRONTEND_URL,
-            ]
+            [WikibaseURLType.SPARQL_ENDPOINT_URL, WikibaseURLType.SPARQL_FRONTEND_URL]
         ),
     )
 
@@ -184,9 +171,7 @@ async def detach_sparql_urls(
 
 
 async def update_wikibase(
-    async_session: AsyncSession,
-    wikibase_id: int,
-    wikibase_input: WikibaseInput,
+    async_session: AsyncSession, wikibase_id: int, wikibase_input: WikibaseInput
 ) -> WikibaseStrawberryModel:
     """Update Existing Wikibase"""
 
@@ -220,20 +205,14 @@ async def update_wikibase(
 
     if wikibase_input.urls.article_path is not None:
         model.set_article_path(
-            clean_up_url(
-                wikibase_input.urls.article_path,
-                WikibaseURLType.ARTICLE_PATH,
-            )
+            clean_up_url(wikibase_input.urls.article_path, WikibaseURLType.ARTICLE_PATH)
         )
     else:
         model.article_path = None
 
     if wikibase_input.urls.script_path is not None:
         model.set_script_path(
-            clean_up_url(
-                wikibase_input.urls.script_path,
-                WikibaseURLType.SCRIPT_PATH,
-            )
+            clean_up_url(wikibase_input.urls.script_path, WikibaseURLType.SCRIPT_PATH)
         )
     else:
         model.script_path = None

@@ -49,8 +49,7 @@ async def test_update_all_quantity_observations_fail(ten_wikibases_with_sparql, 
     )
 
     result = await test_schema.execute(
-        ALL_QUANTITY_DATA_MUTATION,
-        context_value=get_mock_context("test-auth-token"),
+        ALL_QUANTITY_DATA_MUTATION, context_value=get_mock_context("test-auth-token")
     )
     assert result.errors is None
     assert result.data is not None

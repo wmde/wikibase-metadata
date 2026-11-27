@@ -23,18 +23,18 @@ def upgrade() -> None:
         batch_op.add_column(
             sa.Column(
                 "total_external_identifier_properties", sa.Integer(), nullable=True
-            ),
+            )
         )
         batch_op.add_column(
             sa.Column(
                 "total_external_identifier_statements", sa.Integer(), nullable=True
-            ),
+            )
         )
         batch_op.add_column(
-            sa.Column("total_url_properties", sa.Integer(), nullable=True),
+            sa.Column("total_url_properties", sa.Integer(), nullable=True)
         )
         batch_op.add_column(
-            sa.Column("total_url_statements", sa.Integer(), nullable=True),
+            sa.Column("total_url_statements", sa.Integer(), nullable=True)
         )
 
 

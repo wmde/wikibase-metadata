@@ -72,8 +72,7 @@ async def extension_software_data(db_session):
         software_ids = []
         for ext in extensions:
             software = WikibaseSoftwareModel(
-                software_type=WikibaseSoftwareType.EXTENSION,
-                software_name=ext["name"],
+                software_type=WikibaseSoftwareType.EXTENSION, software_name=ext["name"]
             )
             software.url = ext["url"]
             software.data_fetched = datetime(2024, 3, 1, tzinfo=timezone.utc)

@@ -145,8 +145,7 @@ async def wikibases(db_session):  # pylint: disable=too-many-locals, too-many-st
         session.add(rc_obs)
 
         mediawiki_software = WikibaseSoftwareModel(
-            software_type=WikibaseSoftwareType.SOFTWARE,
-            software_name="MediaWiki",
+            software_type=WikibaseSoftwareType.SOFTWARE, software_name="MediaWiki"
         )
         session.add(mediawiki_software)
         await session.flush()
@@ -167,15 +166,13 @@ async def wikibases(db_session):  # pylint: disable=too-many-locals, too-many-st
         await session.refresh(sv_obs)
 
         mediawiki_version = WikibaseSoftwareVersionModel(
-            software=mediawiki_software,
-            version="1.39.8",
+            software=mediawiki_software, version="1.39.8"
         )
         mediawiki_version.wikibase_software_version_observation_id = sv_obs.id
         session.add(mediawiki_version)
 
         manifest_version = WikibaseSoftwareVersionModel(
-            software=manifest_software,
-            version="1.0.0",
+            software=manifest_software, version="1.0.0"
         )
         manifest_version.wikibase_software_version_observation_id = sv_obs.id
         session.add(manifest_version)
@@ -187,8 +184,7 @@ async def wikibases(db_session):  # pylint: disable=too-many-locals, too-many-st
 
 @pytest.mark.asyncio
 async def test_export_metric_csv(
-    wikibases,
-    db_session,
+    wikibases, db_session
 ):  # pylint: disable=redefined-outer-name, unused-argument
     """Test Export Metric CSV"""
 

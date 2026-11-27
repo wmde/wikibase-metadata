@@ -52,10 +52,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
     site_implicit_user_groups = set()
 
     try:
-        logger.debug(
-            "User: Attempting to Fetch Data",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.debug("User: Attempting to Fetch Data", extra={"wikibase": wikibase_id})
         site_user_data = await get_all_user_data(action_api_url)
         observation.returned_data = True
     except (
@@ -67,29 +64,17 @@ async def create_user_observation(wikibase_id: int) -> bool:
         SSLError,
         TooManyRedirects,
     ):
-        logger.error(
-            "SuspectWikibaseOfflineError",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.error("SuspectWikibaseOfflineError", extra={"wikibase": wikibase_id})
         observation.returned_data = False
     except (ChunkedEncodingError, IncompleteRead, ProtocolError, ValueError):
-        logger.warning(
-            "UserDataError",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.warning("UserDataError", extra={"wikibase": wikibase_id})
         observation.returned_data = False
 
     if observation.returned_data:
-        logger.debug(
-            "User: Data Fetch Success",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.debug("User: Data Fetch Success", extra={"wikibase": wikibase_id})
         observation.total_users = len(site_user_data)
 
-        logger.debug(
-            "User: Compiling Groups",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.debug("User: Compiling Groups", extra={"wikibase": wikibase_id})
         site_implicit_user_groups = compile_all_implicit_user_groups(site_user_data)
         site_group_counts = compile_user_group_counts(site_user_data)
 
@@ -122,10 +107,7 @@ async def create_user_observation(wikibase_id: int) -> bool:
                     )
                 )
 
-        logger.debug(
-            "User: Saving Data",
-            extra={"wikibase": wikibase_id},
-        )
+        logger.debug("User: Saving Data", extra={"wikibase": wikibase_id})
 
         wikibase = await get_wikibase_from_database(
             async_session=async_session,
