@@ -24,10 +24,14 @@ async def test_fetch_total_page_count_two_pages(wikibase_with_script_path, mocke
         if (all_pages_match := ALL_PAGES_API_URL.match(query)) is not None:
             assert all_pages_match.group(1) == "120"
             if all_pages_match.group(2) == "":
-                with open(f"{DATA_DIRECTORY}/allpages/page_1.json", mode="rb") as data:
+                with open(
+                    f"{DATA_DIRECTORY}/allpages/items/page_1.json", mode="rb"
+                ) as data:
                     return MockResponse(query, 200, data.read())
             else:
-                with open(f"{DATA_DIRECTORY}/allpages/page_2.json", mode="rb") as data:
+                with open(
+                    f"{DATA_DIRECTORY}/allpages/items/page_2.json", mode="rb"
+                ) as data:
                     return MockResponse(query, 200, data.read())
 
         raise NotImplementedError(query)
