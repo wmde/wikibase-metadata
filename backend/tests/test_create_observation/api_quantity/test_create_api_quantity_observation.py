@@ -1,6 +1,7 @@
 import re
 
 import pytest
+from requests import ReadTimeout
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -261,3 +262,27 @@ async def test_create_api_quantity_observation_only_properties(
         assert after.total_items == None
         assert after.total_lexemes == None
         assert after.total_properties == 5
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+@pytest.mark.soup
+async def test_create_api_quantity_observation_read_error(
+    wikibase_with_script_path, mocker
+):
+    """Test Read Error Scenario"""
+
+    mocker.patch(
+        "fetch_data.api_data.log_data.fetch_log_data.fetch_api_data",
+        side_effect=[ReadTimeout()],
+    )
+
+    result = await test_schema.execute(
+        FETCH_API_QUANTITY_MUTATION,
+        variable_values={"wikibaseId": wikibase_with_script_path.id},
+        context_value=get_mock_context("test-auth-token"),
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["fetchApiQuantityData"] is False
