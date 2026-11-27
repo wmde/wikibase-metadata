@@ -1,3 +1,5 @@
+"""Fetch Total Page Count"""
+
 from fetch_data.utils import dict_to_url, fetch_api_data
 
 ALL_PAGES_PARAMETERS = {
@@ -10,6 +12,8 @@ ALL_PAGES_PARAMETERS = {
 
 
 async def fetch_total_page_count(api_url: str, namespace_id: int | str) -> int:
+    """Get Count of Unique Pages"""
+
     parameters = dict(ALL_PAGES_PARAMETERS)
     parameters["apnamespace"] = namespace_id
 

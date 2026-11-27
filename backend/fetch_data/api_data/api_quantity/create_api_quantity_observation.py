@@ -1,3 +1,5 @@
+"""Create API Quantity Observation"""
+
 from http.client import IncompleteRead
 from json import JSONDecodeError
 
@@ -15,7 +17,9 @@ from urllib3.exceptions import (
 )
 
 from data import get_async_session
-from fetch_data.api_data.api_quantity.fetch_total_page_count import fetch_total_page_count
+from fetch_data.api_data.api_quantity.fetch_total_page_count import (
+    fetch_total_page_count,
+)
 from fetch_data.api_data.util import get_namespaces, parse_namespace
 from fetch_data.utils import get_wikibase_from_database
 from logger import logger
@@ -23,6 +27,7 @@ from model.database import WikibaseAPIQuantityObservationModel, WikibaseModel
 
 
 async def create_api_quantity_observation(wikibase_id: int):
+    """Create API Quantity Observation"""
 
     logger.debug(
         "API Quantity: Attempting Observation", extra={"wikibase": wikibase_id}
