@@ -19,4 +19,3 @@ async def get_namespaces(api_url: str) -> dict[int, dict[str, str | int]]:
     )
     namespaces: dict[int, dict[str, str | int]] = namespace_data["query"]["namespaces"]
     return namespaces
-

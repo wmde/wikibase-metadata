@@ -18,6 +18,7 @@ from model.database.wikibase_observation.property import (
     WikibasePropertyPopularityCountModel,
 )
 from model.database.wikibase_observation.quantity import (
+    WikibaseAPIQuantityObservationModel,
     WikibaseQuantityObservationModel,
 )
 from model.database.wikibase_observation.recent_changes import (
