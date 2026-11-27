@@ -1,0 +1,14 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"allpages": [
+			{ "pageid": 44, "ns": 146, "title": "Lexeme:L1" },
+			{ "pageid": 45, "ns": 146, "title": "Lexeme:L2" },
+			{ "pageid": 46, "ns": 146, "title": "Lexeme:L3" },
+			{ "pageid": 47, "ns": 146, "title": "Lexeme:L4" },
+			{ "pageid": 48, "ns": 146, "title": "Lexeme:L5" },
+			{ "pageid": 49, "ns": 146, "title": "Lexeme:L6" },
+			{ "pageid": 50, "ns": 146, "title": "Lexeme:L7" }
+		]
+	}
+}

@@ -45,6 +45,7 @@ async def create_api_quantity_observation(wikibase_id: int):
 
         try:
             namespaces = await get_namespaces(api_url=wikibase.action_api_url())
+
             item_namespace_id = parse_namespace(
                 namespaces, prop="defaultcontentmodel", value="wikibase-item"
             )
@@ -52,6 +53,8 @@ async def create_api_quantity_observation(wikibase_id: int):
                 observation.total_items = await fetch_total_page_count(
                     api_url=wikibase.action_api_url(), namespace_id=item_namespace_id
                 )
+                observation.returned_data = True
+
             lexeme_namespace_id = parse_namespace(
                 namespaces, prop="defaultcontentmodel", value="wikibase-lexeme"
             )
@@ -59,6 +62,8 @@ async def create_api_quantity_observation(wikibase_id: int):
                 observation.total_lexemes = await fetch_total_page_count(
                     api_url=wikibase.action_api_url(), namespace_id=lexeme_namespace_id
                 )
+                observation.returned_data = True
+
             property_namespace_id = parse_namespace(
                 namespaces, prop="defaultcontentmodel", value="wikibase-property"
             )
@@ -67,6 +72,7 @@ async def create_api_quantity_observation(wikibase_id: int):
                     api_url=wikibase.action_api_url(),
                     namespace_id=property_namespace_id,
                 )
+                observation.returned_data = True
 
         except (
             ConnectTimeoutError,

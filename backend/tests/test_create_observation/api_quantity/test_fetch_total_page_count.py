@@ -1,7 +1,5 @@
 """Test fetch total page count"""
 
-from datetime import datetime, timezone
-
 import pytest
 
 from fetch_data.api_data.api_quantity.fetch_total_page_count import (

@@ -1,0 +1,28 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"namespaces": {
+			"120": {
+				"id": 120,
+				"case": "first-letter",
+				"canonical": "Item",
+				"defaultcontentmodel": "wikibase-item",
+				"*": "Item"
+			},
+			"122": {
+				"id": 122,
+				"case": "first-letter",
+				"canonical": "Property",
+				"defaultcontentmodel": "wikibase-property",
+				"*": "Property"
+			},
+			"146": {
+				"id": 146,
+				"case": "first-letter",
+				"canonical": "Lexeme",
+				"defaultcontentmodel": "wikibase-lexeme",
+				"*": "Lexeme"
+			}
+		}
+	}
+}

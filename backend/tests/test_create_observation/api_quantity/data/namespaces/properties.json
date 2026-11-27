@@ -1,0 +1,14 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"namespaces": {
+			"122": {
+				"id": 122,
+				"case": "first-letter",
+				"canonical": "Property",
+				"defaultcontentmodel": "wikibase-property",
+				"*": "Property"
+			}
+		}
+	}
+}
