@@ -1,0 +1,14 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"namespaces": {
+			"146": {
+				"id": 146,
+				"case": "first-letter",
+				"canonical": "Lexeme",
+				"defaultcontentmodel": "wikibase-lexeme",
+				"*": "Lexeme"
+			}
+		}
+	}
+}

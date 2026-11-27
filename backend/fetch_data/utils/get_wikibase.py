@@ -11,6 +11,7 @@ from model.database import WikibaseModel
 async def get_wikibase_from_database(
     async_session: AsyncSession,
     wikibase_id: int,
+    join_api_quantity_observations: bool = False,
     join_connectivity_observations: bool = False,
     join_external_identifier_observations: bool = False,
     join_log_observations: bool = False,
@@ -30,6 +31,8 @@ async def get_wikibase_from_database(
     logger.debug("Fetching Wikibase", extra={"wikibase": wikibase_id})
 
     query = select(WikibaseModel).where(WikibaseModel.id == wikibase_id)
+    if join_api_quantity_observations:
+        query = query.options(joinedload(WikibaseModel.api_quantity_observations))
     if join_connectivity_observations:
         query = query.options(joinedload(WikibaseModel.connectivity_observations))
     if join_external_identifier_observations:

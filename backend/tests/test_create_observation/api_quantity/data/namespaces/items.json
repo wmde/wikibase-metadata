@@ -1,0 +1,14 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"namespaces": {
+			"120": {
+				"id": 120,
+				"case": "first-letter",
+				"canonical": "Item",
+				"defaultcontentmodel": "wikibase-item",
+				"*": "Item"
+			}
+		}
+	}
+}

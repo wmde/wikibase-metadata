@@ -10,6 +10,7 @@ from data.database_connection import get_async_session
 from model.database import WikibaseModel
 from model.enum import WikibaseCategory, WikibaseType
 from model.strawberry.output.observation import (
+    WikibaseAPIQuantityObservationStrawberryModel,
     WikibaseConnectivityObservationStrawberryModel,
     WikibaseExternalIdentifierObservationStrawberryModel,
     WikibaseLogObservationStrawberryModel,
@@ -50,6 +51,9 @@ class WikibaseStrawberryModel:
     )
     urls: WikibaseURLSetStrawberryModel = strawberry.field(description="URLs")
 
+    _api_quantity_observations: strawberry.Private[
+        Optional[list[WikibaseAPIQuantityObservationStrawberryModel]]
+    ]
     _connectivity_observations: strawberry.Private[
         Optional[list[WikibaseConnectivityObservationStrawberryModel]]
     ]
@@ -80,6 +84,35 @@ class WikibaseStrawberryModel:
     _user_observations: strawberry.Private[
         Optional[list[WikibaseUserObservationStrawberryModel]]
     ]
+
+    @strawberry.field(description="API Quantity Data")
+    async def api_quantity_observations(
+        self,
+    ) -> WikibaseObservationSetStrawberryModel[
+        WikibaseAPIQuantityObservationStrawberryModel
+    ]:
+        """Summon API Quantity Data on Specific Request"""
+
+        if self._api_quantity_observations is not None:
+            return WikibaseObservationSetStrawberryModel.marshal(
+                self._api_quantity_observations
+            )
+        async with get_async_session() as async_session:
+            model = (
+                (
+                    await async_session.scalars(
+                        select(WikibaseModel)
+                        .options(joinedload(WikibaseModel.api_quantity_observations))
+                        .where(WikibaseModel.id == int(self.id))
+                    )
+                )
+                .unique()
+                .one()
+            )
+            return WikibaseObservationSetStrawberryModel.marshal(
+                WikibaseAPIQuantityObservationStrawberryModel.marshal(o)
+                for o in model.api_quantity_observations
+            )
 
     @strawberry.field(description="Connectivity Data")
     async def connectivity_observations(

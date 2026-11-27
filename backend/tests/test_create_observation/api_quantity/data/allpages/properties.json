@@ -1,0 +1,12 @@
+{
+	"batchcomplete": "",
+	"query": {
+		"allpages": [
+			{ "pageid": 6, "ns": 122, "title": "Property:P1" },
+			{ "pageid": 7, "ns": 122, "title": "Property:P10" },
+			{ "pageid": 8, "ns": 122, "title": "Property:P11" },
+			{ "pageid": 9, "ns": 122, "title": "Property:P12" },
+			{ "pageid": 10, "ns": 122, "title": "Property:P13" }
+		]
+	}
+}

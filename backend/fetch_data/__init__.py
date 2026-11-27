@@ -2,6 +2,7 @@
 
 from fetch_data.api_data import (
     WIKIBASE_API_TIMESTAMP_FORMAT,
+    create_api_quantity_observation,
     create_log_observation,
     create_recent_changes_observation,
     create_time_to_first_value_observation,

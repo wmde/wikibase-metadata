@@ -1,5 +1,15 @@
 ### Quantity Observations:
 
+There are two kinds of quantity observations; one made using SPARQL queries, and one made using API calls.
+
+#### API Quantity
+
+We query the wikibase's action api (`/[scriptPath]/api.php`) for the namespaces data, to identify the namespaces for items, properties, and lexemes (if present).
+
+For each of those retrieved, we query the `allpages` endpoint for all pages within the namespace, and save the number of unique page titles.
+
+#### SPARQL Quantity
+
 Using SPARQL, we query for the total number of items, lexemes, and properties in the data.
 
 - Total Items
@@ -7,7 +17,7 @@ Using SPARQL, we query for the total number of items, lexemes, and properties in
 - Total Properties
 - Total Triples
 
-#### Example:
+##### Example:
 
 Query:
 
