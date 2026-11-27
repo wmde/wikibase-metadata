@@ -25,6 +25,8 @@ class WikibaseInput:
 
     test: Optional[bool] = False
 
+    opt_in: bool = False
+
     reuse: Optional[bool] = False
 
     urls: WikibaseURLSetInput

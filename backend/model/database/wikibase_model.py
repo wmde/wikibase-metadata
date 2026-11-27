@@ -87,6 +87,11 @@ class WikibaseModel(ModelBase):
     test: Mapped[bool] = mapped_column("test", Boolean, nullable=False)
     """Test Wikibase?"""
 
+    opt_in: Mapped[bool] = mapped_column(
+        "opt_in", Boolean, nullable=False, default=False
+    )
+    """Opt in to share information with Explorer. If false then only the URL gets stored"""
+
     reuse: Mapped[Optional[bool]] = mapped_column("reuse", Boolean, nullable=True)
     """Display Wikibase"""
 
@@ -332,7 +337,7 @@ class WikibaseModel(ModelBase):
     )
     """Date added (UTC)"""
 
-    # pylint: disable-next=too-many-arguments,too-many-positional-arguments
+    # pylint: disable-next=too-many-arguments,too-many-positional-arguments, too-many-locals
     def __init__(
         self,
         wikibase_name: str,
@@ -349,6 +354,7 @@ class WikibaseModel(ModelBase):
         sparql_frontend_url: Optional[str] = None,
         wikibase_type: Optional[WikibaseType] = WikibaseType.UNKNOWN,
         reuse: bool = False,
+        opt_in: bool = False,
     ):
         self.wikibase_name = wikibase_name
         self.description = description
@@ -359,6 +365,7 @@ class WikibaseModel(ModelBase):
         self.reuse = reuse
         self.test = False
         self.wikibase_type = wikibase_type
+        self.opt_in = opt_in
 
         self.url = WikibaseURLModel(url=base_url, url_type=WikibaseURLType.BASE_URL)
 
@@ -460,3 +467,21 @@ class WikibaseModel(ModelBase):
             self.sparql_frontend_url = WikibaseURLModel(
                 url=sparql_frontend_url, url_type=WikibaseURLType.SPARQL_FRONTEND_URL
             )
+
+    def clear_metadata(self):
+        """Clear metadata when a Wikibase opts out."""
+
+        self.wikibase_name = self.url.url
+        self.organization = None
+        self.description = None
+        self.country = None
+        self.region = None
+        self.reuse = False
+        self.wikibase_type = None
+
+        self.languages.clear()
+
+        self.article_path = None
+        self.script_path = None
+        self.sparql_endpoint_url = None
+        self.sparql_frontend_url = None

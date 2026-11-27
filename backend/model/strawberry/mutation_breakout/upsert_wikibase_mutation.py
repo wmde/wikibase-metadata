@@ -18,6 +18,7 @@ from resolvers import (
     update_wikibase_reuse_flag,
     update_wikibase_type,
     upsert_wikibase_url,
+    update_wikibase_opt_in,
 )
 
 
@@ -102,3 +103,12 @@ class UpsertWikibaseMutation:
 
         authenticate(info)
         return await upsert_wikibase_url(wikibase_id, url, url_type)
+
+    @strawberry.mutation(description="Update Wikibase Opt-in Status")
+    async def update_wikibase_opt_in(
+        self, info: Info, wikibase_id: int, opt_in: bool
+    ) -> bool:
+        """Update Wikibase Opt-in Status"""
+
+        authenticate(info)
+        return await update_wikibase_opt_in(wikibase_id, opt_in)
