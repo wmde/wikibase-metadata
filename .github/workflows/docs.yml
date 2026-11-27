@@ -1,0 +1,29 @@
+name: Docs Lint
+
+on:
+  pull_request:
+    paths-ignore:
+      - "backend/**"
+      - "frontend/**"
+      - "scheduler/**"
+      - ".github/workflows/backend.yml"
+      - ".github/workflows/frontend.yml"
+      - ".github/workflows/scheduler.yml"
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: npm install
+        working-directory: ./docs
+        run: npm i prettier
+
+      - name: npm check format
+        working-directory: ./docs
+        run: |
+          npx prettier --check ./ "!package*.json"

@@ -8,17 +8,17 @@
 - Docker
 - npm
 
-### Docker 
+### Docker
 
-The whole project can be run locally with Docker Compose by using 
+The whole project can be run locally with Docker Compose by using
 
 ```bash
-make up 
+make up
 ```
 
 The UI will now be viewable at http://localhost
 
-To stop the service, use: 
+To stop the service, use:
 
 ```bash
 make down
@@ -31,6 +31,7 @@ Inside the `backend` directory:
 1. Make a copy of `.env.template` and rename it to `.env`
 
 2. Start a postgres instance with docker using:
+
 ```bash
 $ docker run -d \
   --name postgres \
@@ -40,25 +41,29 @@ $ docker run -d \
 ```
 
 3. Create a python virtual environment:
+
 ```bash
 $ python3.12 -m venv .venv
 $ source .venv/bin/activate
 ```
 
 4. Install the requirements:
+
 ```bash
-$ pip install -r requirements.txt && pip install -r requirements-dev.txt 
+$ pip install -r requirements.txt && pip install -r requirements-dev.txt
 ```
 
 5. Run migrations:
+
 ```bash
 $ alembic upgrade head
 ```
+
 6. Start the server:
+
 ```bash
 $ PYTHONPATH=. fastapi dev app.py
 ```
-
 
 ### Frontend
 
@@ -67,17 +72,18 @@ Inside the `frontend` directory:
 1. Make a copy of `.env.template` and rename it to `.env`
 
 2. Install dependencies:
+
 ```bash
 $ npm ci
 ```
 
 3. Start the app:
+
 ```bash
 $ npm run dev
 ```
 
 The UI should now be running on http://localhost:1573
-
 
 ## Testing Locally:
 
@@ -89,7 +95,7 @@ To run all non-data tests, run the following command:
 $ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest -m "not data"
 ```
 
-You can run just a specific test using: 
+You can run just a specific test using:
 
 ```bash
 $ TESTING=1 PYTHONPATH=. SETTINGS_FILE=test-settings.ini pytest tests/test_query/<FILE_NAME>::<TEST_NAME>

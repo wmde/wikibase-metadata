@@ -23,7 +23,13 @@ async def execute_add_wikibase(name: str, urls: dict):
 
     return await test_schema.execute(
         ADD_WIKIBASE_QUERY,
-        variable_values={"wikibaseInput": {"wikibaseName": name, "urls": urls}},
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": name,
+                "urls": urls,
+                "optIn": True,
+            }
+        },
     )
 
 
@@ -64,6 +70,7 @@ async def test_add_wikibase_mutation(
                     "sparqlEndpointUrl": "https://query.example.com/sparql-wrong",
                     "sparqlFrontendUrl": "https://query.example.com",
                 },
+                "optIn": True,
                 "reuse": True,
             }
         },
@@ -115,6 +122,7 @@ async def test_updates_wikibase_if_base_url_already_exists(
                 "wikibaseName": "Example Wikibase 2",
                 "description": "Updated description",
                 "urls": {"baseUrl": base_url, "articlePath": "wiki"},
+                "optIn": True,
             }
         },
     )
@@ -332,6 +340,7 @@ async def test_normalizes_urls(
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {"baseUrl": f"http://{base_url}", "articlePath": "/wiki"},
+                "optIn": True,
             }
         },
     )
@@ -359,6 +368,7 @@ async def test_normalizes_urls(
                     "region": "",
                     "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                     "urls": {"baseUrl": url, "articlePath": "wiki"},
+                    "optIn": True,
                 }
             },
         )
@@ -409,6 +419,7 @@ async def test_marks_localhost_urls_as_test(
                 "region": "Europe",
                 "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
                 "urls": {"baseUrl": "http://localhost:8000", "articlePath": "/wiki"},
+                "optIn": True,
             }
         },
     )
@@ -423,3 +434,69 @@ async def test_marks_localhost_urls_as_test(
         wikibase = db_result.scalar_one()
         assert wikibase.test is True
         assert wikibase_id == int(result.data["addWikibase"]["id"])
+
+
+@pytest.mark.asyncio
+@pytest.mark.mutation
+async def test_add_wikibase_opted_out_stores_only_necessary_data(
+    db_session, wikibase_categories
+):  # pylint: disable=unused-argument
+    """Test adding Wikibase with optIn set to False only stores necessary data."""
+
+    base_url = "https://example-opted-out.com"
+
+    result = await test_schema.execute(
+        ADD_WIKIBASE_QUERY,
+        variable_values={
+            "wikibaseInput": {
+                "wikibaseName": "Private Wikibase",
+                "optIn": False,
+                "wikibaseType": "SUITE",
+                "description": "Private description",
+                "organization": "Private organization",
+                "country": "Germany",
+                "region": "Europe",
+                "category": "EXPERIMENTAL_AND_PROTOTYPE_PROJECTS",
+                "urls": {
+                    "baseUrl": base_url,
+                    "articlePath": "/wiki",
+                    "sparqlEndpointUrl": "https://example.com/sparql",
+                    "sparqlFrontendUrl": "https://example.com/query",
+                },
+                "reuse": True,
+            }
+        },
+    )
+
+    assert result.errors is None
+    assert result.data is not None
+
+    wikibase_id = int(result.data["addWikibase"]["id"])
+
+    async with AsyncSession(bind=db_session) as session:
+        wikibase = await session.get(WikibaseModel, wikibase_id)
+
+        assert wikibase is not None
+
+        assert wikibase.opt_in is False
+        assert wikibase.wikibase_name == base_url
+        assert wikibase.url.url == base_url
+        assert wikibase.url.url_type == WikibaseURLType.BASE_URL
+
+        assert wikibase.description is None
+        assert wikibase.organization is None
+        assert wikibase.country is None
+        assert wikibase.region is None
+        assert wikibase.category is None
+        assert wikibase.wikibase_type is None
+        assert wikibase.reuse is False
+
+        assert wikibase.article_path is None
+        assert wikibase.script_path is None
+        assert wikibase.sparql_endpoint_url is None
+        assert wikibase.sparql_frontend_url is None
+
+        assert wikibase.languages == []
+
+        assert wikibase.checked is False
+        assert wikibase.test is False
